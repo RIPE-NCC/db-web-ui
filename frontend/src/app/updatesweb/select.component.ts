@@ -64,7 +64,7 @@ export class SelectComponent {
 
     public filterObjectTypes(unfiltered: string[]): string[] {
         return _.filter(unfiltered, (item: string) => {
-            return item !== "as-block" && item !== "poem" && item !== "poetic-form";
+            return item !== "as-block" && item !== "poem" && item !== "poetic-form" && item != "aut-num";
         });
     }
 }

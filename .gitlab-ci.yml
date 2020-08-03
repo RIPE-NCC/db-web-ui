@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:chrome80-ff-jdk8-maven36-node10
+image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:chrome83-ff-jdk8-maven36-node10
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
@@ -46,7 +46,8 @@ e2e:
     - export DISPLAY=:20
     - Xvfb :20 -screen 0 1920x1080x16 &
     - mvn install
-    - cd frontend && npm run e2e
+    # use pinned version of Chrome:
+    - cd frontend && npm run e2e-chrome
 
 e2e-firefox:
     stage: test
