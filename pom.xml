@@ -6,7 +6,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <!-- keep version in sync with spring-boot.version in backend pom -->
-        <version>2.3.4.RELEASE</version>
+        <version>2.3.0.RELEASE</version>
         <relativePath />
     </parent>
 
