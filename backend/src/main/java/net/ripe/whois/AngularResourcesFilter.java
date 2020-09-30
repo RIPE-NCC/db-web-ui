@@ -1,9 +1,6 @@
 package net.ripe.whois;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,8 +15,6 @@ import java.io.IOException;
 @Component
 public class AngularResourcesFilter implements Filter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngularResourcesFilter.class);
-
     private static final String REDIRECT_PATH = "/index.html";
 
     @Override
@@ -29,27 +24,6 @@ public class AngularResourcesFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) req;
 
         final String uri = request.getRequestURI().substring(request.getContextPath().length());
-
-        // requestURI=/db-web-ui/query uri=/query Angular path? true ****************************
-        LOGGER.info(
-            "\n\turi={}" +
-            "\n\tisAngularPath? {}" +
-            "\n\trequestURI={}" +
-            "\n\tservlet path={}" +
-            "\n\tpath info={}" +
-            "\n\tpath translated={}" +
-            "\n\tcontext path={}" +
-            "\n\trequestURL={}" +
-            "\n\tservlet path={}",
-            uri,
-            isAngularPath(uri),
-            request.getRequestURI(),
-            request.getServletPath(),
-            request.getPathInfo(),
-            request.getPathTranslated(),
-            request.getContextPath(),
-            request.getRequestURL(),
-            request.getServletPath());
 
         if (isAngularPath(uri)) {
             chain.doFilter(
@@ -62,22 +36,6 @@ public class AngularResourcesFilter implements Filter {
                     @Override
                     public String getRequestURI() {
                         return REDIRECT_PATH;
-                    }
-
-                    @Override
-                    public StringBuffer getRequestURL() {
-                        return new StringBuffer(REDIRECT_PATH);
-                    }
-
-                    @Override
-                    public Object getAttribute(final String name) {
-                        if (WebUtils.INCLUDE_SERVLET_PATH_ATTRIBUTE.equals(name)) {
-                            LOGGER.info("getAttribute: {}={}", name, REDIRECT_PATH);
-                            return REDIRECT_PATH;
-                        }
-
-                        LOGGER.info("getAttribute: {}={}", name, super.getAttribute(name));
-                        return super.getAttribute(name);
                     }
                 },
                 response);
