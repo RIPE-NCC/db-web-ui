@@ -228,6 +228,12 @@ describe("WhoisResourcesService", () => {
                         },
                         text: "\"%s\" is not valid for this object type",
                         args: [{value: "XYZ"}]
+                    }, {
+                        severity : "Error",
+                        text : "Cannot use reserved AS number %d",
+                        args : [ {
+                            value : "65530"
+                        }]
                     }
                 ]
             }
@@ -240,6 +246,12 @@ describe("WhoisResourcesService", () => {
                 text: "Unrecognized source: %s",
                 args: [{value: "INVALID_SOURCE"}],
                 plainText: "Unrecognized source: INVALID_SOURCE"
+            },
+            {
+                severity : "Error",
+                text : "Cannot use reserved AS number %d",
+                args : [{value : "65530"}],
+                plainText: "Cannot use reserved AS number 65530"
             }
         ]);
 
@@ -253,6 +265,10 @@ describe("WhoisResourcesService", () => {
 
         expect(WhoisResourcesService.readableError(errorResponse.errormessages.errormessage[1])).toEqual(
             "Not authenticated"
+        );
+
+        expect(WhoisResourcesService.readableError(errorResponse.errormessages.errormessage[3])).toEqual(
+            "Cannot use reserved AS number 65530"
         );
 
         // has second %s withoutv second arg
