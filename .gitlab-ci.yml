@@ -43,6 +43,7 @@ karma:
 e2e:
   stage: test
   script:
+    - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
     - export DISPLAY=:20
     - Xvfb :20 -screen 0 1920x1080x16 &
     - mvn install
@@ -52,6 +53,7 @@ e2e:
 e2e-firefox:
     stage: test
     script:
+        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
         - mvn install

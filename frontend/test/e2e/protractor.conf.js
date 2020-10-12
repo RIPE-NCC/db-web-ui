@@ -13,7 +13,8 @@ exports.config = {
   ],
   capabilities: {
     'browserName': 'chrome',
-    'chromeOptions': {'args': ['--disable-extensions', '--window-size=1920,1080', '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']}
+    'chromeOptions': {'args': ['--disable-extensions', '--window-size=1920,1080', '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']},
+    'acceptInsecureCerts' : true
   },
   directConnect: true,
   framework: 'jasmine',

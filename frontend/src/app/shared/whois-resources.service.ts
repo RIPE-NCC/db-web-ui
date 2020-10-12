@@ -156,7 +156,7 @@ export class WhoisResourcesService {
 
     public static readableError(errorMessage: IErrorMessageModel) {
         let idx = 0;
-        return errorMessage.text.replace(/%s/g, (match) => {
+        return errorMessage.text.replace(/%s|%d/g, (match) => {
             if (errorMessage.args.length - 1 >= idx) {
                 const arg = errorMessage.args[idx].value;
                 idx++;
