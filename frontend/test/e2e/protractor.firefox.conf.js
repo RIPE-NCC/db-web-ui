@@ -13,6 +13,7 @@ exports.config = {
   ],
   capabilities: {
     'browserName': 'firefox',
+    'acceptInsecureCerts' : true
   },
   directConnect: true,
   framework: 'jasmine',
@@ -20,7 +21,7 @@ exports.config = {
 
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: 50000,
     print: function() {}
   },
   onPrepare() {

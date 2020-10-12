@@ -14,7 +14,8 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     'seleniumAddress': 'http://193.0.2.222:4444/wd/hub',
-    'chromeOptions': {'args': ['--disable-extensions']}
+    'chromeOptions': {'args': ['--disable-extensions']},
+    'acceptInsecureCerts' : true
   },
   framework: 'jasmine',
   allScriptsTimeout: 200000,
