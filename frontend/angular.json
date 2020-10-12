@@ -107,11 +107,12 @@
             "baseHref": "/db-web-ui/",
             "disableHostCheck": true,
             "port": 9002,
-            "host": "0.0.0.0"
+            "host": "0.0.0.0",
+            "ssl": true
           },
           "configurations": {
             "local": {
-              "publicHost": "localhost:9002/db-web-ui/"
+              "publicHost": "localhost.ripe.net:9002/db-web-ui/"
             },
             "remote": {
               "publicHost": "db-tools-1.ripe.net:9002/db-web-ui/"

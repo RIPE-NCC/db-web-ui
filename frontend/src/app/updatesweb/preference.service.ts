@@ -68,7 +68,7 @@ export class PreferenceService {
     }
 
     private setCookie(name: string, value: string, path: string) {
-        this.cookies.set(name, value, this.expiredDate, path);
+        this.cookies.set(name, value, 1, "/", ".ripe.net", true);
     }
 
     private getCookie(name: string, defaulValue: string): any {

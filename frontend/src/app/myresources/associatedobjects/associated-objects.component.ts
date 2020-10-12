@@ -48,10 +48,12 @@ export class AssociatedObjectsComponent implements OnChanges {
 
     // height is: 36 * n visible rows
     public updateHeight() {
-        if (this.resultObject.associatedObjects && this.resultObject.associatedObjects.length > this.tableSize) {
-            this.tableHeight = this.tableSize * 36;
-        } else {
-            this.tableHeight = this.resultObject.associatedObjects.length * 36;
+        if (this.resultObject.associatedObjects) {
+            if (this.resultObject.associatedObjects.length > this.tableSize) {
+                this.tableHeight = this.tableSize * 36;
+            } else {
+                this.tableHeight = this.resultObject.associatedObjects.length * 36;
+            }
         }
     }
 

@@ -80,7 +80,7 @@ Frontend
 * `npm run start-mock`<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks. <br />
-  _To be able to run e2e-no-test locally (http://localhost:9002/db-web-ui/#) with logged in user you will have to check <br />
+  _To be able to run e2e-no-test locally (http://localhost:9002/db-web-ui) with logged in user you will have to check <br />
   `hostname -s` and then resulted host name (for example laptop-123456.local) add<br /> 
   `127.0.0.1       laptop-123456.local` in you host file<br />
   `sudo vi /etc/hosts`_  
