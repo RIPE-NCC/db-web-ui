@@ -482,13 +482,14 @@ export class WhoisMetaService {
     }
 
     public getMetaAttributesOnObjectType(objectTypeName: string, mandatoryOnly: boolean) {
-        if (!objectTypeName || !this.objectTypesMap[objectTypeName]) {
+        const objectTypeLowerCase = objectTypeName.toLowerCase();
+        if (!objectTypeName || !this.objectTypesMap[objectTypeLowerCase]) {
             return [];
         }
         if (mandatoryOnly === false) {
-            return this.objectTypesMap[objectTypeName].attributes;
+            return this.objectTypesMap[objectTypeLowerCase].attributes;
         }
-        return this.objectTypesMap[objectTypeName].attributes.filter((attr: any) => {
+        return this.objectTypesMap[objectTypeLowerCase].attributes.filter((attr: any) => {
                 return attr.mandatory === mandatoryOnly;
                 // return attr.$$meta.$$mandatory === mandatoryOnly;
             },
@@ -496,10 +497,11 @@ export class WhoisMetaService {
     }
 
     public findMetaAttributeOnObjectTypeAndName(objectTypeName: string, attributeName: string) {
-        if (!objectTypeName || !this.objectTypesMap[objectTypeName]) {
+        const objectTypeLowerCase = objectTypeName.toLowerCase();
+        if (!objectTypeName || !this.objectTypesMap[objectTypeLowerCase]) {
             return undefined;
         }
-        return _.find(this.objectTypesMap[objectTypeName].attributes, (attr: IAttributeModel) => {
+        return _.find(this.objectTypesMap[objectTypeLowerCase].attributes, (attr: IAttributeModel) => {
                 return attr.name === attributeName;
             });
     }
@@ -517,7 +519,10 @@ export class WhoisMetaService {
     }
 
     public isExistingObjectTypes(objectType: string): boolean {
-        return this.objectTypesMap[objectType] !== undefined;
+        if (objectType) {
+            return this.objectTypesMap[objectType.toLowerCase()] !== undefined;
+        }
+        return false;
     }
 
     public enrichAttributesWithMetaInfo(objectTypeName: string, attrs: IAttributeModel[]) {

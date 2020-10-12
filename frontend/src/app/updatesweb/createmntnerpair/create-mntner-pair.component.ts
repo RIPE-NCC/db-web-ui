@@ -54,9 +54,6 @@ export class CreateMntnerPairComponent {
     public init() {
 
         this.submitInProgress = false;
-
-        // this.alertService.clearErrors();
-
         this.source = this.properties.SOURCE;
 
         const paramMap = this.activatedRoute.snapshot.paramMap;
