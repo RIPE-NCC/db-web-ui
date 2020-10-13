@@ -26,7 +26,13 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     singleRun: false,
     // autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['chrome_sandbox'],
+    customLaunchers: {
+      chrome_sandbox: {
+        base: 'Chrome',
+        flags: ['--no-sandbox','--disable-setuid-sandbox']
+      }
+    },
     restartOnFileChange: true
   });
 };

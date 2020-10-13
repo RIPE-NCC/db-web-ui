@@ -208,3 +208,22 @@ https://matomo.ripe.net/
 
 Debug tool <br />
 https://apps.db.ripe.net/db-web-ui/?mtmPreviewMode=BuGxbMDR#/webupdates/select
+
+Running E2E tests in Gitlab
+---------------------------
+
+E2E (Protractor) tests are run in-container in Gitlab for every commit.
+The whois-build image contains both a Chrome and Firefox browser that is used to run the E2E tests.
+
+The webdriver version for Chrome has been pinned in the [js package build config](frontend/package.json) so it corresponds with the Chrome version
+being used. If the webdriver and Chrome version mismatch running the tests will fail with a message similar to this:
+
+````
+[09:32:37] E/launcher - session not created: This version of ChromeDriver only supports Chrome version 83
+  (Driver info: chromedriver=83.0.4103.39 (ccbf011cb2d2b19b506d844400483861342c20cd-refs/branch-heads/4103@{#416}),platform=Linux 4.19.76-linuxkit x86_64)
+[09:32:37] E/launcher - SessionNotCreatedError: session not created: This version of ChromeDriver only supports Chrome version 83
+  (Driver info: chromedriver=83.0.4103.39 (ccbf011cb2d2b19b506d844400483861342c20cd-refs/branch-heads/4103@{#416}),platform=Linux 4.19.76-linuxkit x86_64)
+    at Object.checkLegacyResponse (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/error.js:546:15)
+    at parseHttpResponse (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/http.js:509:13)
+    at doSend.then.response (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/http.js:441:30)
+````
