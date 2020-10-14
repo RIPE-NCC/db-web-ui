@@ -753,7 +753,7 @@ export class CreateModifyComponent {
                     attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
                         this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", mntnerAttrs));
 
-                    // Post-process atttributes before showing using screen-logic-interceptor
+                    // Post-process attributes before showing using screen-logic-interceptor
                     this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
 
                     console.debug("mntnrs-sso:" + JSON.stringify(this.maintainers.sso));

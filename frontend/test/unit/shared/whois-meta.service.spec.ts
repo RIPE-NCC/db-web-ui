@@ -39,6 +39,18 @@ describe("WhoisMetaService", () => {
         expect(whoisMetaService.findMetaAttributeOnObjectTypeAndName("aut-num", "inet6num")).toBeUndefined();
     });
 
+    it("should find meta attribute on objectType in UpperCase and name", () => {
+        expect(whoisMetaService.findMetaAttributeOnObjectTypeAndName("ROLE", "abuse-mailbox")).toEqual(
+            //@ts-ignore
+            {name: "abuse-mailbox", mandatory: false, multiple: false, refs: [], searchable: true}
+        );
+    });
+
+    it("should recognise object type in Upper case as existing object types", () => {
+        expect(whoisMetaService.isExistingObjectTypes("ROLE")).toBeTrue();
+        expect(whoisMetaService.isExistingObjectTypes("PERSON")).toBeTrue();
+    });
+
     it("should enrich attributes with meta attributes for a given type", () => {
 
         const attrs = [
@@ -68,6 +80,18 @@ describe("WhoisMetaService", () => {
     // role
     it("should return exactly the mandatory meta attributes for a given type", () => {
         expect(whoisMetaService.getMetaAttributesOnObjectType("role", true)).toEqual([
+            {name: "role", mandatory: true, multiple: false, refs: [], searchable: true},
+            {name: "address", mandatory: true, multiple: true, refs: []},
+            {name: "e-mail", mandatory: true, multiple: true, refs: []},
+            {name: "nic-hdl", mandatory: true, multiple: false, primaryKey: true, refs: []},
+            {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
+            {name: "source", mandatory: true, multiple: false, refs: []}
+        ]);
+    });
+
+    // role
+    it("should return exactly the mandatory meta attributes for a given type in UpperCase", () => {
+        expect(whoisMetaService.getMetaAttributesOnObjectType("ROLE", true)).toEqual([
             {name: "role", mandatory: true, multiple: false, refs: [], searchable: true},
             {name: "address", mandatory: true, multiple: true, refs: []},
             {name: "e-mail", mandatory: true, multiple: true, refs: []},
