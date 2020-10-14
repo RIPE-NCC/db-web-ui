@@ -23,7 +23,8 @@ cache:
 build:
   stage: build
   script:
-    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -Dversion=${CI_COMMIT_SHA}
+    - mvn versions:set -DnewVersion=${CI_COMMIT_SHA}
+    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package
   artifacts:
     paths:
       - backend/target/backend*.jar
