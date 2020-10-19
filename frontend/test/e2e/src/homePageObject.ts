@@ -131,6 +131,7 @@ module.exports = {
     btnSubmitForm: element(by.id("btnSubmitCreate")),
     inpRoute: element(by.id("createForm")).element(by.name("route")),
     inpOrigin: element(by.id("createForm")).element(by.name("origin")),
+    inpAbuseMailbox: element(by.id("createForm")).element(by.name("abuse-mailbox")),
     btnDeleteObject: element(by.id("deleteObject")),
     btnConfirmDeleteObject: element(by.id("btnConfirmDeleteObject")),
     btnSubmitModify: element(by.id("btnSubmitModify")),
