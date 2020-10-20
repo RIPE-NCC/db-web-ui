@@ -17,6 +17,7 @@ import {IWhoisResponseModel} from "../../../src/app/shared/whois-response-type.m
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {CertificateBannerComponent} from "../../../src/app/banner/certificate-banner.component";
+import {BofBannerComponent} from "../../../src/app/banner/bof-banner.component";
 import {CookieService} from "ngx-cookie-service";
 
 const whoisObjectModelMock = {
@@ -147,6 +148,7 @@ describe("QueryComponent", () => {
             declarations: [
                 QueryComponent,
                 CertificateBannerComponent,
+                BofBannerComponent,
                 LookupComponent,
                 TemplateComponent,
                 WhoisObjectViewerComponent,
