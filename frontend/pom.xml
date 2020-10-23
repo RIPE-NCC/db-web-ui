@@ -12,6 +12,13 @@
     <artifactId>frontend</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <sonar.sources>src/app</sonar.sources>
+        <sonar.tests>test</sonar.tests>
+        <sonar.javascript.lcov.reportPaths>../reports/unittest-coverage/lcov.info</sonar.javascript.lcov.reportPaths>
+        <sonar.language>ts</sonar.language>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -43,6 +50,20 @@
                             <arguments>
                                 <argument>run</argument>
                                 <argument>build</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm run test</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>test</argument>
                             </arguments>
                         </configuration>
                     </execution>

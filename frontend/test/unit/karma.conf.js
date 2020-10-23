@@ -26,11 +26,18 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     singleRun: false,
     // autoWatch: true,
-    browsers: ['chrome_sandbox'],
+    browsers: ['MyChromeHeadless'],
     customLaunchers: {
-      chrome_sandbox: {
-        base: 'Chrome',
-        flags: ['--no-sandbox','--disable-setuid-sandbox']
+      MyChromeHeadless: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-gpu',
+          '--disable-setuid-sandbox',
+          '--disable-translate',
+          '--disable-extensions'
+        ]
       }
     },
     restartOnFileChange: true
