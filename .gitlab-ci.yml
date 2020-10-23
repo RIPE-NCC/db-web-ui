@@ -36,8 +36,6 @@ build:
 karma:
   stage: test
   script:
-    - export DISPLAY=:20
-    - Xvfb :20 -screen 0 1920x1080x16 &
     - mvn install
     - cd frontend && npm run test
 
@@ -65,7 +63,7 @@ e2e-firefox:
 qa:
     stage: test
     script:
-        - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar  -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
+        - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
     allow_failure: true
 
 .deploy_template: &deploy_env

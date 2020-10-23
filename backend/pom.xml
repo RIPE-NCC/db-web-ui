@@ -30,7 +30,9 @@
         <maven.plugins.version>3.1.1</maven.plugins.version>
         <reflection.version>0.9.12</reflection.version>
         <run.addResources>false</run.addResources>
-        <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+        <sonar.sources>src/main</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <whois.version>52ec9c66</whois.version>
@@ -308,7 +310,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-sortpom-plugin.version}</version>
                 <configuration>
-                    <argLine>-Xmx256m</argLine>
+                    <argLine>${argLine} -Xmx256m</argLine>
                                         <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
                     <redirectTestOutputToFile>${test.redirectOutput}</redirectTestOutputToFile>
@@ -338,6 +340,33 @@
                         <exclude>**/Abstract*</exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
