@@ -18,26 +18,17 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - frontend/node_modules/
+    - frontend/package-lock.json
     - .m2/repository
 
 build:
   stage: build
   script:
     - mvn versions:set -DnewVersion=${CI_COMMIT_SHA}
-    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package
+    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests
   artifacts:
     paths:
       - backend/target/backend*.jar
-    reports:
-      junit:
-        - backend/target/surefire-reports/TEST-*.xml
-        - backend/target/failsafe-reports/TEST-*.xml
-
-karma:
-  stage: test
-  script:
-    - mvn install
-    - cd frontend && npm run test
 
 e2e:
   stage: test
@@ -45,26 +36,28 @@ e2e:
     - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
     - export DISPLAY=:20
     - Xvfb :20 -screen 0 1920x1080x16 &
-    - mvn install
     # use pinned version of Chrome:
     - cd frontend && npm run e2e-chrome
 
 e2e-firefox:
-    stage: test
-    script:
-        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
-        - export DISPLAY=:20
-        - Xvfb :20 -screen 0 1920x1080x16 &
-        - mvn install
-        - cd frontend && npm run e2e-firefox
-    # TODO: some tests fail on firefox
-    allow_failure: true
+  stage: test
+  script:
+    - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
+    - export DISPLAY=:20
+    - Xvfb :20 -screen 0 1920x1080x16 &
+    - cd frontend && npm run e2e-firefox
+  allow_failure: true
 
 qa:
-    stage: test
-    script:
-        - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
-    allow_failure: true
+  stage: test
+  script:
+      - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
+  allow_failure: true
+  artifacts:
+    reports:
+      junit:
+        - backend/target/surefire-reports/TEST-*.xml
+        - backend/target/failsafe-reports/TEST-*.xml
 
 .deploy_template: &deploy_env
   stage: deploy
