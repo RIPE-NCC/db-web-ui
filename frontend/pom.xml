@@ -58,13 +58,14 @@
                         <goals>
                             <goal>exec</goal>
                         </goals>
-                        <phase>verify</phase>
+                        <phase>test</phase>
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
                                 <argument>test</argument>
                             </arguments>
+                            <skip>${skipTests}</skip>
                         </configuration>
                     </execution>
                 </executions>
