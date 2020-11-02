@@ -9,6 +9,8 @@ export class PropertiesService {
 
     public ACCESS_URL = "https://access.prepdev.ripe.net?originalUrl=https://localhost.ripe.net:8443/db-web-ui/";
     public BANNER = "Welcome to the localhost version of the RIPE Database.";
+    // FIXME This tag is not used anymore... remove it after merging https://gitlab.ripe.net/swe-database-team/db-web-ui/-/commits/DB-3160_ripe_web_component_login_switcher
+    // also clean getImplementationVersion in AngularConstantsController
     public BUILD_TAG = "SNAPSHOT";
     public DATABASE_CREATE_URL = "webupdates/select";
     public DATABASE_FULL_TEXT_SEARCH_URL = "fulltextsearch";
@@ -92,6 +94,6 @@ export class PropertiesService {
 
     private injectProperties() {
         loadMatomo(this.MATOMO_ID);
-        loadUsersnap(this.BUILD_TAG);
+        loadUsersnap(this.DB_WEB_UI_BUILD_TIME);
     }
 }
