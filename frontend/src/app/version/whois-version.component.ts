@@ -1,5 +1,4 @@
 import {Component, Input, OnChanges} from "@angular/core";
-import {PropertiesService} from "../properties.service";
 import {IVersion} from "../shared/whois-response-type.model";
 
 @Component({
