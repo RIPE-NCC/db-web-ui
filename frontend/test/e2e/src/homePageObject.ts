@@ -168,11 +168,6 @@ module.exports = {
     orgSelectorOptions: element(by.id("organisation-selector")).all(by.css("small")),
     orgSelectorOptionsElName: element(by.id("organisation-selector")).all(by.css(".ng-option div")),
 
-    // UserInfo component
-    userInfo: element(by.css("user-info")),
-    userInfoMenu: element(by.css("user-info")).element(by.id("loggedin-box")),
-    userInfoLogoutLink: element(by.css("user-info")).element(by.id("loggedin-box")).all(by.css("li")).get(1).element(by.css("a")),
-
     // Lefthand menu items
     topMenuItems: element.all(by.css(".toplevel li.child")),
     myLirMenuItems: element.all(by.css(".toplevel li.child")).get(0).all(by.css(".level2 li")),

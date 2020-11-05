@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import {APP_INITIALIZER, NgModule} from "@angular/core";
+import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {NgSelectModule} from "@ng-select/ng-select";
@@ -46,6 +46,7 @@ import {BannerComponent} from "./banner/banner.component";
     ErrorPageComponent,
     NotFoundPageComponent
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   imports: [
     BrowserModule,
     NgSelectModule,
