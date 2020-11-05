@@ -17,6 +17,7 @@ export class PropertiesService {
     public DATABASE_QUERY_URL = "query";
     public DATABASE_SYNCUPDATES_URL = "syncupdates";
     public ENV = "local";
+    public RIPE_APP_WEBCOMPONENTS_ENV = "pre";
     public MATOMO_ID = "BuGxbMDR_dev_0ae7dee0ac65f70a4e8cf1b8";
     public IPV4_TRANSFER_LISTING_URL = "";
     public LIR_ACCOUNT_DETAILS_URL = "";
@@ -77,6 +78,7 @@ export class PropertiesService {
                         this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                         this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
                         this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
+                        this.RIPE_APP_WEBCOMPONENTS_ENV = "prod";
 
                         this.injectProperties();
                     },

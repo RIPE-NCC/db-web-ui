@@ -63,3 +63,4 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  */
 import "ip-address/lib/ipv4";
 import "ip-address/lib/ipv6";
+import "@technical-design/ripe-app-webcomponents";
