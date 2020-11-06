@@ -9,8 +9,16 @@ describe("Display an aut-num", () => {
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/aut-num/as210089?method=Modify");
         expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
-        expect(page.displayPanel.getText()).not.toContain("<img");
-        expect(page.displayPanel.getText()).not.toContain("script");
+        expect(page.displayPanelImgTag.isPresent()).toBeFalsy();
+        expect(page.displayPanelScriptTag.isPresent()).toBeFalsy();
+    });
+
+    it("should show umlaut", () => {
+        browser.get(browser.baseUrl + "webupdates/display/RIPE/aut-num/as210089?method=Modify");
+        expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/aut-num/as210089?method=Modify");
+        expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
+        expect(page.displayPanel.isDisplayed()).toBeTruthy();
+        expect(page.displayPanel.getText()).toContain("Ümlaüt");
     });
 
     it("should contain + in front of each added row", () => {

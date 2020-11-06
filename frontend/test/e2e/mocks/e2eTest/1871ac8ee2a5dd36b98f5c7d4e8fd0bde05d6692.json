@@ -1,6 +1,6 @@
 {
   "requestUrl": "/api/whois/RIPE/aut-num/as210089?unfiltered=true",
-  "contentType": "application/javascript",
+  "contentType": "application/json",
   "statusCode": 200,
   "data": {
     "objects": {
@@ -75,6 +75,10 @@
                 "value": "----- Cynthia Maja Revstrom -----"
               },
               {
+                "name" : "remarks",
+                "value" : "Ümlaüt"
+              },
+              {
                 "name": "import",
                 "value": "from AS57782 accept ANY"
               },
@@ -146,6 +150,11 @@
     "terms-and-conditions": {
       "type": "locator",
       "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    },
+    "version" : {
+      "version" : "1.98",
+      "timestamp" : "2020-10-05T13:10:55Z",
+      "commit-id" : "a3e96d4"
     }
   }
 }

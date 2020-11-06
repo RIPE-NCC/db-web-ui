@@ -14,7 +14,7 @@
             </td>
             <td>
                 <p [hidden]="attribute.link">
-                        {{attribute.value | sanitizeImgHtml}}
+                        {{attribute.value}}
                 </p>
                 <p [hidden]="!attribute.link">
                         <a [href]="attribute.link?.href">{{attribute.value}}</a>
@@ -27,7 +27,8 @@
         </tr>
     </table>
 
-    <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeImgHtml | sanitizeHtml" [right]="after | sanitizeImgHtml | sanitizeHtml" class="textdiff"></pre>
+
+    <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
 
     <button (click)="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
     <span [hidden]="!modifyButtonToBeShown()">
