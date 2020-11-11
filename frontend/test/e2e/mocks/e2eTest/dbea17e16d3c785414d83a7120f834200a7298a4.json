@@ -47,6 +47,12 @@
       ],
       "type": "mntner",
       "key": "IPACCT-MNT"
+    },
+    {
+      "mine": true,
+      "auth": ["SSO"],
+      "type": "mntner",
+      "key": "IVANA-MNT"
     }
   ],
   "statusCode": 200,

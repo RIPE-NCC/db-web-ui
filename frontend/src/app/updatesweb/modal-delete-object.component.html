@@ -15,7 +15,7 @@
 
         <div *ngIf="canBeDeleted">
             <label for="reason">Reason</label><br/>
-            <input class="form-control" type="text" name="reason" id="reason" [ngModel]="reason" autocomplete="off">
+            <input class="form-control" type="text" name="reason" id="reason" [(ngModel)]="reason" autocomplete="off">
         </div>
 
         <div *ngIf="hasNonSelfIncomingRefs(inputData.objectType, inputData.name, incomingReferences)">
