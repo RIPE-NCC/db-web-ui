@@ -11,6 +11,20 @@ const prismFilename = (config, req) => {
 };
 
 module.exports = {
+    module: {
+        rules: [
+            {
+                test: /node_modules\/@technical-design/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                },
+
+            }
+        ]
+    },
     devServer: {
         before: function (app) {
             prism.create({
