@@ -214,6 +214,99 @@ describe("ModalAuthenticationComponent", () => {
         });
     });
 
+    it("should sent attributes without comments when authorise-associate current user to object", async () => {
+        // testing if comment was removed from value: "PGPKEY-170757B6 # Remco"
+        modalAuthenticationComponent.selected.item = {type: "mntner", key: "b-mnt", auth: []};
+        modalAuthenticationComponent.selected.password = "secret";
+        modalAuthenticationComponent.selected.associate = true;
+
+        modalAuthenticationComponent.submit();
+
+        httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true"}).flush({
+            objects: {
+                object: [
+                    {
+                        source: {id: "RIPE"},
+                        "primary-key": {attribute: [{name: "mntner", value: "b-mnt"}]},
+                        attributes: {
+                            attribute: [
+                                {name: "mntner", value: "b-mnt"},
+                                {name: "mnt-by", value: "b-mnt"},
+                                {$$meta: {
+                                        $$idx: undefined,
+                                        $$isEnum: undefined,
+                                        $$mandatory: true,
+                                        $$multiple: true,
+                                        $$primaryKey: undefined,
+                                        $$refs: ["KEY-CERT"]},
+                                comment: "Remco",
+                                link: {type: "locator", href: "https://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-170757B6"},
+                                name: "auth",
+                                "referenced-type": "key-cert",
+                                value: "PGPKEY-170757B6 # Remco"},
+                                {name: "source", value: "RIPE"}
+                            ]
+                        }
+                    }
+                ]
+            }
+        });
+
+
+        await componentFixture.whenStable();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({
+            user: {
+                "username": "dummy@ripe.net",
+                "displayName": "Test User",
+                "uuid": "aaaa-bbbb-cccc-dddd",
+                "active": "true"
+            }
+        });
+
+        const resp = {
+            objects: {
+                object: [
+                    {
+                        "primary-key": {attribute: [{name: "mntner", value: "b-mnt"}]},
+                        attributes: {
+                            attribute: [
+                                {name: "mntner", value: "b-mnt"},
+                                {name: "mnt-by", value: "b-mnt"},
+                                {$$meta: {
+                                    $$idx: undefined,
+                                    $$isEnum: undefined,
+                                    $$mandatory: true,
+                                    $$multiple: true,
+                                    $$primaryKey: undefined,
+                                    $$refs: ["KEY-CERT"]},
+                                    comment: "Remco",
+                                    link: {type: "locator", href: "https://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-170757B6"},
+                                    name: "auth",
+                                    "referenced-type": "key-cert",
+                                    value: "PGPKEY-170757B6"},
+                                {name: "auth", value: "SSO dummy@ripe.net"},
+                                {name: "source", value: "RIPE"}
+                            ]
+                        }
+                    }
+                ]
+            }
+        };
+
+        httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/mntner/b-mnt?password=secret"}).flush(resp);
+        await componentFixture.whenStable();
+
+        expect(credentialsServiceMock.setCredentials).toHaveBeenCalledWith("b-mnt", "secret");
+        expect(credentialsServiceMock.removeCredentials).toHaveBeenCalled();
+
+        expect(modalMock.close).toHaveBeenCalledWith({
+            $value: {
+                selectedItem: {type: "mntner", key: "b-mnt", auth: ["SSO"], mine: true},
+                response: jasmine.any(Object)
+            }
+        });
+    });
+
     it("should show error message from backend in case of association error", async () => {
         modalAuthenticationComponent.selected.item = {type: "mntner", key: "b-mnt"};
         modalAuthenticationComponent.selected.password = "secret";
