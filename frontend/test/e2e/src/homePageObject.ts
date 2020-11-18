@@ -151,6 +151,7 @@ module.exports = {
     modalAttributeList: element(by.css("ngb-modal-window")).element(by.css("select")),
     modalEmail: element(by.css("ngb-modal-window")).element(by.name("email")),
     modalInpMaintainer: element(by.css("ngb-modal-window")).element(by.id("selectAuthMntner")),
+    modalInpReason: element(by.css("ngb-modal-window")).element(by.id("reason")),
     modalInpPassword: element(by.css("ngb-modal-window")).element(by.css("input[name='passwordAuth']")),
     modalInpAssociate: element(by.css("ngb-modal-window")).element(by.css("input[name='associate']")),
     modalForceDelete: element(by.css("ngb-modal-window")).element(by.css(".modal-footer a:nth-child(1)")),
