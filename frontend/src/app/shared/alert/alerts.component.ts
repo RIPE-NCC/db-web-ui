@@ -10,6 +10,10 @@ export class AlertsComponent {
 
     constructor(public alertsService: AlertsService) {}
 
+    ngOnDestroy() {
+        this.clearErrors();
+    }
+
     public clearErrors() {
         this.alertsService.clearErrors();
     }
