@@ -6,7 +6,6 @@ import {RestService} from "./rest.service";
 import {UserInfoService} from "../userinfo/user-info.service";
 import {CredentialsService} from "../shared/credentials.service";
 import {PropertiesService} from "../properties.service";
-import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 
 export interface IModalAuthentication {
     method: any;
@@ -76,8 +75,7 @@ export class ModalAuthenticationComponent {
             return;
         }
         this.restService.authenticate(this.resolve.method, this.SOURCE, "mntner", this.selected.item.key, this.selected.password)
-            .then((result: any) => {
-                const whoisResources = result;
+            .then((whoisResources: any) => {
 
                 if (this.whoisResourcesService.isFiltered(whoisResources)) {
                     this.selected.message =
@@ -97,8 +95,6 @@ export class ModalAuthenticationComponent {
                             name: "auth",
                             value: "SSO " + ssoUserName,
                         }, {name: "auth"});
-
-                        AttributeMetadataService.splitAttrsCommentsFromValue(attributes, false);
 
                         // do adjust the maintainer
                         this.restService.associateSSOMntner(this.whoisResourcesService.getSource(whoisResources), "mntner", this.selected.item.key,
