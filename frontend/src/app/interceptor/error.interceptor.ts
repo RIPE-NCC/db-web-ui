@@ -97,7 +97,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         console.debug("http-status:" + error.status);
         if (!_.isUndefined(error)) {
             console.debug("rest-url:" + error.url);
-            if (this.isAuthorisationError(error.status) && _.endsWith(error.url, "api/user/info")) {
+            if ((this.isServerError(error.status) || this.isAuthorisationError(error.status)) && _.endsWith(error.url, "api/user/info")) {
                 toBeSwallowed = true;
             }
             if (this.isForbiddenError(error.status) && _.endsWith(error.url, "api/user/info")) {
