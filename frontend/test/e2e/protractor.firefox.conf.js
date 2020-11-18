@@ -17,7 +17,7 @@ exports.config = {
   },
   directConnect: true,
   framework: 'jasmine',
-  allScriptsTimeout: 200000,
+  allScriptsTimeout: 300000,
 
   jasmineNodeOpts: {
     showColors: true,
