@@ -137,6 +137,8 @@ module.exports = {
     btnSubmitModify: element(by.id("btnSubmitModify")),
 
     displayPanel: element(by.css("section.inner-container")),
+    displayPanelImgTag: element(by.css("section.inner-container")).element(by.css("img")),
+    displayPanelScriptTag: element(by.css("section.inner-container")).element(by.css("script")),
     btnModify: element(by.css("section.inner-container")).element(by.css("button.ga-createobj-modifyobj")),
     btnAddAttribute: element(by.id("createForm")).element(by.css(".attr-0")).element(by.css(".fa.fa-plus")),
     allObjectRows: element(by.id("createForm")).element(by.css("section.visible-field-form")).element(by.css("ul.appeared-fields")).all(by.css("li")),
