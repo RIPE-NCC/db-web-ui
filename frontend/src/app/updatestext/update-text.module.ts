@@ -3,17 +3,13 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
-import {AutoKeyLogicService} from "./auto-key-logic.service";
 import {RpslService} from "./rpsl.service";
-import {TextMultiComponent} from "./text-multi.component";
 import {SerialExecutorService} from "./serial-executor.service";
 import {UpdatesWebModule} from "../updatesweb/updateweb.module";
 import {CoreModule} from "../core/core.module";
 import {TextCommonsService} from "./text-commons.service";
 import {TextCreateComponent} from "./text-create.component";
 import {TextModifyComponent} from "./text-modify.component";
-import {TextMultiDecisionComponent} from "./text-multi-decision.component";
-import {TextMultiDecisionModalComponent} from "./text-multi-decision-modal.component";
 
 @NgModule({
     imports: [
@@ -25,24 +21,17 @@ import {TextMultiDecisionModalComponent} from "./text-multi-decision-modal.compo
         UpdatesWebModule
     ],
     declarations: [
-        TextMultiComponent,
         TextCreateComponent,
-        TextModifyComponent,
-        TextMultiDecisionComponent,
-        TextMultiDecisionModalComponent
+        TextModifyComponent
     ],
     providers: [
-        AutoKeyLogicService,
         RpslService,
         SerialExecutorService,
         TextCommonsService,
     ],
     entryComponents: [
-        TextMultiComponent,
         TextCreateComponent,
-        TextModifyComponent,
-        TextMultiDecisionComponent,
-        TextMultiDecisionModalComponent
+        TextModifyComponent
     ]
 })
 export class UpdatesTextModule {

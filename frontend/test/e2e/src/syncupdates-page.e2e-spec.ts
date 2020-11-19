@@ -34,10 +34,4 @@ describe("The syncupdates page", () => {
         expect(page.viewSyncupdateString.getText()).toContain(response);
     });
 
-    it("should open beta syncupdate", () => {
-        page.scrollIntoView(page.btnSwitchSyncupdates);
-        page.btnSwitchSyncupdates.click();
-        expect(browser.getCurrentUrl()).toContain("textupdates/multi");
-    });
-
 });

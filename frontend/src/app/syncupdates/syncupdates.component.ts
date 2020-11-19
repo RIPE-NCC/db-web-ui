@@ -40,8 +40,4 @@ export class SyncupdatesComponent {
             );
     }
 
-    public useBetaSyncupdate() {
-        this.preferenceService.setRichSyncupdatesMode();
-        this.router.navigate(["textupdates/multiDecision"]);
-    }
 }

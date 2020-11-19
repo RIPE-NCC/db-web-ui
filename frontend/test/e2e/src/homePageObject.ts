@@ -261,7 +261,6 @@ module.exports = {
     inpSyncupdateString: element(by.id("rpslTextArea")),
     viewSyncupdateString: element(by.id("updateResultPreview")),
     btnUpdate: element(by.name("btnSyncupdate")),
-    btnSwitchSyncupdates: element(by.name("btnSwitchSyncupdates")),
 
     // full text search page
     fullTextSearchResults: element(by.id("resultsAnchor")).all(by.css(".results")),

@@ -14,13 +14,6 @@ export class PreferenceService {
         defaultValue: "webupdates",
     };
 
-    private SYNCUPDATE_MODE_COOKIE = {
-        name: "pref-syncupdates-mode",
-        poor: "poor",
-        rich: "rich",
-        defaultValue: "poor",
-    };
-
     constructor(private cookies: CookieService) {
         this.expiredDate = new Date();
         this.expiredDate.setDate(this.expiredDate.getDate() + 7);
@@ -40,26 +33,6 @@ export class PreferenceService {
 
     public isWebMode() {
         return this.getCookie(this.UI_MODE_COOKIE.name, this.UI_MODE_COOKIE.defaultValue) === this.UI_MODE_COOKIE.web;
-    }
-
-    public setRichSyncupdatesMode() {
-        this.setCookie(this.SYNCUPDATE_MODE_COOKIE.name, this.SYNCUPDATE_MODE_COOKIE.rich, "/");
-    }
-
-    public setPoorSyncupdatesMode() {
-        this.setCookie(this.SYNCUPDATE_MODE_COOKIE.name, this.SYNCUPDATE_MODE_COOKIE.poor, "/");
-    }
-
-    public isRichSyncupdatesMode() {
-        return this.getCookie(this.SYNCUPDATE_MODE_COOKIE.name, this.SYNCUPDATE_MODE_COOKIE.defaultValue) === this.SYNCUPDATE_MODE_COOKIE.rich;
-    }
-
-    public isPoorSyncupdatesMode() {
-        return this.getCookie(this.SYNCUPDATE_MODE_COOKIE.name, this.SYNCUPDATE_MODE_COOKIE.defaultValue) === this.SYNCUPDATE_MODE_COOKIE.poor;
-    }
-
-    public hasMadeSyncUpdatesDecision() {
-        return this.hasCookie(this.SYNCUPDATE_MODE_COOKIE.name);
     }
 
     private hasCookie(name: string): boolean {
