@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import * as _ from "lodash";
 import {WhoisMetaService} from "./whois-meta.service";
 import {IAttributeModel, IErrorMessageModel, IWhoisObjectModel, IWhoisResponseModel} from "./whois-response-type.model";
-import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 
 @Injectable()
 export class WhoisResourcesService {
@@ -129,7 +128,6 @@ export class WhoisResourcesService {
     }
 
     public turnAttrsIntoWhoisObject(attrs: IAttributeModel[]) {
-        AttributeMetadataService.splitAttrsCommentsFromValue(attrs, false);
         return{
             objects: {
                 object: [
