@@ -1,15 +1,11 @@
 <section>
-    <button (click)="useBetaSyncupdate()" class="blue-button pull-right ga-multiobj-switch-poor" name="btnSwitchSyncupdates">
-        <span class="fa"></span>
-        Switch to new syncupdates
-    </button>
     <h1 id="anchorScroll" class="documentFirstHeading">Syncupdates</h1>
     <p>This form allows an advanced user to paste one or more objects into the text area, and perform a whois update.</p>
 </section>
 <div *ngIf="updateResponse">
     <pre id="updateResultPreview">{{updateResponse}}</pre>
 </div>
-<form class="padding grey ga-syncupdate-form" #form="ngForm">
+<form class="padding grey ga-syncupdate-form">
     <label for="rpslTextArea">Object Data</label>
     <textarea id="rpslTextArea" name="rpslObject" [(ngModel)]="rpslObject" rows="18" class="full-width form-control margin-bottom">{{rpslObject}}</textarea>
     <button name="btnSyncupdate" (click)="update()" [disabled]="isUpdating" type="button" class="blue-button pull-right">Update</button>

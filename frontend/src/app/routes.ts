@@ -26,8 +26,6 @@ import {ErrorPageComponent} from "./errorpages/error-page.component";
 import {NotFoundPageComponent} from "./errorpages/not-found-page.component";
 import {EmailConfirmationComponent} from "./emailconfirmation/email-confirmation.component";
 import {AuthenticationGuard} from "./authentication-guard.service";
-import {TextMultiDecisionComponent} from "./updatestext/text-multi-decision.component";
-import {TextMultiComponent} from "./updatestext/text-multi.component";
 import {DeleteComponent} from "./updatesweb/delete.component";
 import {CreateMntnerPairComponent} from "./updatesweb/createmntnerpair/create-mntner-pair.component";
 
@@ -54,8 +52,9 @@ export const appRoutes: Routes = [
     {path: "fulltextsearch", component: FullTextSearchComponent},
     {path: "textupdates/create/:source/:objectType", component: TextCreateComponent, canActivate: [AuthenticationGuard]},
     {path: "textupdates/modify/:source/:objectType/:objectName", component: TextModifyComponent, canActivate: [AuthenticationGuard]},
-    {path: "textupdates/multiDecision", component: TextMultiDecisionComponent},
-    {path: "textupdates/multi", component: TextMultiComponent},
+    // syncupdates BETA was removed so redirect to syncupdates
+    {path: "textupdates/multiDecision", redirectTo: "syncupdates", pathMatch: "full"},
+    {path: "textupdates/multi", redirectTo: "syncupdates", pathMatch: "full"},
     {path: "fmp", component: FindMaintainerComponent},
     {path: "fmp/requireLogin", component: RequireLoginComponent},
     {path: "fmp/mailSent/:email", component: MailSentComponent},
