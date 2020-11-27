@@ -102,6 +102,14 @@ export class AttributeMetadataService {
         }
     };
 
+    public enrichAttributesId = (objectType: string, attributes: any) => {
+        const arg: any[] = [objectType, attributes];
+        this.jsUtils.checkTypes(arg, ["string", "array"]);
+        for (let i = 0; i < attributes.length; i++) {
+            attributes[i].$$id = "attr-" + i;
+        }
+    };
+
     public isHidden = (objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) => {
         const arg: any[] = [objectType, attributes, attribute];
         this.jsUtils.checkTypes(arg, ["string", "array", "object"]);

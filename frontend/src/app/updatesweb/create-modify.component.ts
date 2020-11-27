@@ -753,17 +753,16 @@ export class CreateModifyComponent {
                     attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
                         this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", mntnerAttrs));
 
-                    // Post-process attributes before showing using screen-logic-interceptor
-                    this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
-
                     console.debug("mntnrs-sso:" + JSON.stringify(this.maintainers.sso));
                     console.debug("mntn rs-object-original:" + JSON.stringify(this.maintainers.objectOriginal));
                     console.debug("mntners-object:" + JSON.stringify(this.maintainers.object));
 
                 } else {
                     attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
-                    this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
                 }
+                this.attributeMetadataService.enrichAttributesId(this.objectType, attributes);
+                // Post-process attributes before showing using screen-logic-interceptor
+                this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
             }, (error: any) => {
                 this.restCallInProgress = false;
                 console.error("Error fetching mntners for SSO:" + JSON.stringify(error));

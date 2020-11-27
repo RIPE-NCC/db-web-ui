@@ -113,4 +113,21 @@ describe("The inetnum editor", () => {
         expect(page.prefixErrMsg.getText()).not.toContain("<img");
         expect(page.prefixErrMsg.getText()).toContain("Syntax error in img src=");
     });
+
+    it("should open description just under field on click on question mark", () => {
+        page.selectObjectType("inetnum").click();
+        page.btnNavigateToCreate.click();
+        page.inpInetnumQuestionMark.click();
+        expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
+        expect(page.inpInetnumDescription.getText()).toContain("Specifies a range of IPv4 that the inetnum object presents.");
+        expect(page.inpNetnameDescription.isDisplayed()).toBeFalsy();
+        page.scrollIntoView(page.inpNetnameQuestionMark);
+        page.inpNetnameQuestionMark.click();
+        expect(page.inpNetnameDescription.isDisplayed()).toBeTruthy();
+        page.scrollIntoView(page.inpInetnumDescription);
+        expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
+        page.inpInetnumQuestionMark.click();
+        expect(page.inpInetnumDescription.isDisplayed()).toBeFalsy();
+        expect(page.inpNetnameDescription.isDisplayed()).toBeTruthy();
+    });
 });
