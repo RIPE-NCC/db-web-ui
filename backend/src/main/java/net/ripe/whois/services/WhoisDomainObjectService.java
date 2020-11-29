@@ -53,8 +53,12 @@ public class WhoisDomainObjectService {
         ResponseEntity<String> result;
         try {
             result = restTemplate.postForEntity(getCreateDomainUri(source, passwords), new HttpEntity<>(whoisResources, headers), String.class);
+        } catch (HttpClientErrorException.BadRequest e) {
+            // whois update failed due to validation failure etc. (expected)
+            LOGGER.info("Failed to create domain object(s): {}:{}\n{}\n{}", e.getClass().getName(), e.getMessage(), e.getResponseBodyAsString(), e.getStatusCode());
+            result = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
         } catch (HttpClientErrorException e) {
-            LOGGER.error("Fail to create domain object(s): {}:{}\n{}\n{}", e.getClass().getName(), e.getMessage(), e.getResponseBodyAsString(), e.getStatusCode());
+            LOGGER.info("Failed to create domain object(s): {}:{}\n{}\n{}", e.getClass().getName(), e.getMessage(), e.getResponseBodyAsString(), e.getStatusCode());
             result = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
         } catch (HttpServerErrorException e) {
             String msg = "Call to Whois backend failed: ";
