@@ -4,7 +4,7 @@ import net.ripe.db.whois.common.ip.Ipv4Resource;
 import net.ripe.db.whois.common.ip.Ipv6Resource;
 import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
 import net.ripe.db.whois.common.rpsl.attrs.AutNum;
-import net.ripe.whois.services.BaAppsService;
+import net.ripe.whois.services.RsngService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,16 +22,16 @@ import static net.ripe.whois.web.api.baapps.ResourceTicketMap.KeyType;
 @Service
 public class ResourceTicketService {
 
-    private final BaAppsService baAppsService;
+    private final RsngService rsngService;
 
     @Autowired
-    ResourceTicketService(final BaAppsService baAppsService) {
-        this.baAppsService = baAppsService;
+    ResourceTicketService(final RsngService rsngService) {
+        this.rsngService = rsngService;
     }
 
     @Cacheable("net.ripe.whois.web.api.baapps.ResourceTicketService")
     public ResourceTicketMap getTicketsForMember(final long memberId) throws JSONException {
-        final String jsonTickets = baAppsService.getResourceTickets(memberId);
+        final String jsonTickets = rsngService.getResourceTickets(memberId);
         final JSONObject content = new JSONObject(jsonTickets).getJSONObject("response").getJSONObject("content");
         final ResourceTicketMap map = new ResourceTicketMap();
 

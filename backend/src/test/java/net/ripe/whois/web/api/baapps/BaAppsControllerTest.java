@@ -1,6 +1,5 @@
 package net.ripe.whois.web.api.baapps;
 
-import net.ripe.whois.services.BaAppsService;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.junit.Before;

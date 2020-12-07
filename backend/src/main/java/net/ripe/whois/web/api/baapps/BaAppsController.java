@@ -7,7 +7,7 @@ import net.ripe.db.whois.common.rpsl.AttributeType;
 import net.ripe.db.whois.common.rpsl.ObjectType;
 import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
 import net.ripe.db.whois.common.rpsl.attrs.AutNum;
-import net.ripe.whois.services.BaAppsService;
+import net.ripe.whois.services.RsngService;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.json.JSONException;
@@ -31,15 +31,15 @@ import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
 @SuppressWarnings("UnusedDeclaration")
 public class BaAppsController {
 
-    private final BaAppsService baAppsService;
+    private final RsngService rsngService;
     private final ResourceTicketService resourceTicketService;
     private final WhoisInternalService whoisInternalService;
 
     @Autowired
-    public BaAppsController(final BaAppsService baAppsService,
+    public BaAppsController(final RsngService rsngService,
                             final ResourceTicketService resourceTicketService,
                             final WhoisInternalService whoisInternalService) {
-        this.baAppsService = baAppsService;
+        this.rsngService = rsngService;
         this.resourceTicketService = resourceTicketService;
         this.whoisInternalService = whoisInternalService;
     }
