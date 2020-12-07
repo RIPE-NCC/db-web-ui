@@ -60,8 +60,8 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("server.servlet.context-path", "/db-web-ui");
         System.setProperty("internal.api.url", getMockServerUrl());
         System.setProperty("internal.api.key", "123");
-        System.setProperty("ba-apps.api.key", "OMG");
-        System.setProperty("ba-apps.api.url", getMockServerUrl());
+        System.setProperty("rsng.api.key", "OMG");
+        System.setProperty("rsng.api.url", getMockServerUrl());
         System.setProperty("syncupdates.api.url", getMockServerUrl());
         System.setProperty("rest.search.url", getMockServerUrl());
         System.setProperty("my.resources.url", "myresources/overview");

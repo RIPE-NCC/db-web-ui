@@ -11,27 +11,26 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Call various BA Apps APIs.
+ * Call various RSNG API.
  *
  * Caching
- * The Authorisation Service API calls are handled by the SSO Application, and are all cached on the server side.
  * The Member Resources API call is cached by the ResourceTicketService (see below).
  *
  */
 @Service
-public class BaAppsService implements ExchangeErrorHandler {
+public class RsngService implements ExchangeErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestService.class);
     private final RestTemplate restTemplate;
-    private final String baAppsUrl;
+    private final String rsngBaseUrl;
     private final String apiKey;
 
     @Autowired
-    public BaAppsService(
+    public RsngService(
             final RestTemplate restTemplate,
-            @Value("${ba-apps.api.url}") final String baAppsUrl,
-            @Value("${ba-apps.api.key}") final String apiKey) {
+            @Value("${rsng.api.url}") final String rsngBaseUrl,
+            @Value("${rsng.api.key}") final String apiKey) {
         this.restTemplate = restTemplate;
-        this.baAppsUrl = baAppsUrl;
+        this.rsngBaseUrl = rsngBaseUrl;
         this.apiKey = apiKey;
     }
 
@@ -46,7 +45,7 @@ public class BaAppsService implements ExchangeErrorHandler {
      */
     public String getResourceTickets(long memberId) {
 
-        String url = baAppsUrl + "/resource-services/member-resources/{memberId}";
+        String url = rsngBaseUrl + "/resource-services/member-resources/{memberId}";
         try {
             LOGGER.info("Calling {} with memberId {}", url, memberId);
             final ResponseEntity<String> response = restTemplate.exchange(
