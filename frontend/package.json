@@ -80,6 +80,7 @@
     "rxjs": "6.5.4",
     "tslib": "1.10.0",
     "web-animations-js": "2.3.2",
+    "whatwg-fetch": "3.5.0",
     "zone.js": "0.10.2"
   }
 }
