@@ -133,7 +133,6 @@ ngb-popover-window.popover {
   }
 }
 
-//.ng-select.ng-select-disabled>.ng-select-container,
-//.ng-select .ng-select-container .ng-value-container .ng-input>input[disabled] {
-//  background-color: #eee;
-//}
+.ng-select.ng-select-disabled>.ng-select-container {
+  background-color: #eee;
+}

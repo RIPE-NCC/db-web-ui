@@ -513,9 +513,7 @@ export class CreateModifyComponent {
 
         const modalRef = this.modalService.open(ModalAddAttributeComponent, {size: "lg"});
         modalRef.componentInstance.items = addableAttributes;
-        console.debug("openAddAttributeModal for items", addableAttributes);
         modalRef.result.then((selectedItem: any) => {
-            console.debug("openAddAttributeModal completed with:", selectedItem);
             this.addSelectedAttribute(selectedItem, attr);
         }, (error) => console.log("openAddAttributeModal completed with:", error));
     }
@@ -1021,7 +1019,7 @@ export class CreateModifyComponent {
                             // save object for later diff in display-screen
                             this.messageStoreService.add("DIFF", _.cloneDeep(this.attributes));
 
-                            console.debug("sso-ntners:" + JSON.stringify(this.maintainers.sso));
+                            console.debug("sso-mntners:" + JSON.stringify(this.maintainers.sso));
                             console.debug("objectMaintainers:" + JSON.stringify(this.maintainers.object));
 
                         }, () => {

@@ -32,6 +32,9 @@
         "value" : "7465 Mission George Road San Diego, CA92120",
         "comment": "comment address"
       }, {
+        "name" : "country",
+        "value" : "NL"
+      }, {
         "name" : "e-mail",
         "value" : "***@acedatanetworks.net"
       }, {
