@@ -47,10 +47,15 @@ public class BaAppsControllerTest {
     @Before
     public void setup() throws Exception {
         UserInfoResponse userInfoResponse = new UserInfoResponse();
+        // orgObjectId can be null in FYI pseudo-LIRs objects
+        UserInfoResponse.Member memberFyi = new UserInfoResponse.Member();
+        memberFyi.membershipId = 234L;
+        memberFyi.orgObjectId = null;
         UserInfoResponse.Member member = new UserInfoResponse.Member();
         member.membershipId = 123L;
         member.orgObjectId = "ORG-RIEN1-RIPE";
         userInfoResponse.members = new ArrayList<UserInfoResponse.Member>() {{
+            add(memberFyi);
             add(member);
         }};
 
