@@ -63,4 +63,5 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  */
 import "ip-address/lib/ipv4";
 import "ip-address/lib/ipv6";
+import "whatwg-fetch"; // wrapper to use fetch in IE11
 import "@technical-design/ripe-app-webcomponents";
