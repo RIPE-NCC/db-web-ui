@@ -85,6 +85,10 @@ describe("Modifying an organisation", () => {
             page.scrollIntoView(page.inpAbuseC);
             expect(page.btnRemoveAttributeCreatModifyPage(page.inpAbuseC).isPresent()).toBeFalsy();
         });
+
+        it("should not have country field in case there is not specified country attribute", () => {
+            expect(page.inpCountry.isPresent()).toBeFalsy();
+        });
     });
 
     describe("which is an OTHER type", () => {
@@ -98,13 +102,24 @@ describe("Modifying an organisation", () => {
             expect(page.btnRemoveAttributeCreatModifyPage(page.inpAbuseC).isPresent()).toBeTruthy();
         });
 
-
         it("should remove comment after address change and comment was removed", () => {
             expect(page.inpAddress.getAttribute("value")).toEqual("7465 Mission George Road San Diego, CA92120 # comment address");
             page.inpAddress.clear();
             page.inpAddress.sendKeys("New address without comment");
             expect(page.inpAddress.getAttribute("value")).toEqual("New address without comment");
             expect(page.inpAddress.getAttribute("value")).not.toContain("#");
+        });
+
+        it("should have disabled country field", () => {
+            expect(page.inpCountry.getAttribute("ng-reflect-model")).toEqual("NL");
+            expect(page.inpCountry.getAttribute("ng-reflect-is-disabled")).toBeTruthy();
+        });
+
+        it("should not have country attribute in modal-add-attribute", () => {
+            page.btnAddAttribute.click();
+            expect(page.modal.isPresent()).toEqual(true);
+            expect(page.modalCountry.isPresent()).toEqual(false);
+            expect(page.selectFromList(page.modalAttributeList, "country").isPresent()).toEqual(false);
         });
     });
 });

@@ -161,6 +161,7 @@ module.exports = {
     modalForceDelete: element(by.css("ngb-modal-window")).element(by.css(".modal-footer a:nth-child(1)")),
     modalOrg: element(by.css("ngb-modal-window")).element(by.css("option[label='org']")),
     modalAddress: element(by.css("ngb-modal-window")).element(by.css("option[label='address']")),
+    modalCountry: element(by.css("ngb-modal-window")).element(by.css("option[label='country']")),
     modalBtnSubmit: element(by.css("ngb-modal-window")).element(by.css("button[type=submit]")),
     modalClose: element(by.css("ngb-modal-window")).element(by.css(".modal-header")).element(by.css(".close")),
     modalBody: element(by.css("ngb-modal-window")).element(by.css(".modal-body")),

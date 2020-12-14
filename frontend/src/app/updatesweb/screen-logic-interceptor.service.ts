@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import {LinkService} from "./link.service";
 import {MessageStoreService} from "./message-store.service";
 import {MntnerService} from "./mntner.service";
-import {IAttributeModel} from "../shared/whois-response-type.model";
+import {IAttributeModel, IMntByModel} from "../shared/whois-response-type.model";
 import {OrganisationHelperService} from "./organisation-helper.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 
@@ -31,7 +31,7 @@ export class ScreenLogicInterceptorService {
                 return addableAttributes;
             },
             beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
-                this._disablePrimaryKeyIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                this.disablePrimaryKeyIfModifying(method, attributes);
                 return this._loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
             },
             // Currently we have no global afterSubmitSuccess and afterSubmitError callback
@@ -95,7 +95,7 @@ export class ScreenLogicInterceptorService {
                     this._disableRipeMntnrAttributes(attributes);
                     this.disableNetnameAttribute(attributes);
                     this.disableAssignmentAttributes(attributes);
-                    this._disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                    this.disableRipeMntIfModifying(method, attributes);
                     return this._disableOrgWhenStatusIsAssignedPI(attributes);
                 },
             },
@@ -111,7 +111,7 @@ export class ScreenLogicInterceptorService {
                     this._disableRipeMntnrAttributes(attributes);
                     this.disableNetnameAttribute(attributes);
                     this.disableAssignmentAttributes(attributes);
-                    this._disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                    this.disableRipeMntIfModifying(method, attributes);
                     return this._disableOrgWhenStatusIsAssignedPI(attributes);
                 },
             },
@@ -141,11 +141,13 @@ export class ScreenLogicInterceptorService {
                 afterSubmitError: undefined,
                 afterSubmitSuccess: undefined,
                 beforeAddAttribute: (method: string, source: string, objectType: string, objectAttributes: IAttributeModel[], addableAttributes: IAttributeModel[]) => {
-                    return this.removeAbuseMailBoxOrgAndAddressIfLIR(method, source, objectType, objectAttributes, addableAttributes);
+                    this.removeAbuseMailBoxOrgAndAddressIfLIR(method, source, objectType, objectAttributes, addableAttributes);
+                    return this.removeCountryFromAttributes(addableAttributes);
                 },
                 beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                     this._checkLirAttributes(method, attributes);
-                    this._disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                    this.disableRipeMntIfModifying(method, attributes);
+                    this.disableCountryAttribute(attributes);
                     return this._loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
                 },
             },
@@ -326,8 +328,12 @@ export class ScreenLogicInterceptorService {
         return addableAttributes;
     }
 
-    private _disablePrimaryKeyIfModifying(method: string, source: string, objectType: string, attributes: IAttributeModel[],
-                                          errors: string[], warnings: string[], infos: string[]) {
+    private removeCountryFromAttributes(addableAttributes: IAttributeModel[]) {
+        this.whoisResourcesService.removeAttributeWithName(addableAttributes, "country");
+        return addableAttributes;
+    }
+
+    private disablePrimaryKeyIfModifying(method: string, attributes: IAttributeModel[]) {
         if (method === "Modify") {
             _.forEach(attributes, (attr) => {
                 if (attr.$$meta.$$primaryKey) {
@@ -339,7 +345,7 @@ export class ScreenLogicInterceptorService {
         return attributes;
     }
 
-    private _disableRipeMntIfModifying(method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) {
+    private disableRipeMntIfModifying(method: string, attributes: any) {
         const disable = (type: string) => {
             _.forEach(WhoisResourcesService.getAllAttributesOnName(attributes, type), (attr) => {
                 attr.$$meta.$$disable = this.mntnerService.isNccMntner(attr.value);
@@ -353,6 +359,14 @@ export class ScreenLogicInterceptorService {
             disable("mnt-routes");
         }
 
+        return attributes;
+    }
+
+    private disableCountryAttribute(attributes: IAttributeModel[]) {
+        const countryAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, "country");
+        if (countryAttr) {
+            attributes.find(attr => attr.name === "country").$$meta.$$disable = true;
+        }
         return attributes;
     }
 

@@ -32,9 +32,20 @@ describe("ScreenLogicInterceptorService Organisation", () => {
                 LinkService,
                 WhoisMetaService,
                 WhoisResourcesService,
-                { provide: "OrganisationHelperService", useValue: { containsAbuseC: (attributes: any) => attributes, addAbuseC: (attributes: any) => attributes}},
-                { provide: MntnerService, useValue: MockMntnerService},
-                { provide: Router, useValue: {navigate:() => {}, events: of()}}
+                {
+                    provide: "OrganisationHelperService",
+                    useValue: {
+                        containsAbuseC: (attributes: any) => attributes,
+                        addAbuseC: (attributes: any) => attributes
+                    }
+                },
+                {provide: MntnerService, useValue: MockMntnerService},
+                {
+                    provide: Router, useValue: {
+                        navigate: () => {
+                        }, events: of()
+                    }
+                }
             ],
         });
         interceptor = TestBed.get(ScreenLogicInterceptorService);
@@ -376,6 +387,44 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         expect(mntRef.$$meta.$$disable).toBeFalsy();
     });
 
+    it("should NOT allow editing country attribute - create", () => {
+        const organisationSubject = _wrap("organisation", organisationAttributes);
+        let errors: string[] = [];
+        let warnings: string[] = [];
+        let infos: string[] = [];
+        const attributes = interceptor.beforeEdit("Create", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
+        const countryAttribute = whoisResourcesService.getSingleAttributeOnName(attributes, "country");
+        expect(countryAttribute.$$meta.$$disable).toBeTruthy();
+    });
+
+    it("should NOT allow editing country attribute - modify", () => {
+        const organisationSubject = _wrap("organisation", organisationAttributes);
+        let errors: string[] = [];
+        let warnings: string[] = [];
+        let infos: string[] = [];
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
+        const countryAttribute = whoisResourcesService.getSingleAttributeOnName(attributes, "country");
+        expect(countryAttribute.$$meta.$$disable).toBeTruthy();
+    });
+
+    it("should NOT allow adding country attribute - create", () => {
+        const organisationSubject = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        const addableAttributes = _wrap("organisation", whoisResourcesService.getAddableAttributes(organisationSubject, "organisation", organisationSubject));
+        const filteredAddableAttributes = interceptor.beforeAddAttribute("Create", "RIPE", "organisation", organisationSubject, addableAttributes);
+
+        const orgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "country");
+        expect(orgAttr).toBeUndefined();
+    });
+
+    it("should NOT allow adding country attribute - modify", () => {
+        const organisationSubject = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        const addableAttributes = _wrap("organisation", whoisResourcesService.getAddableAttributes(organisationSubject, "organisation", organisationSubject));
+        const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "organisation", organisationSubject, addableAttributes);
+
+        const orgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "country");
+        expect(orgAttr).toBeUndefined();
+    });
+
     const _wrap = (type: string, attrs: IAttributeModel[]) => {
         return whoisResourcesService.wrapAndEnrichAttributes(type, attrs);
     };
@@ -395,6 +444,9 @@ describe("ScreenLogicInterceptorService Organisation", () => {
     }, {
          name :"address",
          value :"The Netherlands"
+    }, {
+         name :"country",
+         value :"NL"
     }, {
         name :"e-mail",
         value :"bla@blu.net"

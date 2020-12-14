@@ -34,7 +34,7 @@ describe("ScreenLogicInterceptorService", () => {
                 {provide: "OrganisationHelperService", useValue: {containsAbuseC: (attributes: any) => attributes, addAbuseC: (attributes: any) => attributes}},
                 {provide: CredentialsService, useValue: credentialServiceMock},
                 MessageStoreService,
-                {provide: MntnerService, useValue: {isNccMntner: (mntnerKey: string) => true}},
+                {provide: MntnerService, useValue: {ssoMntners: [], isNccMntner: (mntnerKey: string) => true}},
                 LinkService,
                 WhoisMetaService,
                 WhoisResourcesService,
