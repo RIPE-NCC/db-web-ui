@@ -65,8 +65,9 @@ public class BaAppsController {
             validateOrgId(orgId);
             validateResource(resource);
             UserInfoResponse userInfo = whoisInternalService.getUserInfo(crowdToken);
+            // orgObjectId can be null in FYI pseudo-LIRs objects
             final Optional<UserInfoResponse.Member> member = userInfo.members.stream()
-                .filter(searchMember -> searchMember.orgObjectId.equals(orgId))
+                .filter(searchMember -> searchMember.orgObjectId != null && searchMember.orgObjectId.equals(orgId))
                 .findFirst();
 
             if (!member.isPresent()) {
