@@ -16,6 +16,7 @@ export class DeleteComponent {
     public name: string;
     public onCancel: string;
     public deletedObjects: any;
+    public skipClearError: boolean = false;
 
     @ViewChild(AlertsComponent, {static: true})
     public alertsComponent: AlertsComponent;
@@ -48,6 +49,12 @@ export class DeleteComponent {
         Promise.resolve().then(() =>  this.deleteObject());
     }
 
+    public ngOnDestroy() {
+      if (!this.skipClearError) {
+        this.alertsComponent.clearErrors();
+      }
+    }
+
     public deleteObject() {
         console.debug("deleteObject called");
         const inputData = {
@@ -65,6 +72,9 @@ export class DeleteComponent {
             this.alertsComponent.setGlobalInfo("The following object(s) have been successfully deleted");
         }, (errorResp: any) => {
             this.modalInProgress = false;
+            // on error, the modal is dismissed and app redirects to the create-modify component
+            // hence skip clearing the error message so as to be able to display it to user
+            this.skipClearError = true;
             console.debug("ERROR deleting object" + JSON.stringify(errorResp));
             if (errorResp.data) {
                 this.alertsComponent.setErrors(errorResp.data);

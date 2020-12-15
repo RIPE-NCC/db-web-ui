@@ -227,4 +227,22 @@ describe("DeleteController", () => {
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
     });
+
+    it("should skip clearing of error if delete object fail", async () => {
+      const error = {
+        data: whoisObjectWithErrors
+      };
+      modalMock.open.and.returnValue({componentInstance: {}, result: throwError(whoisResourcesService.wrapError(error)).toPromise()});
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.skipClearError).toBeTrue();
+    });
+
+    it("should not skip clearing of error if delete object succeeds", async () => {
+      modalMock.open.and.returnValue({componentInstance: {}, result: of(objectToDisplay).toPromise()});
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.deletedObjects.length).toBe(1);
+      expect(component.skipClearError).toBeFalse();
+    });
 });
