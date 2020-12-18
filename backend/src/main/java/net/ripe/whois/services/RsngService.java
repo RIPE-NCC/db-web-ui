@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -59,11 +60,17 @@ public class RsngService implements ExchangeErrorHandler {
             }
             return response.getBody();
         } catch (RestClientException e) {
-            LOGGER.warn("Failed to retrieve LIRs due to {}", e.getMessage());
+            logRequestException(e);
             throw new RestClientException(e);
+        } catch (ResourceAccessException e) {
+            logRequestException(e);
+            throw new ResourceAccessException("Unable to get resource tickets");
         }
     }
 
+    private void logRequestException(Exception e) {
+        LOGGER.warn("Failed to retrieve LIRs due to {}", e.getMessage());
+    }
     private MultiValueMap<String, String> withHeaders(final String accept) {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", accept);

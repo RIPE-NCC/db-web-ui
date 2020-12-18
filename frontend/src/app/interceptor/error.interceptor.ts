@@ -134,6 +134,10 @@ export class ErrorInterceptor implements HttpInterceptor {
             toBeSwallowed = true;
         }
 
+        if (this.isServerError(error.status) && _.includes(error.url, "api/ba-apps/resources")) {
+            toBeSwallowed = true;
+        }
+
         console.debug("Must be swallowed? " + toBeSwallowed);
 
         return toBeSwallowed;

@@ -2,7 +2,7 @@ import {Routes} from "@angular/router";
 import {ForgotMaintainerPasswordComponent} from "./fmp/forgot-maintainer-password.component";
 import {RequireLoginComponent} from "./fmp/require-login.component";
 import {ResourcesComponent} from "./myresources/resources.component";
-import {ResourceDetailsComponent} from "./myresources/resource-details.component";
+import {ResourceDetailsComponent} from "./myresources/resourcedetails/resource-details.component";
 import {DomainObjectWizardComponent} from "./domainobject/domain-object-wizard.component";
 import {DisplayDomainObjectsComponent} from "./domainobject/display-domain-objects.component";
 import {SelectComponent} from "./updatesweb/select.component";
