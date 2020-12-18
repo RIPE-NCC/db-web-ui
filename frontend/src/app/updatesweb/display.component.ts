@@ -52,7 +52,6 @@ export class DisplayComponent {
         }
 
     private init() {
-        this.alertsComponent.clearErrors();
 
         /*
          * Start of initialisation phase
@@ -95,6 +94,10 @@ export class DisplayComponent {
                 },
             );
         }
+    }
+
+    public ngOnDestroy() {
+      this.alertsComponent.clearErrors();
     }
 
     /*
