@@ -70,7 +70,7 @@ public class BaAppsController {
                 .filter(searchMember -> searchMember.orgObjectId != null && searchMember.orgObjectId.equals(orgId))
                 .findFirst();
 
-            if (!member.isPresent()) {
+            if (member.isEmpty()) {
                 // either end-user org or lir has no access
                 return new ResponseEntity(HttpStatus.OK);
             }

@@ -10,7 +10,7 @@ import {ResourceStatusService} from "../../../src/app/myresources/resource-statu
 import {FlagComponent} from "../../../src/app/myresources/flag/flag.component";
 import {SharedModule} from "../../../src/app/shared/shared.module";
 import {IpAddressService} from "../../../src/app/myresources/ip-address.service";
-import {ResourceDetailsComponent} from "../../../src/app/myresources/resource-details.component";
+import {ResourceDetailsComponent} from "../../../src/app/myresources/resourcedetails/resource-details.component";
 import {HierarchySelectorComponent} from "../../../src/app/myresources/hierarchyselector/hierarchy-selector.component";
 import {IpUsageComponent} from "../../../src/app/myresources/ip-usage.component";
 import {WhoisObjectViewerComponent} from "../../../src/app/whois-object/whois-object-viewer.component";

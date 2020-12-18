@@ -12,7 +12,7 @@ import {IpAddressService} from "./ip-address.service";
 import {IpUsageService} from "./ip-usage.service";
 import {IpUsageComponent} from "./ip-usage.component";
 import {IpUsageOfAllResourcesComponent} from "./ip-usage-of-all-resources.component";
-import {ResourceDetailsComponent} from "./resource-details.component";
+import {ResourceDetailsComponent} from "./resourcedetails/resource-details.component";
 import {ResourceItemComponent} from "./resource-item.component";
 import {ResourcesComponent} from "./resources.component";
 import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.component";

@@ -2,26 +2,26 @@ import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {IResourceDetailsResponseModel, IResourceTickets} from "./resource-type.model";
-import {ResourcesDataService} from "./resources-data.service";
-import {MntnerService} from "../updatesweb/mntner.service";
-import {Labels} from "../label.constants";
-import {ResourceStatusService} from "./resource-status.service";
-import {RestService} from "../updatesweb/rest.service";
-import {CredentialsService} from "../shared/credentials.service";
-import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
+import {IResourceDetailsResponseModel, IResourceTickets} from "../resource-type.model";
+import {ResourcesDataService} from "../resources-data.service";
+import {MntnerService} from "../../updatesweb/mntner.service";
+import {Labels} from "../../label.constants";
+import {ResourceStatusService} from "../resource-status.service";
+import {RestService} from "../../updatesweb/rest.service";
+import {CredentialsService} from "../../shared/credentials.service";
+import {OrgDropDownSharedService} from "../../dropdown/org-drop-down-shared.service";
 import {
     IAttributeModel,
     IWhoisObjectModel,
     IWhoisResponseModel
-} from "../shared/whois-response-type.model";
-import {IUserInfoOrganisation, IUserInfoRegistration} from "../dropdown/org-data-type.model";
-import {PropertiesService} from "../properties.service";
-import {IFlag} from "./flag/flag.component";
-import {ModalDeleteObjectComponent} from "../updatesweb/modal-delete-object.component";
-import {HierarchySelectorService} from "./hierarchyselector/hierarchy-selector.service";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+} from "../../shared/whois-response-type.model";
+import {IUserInfoOrganisation, IUserInfoRegistration} from "../../dropdown/org-data-type.model";
+import {PropertiesService} from "../../properties.service";
+import {IFlag} from "../flag/flag.component";
+import {ModalDeleteObjectComponent} from "../../updatesweb/modal-delete-object.component";
+import {HierarchySelectorService} from "../hierarchyselector/hierarchy-selector.service";
+import {WhoisResourcesService} from "../../shared/whois-resources.service";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 @Component({
     selector: "resource-details",

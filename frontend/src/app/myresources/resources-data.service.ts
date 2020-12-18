@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable, of, throwError} from "rxjs";
-import {timeout, retryWhen, delay, switchMap} from "rxjs/operators";
+import {Observable, of} from "rxjs";
+import {timeout, catchError} from "rxjs/operators";
 import {IMoreSpecificsApiResult} from "./morespecifics/more-specifics.service";
 import {
     IIpv4Analysis,
@@ -50,6 +50,14 @@ export class ResourcesDataService {
     }
 
     public fetchTicketsAndDates(orgId: string, resource: string): Observable<IResourceTickets> {
-        return this.http.get<IResourceTickets>(`api/ba-apps/resources/${orgId}/${resource}`);
+        return this.http
+          .get<IResourceTickets>(`api/ba-apps/resources/${orgId}/${resource}`)
+          .pipe(catchError(error => {
+            console.debug("Error on tickets retrieval", error);
+            return of({
+              tickets:{
+                [resource]: []
+              }})
+          }));
     }
 }
