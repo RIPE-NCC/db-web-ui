@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {CookieService} from "ngx-cookie-service";
-import {catchError, map, timeout} from "rxjs/operators";
+import {catchError, map, share, timeout} from "rxjs/operators";
 import {Observable, of, throwError} from "rxjs";
 import * as _ from "lodash";
 import {IUserInfo, IUserInfoOrganisation, IUserInfoResponseData} from "../dropdown/org-data-type.model";
@@ -13,7 +13,6 @@ export class UserInfoService {
     private loggedInUser: IUserInfo;
     private selectedOrganisation: IUserInfoOrganisation;
     public userLoggedIn$: EventEmitter<IUserInfoResponseData>;
-    public alreadyWaitingResponse: boolean = false;
 
     constructor(private http: HttpClient,
                 private cookies: CookieService) {
@@ -42,21 +41,19 @@ export class UserInfoService {
     }
 
     public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
-        if (this.userInfo || this.alreadyWaitingResponse) {
+        if (this.userInfo) {
             return of(this.userInfo);
         } else {
-            this.alreadyWaitingResponse = true;
             return this.http.get("api/whois-internal/api/user/info")
                 .pipe(
                     timeout(30000),
+                    share(),
                     map((response: IUserInfoResponseData) => {
-                        this.alreadyWaitingResponse = false;
                         this.userInfo = response;
                         this.userLoggedIn$.emit(response);
                         return this.userInfo;
                     }),
-                    catchError((error: any, caught: Observable<any>) => {
-                        this.alreadyWaitingResponse = false;
+                    catchError((error: any) => {
                         console.error("authenticate error:" + JSON.stringify(error));
                         return throwError(error);
                     }));
