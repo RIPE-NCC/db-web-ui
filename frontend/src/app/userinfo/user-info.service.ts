@@ -42,7 +42,7 @@ export class UserInfoService {
     }
 
     public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
-        if (this.userInfo || this.alreadyWaitingResponse) {
+        if (this.userInfo) {
             return of(this.userInfo);
         } else {
             this.alreadyWaitingResponse = true;
