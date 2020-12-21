@@ -96,7 +96,7 @@ export class ResourcesComponent implements OnDestroy {
     public refreshPage() {
         if (!this.selectedOrg) {
             this.userInfoService.getSelectedOrganisation()
-                .subscribe((org: any) => {
+                .subscribe((org: IUserInfoOrganisation) => {
                     this.selectedOrg = org;
                     this.fetchResourcesAndPopulatePage();
                 });
