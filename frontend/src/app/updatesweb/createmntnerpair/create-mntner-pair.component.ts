@@ -45,13 +45,15 @@ export class CreateMntnerPairComponent {
                 private properties: PropertiesService,
                 public activatedRoute: ActivatedRoute,
                 public router: Router) {
-
-        this.subscription = this.activatedRoute.params.subscribe((() => {
-            this.init();
-        }));
     }
 
-    public init() {
+    public ngOnInit() {
+      this.subscription = this.activatedRoute.params.subscribe((() => {
+        this.init();
+      }));
+    }
+
+    private init() {
 
         this.submitInProgress = false;
         this.source = this.properties.SOURCE;
