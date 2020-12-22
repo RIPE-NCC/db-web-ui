@@ -66,6 +66,7 @@ export class QueryComponent implements OnDestroy {
     }
 
     public ngOnDestroy() {
+        this.alertsComponent.clearErrors();
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
