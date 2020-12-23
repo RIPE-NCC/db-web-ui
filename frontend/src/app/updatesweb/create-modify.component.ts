@@ -529,7 +529,7 @@ export class CreateModifyComponent {
 
     public addSelectedAttribute(selectedAttributeType: IAttributeModel, attr: IAttributeModel) {
         this.addAttr(this.attributes, attr, selectedAttributeType.name);
-        this.attributeMetadataService.enrich(this.objectType, this.attributes);
+        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
     public displayMd5DialogDialog(attr: IAttributeModel) {
