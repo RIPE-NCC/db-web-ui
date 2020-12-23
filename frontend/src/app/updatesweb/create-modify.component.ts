@@ -158,7 +158,6 @@ export class CreateModifyComponent {
 
             this.fetchDataForModify();
         }
-        this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({[attr.$$id]: true}));
     }
 
     public ngOnDestroy() {
@@ -472,10 +471,10 @@ export class CreateModifyComponent {
     }
 
     public duplicateAttribute(attr: IAttributeModel) {
-        this.addDuplicateAttr(this.attributes, attr, attr.name);
+        this.addAttr(this.attributes, attr, attr.name);
     }
 
-    private addDuplicateAttr(attributes: IAttributeModel[], attribute: IAttributeModel, attributeName: string) {
+    private addAttr(attributes: IAttributeModel[], attribute: IAttributeModel, attributeName: string) {
         let foundIdx = -1;
         if (attribute.$$id) {
             foundIdx = _.findIndex(attributes, (attr: IAttributeModel) => {
@@ -529,8 +528,8 @@ export class CreateModifyComponent {
     }
 
     public addSelectedAttribute(selectedAttributeType: IAttributeModel, attr: IAttributeModel) {
-        const attrs = this.whoisResourcesService.addAttributeAfter(this.attributes, selectedAttributeType, attr);
-        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, attrs);
+        this.addAttr(this.attributes, attr, selectedAttributeType.name);
+        this.attributeMetadataService.enrich(this.objectType, this.attributes);
     }
 
     public displayMd5DialogDialog(attr: IAttributeModel) {
@@ -709,8 +708,8 @@ export class CreateModifyComponent {
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }
 
-    public setVisibilityAttrsHelp(attributeId: string) {
-        this.showAttrsHelp[attributeId] = !this.showAttrsHelp[attributeId]
+    public setVisibilityAttrsHelp(attributeName: string) {
+        this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName]
     }
 
     /*
@@ -751,17 +750,12 @@ export class CreateModifyComponent {
 
                     attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
                         this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", mntnerAttrs));
-
-                    console.debug("mntnrs-sso:" + JSON.stringify(this.maintainers.sso));
-                    console.debug("mntn rs-object-original:" + JSON.stringify(this.maintainers.objectOriginal));
-                    console.debug("mntners-object:" + JSON.stringify(this.maintainers.object));
-
                 } else {
                     attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
                 }
-                this.attributeMetadataService.enrichAttributesId(this.objectType, attributes);
                 // Post-process attributes before showing using screen-logic-interceptor
                 this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
+                this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
             }, (error: any) => {
                 this.restCallInProgress = false;
                 console.error("Error fetching mntners for SSO:" + JSON.stringify(error));
@@ -846,6 +840,9 @@ export class CreateModifyComponent {
                 // store object to modify
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
+
+                // show description under fields
+                this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
 
                 // Create empty attribute with warning for each missing mandatory attribute
                 this.insertMissingMandatoryAttributes();
@@ -968,10 +965,6 @@ export class CreateModifyComponent {
     private validateForm() {
         return this.whoisResourcesService.validate(this.attributes)
             && this.organisationHelperService.validateAbuseC(this.objectType, this.attributes);
-    }
-
-    private hasErrors() {
-        return this.alertsComponent.hasErrors();
     }
 
     private stripNulls() {
