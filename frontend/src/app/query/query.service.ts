@@ -173,11 +173,15 @@ export class QueryService {
             linkParts.push("flags=no-filtering");
         }
         if (!_.isUndefined(qp.source)) {
-            qp.source.split(/,/).forEach(s => linkParts.push("source=" + s));
+            qp.source.split(/,/).forEach(s => {
+              if (s.toUpperCase() === "GRS") {
+                linkParts.push("flags=" + "resource");
+              } else {
+                linkParts.push("source=" + s);
+              }
+            });
         }
-
         return linkParts.join("&");
-
     }
 
     private convertMapOfBoolsToList(boolMap: { [key: string]: boolean }): string[] {
