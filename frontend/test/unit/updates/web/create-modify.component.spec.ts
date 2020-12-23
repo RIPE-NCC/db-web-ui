@@ -379,7 +379,7 @@ describe("CreateModifyComponent", () => {
             component.addSelectedAttribute({name:"remarks", value: null}, component.attributes[0]);
 
             expect(component.attributes[1].name).toEqual("remarks");
-            expect(component.attributes[1].value).toBeNull();
+            expect(component.attributes[1].value).toEqual(undefined);
         });
 
         it("should go to delete controler on delete", async () => {

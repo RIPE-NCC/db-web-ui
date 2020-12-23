@@ -73,7 +73,7 @@
 
                 <input *ngIf="!attribute.$$meta.$$isEnum && !isBrowserAutoComplete(attribute)"
                        type="text"
-                       [attr.name]="attribute.name"
+                       [attr.name]="attribute.name + '$' + idx"
                        class="form-control"
                        placeholder="{{getAttributeShortDescription(attribute.name)}}"
                        autocomplete="off"
@@ -83,7 +83,7 @@
                        (blur)="fieldVisited(attribute)">
                 <input *ngIf="!attribute.$$meta.$$isEnum && isBrowserAutoComplete(attribute)"
                        type="text"
-                       [attr.name]="attribute.name"
+                       [attr.name]="attribute.name + '$' + idx"
                        class="form-control"
                        placeholder="{{getAttributeShortDescription(attribute.name)}}"
                        autocomplete="off"
@@ -97,7 +97,7 @@
                        >
                 <span *ngIf="attribute.$$meta.$$isEnum">
                     <ng-select
-                       [attr.name]="attribute.name"
+                       [attr.name]="attribute.name + '$' + idx"
                        [items]="attribute.name === 'status' ? optionList.status : enumAutocomplete(attribute)"
                        bindLabel="key"
                        bindValue="key"
@@ -109,7 +109,7 @@
                         </ng-template>
                     </ng-select>
                 </span>
-                <description-syntax [showComponent]="showAttrsHelp[attribute.$$id]" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>
+                <description-syntax [showComponent]="showAttrsHelp[attribute.name + '$' + idx]" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>
                 <ul class="input-group-btn">
                     <li *ngIf="canAttributeBeDuplicated(attribute)">
                         <a id="duplicateAttribute" class="btn btn-default ga-add-dup" title="Add another attribute of this type"
@@ -149,7 +149,7 @@
                         </a>
                     </li>
                     <li>
-                        <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.$$id)" >
+                        <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name + '$' + idx)" >
                             <span class="fa fa-question"></span>
                         </a>
                     </li>

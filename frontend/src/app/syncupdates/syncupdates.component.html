@@ -5,7 +5,7 @@
 <div *ngIf="updateResponse">
     <pre id="updateResultPreview">{{updateResponse}}</pre>
 </div>
-<form class="padding grey ga-syncupdate-form">
+<form class="padding grey ga-syncupdate-form" #form="ngForm">
     <label for="rpslTextArea">Object Data</label>
     <textarea id="rpslTextArea" name="rpslObject" [(ngModel)]="rpslObject" rows="18" class="full-width form-control margin-bottom">{{rpslObject}}</textarea>
     <button name="btnSyncupdate" (click)="update()" [disabled]="isUpdating" type="button" class="blue-button pull-right">Update</button>

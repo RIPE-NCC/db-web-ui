@@ -196,7 +196,7 @@ export class RestService {
                         console.debug("createObject success:" + JSON.stringify(result));
                         return this.whoisResourcesService.wrapSuccess(result);
                     }),
-                catchError((error: any, caught: Observable<any>) => {
+                catchError((error: any) => {
                     if (!error) {
                         throw new TypeError("Unknown error createObject");
                     } else {
