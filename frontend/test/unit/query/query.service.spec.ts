@@ -65,6 +65,10 @@ describe("QueryService", () => {
         qp.source = "TEST";
         expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&source=TEST&bflag=false");
         expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&source=TEST");
+
+        qp.source = "GRS";
+        expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&source=GRS&bflag=false");
+        expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&flags=resource");
     });
 
     it("should generate a link for a text search with options", () => {
