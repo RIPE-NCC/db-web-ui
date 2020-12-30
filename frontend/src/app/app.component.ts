@@ -13,6 +13,8 @@ declare var whois_search: any;
 })
 export class AppComponent {
 
+  public isIEOrEdge: boolean;
+
   constructor(public properties: PropertiesService,
               private router: Router,
               @Inject(WINDOW) private window: any) {
@@ -20,6 +22,7 @@ export class AppComponent {
   }
 
   public ngOnInit() {
+    this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     init_mega_menu();
     init_popover();
     whois_search();
