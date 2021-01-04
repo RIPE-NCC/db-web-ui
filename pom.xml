@@ -47,7 +47,7 @@
     <repositories>
         <repository>
             <id>ripe-releases</id>
-            <url>http://nexus.ripe.net/nexus/content/repositories/releases</url>
+            <url>https://artefacts.ripe.net/repository/maven-public/</url>
         </repository>
     </repositories>
 
