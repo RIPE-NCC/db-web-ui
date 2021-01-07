@@ -17,15 +17,16 @@ public class LoggingAspectConfiguration {
         this.environment = environment;
     }
 
-    @Bean
-    @Profile({
-        Constants.SPRING_PROFILE_DEVELOPMENT,
-        Constants.SPRING_PROFILE_PREPDEV,
-        Constants.SPRING_PROFILE_RC,
-        Constants.SPRING_PROFILE_TEST,
-        Constants.SPRING_PROFILE_PRD,
-        Constants.SPRING_PROFILE_TRAINING})
-    public LoggingAspect loggingAspect() {
-        return new LoggingAspect(environment);
-    }
+        @Bean
+        @Profile({
+            Constants.SPRING_PROFILE_DEVELOPMENT,
+            Constants.SPRING_PROFILE_PREPDEV,
+            Constants.SPRING_PROFILE_RC,
+            Constants.SPRING_PROFILE_TEST,
+            Constants.SPRING_PROFILE_PRD,
+            Constants.SPRING_PROFILE_TRAINING,
+            Constants.SPRING_PROFILE_AWS})
+        public LoggingAspect loggingAspect() {
+            return new LoggingAspect(environment);
+        }
 }

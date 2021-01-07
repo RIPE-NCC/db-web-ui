@@ -57,7 +57,7 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
 
         final URI uri = new UriTemplate(syncupdatesApiUrl).expand(newHashMap());
 
-        LOGGER.debug("Performing syncupdates {}", uri.toString());
+        LOGGER.info("Performing syncupdates {}", uri.toString());
 
         return handleErrors(() -> restTemplate.exchange(uri,
                 HttpMethod.POST,

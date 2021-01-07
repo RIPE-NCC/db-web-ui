@@ -4,10 +4,19 @@ variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
   WHITESOURCE_PRODUCT: "database-team"
   WHITESOURCE_PROJECT: "db-web-ui"
+  PROJECT_NAME: "db-web-ui"
+  ARTIFACT_NAME: "db-web-ui"
+  ARTIFACT_DIR: "backend"
 
 include:
     - project: 'swe/gitlab-ci'
       file: '/templates/whitesource-scanning.yml'
+
+    - project: 'swe-database-team/gitlab-ci'
+      file: '/templates/deployment-template.yml'
+
+    - project: 'swe-database-team/gitlab-ci'
+      file: '/templates/aws-deployment-template.yml'
 
 stages:
   - build
@@ -23,35 +32,39 @@ cache:
 
 build:
   stage: build
+  before_script:
+      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - mvn versions:set -DnewVersion=${CI_COMMIT_SHA}
-    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests
+    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA} -Prelease
+    - docker tag db-web-ui:${CI_COMMIT_SHA} $CI_REGISTRY_IMAGE/db-web-ui:${CI_COMMIT_SHORT_SHA}
+    - docker push $CI_REGISTRY_IMAGE/db-web-ui:${CI_COMMIT_SHORT_SHA}
   artifacts:
     paths:
-      - backend/target/backend*.jar
+      - backend/target/db-web-ui*.jar
 
 e2e:
-  stage: test
-  script:
-    - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
-    - export DISPLAY=:20
-    - Xvfb :20 -screen 0 1920x1080x16 &
-    # use pinned version of Chrome:
-    - cd frontend && npm run e2e-chrome
+    stage: test
+    script:
+        - export DISPLAY=:20
+        - Xvfb :20 -screen 0 1920x1080x16 &
+        # use pinned version of Chrome:
+        - cd frontend && npm run e2e-chrome
+    when: manual
 
 e2e-firefox:
-  stage: test
-  script:
-    - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
-    - export DISPLAY=:20
-    - Xvfb :20 -screen 0 1920x1080x16 &
-    - cd frontend && npm run e2e-firefox
-  allow_failure: true
+    stage: test
+    script:
+      - export DISPLAY=:20
+      - Xvfb :20 -screen 0 1920x1080x16 &
+      - cd frontend && npm run e2e-firefox
+    # TODO: some tests fail on firefox
+    allow_failure: true
+    when: manual
 
 qa:
   stage: test
   script:
-      - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
+    - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
   allow_failure: true
   artifacts:
     reports:
@@ -59,56 +72,3 @@ qa:
         - backend/target/surefire-reports/TEST-*.xml
         - backend/target/failsafe-reports/TEST-*.xml
 
-.deploy_template: &deploy_env
-  stage: deploy
-  before_script:
-    - mkdir -p /root/.ssh
-    - touch /root/.ssh/known_hosts
-    - ssh-keyscan hanwoo.ripe.net 2>&1 >>/root/.ssh/known_hosts
-    - echo "search ripe.net">>/etc/resolv.conf
-    - eval $(ssh-agent -s)
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\nAddressFamily inet\n\n" > ~/.ssh/config
-    - echo "$DBASE_SSH_KEY" | tr -d '\r' | ssh-add -
-  script:
-    - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/swe-database-team/db-operational.git
-    - cp backend/target/backend-$CI_COMMIT_SHA.jar db-operational/deployment/db-web-ui-spring-$CI_COMMIT_SHA.jar
-    - cd db-operational/deployment
-    - ./stage.sh -p db-web-ui -e $CI_ENVIRONMENT_NAME db-web-ui-spring-$CI_COMMIT_SHA.jar
-    - ./sync.sh -p db-web-ui -e $CI_ENVIRONMENT_NAME
-    - bash ./deploy.sh -p db-web-ui -e $CI_ENVIRONMENT_NAME
-
-deploy_dev:
-  <<: *deploy_env
-  environment:
-    name: dev
-  when: manual
-
-deploy_prepdev:
-  <<: *deploy_env
-  environment:
-    name: prepdev
-  when: manual
-
-deploy_rc:
-  <<: *deploy_env
-  environment:
-    name: rc
-  when: manual
-
-deploy_training:
-  <<: *deploy_env
-  environment:
-    name: training
-  when: manual
-
-deploy_test:
-  <<: *deploy_env
-  environment:
-    name: test
-  when: manual
-
-deploy_prod:
-  <<: *deploy_env
-  environment:
-    name: prod
-  when: manual
