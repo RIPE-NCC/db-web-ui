@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(value = "classpath:menu.properties", ignoreResourceNotFound = true)
 public class LeftMenuConfiguration {
 
     @Value("${lir.account.details.url:}")
