@@ -41,38 +41,40 @@
             You can search up to five terms at once in the search box above, separating them with a semi-colon.
         </p>
         <div class="margin-bottom">
-            <ngb-tabset activeId="activeForm">
-                <ngb-tab title="Sources">
-                    <ng-template ngbTabContent>
-                    <form #sourceForm="ngForm">
-                        <div class="padding">
-                            <div class="form-group">
-                                <div class="radio">
-                                    <label>
-                                        <input id="search:sources:1" type="radio" value="GRS"
-                                               class="ga-grsdb-checkbox" name="qp.source" [(ngModel)]="qp.source">
-                                        <label for="search:sources:1">Search resource objects in all available databases</label>
-                                    </label>
-                                    <help-marker [label-key]="'query.optionAllDatabases.title'"
-                                                 [link]="'https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service'"></help-marker>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input id="search:sources:0" type="radio" value="RIPE"
-                                               class="ga-ripedb-checkbox" name="qp.source" [(ngModel)]="qp.source">
-                                        <label for="search:sources:0">Search RIPE Database only</label></label>
-                                </div>
-                                <div class="help-block small">
-                                    <span>Are you looking for the <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank">{{properties.SOURCE  === "RIPE" ? "TEST" : "RIPE"}} Database</a>?</span>
+            <ul ngbNav #navQuery="ngbNav" [(activeId)]="active" class="nav-tabs">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>Sources</a>
+                    <ng-template ngbNavContent>
+                        <ng-form>
+                            <div class="padding">
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <input id="search:sources:1" type="radio" value="GRS"
+                                                   class="ga-grsdb-checkbox" name="qp.source" [(ngModel)]="qp.source">
+                                            <label for="search:sources:1">Search resource objects in all available databases</label>
+                                        </label>
+                                        <help-marker [label-key]="'query.optionAllDatabases.title'"
+                                                     [link]="'https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service'"></help-marker>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="search:sources:0" type="radio" value="RIPE"
+                                                   class="ga-ripedb-checkbox" name="qp.source" [(ngModel)]="qp.source">
+                                            <label for="search:sources:0">Search RIPE Database only</label></label>
+                                    </div>
+                                    <div class="help-block small">
+                                        <span>Are you looking for the <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank">{{properties.SOURCE  === "RIPE" ? "TEST" : "RIPE"}} Database</a>?</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </ng-form>
                     </ng-template>
-                </ngb-tab>
-                <ngb-tab title="Types">
-                    <ng-template ngbTabContent>
-                        <form #typesForm="ngForm">
+                </li>
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink>Types</a>
+                    <ng-template ngbNavContent>
+                        <ng-form>
                             <div class="padding">
                                 <help-marker label-key="query.optionPageTypes.title"
                                              link="https://www.ripe.net/data-tools/support/documentation/ripe-database-query-reference-manual#LinkTarget_3010"></help-marker>
@@ -154,11 +156,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </ng-form>
                     </ng-template>
-                </ngb-tab>
-                <ngb-tab title="Hierarchy flags">
-                    <ng-template ngbTabContent>
+                </li>
+                <li [ngbNavItem]="3" name="hierarchyFlags">
+                    <a ngbNavLink>Hierarchy flags</a>
+                    <ng-template ngbNavContent>
                         <form>
                             <div class="padding">
                                 <div>
@@ -218,10 +221,11 @@
                             </div>
                         </form>
                     </ng-template>
-                </ngb-tab>
-                <ngb-tab title="Inverse lookup">
-                    <ng-template ngbTabContent>
-                        <form #inverseForm="ngForm">
+                </li>
+                <li [ngbNavItem]="4">
+                    <a ngbNavLink>Inverse lookup</a>
+                    <ng-template ngbNavContent>
+                        <ng-form>
                             <div class="padding">
                                 <help-marker label-key="query.optionPageInverse.title"
                                              link="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"></help-marker>
@@ -404,10 +408,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </ng-form>
                     </ng-template>
-                </ngb-tab>
-            </ngb-tabset>
+                </li>
+            </ul>
+            <div [ngbNavOutlet]="navQuery" class="mt-2"></div>
         </div>
         <p [innerHTML]="'query.whoisTelnetOutputLabel.text' | label"></p>
         <pre>{{ whoisCliQuery() }}</pre>

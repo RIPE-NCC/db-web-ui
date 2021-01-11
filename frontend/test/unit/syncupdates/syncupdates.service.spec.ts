@@ -12,8 +12,8 @@ describe("SyncupdatesService", () => {
             imports: [HttpClientTestingModule],
             providers: [SyncupdatesService],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        service = TestBed.get(SyncupdatesService);
+        httpMock = TestBed.inject(HttpTestingController);
+        service = TestBed.inject(SyncupdatesService);
     });
 
     afterEach(() => {

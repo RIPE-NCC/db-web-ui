@@ -33,8 +33,8 @@ describe("Testing EmailConfirmation with logged in user", () => {
 
     beforeEach(() => {
         fixture = TestBed.createComponent(EmailConfirmationComponent);
-        httpMock = TestBed.get(HttpTestingController);
-        service = TestBed.get(EmailConfirmationService);
+        httpMock = TestBed.inject(HttpTestingController);
+        service = TestBed.inject(EmailConfirmationService);
         component = fixture.componentInstance;
         fixture.detectChanges();
         expect(component.loading).toEqual(true);
@@ -87,8 +87,8 @@ describe("Testing EmailConfirmation with not logged in user", () => {
 
     beforeEach(() => {
         fixture = TestBed.createComponent(EmailConfirmationComponent);
-        httpMock = TestBed.get(HttpTestingController);
-        service = TestBed.get(EmailConfirmationService);
+        httpMock = TestBed.inject(HttpTestingController);
+        service = TestBed.inject(EmailConfirmationService);
         component = fixture.componentInstance;
         fixture.detectChanges();
         expect(component.loading).toEqual(true);

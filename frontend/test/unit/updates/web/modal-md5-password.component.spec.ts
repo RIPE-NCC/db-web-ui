@@ -24,7 +24,7 @@ describe("ModalMd5PasswordComponent", () => {
                 CryptService,
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ModalMd5PasswordComponent);
         modalMd5PasswordComponent = componentFixture.componentInstance;
     });

@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import {DiffMatchPatchModule} from "ng-diff-match-patch";
 import {CredentialsService} from "./credentials.service";
 import {WhoisMetaService} from "./whois-meta.service";
@@ -32,6 +32,7 @@ import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
         CommonModule,
         FormsModule,
         NgbModule,
+        NgbNavModule,
         DiffMatchPatchModule
     ],
     declarations: [
@@ -85,6 +86,7 @@ import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
         SanitizeHtmlPipe,
         SanitizeImgHtmlPipe,
         NgbModule,
+        NgbNavModule,
         TableScrollerDirective,
         WhoisVersionComponent,
         WebAppVersionComponent,

@@ -90,8 +90,8 @@ describe("ForceDeleteController", () => {
                 PropertiesService,
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        whoisResourcesService = TestBed.get(WhoisResourcesService);
+        httpMock = TestBed.inject(HttpTestingController);
+        whoisResourcesService = TestBed.inject(WhoisResourcesService);
         objectToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
@@ -273,7 +273,7 @@ describe("ForceDeleteController should be able to handle escape objected with sl
                 PropertiesService,
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ForceDeleteComponent);
         forceDeleteComponent = componentFixture.componentInstance;
     });

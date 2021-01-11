@@ -57,8 +57,8 @@ describe("AttributeMetadataService", () => {
                 { provide: "ModalService", useValue: {}}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        attributeMetadataService = TestBed.get(AttributeMetadataService);
+        httpMock = TestBed.inject(HttpTestingController);
+        attributeMetadataService = TestBed.inject(AttributeMetadataService);
     });
 
     afterEach(() => {

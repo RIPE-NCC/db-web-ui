@@ -14,7 +14,7 @@ describe("WhoisMetaService", () => {
                 {provide: "$log",  useValue: {debug: () => {}, error: () => {} }},
             ],
         });
-        whoisMetaService = TestBed.get(WhoisMetaService);
+        whoisMetaService = TestBed.inject(WhoisMetaService);
     });
 
     it("should return correct documentation based on object- and attribute-name", () => {

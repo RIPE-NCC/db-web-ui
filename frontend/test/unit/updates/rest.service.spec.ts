@@ -19,8 +19,8 @@ describe("RestService", () => {
                 { provide: Router, useValue: {navigateByUrl:() => {}, events: of()}}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        restService = TestBed.get(RestService);
+        httpMock = TestBed.inject(HttpTestingController);
+        restService = TestBed.inject(RestService);
     });
 
     afterEach(() => {

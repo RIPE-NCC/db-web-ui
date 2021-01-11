@@ -1,6 +1,6 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Location} from "@angular/common";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, convertToParamMap, Router} from "@angular/router";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of} from "rxjs";
@@ -129,10 +129,12 @@ describe("CreateModifyComponent with modifying test cases", () => {
     let component: CreateModifyComponent;
     let routerMock: any;
     let modalMock: any;
+    let paramMapMock: any;
 
     beforeEach(() => {
         modalMock = jasmine.createSpyObj("NgbModal", ["open"]);
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+        paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
             imports: [
                 SharedModule,
@@ -163,12 +165,13 @@ describe("CreateModifyComponent with modifying test cases", () => {
                 ScreenLogicInterceptorService,
                 { provide: Location, useValue: {path: () => ("")}},
                 { provide: Router, useValue: routerMock},
-                { provide: ActivatedRoute, useValue: {snapshot: {paramMap: {},
+                { provide: ActivatedRoute, useValue: {snapshot: {
+                            paramMap: paramMapMock,
                             queryParamMap: {has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])}}}},
                 { provide: NgbModal, useValue: modalMock}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(CreateModifyComponent);
     });
 
@@ -182,13 +185,15 @@ describe("CreateModifyComponent with modifying test cases", () => {
         const NAME = "MY-AS-BLOCK";
 
         beforeEach(async () => {
-            TestBed.get(ActivatedRoute).snapshot.paramMap = {
-                source: SOURCE,
-                objectType: OBJECT_TYPE,
-                objectName: NAME,
-                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
-                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
-            };
+            paramMapMock.source = SOURCE;
+            paramMapMock.objectType = OBJECT_TYPE;
+            paramMapMock.objectName = NAME;
+            spyOn(paramMapMock, "get").and.callFake((param) => {
+                return component.activatedRoute.snapshot.paramMap[param];
+            })
+            spyOn(paramMapMock, "has").and.callFake((param) => {
+                return !!component.activatedRoute.snapshot.paramMap[param];
+            })
             component = fixture.componentInstance;
             component.credentialsService.setCredentials("TEST-MNT", "@123");
             fixture.detectChanges();
@@ -400,13 +405,15 @@ describe("CreateModifyComponent with modifying test cases", () => {
         const NAME = "MY-AS-BLOCK";
 
         beforeEach(async () => {
-            TestBed.get(ActivatedRoute).snapshot.paramMap = {
-                source: SOURCE,
-                objectType: OBJECT_TYPE,
-                objectName: NAME,
-                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
-                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
-            };
+            paramMapMock.source = SOURCE;
+            paramMapMock.objectType = OBJECT_TYPE;
+            paramMapMock.objectName = NAME;
+            spyOn(paramMapMock, "get").and.callFake((param) => {
+                return component.activatedRoute.snapshot.paramMap[param];
+            })
+            spyOn(paramMapMock, "has").and.callFake((param) => {
+                return !!component.activatedRoute.snapshot.paramMap[param];
+            })
             component = fixture.componentInstance;
             fixture.detectChanges();
         });
@@ -494,13 +501,15 @@ describe("CreateModifyComponent with modifying test cases", () => {
         const NAME = "MY-AS-BLOCK";
 
         beforeEach(async () => {
-            TestBed.get(ActivatedRoute).snapshot.paramMap = {
-                source: SOURCE,
-                objectType: OBJECT_TYPE,
-                objectName: NAME,
-                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
-                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
-            };
+            paramMapMock.source = SOURCE;
+            paramMapMock.objectType = OBJECT_TYPE;
+            paramMapMock.objectName = NAME;
+            spyOn(paramMapMock, "get").and.callFake((param) => {
+                return component.activatedRoute.snapshot.paramMap[param];
+            })
+            spyOn(paramMapMock, "has").and.callFake((param) => {
+                return !!component.activatedRoute.snapshot.paramMap[param];
+            })
             component = fixture.componentInstance;
             fixture.detectChanges();
             httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
@@ -537,13 +546,15 @@ describe("CreateModifyComponent with modifying test cases", () => {
         const NAME = "12.235.32.0%2f19AS1680";
 
         beforeEach(async () => {
-            TestBed.get(ActivatedRoute).snapshot.paramMap = {
-                source: SOURCE,
-                objectType: OBJECT_TYPE,
-                objectName: NAME,
-                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
-                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
-            };
+            paramMapMock.source = SOURCE;
+            paramMapMock.objectType = OBJECT_TYPE;
+            paramMapMock.objectName = NAME;
+            spyOn(paramMapMock, "get").and.callFake((param) => {
+                return component.activatedRoute.snapshot.paramMap[param];
+            })
+            spyOn(paramMapMock, "has").and.callFake((param) => {
+                return !!component.activatedRoute.snapshot.paramMap[param];
+            })
             component = fixture.componentInstance;
             fixture.detectChanges();
             httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
@@ -574,13 +585,15 @@ describe("CreateModifyComponent with modifying test cases", () => {
         const NAME = "ORG-UA300-RIPE";
 
         beforeEach(async () => {
-            TestBed.get(ActivatedRoute).snapshot.paramMap = {
-                source: SOURCE,
-                objectType: OBJECT_TYPE,
-                objectName: NAME,
-                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
-                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
-            };
+            paramMapMock.source = SOURCE;
+            paramMapMock.objectType = OBJECT_TYPE;
+            paramMapMock.objectName = NAME;
+            spyOn(paramMapMock, "get").and.callFake((param) => {
+                return component.activatedRoute.snapshot.paramMap[param];
+            })
+            spyOn(paramMapMock, "has").and.callFake((param) => {
+                return !!component.activatedRoute.snapshot.paramMap[param];
+            })
             component = fixture.componentInstance;
             fixture.detectChanges();
             httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
@@ -632,13 +645,15 @@ describe("CreateModifyComponent with modifying test cases", () => {
         const NAME = "ORG-UA300-RIPE";
 
         beforeEach(async () => {
-            TestBed.get(ActivatedRoute).snapshot.paramMap = {
-                source: SOURCE,
-                objectType: OBJECT_TYPE,
-                objectName: NAME,
-                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
-                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
-            };
+            paramMapMock.source = SOURCE;
+            paramMapMock.objectType = OBJECT_TYPE;
+            paramMapMock.objectName = NAME;
+            spyOn(paramMapMock, "get").and.callFake((param) => {
+                return component.activatedRoute.snapshot.paramMap[param];
+            })
+            spyOn(paramMapMock, "has").and.callFake((param) => {
+                return !!component.activatedRoute.snapshot.paramMap[param];
+            })
             component = fixture.componentInstance;
             fixture.detectChanges();
             httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([

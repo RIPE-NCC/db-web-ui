@@ -73,7 +73,7 @@ describe("CreateMntnerPairComponent", () => {
                     }
                 ],
             });
-            httpMock = TestBed.get(HttpTestingController);
+            httpMock = TestBed.inject(HttpTestingController);
             fixture = TestBed.createComponent(CreateMntnerPairComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();
@@ -239,7 +239,7 @@ describe("CreateMntnerPairComponent", () => {
                     }
                 ],
             });
-            httpMock = TestBed.get(HttpTestingController);
+            httpMock = TestBed.inject(HttpTestingController);
             fixture = TestBed.createComponent(CreateMntnerPairComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();

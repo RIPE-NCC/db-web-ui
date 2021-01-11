@@ -16,7 +16,7 @@ describe("WhoisResourcesService", () => {
                 WhoisMetaService
             ],
         });
-        whoisResourcesService = TestBed.get(WhoisResourcesService);
+        whoisResourcesService = TestBed.inject(WhoisResourcesService);
     });
 
     it("should wrap a success response", () => {

@@ -22,8 +22,8 @@ describe("CreateService", () => {
                 { provide: Router, useValue: {navigateByUrl:() => {}, events: of()}}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        createService = TestBed.get(CreateService);
+        httpMock = TestBed.inject(HttpTestingController);
+        createService = TestBed.inject(CreateService);
     });
 
     afterEach(() => {

@@ -135,13 +135,13 @@ describe("QueryComponent", () => {
 
     let component: QueryComponent;
     let fixture: ComponentFixture<QueryComponent>;
-    let queryService: jasmine.SpyObj<QueryService>;
+    let queryServiceSpy: jasmine.SpyObj<QueryService>;
     let userInfoService: any;
     let whoisMetaService: WhoisMetaService;
     let queryParametersService: QueryParametersService;
 
     beforeEach(() => {
-        const queryServiceSpy = jasmine.createSpyObj("QueryService", ["searchWhoisObjects", "searchTemplate", "buildQueryStringForLink", "buildPermalink"]);
+        queryServiceSpy = jasmine.createSpyObj("QueryService", ["searchWhoisObjects", "searchTemplate", "buildQueryStringForLink", "buildPermalink"]);
         TestBed.configureTestingModule({
             imports: [ SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
             declarations: [
@@ -165,14 +165,12 @@ describe("QueryComponent", () => {
                         userLoggedIn$: of()}},
             ]
         });
-        whoisMetaService = TestBed.get(WhoisMetaService);
-        queryParametersService = TestBed.get(QueryParametersService);
-        queryService = TestBed.get(QueryService);
-        userInfoService = TestBed.get(UserInfoService);
+        whoisMetaService = TestBed.inject(WhoisMetaService);
+        queryParametersService = TestBed.inject(QueryParametersService);
+        userInfoService = TestBed.inject(UserInfoService);
 
         expect(whoisMetaService).toBeDefined();
         expect(queryParametersService).toBeDefined();
-        expect(queryService).toBeDefined();
         expect(userInfoService).toBeDefined();
 
         fixture = TestBed.createComponent(QueryComponent);
@@ -210,7 +208,7 @@ describe("QueryComponent", () => {
         };
 
         beforeEach(() => {
-            queryService.searchWhoisObjects.and.returnValue(of(successResponse));
+            queryServiceSpy.searchWhoisObjects.and.returnValue(of(successResponse));
         });
 
         it("should parse the options into the form", () => {
@@ -240,7 +238,7 @@ describe("QueryComponent", () => {
             expect(component.qp.source).toEqual("TEST");
             expect(component.whoisCliQuery()).toEqual("-T inetnum,inet6num -xd --sources TEST 193.0.0.0");
             expect(component.results.length).toEqual(4);
-            expect(queryService.searchWhoisObjects).toHaveBeenCalledTimes(1);
+            expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
 
         it("should handle an empty search string", () => {
@@ -271,7 +269,7 @@ describe("QueryComponent", () => {
 
             component.doSearch();
             expect(component.results.length).toEqual(0);
-            expect(queryService.searchWhoisObjects).toHaveBeenCalledTimes(0);
+            expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(0);
         });
 
         it("should handle empty params", () => {
@@ -300,7 +298,7 @@ describe("QueryComponent", () => {
             expect(component.qp.source).toEqual("GRS");
             expect(component.whoisCliQuery().trim()).toEqual("-Br --resource 193.0.0.0");
             expect(component.results.length).toEqual(4);
-            expect(queryService.searchWhoisObjects).toHaveBeenCalledTimes(1);
+            expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
 
         it("should handle empty flags", () => {
@@ -331,7 +329,7 @@ describe("QueryComponent", () => {
             expect(component.results.length).toEqual(4);
             component.lastResultOnScreen();
             expect(component.offset).toEqual(0);
-            expect(queryService.searchWhoisObjects).toHaveBeenCalledTimes(1);
+            expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -344,8 +342,8 @@ describe("QueryComponent", () => {
         };
 
         beforeEach(() => {
-            queryService.searchWhoisObjects.and.returnValue(of(successResponse));
-            queryService.PAGE_SIZE = 20 as any;
+            queryServiceSpy.searchWhoisObjects.and.returnValue(of(successResponse));
+            queryServiceSpy.PAGE_SIZE = 20 as any;
         });
 
         it("should react to scroll events (async)", async() => {
@@ -370,7 +368,7 @@ describe("QueryComponent", () => {
             component.showScroller = true;
             component.lastResultOnScreen();
             expect(component.offset).toEqual(20);
-            expect(queryService.searchWhoisObjects).toHaveBeenCalledTimes(2);
+            expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(2);
         });
 
         it("should react to scroll events", async() => {
@@ -423,7 +421,7 @@ describe("QueryComponent", () => {
         };
 
         beforeEach(() => {
-            queryService.searchWhoisObjects.and.returnValue(throwError(errorResponse));
+            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(errorResponse));
         });
 
         it("should show error messages", () => {
@@ -457,14 +455,14 @@ describe("QueryComponent", () => {
             expect(component.formatError(component.alertsComponent.getErrors()[1])).toEqual("So Goodbye, Yellow Brick Road");
             expect(component.formatError(component.alertsComponent.getErrors()[2])).toEqual("Goodbye, cruel world!");
             expect(component.formatError(component.alertsComponent.getErrors()[3])).toEqual("Broken message");
-            expect(queryService.searchWhoisObjects).toHaveBeenCalledTimes(1);
+            expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
     });
 
     describe("with a --template query", () => {
 
         it("should not show error or warning messages", () => {
-            queryService.searchTemplate.and.returnValue(of(mockTemplateAutnum));
+            queryServiceSpy.searchTemplate.and.returnValue(of(mockTemplateAutnum));
             // @ts-ignore
             component.activatedRoute.snapshot = { queryParamMap: convertToParamMap({
                 searchtext: " 193.0.0.0 -t aut-num",
@@ -485,7 +483,7 @@ describe("QueryComponent", () => {
         });
 
         it("should show error messages", () => {
-            queryService.searchTemplate.and.returnValue(of(mockTemplateAutnum));
+            queryServiceSpy.searchTemplate.and.returnValue(of(mockTemplateAutnum));
             // @ts-ignore
             component.activatedRoute.snapshot = { queryParamMap: convertToParamMap({
                 searchtext: "blah blah --template zzz inetnum",

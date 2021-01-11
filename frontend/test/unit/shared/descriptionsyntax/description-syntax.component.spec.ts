@@ -17,7 +17,7 @@ describe("DescriptionSyntaxComponent", () => {
                 CoreModule
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(DescriptionSyntaxComponent);
         component = fixture.componentInstance;
     });

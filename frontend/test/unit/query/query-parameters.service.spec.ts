@@ -28,8 +28,8 @@ describe("QueryParameters", () => {
             showFullObjectDetails: false,
             source: ""
         };
-        httpMock = TestBed.get(HttpTestingController);
-        queryParametersService = TestBed.get(QueryParametersService);
+        httpMock = TestBed.inject(HttpTestingController);
+        queryParametersService = TestBed.inject(QueryParametersService);
     });
 
     afterEach(() => {

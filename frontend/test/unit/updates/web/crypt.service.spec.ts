@@ -11,7 +11,7 @@ describe("CryptService", () => {
                 CryptService
             ],
         });
-        cryptService = TestBed.get(CryptService);
+        cryptService = TestBed.inject(CryptService);
     });
 
     it("crypt", () => {

@@ -37,7 +37,7 @@ describe("primitives of modalDeleteObject", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
         modalDeleteObjectComponent = componentFixture.componentInstance;
         modalDeleteObjectComponent.inputData = {
@@ -140,7 +140,7 @@ describe("ModalDeleteObjectComponent undeletable object", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
         modalDeleteObjectComponent = componentFixture.componentInstance;
         modalDeleteObjectComponent.inputData = {
@@ -224,7 +224,7 @@ describe("ModalDeleteObjectComponent deleteable object ", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
         modalDeleteObjectComponent = componentFixture.componentInstance;
         modalDeleteObjectComponent.inputData = {
@@ -323,7 +323,7 @@ describe("ModalDeleteObjectComponent loading references failures ", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
         modalDeleteObjectComponent = componentFixture.componentInstance;
         modalDeleteObjectComponent.inputData = {

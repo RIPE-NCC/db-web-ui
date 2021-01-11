@@ -16,10 +16,10 @@ describe("LookupSingleObjectComponent", () => {
 
     let component: LookupSingleObjectComponent;
     let fixture: ComponentFixture<LookupSingleObjectComponent>;
-    let lookupService: jasmine.SpyObj<LookupService>;
+    let lookupServiceSpy: jasmine.SpyObj<LookupService>;
 
     beforeEach(() => {
-        const lookupServiceSpy = jasmine.createSpyObj("LookupService", ["lookupWhoisObject"]);
+        lookupServiceSpy = jasmine.createSpyObj("LookupService", ["lookupWhoisObject"]);
         TestBed.configureTestingModule({
             imports: [
                 SharedModule,
@@ -38,7 +38,6 @@ describe("LookupSingleObjectComponent", () => {
                 { provide: LookupService, useValue: lookupServiceSpy},
             ]
         });
-        lookupService = TestBed.get(LookupService);
     });
 
     beforeEach(() => {
@@ -54,7 +53,7 @@ describe("LookupSingleObjectComponent", () => {
     describe("should shows an object", () => {
 
         it("all lovely and that", async() => {
-            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse.singleResult));
+            lookupServiceSpy.lookupWhoisObject.and.returnValue(of(mockResponse.singleResult));
             component.activatedRoute.queryParams = of({
                 source: "useTheSource",
                 type: "thetype",
@@ -70,7 +69,7 @@ describe("LookupSingleObjectComponent", () => {
         });
 
         it("but not when the params are empty", async() => {
-            lookupService.lookupWhoisObject.and.returnValue(throwError("That just won't do."));
+            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError("That just won't do."));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
                 has: (hash: string) => true
@@ -81,7 +80,7 @@ describe("LookupSingleObjectComponent", () => {
         });
 
         it("but not when the response is empty", async() => {
-            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse));
+            lookupServiceSpy.lookupWhoisObject.and.returnValue(of(mockResponse));
             component.activatedRoute.queryParams = of({
                 source: "useTheSource",
                 type: "thetype",
@@ -96,7 +95,7 @@ describe("LookupSingleObjectComponent", () => {
 
         it("but not when there is more than one result", async() => {
             //@ts-ignore
-            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse.wakefield));
+            lookupServiceSpy.lookupWhoisObject.and.returnValue(of(mockResponse.wakefield));
             // @ts-ignore
             component.activatedRoute.snapshot = { queryParamMap: convertToParamMap({
                 source: "useTheSource",
@@ -111,7 +110,7 @@ describe("LookupSingleObjectComponent", () => {
         });
 
         it("with RIPE source even if specifed is NONAUTH, because object actualy exist in RIPE source", async() => {
-            lookupService.lookupWhoisObject.and.returnValue(throwError(mockErrorNonauth));
+            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError(mockErrorNonauth));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
                 has: (hash: string) => true

@@ -20,8 +20,8 @@ describe("MoreSpecificsService", () => {
                 MoreSpecificsService
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        moreSpecificsService = TestBed.get(MoreSpecificsService);
+        httpMock = TestBed.inject(HttpTestingController);
+        moreSpecificsService = TestBed.inject(MoreSpecificsService);
     });
 
     afterEach(() => {

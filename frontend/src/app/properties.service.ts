@@ -95,7 +95,9 @@ export class PropertiesService {
     }
 
     private injectProperties() {
-        loadMatomo(this.MATOMO_ID);
-        loadUsersnap(this.DB_WEB_UI_BUILD_TIME);
+        if (typeof loadMatomo === 'function') { loadMatomo(this.MATOMO_ID) }
+        if (typeof loadUsersnap === 'function') { loadUsersnap(this.DB_WEB_UI_BUILD_TIME) }
+        // loadMatomo(this.MATOMO_ID);
+        // loadUsersnap(this.DB_WEB_UI_BUILD_TIME);
     }
 }

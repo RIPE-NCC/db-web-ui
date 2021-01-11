@@ -53,10 +53,10 @@ describe("DeleteController", () => {
                 }
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(DeleteComponent);
         component = fixture.componentInstance;
-        whoisResourcesService = TestBed.get(WhoisResourcesService);
+        whoisResourcesService = TestBed.inject(WhoisResourcesService);
 
         objectToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {

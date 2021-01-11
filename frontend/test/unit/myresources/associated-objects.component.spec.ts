@@ -31,7 +31,7 @@ describe("AssociatedObjectsComponent", () => {
                 PropertiesService
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(AssociatedObjectsComponent);
         component = fixture.componentInstance;
     });

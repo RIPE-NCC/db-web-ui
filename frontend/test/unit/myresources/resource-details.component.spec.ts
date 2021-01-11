@@ -97,11 +97,11 @@ describe("ResourceDetailsComponent", () => {
 
     describe("on inetnum detail page", () => {
         beforeEach(() => {
-            TestBed.get(ActivatedRoute).snapshot.params = {
+            TestBed.inject(ActivatedRoute).snapshot.params = {
                 objectType: "inetnum",
                 objectName: "212.58.224.0 - 212.58.255.255"
             };
-            httpMock = TestBed.get(HttpTestingController);
+            httpMock = TestBed.inject(HttpTestingController);
             fixture = TestBed.createComponent(ResourceDetailsComponent);
             component = fixture.componentInstance;
             httpMock.expectOne({
@@ -131,11 +131,11 @@ describe("ResourceDetailsComponent", () => {
 
     describe("on aut-num detail page", () => {
         beforeEach(() => {
-            TestBed.get(ActivatedRoute).snapshot.params = {
+            TestBed.inject(ActivatedRoute).snapshot.params = {
                 objectType: "aut-num",
                 objectName: "AS2818"
             };
-            httpMock = TestBed.get(HttpTestingController);
+            httpMock = TestBed.inject(HttpTestingController);
             fixture = TestBed.createComponent(ResourceDetailsComponent);
             component = fixture.componentInstance;
             httpMock.expectOne({

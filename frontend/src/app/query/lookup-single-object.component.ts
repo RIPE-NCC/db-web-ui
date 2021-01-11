@@ -37,7 +37,9 @@ export class LookupSingleObjectComponent implements OnDestroy {
     }
 
     public ngOnDestroy() {
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     private init() {

@@ -87,7 +87,7 @@ describe("CreateModifyComponent for organisation", () => {
                 {provide: NgbModal, useValue: modalMock}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(CreateModifyComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

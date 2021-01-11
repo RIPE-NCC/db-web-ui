@@ -28,6 +28,7 @@ export class QueryComponent implements OnDestroy {
     public showScroller = false;
     public results: IWhoisObjectModel[];
     public whoisVersion: IVersion;
+    public active = 1;
 
     public qp: IQueryParameters;
     public showTemplatePanel: boolean;

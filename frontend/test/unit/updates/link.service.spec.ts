@@ -15,7 +15,7 @@ describe("LinkService", () => {
                 LinkService,
             ],
         });
-        linkService = TestBed.get(LinkService);
+        linkService = TestBed.inject(LinkService);
     });
 
     it("should be linkService defined", () => {

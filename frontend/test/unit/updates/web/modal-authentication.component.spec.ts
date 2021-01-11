@@ -46,7 +46,7 @@ describe("ModalAuthenticationComponent", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ModalAuthenticationComponent);
         modalAuthenticationComponent = componentFixture.componentInstance;
         modalAuthenticationComponent.resolve = {

@@ -45,7 +45,7 @@ describe("MaintainersEditorComponent", () => {
                 WebUpdatesCommonsService
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(MaintainersEditorComponent);
         component = fixture.componentInstance;
     });
