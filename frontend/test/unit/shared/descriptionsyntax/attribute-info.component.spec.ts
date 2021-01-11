@@ -17,7 +17,7 @@ describe("AttributeInfoComponent", () => {
                 CoreModule
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(AttributeInfoComponent);
         component = fixture.componentInstance;
     });

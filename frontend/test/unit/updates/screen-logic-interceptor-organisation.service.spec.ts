@@ -48,9 +48,9 @@ describe("ScreenLogicInterceptorService Organisation", () => {
                 }
             ],
         });
-        interceptor = TestBed.get(ScreenLogicInterceptorService);
-        whoisResourcesService = TestBed.get(WhoisResourcesService);
-        whoisMetaService = TestBed.get(WhoisMetaService);
+        interceptor = TestBed.inject(ScreenLogicInterceptorService);
+        whoisResourcesService = TestBed.inject(WhoisResourcesService);
+        whoisMetaService = TestBed.inject(WhoisMetaService);
     });
 
     it("should set default organisation before-edit organisation on Create operation", () => {

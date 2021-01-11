@@ -93,7 +93,7 @@ describe("The query pagina", () => {
         page.scrollIntoView(page.queryParamTabs.get(2));
         // click on Hierarchy flags tab
         page.queryParamTabs.get(2).click();
-        expect(page.byId("ngb-tab-2-panel").isDisplayed()).toBeTruthy();
+        expect(page.byName("hierarchyFlags").isDisplayed()).toBeTruthy();
         expect(page.byId("all").isSelected()).toBeTruthy();
         expect(page.byName("hierarchyD").isEnabled()).toBeFalsy();
     });
@@ -102,7 +102,7 @@ describe("The query pagina", () => {
         // click on Hierarchy flags tab
         page.scrollIntoView(page.queryParamTabs.get(2));
         page.queryParamTabs.get(2).click();
-        expect(page.byId("ngb-tab-2-panel").isDisplayed()).toBeTruthy();
+        expect(page.byName("hierarchyFlags").isDisplayed()).toBeTruthy();
         expect(page.byId("all").isSelected()).toBeTruthy();
         page.scrollIntoView(page.byId("all-less"));
         page.byId("all-less").click();
@@ -125,7 +125,7 @@ describe("The query pagina", () => {
         page.scrollIntoView(page.queryParamTabs.get(2));
         // click on Hierarchy flags tab
         page.queryParamTabs.get(2).click();
-        expect(page.byId("ngb-tab-2-panel").isDisplayed()).toBeTruthy();
+        expect(page.byName("hierarchyFlags").isDisplayed()).toBeTruthy();
         page.scrollIntoView(page.byId("one-more"));
         page.byId("one-more").click();
         expect(page.byId("one-more").isSelected()).toBeTruthy();

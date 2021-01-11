@@ -73,7 +73,7 @@ describe("TextCreateComponent", () => {
 
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(TextCreateComponent);
         textCreateComponent = componentFixture.componentInstance;
     });

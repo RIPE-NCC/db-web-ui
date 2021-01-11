@@ -24,7 +24,7 @@ describe("OrganisationHelperService", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        organisationHelperService = TestBed.get(OrganisationHelperService);
+        organisationHelperService = TestBed.inject(OrganisationHelperService);
     });
 
     it("should inform if no abuse-c is available", () => {

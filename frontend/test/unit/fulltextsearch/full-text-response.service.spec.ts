@@ -13,7 +13,7 @@ describe("FullTextResponseService", () => {
                 FullTextResponseService,
             ],
         });
-        fullTextResponseService = TestBed.get(FullTextResponseService);
+        fullTextResponseService = TestBed.inject(FullTextResponseService);
     });
 
     it("should be able to parse an empty Solr response", () => {

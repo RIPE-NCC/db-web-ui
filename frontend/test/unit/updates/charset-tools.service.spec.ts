@@ -15,7 +15,7 @@ describe("updates: CharsetToolsService", () => {
                 { provide: "$log",  useValue: {debug: () => {} } }, // <- just because of testing AbuseCTableComponent here
             ],
         });
-        subject = TestBed.get(CharsetToolsService);
+        subject = TestBed.inject(CharsetToolsService);
     });
 
     /*

@@ -60,7 +60,7 @@ describe("DisplayComponent", () => {
                 }
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(DisplayComponent);
         component = fixture.componentInstance;
         objectToDisplay = component.whoisResourcesService.validateWhoisResources({
@@ -273,7 +273,7 @@ describe("DisplayComponent with object containing slash", () => {
                 }
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(DisplayComponent);
         component = fixture.componentInstance;
         objectToDisplay = component.whoisResourcesService.validateWhoisResources({
@@ -405,7 +405,7 @@ describe("DisplayComponent for RIPE-NONAUTH aut-num object", () => {
                 }
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(DisplayComponent);
         component = fixture.componentInstance;
         objectToDisplay = component.whoisResourcesService.validateWhoisResources({

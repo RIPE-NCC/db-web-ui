@@ -13,7 +13,7 @@ describe("MessageStoreService", () => {
                 MessageStoreService,
             ],
         });
-        messageStore = TestBed.get(MessageStoreService);
+        messageStore = TestBed.inject(MessageStoreService);
     });
 
     it("should get message", () => {

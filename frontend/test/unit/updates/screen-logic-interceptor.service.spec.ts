@@ -41,9 +41,9 @@ describe("ScreenLogicInterceptorService", () => {
                 {provide: Router, useValue: {navigate:() => {}, events: of()}}
             ],
         });
-        interceptor = TestBed.get(ScreenLogicInterceptorService);
-        whoisResourcesService = TestBed.get(WhoisResourcesService);
-        whoisMetaService = TestBed.get(WhoisMetaService);
+        interceptor = TestBed.inject(ScreenLogicInterceptorService);
+        whoisResourcesService = TestBed.inject(WhoisResourcesService);
+        whoisMetaService = TestBed.inject(WhoisMetaService);
     });
 
     it("should disable org attribute from aut-num when status is ASSIGNED PI", () => {

@@ -19,8 +19,8 @@ describe("AssociatedObjectsService", () => {
                 AssociatedObjectsService
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
-        associatedObjectsService = TestBed.get(AssociatedObjectsService);
+        httpMock = TestBed.inject(HttpTestingController);
+        associatedObjectsService = TestBed.inject(AssociatedObjectsService);
     });
 
     describe("for route", () => {

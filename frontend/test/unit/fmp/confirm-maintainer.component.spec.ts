@@ -41,7 +41,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should set maintainer and email on valid hash", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "validhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -68,7 +68,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should throw an error if hash is not found", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             get: (hash: string) => (""),
             has:(hash: string) => (false)
         };
@@ -78,7 +78,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should redirect to legacy on invalid hash", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "invalidhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -95,7 +95,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should redirect to legacy on expired hash", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "expiredhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -114,7 +114,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should parse correctly a date in the future", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "parsefuturedatestringhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -140,7 +140,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should inform user mntner already associated with current user", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "validhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -167,7 +167,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should return message if associate is cancelled", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "validhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -177,7 +177,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should return message that linking account with mntner has succeeded", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "validhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -207,7 +207,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should return a message that linking account with mntner has failed", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "validhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)
@@ -233,7 +233,7 @@ describe("ConfirmMaintainerComponent", () => {
     });
 
     it("should return a message that linking account with mntner has failed already contains SSO", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParams = {
+        TestBed.inject(ActivatedRoute).snapshot.queryParams = {
             hash: "validhash",
             get: (hash: string) => (""),
             has:(hash: string) => (true)

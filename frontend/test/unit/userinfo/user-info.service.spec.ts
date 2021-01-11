@@ -18,9 +18,9 @@ describe("UserInfoService", () => {
                 CookieService,
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        userInfoService = TestBed.get(UserInfoService);
-        cookies = TestBed.get(CookieService);
+        httpMock = TestBed.inject(HttpTestingController);
+        userInfoService = TestBed.inject(UserInfoService);
+        cookies = TestBed.inject(CookieService);
         localStorage.clear();
     });
 

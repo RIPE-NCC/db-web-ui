@@ -54,10 +54,10 @@ describe("displayPairComponent", () => {
                 }
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(DisplayMntnerPairComponent);
         component = fixture.componentInstance;
-        whoisResourcesService = TestBed.get(WhoisResourcesService);
+        whoisResourcesService = TestBed.inject(WhoisResourcesService);
         personToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [

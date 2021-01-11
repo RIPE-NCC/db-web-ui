@@ -41,7 +41,7 @@ describe("ModalCreateRoleForAbuseCComponent", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(ModalCreateRoleForAbuseCComponent);
         modalCreateRoleForAbuseCComponent = componentFixture.componentInstance;
         modalCreateRoleForAbuseCComponent.inputData = {

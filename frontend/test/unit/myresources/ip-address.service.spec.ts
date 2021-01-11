@@ -17,7 +17,7 @@ describe("IpAddressService", () => {
                 IpAddressService
             ],
     });
-        ipAddressService = TestBed.get(IpAddressService);
+        ipAddressService = TestBed.inject(IpAddressService);
     });
 
     it("IPv4 Start Address", () => {

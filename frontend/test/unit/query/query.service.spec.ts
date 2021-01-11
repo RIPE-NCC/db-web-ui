@@ -1,7 +1,7 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {QueryService} from "../../../src/app/query/query.service";
-import {IQueryParameters, QueryParametersService} from "../../../src/app/query/query-parameters.service";
+import {IQueryParameters, ITemplateTerm, QueryParametersService} from "../../../src/app/query/query-parameters.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 
 describe("QueryService", () => {
@@ -20,9 +20,18 @@ describe("QueryService", () => {
                 {provide: "$log", useValue: {info: () => {}}}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        queryService = TestBed.get(QueryService);
-        qp = TestBed.get(QueryParametersService);
+        httpMock = TestBed.inject(HttpTestingController);
+        queryService = TestBed.inject(QueryService);
+        qp = {
+            queryText: "",
+            types: { objectName: true },
+            inverse: { attrName: true },
+            hierarchy: "string",
+            reverseDomain: false,
+            doNotRetrieveRelatedObjects: false,
+            showFullObjectDetails: false,
+            source: "TEST"
+        }
     });
 
     afterEach(() => {
@@ -54,17 +63,17 @@ describe("QueryService", () => {
 
         qp.queryText = "   yorkshire   ";
 
-        expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&bflag=false");
-        expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire");
+        expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&source=TEST&bflag=false");
+        expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&source=TEST");
 
         qp.hierarchy = "Z";
 
-        expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&bflag=false");
-        expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire");
-
-        qp.source = "TEST";
         expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&source=TEST&bflag=false");
         expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&source=TEST");
+
+        qp.source = "RIPE";
+        expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&source=RIPE&bflag=false");
+        expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&source=RIPE");
 
         qp.source = "GRS";
         expect(queryService.buildPermalink(qp)).toEqual("searchtext=yorkshire&rflag=false&source=GRS&bflag=false");

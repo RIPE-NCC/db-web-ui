@@ -14,8 +14,8 @@ describe("EmailLinkService", () => {
                 EmailLinkService,
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        emailLinkService = TestBed.get(EmailLinkService);
+        httpMock = TestBed.inject(HttpTestingController);
+        emailLinkService = TestBed.inject(EmailLinkService);
     });
 
     afterEach(() => {

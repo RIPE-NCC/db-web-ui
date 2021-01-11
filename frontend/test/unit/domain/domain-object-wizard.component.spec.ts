@@ -25,7 +25,12 @@ describe("DomainObjectWizardComponent", () => {
             providers: [
                 JsUtilService,
                 { provide: Location, useValue: {}},
-                { provide: ActivatedRoute, useValue: {snapshot: {paramMap: {objectType: "domain", get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param])}}}},
+                { provide: ActivatedRoute, useValue: {snapshot: {
+                    paramMap: {objectType: "domain", get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param])},
+                    queryParamMap: {
+                        objectType: "domain",
+                        get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
+                    }}}},
                 { provide: Router, useValue: {navigate:() => {}}},
                 { provide: WINDOW, useValue: {}},
                 PropertiesService
@@ -41,10 +46,6 @@ describe("DomainObjectWizardComponent", () => {
     });
 
     it("should create the right attributes", () => {
-        TestBed.get(ActivatedRoute).snapshot.queryParamMap = {
-            objectType: "domain",
-            get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
-        };
         component.ngOnInit();
         expect(component.attributes.length).toEqual(9);
         const attrName = [

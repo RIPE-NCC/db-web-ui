@@ -14,8 +14,8 @@ describe("PrefixService", () => {
                 PrefixService
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        prefixService = TestBed.get(PrefixService);
+        httpMock = TestBed.inject(HttpTestingController);
+        prefixService = TestBed.inject(PrefixService);
     });
 
     afterEach(() => {

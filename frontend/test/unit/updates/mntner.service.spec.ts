@@ -38,7 +38,7 @@ describe("MntnerService", () => {
                 { provide: Router, useValue: {navigate:() => {}, navigateByUrl: () => {}, events: of()}}
             ],
         });
-        mntnerService = TestBed.get(MntnerService);
+        mntnerService = TestBed.inject(MntnerService);
     });
 
     it("should be loaded", () => {

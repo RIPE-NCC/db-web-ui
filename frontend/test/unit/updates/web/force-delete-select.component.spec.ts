@@ -29,7 +29,7 @@ describe("ForceDeleteSelectComponent", () => {
                 {provide: Router, useValue: routerMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(ForceDeleteSelectComponent);
         component = fixture.componentInstance;
     });

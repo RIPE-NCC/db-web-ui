@@ -6,7 +6,7 @@ import {AppModule} from "../../../src/app/app.module";
 describe("ResourceStatusService", () => {
 
     let resourcesDataService: ResourceStatusService;
-    
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -17,7 +17,7 @@ describe("ResourceStatusService", () => {
                 ResourceStatusService
             ],
         });
-        resourcesDataService = TestBed.get(ResourceStatusService);
+        resourcesDataService = TestBed.inject(ResourceStatusService);
     });
 
     it("should be created", () => {

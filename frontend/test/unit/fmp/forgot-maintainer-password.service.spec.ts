@@ -14,8 +14,8 @@ describe("ForgotMaintainerPasswordService", () => {
                 ForgotMaintainerPasswordService
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        forgotMaintainerPasswordService = TestBed.get(ForgotMaintainerPasswordService);
+        httpMock = TestBed.inject(HttpTestingController);
+        forgotMaintainerPasswordService = TestBed.inject(ForgotMaintainerPasswordService);
     });
 
     afterEach(() => {

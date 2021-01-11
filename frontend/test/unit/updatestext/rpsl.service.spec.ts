@@ -11,7 +11,7 @@ describe("RpslService", () => {
             imports: [HttpClientTestingModule],
             providers: [RpslService],
         });
-        rpslService = TestBed.get(RpslService);
+        rpslService = TestBed.inject(RpslService);
     });
 
 

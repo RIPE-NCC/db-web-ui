@@ -30,11 +30,9 @@ export class SyncupdatesComponent {
             .subscribe((response: any) => {
                         this.updateResponse = response;
                         document.querySelector(`#anchorScroll`).scrollIntoView();
-                    console.log("reject", response);
                     },
                     (error: any) => {
                         this.errorMessages = error;
-                        console.log("reject", error);
                     },
                     () => this.isUpdating = false
             );

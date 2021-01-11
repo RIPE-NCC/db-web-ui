@@ -32,7 +32,7 @@ describe("MoreSpecificsComponent", () => {
                 {provide: Location, useValue: {path: () => "/myresources/detail"}},
             ]
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(MoreSpecificsComponent);
         component = fixture.componentInstance;
     });

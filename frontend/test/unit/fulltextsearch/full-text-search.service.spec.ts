@@ -16,8 +16,8 @@ describe("FullTextSearchService", () => {
                 { provide: "$log",  useValue: {error: () => {} }},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        fullTextSearchService = TestBed.get(FullTextSearchService);
+        httpMock = TestBed.inject(HttpTestingController);
+        fullTextSearchService = TestBed.inject(FullTextSearchService);
     });
 
     afterEach(() => {

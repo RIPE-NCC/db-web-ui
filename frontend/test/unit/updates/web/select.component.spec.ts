@@ -171,7 +171,7 @@ describe("SelectController", () => {
 
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(SelectComponent);
         component = componentFixture.componentInstance;
     });

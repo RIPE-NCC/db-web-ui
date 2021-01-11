@@ -63,8 +63,8 @@ describe("ResourcesDataService", () => {
                 { provide: "$log", useValue: {info: () => {}}}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        resourcesDataService = TestBed.get(ResourcesDataService);
+        httpMock = TestBed.inject(HttpTestingController);
+        resourcesDataService = TestBed.inject(ResourcesDataService);
     });
 
     afterEach(() => {

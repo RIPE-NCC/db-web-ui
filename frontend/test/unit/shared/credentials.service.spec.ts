@@ -12,7 +12,7 @@ describe("CredentialsService", () => {
                 CredentialsService,
             ],
         });
-        credentialsService = TestBed.get(CredentialsService);
+        credentialsService = TestBed.inject(CredentialsService);
     });
 
     it("should initial state", () => {

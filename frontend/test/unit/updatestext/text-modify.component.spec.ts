@@ -116,7 +116,7 @@ describe("TextModifyComponent", () => {
                 }}
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
+        httpMock = TestBed.inject(HttpTestingController);
         componentFixture = TestBed.createComponent(TextModifyComponent);
         textModifyComponent = componentFixture.componentInstance;
     });

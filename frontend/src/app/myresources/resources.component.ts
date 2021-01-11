@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {NgbTabChangeEvent} from "@ng-bootstrap/ng-bootstrap";
+import {NgbNavChangeEvent} from "@ng-bootstrap/ng-bootstrap";
 import {
     IAsnResourceDetails,
     IIPv4ResourceDetails,
@@ -69,7 +69,7 @@ export class ResourcesComponent implements OnDestroy {
         this.showAlerts = !this.isShowingSponsored && this.lastTab === "inetnum";
     }
 
-    public tabClicked($event: NgbTabChangeEvent) {
+    public tabClicked($event: NgbNavChangeEvent) {
         if ($event.activeId !== $event.nextId) {
             this.lastTab = $event.nextId;
             const params = {type: $event.nextId, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser };

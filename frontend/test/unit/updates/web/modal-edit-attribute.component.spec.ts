@@ -28,8 +28,8 @@ describe("ModalEditAttributeController", () => {
                 {provide: WINDOW, useValue: windowMock},
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        propertiesService = TestBed.get(PropertiesService);
+        httpMock = TestBed.inject(HttpTestingController);
+        propertiesService = TestBed.inject(PropertiesService);
         componentFixture = TestBed.createComponent(ModalEditAttributeComponent);
         modalEditAttributeComponent = componentFixture.componentInstance;
         modalEditAttributeComponent.attr = {

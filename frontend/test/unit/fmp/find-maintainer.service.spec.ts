@@ -14,8 +14,8 @@ describe("FindMaintainerService", () => {
                 FindMaintainerService,
             ],
         });
-        httpMock = TestBed.get(HttpTestingController);
-        findMaintainerService = TestBed.get(FindMaintainerService);
+        httpMock = TestBed.inject(HttpTestingController);
+        findMaintainerService = TestBed.inject(FindMaintainerService);
     });
 
     afterEach(() => {
