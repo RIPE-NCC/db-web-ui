@@ -1,11 +1,10 @@
 <header class="header-gradient container-fluid">
   <div id="site-header" class="container">
     <div id="portal-header">
-      <div *ngIf="!isIEOrEdge" id="top-right">
+      <div id="top-right">
         <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
         <user-login class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
       </div>
-      <user-info *ngIf="isIEOrEdge" id="login"></user-info>
       <div class="header-item">
         <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
           <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png"/></a>
@@ -777,6 +776,7 @@
 <main class="container-fluid">
   <div class="container box-shadow clearfix" id="portal-columns">
     <banner *ngIf="properties.BANNER" [title]="properties.ENV" [textMessage]="properties.BANNER"></banner>
+    <ie-banner *ngIf="isIE"></ie-banner>
     <div id="portal-breadcrumbs">
       <span id="breadcrumbs-you-are-here">You are here: </span>
       <span id="breadcrumbs-home">
