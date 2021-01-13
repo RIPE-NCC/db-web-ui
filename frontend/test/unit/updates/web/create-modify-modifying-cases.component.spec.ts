@@ -3,7 +3,7 @@ import {Location} from "@angular/common";
 import {ActivatedRoute, convertToParamMap, Router} from "@angular/router";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {of} from "rxjs";
+import {of, throwError} from "rxjs";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
@@ -530,11 +530,11 @@ describe("CreateModifyComponent with modifying test cases", () => {
                 });
             httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT"})
                 .flush([{key: "TEST3-MNT", type: "mntner", auth: ["MD5-PW"]}]);
+            modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
             await fixture.whenStable();
         });
 
         it("should ask for password before modify object with non-sso maintainer with password.", () => {
-            modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
             expect(modalMock.open).toHaveBeenCalled();
         });
 

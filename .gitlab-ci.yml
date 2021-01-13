@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:54f32426
+image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:568ab196
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
@@ -45,21 +45,19 @@ build:
 e2e:
     stage: test
     script:
+        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
         # use pinned version of Chrome:
         - cd frontend && npm run e2e-chrome
-    when: manual
 
 e2e-firefox:
     stage: test
     script:
+      - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
       - export DISPLAY=:20
       - Xvfb :20 -screen 0 1920x1080x16 &
       - cd frontend && npm run e2e-firefox
-    # TODO: some tests fail on firefox
-    allow_failure: true
-    when: manual
 
 qa:
   stage: test

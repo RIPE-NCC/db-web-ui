@@ -8,7 +8,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
-import {of} from "rxjs";
+import {of, throwError} from "rxjs";
 import {CreateModifyComponent} from "../../../../src/app/updatesweb/create-modify.component";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../../src/app/core/core.module";
@@ -275,7 +275,7 @@ describe("CreateModifyComponent", () => {
         });
 
         it("should add the selected maintainers to the object before post it.", async () => {
-            modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
+            modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
             const DUMMY_RESPONSE = {
                 objects: {
                     object: [
@@ -307,7 +307,7 @@ describe("CreateModifyComponent", () => {
         });
 
         it("should ask for password after add non-sso maintainer with password.", () => {
-            modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
+            modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
             // simulate manual removal of the last and only mntner
             component.maintainers.object = [];
             component.onMntnerRemoved({"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"});
@@ -320,7 +320,7 @@ describe("CreateModifyComponent", () => {
         });
 
         it("should ask for password after upon submit.", () => {
-            modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
+            modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
 
             // simulate manual addition of a new mntner with only md5
             component.maintainers.object = [{"mine":false,"type":"mntner","auth":["MD5"],"key":"TEST-MNT-1"}];
