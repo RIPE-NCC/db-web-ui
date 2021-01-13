@@ -34,6 +34,10 @@ describe("TextCreateComponent", () => {
 
     let textCreateComponent: TextCreateComponent;
 
+    afterAll( () => {
+        TestBed.resetTestingModule();
+    })
+
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});

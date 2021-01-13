@@ -10,6 +10,11 @@ import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
 import {PropertiesService} from "../../../../src/app/properties.service";
 
 describe("SelectController", () => {
+
+    afterAll( () => {
+        TestBed.resetTestingModule();
+    })
+
     const OBJECT_TYPE = "as-set";
     const SOURCE = "RIPE";
 

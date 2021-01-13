@@ -81,6 +81,10 @@ describe("TextModifyComponent", () => {
         }
     };
 
+    afterAll( () => {
+        TestBed.resetTestingModule();
+    })
+
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});

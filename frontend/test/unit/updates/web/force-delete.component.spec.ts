@@ -57,6 +57,10 @@ describe("ForceDeleteController", () => {
     let credentialsServiceMock: any;
     let whoisResourcesService: WhoisResourcesService;
 
+    afterAll( () => {
+        TestBed.resetTestingModule();
+    })
+
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
