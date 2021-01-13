@@ -533,7 +533,10 @@ export class WhoisMetaService {
         const attrsMeta = this.getMetaAttributesOnObjectType(objectTypeName, false);
 
         const enrichedAttrs: IAttributeModel[] = [];
-        _.each(attrs, (attr: IAttributeModel) => {
+        let i = 0;
+        attrs.forEach(attr => {
+            attr.$$id = "attr-" + i;
+            i++;
             const attrMeta = _.find(attrsMeta, (am: IAttributeModel) => {
                 return am.name === attr.name;
             });

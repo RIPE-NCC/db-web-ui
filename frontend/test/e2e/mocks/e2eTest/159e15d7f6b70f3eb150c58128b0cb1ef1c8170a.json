@@ -1,0 +1,14 @@
+{
+  "requestUrl": "/db-web-ui/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=VOXILITY-MNT",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": [
+    {
+      "key": "VOXILITY-MNT",
+      "type": "mntner",
+      "auth": [
+        "MD5-PW"
+      ]
+    }
+  ]
+}
