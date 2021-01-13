@@ -503,7 +503,6 @@ export class CreateModifyComponent {
 
     public displayAddAttributeDialog(attr: any) {
         let originalAddableAttributes = this.whoisResourcesService.getAddableAttributes(this.attributes, this.objectType, this.attributes);
-        originalAddableAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, originalAddableAttributes);
 
         const addableAttributes = _.filter(
             this.screenLogicInterceptorService.beforeAddAttribute(this.operation, this.source, this.objectType, this.attributes, originalAddableAttributes),
