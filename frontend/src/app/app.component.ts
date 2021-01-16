@@ -14,6 +14,7 @@ declare var whois_search: any;
 export class AppComponent {
 
   public isIE: boolean;
+  public isIEOrEdge: boolean;
 
   constructor(public properties: PropertiesService,
               private router: Router,
@@ -23,6 +24,8 @@ export class AppComponent {
 
   public ngOnInit() {
     this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent)
+    // TODO isIEOrEdge REMOVE AFTER 1st March 2021
+    this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     init_mega_menu();
     init_popover();
     whois_search();

@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
 import {UserInfoService} from "./user-info.service";
+import {UserInfoComponent} from "./user-info.component";
 
 @NgModule({
     imports: [
@@ -12,12 +13,16 @@ import {UserInfoService} from "./user-info.service";
         SharedModule,
         WhoisObjectModule
     ],
-    declarations: [],
+    declarations: [UserInfoComponent],
     providers: [
         UserInfoService
     ],
-    entryComponents: [],
-    exports: []
+    entryComponents: [
+        UserInfoComponent
+    ],
+    exports: [
+        UserInfoComponent
+    ]
 })
 export class UserInfoModule {
 }
