@@ -57,7 +57,7 @@ export class WebUpdatesCommonsService {
             source: authParams.object.source
         };
         modalRef.result.then(result => {
-            this.alertService.clearErrors();
+            this.alertService.clearAlertMessages();
             const selectedMntner = result.$value.selectedItem;
             console.debug("selected mntner:" + selectedMntner);
             const associationResp = result.$value.response;

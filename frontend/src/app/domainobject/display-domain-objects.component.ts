@@ -31,7 +31,7 @@ export class DisplayDomainObjectsComponent {
         const whoisResources = this.whoisResourcesService.validateWhoisResources(result.whoisResources);
         this.objects = whoisResources.objects.object;
 
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         this.alertsComponent.addErrors(whoisResources);
     }
 

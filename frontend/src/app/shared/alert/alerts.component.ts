@@ -10,8 +10,8 @@ export class AlertsComponent {
 
     constructor(public alertsService: AlertsService) {}
 
-    public clearErrors() {
-        this.alertsService.clearErrors();
+    public clearAlertMessages() {
+        this.alertsService.clearAlertMessages();
     }
 
     public getErrors() {

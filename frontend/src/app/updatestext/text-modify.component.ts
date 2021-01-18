@@ -47,7 +47,7 @@ export class TextModifyComponent {
     }
 
     public ngOnInit() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;

@@ -178,7 +178,7 @@ export class TextCommonsService {
         };
         return modalRef.result
             .then(result => {
-                this.alertService.clearErrors();
+                this.alertService.clearAlertMessages();
                 const authenticatedMntner = result.$value.selectedItem;
                 if (this._isMine(authenticatedMntner)) {
                     // has been successfully associated in authentication modal

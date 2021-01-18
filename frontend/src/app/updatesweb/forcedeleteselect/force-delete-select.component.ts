@@ -20,7 +20,7 @@ export class ForceDeleteSelectComponent {
     }
 
     public ngOnInit() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         this.selected = {
             name: undefined,
             objectType: this.objectTypes[0],

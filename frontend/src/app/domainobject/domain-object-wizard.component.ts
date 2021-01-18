@@ -196,7 +196,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.alreadySubmited = true;
 
         // close the alert message
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
 
         const data = {
             attributes: flattenedAttributes,
@@ -262,7 +262,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private showCreatedDomains(resp: any) {
         this.restCallInProgress = false;
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         const prefix = _.find(this.attributes, (attr: any) => {
             return attr.name === "prefix";
         });

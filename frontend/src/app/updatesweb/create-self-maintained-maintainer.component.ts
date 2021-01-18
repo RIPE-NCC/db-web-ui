@@ -40,7 +40,7 @@ export class CreateSelfMaintainedMaintainerComponent {
     }
 
     public ngOnInit() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
 
         this.adminC = {
             alternatives: [],

@@ -29,7 +29,7 @@ export class FindMaintainerComponent {
     }
 
     public selectMaintainer(maintainerKey: string) {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         console.info("Search for mntner " + maintainerKey);
         this.findMaintainerService.search(maintainerKey)
             .subscribe((result: IFindMaintainer) => {

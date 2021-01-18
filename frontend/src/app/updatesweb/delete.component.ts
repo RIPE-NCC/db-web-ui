@@ -32,7 +32,7 @@ export class DeleteComponent {
     public ngOnInit() {
         this.modalInProgress = true;
 
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -51,7 +51,7 @@ export class DeleteComponent {
 
     public ngOnDestroy() {
       if (!this.skipClearError) {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
       }
     }
 

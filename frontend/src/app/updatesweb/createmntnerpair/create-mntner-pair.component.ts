@@ -101,7 +101,7 @@ export class CreateMntnerPairComponent {
             this.errorReporterService.log("Create", "mntner", this.alertsComponent.getErrors(), this.mntnerAttributes);
 
         } else {
-            this.alertsComponent.clearErrors();
+            this.alertsComponent.clearAlertMessages();
 
             this.submitInProgress = true;
             this.isObjectTypeRole() ? this.createRoleMntnerPair() : this.createPersonMntnerPair();
