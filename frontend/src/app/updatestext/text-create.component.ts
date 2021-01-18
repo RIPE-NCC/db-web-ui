@@ -57,7 +57,7 @@ export class TextCreateComponent {
     public ngOnInit() {
         this.restCallInProgress = false;
 
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -89,7 +89,7 @@ export class TextCreateComponent {
     }
 
     public submit() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
 
         console.debug("rpsl:" + this.object.rpsl);
 

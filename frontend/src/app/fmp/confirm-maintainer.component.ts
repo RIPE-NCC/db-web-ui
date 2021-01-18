@@ -27,7 +27,7 @@ export class ConfirmMaintainerComponent {
 
     public ngOnInit() {
 
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         console.info("ConfirmMaintainer starts");
         const queryParams = this.activatedRoute.snapshot.queryParams;
         if (!queryParams.hash) {
@@ -88,7 +88,7 @@ export class ConfirmMaintainerComponent {
     }
 
     public cancelAssociate() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         this.alertsComponent.addGlobalWarning(
         `<p>No changes were made to the <span class="mntner">MNTNER</span> object ${this.key}.</p>` +
                 `<p>If you wish to add a different RIPE NCC Access account to your <strong>MNTNER</strong> object:` +

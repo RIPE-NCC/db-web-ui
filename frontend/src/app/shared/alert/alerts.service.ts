@@ -17,7 +17,7 @@ export class AlertsService {
         this.hasInfos();
     }
 
-    public clearErrors() {
+    public clearAlertMessages() {
         this.errors = [];
         this.warnings = [];
         this.successes = [];
@@ -63,7 +63,7 @@ export class AlertsService {
     }
 
     public setGlobalError(errorMsg: string) {
-        this.clearErrors();
+        this.clearAlertMessages();
         this.errors.push({plainText: errorMsg});
     }
 
@@ -76,7 +76,7 @@ export class AlertsService {
     }
 
     public setGlobalInfo(infoMsg: string) {
-        this.clearErrors();
+        this.clearAlertMessages();
         this.infos.push({plainText: infoMsg});
     }
 

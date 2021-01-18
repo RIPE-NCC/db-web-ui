@@ -161,7 +161,7 @@ export class CreateModifyComponent {
     }
 
     public ngOnDestroy() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
     }
     /*
      * Functions / callbacks below...
@@ -621,7 +621,7 @@ export class CreateModifyComponent {
             this.errorReporterService.log(this.operation, this.objectType, this.alertsComponent.getErrors(), this.attributes);
         } else {
             this.stripNulls();
-            this.alertsComponent.clearErrors();
+            this.alertsComponent.clearAlertMessages();
 
             if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                 this.performAuthentication();

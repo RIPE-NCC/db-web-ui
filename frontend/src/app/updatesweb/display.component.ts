@@ -97,7 +97,7 @@ export class DisplayComponent {
     }
 
     public ngOnDestroy() {
-      this.alertsComponent.clearErrors();
+      this.alertsComponent.clearAlertMessages();
     }
 
     /*

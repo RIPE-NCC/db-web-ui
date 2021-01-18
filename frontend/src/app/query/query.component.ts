@@ -60,14 +60,14 @@ export class QueryComponent implements OnDestroy {
         };
         this.subscription = this.activatedRoute.queryParams.subscribe((() => {
             if (this.alertsComponent) {
-                this.alertsComponent.clearErrors();
+                this.alertsComponent.clearAlertMessages();
             }
             this.init();
         }));
     }
 
     public ngOnDestroy() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
@@ -135,7 +135,7 @@ export class QueryComponent implements OnDestroy {
         const cleanQp = _.cloneDeep(this.qp);
         // Reset on-screen widgets
         if (this.alertsComponent) {
-            this.alertsComponent.clearErrors();
+            this.alertsComponent.clearAlertMessages();
         }
 
         const issues = this.queryParametersService.validate(cleanQp);

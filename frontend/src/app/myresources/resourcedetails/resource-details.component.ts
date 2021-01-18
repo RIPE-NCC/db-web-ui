@@ -92,12 +92,13 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     public ngOnDestroy() {
         this.subscriptions.forEach(s => s.unsubscribe());
+        this.alertsComponent.clearAlertMessages();
     }
 
     public init() {
         this.flags = [];
         if (this.alertsComponent) {
-            this.alertsComponent.clearErrors();
+            this.alertsComponent.clearAlertMessages();
         }
         this.show = {
             editor: false,
@@ -233,7 +234,7 @@ export class ResourceDetailsComponent implements OnDestroy {
     }
 
     private resetMessages() {
-        this.alertsComponent.clearErrors();
+        this.alertsComponent.clearAlertMessages();
         // explicitly clear errors on fields before submitting the form, should probably be done elsewhere
         this.whoisObject.attributes.attribute.forEach((a) => {
             a.$$error = "";
