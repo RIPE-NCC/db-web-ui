@@ -5,6 +5,7 @@ import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.rpsl.AttributeType;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,10 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     }
 
     public UserInfoResponse getUserInfo(String crowdToken) {
+        if (StringUtils.isEmpty(crowdToken)) {
+            throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        }
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Cookie",CROWD_TOKEN_KEY + "=" + crowdToken);
         httpHeaders.set(API_KEY_HEADER, apiKey);
@@ -131,6 +136,10 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     }
 
     public boolean getActiveToken(String crowdToken) {
+        if (StringUtils.isEmpty(crowdToken)) {
+            throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        }
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Cookie",CROWD_TOKEN_KEY + "=" + crowdToken);
         httpHeaders.add(API_KEY_HEADER, apiKey);
