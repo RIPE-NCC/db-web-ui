@@ -1,13 +1,7 @@
-<header class="header-gradient container-fluid">
+<header *ngIf="isIEOrEdge" class="header-gradient container-fluid">
   <div id="site-header" class="container">
     <div id="portal-header">
-      <!--  TODO *ngIf REMOVE AFTER 1st March 2021 but leave div   -->
-      <div *ngIf="!isIEOrEdge" id="top-right">
-        <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
-        <user-login class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
-      </div>
-      <!--  TODO REMOVE user-info AFTER 1st March 2021   -->
-      <user-info *ngIf="isIEOrEdge" id="login"></user-info>
+      <user-info id="login"></user-info>
       <div class="header-item">
         <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
           <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png"/></a>
@@ -55,7 +49,7 @@
     </div>
   </div>
 </header>
-<nav class="container-fluid">
+<nav *ngIf="isIEOrEdge" class="container-fluid">
   <div id="nav" class="container clearfix">
     <ul class="nav navbar-nav">
       <li class="manage-ips-and-asns">
@@ -776,55 +770,109 @@
     </div>
   </div>
 </nav>
-<main class="container-fluid">
-  <div class="container box-shadow clearfix" id="portal-columns">
-    <banner *ngIf="properties.BANNER" [title]="properties.ENV" [textMessage]="properties.BANNER"></banner>
-    <ie-banner *ngIf="isIE"></ie-banner>
-    <div id="portal-breadcrumbs">
-      <span id="breadcrumbs-you-are-here">You are here: </span>
-      <span id="breadcrumbs-home">
-                <a href="https://www.ripe.net">Home</a>
-                <span class="breadcrumbSeparator"> &gt; </span>
-                </span>
-      <span id="breadcrumbs-1" dir="ltr">
-                <a href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs</a>
-                <span class="breadcrumbSeparator"> &gt; </span>
-                </span>
-      <span id="breadcrumbs-2" dir="ltr">
-                <a href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
-                <span class="breadcrumbSeparator"> &gt; </span>
-                </span>
-      <span id="breadcrumbs-3" dir="ltr">
-                <span id="pathbar_here">Webupdates</span>
-                </span>
-      <org-drop-down></org-drop-down>
-    </div>
-
-    <div id="global_statusmessage">
-      <div>
+<ripe-header (ripe-header-menu-toggle)="open($event)" [open]="isOpenMenu">
+    <img src="assets/images/RIPE_Database_Logo.svg" slot="logo-app"/>
+    <svg slot="logo-app"></svg>
+  <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
+               [current]="'database'"></app-switcher>
+  <user-login class="web-component" [accessurl]="properties.LOGIN_URL"
+               [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+</ripe-header>
+<main id="app-grid">
+    <swe-menu [open]="isOpenMenu"></swe-menu>
+    <section id="app-banners-container">
+      <app-banner *ngIf="properties.BANNER" id="notification-1" level="info"
+          text="{{properties.ENV.toUpperCase()}}  {{properties.BANNER}}"></app-banner>
+    </section>
+    <section id="app-workspace">
+      <!--    <div class="container box-shadow clearfix" id="portal-columns">-->
+      <banner *ngIf="isIEOrEdge && properties.BANNER" [title]="properties.ENV" [textMessage]="properties.BANNER"></banner>
+      <ie-banner *ngIf="isIE"></ie-banner>
+      <!--      REMOVE AFTER 1st March 2020 this div-->
+      <div *ngIf="isIEOrEdge" id="portal-breadcrumbs">
+          <span id="breadcrumbs-you-are-here">You are here: </span>
+          <span id="breadcrumbs-home">
+            <a href="https://www.ripe.net">Home</a>
+            <span class="breadcrumbSeparator"> &gt; </span>
+          </span>
+          <span id="breadcrumbs-1" dir="ltr">
+            <a href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs</a>
+            <span class="breadcrumbSeparator"> &gt; </span>
+          </span>
+          <span id="breadcrumbs-2" dir="ltr">
+            <a href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
+            <span class="breadcrumbSeparator"> &gt; </span>
+          </span>
+          <span id="breadcrumbs-3" dir="ltr">
+            <span id="pathbar_here">Webupdates</span>
+          </span>
+          <org-drop-down></org-drop-down>
       </div>
-    </div>
-    <div id="portal-column-one" class="col-md-3">
-      <!-- Insert your navigation here NAVIGATIONMARKER -->
-      <left-hand-menu></left-hand-menu>
-    </div>
-    <div id="portal-column-content" class="sl col-md-9">
-      <div id="viewlet-above-content"></div>
-      <div id="content">
-        <div>
-          <div id="external">
-            <router-outlet></router-outlet>
-            <div class="ng-view"></div>
-            <ngx-loading-bar></ngx-loading-bar>
+      <div id="org-drop-down">
+        <org-drop-down></org-drop-down>
+      </div>
+      <div id="global_statusmessage">
+          <div>
           </div>
-          <web-app-version></web-app-version>
+      </div>
+      <!-- REMOVE AFTER 1st March 2020 this div -->
+      <div *ngIf="isIEOrEdge" id="portal-column-one" class="col-md-3">
+          <!-- Insert your navigation here NAVIGATIONMARKER -->
+          <left-hand-menu></left-hand-menu>
+      </div>
+      <div *ngIf="isIEOrEdge" id="portal-column-content" class="sl col-md-9">
+        <div id="viewlet-above-content"></div>
+        <div id="content">
+          <div>
+            <div id="external">
+              <router-outlet></router-outlet>
+              <div class="ng-view"></div>
+              <ngx-loading-bar></ngx-loading-bar>
+            </div>
+            <web-app-version></web-app-version>
+          </div>
+        </div>
+        <div id="viewlet-below-content">
         </div>
       </div>
-      <div id="viewlet-below-content">
+      <div *ngIf="!isIEOrEdge">
+        <router-outlet></router-outlet>
+        <ngx-loading-bar></ngx-loading-bar>
+        <web-app-version></web-app-version>
       </div>
+    </section>
+</main>
+<!-- REMOVE AFTER 1st March 2020 -->
+<footer *ngIf="isIEOrEdge" class="container-fluid">
+  <a href="#" id="scrollToTop"></a>
+  <div class="container box-shadow">
+    <div class="col-lg-2">
+                <span id="social-icons" title="RIPE NCC - Social Media">
+                    <a href="https://www.ripe.net/support/contact/social-networking">
+                        <i class="fa fa-sl-f"></i>
+                        <i class="fa fa-sl-t"></i>
+                        <i class="fa fa-sl-l"></i>
+                        <i class="fa fa-sl-y"></i>
+                        <i class="fa fa-sl-g"></i>
+                    </a>
+                </span>
+    </div>
+    <div class="col-lg-10" id="footer-links">
+      <a href="/">Home</a>
+      <a href="https://www.ripe.net/sitemap">Sitemap</a>
+      <a href="https://www.ripe.net/support/contact">Contact Us</a>
+      <a href="https://www.ripe.net/support/service-announcements">Service Announcements</a>
+      <a href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement">Privacy Statement</a>
+      <a href="https://www.ripe.net/about-us/legal">Legal</a>
+      <a href="https://www.ripe.net/about-us/legal/cookies">Cookies</a>
+      <a href="https://www.ripe.net/about-us/legal/copyright-statement">Copyright Statement</a>
+      <a href="https://www.ripe.net/about-us/legal/terms-of-service">Terms of Service</a>
     </div>
   </div>
-</main>
-
-
-
+  <div id="cookiepopup">
+    <div id="cookie-close"><i class="fa fa-close"></i></div>
+    <div class="cookie-content">
+      <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
+    </div>
+  </div>
+</footer>

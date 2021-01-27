@@ -15,6 +15,7 @@ export class AppComponent {
 
   public isIE: boolean;
   public isIEOrEdge: boolean;
+  public isOpenMenu: boolean = true;
 
   constructor(public properties: PropertiesService,
               private router: Router,
@@ -24,7 +25,7 @@ export class AppComponent {
 
   public ngOnInit() {
     this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent)
-    // TODO isIEOrEdge REMOVE AFTER 1st March 2021
+    // TODO isIEOrEdge REMOVE AFTER 1st March 2021 whole ngOnInit from this point down
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     init_mega_menu();
     init_popover();
@@ -36,5 +37,9 @@ export class AppComponent {
     if (hash) {
       this.router.navigateByUrl(hash.substring(1));
     }
+  }
+  
+  open = (event: any) => {
+    this.isOpenMenu = event.detail.open;
   }
 }

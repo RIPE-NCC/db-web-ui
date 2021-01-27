@@ -1,5 +1,5 @@
 :root {
-    --ripe-app-font-family: 'Public Sans';
+    --ripe-app-font-family: "Public Sans",sans-serif;
     --ripe-app-header-icon-bg: #c0c0c0;
     --ripe-app-border-line: #2f2c56;
     --ripe-app-navbar-active-menuitem: #FFFFFF;
@@ -9,10 +9,38 @@
     --ripe-app-header-icon-hover: var(--ripe-app-primary-100);
     --ripe-app-navbar-background: var(--ripe-app-primary-100);
     --ripe-app-navbar-menuitem: var(--ripe-app-primary-20);
-    margin-left: -3px;
     #apps-list li {
         font-weight: 400!important;
         font-size: 1.1em!important;
     }
+    #app-nav-bar {
+        grid-column: left;
+        grid-row-end: 1000 span;
+    }
 }
 
+#app-grid {
+    display: grid;
+    grid-template-columns: [left] max-content [right] auto;
+}
+
+swe-menu {
+    grid-column: left;
+    grid-row-end: 1000 span;
+}
+
+#app-banners-container {
+    position: sticky;
+    top: 70px;
+    background-color: white;
+    z-index: 99;
+}
+
+#app-workspace {
+    margin: 24px;
+    background-color: white;
+}
+
+.web-component {
+    font-size: unset; //overwrite style from template.css
+}

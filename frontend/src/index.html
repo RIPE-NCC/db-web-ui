@@ -30,9 +30,6 @@
   <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.69/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.69/bootstrap-theme.min.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.69/template.css" />
-  <!--[if lte IE 8]>
-  <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.69/ie-template.css"  />
-  <![endif]-->
   <!-- your custom styles here CSSMARKER -->
   <!-- Our own css -->
   <!-- Webupdates specific css end -->
@@ -48,10 +45,6 @@
   <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.69/template.js"></script>
   <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.69/browser-update.js"></script>
   <script type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
-  <!--[if lte IE 8]>
-  <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.69/html5.js"></script>
-  <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.69/respond.js"></script>
-  <![endif]-->
 </head>
 <body id="visual-portal-wrapper" class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates icons-on thumbs-on frontend viewpermission-view userrole-anonymous" dir="ltr">
 <noscript>
@@ -62,43 +55,8 @@
   </h1>
 </noscript>
 <app-db-web-ui></app-db-web-ui>
-<footer class="container-fluid">
-  <a href="#" id="scrollToTop"></a>
-  <div class="container box-shadow">
-    <div class="col-lg-2">
-                <span id="social-icons" title="RIPE NCC - Social Media">
-                    <a href="https://www.ripe.net/support/contact/social-networking">
-                        <i class="fa fa-sl-f"></i>
-                        <i class="fa fa-sl-t"></i>
-                        <i class="fa fa-sl-l"></i>
-                        <i class="fa fa-sl-y"></i>
-                        <i class="fa fa-sl-g"></i>
-                    </a>
-                </span>
-    </div>
-    <div class="col-lg-10" id="footer-links">
-      <a href="/">Home</a>
-      <a href="https://www.ripe.net/sitemap">Sitemap</a>
-      <a href="https://www.ripe.net/support/contact">Contact Us</a>
-      <a href="https://www.ripe.net/support/service-announcements">Service Announcements</a>
-      <a href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement">Privacy Statement</a>
-      <a href="https://www.ripe.net/about-us/legal">Legal</a>
-      <a href="https://www.ripe.net/about-us/legal/cookies">Cookies</a>
-      <a href="https://www.ripe.net/about-us/legal/copyright-statement">Copyright Statement</a>
-      <a href="https://www.ripe.net/about-us/legal/terms-of-service">Terms of Service</a>
-    </div>
-  </div>
-  <div id="cookiepopup">
-    <div id="cookie-close"><i class="fa fa-close"></i></div>
-    <div class="cookie-content">
-      <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
-    </div>
-  </div>
-</footer>
-
 <!--  Webupdates specific body-end end -->
 <!-- Usersnap widget: always on -->
-<button id="usersnapButton" style="position: fixed; bottom: 0; right: 26px; height: 35px; width: 117px; background: rgb(8, 0, 55); border-color: rgba(255, 255, 255, 0.5); border-style: solid solid none; border-width: 1px; color: rgb(255, 255, 255); border-radius: 5px 5px 0px 0px;" onclick="useUsersnap();">Report a Bug</button>
 <script>
   function loadUsersnap(buildTag) {
     window.onUsersnapLoad = function(api) {
@@ -136,6 +94,7 @@
     }
   }
 </script>
+<!-- End Usersnap widget -->
 <!-- Matomo Tag Manager -->
 <script type="text/javascript">
   function loadMatomo(matomoId) {

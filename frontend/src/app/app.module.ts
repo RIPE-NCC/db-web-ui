@@ -35,6 +35,9 @@ import {PropertiesService} from "./properties.service";
 import {AuthenticationGuard} from "./authentication-guard.service";
 import {BannerComponent} from "./banner/banner.component";
 import {IeBannerComponent} from "./banner/ie-banner.component";
+import {MenuComponent} from "./menu/menu.component";
+import {MenuService} from "./menu/menu.service";
+import {LegalComponent} from "./footer-legal/legal.component";
 
 @NgModule({
   declarations: [
@@ -45,8 +48,10 @@ import {IeBannerComponent} from "./banner/ie-banner.component";
     IeBannerComponent,
     OrgDropDownComponent,
     LeftHandMenuComponent,
+    MenuComponent,
     ErrorPageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    LegalComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   imports: [
@@ -75,6 +80,7 @@ import {IeBannerComponent} from "./banner/ie-banner.component";
     EmailConfirmationService,
     OrgDropDownSharedService,
     PropertiesService,
+    MenuService,
     {provide: APP_INITIALIZER, useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(), deps: [PropertiesService], multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: MetaDataCleanerInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true},
