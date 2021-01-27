@@ -9,15 +9,13 @@ describe("The organisation editor", () => {
     });
 
     it("should not crash when showing the single line editor", () => {
-        expect(page.searchTextInput.isPresent()).toEqual(true);
         expect(page.selectMaintainerDropdown.isPresent()).toEqual(true);
-        // test that we"re detecting failures properly -- ptor gets confused by bad configs so make sure we"re not using
+        // test that we're detecting failures properly -- ptor gets confused by bad configs so make sure we're not using
         // one of those :S
         expect(element(by.id("nosuchelement")).isPresent()).toEqual(false);
     });
 
     it("should be able to switch to text mode and back", () => {
-        page.scrollIntoView(page.btnCreateInTextArea);
         expect(page.createForm.isPresent()).toEqual(true);
         page.btnCreateInTextArea.click();
         expect(page.textCreateForm.isPresent()).toEqual(true);

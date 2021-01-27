@@ -17,7 +17,6 @@ describe("Modifying an aut-num", () => {
 
         it("should not allow sponsoring-org to be added", () => {
             expect(page.inpSponsoringOrg.isPresent()).toEqual(true);
-            page.scrollIntoView(page.btnAddAttribute);
             page.btnAddAttribute.click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.selectFromList(page.modalAttributeList, "descr").isPresent()).toEqual(true);

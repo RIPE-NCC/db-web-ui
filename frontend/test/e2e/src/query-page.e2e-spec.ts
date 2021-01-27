@@ -339,9 +339,7 @@ describe("The query pagina", () => {
 
     it("should be able to search --verbose using the text box", () => {
         page.inpQueryString.sendKeys("-t aut-num\n");
-        page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        page.scrollIntoView(page.templateSearchResults);
         expect(page.inpQueryString.getAttribute("value")).toEqual("-t aut-num");
         expect(page.inpTelnetQuery.getText()).toEqual("-t aut-num");
         expect(page.templateSearchResults.getText()).toContain("The aut-num class:");
@@ -353,9 +351,9 @@ describe("The query pagina", () => {
 
     it("should hide template search result after new query is triggered", () => {
         page.inpQueryString.sendKeys("-t aut-num\n");
-        page.scrollIntoView(page.btnSubmitQuery);
+        // page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        page.scrollIntoView(page.templateSearchResults);
+        // page.scrollIntoView(page.templateSearchResults);
         expect(page.inpQueryString.getAttribute("value")).toEqual("-t aut-num");
         expect(page.inpTelnetQuery.getText()).toEqual("-t aut-num");
         expect(page.templateSearchResults.isDisplayed()).toEqual(true);
@@ -364,7 +362,7 @@ describe("The query pagina", () => {
         page.inpQueryString.sendKeys("211.43.192.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
-        page.scrollIntoView(page.btnSubmitQuery);
+        // page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.templateSearchResults.isPresent()).toEqual(false);
         expect(page.resultsSection.isDisplayed()).toEqual(true);
@@ -375,9 +373,7 @@ describe("The query pagina", () => {
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         page.inpQueryString.sendKeys("1.1.1.1 --resource\n");
-        page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        // expect(page.inpQueryString.getAttribute("value")).toEqual("1.1.1.1 --resource");
         expect(page.inpTelnetQuery.getText()).toEqual("-B --resource 1.1.1.1");
         expect(page.searchResults.count()).toEqual(3);
     });

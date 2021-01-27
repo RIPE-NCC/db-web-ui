@@ -79,7 +79,7 @@ export const menuObject =  {
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
     }, {
       "title": "Request Resources",
-      "id": "request_update",
+      "id": "request_resources",
       "parent": "resources",
       "url": "REQUEST_RESOURCES_URL",
       "roles": ["admin", "general"]

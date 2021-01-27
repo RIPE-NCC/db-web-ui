@@ -27,11 +27,9 @@ describe("The full text search", () => {
 
     it("should be able to add a filter by clicking on summary", () => {
         page.byId("fullTextSearchInput").sendKeys("193.0.0.0");
-        page.scrollIntoView(page.byId("fullTextSearchInput"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(7);
         expect(page.fullTextResultSummaryRow.get(0).getText()).toContain("inetnum");
-        page.scrollIntoView(page.fullTextResultSummaryRow.get(0));
         page.fullTextResultSummaryRow.get(0).click(); // click on "inetnum"
         expect(page.fullTextSearchResults.count()).toEqual(3);
     });
@@ -41,19 +39,14 @@ describe("The full text search", () => {
         page.byId("fullTextAdvanceModeLink").click();
 
         expect(page.byId("fullTextAdvancedTypeAll").isPresent()).toEqual(true);
-        page.scrollIntoView(page.byId("fullTextSearchButton"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(7);
 
-        page.scrollIntoView(page.byId("fullTextAdvancedTypeAny"));
         page.byId("fullTextAdvancedTypeAny").click();
-        page.scrollIntoView(page.byId("fullTextSearchButton"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(10);
 
-        page.scrollIntoView(page.byId("fullTextAdvancedTypeExact"));
         page.byId("fullTextAdvancedTypeExact").click();
-        page.scrollIntoView(page.byId("fullTextSearchButton"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(0);
     });

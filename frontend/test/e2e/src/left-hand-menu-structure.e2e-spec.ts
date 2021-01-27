@@ -37,21 +37,24 @@ describe("The left hand menu structure depend on logged in user role", () => {
         Create an Object
      */
     const expectRipeDatabaseMenuItemWithAllSubItems = () => {
-        page.topMenuItems.get(2).all(by.css("a")).first().getText().then((text) => {
+        page.topMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RIPE Database");
         });
+        page.topMenuItems.get(0).click();
+        page.topMenuItems.get(1).click();
+        page.scrollIntoView(page.ripeDatabaseMenuItem);
         page.topMenuItems.get(2).click();
-        expect(page.topMenuItems.get(2).all(by.css(".level2 li")).count()).toEqual(4);
-        page.ripeDatabaseMenuItems.get(0).element(by.css("a")).getText().then((text) => {
+        expect(page.ripeDatabaseMenuItems.count()).toEqual(4);
+        page.ripeDatabaseMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Query the RIPE Database");
         });
-        page.ripeDatabaseMenuItems.get(1).element(by.css("a")).getText().then((text) => {
+        page.ripeDatabaseMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Full Text Search");
         });
-        page.ripeDatabaseMenuItems.get(2).element(by.css("a")).getText().then((text) => {
+        page.ripeDatabaseMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Syncupdates");
         });
-        page.ripeDatabaseMenuItems.get(3).element(by.css("a")).getText().then((text) => {
+        page.ripeDatabaseMenuItems.get(3).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Create an Object");
         });
     };
@@ -67,10 +70,10 @@ describe("The left hand menu structure depend on logged in user role", () => {
         expect(page.topMenuItems.get(0).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
-        page.topMenuItems.get(0).all(by.css("a")).first().getText().then((text) => {
+        page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Account");
         });
-        page.topMenuItems.get(1).all(by.css("a")).first().getText().then((text) => {
+        page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Resources");
         });
 
@@ -86,29 +89,29 @@ describe("The left hand menu structure depend on logged in user role", () => {
          */
         page.scrollIntoView(page.topMenuItems.get(0));
         page.topMenuItems.get(0).click();
-        expect(page.myLirMenuItems.count()).toEqual(9);
-        page.myLirMenuItems.get(0).element(by.css("a")).getText().then((text) => {
+        expect(page.firstMenuItems.count()).toEqual(8);
+        page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Account Overview");
         });
-        page.myLirMenuItems.get(1).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Billing");
         });
-        page.myLirMenuItems.get(2).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Request Update");
         });
-        page.myLirMenuItems.get(3).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(3).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Users");
         });
-        page.myLirMenuItems.get(4).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(4).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Tickets");
         });
-        page.myLirMenuItems.get(5).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(5).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Training");
         });
-        page.myLirMenuItems.get(6).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(6).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("API Keys");
         });
-        page.myLirMenuItems.get(7).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(7).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("General Meeting");
         });
 
@@ -121,23 +124,23 @@ describe("The left hand menu structure depend on logged in user role", () => {
             RPKI Dashboard
          */
         page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(6);
-        page.resourcesMenuItems.get(0).element(by.css("a")).getText().then((text) => {
+        expect(page.secondMenuItems.count()).toEqual(6);
+        page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
         });
-        page.resourcesMenuItems.get(1).element(by.css("a")).getText().then((text) => {
+        page.secondMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
-        page.resourcesMenuItems.get(2).element(by.css("a")).getText().then((text) => {
+        page.secondMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Request Resources");
         });
-        page.resourcesMenuItems.get(3).element(by.css("a")).getText().then((text) => {
+        page.secondMenuItems.get(3).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Request Transfer");
         });
-        page.resourcesMenuItems.get(4).element(by.css("a")).getText().then((text) => {
+        page.secondMenuItems.get(4).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("IPv4 Transfer Listing Service");
         });
-        page.resourcesMenuItems.get(5).element(by.css("a")).getText().then((text) => {
+        page.secondMenuItems.get(5).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RPKI Dashboard");
         });
 
@@ -151,10 +154,10 @@ describe("The left hand menu structure depend on logged in user role", () => {
         expect(page.topMenuItems.get(0).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
-        page.topMenuItems.get(0).all(by.css("a")).first().getText().then((text) => {
+        page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Account");
         });
-        page.topMenuItems.get(1).all(by.css("a")).first().getText().then((text) => {
+        page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Resources");
         });
 
@@ -163,17 +166,11 @@ describe("The left hand menu structure depend on logged in user role", () => {
             Users
          */
         page.topMenuItems.get(0).click();
-        expect(page.myLirMenuItems.count()).toEqual(9);
-        expect(page.myLirMenuItems.get(0).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(1).isDisplayed()).toEqual(true);
-        expect(page.myLirMenuItems.get(2).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(3).isDisplayed()).toEqual(true);
-        expect(page.myLirMenuItems.get(4).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(5).isDisplayed()).toEqual(false);
-        page.myLirMenuItems.get(1).element(by.css("a")).getText().then((text) => {
+        expect(page.firstMenuItems.count()).toEqual(2);
+        page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Billing");
         });
-        page.myLirMenuItems.get(3).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Users");
         });
 
@@ -182,17 +179,11 @@ describe("The left hand menu structure depend on logged in user role", () => {
             Sponsored Resources
          */
         page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(6);
-        expect(page.resourcesMenuItems.get(0).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(2).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(3).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(4).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(5).isDisplayed()).toEqual(false);
-        page.resourcesMenuItems.get(0).element(by.css("a")).getText().then((text) => {
+        expect(page.secondMenuItems.count()).toEqual(2);
+        page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
         });
-        page.resourcesMenuItems.get(1).element(by.css("a")).getText().then((text) => {
+        page.secondMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
 
@@ -202,99 +193,134 @@ describe("The left hand menu structure depend on logged in user role", () => {
     it("should show menu structure for user without org or lir", () => {
         changeJsonResponsFile(userInfoFile, userWithoutOrgOrLir);
         browser.get(browser.baseUrl);
-        expect(page.topMenuItems.count()).toEqual(3);
-        expect(page.topMenuItems.get(0).isDisplayed()).toEqual(false);
-        expect(page.topMenuItems.get(1).isDisplayed()).toEqual(true);
-        expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
-        page.topMenuItems.get(1).all(by.css("a")).first().getText().then((text) => {
+        expect(page.topMenuItems.count()).toEqual(2);
+        page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Resources");
         });
-
+        page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("RIPE Database");
+        });
         /* Resource structure of menu items
             My Resources
             Sponsored Resources
          */
-        page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(6);
-        page.resourcesMenuItems.get(0).element(by.css("a")).getText().then((text) => {
+        page.topMenuItems.get(0).click();
+        expect(page.firstMenuItems.count()).toEqual(2);
+        page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
         });
-        page.resourcesMenuItems.get(1).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
-        expect(page.resourcesMenuItems.get(0).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(2).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(3).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(4).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(5).isDisplayed()).toEqual(false);
 
-        expectRipeDatabaseMenuItemWithAllSubItems();
+        /* RIPE Database structure of menu items
+            Query the RIPE Database
+            Full Text Search
+            Syncupdates
+            Create an Object
+         */
+        page.topMenuItems.get(1).click();
+        expect(page.secondMenuItems.count()).toEqual(4);
+        page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Query the RIPE Database");
+        });
+        page.secondMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Full Text Search");
+        });
+        page.secondMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Syncupdates");
+        });
+        page.secondMenuItems.get(3).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Create an Object");
+        });
     });
 
     it("should show menu structure for no logged in user", () => {
         changeJsonResponsFile(userInfoFile, userNotLoggedIn);
         browser.get(browser.baseUrl);
-        expect(page.topMenuItems.count()).toEqual(3);
-        expect(page.topMenuItems.get(0).isDisplayed()).toEqual(false);
-        expect(page.topMenuItems.get(1).isDisplayed()).toEqual(true);
-        expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
-        page.topMenuItems.get(1).all(by.css("a")).first().getText().then((text) => {
+        expect(page.topMenuItems.count()).toEqual(2);
+        page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Resources");
+        });
+        page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("RIPE Database");
         });
 
         /* Resource structure of menu items
             My Resources
             Sponsored Resources
          */
-        page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(6);
-        page.resourcesMenuItems.get(0).element(by.css("a")).getText().then((text) => {
+        page.topMenuItems.get(0).click();
+        expect(page.firstMenuItems.count()).toEqual(2);
+        page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
         });
-        page.resourcesMenuItems.get(1).element(by.css("a")).getText().then((text) => {
+        page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
-        expect(page.resourcesMenuItems.get(0).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(2).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(3).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(4).isDisplayed()).toEqual(false);
-        expect(page.resourcesMenuItems.get(5).isDisplayed()).toEqual(false);
 
-        expectRipeDatabaseMenuItemWithAllSubItems();
+        /* RIPE Database structure of menu items
+            Query the RIPE Database
+            Full Text Search
+            Syncupdates
+            Create an Object
+         */
+        page.topMenuItems.get(1).click();
+        expect(page.secondMenuItems.count()).toEqual(4);
+        page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Query the RIPE Database");
+        });
+        page.secondMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Full Text Search");
+        });
+        page.secondMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Syncupdates");
+        });
+        page.secondMenuItems.get(3).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Create an Object");
+        });
     });
 
     it("should show menu structure for a guest user", () => {
         changeJsonResponsFile(userInfoFile, userGuest);
         browser.get(browser.baseUrl);
-        expect(page.topMenuItems.count()).toEqual(3);
-        expect(page.topMenuItems.get(0).isDisplayed()).toEqual(true);
-        expect(page.topMenuItems.get(1).isDisplayed()).toEqual(false);
-        expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
-        page.topMenuItems.get(0).all(by.css("a")).first().getText().then((text) => {
+        expect(page.topMenuItems.count()).toEqual(2);
+        page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Account");
+        });
+        page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("RIPE Database");
         });
 
         /* Resource structure of menu items
             My LIR
          */
         page.topMenuItems.get(0).click();
-        expect(page.myLirMenuItems.count()).toEqual(9);
-        page.myLirMenuItems.get(8).element(by.css("a")).getText().then((text) => {
+        expect(page.firstMenuItems.count()).toEqual(1);
+        page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Request Update");
         });
-        expect(page.myLirMenuItems.get(0).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(1).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(2).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(3).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(4).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(5).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(6).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(7).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(8).isDisplayed()).toEqual(true);
 
-        expectRipeDatabaseMenuItemWithAllSubItems();
+        /* RIPE Database structure of menu items
+            Query the RIPE Database
+            Full Text Search
+            Syncupdates
+            Create an Object
+         */
+        page.topMenuItems.get(1).click();
+        expect(page.secondMenuItems.count()).toEqual(4);
+        page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Query the RIPE Database");
+        });
+        page.secondMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Full Text Search");
+        });
+        page.secondMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Syncupdates");
+        });
+        page.secondMenuItems.get(3).element(by.css_sr("::sr p.title")).getText().then((text) => {
+            expect(text).toBe("Create an Object");
+        });
     });
 
 });

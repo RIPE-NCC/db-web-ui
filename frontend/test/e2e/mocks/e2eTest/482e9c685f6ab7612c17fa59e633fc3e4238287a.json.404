@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/db-web-ui/api/whois-internal/api/resources?org-id=ORG-EIP1-RIPE&type=inetnum",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {}
+}

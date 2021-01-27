@@ -121,10 +121,8 @@ describe("The inetnum editor", () => {
         expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
         expect(page.inpInetnumDescription.getText()).toContain("Specifies a range of IPv4 that the inetnum object presents.");
         expect(page.inpNetnameDescription.isDisplayed()).toBeFalsy();
-        page.scrollIntoView(page.inpNetnameQuestionMark);
         page.inpNetnameQuestionMark.click();
         expect(page.inpNetnameDescription.isDisplayed()).toBeTruthy();
-        page.scrollIntoView(page.inpInetnumDescription);
         expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
         page.inpInetnumQuestionMark.click();
         expect(page.inpInetnumDescription.isDisplayed()).toBeFalsy();
