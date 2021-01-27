@@ -187,4 +187,14 @@ public class WhoisInternalServiceTest {
             assertEquals("", e.getErrorMessages().stream().findFirst().get().getText());
         }
     }
+
+    @Test
+    public void shouldThrowUnauthorizedWhenCookieAbsent(){
+        try {
+            whoisInternalService.getUserInfo(null);
+        } catch (RestClientException e){
+            assertEquals(401, e.getStatus());
+        }
+    }
+
 }
