@@ -10,7 +10,7 @@ const fs = require("fs");
  * On this way we are able to test if left hand menu containts expected structure of menu items,
  * because for different role is different content in menu.
  */
-describe("The left hand menu structure depend on logged in user role", () => {
+fdescribe("The left hand menu structure depend on logged in user role", () => {
 
     const userInfoFile = "./test/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json";
     const userWithAllRoles = "./test/e2e/mocks/e2eTest/user-with-all-role.json";
@@ -40,10 +40,8 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.topMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RIPE Database");
         });
-        page.topMenuItems.get(0).click();
-        page.topMenuItems.get(1).click();
-        page.scrollIntoView(page.ripeDatabaseMenuItem);
-        page.topMenuItems.get(2).click();
+        // page.scrollIntoView(page.ripeDatabaseMenuItem);
+        page.ripeDatabaseMenuItem.click();
         expect(page.ripeDatabaseMenuItems.count()).toEqual(4);
         page.ripeDatabaseMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Query the RIPE Database");
@@ -87,8 +85,8 @@ describe("The left hand menu structure depend on logged in user role", () => {
             API Keys
             General Meeting
          */
-        page.scrollIntoView(page.topMenuItems.get(0));
-        page.topMenuItems.get(0).click();
+        // page.scrollIntoView(page.topMenuItems.get(0));
+        page.getMyAccountTopMenu().click();
         expect(page.firstMenuItems.count()).toEqual(8);
         page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Account Overview");
@@ -114,6 +112,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.firstMenuItems.get(7).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("General Meeting");
         });
+        page.getMyAccountTopMenu().click();
 
         /* Resource structure of menu items
             My Resources
@@ -123,7 +122,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             IPv4 Transfer Listing Service
             RPKI Dashboard
          */
-        page.topMenuItems.get(1).click();
+        page.getResourcesTopMenu().click();
         expect(page.secondMenuItems.count()).toEqual(6);
         page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
@@ -143,6 +142,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.secondMenuItems.get(5).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RPKI Dashboard");
         });
+        page.getResourcesTopMenu().click();
 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
@@ -173,6 +173,8 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Users");
         });
+        page.topMenuItems.get(0).click();
+
 
         /* Resource structure of menu items
             My Resources
@@ -186,6 +188,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.secondMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
+        page.topMenuItems.get(1).click();
 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });

@@ -341,6 +341,10 @@ module.exports = {
         return element(by.id(id));
     },
 
+    byCss: function(css) {
+        return element(by.css(css));
+    },
+
     byName: function(name) {
         return element(by.name(name));
     },
@@ -489,5 +493,12 @@ module.exports = {
 
     getWhoisObject: function (parent) {
         return new GetWhoisObject(parent);
+    },
+
+    getResourcesTopMenu: function() {
+        return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-resources"))
+    },
+    getMyAccountTopMenu: function() {
+        return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-account"))
     }
 };
