@@ -13,8 +13,7 @@ exports.config = {
   ],
   capabilities: {
     'browserName': 'firefox',
-    'acceptInsecureCerts' : true,
-    'moz:firefoxOptions': {binary: '/Users/isvonja/Desktop/FirefoxBeta84.app'}
+    'acceptInsecureCerts' : true
   },
   directConnect: true,
   framework: 'jasmine',
