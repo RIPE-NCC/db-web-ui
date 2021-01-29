@@ -2,7 +2,7 @@ import {browser} from "protractor";
 
 const page = require("./homePageObject");
 
-fdescribe("The full text search", () => {
+describe("The full text search", () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl + "fulltextsearch");

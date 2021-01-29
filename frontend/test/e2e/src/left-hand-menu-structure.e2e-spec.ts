@@ -10,7 +10,7 @@ const fs = require("fs");
  * On this way we are able to test if left hand menu containts expected structure of menu items,
  * because for different role is different content in menu.
  */
-fdescribe("The left hand menu structure depend on logged in user role", () => {
+describe("The left hand menu structure depend on logged in user role", () => {
 
     const userInfoFile = "./test/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json";
     const userWithAllRoles = "./test/e2e/mocks/e2eTest/user-with-all-role.json";
@@ -61,7 +61,7 @@ fdescribe("The left hand menu structure depend on logged in user role", () => {
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
     });
 
-    it("should show menu structure for user with all role", () => {
+    fit("should show menu structure for user with all role", () => {
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);
