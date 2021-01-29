@@ -848,8 +848,9 @@
 <main id="app-grid">
     <swe-menu [open]="isOpenMenu"></swe-menu>
     <section id="app-banners-container">
-      <app-banner *ngIf="properties.BANNER" id="notification-1" level="info"
+      <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning"
           text="{{properties.ENV.toUpperCase()}}  {{properties.BANNER}}"></app-banner>
+      <app-cookie-consent></app-cookie-consent>
     </section>
     <section id="app-workspace">
       <!--    <div class="container box-shadow clearfix" id="portal-columns">-->
