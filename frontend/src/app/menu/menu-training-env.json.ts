@@ -13,7 +13,7 @@ export const menuTrainingObject  = {
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
     }, {
       "title": "Full Text Search",
-      "id": "fulltext_search",
+      "id": "fulltextsearch",
       "parent": "database",
       "url": "DATABASE_FULL_TEXT_SEARCH_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
@@ -25,7 +25,7 @@ export const menuTrainingObject  = {
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
     }, {
       "title": "Create an Object",
-      "id": "create_object",
+      "id": "create",
       "parent": "database",
       "url": "DATABASE_CREATE_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]

@@ -129,7 +129,6 @@ export class LeftHandMenuComponent {
             this.activeUrl.indexOf("/query") > -1 ||
             this.activeUrl.indexOf("/fulltextsearch") > -1 ||
             this.activeUrl.indexOf("/lookup") > -1 ||
-            this.activeUrl.indexOf("/multi") > -1 ||
             this.activeUrl.indexOf("/syncupdates") > -1 ||
             this.activeUrl === "/";
     }

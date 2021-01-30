@@ -67,13 +67,13 @@ export const menuObject =  {
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
     },{
       "title": "My Resources",
-      "id": "my_resources",
+      "id": "myresources",
       "parent": "resources",
       "url": "MY_RESOURCES_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
     }, {
       "title": "Sponsored Resources",
-      "id": "sponsored_resources",
+      "id": "sponsored",
       "parent": "resources",
       "url": "MY_RESOURCES_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
@@ -116,7 +116,7 @@ export const menuObject =  {
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
     }, {
       "title": "Full Text Search",
-      "id": "fulltext_search",
+      "id": "fulltextsearch",
       "parent": "database",
       "url": "DATABASE_FULL_TEXT_SEARCH_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
@@ -128,7 +128,7 @@ export const menuObject =  {
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
     }, {
       "title": "Create an Object",
-      "id": "create_object",
+      "id": "create",
       "parent": "database",
       "url": "DATABASE_CREATE_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
