@@ -81,6 +81,8 @@ public class CrowdTokenFilter implements Filter {
                 request.getRequestURI().endsWith(".json") ||
                 request.getRequestURI().endsWith(".js.map") ||
                 //request.getRequestURI().endsWith(".html") ||
+                request.getRequestURI().endsWith(".woff") ||
+                request.getRequestURI().endsWith(".woff2") ||
                 request.getRequestURI().endsWith(".png"));
     }
 
