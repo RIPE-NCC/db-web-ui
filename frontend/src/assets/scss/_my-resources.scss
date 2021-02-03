@@ -353,6 +353,7 @@ section.back-to-my-resources {
 section.db-object {
     @extend %float-l;
     @extend %width-100;
+    margin-bottom: 20px;
 }
 section.more-specifics {
     @extend %float-l;

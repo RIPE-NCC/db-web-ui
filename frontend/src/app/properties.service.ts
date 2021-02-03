@@ -16,7 +16,6 @@ export class PropertiesService {
     public DATABASE_FULL_TEXT_SEARCH_URL = "fulltextsearch";
     public DATABASE_QUERY_URL = "query";
     public DATABASE_SYNCUPDATES_URL = "syncupdates";
-    public LEGAL = "legal";
     public ENV = "local";
     public RIPE_APP_WEBCOMPONENTS_ENV = "pre";
     public MATOMO_ID = "BuGxbMDR_dev_0ae7dee0ac65f70a4e8cf1b8";
