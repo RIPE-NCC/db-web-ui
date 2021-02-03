@@ -64,7 +64,7 @@ export class MenuComponent {
             } else if (url.startsWith("http")) {
                 window.location.href = url;
             } else if (event.detail.selected.id === "sponsored") {
-                this.router.navigate([eval("`${this.properties." + url + "}?sponsored=true`")]);
+                this.router.navigate([eval("`${this.properties." + url + "}`")], {queryParams: {sponsored: true }});
             } else {
                 this.router.navigate([eval("`${this.properties." + url + "}`")]);
             }
