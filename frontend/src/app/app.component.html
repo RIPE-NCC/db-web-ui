@@ -855,7 +855,10 @@
       <app-cookie-consent></app-cookie-consent>
     </section>
     <section id="app-workspace">
-      <!--    <div class="container box-shadow clearfix" id="portal-columns">-->
+      <!-- This is useless should stay until next release of https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.69/template.js  -->
+      <!-- just to protect errors in console     -->
+      <div style="padding: 0" id="portal-columns"></div>
+      <!-- until here remove after imprting template.js 1.70  -->
       <banner *ngIf="isIEOrEdge && properties.BANNER" [title]="properties.ENV" [textMessage]="properties.BANNER"></banner>
       <ie-banner *ngIf="isIE"></ie-banner>
       <!--      REMOVE AFTER 1st March 2020 this div-->
