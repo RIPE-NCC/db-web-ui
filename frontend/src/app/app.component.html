@@ -770,6 +770,7 @@
     </div>
   </div>
 </nav>
+
 <ripe-header (ripe-header-menu-toggle)="open($event)" [open]="isOpenMenu">
   <svg  slot="logo-app" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
        viewBox="0 0 3914.34 718.29" style="enable-background:new 0 0 3914.34 718.29; height: 48px" xml:space="preserve">
@@ -848,6 +849,7 @@
 <main id="app-grid">
     <swe-menu [open]="isOpenMenu"></swe-menu>
     <section id="app-banners-container">
+      <ngx-loading-bar></ngx-loading-bar>
       <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning"
           text="{{properties.ENV.toUpperCase()}}  {{properties.BANNER}}"></app-banner>
       <app-cookie-consent></app-cookie-consent>
@@ -879,30 +881,30 @@
       <div id="org-drop-down">
         <org-drop-down></org-drop-down>
       </div>
-      <div id="global_statusmessage">
-          <div>
-          </div>
-      </div>
-      <!-- REMOVE AFTER 1st March 2020 this div -->
-      <div *ngIf="isIEOrEdge" id="portal-column-one" class="col-md-3">
-          <!-- Insert your navigation here NAVIGATIONMARKER -->
-          <left-hand-menu></left-hand-menu>
-      </div>
-      <div *ngIf="isIEOrEdge" id="portal-column-content" class="sl col-md-9">
-        <div id="viewlet-above-content"></div>
-        <div id="content">
-          <div>
-            <div id="external">
-              <router-outlet></router-outlet>
-              <div class="ng-view"></div>
-              <ngx-loading-bar></ngx-loading-bar>
-            </div>
-            <web-app-version></web-app-version>
-          </div>
-        </div>
-        <div id="viewlet-below-content">
-        </div>
-      </div>
+<!--      <div id="global_statusmessage">-->
+<!--          <div>-->
+<!--          </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; REMOVE AFTER 1st March 2020 this div &ndash;&gt;-->
+<!--      <div *ngIf="isIEOrEdge" id="portal-column-one" class="col-md-3">-->
+<!--          &lt;!&ndash; Insert your navigation here NAVIGATIONMARKER &ndash;&gt;-->
+<!--          <left-hand-menu></left-hand-menu>-->
+<!--      </div>-->
+<!--      <div *ngIf="isIEOrEdge" id="portal-column-content" class="sl col-md-9">-->
+<!--        <div id="viewlet-above-content"></div>-->
+<!--        <div id="content">-->
+<!--          <div>-->
+<!--            <div id="external">-->
+<!--              <router-outlet></router-outlet>-->
+<!--              <div class="ng-view"></div>-->
+<!--              <ngx-loading-bar></ngx-loading-bar>-->
+<!--            </div>-->
+<!--            <web-app-version></web-app-version>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div id="viewlet-below-content">-->
+<!--        </div>-->
+<!--      </div>-->
       <div *ngIf="!isIEOrEdge">
         <router-outlet></router-outlet>
         <ngx-loading-bar></ngx-loading-bar>

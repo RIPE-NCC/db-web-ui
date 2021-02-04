@@ -336,6 +336,11 @@ section .resultlinks {
 .grey {
     background: #f9f9f9;
 }
+
 .margin-bottom {
     margin-bottom: 1em;
+}
+
+ngx-loading-bar {
+    z-index: 199999 !important;
 }
