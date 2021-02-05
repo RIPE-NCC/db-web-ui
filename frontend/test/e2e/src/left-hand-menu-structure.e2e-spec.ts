@@ -61,7 +61,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
     });
 
-    fit("should show menu structure for user with all role", () => {
+    it("should show menu structure for user with all role", () => {
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);

@@ -24,12 +24,9 @@ export class AppComponent {
   }
 
   public ngOnInit() {
-    this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent)
-    // TODO isIEOrEdge REMOVE AFTER 1st March 2021 whole ngOnInit from this point down
+    this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent);
+    // TODO isIEOrEdge REMOVE AFTER 1st March 2021
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
-    init_mega_menu();
-    init_popover();
-    whois_search();
   }
 
   private skipHash() {
@@ -38,7 +35,7 @@ export class AppComponent {
       this.router.navigateByUrl(hash.substring(1));
     }
   }
-  
+
   open = (event: any) => {
     this.isOpenMenu = event.detail.open;
   }

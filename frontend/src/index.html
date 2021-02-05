@@ -18,14 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
   <base href="/">
-<!--  TODO UNCOMMENT after 1st March 2021 -->
-<!--  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.5.0/webcomponents-bundle.js"></script>-->
-<!--  <script src="https://unpkg.com/css-vars-ponyfill@2.4.2/dist/css-vars-ponyfill.min.js"></script>-->
-<!--  <script>-->
-<!--    cssVars({-->
-<!--      shadowDOM: true,-->
-<!--    })-->
-<!--  </script>-->
+  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.5.0/webcomponents-bundle.js"></script>
+  <script src="https://unpkg.com/css-vars-ponyfill@2.4.2/dist/css-vars-ponyfill.min.js"></script>
+  <script>
+    cssVars({
+      shadowDOM: true,
+    })
+  </script>
   <link rel="stylesheet" type="text/css" media="screen" href="https://www-static.ripe.net/static/common/fonts/open-sans.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.69/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.69/bootstrap-theme.min.css" />
@@ -55,6 +54,14 @@
           href="https://www.ripe.net/about-us/legal/supported-browsers">Supported Browsers</a> page.
   </h1>
 </noscript>
+<script>
+  if (/msie\s|trident\//i.test(window.navigator.userAgent)){
+    document.write("<meta http-equiv='refresh' content='5;URL=https://www.ripe.net/about-us/legal/supported-browsers' />" +
+            "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
+            "      The Internet Explorer (IE11) browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
+            "    </h1>");
+  }
+</script>
 <app-db-web-ui></app-db-web-ui>
 <!--  Webupdates specific body-end end -->
 <!-- Usersnap widget: always on -->
@@ -107,7 +114,6 @@
     g.src="https://matomo.ripe.net/js/container_" + matomoId + ".js";
     s.parentNode.insertBefore(g,s);
   }
-
 </script>
 <!-- End Matomo Tag Manager -->
 </body>

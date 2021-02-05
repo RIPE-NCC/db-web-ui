@@ -353,7 +353,7 @@ export class AttributeRendererComponent {
                     name = name.concat(separator + item["abuse-mailbox"]);
                 }
             } else if (item.type === "aut-num") {
-                // When we"re using an as-name then we"ll need 1st descr as well (pivotal#116279723)
+                // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
                 if (_.isArray(item.descr) && item.descr.length) {
                     name = [item["as-name"], separator, item.descr[0]].join("");
                 } else {
