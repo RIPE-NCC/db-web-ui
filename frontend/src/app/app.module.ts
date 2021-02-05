@@ -17,7 +17,6 @@ import {UpdatesTextModule} from "./updatestext/update-text.module";
 import {FmpModule} from "./fmp/fmp.module";
 import {FullTextSearchModule} from "./fulltextsearch/full-text-search.module";
 import {QueryModule} from "./query/query.module";
-import {LeftHandMenuComponent} from "./menu/left-hand-menu.component";
 import {WhoisObjectModule} from "./whois-object/whois-object.module";
 import {OrgDropDownComponent} from "./dropdown/org-drop-down.component";
 import {MyResourcesModule} from "./myresources/my-resources.module";
@@ -47,7 +46,6 @@ import {LegalComponent} from "./footer-legal/legal.component";
     BannerComponent,
     IeBannerComponent,
     OrgDropDownComponent,
-    LeftHandMenuComponent,
     MenuComponent,
     ErrorPageComponent,
     NotFoundPageComponent,
