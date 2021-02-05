@@ -18,6 +18,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {CertificateBannerComponent} from "../../../src/app/banner/certificate-banner.component";
 import {CookieService} from "ngx-cookie-service";
+import {QuestionnaireBannerComponent} from "../../../src/app/banner/questionnaire-banner.component";
 
 const whoisObjectModelMock = {
     "type" : "inetnum",
@@ -147,6 +148,7 @@ describe("QueryComponent", () => {
             declarations: [
                 QueryComponent,
                 CertificateBannerComponent,
+                QuestionnaireBannerComponent,
                 LookupComponent,
                 TemplateComponent,
                 WhoisObjectViewerComponent,

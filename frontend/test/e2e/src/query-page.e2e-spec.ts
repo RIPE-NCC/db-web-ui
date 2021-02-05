@@ -21,6 +21,7 @@ describe("The query pagina", () => {
     });
 
     it("should be able to search using the text box", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0"); // press "enter" for a laugh
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -32,6 +33,7 @@ describe("The query pagina", () => {
     });
 
     it("should be able to search using the text box and a type checkbox", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -47,6 +49,7 @@ describe("The query pagina", () => {
     });
 
     it("should be able to have source dynamic", () => {
+        page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
@@ -59,6 +62,7 @@ describe("The query pagina", () => {
     });
 
     it("should be able to have source dynamic", () => {
+        page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("223.0.0.0");
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
@@ -71,6 +75,7 @@ describe("The query pagina", () => {
     });
 
     it("should search by inverse lookup abuse-c", () => {
+        page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("ACRO862-RIPE");
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
@@ -140,6 +145,7 @@ describe("The query pagina", () => {
     });
 
     it("should be specified ripe stat link", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -160,6 +166,7 @@ describe("The query pagina", () => {
     });
 
     it("should show object banner with text - No abuse contact found", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -171,6 +178,7 @@ describe("The query pagina", () => {
     });
 
     it("should show object banner with abuse contact info", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.201.0.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -204,6 +212,7 @@ describe("The query pagina", () => {
     });
 
     it("should show checkbox - Highlight RIPE NCC managed values", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.201.0.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -221,6 +230,7 @@ describe("The query pagina", () => {
     });
 
     it("should be able to show out of region route from ripe db", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -249,6 +259,7 @@ describe("The query pagina", () => {
     });
 
     it("should contain ripe-nonauth for source in link on attribute value", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -258,6 +269,7 @@ describe("The query pagina", () => {
     });
 
     it("should contain date in proper format", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
@@ -269,6 +281,7 @@ describe("The query pagina", () => {
 
     it("should be able to show out of region route from ripe db without related objects", () => {
         page.inpQueryString.sendKeys("AS9777");
+        page.scrollIntoView(page.inpShowFullDetails);
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.queryParamTabs.get(1));
         page.queryParamTabs.get(1).click();
@@ -350,6 +363,7 @@ describe("The query pagina", () => {
     });
 
     it("should hide template search result after new query is triggered", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("-t aut-num\n");
         // page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
@@ -360,6 +374,7 @@ describe("The query pagina", () => {
         expect(page.resultsSection.isDisplayed()).toEqual(false);
         page.inpQueryString.clear();
         page.inpQueryString.sendKeys("211.43.192.0");
+        page.scrollIntoView(page.inpShowFullDetails);
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         // page.scrollIntoView(page.btnSubmitQuery);
@@ -370,6 +385,7 @@ describe("The query pagina", () => {
 
     //--resource in query
     it("should be able to search --resource (source=GRS) using the text box", () => {
+        page.scrollIntoView(page.inpQueryString);
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         page.inpQueryString.sendKeys("1.1.1.1 --resource\n");
