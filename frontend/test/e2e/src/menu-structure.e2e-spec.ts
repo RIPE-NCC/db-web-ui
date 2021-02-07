@@ -1,5 +1,5 @@
 // Local requires
-import {browser, by} from "protractor";
+import {browser, by, protractor} from "protractor";
 
 const page = require("./homePageObject");
 const fs = require("fs");
@@ -18,6 +18,14 @@ describe("The left hand menu structure depend on logged in user role", () => {
     const userWithoutOrgOrLir = "./test/e2e/mocks/e2eTest/user-without-org-or-lir.json";
     const userNotLoggedIn = "./test/e2e/mocks/e2eTest/user-not-logged-in.json";
     const userGuest = "./test/e2e/mocks/e2eTest/user-with-guest-role.json";
+    const EC = protractor.ExpectedConditions;
+
+    // protractor won't wait for non-angular components
+    // we have to force the wait manually
+    const waitAndClick = async (element) => {
+        await browser.wait(EC.elementToBeClickable(element), 5000);
+        await element.click();
+    }
 
     const changeJsonResponsFile = (file, replacement) => {
         fs.readFile(replacement, "utf8", (err, data) => {
@@ -36,12 +44,11 @@ describe("The left hand menu structure depend on logged in user role", () => {
         Syncupdates
         Create an Object
      */
-    const expectRipeDatabaseMenuItemWithAllSubItems = () => {
+    const expectRipeDatabaseMenuItemWithAllSubItems = async () => {
         page.topMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RIPE Database");
         });
-        // page.scrollIntoView(page.ripeDatabaseMenuItem);
-        page.ripeDatabaseMenuItem.click();
+        await waitAndClick(page.ripeDatabaseMenuItem);
         expect(page.ripeDatabaseMenuItems.count()).toEqual(4);
         page.ripeDatabaseMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Query the RIPE Database");
@@ -61,7 +68,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
     });
 
-    it("should show menu structure for user with all role", () => {
+    it("should show menu structure for user with all role", async () => {
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);
@@ -86,7 +93,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             General Meeting
          */
         // page.scrollIntoView(page.topMenuItems.get(0));
-        page.getMyAccountTopMenu().click();
+        await waitAndClick(page.getMyAccountTopMenu());
         expect(page.firstMenuItems.count()).toEqual(8);
         page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Account Overview");
@@ -112,7 +119,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.firstMenuItems.get(7).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("General Meeting");
         });
-        page.getMyAccountTopMenu().click();
+        await waitAndClick(page.getMyAccountTopMenu());
 
         /* Resource structure of menu items
             My Resources
@@ -122,7 +129,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             IPv4 Transfer Listing Service
             RPKI Dashboard
          */
-        page.getResourcesTopMenu().click();
+        await waitAndClick(page.getResourcesTopMenu());
         expect(page.secondMenuItems.count()).toEqual(6);
         page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
@@ -142,12 +149,12 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.secondMenuItems.get(5).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RPKI Dashboard");
         });
-        page.getResourcesTopMenu().click();
+        await waitAndClick(page.getResourcesTopMenu());
 
-        expectRipeDatabaseMenuItemWithAllSubItems();
+        await expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
-    it("should show menu structure for user with billing role", () => {
+    it("should show menu structure for user with billing role", async () => {
         changeJsonResponsFile(userInfoFile, userWithBillingRole);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);
@@ -165,7 +172,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             Billing
             Users
          */
-        page.topMenuItems.get(0).click();
+        await waitAndClick(page.topMenuItems.get(0));
         expect(page.firstMenuItems.count()).toEqual(2);
         page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Billing");
@@ -173,14 +180,14 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Users");
         });
-        page.topMenuItems.get(0).click();
+        await waitAndClick(page.topMenuItems.get(0));
 
 
         /* Resource structure of menu items
             My Resources
             Sponsored Resources
          */
-        page.topMenuItems.get(1).click();
+        await waitAndClick(page.topMenuItems.get(1));
         expect(page.secondMenuItems.count()).toEqual(2);
         page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
@@ -188,12 +195,12 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.secondMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
-        page.topMenuItems.get(1).click();
+        await waitAndClick(page.topMenuItems.get(1));
 
-        expectRipeDatabaseMenuItemWithAllSubItems();
+        await expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
-    it("should show menu structure for user without org or lir", () => {
+    it("should show menu structure for user without org or lir", async () => {
         changeJsonResponsFile(userInfoFile, userWithoutOrgOrLir);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(2);
@@ -207,7 +214,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             My Resources
             Sponsored Resources
          */
-        page.topMenuItems.get(0).click();
+        await waitAndClick(page.topMenuItems.get(0));
         expect(page.firstMenuItems.count()).toEqual(2);
         page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
@@ -215,6 +222,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
+        await waitAndClick(page.topMenuItems.get(0));
 
         /* RIPE Database structure of menu items
             Query the RIPE Database
@@ -222,7 +230,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             Syncupdates
             Create an Object
          */
-        page.topMenuItems.get(1).click();
+        await waitAndClick(page.topMenuItems.get(1));
         expect(page.secondMenuItems.count()).toEqual(4);
         page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Query the RIPE Database");
@@ -238,7 +246,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         });
     });
 
-    it("should show menu structure for no logged in user", () => {
+    it("should show menu structure for no logged in user", async () => {
         changeJsonResponsFile(userInfoFile, userNotLoggedIn);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(2);
@@ -253,7 +261,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             My Resources
             Sponsored Resources
          */
-        page.topMenuItems.get(0).click();
+        await waitAndClick(page.topMenuItems.get(0));
         expect(page.firstMenuItems.count()).toEqual(2);
         page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("My Resources");
@@ -261,6 +269,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         page.firstMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Sponsored Resources");
         });
+        await waitAndClick(page.topMenuItems.get(0));
 
         /* RIPE Database structure of menu items
             Query the RIPE Database
@@ -268,7 +277,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             Syncupdates
             Create an Object
          */
-        page.topMenuItems.get(1).click();
+        await waitAndClick(page.topMenuItems.get(1));
         expect(page.secondMenuItems.count()).toEqual(4);
         page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Query the RIPE Database");
@@ -284,7 +293,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         });
     });
 
-    it("should show menu structure for a guest user", () => {
+    it("should show menu structure for a guest user", async () => {
         changeJsonResponsFile(userInfoFile, userGuest);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(2);
@@ -298,11 +307,12 @@ describe("The left hand menu structure depend on logged in user role", () => {
         /* Resource structure of menu items
             My LIR
          */
-        page.topMenuItems.get(0).click();
+        await waitAndClick(page.topMenuItems.get(0));
         expect(page.firstMenuItems.count()).toEqual(1);
         page.firstMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Request Update");
         });
+        await waitAndClick(page.topMenuItems.get(0));
 
         /* RIPE Database structure of menu items
             Query the RIPE Database
@@ -310,7 +320,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             Syncupdates
             Create an Object
          */
-        page.topMenuItems.get(1).click();
+        await waitAndClick(page.topMenuItems.get(1));
         expect(page.secondMenuItems.count()).toEqual(4);
         page.secondMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("Query the RIPE Database");
