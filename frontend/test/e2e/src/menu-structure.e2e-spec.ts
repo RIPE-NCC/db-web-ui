@@ -23,8 +23,20 @@ describe("The left hand menu structure depend on logged in user role", () => {
     // protractor won't wait for non-angular components
     // we have to force the wait manually
     const waitAndClick = async (element) => {
-        await browser.wait(EC.elementToBeClickable(element), 5000);
-        await element.click();
+        await browser.wait(EC.elementToBeClickable(element), 5000, `timeout waiting for [${element.locator()}]`);
+        await clickOnTop(element)
+        // wait until css transition is over
+        await browser.sleep(1000)
+    }
+
+    const clickOnTop = async (element) => {
+        const size = await element.getSize();
+        const x = size.width / 2;
+        const y = 5;
+        await browser.actions()
+            .mouseMove(element, {x, y})
+            .click()
+            .perform();
     }
 
     const waitForCount = async (elements, amount) => {
