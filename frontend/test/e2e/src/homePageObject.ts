@@ -295,6 +295,7 @@ module.exports = {
     btnConfirmModalDelete: element(by.css("modal-delete-object button")),
 
     // Query page
+    certificateBanner: element(by.css("certificate-banner")),
     inpQueryString: element(by.name("qp.queryText")),
     inpTelnetQuery: element(by.name("searchform")).element(by.css("pre")),
     inpShowFullDetails: element(by.name("qp.showFullObjectDetails")),

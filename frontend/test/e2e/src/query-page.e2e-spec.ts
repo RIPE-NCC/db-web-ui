@@ -374,7 +374,7 @@ describe("The query pagina", () => {
         expect(page.resultsSection.isDisplayed()).toEqual(false);
         page.inpQueryString.clear();
         page.inpQueryString.sendKeys("211.43.192.0");
-        page.scrollIntoView(page.inpShowFullDetails);
+        page.scrollIntoView(page.certificateBanner);
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         // page.scrollIntoView(page.btnSubmitQuery);
