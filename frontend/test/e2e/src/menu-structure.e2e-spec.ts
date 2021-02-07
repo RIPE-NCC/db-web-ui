@@ -24,7 +24,15 @@ describe("The left hand menu structure depend on logged in user role", () => {
     // we have to force the wait manually
     const waitAndClick = async (element) => {
         await browser.wait(EC.elementToBeClickable(element), 5000, `timeout waiting for [${element.locator()}]`);
-        await clickOnTop(element)
+        // const capabilities = await browser.getCapabilities();
+        // const browserName = capabilities.get("browserName").toLowerCase();
+        // // firefox can't move mouse: https://github.com/angular/protractor/issues/5346
+        // if (browserName.includes("firefox")) {
+        //     await element.click();
+        // } else {
+        //     await clickOnTop(element);
+        // }
+        await element.click();
         // wait until css transition is over
         await browser.sleep(1000)
     }
