@@ -4,6 +4,15 @@ paginator ul li {
     min-width: 46px;
     text-align: center;
   }
+  &.disabled {
+    a {
+      color: #999 !important;
+      cursor: none;
+      &:hover {
+        background: #eee !important;
+      }
+    }
+  }
 }
 
 #content ul.pagination>li {
