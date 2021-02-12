@@ -16,11 +16,13 @@ export class FullTextResponseService {
 
         if (!_.isUndefined(data.lsts[1].lst.lsts)) {
             for (const doc of data.lsts[1].lst.lsts) {
-                hlMap[doc.lst.name] = doc.lst.arrs
-                    .filter((arr) => arr.name !== "object-type")
-                    .map((arr) => {
-                        return {name: arr.arr.name, value: arr.arr.str.value};
-                    });
+                if (!_.isUndefined(doc.lst.arrs)) {
+                    hlMap[doc.lst.name] = doc.lst.arrs
+                        .filter((arr) => arr.name !== "object-type")
+                        .map((arr) => {
+                            return {name: arr.arr.name, value: arr.arr.str.value};
+                        });
+                }
             }
         }
         if (!_.isUndefined(data.result.docs)) {
