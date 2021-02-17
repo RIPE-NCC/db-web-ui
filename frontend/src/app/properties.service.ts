@@ -41,6 +41,7 @@ export class PropertiesService {
     public RPKI_DASHBOARD_URL = "";
     public SOURCE = "RIPE";
     public DB_WEB_UI_BUILD_TIME = "00:00";
+    public LEGAL = "legal";
 
     constructor(private httpClient: HttpClient) { }
 

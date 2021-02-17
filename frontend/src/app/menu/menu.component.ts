@@ -57,15 +57,17 @@ export class MenuComponent {
     }
 
     onNavBarSelected = (event: any) => {
-        if (event.detail && event.detail.selected && event.detail.selected.url) {
+        if (event?.detail?.selected?.url) {
             const urlPropertieName = event.detail.selected.url;
-            const url = eval("`${this.properties." + urlPropertieName + "}`");
+            const url = urlPropertieName.startsWith("http")
+                ? urlPropertieName
+                    : eval("`${this.properties." + urlPropertieName + "}`");
             if (event.detail.selected.id === "feedback") {
                 useUsersnap();
             } else if (url.startsWith("http")) {
                 window.location.href = url;
             } else if (event.detail.selected.id === "sponsored") {
-                this.router.navigate([url], {queryParams: {sponsored: true }});
+                this.router.navigate([url], {queryParams: {sponsored: true}});
             } else {
                 this.router.navigate([url]);
             }
