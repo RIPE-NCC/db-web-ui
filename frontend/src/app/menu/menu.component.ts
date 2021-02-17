@@ -12,7 +12,7 @@ declare var useUsersnap: () => any;
 
 @Component({
     selector: "swe-menu",
-    template: `<app-nav-bar (app-nav-bar-select)="handle($event)"
+    template: `<app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)"
                             [menu]="menu" [open]=open [active]="activeItem"></app-nav-bar>`,
 })
 export class MenuComponent {
@@ -56,7 +56,7 @@ export class MenuComponent {
         }
     }
 
-    handle = (event: any) => {
+    onNavBarSelected = (event: any) => {
         if (event.detail && event.detail.selected && event.detail.selected.url) {
             const urlPropertieName = event.detail.selected.url;
             const url = eval("`${this.properties." + urlPropertieName + "}`");
