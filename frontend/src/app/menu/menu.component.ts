@@ -8,7 +8,7 @@ import {MenuService} from "./menu.service";
 import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 import {IUserInfoOrganisation} from "../dropdown/org-data-type.model";
 
-declare var useUsersnap: () => any;
+declare let useUsersnap: () => any;
 
 @Component({
     selector: "swe-menu",
