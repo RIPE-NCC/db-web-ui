@@ -16,7 +16,7 @@ export class AppComponent {
 
   constructor(public properties: PropertiesService,
               private router: Router,
-              @Inject(WINDOW) private window: any) {
+              @Inject(WINDOW) public window: any) {
     this.skipHash();
   }
 
@@ -34,8 +34,8 @@ export class AppComponent {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  @HostListener("window:resize", ["$event"])
+  onResize() {
     this.openOrCloseMenu();
   }
 
@@ -44,7 +44,7 @@ export class AppComponent {
   }
 
   public openOrCloseMenu() {
-    this.innerWidth = window.innerWidth;
+    this.innerWidth = this.window.innerWidth;
     this.isOpenMenu = this.innerWidth >= 768;
   }
 }
