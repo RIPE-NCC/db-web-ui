@@ -7,6 +7,8 @@ import {PropertiesService} from "../properties.service";
 import {MenuService} from "./menu.service";
 import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 import {IUserInfoOrganisation} from "../dropdown/org-data-type.model";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalYesNoInstanceComponent} from "../updatesweb/modal-yes-no-instance.component";
 
 declare let useUsersnap: () => any;
 
@@ -28,6 +30,7 @@ export class MenuComponent {
     constructor(public properties: PropertiesService,
                 public orgDropDownSharedService: OrgDropDownSharedService,
                 private menuService: MenuService,
+                public modalService: NgbModal,
                 private location: Location,
                 private router: Router) {
         // mainly because switching between My Resources and Sponsored Resources
@@ -65,7 +68,7 @@ export class MenuComponent {
             if (event.detail.selected.id === "feedback") {
                 useUsersnap();
             } else if (url.startsWith("http")) {
-                window.location.href = url;
+                this.openRedirectionNotification(url);
             } else if (event.detail.selected.id === "sponsored") {
                 this.router.navigate([url], {queryParams: {sponsored: true}});
             } else {
@@ -88,5 +91,17 @@ export class MenuComponent {
         } else {
             this.activeItem = this.activeUrl.substring(this.activeUrl.lastIndexOf('/') + 1);
         }
+    }
+
+    private openRedirectionNotification(url: string) {
+        const appName = (url.includes("rpki")) ? "RIPE RPKI Dashboard" : "RIPE LIR Portal Application";
+        const modalRef = this.modalService.open(ModalYesNoInstanceComponent, {size: "lg"});
+        modalRef.componentInstance.msg = `You will be redirected to ${appName}`;
+        modalRef.result.then((option: any) => {
+            console.log("option is", option)
+            if (option === "yes") {
+                window.location.href = url;
+            }
+        });
     }
 }
