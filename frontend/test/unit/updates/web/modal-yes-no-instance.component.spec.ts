@@ -4,11 +4,12 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {ModalAddAttributeComponent} from "../../../../src/app/updatesweb/modal-add-attribute.component";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
+import {ModalYesNoInstanceComponent} from "../../../../src/app/updatesweb/modal-yes-no-instance.component";
 
-describe("ModalAddAttributeComponent", () => {
+describe("ModalYesNoInstanceComponent", () => {
 
-    let componentFixture: ComponentFixture<ModalAddAttributeComponent>;
-    let modalAddAttributeComponent: ModalAddAttributeComponent;
+    let componentFixture: ComponentFixture<ModalYesNoInstanceComponent>;
+    let modalYesNoInstanceComponent: ModalYesNoInstanceComponent;
     let modalMock: any;
     beforeEach(() => {
         modalMock = jasmine.createSpyObj("NgbActiveModal", ["close", "dismiss"]);
@@ -19,25 +20,23 @@ describe("ModalAddAttributeComponent", () => {
                 {provide: NgbActiveModal, useValue: modalMock}
             ],
         });
-        componentFixture = TestBed.createComponent(ModalAddAttributeComponent);
-        modalAddAttributeComponent = componentFixture.componentInstance;
+        componentFixture = TestBed.createComponent(ModalYesNoInstanceComponent);
+        modalYesNoInstanceComponent = componentFixture.componentInstance;
     });
 
-    it("should close the modal and return selected item when ok", async () => {
-        modalAddAttributeComponent.items = [ {name:"a"}, {name:"b"} ];
+    it("should close the modal and return yes", async () => {
+        modalYesNoInstanceComponent.msg = "message";
         componentFixture.detectChanges();
-        modalAddAttributeComponent.selected = {name:"b"};
-        modalAddAttributeComponent.ok();
+        modalYesNoInstanceComponent.yes();
 
-        expect(modalMock.close).toHaveBeenCalledWith({name:"b"});
+        expect(modalMock.close).toHaveBeenCalledWith("yes");
     });
 
-    it("should close the modal and return error when canceled", async () => {
-        modalAddAttributeComponent.items = [ {name:"a"}, {name:"b"} ];
+    it("should close the modal when canceled", async () => {
+        modalYesNoInstanceComponent.msg = "message";
 
         componentFixture.detectChanges();
-        modalAddAttributeComponent.selected = "b";
-        modalAddAttributeComponent.cancel();
+        modalYesNoInstanceComponent.no();
 
         expect(modalMock.dismiss).toHaveBeenCalled();
     });

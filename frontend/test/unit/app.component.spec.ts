@@ -53,10 +53,9 @@ describe("AppComponent", () => {
         expect(appSwitch.properties.logoutredirecturl).toBe("https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query");
     });
 
-    it("shouldn\'t open menu on init for mobile screen size", async () => {
+    it("shouldn\'t open menu on init for mobile screen size",() => {
         component.window.innerWidth = 767;
         fixture.detectChanges();
-        await fixture.whenStable();
         component.openOrCloseMenu();
         expect(component.isOpenMenu).toBeFalsy();
     });
