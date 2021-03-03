@@ -54,14 +54,14 @@ describe("AppComponent", () => {
     });
 
     it("shouldn\'t open menu on init for mobile screen size",() => {
-        component.window.innerWidth = 767;
+        component.window.innerWidth = 1024;
         fixture.detectChanges();
         component.openOrCloseMenu();
         expect(component.isOpenMenu).toBeFalsy();
     });
 
     it("should open menu on init for desktop screen size", () => {
-        component.window.innerWidth = 768;
+        component.window.innerWidth = 1025;
         fixture.detectChanges();
         component.openOrCloseMenu();
         expect(component.isOpenMenu).toBeTruthy();
