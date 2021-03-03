@@ -61,13 +61,13 @@ export class MenuComponent {
     onNavBarSelected = (event: any) => {
         if (event?.detail?.selected?.url) {
             const urlPropertieName = event.detail.selected.url;
-            if (urlPropertieName.startsWith("http")) {
+            if (event.detail.selected.id === "feedback") {
+                useUsersnap();
+            } else if (urlPropertieName.startsWith("http")) {
                 window.location.href = urlPropertieName;
             } else {
                 const url = eval("`${this.properties." + urlPropertieName + "}`");
-                if (event.detail.selected.id === "feedback") {
-                    useUsersnap();
-                } else if (url.startsWith("http")) {
+                if (url.startsWith("http")) {
                     this.router.navigate(["menuChangeNotification"]);
                 } else if (event.detail.selected.id === "sponsored") {
                     this.router.navigate([url], {queryParams: {sponsored: true}});
