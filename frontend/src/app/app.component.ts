@@ -45,6 +45,6 @@ export class AppComponent {
 
   public openOrCloseMenu() {
     this.innerWidth = this.window.innerWidth;
-    this.isOpenMenu = this.innerWidth >= 768;
+    this.isOpenMenu = this.innerWidth >= 1025;
   }
 }
