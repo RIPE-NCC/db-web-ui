@@ -29,6 +29,7 @@ import {AuthenticationGuard} from "./authentication-guard.service";
 import {DeleteComponent} from "./updatesweb/delete.component";
 import {CreateMntnerPairComponent} from "./updatesweb/createmntnerpair/create-mntner-pair.component";
 import {LegalComponent} from "./footer-legal/legal.component";
+import {MenuChangeNotificationComponent} from "./menu/menu-change-notification.component";
 
 export const appRoutes: Routes = [
     {path: "myresources/overview", component: ResourcesComponent, canActivate: [AuthenticationGuard]},
@@ -67,6 +68,7 @@ export const appRoutes: Routes = [
     {path: "not-found", component: NotFoundPageComponent},
     {path: "confirmEmail", component: EmailConfirmationComponent},
     {path: "legal", component: LegalComponent},
+    {path: "menuChangeNotification", component: MenuChangeNotificationComponent},
     {path: "", redirectTo: "webupdates/select", pathMatch: "full"},
     {path: "**", redirectTo: "webupdates/select"},
 ];

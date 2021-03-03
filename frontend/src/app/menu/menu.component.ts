@@ -8,14 +8,13 @@ import {MenuService} from "./menu.service";
 import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 import {IUserInfoOrganisation} from "../dropdown/org-data-type.model";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ModalYesNoInstanceComponent} from "../updatesweb/modal-yes-no-instance.component";
 
 declare let useUsersnap: () => any;
 
 @Component({
     selector: "swe-menu",
     template: `<app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)"
-                            [menu]="menu" [open]=open [active]="activeItem"></app-nav-bar>`,
+                            [menu]="menu" [open]=open [active]="activeItem"></app-nav-bar>`
 })
 export class MenuComponent {
 
@@ -62,17 +61,19 @@ export class MenuComponent {
     onNavBarSelected = (event: any) => {
         if (event?.detail?.selected?.url) {
             const urlPropertieName = event.detail.selected.url;
-            const url = urlPropertieName.startsWith("http")
-                ? urlPropertieName
-                    : eval("`${this.properties." + urlPropertieName + "}`");
-            if (event.detail.selected.id === "feedback") {
-                useUsersnap();
-            } else if (url.startsWith("http")) {
-                this.openRedirectionNotification(url);
-            } else if (event.detail.selected.id === "sponsored") {
-                this.router.navigate([url], {queryParams: {sponsored: true}});
+            if (urlPropertieName.startsWith("http")) {
+                window.location.href = urlPropertieName;
             } else {
-                this.router.navigate([url]);
+                const url = eval("`${this.properties." + urlPropertieName + "}`");
+                if (event.detail.selected.id === "feedback") {
+                    useUsersnap();
+                } else if (url.startsWith("http")) {
+                    this.router.navigate(["menuChangeNotification"]);
+                } else if (event.detail.selected.id === "sponsored") {
+                    this.router.navigate([url], {queryParams: {sponsored: true}});
+                } else {
+                    this.router.navigate([url]);
+                }
             }
         }
     }
@@ -91,17 +92,5 @@ export class MenuComponent {
         } else {
             this.activeItem = this.activeUrl.substring(this.activeUrl.lastIndexOf('/') + 1);
         }
-    }
-
-    private openRedirectionNotification(url: string) {
-        const appName = (url.includes("rpki")) ? "RIPE RPKI Dashboard" : "RIPE LIR Portal Application";
-        const modalRef = this.modalService.open(ModalYesNoInstanceComponent, {size: "lg"});
-        modalRef.componentInstance.msg = `You will be redirected to ${appName}`;
-        modalRef.result.then((option: any) => {
-            console.log("option is", option)
-            if (option === "yes") {
-                window.location.href = url;
-            }
-        });
     }
 }

@@ -35,7 +35,6 @@ import {ModalDeleteObjectComponent} from "./modal-delete-object.component";
 import {ModalMd5PasswordComponent} from "./modal-md5-password.component";
 import {ModalEditAttributeComponent} from "./modal-edit-attribute.component";
 import {CreateService} from "./create.service";
-import {ModalYesNoInstanceComponent} from "./modal-yes-no-instance.component";
 
 @NgModule({
     imports: [
@@ -62,8 +61,7 @@ import {ModalYesNoInstanceComponent} from "./modal-yes-no-instance.component";
         ModalCreateRoleForAbuseCComponent,
         ModalDeleteObjectComponent,
         ModalMd5PasswordComponent,
-        ModalEditAttributeComponent,
-        ModalYesNoInstanceComponent
+        ModalEditAttributeComponent
     ],
     providers: [
         PreferenceService,
@@ -93,8 +91,7 @@ import {ModalYesNoInstanceComponent} from "./modal-yes-no-instance.component";
         ModalCreateRoleForAbuseCComponent,
         ModalDeleteObjectComponent,
         ModalMd5PasswordComponent,
-        ModalEditAttributeComponent,
-        ModalYesNoInstanceComponent
+        ModalEditAttributeComponent
     ]
 })
 export class UpdatesWebModule {
