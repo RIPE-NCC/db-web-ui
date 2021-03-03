@@ -87,7 +87,8 @@ export class PropertiesService {
 
                 );
         } else {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
+                this.RIPE_APP_WEBCOMPONENTS_ENV = "pre";
                 this.injectProperties();
                 resolve();
             })
