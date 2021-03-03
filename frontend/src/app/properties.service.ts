@@ -79,7 +79,7 @@ export class PropertiesService {
                         this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                         this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
                         this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
-                        this.RIPE_APP_WEBCOMPONENTS_ENV = "prod";
+                        this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === "prod" ? "prod" : "pre";
 
                         this.injectProperties();
                     },
@@ -88,7 +88,6 @@ export class PropertiesService {
                 );
         } else {
             return new Promise((resolve) => {
-                this.RIPE_APP_WEBCOMPONENTS_ENV = "pre";
                 this.injectProperties();
                 resolve();
             })
