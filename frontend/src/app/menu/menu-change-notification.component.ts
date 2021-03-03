@@ -4,5 +4,4 @@ import {Component} from "@angular/core";
     selector: "menu-change-notification",
     templateUrl: "./menu-change-notification.component.html"
 })
-export class MenuChangeNotificationComponent {
-}
+export class MenuChangeNotificationComponent {}

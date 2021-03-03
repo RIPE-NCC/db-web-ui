@@ -64,11 +64,11 @@ export const appRoutes: Routes = [
     {path: "fmp/change-auth", component: ForgotMaintainerPasswordComponent},
     {path: "fmp/ssoAdded/:mntnerKey/:user", component: SsoAddedComponent},
     {path: "fmp/confirm", component: ConfirmMaintainerComponent},
+    {path: "legal", component: LegalComponent},
+    {path: "menuChangeNotification", component: MenuChangeNotificationComponent},
     {path: "error", component: ErrorPageComponent},
     {path: "not-found", component: NotFoundPageComponent},
     {path: "confirmEmail", component: EmailConfirmationComponent},
-    {path: "legal", component: LegalComponent},
-    {path: "menuChangeNotification", component: MenuChangeNotificationComponent},
     {path: "", redirectTo: "webupdates/select", pathMatch: "full"},
     {path: "**", redirectTo: "webupdates/select"},
 ];

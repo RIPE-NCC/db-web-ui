@@ -4,8 +4,4 @@ import {Component} from "@angular/core";
     selector: "legal",
     template: `<legal-accordion></legal-accordion>`,
 })
-export class LegalComponent {
-
-    constructor() {
-    }
-}
+export class LegalComponent {}

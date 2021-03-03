@@ -55,6 +55,8 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/fmp") ||
                 uri.startsWith("/forceDelete") ||
                 uri.startsWith("/error") ||
-                uri.startsWith("/not-found");
+                uri.startsWith("/not-found") ||
+                uri.startsWith("/legal") ||
+                uri.startsWith("/menuChangeNotification");
     }
 }
