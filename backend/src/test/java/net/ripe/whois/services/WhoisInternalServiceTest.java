@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -197,4 +199,21 @@ public class WhoisInternalServiceTest {
         }
     }
 
+    @Test
+    public void shouldThrow503WhenWhoisInternalIsDown(){
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active"))
+                .andRespond(withStatus(HttpStatus.SERVICE_UNAVAILABLE));
+        try {
+            whoisInternalService.getActiveToken(CROWD_TOKEN);
+        } catch (RestClientException e){
+            assertEquals(503, e.getStatus());
+        }
+    }
+
+    @Test
+    public void shouldReturnFalseWhenActiveTokenUnauthorized(){
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active"))
+                .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
+        assertFalse(whoisInternalService.getActiveToken(CROWD_TOKEN));
+    }
 }

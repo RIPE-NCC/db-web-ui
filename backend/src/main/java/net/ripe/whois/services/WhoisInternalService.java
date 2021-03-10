@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -148,10 +149,17 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         try {
             return restTemplate.exchange(uri, HttpMethod.GET,
                 new HttpEntity<>("", httpHeaders), Boolean.class).getBody();
-        } catch (Exception e){
+        } catch (RestClientResponseException e) {
+            if (e.getRawStatusCode() == HttpStatus.UNAUTHORIZED.value()) {
+                return false;
+            }
             LOGGER.warn("Exception: Failed to parse user active from whois internal {}", e.getMessage());
-            return false;
+            throw new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.warn("Exception: Failed to parse user active from whois internal {}", e.getMessage());
+            throw new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
         }
+
     }
 
     public ResponseEntity<byte[]> bypassFile(final HttpServletRequest request, final String body, final HttpHeaders headers) {
