@@ -1,5 +1,6 @@
 package net.ripe.whois;
 
+import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.crowd.CachingCrowdSessionChecker;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -195,4 +197,16 @@ public class CrowdTokenFilterTest {
         assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit?param%3Dtest"));
     }
 
+    @Test
+    public void respond_with_error_when_already_called_redirected_once_to_access_page() throws Exception {
+        request = new MockHttpServletRequest("GET", "/db-web-ui/webupdates/create/RIPE/role/self");
+        request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
+
+        when(crowdSessionChecker.hasActiveToken("value")).thenThrow(new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), ""));
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        assertThat(response.getStatus(), is(302));
+        assertThat(response.getHeader("Location"), is("http://localhost/error"));
+    }
 }
