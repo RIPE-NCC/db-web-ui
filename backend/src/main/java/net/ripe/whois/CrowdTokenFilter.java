@@ -1,5 +1,6 @@
 package net.ripe.whois;
 
+import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.crowd.CachingCrowdSessionChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,16 @@ public class CrowdTokenFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request)) {
+        boolean shouldFilter = true;
+        try {
+            shouldFilter = isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request);
+        } catch (RestClientException e) {
+            // whoisInternal is not available, we can't redirect to login page as it loops
+            response.setHeader(HttpHeaders.LOCATION, generateErrorLocationHeader(request));
+            response.setStatus(HttpServletResponse.SC_FOUND);
+            return;
+        }
+        if (shouldFilter) {
             LOGGER.debug("******* Allow {} {}", request.getMethod(), request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
@@ -76,6 +86,22 @@ public class CrowdTokenFilter implements Filter {
 
         reportAuthorisationError(request, response);
     }
+
+    private String generateErrorLocationHeader(final HttpServletRequest request) {
+        StringBuilder url = new StringBuilder();
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+
+        url.append(scheme).append("://").append(serverName);
+        if (serverPort != 80 && serverPort != 443) {
+            url.append(":").append(serverPort);
+        }
+        url.append(contextPath).append("/error");
+        return url.toString();
+    }
+
 
     private boolean isStaticResource(HttpServletRequest request) {
         return (request.getRequestURI().endsWith(".css") ||
