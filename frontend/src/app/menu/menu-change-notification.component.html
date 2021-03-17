@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        ul.bullets li {
-            list-style: disc inside;
+        .menu-notification div {
+            display: inline-block;
+        }
+        .menu-notification .msg {
+            width: 500px;
+            float: left;
+            padding-right: 40px;
         }
         .menu-notification img {
-            display: block;
             height: 500px;
             margin: 20px auto;
             object-fit: scale-down;
             box-shadow:0 0 7px 0 #555555;
-            background: url("/assets/images/app-switcher.gif");
+            background: url("assets/images/app-switcher.gif");
         }
     </style>
 </head>
 <body>
 <div class="menu-notification">
-    <p><strong>The RIPE Database and LIR Portal have a new look!</strong></p>
-    <br />
-    <p>We’re working on improving the usability of our services and have <i>moved our services to the new UI</i>. You can still navigate to the LIR Portal, RIPE Database and RPKI Dashboard by using the App Switcher in the top right corner.</p>
-    <img src="assets/images/app-switcher.gif" alt="app switcher example">
+    <div class="msg">
+        <p><strong>The RIPE Database and LIR Portal have a new look!</strong></p>
+        <br />
+        <p>We’re working on improving the usability of our services and have <i>moved our services to the new UI</i>. You can still navigate to the LIR Portal, RIPE Database and RPKI Dashboard by using the App Switcher in the top right corner.</p>
+    </div>
+    <div>
+        <img src="assets/images/app-switcher.gif" alt="app switcher example">
+    </div>
 </div>
 </body>
 </html>
