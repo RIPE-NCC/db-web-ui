@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        .menu-notification div {
-            display: inline-block;
+        .menu-notification {
+            display: flex;
+            flex-wrap: wrap;
         }
-        .menu-notification .msg {
-            width: auto;
-            float: left;
-            padding-right: 20px;
+
+        .menu-notification .wrap {
+            flex: 1 1 0;
         }
         .menu-notification img {
             height: 500px;
-            margin: 20px auto;
+            margin: 20px;
             object-fit: scale-down;
             box-shadow: 0 0 7px 0 #555555;
-            background: url("assets/images/app-switcher.gif");
+            background: url("assets/images/app-switcher-1.gif");
         }
     </style>
 </head>
 <body>
 <div class="menu-notification">
-    <div class="msg">
+    <div class="wrap">
         <p><strong>The RIPE Database and LIR Portal have a new look!</strong></p>
         <br />
         <p>We’re working on improving the usability of our services and have <a href="https://labs.ripe.net/Members/theodoros_polychniatis/new-look-for-the-ripe-database-and-lir-portal">moved our services to the new UI</a>. You can still navigate to the LIR Portal, RIPE Database and RPKI Dashboard by using the App Switcher in the top right corner.</p>
     </div>
-    <div>
-        <img src="assets/images/app-switcher.gif" alt="app switcher example">
+    <div class="wrap">
+        <img src="assets/images/app-switcher-1.gif" alt="app switcher example">
     </div>
 </div>
 </body>

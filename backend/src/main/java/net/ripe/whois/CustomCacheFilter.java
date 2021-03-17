@@ -28,8 +28,7 @@ public class CustomCacheFilter implements Filter {
         ".css",
         ".ico",
         ".jpg",
-        ".png",
-        ".gif"
+        ".png"
     };
 
     @Override

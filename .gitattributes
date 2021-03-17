@@ -14,10 +14,13 @@ frontend/test/lib/webdrivers/linux/* binary
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary
+*.gif binary
 *.jpg binary
 *.jar binary
 *.pdf binary
 *.eot binary
 *.ttf binary
+*.woff binary
+*.woff2 binary
 *.gzip binary
 *.gz binary
