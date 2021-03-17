@@ -111,7 +111,8 @@ public class CrowdTokenFilter implements Filter {
                 //request.getRequestURI().endsWith(".html") ||
                 request.getRequestURI().endsWith(".woff") ||
                 request.getRequestURI().endsWith(".woff2") ||
-                request.getRequestURI().endsWith(".png"));
+                request.getRequestURI().endsWith(".png") ||
+                request.getRequestURI().endsWith(".gif"));
     }
 
     private boolean isUnprotectedUrl(HttpServletRequest request) {
