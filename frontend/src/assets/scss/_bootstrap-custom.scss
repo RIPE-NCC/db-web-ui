@@ -141,3 +141,7 @@ ngb-popover-window.popover {
 .modal, .modal-backdrop.show {
   z-index: 999999 !important; //needs to be bigger than <ripe-header>: 99999
 }
+
+.modal-dialog {
+  width: 700px !important;
+}
