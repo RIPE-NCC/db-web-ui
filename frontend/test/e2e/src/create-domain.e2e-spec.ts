@@ -105,7 +105,6 @@ describe("The create domain screen", () => {
     });
 
     it("should show a popup and a nice message on success", () => {
-        page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         browser.wait(() => {
             return browser.isElementPresent(page.inpPrefix);
