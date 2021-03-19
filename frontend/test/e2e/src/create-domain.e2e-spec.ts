@@ -104,7 +104,7 @@ describe("The create domain screen", () => {
 
     });
 
-    xit("should show a popup and a nice message on success", () => {
+    fit("should show a popup and a nice message on success", () => {
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         browser.wait(() => {
@@ -147,7 +147,7 @@ describe("The create domain screen", () => {
         page.inpZoneC6.sendKeys(protractor.Key.TAB);
 
         //so submit button is just under scroll-to-view web component (hot hovered)
-        browser.executeScript('window.scrollTo(0,430);').then( () => {});
+        browser.executeScript('window.scrollBy(0, -75);').then( () => {});
         browser.wait(() => {
             return browser.isElementPresent(page.btnSubmitObject);
         }, 5000);
