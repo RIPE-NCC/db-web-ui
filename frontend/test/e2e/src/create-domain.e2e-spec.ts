@@ -104,7 +104,7 @@ describe("The create domain screen", () => {
 
     });
 
-    fit("should show a popup and a nice message on success", () => {
+    it("should show a popup and a nice message on success", () => {
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         browser.wait(() => {
