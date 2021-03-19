@@ -146,6 +146,8 @@ describe("The create domain screen", () => {
         page.inpZoneC6.sendKeys(protractor.Key.ENTER);
         page.inpZoneC6.sendKeys(protractor.Key.TAB);
 
+        //so submit button is just under scroll-to-view web component (hot hovered)
+        browser.executeScript('window.scrollTo(0,430);').then( () => {});
         browser.wait(() => {
             return browser.isElementPresent(page.btnSubmitObject);
         }, 5000);

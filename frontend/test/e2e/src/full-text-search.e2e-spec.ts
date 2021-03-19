@@ -34,23 +34,20 @@ describe("The full text search", () => {
         expect(page.fullTextSearchResults.count()).toEqual(3);
     });
 
-    fit("should be able to search using advanced options", () => {
+    it("should be able to search using advanced options", () => {
         page.byId("fullTextSearchInput").sendKeys("193.0.0.0 ripe");
         page.byId("fullTextAdvanceModeLink").click();
         browser.executeScript('window.scrollTo(0,300);').then( () => {});
-        // page.scrollIntoView(page.byCss("full-text-search h1"));
         expect(page.byId("fullTextAdvancedTypeAll").isPresent()).toEqual(true);
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(7);
 
         browser.executeScript('window.scrollTo(0,300);').then( () => {});
-        // page.scrollIntoView(page.byCss("full-text-search h1"));
         page.byId("fullTextAdvancedTypeAny").click();
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(10);
 
         browser.executeScript('window.scrollTo(0,300);').then( () => {});
-        // page.scrollIntoView(page.byCss("full-text-search h1"));
         page.byId("fullTextAdvancedTypeExact").click();
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(0);
