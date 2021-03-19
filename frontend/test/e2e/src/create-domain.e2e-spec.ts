@@ -149,6 +149,7 @@ describe("The create domain screen", () => {
         browser.wait(() => {
             return browser.isElementPresent(page.btnSubmitObject);
         }, 5000);
+        page.scrollIntoView(page.btnSubmitObject);
         page.btnSubmitObject.click();
 
         // FIXME

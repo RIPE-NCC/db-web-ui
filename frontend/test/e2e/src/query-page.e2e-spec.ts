@@ -377,7 +377,6 @@ describe("The query pagina", () => {
         page.scrollIntoView(page.certificateBanner);
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
-        // page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.templateSearchResults.isPresent()).toEqual(false);
         expect(page.resultsSection.isDisplayed()).toEqual(true);
