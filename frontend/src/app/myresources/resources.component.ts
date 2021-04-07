@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbNavChangeEvent} from "@ng-bootstrap/ng-bootstrap";
 import {
@@ -12,6 +12,7 @@ import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service
 import {IUserInfoOrganisation, IUserInfoRegistration} from "../dropdown/org-data-type.model";
 import {UserInfoService} from "../userinfo/user-info.service";
 import {PropertiesService} from "../properties.service";
+import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.component";
 
 @Component({
     selector: "resource-component",
@@ -33,6 +34,10 @@ export class ResourcesComponent implements OnDestroy {
     public activeSponsoredTab = 0;
     public showAlerts: boolean = true;
     private subscription: any;
+    private subscriptionFetchResources: any;
+
+    @ViewChild(AlertsDropDownComponent, {static: true})
+    public alertsDropDownComponent: AlertsDropDownComponent;
 
     constructor(private resourcesDataService: ResourcesDataService,
                 private userInfoService: UserInfoService,
@@ -41,8 +46,9 @@ export class ResourcesComponent implements OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
         this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
-            if (this.selectedOrg.orgObjectId !== selected.orgObjectId) {
+            if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
                 this.selectedOrg = selected;
+                this.loading = true;
                 // go back to the start "My Resources" page
                 this.refreshPage();
             }
@@ -147,9 +153,12 @@ export class ResourcesComponent implements OnDestroy {
         if (!this.selectedOrg) {
             return;
         }
-
+        // in case organisation was changed, unsubscribe from fetching resources for previously selected org
+        if (this.subscriptionFetchResources) {
+            this.subscriptionFetchResources.unsubscribe();
+        }
         this.loading = true;
-        this.resourcesDataService.fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
+        this.subscriptionFetchResources = this.resourcesDataService.fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
             .subscribe((response: IResourceOverviewResponseModel) => {
                 this.loading = false;
                 switch (this.lastTab) {

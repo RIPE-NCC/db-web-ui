@@ -19,7 +19,7 @@
 
     <a class="blue-button btn-group pull-right" *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'" (click)="navigateToCreateAssignments()">{{ "resource.createAssignment.text" | label }}</a>
     <transfer-drop-down *ngIf="isMemberOrg()" [sponsored-menu]="isShowingSponsored"></transfer-drop-down>
-    <alerts-drop-down *ngIf="showAlerts"></alerts-drop-down>
+    <alerts-drop-down *ngIf="showAlerts" [selected-org]="this.selectedOrg"></alerts-drop-down>
     <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources"
                                [type]="lastTab"
                                [sponsored]="isShowingSponsored">
