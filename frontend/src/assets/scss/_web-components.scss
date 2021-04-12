@@ -13,30 +13,68 @@
         font-weight: 400!important;
         font-size: 1.1em!important;
     }
-    #app-nav-bar {
+    swe-menu {
         grid-column: left;
-        grid-row-end: 1000 span;
+        grid-row: topsmall / 1000 span;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    #app-grid {
+        grid-template-columns: [left] 300px [right] auto;
+    }
+
+    #app-banners-container {
+        grid-column: left / 2 span;
+        top: 40px;
+        padding-bottom: 0;
+    }
+
+    #app-workspace {
+        grid-column: left / 2 span;
+    }
+}
+
+@media only screen and (min-width: 701px) {
+    #app-grid {
+        grid-template-columns: [left] max-content [right] auto;
+    }
+
+    #app-banners-container {
+        grid-column: right;
+        top: 70px;
+    }
+
+    #app-workspace {
+        grid-column: right;
     }
 }
 
 #app-grid {
+    width: 100%;
     display: grid;
-    grid-template-columns: [left] max-content [right] auto;
+    grid-template-rows: [topsmall] 40px [topbig] 70px [bc] auto [ws] max-content;
 }
 
 swe-menu {
-    grid-column: left;
-    grid-row-end: 1000 span;
+    display: contents; //app-nav-bar must be first children of grid-layout, use `contents` to ignore it, this doesn't work on IE11
+    app-nav-bar {
+        grid-column: left;
+        grid-row: topsmall / 1000 span;
+    }
 }
 
 #app-banners-container {
     position: sticky;
-    top: 70px;
+    grid-row: topsmall / ws;
     background-color: white;
     z-index: 99;
+    top: 70px;
+    padding-bottom: 0;
 }
 
 #app-workspace {
+    grid-row: ws;
     margin: 24px;
     background-color: white;
 }
