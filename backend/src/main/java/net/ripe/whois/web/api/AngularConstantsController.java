@@ -130,7 +130,6 @@ public class AngularConstantsController {
         constants.setPortal_url(portalUrl);
         constants.setBanner(frontendBanner);
         constants.setMatomo_id(frontendMatomoId);
-        constants.setLirLandingPageUrl(leftMenuConfiguration.getLirLandingPageUrl());
         constants.setMy_resources_url(leftMenuConfiguration.getMyResourcesUrl());
         constants.setRequest_resources_url(leftMenuConfiguration.getRequestResourcesUrl());
         constants.setRequest_update_url(leftMenuConfiguration.getRequestUpdateUrl());
@@ -168,8 +167,6 @@ public class AngularConstantsController {
         private String banner;
         @JsonProperty("MATOMO_ID")
         private String frontendMatomoId;
-        @JsonProperty("LIR_LANDING_PAGE_URL")
-        private String lir_landing_page_url;
         @JsonProperty("MY_RESOURCES_URL")
         private String my_resources_url;
         @JsonProperty("REQUEST_RESOURCES_URL")
@@ -235,10 +232,6 @@ public class AngularConstantsController {
 
         public void setMatomo_id(String matomo_id) {
             this.frontendMatomoId = matomo_id;
-        }
-
-        public void setLirLandingPageUrl(String lir_landing_page_url) {
-            this.lir_landing_page_url = lir_landing_page_url;
         }
 
         public void setMy_resources_url(String my_resources_url) {

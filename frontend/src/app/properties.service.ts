@@ -20,7 +20,6 @@ export class PropertiesService {
     public RIPE_APP_WEBCOMPONENTS_ENV = "pre";
     public MATOMO_ID = "BuGxbMDR_dev_0ae7dee0ac65f70a4e8cf1b8";
     public IPV4_TRANSFER_LISTING_URL = "";
-    public LIR_LANDING_PAGE_URL = "";
     public LOGIN_URL = "https://access.prepdev.ripe.net/";
     public LOGOUT_URL = "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query";
     public MY_RESOURCES_URL = "myresources/overview";
@@ -56,7 +55,6 @@ export class PropertiesService {
                         this.PORTAL_URL = response.PORTAL_URL;
                         this.BANNER = response.BANNER;
                         this.MATOMO_ID = response.MATOMO_ID;
-                        this.LIR_LANDING_PAGE_URL = response.LIR_LANDING_PAGE_URL;
                         this.MY_RESOURCES_URL = response.MY_RESOURCES_URL;
                         this.REQUEST_RESOURCES_URL = response.REQUEST_RESOURCES_URL;
                         this.REQUEST_UPDATE_URL = response.REQUEST_UPDATE_URL;

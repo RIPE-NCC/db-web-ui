@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LeftMenuConfiguration {
 
-    @Value("${lir.landing.page.url:}")
-    private String lirLandingPageUrl;
     @Value("${my.resources.url}")
     private String myResourcesUrl;
     @Value("${request.resources.url:}")
@@ -30,10 +28,6 @@ public class LeftMenuConfiguration {
     private String databaseCreateUrl;
     @Value("${open.acquisition.url:}") //we need it to be #/open-lir-org-change
     private String openAcquisitionUrl;
-
-    public String getLirLandingPageUrl() {
-        return lirLandingPageUrl;
-    }
 
     public String getMyResourcesUrl() {
         return myResourcesUrl;
