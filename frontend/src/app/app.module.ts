@@ -37,7 +37,6 @@ import {IeBannerComponent} from "./banner/ie-banner.component";
 import {MenuComponent} from "./menu/menu.component";
 import {MenuService} from "./menu/menu.service";
 import {LegalComponent} from "./footer-legal/legal.component";
-import {MenuChangeNotificationComponent} from "./menu/menu-change-notification.component";
 
 @NgModule({
   declarations: [
@@ -48,7 +47,6 @@ import {MenuChangeNotificationComponent} from "./menu/menu-change-notification.c
     IeBannerComponent,
     OrgDropDownComponent,
     MenuComponent,
-    MenuChangeNotificationComponent,
     ErrorPageComponent,
     NotFoundPageComponent,
     LegalComponent

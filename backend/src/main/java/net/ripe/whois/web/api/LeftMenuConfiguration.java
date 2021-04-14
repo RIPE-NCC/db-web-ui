@@ -6,20 +6,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LeftMenuConfiguration {
 
-    @Value("${lir.account.details.url:}")
-    private String lirAccountDetailsUrl;
-    @Value("${lir.billing.details.url:}")
-    private String lirBillingDetailsUrl;
-    @Value("${lir.gm.preferences.url:}")
-    private String lirGeneralMeetingUrl;
-    @Value("${lir.user.accounts.url:}")
-    private String lirUserAccountsUrl;
-    @Value("${lir.tickets.url:}")
-    private String lirTicketsUrl;
-    @Value("${lir.training.url:}")
-    private String lirTrainingUrl;
-    @Value("${lir.api.access.keys.url:}")
-    private String lirApiAccessKeysUrl;
+    @Value("${lir.landing.page.url:}")
+    private String lirLandingPageUrl;
     @Value("${my.resources.url}")
     private String myResourcesUrl;
     @Value("${request.resources.url:}")
@@ -43,32 +31,8 @@ public class LeftMenuConfiguration {
     @Value("${open.acquisition.url:}") //we need it to be #/open-lir-org-change
     private String openAcquisitionUrl;
 
-    public String getLirAccountDetailsUrl() {
-        return lirAccountDetailsUrl;
-    }
-
-    public String getLirBillingDetailsUrl() {
-        return lirBillingDetailsUrl;
-    }
-
-    public String getLirGeneralMeetingUrl() {
-        return lirGeneralMeetingUrl;
-    }
-
-    public String getLirUserAccountsUrl() {
-        return lirUserAccountsUrl;
-    }
-
-    public String getLirTicketsUrl() {
-        return lirTicketsUrl;
-    }
-
-    public String getLirTrainingUrl() {
-        return lirTrainingUrl;
-    }
-
-    public String getLirApiAccessKeysUrl() {
-        return lirApiAccessKeysUrl;
+    public String getLirLandingPageUrl() {
+        return lirLandingPageUrl;
     }
 
     public String getMyResourcesUrl() {

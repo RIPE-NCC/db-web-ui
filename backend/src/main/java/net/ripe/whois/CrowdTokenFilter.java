@@ -44,7 +44,6 @@ public class CrowdTokenFilter implements Filter {
             ".*/db-web-ui/not-found",
             ".*/db-web-ui/index.html",
             ".*/db-web-ui/legal",
-            ".*/db-web-ui/menuChangeNotification",
             // these calls are only made in non-aot mode
             ".*/ng/.*.html",
     };

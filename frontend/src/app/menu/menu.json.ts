@@ -3,69 +3,34 @@ export const menuObject =  {
     {
       "title": "My Account",
       "id": "account",
+      "url": "LIR_LANDING_PAGE_URL",
       "icon": "<svg aria-hidden='true' focusable='false' data-prefix='fal' data-icon='server' class='svg-inline--fa fa-server fa-w-16' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='currentColor' d='M376 256c0-13.255 10.745-24 24-24s24 10.745 24 24-10.745 24-24 24-24-10.745-24-24zm-40 24c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm176-128c0 12.296-4.629 23.507-12.232 32 7.603 8.493 12.232 19.704 12.232 32v80c0 12.296-4.629 23.507-12.232 32 7.603 8.493 12.232 19.704 12.232 32v80c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48v-80c0-12.296 4.629-23.507 12.232-32C4.629 319.507 0 308.296 0 296v-80c0-12.296 4.629-23.507 12.232-32C4.629 175.507 0 164.296 0 152V72c0-26.51 21.49-48 48-48h416c26.51 0 48 21.49 48 48v80zm-480 0c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16V72c0-8.822-7.178-16-16-16H48c-8.822 0-16 7.178-16 16v80zm432 48H48c-8.822 0-16 7.178-16 16v80c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16v-80c0-8.822-7.178-16-16-16zm16 160c0-8.822-7.178-16-16-16H48c-8.822 0-16 7.178-16 16v80c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16v-80zm-80-224c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm-64 0c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm64 240c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z'></path></svg>",
       "roles": ["admin", "general", "billing", "generalMeeting", "ticketing", "guest"]
     }, {
-      "title": "Account Overview",
-      "id": "overview",
+      "title": "",
+      "id": "fake-my-account-submenu_account",
       "parent": "account",
-      "url": "LIR_ACCOUNT_DETAILS_URL",
-      "roles": ["admin", "general"]
-    }, {
-      "title": "Billing",
-      "id": "billing",
-      "parent": "account",
-      "url": "LIR_BILLING_DETAILS_URL",
-      "roles": ["billing"]
-    }, {
-      "title": "Request Update",
-      "id": "request_update",
-      "parent": "account",
-      "url": "REQUEST_UPDATE_URL",
-      "roles": ["admin", "general"]
-    }, {
-      "title": "Users",
-      "id": "users",
-      "parent": "account",
-      "url": "LIR_USER_ACCOUNTS_URL",
-      "roles": ["admin", "general", "billing"]
-    }, {
-      "title": "Tickets",
-      "id": "tickets",
-      "parent": "account",
-      "url": "LIR_TICKETS_URL",
-      "roles": ["ticketing"]
-    }, {
-      "title": "Training",
-      "id": "training",
-      "parent": "account",
-      "url": "LIR_TRAINING_URL",
-      "roles": ["admin", "general"]
-    }, {
-      "title": "API Keys",
-      "id": "api_keys",
-      "parent": "account",
-      "url": "LIR_API_ACCESS_KEYS_URL",
-      "roles": ["admin"]
-    }, {
-      "title": "General Meeting",
-      "id": "general_meeting",
-      "parent": "account",
-      "url": "LIR_GENERAL_MEETING_URL",
-      "roles": ["generalMeeting"]
-    }, {
-      "title": "Request Update",
-      "id": "request_update",
-      "parent": "account",
-      "url": "OPEN_ACQUISITION_URL",
-      "roles": ["guest"]
+      "roles": ["admin", "general", "billing", "generalMeeting", "ticketing", "guest"]
     },
     {
-      "title": "Resources",
-      "id": "resources",
+      "title": "Requests & Transfers",
+      "subtitle": "Request Resources, Request Transfer, IPv4 Transfer Listing Service",
+      "id": "requests_transfers",
+      "url": "LIR_LANDING_PAGE_URL",
       "icon": "<svg aria-hidden='true' focusable='false' data-prefix='fal' data-icon='ethernet' class='svg-inline--fa fa-ethernet fa-w-16' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='currentColor' d='M496 192h-48v-48c0-8.8-7.2-16-16-16h-48V80c0-8.8-7.2-16-16-16H144c-8.8 0-16 7.2-16 16v48H80c-8.8 0-16 7.2-16 16v48H16c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V208c0-8.8-7.2-16-16-16zm-16 224h-64V288h-32v128h-64V288h-32v128h-64V288h-32v128h-64V288H96v128H32V224h64v-64h64V96h192v64h64v64h64v192z'></path></svg>",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
-    },{
+    }, {
+      "title": "",
+      "id": "fake-my-account-submenu_requests_transfers",
+      "parent": "requests_transfers",
+      "roles": ["admin", "general", "billing", "generalMeeting", "ticketing", "guest"]
+    },
+    {
+      "title": "My Resources",
+      "subtitle": "My Resources & Sponsored Resources",
+      "id": "resources",
+      "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
+    }, {
       "title": "My Resources",
       "id": "myresources",
       "parent": "resources",
@@ -77,30 +42,6 @@ export const menuObject =  {
       "parent": "resources",
       "url": "MY_RESOURCES_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
-    }, {
-      "title": "Request Resources",
-      "id": "request_resources",
-      "parent": "resources",
-      "url": "REQUEST_RESOURCES_URL",
-      "roles": ["admin", "general"]
-    }, {
-      "title": "Request Transfer",
-      "id": "request_transfer",
-      "parent": "resources",
-      "url": "REQUEST_TRANSFER_URL",
-      "roles": ["admin", "general"]
-    }, {
-      "title": "IPv4 Transfer Listing Service",
-      "id": "ipv4_transfer_listing",
-      "parent": "resources",
-      "url": "IPV4_TRANSFER_LISTING_URL",
-      "roles": ["admin", "general"]
-    }, {
-      "title": "RPKI Dashboard",
-      "id": "rpki_dashboard",
-      "parent": "resources",
-      "url": "RPKI_DASHBOARD_URL",
-      "roles": ["certification"]
     },
     {
       "title": "RIPE Database",
@@ -131,6 +72,12 @@ export const menuObject =  {
       "parent": "database",
       "url": "DATABASE_CREATE_URL",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
+    },
+    {
+      "title": "RPKI Dashboard",
+      "id": "rpki_dashboard",
+      "url": "RPKI_DASHBOARD_URL",
+      "roles": ["certification"]
     }
   ],
   "footer": [
