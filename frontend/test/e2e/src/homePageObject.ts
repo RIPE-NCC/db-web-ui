@@ -223,11 +223,13 @@ module.exports = {
 
     // Lefthand menu items
     topMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")),
-    firstMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(0).all(by.css_sr("::sr menu-item")),
-    secondMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(1).all(by.css_sr("::sr menu-item")),
-    ripeDatabaseMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(2).all(by.css_sr("::sr menu-item")),
-    ripeDatabaseMenuItem: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(2).element(by.css_sr("::sr #title-database")),
-    ripeDatabaseQueryMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(2).all(by.css_sr("::sr menu-item")).get(0).element(by.css_sr("::sr #title-query")),
+    firstTopMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(0).all(by.css_sr("::sr menu-item")),
+    secondTopMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(1).all(by.css_sr("::sr menu-item")),
+    myResourcesMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(2).all(by.css_sr("::sr menu-item")),
+    ripeDatabaseMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(3).all(by.css_sr("::sr menu-item")),
+    ripeDatabaseMenuItem: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(3).element(by.css_sr("::sr #title-database")),
+    ripeDatabaseQueryMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(3).all(by.css_sr("::sr menu-item")).get(0).element(by.css_sr("::sr #title-query")),
+    rpkiMenuItems: element.all(by.css_sr("app-nav-bar::sr #menu menu-item.top-level")).get(4).all(by.css_sr("::sr menu-item")),
 
     // My resources
     myResources: element(by.css(".my-resources")),
@@ -496,7 +498,7 @@ module.exports = {
         return new GetWhoisObject(parent);
     },
 
-    getResourcesTopMenu: function() {
+    getMyResourcesTopMenu: function() {
         return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-resources"))
     },
     getMyAccountTopMenu: function() {
