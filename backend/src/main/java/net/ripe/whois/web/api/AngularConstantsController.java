@@ -61,6 +61,8 @@ public class AngularConstantsController {
     private String queryPageLinkToOtherDb;
     @Value("${syncupdates.api.url}")
     private String syncupdatesApiUrl;
+    @Value("${frontend.livechat.key}")
+    private String frontendLiveChatKey;
 
     private AppConstants appConstants;
 
@@ -197,6 +199,8 @@ public class AngularConstantsController {
         private String query_page_link_to_other_db;
         @JsonProperty("DB_WEB_UI_BUILD_TIME")
         private String db_web_ui_build_time;
+        @JsonProperty("LIVE_CHAT_KEY")
+        private String frontend_live_chat_key;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -292,6 +296,10 @@ public class AngularConstantsController {
 
         public void setDb_web_ui_build_time(String db_web_ui_build_time) {
             this.db_web_ui_build_time = db_web_ui_build_time;
+        }
+
+        public void setFrontendLiveChatKey(String frontend_live_chat_key) {
+            this.frontend_live_chat_key = frontend_live_chat_key;
         }
     }
 }

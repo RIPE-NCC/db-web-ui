@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 
 declare var loadMatomo: (matomoId: string) => any;
 declare var loadUsersnap: (buildTag: string) => any;
+declare var loadUserlike: (userlikeKey: string) => any;
 
 @Injectable()
 export class PropertiesService {
@@ -26,6 +27,7 @@ export class PropertiesService {
     public OBJECT_LOOKUP_URL = "lookup";
     public OPEN_ACQUISITION_URL = "";
     public PORTAL_URL = "https://my.prepdev.ripe.net/";
+    public LIVE_CHAT_KEY = "98e82f81b368ddac660f7980f60227954738de3d5b6eaf8d07fc763f617d80b5";
     public QUERY_PAGE_LINK_TO_OTHER_DB = "";
     public REQUEST_RESOURCES_URL = "";
     public REQUEST_TRANSFER_URL = "";
@@ -84,5 +86,6 @@ export class PropertiesService {
     private injectProperties() {
         if (typeof loadMatomo === 'function') { loadMatomo(this.MATOMO_ID) }
         if (typeof loadUsersnap === 'function') { loadUsersnap(this.DB_WEB_UI_BUILD_TIME) }
+        if (typeof loadUserlike === 'function') { loadUserlike(this.LIVE_CHAT_KEY) }
     }
 }
