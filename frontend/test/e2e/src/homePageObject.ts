@@ -419,6 +419,13 @@ module.exports = {
         return this.lookupPageObjectLi.get(attributeNumber).all(by.css("span")).get(1);
     },
 
+    disableLiveChat: function () {
+        browser.executeScript(() => {
+            var element = document.getElementById("userlike");
+            element.remove();
+        })
+    },
+
     /**
      * Experimental support for iMacros scripts.
      *
