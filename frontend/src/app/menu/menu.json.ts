@@ -6,11 +6,6 @@ export const menuObject =  {
       "url": "PORTAL_URL",
       "icon": "<svg aria-hidden='true' focusable='false' data-prefix='fal' data-icon='server' class='svg-inline--fa fa-server fa-w-16' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='currentColor' d='M376 256c0-13.255 10.745-24 24-24s24 10.745 24 24-10.745 24-24 24-24-10.745-24-24zm-40 24c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm176-128c0 12.296-4.629 23.507-12.232 32 7.603 8.493 12.232 19.704 12.232 32v80c0 12.296-4.629 23.507-12.232 32 7.603 8.493 12.232 19.704 12.232 32v80c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48v-80c0-12.296 4.629-23.507 12.232-32C4.629 319.507 0 308.296 0 296v-80c0-12.296 4.629-23.507 12.232-32C4.629 175.507 0 164.296 0 152V72c0-26.51 21.49-48 48-48h416c26.51 0 48 21.49 48 48v80zm-480 0c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16V72c0-8.822-7.178-16-16-16H48c-8.822 0-16 7.178-16 16v80zm432 48H48c-8.822 0-16 7.178-16 16v80c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16v-80c0-8.822-7.178-16-16-16zm16 160c0-8.822-7.178-16-16-16H48c-8.822 0-16 7.178-16 16v80c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16v-80zm-80-224c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm-64 0c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm64 240c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z'></path></svg>",
       "roles": ["admin", "general", "billing", "generalMeeting", "ticketing", "guest"]
-    }, {
-      "title": "",
-      "id": "fake-my-account-submenu_account",
-      "parent": "account",
-      "roles": ["admin", "general", "billing", "generalMeeting", "ticketing", "guest"]
     },
     {
       "title": "Request & Transfer Resources",
@@ -18,11 +13,6 @@ export const menuObject =  {
       "id": "requests_transfers",
       "url": "PORTAL_URL",
       "icon": "<svg aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fal\" data-icon=\"exchange-alt\" class=\"svg-inline--fa fa-exchange-alt fa-w-16\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path fill=\"currentColor\" d=\"M12 192h372v56c0 29.552 36.528 43.072 55.917 21.26l64-72c10.777-12.124 10.777-30.395 0-42.519l-64-72C420.535 60.936 384 74.436 384 104v56H12c-6.627 0-12 5.373-12 12v8c0 6.627 5.373 12 12 12zm404-88l64 72-64 72V104zm84 216H128v-56c0-29.552-36.528-43.072-55.917-21.26l-64 72c-10.777 12.124-10.777 30.395 0 42.519l64 72C91.465 451.064 128 437.564 128 408v-56h372c6.627 0 12-5.373 12-12v-8c0-6.627-5.373-12-12-12zM96 408l-64-72 64-72v144z\"></path></svg>",
-      "roles": ["admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
-    }, {
-      "title": "",
-      "id": "fake-my-account-submenu_requests_transfers",
-      "parent": "requests_transfers",
       "roles": ["admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
     },
     {
