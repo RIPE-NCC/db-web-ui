@@ -47,8 +47,7 @@ export class ResourcesDataService {
             .set("org-id", orgId);
         return this.http.get<IIpv4Analysis>("api/whois-internal/api/resources/ipanalyser/ipv4.json", {params})
             .pipe(
-                timeout(30000),
-                share());
+                timeout(30000));
     }
 
     public fetchTicketsAndDates(orgId: string, resource: string): Observable<IResourceTickets> {
