@@ -50,7 +50,6 @@ e2e:
         - Xvfb :20 -screen 0 1920x1080x16 &
         # use pinned version of Chrome:
         - cd frontend && npm run e2e-chrome
-    when: manual
 
 e2e-firefox:
     stage: test
@@ -59,7 +58,6 @@ e2e-firefox:
       - export DISPLAY=:20
       - Xvfb :20 -screen 0 1920x1080x16 &
       - cd frontend && npm run e2e-firefox
-    when: manual
 
 qa:
   stage: test

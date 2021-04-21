@@ -91,6 +91,7 @@ describe("The inetnum editor", () => {
     });
 
     it("should sanitized img and script tag - XSS attack", () => {
+        page.disableLiveChat();
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");
