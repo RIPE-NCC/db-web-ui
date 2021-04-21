@@ -66,11 +66,9 @@ swe-menu {
 
 #app-banners-container {
     position: sticky;
-    grid-row: topsmall / ws;
     background-color: white;
     z-index: 99;
     top: 70px;
-    padding-bottom: 0;
 }
 
 #app-workspace {
