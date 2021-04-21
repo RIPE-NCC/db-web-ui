@@ -105,7 +105,6 @@ describe("The create domain screen", () => {
     });
 
     it("should show a popup and a nice message on success", () => {
-        page.disableLiveChat();
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         browser.wait(() => {

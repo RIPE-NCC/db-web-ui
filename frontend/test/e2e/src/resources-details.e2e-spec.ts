@@ -332,7 +332,6 @@ describe("Resources detail", () => {
         });
 
         it("should edit and update out of region aut-num", () => {
-            page.disableLiveChat();
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.scrollIntoView(page.modalInpPassword);
