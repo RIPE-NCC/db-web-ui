@@ -9,7 +9,7 @@ import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service
 import {IUserInfoOrganisation} from "../dropdown/org-data-type.model";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
-declare let useUsersnap: () => any;
+declare let useUsersnapCX: () => any;
 
 @Component({
     selector: "swe-menu",
@@ -62,7 +62,7 @@ export class MenuComponent {
         if (event?.detail?.selected?.url) {
             const urlPropertieName = event.detail.selected.url;
             if (event.detail.selected.id === "feedback") {
-                useUsersnap();
+                useUsersnapCX();
             } else if (urlPropertieName.startsWith("http")) {
                 window.location.href = urlPropertieName;
             } else {
