@@ -86,6 +86,6 @@ export class PropertiesService {
     private injectProperties() {
         if (typeof loadMatomo === 'function') { loadMatomo(this.MATOMO_ID) }
         if (typeof loadUsersnap === 'function') { loadUsersnap(this.DB_WEB_UI_BUILD_TIME) }
-        // if (typeof loadUserlike === 'function') { loadUserlike(this.LIVE_CHAT_KEY) }
+        if (typeof loadUserlike === 'function') { loadUserlike(this.LIVE_CHAT_KEY) }
     }
 }

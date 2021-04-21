@@ -421,8 +421,10 @@ module.exports = {
 
     disableLiveChat: function () {
         browser.executeScript(() => {
-            var element = document.getElementById("userlike");
-            element.remove();
+            let elementLiveChat = document.getElementById("userlike");
+            if (elementLiveChat) {
+                elementLiveChat.remove();
+            }
         })
     },
 
@@ -459,7 +461,6 @@ module.exports = {
             var type = line.match(/TYPE=([^ ]*)/)[1].split(":");
             var pos = parseInt(line.match(/POS=([^ ]*)/)[1], 10);
             var attr = parseAttr(line.match(/ATTR=([^ ]*)/)[1]);
-            //var content = line.match(/CONTENT=([^ ]*)/)[1];
 
             var xpathExpr = ["//", type[0]];
             if (attr.className) {
@@ -467,7 +468,6 @@ module.exports = {
             }
             xpathExpr.push("[position()=", pos, "]");
 
-            //console.log("pos", pos, "type", type, "attr", attr, "locator", locator);
             return element(by.xpath(xpathExpr.join("")));
         }
 

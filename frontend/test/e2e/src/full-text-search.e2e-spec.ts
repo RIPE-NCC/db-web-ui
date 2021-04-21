@@ -34,7 +34,7 @@ describe("The full text search", () => {
         expect(page.fullTextSearchResults.count()).toEqual(3);
     });
 
-    it("should be able to search using advanced options", () => {
+    xit("should be able to search using advanced options", () => {
         page.byId("fullTextSearchInput").sendKeys("193.0.0.0 ripe");
         page.byId("fullTextAdvanceModeLink").click();
         browser.executeScript('window.scrollTo(0,300);').then( () => {});
