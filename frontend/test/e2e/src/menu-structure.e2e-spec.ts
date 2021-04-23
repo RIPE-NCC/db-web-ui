@@ -86,13 +86,13 @@ describe("The left hand menu structure depend on logged in user role", () => {
         expect(page.topMenuItems.get(3).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(4).isDisplayed()).toEqual(true);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("My Account");
+            expect(text).toBe("My LIR");
         });
         page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("Request & Transfer Resources");
+            expect(text).toBe("Requests");
         });
         page.topMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("My Resources");
+            expect(text).toBe("Resources");
         });
         page.topMenuItems.get(4).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RPKI Dashboard");
@@ -131,13 +131,13 @@ describe("The left hand menu structure depend on logged in user role", () => {
         expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(3).isDisplayed()).toEqual(true);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("My Account");
+            expect(text).toBe("My LIR");
         });
         page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("Request & Transfer Resources");
+            expect(text).toBe("Requests");
         });
         page.topMenuItems.get(2).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("My Resources");
+            expect(text).toBe("Resources");
         });
 
         /* My Resource structure of menu items
@@ -164,7 +164,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         await waitForCount(page.topMenuItems, 2);
         expect(page.topMenuItems.count()).toEqual(2);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("My Resources");
+            expect(text).toBe("Resources");
         });
         page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RIPE Database");
@@ -213,7 +213,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         await waitForCount(page.topMenuItems, 2);
         expect(page.topMenuItems.count()).toEqual(2);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("My Resources");
+            expect(text).toBe("Resources");
         });
         page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RIPE Database");
@@ -263,7 +263,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         await waitForCount(page.topMenuItems, 2);
         expect(page.topMenuItems.count()).toEqual(2);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("My Account");
+            expect(text).toBe("My LIR");
         });
         page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
             expect(text).toBe("RIPE Database");

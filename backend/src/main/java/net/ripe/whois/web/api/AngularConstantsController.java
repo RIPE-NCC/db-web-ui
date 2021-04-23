@@ -51,6 +51,10 @@ public class AngularConstantsController {
     private String crowdAccessUrl;
     @Value("${portal.url}")
     private String portalUrl;
+    @Value("${portal.url.account}")
+    private String portalUrlAccount;
+    @Value("${portal.url.request}")
+    private String portalUrlRequest;
     @Value("${frontend.banner:}")
     private String frontendBanner;
     @Value("${object.lookup.url}")
@@ -129,7 +133,9 @@ public class AngularConstantsController {
         constants.setLogin_url(crowdLoginUrl);
         constants.setAccess_url(crowdAccessUrl);
         constants.setLogout_url(crowdLogoutUrl);
-        constants.setPortal_url(portalUrl);
+        constants.setPortalUrl(portalUrl);
+        constants.setPortalUrlAccount(portalUrl);
+        constants.setPortalUrlRequest(portalUrl);
         constants.setBanner(frontendBanner);
         constants.setMatomo_id(frontendMatomoId);
         constants.setMy_resources_url(leftMenuConfiguration.getMyResourcesUrl());
@@ -165,6 +171,10 @@ public class AngularConstantsController {
         private String logout_url;
         @JsonProperty("PORTAL_URL")
         private String portal_url;
+        @JsonProperty("PORTAL_URL_ACCOUNT")
+        private String portal_url_account;
+        @JsonProperty("PORTAL_URL_REQUEST")
+        private String portal_url_request;
         @JsonProperty("BANNER")
         private String banner;
         @JsonProperty("MATOMO_ID")
@@ -226,8 +236,16 @@ public class AngularConstantsController {
             this.logout_url = logout_url;
         }
 
-        public void setPortal_url(String portal_url) {
+        public void setPortalUrl(String portal_url) {
             this.portal_url = portal_url;
+        }
+
+        public void setPortalUrlAccount(String portal_url_account) {
+            this.portal_url_account = portal_url_account;
+        }
+
+        public void setPortalUrlRequest(String portal_url_request) {
+            this.portal_url_request = portal_url_request;
         }
 
         public void setBanner(String banner) {
