@@ -95,7 +95,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
             expect(text).toBe("Resources");
         });
         page.topMenuItems.get(4).element(by.css_sr("::sr p.title")).getText().then((text) => {
-            expect(text).toBe("RPKI Dashboard");
+            expect(text).toBe("RPKI");
         });
 
         /* My Account structure of menu items doesn't exist

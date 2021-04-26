@@ -2,7 +2,7 @@ export const menuObject =  {
   "main": [
     {
       "title": "My LIR",
-      "subtitle": "Account Overview, Billing, Users, GM, Training, API Keys",
+      "subtitle": "LIR Account, Billing, Users, General Meeting, Training",
       "id": "account",
       "url": "PORTAL_URL_ACCOUNT",
       "icon": "<svg aria-hidden='true' focusable='false' data-prefix='fal' data-icon='server' class='svg-inline--fa fa-server fa-w-16' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='currentColor' d='M376 256c0-13.255 10.745-24 24-24s24 10.745 24 24-10.745 24-24 24-24-10.745-24-24zm-40 24c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm176-128c0 12.296-4.629 23.507-12.232 32 7.603 8.493 12.232 19.704 12.232 32v80c0 12.296-4.629 23.507-12.232 32 7.603 8.493 12.232 19.704 12.232 32v80c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48v-80c0-12.296 4.629-23.507 12.232-32C4.629 319.507 0 308.296 0 296v-80c0-12.296 4.629-23.507 12.232-32C4.629 175.507 0 164.296 0 152V72c0-26.51 21.49-48 48-48h416c26.51 0 48 21.49 48 48v80zm-480 0c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16V72c0-8.822-7.178-16-16-16H48c-8.822 0-16 7.178-16 16v80zm432 48H48c-8.822 0-16 7.178-16 16v80c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16v-80c0-8.822-7.178-16-16-16zm16 160c0-8.822-7.178-16-16-16H48c-8.822 0-16 7.178-16 16v80c0 8.822 7.178 16 16 16h416c8.822 0 16-7.178 16-16v-80zm-80-224c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm-64 0c13.255 0 24-10.745 24-24s-10.745-24-24-24-24 10.745-24 24 10.745 24 24 24zm64 240c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z'></path></svg>",
@@ -10,7 +10,7 @@ export const menuObject =  {
     },
     {
       "title": "Requests",
-      "subtitle": "Tickets, Request Resources, Request Transfer, IPv4 Listing service",
+      "subtitle": "Tickets, Resources, Updates, Transfers",
       "id": "requests_transfers",
       "url": "PORTAL_URL_REQUEST",
       "icon": "<svg aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fal\" data-icon=\"exchange-alt\" class=\"svg-inline--fa fa-exchange-alt fa-w-16\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path fill=\"currentColor\" d=\"M12 192h372v56c0 29.552 36.528 43.072 55.917 21.26l64-72c10.777-12.124 10.777-30.395 0-42.519l-64-72C420.535 60.936 384 74.436 384 104v56H12c-6.627 0-12 5.373-12 12v8c0 6.627 5.373 12 12 12zm404-88l64 72-64 72V104zm84 216H128v-56c0-29.552-36.528-43.072-55.917-21.26l-64 72c-10.777 12.124-10.777 30.395 0 42.519l64 72C91.465 451.064 128 437.564 128 408v-56h372c6.627 0 12-5.373 12-12v-8c0-6.627-5.373-12-12-12zM96 408l-64-72 64-72v144z\"></path></svg>",
@@ -18,7 +18,7 @@ export const menuObject =  {
     },
     {
       "title": "Resources",
-      "subtitle": "My & Sponsored Resources",
+      "subtitle": "My Resources, Sponsored Resources",
       "id": "resources",
       "icon": "<svg aria-hidden='true' focusable='false' data-prefix='fal' data-icon='ethernet' class='svg-inline--fa fa-ethernet fa-w-16' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='currentColor' d='M496 192h-48v-48c0-8.8-7.2-16-16-16h-48V80c0-8.8-7.2-16-16-16H144c-8.8 0-16 7.2-16 16v48H80c-8.8 0-16 7.2-16 16v48H16c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V208c0-8.8-7.2-16-16-16zm-16 224h-64V288h-32v128h-64V288h-32v128h-64V288h-32v128h-64V288H96v128H32V224h64v-64h64V96h192v64h64v64h64v192z'></path></svg>",
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "myResources", "ticketing"]
@@ -66,7 +66,8 @@ export const menuObject =  {
       "roles": ["unauthorised", "admin", "billing", "certification", "general", "generalMeeting", "guest", "myResources", "ticketing"]
     },
     {
-      "title": "RPKI Dashboard",
+      "title": "RPKI",
+      "subtitle": "RPKI Dashboard",
       "id": "rpki_dashboard",
       "url": "RPKI_DASHBOARD_URL",
       "icon":
@@ -92,7 +93,7 @@ export const menuObject =  {
     {
       "title": "Legal",
       "id": "legal",
-      "subtitle": "Copyright, Privacy, Terms and cookies",
+      "subtitle": "Copyright, Privacy, Terms and Cookies",
       "url": "LEGAL",
       "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'><path fill='currentColor' d='M634.4 375.09L525.35 199.12c-3.17-4.75-8.26-7.12-13.35-7.12s-10.18 2.38-13.35 7.12L389.6 375.09c-3.87 5.78-6.09 12.72-5.51 19.64C389.56 460.4 444.74 512 512 512c67.27 0 122.45-51.6 127.91-117.27.57-6.92-1.64-13.86-5.51-19.64zM511.96 238.24L602.27 384H421.02l90.94-145.76zM512 480c-41.28 0-77-26.77-90.42-64h181.2c-13.23 36.87-49.2 64-90.78 64zm17.89-317.21l5.08-15.17c1.4-4.19-.86-8.72-5.05-10.12L379.46 87.15C382.33 79.98 384 72.21 384 64c0-35.35-28.65-64-64-64-29.32 0-53.77 19.83-61.34 46.73L120.24.42c-4.19-1.4-8.72.86-10.12 5.05l-5.08 15.17c-1.4 4.19.86 8.72 5.05 10.12l148.29 49.62c5.91 22.23 23.33 39.58 45.62 45.36V480H104c-4.42 0-8 3.58-8 8v16c0 4.42 3.58 8 8 8h224c4.42 0 8-3.58 8-8V125.74c8.64-2.24 16.5-6.22 23.32-11.58l160.45 53.68c4.18 1.4 8.71-.86 10.12-5.05zM320 96c-17.64 0-32-14.36-32-32s14.36-32 32-32 32 14.36 32 32-14.36 32-32 32zm-64.09 170.73c.58-6.92-1.64-13.86-5.51-19.64L141.35 71.12C138.18 66.38 133.09 64 128 64s-10.18 2.38-13.35 7.12L5.6 247.09c-3.87 5.78-6.09 12.72-5.51 19.64C5.56 332.4 60.74 384 128 384s122.44-51.6 127.91-117.27zM127.96 110.24L218.27 256H37.02l90.94-145.76zM37.58 288h181.2c-13.23 36.87-49.2 64-90.78 64-41.28 0-77-26.77-90.42-64z'/></svg>"
     }
