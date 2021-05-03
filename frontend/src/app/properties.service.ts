@@ -57,6 +57,8 @@ export class PropertiesService {
                         this.ACCESS_URL = response.ACCESS_URL;
                         this.LOGOUT_URL = response.LOGOUT_URL;
                         this.PORTAL_URL = response.PORTAL_URL;
+                        this.PORTAL_URL_ACCOUNT = response.PORTAL_URL_ACCOUNT;
+                        this.PORTAL_URL_REQUEST = response.PORTAL_URL_REQUEST;
                         this.BANNER = response.BANNER;
                         this.MATOMO_ID = response.MATOMO_ID;
                         this.MY_RESOURCES_URL = response.MY_RESOURCES_URL;
