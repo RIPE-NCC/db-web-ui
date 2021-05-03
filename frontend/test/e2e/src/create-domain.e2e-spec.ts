@@ -105,6 +105,7 @@ describe("The create domain screen", () => {
     });
 
     it("should show a popup and a nice message on success", () => {
+        page.disableLiveChat();
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         browser.wait(() => {
@@ -146,10 +147,11 @@ describe("The create domain screen", () => {
         page.inpZoneC6.sendKeys(protractor.Key.ENTER);
         page.inpZoneC6.sendKeys(protractor.Key.TAB);
 
+        //so submit button is just under scroll-to-view web component (hot hovered)
+        browser.executeScript('window.scrollBy(0, -75);').then( () => {});
         browser.wait(() => {
             return browser.isElementPresent(page.btnSubmitObject);
         }, 5000);
-        page.scrollIntoView(page.btnSubmitObject);
         page.btnSubmitObject.click();
 
         // FIXME

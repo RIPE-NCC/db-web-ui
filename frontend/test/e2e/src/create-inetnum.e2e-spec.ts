@@ -91,10 +91,10 @@ describe("The inetnum editor", () => {
     });
 
     it("should sanitized img and script tag - XSS attack", () => {
+        page.disableLiveChat();
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");
-        page.scrollIntoView(page.inpNetname);
         page.inpNetname.click();
         page.inpNetname.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");
         page.scrollIntoView(page.inpCountry); // let's have a look at that link
@@ -121,10 +121,8 @@ describe("The inetnum editor", () => {
         expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
         expect(page.inpInetnumDescription.getText()).toContain("Specifies a range of IPv4 that the inetnum object presents.");
         expect(page.inpNetnameDescription.isDisplayed()).toBeFalsy();
-        page.scrollIntoView(page.inpNetnameQuestionMark);
         page.inpNetnameQuestionMark.click();
         expect(page.inpNetnameDescription.isDisplayed()).toBeTruthy();
-        page.scrollIntoView(page.inpInetnumDescription);
         expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
         page.inpInetnumQuestionMark.click();
         expect(page.inpInetnumDescription.isDisplayed()).toBeFalsy();

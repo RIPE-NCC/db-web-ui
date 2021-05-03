@@ -34,7 +34,6 @@ describe("Modifying an organisation", () => {
         });
 
         it("should not allow address to be added - should not have in list of options", () => {
-            page.scrollIntoView(page.btnAddAttribute);
             expect(page.inpAddress.isPresent()).toEqual(true);
             page.btnAddAttribute.click();
             expect(page.modal.isPresent()).toEqual(true);
@@ -43,7 +42,6 @@ describe("Modifying an organisation", () => {
         });
 
         it("should open modal edit attribute on click on pen button org-name", () => {
-            page.scrollIntoView(page.btnEditAnAttribute(page.inpOrgName));
             page.btnEditAnAttribute(page.inpOrgName).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating legal information");
@@ -52,7 +50,6 @@ describe("Modifying an organisation", () => {
         });
 
         it("should open modal edit attribute on click on pen button address", () => {
-            page.scrollIntoView(page.inpAddress);
             page.btnEditAnAttribute(page.inpAddress).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating address information");
@@ -61,19 +58,16 @@ describe("Modifying an organisation", () => {
         });
 
         it("should open modal edit attribute on click on pen button contact information", () => {
-            page.scrollIntoView(page.inpPhone);
             page.btnEditAnAttribute(page.inpPhone).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");
             expect(page.modalEditAttrPanel1.getText()).toContain("My organisation\'s telephone number has changed");
             page.modalClose.click();
-            page.scrollIntoView(page.inpFax);
             page.btnEditAnAttribute(page.inpFax).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");
             expect(page.modalEditAttrPanel1.getText()).toContain("My organisation\'s fax number has changed");
             page.modalClose.click();
-            page.scrollIntoView(page.inpEmail);
             page.btnEditAnAttribute(page.inpEmail).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");

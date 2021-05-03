@@ -34,28 +34,22 @@ describe("Resources", () => {
     });
 
     it("should show sponsored IPv4 resources", () => {
-        page.scrollIntoView(page.tabsMySponsoredResources);
         expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("My Resources");
         // switch to Sponsored Resources
         page.tabSponsoredResources.click();
         expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
         expect(page.myResourcesActiveTabRows.count()).toBe(42);
         // switch back to My Resources
-        page.scrollIntoView(page.tabsMySponsoredResources);
         page.tabMyResources.click();
     });
 
     it("should show always Sponsores Resources tab after switching organisation without sponsored resources", () => {
-        page.scrollIntoView(page.tabsMySponsoredResources);
         page.tabSponsoredResources.click();
         expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
-        page.scrollIntoView(page.orgSelector);
         page.orgSelector.click();
         // switch selected org to Viollier AG
         page.orgSelectorOptions.get(3).click();
-        page.scrollIntoView(page.tabsMySponsoredResources);
         expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
-        page.scrollIntoView(page.orgSelector);
         page.orgSelector.click();
         // switch back selected org to SURFnet
         page.orgSelectorOptions.get(0).click();

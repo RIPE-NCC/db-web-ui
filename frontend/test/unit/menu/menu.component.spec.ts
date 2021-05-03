@@ -3,16 +3,18 @@ import {Location} from "@angular/common";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {IpUsageService} from "../../../src/app/myresources/ip-usage.service";
-import {LeftHandMenuComponent} from "../../../src/app/menu/left-hand-menu.component";
 import {EnvironmentStatusService} from "../../../src/app/shared/environment-status.service";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {WINDOW_PROVIDERS} from "../../../src/app/core/window.service";
 import {OrgDropDownSharedService} from "../../../src/app/dropdown/org-drop-down-shared.service";
+import {MenuComponent} from "../../../src/app/menu/menu.component";
+import {MenuService} from "../../../src/app/menu/menu.service";
 
-describe("LeftHandMenuComponent", () => {
+describe("MenuComponent", () => {
 
-    let component: LeftHandMenuComponent;
-    let fixture: ComponentFixture<LeftHandMenuComponent>;
+    let component: MenuComponent;
+    let menuService: MenuService;
+    let fixture: ComponentFixture<MenuComponent>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -20,9 +22,10 @@ describe("LeftHandMenuComponent", () => {
                 HttpClientTestingModule,
                 RouterTestingModule],
             declarations: [
-                LeftHandMenuComponent,
+                MenuComponent,
             ],
             providers: [
+                MenuService,
                 IpUsageService,
                 PropertiesService,
                 WINDOW_PROVIDERS,
@@ -33,8 +36,9 @@ describe("LeftHandMenuComponent", () => {
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LeftHandMenuComponent);
+        fixture = TestBed.createComponent(MenuComponent);
         component = fixture.componentInstance;
+        menuService = TestBed.inject(MenuService);
     });
 
     it("should create", () => {
@@ -53,17 +57,15 @@ describe("LeftHandMenuComponent", () => {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(component.show.admin).toBe(true);
-        expect(component.show.general).toBe(true);
-        expect(component.show.generalMeeting).toBe(true);
-        expect(component.show.ticketing).toBe(true);
-        expect(component.show.certification).toBe(true);
-        expect(component.show.billing).toBe(true);
-        expect(component.show.testRcEnv).toBe(false);
-        expect(component.show.trainingEnv).toBe(false);
+        expect(menuService.roles.admin).toBe(true);
+        expect(menuService.roles.general).toBe(true);
+        expect(menuService.roles.generalMeeting).toBe(true);
+        expect(menuService.roles.ticketing).toBe(true);
+        expect(menuService.roles.certification).toBe(true);
+        expect(menuService.roles.billing).toBe(true);
     });
 
-    it("should show just Resource/My Resources and RIPE Database for Training environment", () => {
+    it("should show just RIPE Database for Training environment", () => {
         spyOn(EnvironmentStatusService, "isTrainingEnv").and.returnValue(true);
         spyOn(EnvironmentStatusService, "isTestRcEnv").and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg(
@@ -75,8 +77,18 @@ describe("LeftHandMenuComponent", () => {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(component.show.testRcEnv).toBe(false);
-        expect(component.show.trainingEnv).toBe(true);
+        expect(component.menu).not.toContain("My Resources");
+        expect(component.menu).not.toContain("Sponsored Resources");
+        expect(component.menu).not.toContain("Request Resources");
+        expect(component.menu).not.toContain("Request Transfer");
+        expect(component.menu).not.toContain("IPv4 Transfer Listing Service");
+        expect(component.menu).not.toContain("RPKI Dashboard");
+        // RIPE Database
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
     });
 
     it("should show just Resource/My Resources and RIPE Database for Production Test environment", () => {
@@ -91,8 +103,18 @@ describe("LeftHandMenuComponent", () => {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(component.show.testRcEnv).toBe(true);
-        expect(component.show.trainingEnv).toBe(false);
+        expect(component.menu).toContain("My Resources");
+        expect(component.menu).toContain("Sponsored Resources");
+        expect(component.menu).not.toContain("Request Resources");
+        expect(component.menu).not.toContain("Request Transfer");
+        expect(component.menu).not.toContain("IPv4 Transfer Listing Service");
+        expect(component.menu).not.toContain("RPKI Dashboard");
+        // RIPE Database
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
     });
 
     it("should show just Resource/My Resources and RIPE Database for Production Test environment", () => {
@@ -107,25 +129,35 @@ describe("LeftHandMenuComponent", () => {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(component.show.testRcEnv).toBe(true);
-        expect(component.show.trainingEnv).toBe(false);
+        expect(component.menu).toContain("My Resources");
+        expect(component.menu).toContain("Sponsored Resources");
+        expect(component.menu).not.toContain("Request Resources");
+        expect(component.menu).not.toContain("Request Transfer");
+        expect(component.menu).not.toContain("IPv4 Transfer Listing Service");
+        expect(component.menu).not.toContain("RPKI Dashboard");
+        // RIPE Database
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
     });
 
     it("should not set anything if user has no roles", () => {
         component.orgDropDownSharedService.setSelectedOrg(null);
-        expect(component.show.admin).toBe(false);
-        expect(component.show.general).toBe(false);
-        expect(component.show.generalMeeting).toBe(false);
-        expect(component.show.ticketing).toBe(false);
-        expect(component.show.certification).toBe(false);
-        expect(component.show.billing).toBe(false);
+        expect(menuService.roles.admin).toBe(false);
+        expect(menuService.roles.general).toBe(false);
+        expect(menuService.roles.generalMeeting).toBe(false);
+        expect(menuService.roles.ticketing).toBe(false);
+        expect(menuService.roles.certification).toBe(false);
+        expect(menuService.roles.billing).toBe(false);
         component.orgDropDownSharedService.setSelectedOrg({"roles": [] });
-        expect(component.show.admin).toBe(false);
-        expect(component.show.general).toBe(false);
-        expect(component.show.generalMeeting).toBe(false);
-        expect(component.show.ticketing).toBe(false);
-        expect(component.show.certification).toBe(false);
-        expect(component.show.billing).toBe(false);
+        expect(menuService.roles.admin).toBe(false);
+        expect(menuService.roles.general).toBe(false);
+        expect(menuService.roles.generalMeeting).toBe(false);
+        expect(menuService.roles.ticketing).toBe(false);
+        expect(menuService.roles.certification).toBe(false);
+        expect(menuService.roles.billing).toBe(false);
     });
 
     it("should set menu for end user role", () => {
@@ -136,23 +168,23 @@ describe("LeftHandMenuComponent", () => {
                 "roles": ["certification", "NON-MEMBER"]
             }
         );
-        expect(component.show.admin).toBe(false);
-        expect(component.show.general).toBe(false);
-        expect(component.show.generalMeeting).toBe(false);
-        expect(component.show.ticketing).toBe(false);
-        expect(component.show.certification).toBe(true);
-        expect(component.show.billing).toBe(false);
+        expect(menuService.roles.admin).toBe(false);
+        expect(menuService.roles.general).toBe(false);
+        expect(menuService.roles.generalMeeting).toBe(false);
+        expect(menuService.roles.ticketing).toBe(false);
+        expect(menuService.roles.certification).toBe(true);
+        expect(menuService.roles.billing).toBe(false);
     });
 
     it("should set menu for user role without lir or organisation", () => {
         component.orgDropDownSharedService.setSelectedOrg(
             {}
         );
-        expect(component.show.admin).toBe(false);
-        expect(component.show.general).toBe(false);
-        expect(component.show.generalMeeting).toBe(false);
-        expect(component.show.ticketing).toBe(false);
-        expect(component.show.certification).toBe(false);
-        expect(component.show.billing).toBe(false);
+        expect(menuService.roles.admin).toBe(false);
+        expect(menuService.roles.general).toBe(false);
+        expect(menuService.roles.generalMeeting).toBe(false);
+        expect(menuService.roles.ticketing).toBe(false);
+        expect(menuService.roles.certification).toBe(false);
+        expect(menuService.roles.billing).toBe(false);
     });
 });

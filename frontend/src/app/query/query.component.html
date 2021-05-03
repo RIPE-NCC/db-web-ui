@@ -41,7 +41,7 @@
             You can search up to five terms at once in the search box above, separating them with a semi-colon.
         </p>
         <div class="margin-bottom">
-            <ul ngbNav #navQuery="ngbNav" [(activeId)]="active" class="nav-tabs">
+            <ul ngbNav #navQuery="ngbNav" [(activeId)]="active" [destroyOnHide]="false" class="nav-tabs">
                 <li [ngbNavItem]="1">
                     <a ngbNavLink>Sources</a>
                     <ng-template ngbNavContent>

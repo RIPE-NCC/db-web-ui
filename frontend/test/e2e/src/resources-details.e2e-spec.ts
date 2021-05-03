@@ -332,6 +332,7 @@ describe("Resources detail", () => {
         });
 
         it("should edit and update out of region aut-num", () => {
+            page.disableLiveChat();
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.scrollIntoView(page.modalInpPassword);
@@ -339,9 +340,7 @@ describe("Resources detail", () => {
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
             expect(page.inpDescr.isPresent()).toBe(true);
-            page.scrollIntoView(page.inpDescr);
             page.inpDescr.sendKeys("Updated test description");
-            page.scrollIntoView(page.inpDescr);
             page.btnAddAnAttribute(page.inpDescr).click();
             page.scrollIntoView(page.modal);
             page.modalBtnSubmit.click();
@@ -353,7 +352,6 @@ describe("Resources detail", () => {
             // source field should be disabled
             expect(page.woeSource.getAttribute("disabled")).toBeTruthy();
 
-            page.scrollIntoView(page.btnSubmitObject);
             page.btnSubmitObject.click();
             expect(page.successMessage.isPresent()).toBe(true);
         });

@@ -1,5 +1,11 @@
 body, html {
-    font-size: 13px;
+    font-size: 1em;
+    font-family: "Open Sans", Helvetica, Sans-serif;
+    margin: 0;
+
+    &.section-manage-ips-and-asns main {
+        background: none !important; //overwrite style from template.css
+    }
 }
 
 code {
@@ -233,6 +239,11 @@ div.portlet.navigation {
     width: 100%;
 }
 
+#org-drop-down {
+    display: inline-block;
+    width: 100%;
+}
+
 div.registry-selector-container {
     @extend %float-r;
     margin-right: 15px;
@@ -320,4 +331,16 @@ section .resultlinks {
     div.popover {
         width: 100px;
     }
+}
+
+.grey {
+    background: #f9f9f9;
+}
+
+.margin-bottom {
+    margin-bottom: 1em;
+}
+
+ngx-loading-bar {
+    z-index: 199999 !important;
 }

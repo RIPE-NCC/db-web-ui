@@ -43,6 +43,7 @@ public class CrowdTokenFilter implements Filter {
             ".*/db-web-ui/error",
             ".*/db-web-ui/not-found",
             ".*/db-web-ui/index.html",
+            ".*/db-web-ui/legal",
             // these calls are only made in non-aot mode
             ".*/ng/.*.html",
     };
@@ -107,7 +108,10 @@ public class CrowdTokenFilter implements Filter {
                 request.getRequestURI().endsWith(".json") ||
                 request.getRequestURI().endsWith(".js.map") ||
                 //request.getRequestURI().endsWith(".html") ||
-                request.getRequestURI().endsWith(".png"));
+                request.getRequestURI().endsWith(".woff") ||
+                request.getRequestURI().endsWith(".woff2") ||
+                request.getRequestURI().endsWith(".png") ||
+                request.getRequestURI().endsWith(".gif"));
     }
 
     private boolean isUnprotectedUrl(HttpServletRequest request) {

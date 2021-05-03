@@ -51,6 +51,10 @@ public class AngularConstantsController {
     private String crowdAccessUrl;
     @Value("${portal.url}")
     private String portalUrl;
+    @Value("${portal.url.account}")
+    private String portalUrlAccount;
+    @Value("${portal.url.request}")
+    private String portalUrlRequest;
     @Value("${frontend.banner:}")
     private String frontendBanner;
     @Value("${object.lookup.url}")
@@ -61,6 +65,8 @@ public class AngularConstantsController {
     private String queryPageLinkToOtherDb;
     @Value("${syncupdates.api.url}")
     private String syncupdatesApiUrl;
+    @Value("${frontend.livechat.key}")
+    private String frontendLiveChatKey;
 
     private AppConstants appConstants;
 
@@ -127,16 +133,11 @@ public class AngularConstantsController {
         constants.setLogin_url(crowdLoginUrl);
         constants.setAccess_url(crowdAccessUrl);
         constants.setLogout_url(crowdLogoutUrl);
-        constants.setPortal_url(portalUrl);
+        constants.setPortalUrl(portalUrl);
+        constants.setPortalUrlAccount(portalUrl);
+        constants.setPortalUrlRequest(portalUrl);
         constants.setBanner(frontendBanner);
         constants.setMatomo_id(frontendMatomoId);
-        constants.setLir_account_details_url(leftMenuConfiguration.getLirAccountDetailsUrl());
-        constants.setLir_billing_details_url(leftMenuConfiguration.getLirBillingDetailsUrl());
-        constants.setLir_general_meeting_url(leftMenuConfiguration.getLirGeneralMeetingUrl());
-        constants.setLir_user_accounts_url(leftMenuConfiguration.getLirUserAccountsUrl());
-        constants.setLir_tickets_url(leftMenuConfiguration.getLirTicketsUrl());
-        constants.setLir_training_url(leftMenuConfiguration.getLirTrainingUrl());
-        constants.setLir_api_access_keys_url(leftMenuConfiguration.getLirApiAccessKeysUrl());
         constants.setMy_resources_url(leftMenuConfiguration.getMyResourcesUrl());
         constants.setRequest_resources_url(leftMenuConfiguration.getRequestResourcesUrl());
         constants.setRequest_update_url(leftMenuConfiguration.getRequestUpdateUrl());
@@ -170,24 +171,14 @@ public class AngularConstantsController {
         private String logout_url;
         @JsonProperty("PORTAL_URL")
         private String portal_url;
+        @JsonProperty("PORTAL_URL_ACCOUNT")
+        private String portal_url_account;
+        @JsonProperty("PORTAL_URL_REQUEST")
+        private String portal_url_request;
         @JsonProperty("BANNER")
         private String banner;
         @JsonProperty("MATOMO_ID")
         private String frontendMatomoId;
-        @JsonProperty("LIR_ACCOUNT_DETAILS_URL")
-        private String lir_account_details_url;
-        @JsonProperty("LIR_BILLING_DETAILS_URL")
-        private String lir_billing_details_url;
-        @JsonProperty("LIR_GENERAL_MEETING_URL")
-        private String lir_general_meeting_url;
-        @JsonProperty("LIR_USER_ACCOUNTS_URL")
-        private String lir_user_accounts_url;
-        @JsonProperty("LIR_TICKETS_URL")
-        private String lir_tickets_url;
-        @JsonProperty("LIR_TRAINING_URL")
-        private String lir_training_url;
-        @JsonProperty("LIR_API_ACCESS_KEYS_URL")
-        private String lir_api_access_keys_url;
         @JsonProperty("MY_RESOURCES_URL")
         private String my_resources_url;
         @JsonProperty("REQUEST_RESOURCES_URL")
@@ -218,6 +209,8 @@ public class AngularConstantsController {
         private String query_page_link_to_other_db;
         @JsonProperty("DB_WEB_UI_BUILD_TIME")
         private String db_web_ui_build_time;
+        @JsonProperty("LIVE_CHAT_KEY")
+        private String frontend_live_chat_key;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -243,8 +236,16 @@ public class AngularConstantsController {
             this.logout_url = logout_url;
         }
 
-        public void setPortal_url(String portal_url) {
+        public void setPortalUrl(String portal_url) {
             this.portal_url = portal_url;
+        }
+
+        public void setPortalUrlAccount(String portal_url_account) {
+            this.portal_url_account = portal_url_account;
+        }
+
+        public void setPortalUrlRequest(String portal_url_request) {
+            this.portal_url_request = portal_url_request;
         }
 
         public void setBanner(String banner) {
@@ -253,34 +254,6 @@ public class AngularConstantsController {
 
         public void setMatomo_id(String matomo_id) {
             this.frontendMatomoId = matomo_id;
-        }
-
-        public void setLir_account_details_url(String lir_account_details_url) {
-            this.lir_account_details_url = lir_account_details_url;
-        }
-
-        public void setLir_billing_details_url(String lir_billing_details_url) {
-            this.lir_billing_details_url = lir_billing_details_url;
-        }
-
-        public void setLir_general_meeting_url(String lir_general_meeting_url) {
-            this.lir_general_meeting_url = lir_general_meeting_url;
-        }
-
-        public void setLir_user_accounts_url(String lir_user_accounts_url) {
-            this.lir_user_accounts_url = lir_user_accounts_url;
-        }
-
-        public void setLir_tickets_url(String lir_tickets_url) {
-            this.lir_tickets_url = lir_tickets_url;
-        }
-
-        public void setLir_training_url(String lir_training_url) {
-            this.lir_training_url = lir_training_url;
-        }
-
-        public void setLir_api_access_keys_url(String lir_api_access_keys_url) {
-            this.lir_api_access_keys_url = lir_api_access_keys_url;
         }
 
         public void setMy_resources_url(String my_resources_url) {
@@ -341,6 +314,10 @@ public class AngularConstantsController {
 
         public void setDb_web_ui_build_time(String db_web_ui_build_time) {
             this.db_web_ui_build_time = db_web_ui_build_time;
+        }
+
+        public void setFrontendLiveChatKey(String frontend_live_chat_key) {
+            this.frontend_live_chat_key = frontend_live_chat_key;
         }
     }
 }

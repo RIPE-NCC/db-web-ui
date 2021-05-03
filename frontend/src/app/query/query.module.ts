@@ -27,7 +27,6 @@ import {CertificateBannerComponent} from "../banner/certificate-banner.component
         CertificateBannerComponent,
         QueryComponent,
         TemplateComponent
-
     ],
     providers: [
         LookupService,

@@ -28,6 +28,7 @@ import {EmailConfirmationComponent} from "./emailconfirmation/email-confirmation
 import {AuthenticationGuard} from "./authentication-guard.service";
 import {DeleteComponent} from "./updatesweb/delete.component";
 import {CreateMntnerPairComponent} from "./updatesweb/createmntnerpair/create-mntner-pair.component";
+import {LegalComponent} from "./footer-legal/legal.component";
 
 export const appRoutes: Routes = [
     {path: "myresources/overview", component: ResourcesComponent, canActivate: [AuthenticationGuard]},
@@ -62,6 +63,7 @@ export const appRoutes: Routes = [
     {path: "fmp/change-auth", component: ForgotMaintainerPasswordComponent},
     {path: "fmp/ssoAdded/:mntnerKey/:user", component: SsoAddedComponent},
     {path: "fmp/confirm", component: ConfirmMaintainerComponent},
+    {path: "legal", component: LegalComponent},
     {path: "error", component: ErrorPageComponent},
     {path: "not-found", component: NotFoundPageComponent},
     {path: "confirmEmail", component: EmailConfirmationComponent},

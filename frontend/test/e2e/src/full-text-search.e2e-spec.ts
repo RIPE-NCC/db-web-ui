@@ -1,4 +1,4 @@
-import {browser} from "protractor";
+import {browser, by} from "protractor";
 
 const page = require("./homePageObject");
 
@@ -27,33 +27,30 @@ describe("The full text search", () => {
 
     it("should be able to add a filter by clicking on summary", () => {
         page.byId("fullTextSearchInput").sendKeys("193.0.0.0");
-        page.scrollIntoView(page.byId("fullTextSearchInput"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(7);
         expect(page.fullTextResultSummaryRow.get(0).getText()).toContain("inetnum");
-        page.scrollIntoView(page.fullTextResultSummaryRow.get(0));
         page.fullTextResultSummaryRow.get(0).click(); // click on "inetnum"
         expect(page.fullTextSearchResults.count()).toEqual(3);
     });
 
     it("should be able to search using advanced options", () => {
+        // accept all cookies so banner doesn't cover app-workspace
+        page.byCss("app-cookie-consent").element(by.css_sr("::sr #close-cookie-consent")).click();
         page.byId("fullTextSearchInput").sendKeys("193.0.0.0 ripe");
         page.byId("fullTextAdvanceModeLink").click();
-
+        browser.executeScript('window.scrollTo(0,300);').then( () => {});
         expect(page.byId("fullTextAdvancedTypeAll").isPresent()).toEqual(true);
-        page.scrollIntoView(page.byId("fullTextSearchButton"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(7);
 
-        page.scrollIntoView(page.byId("fullTextAdvancedTypeAny"));
+        browser.executeScript('window.scrollTo(0,300);').then( () => {});
         page.byId("fullTextAdvancedTypeAny").click();
-        page.scrollIntoView(page.byId("fullTextSearchButton"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(10);
 
-        page.scrollIntoView(page.byId("fullTextAdvancedTypeExact"));
+        browser.executeScript('window.scrollTo(0,300);').then( () => {});
         page.byId("fullTextAdvancedTypeExact").click();
-        page.scrollIntoView(page.byId("fullTextSearchButton"));
         page.byId("fullTextSearchButton").click();
         expect(page.fullTextSearchResults.count()).toEqual(0);
     });
