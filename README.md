@@ -169,6 +169,10 @@ Open a terminal and cd into the `frontend/app` directory, then type these comman
 
     curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
 
+### Ripe web components 
+Join technical design bot channel on Mattermost to stay up to date with releases and change version in package.json file
+https://gitlab.ripe.net/technical-design/ripe-app-webcomponents
+
 Protractor
 ----------
 

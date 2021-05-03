@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 
 declare var loadMatomo: (matomoId: string) => any;
 declare var loadUsersnap: (buildTag: string) => any;
+declare var loadUserlike: (userlikeKey: string) => any;
 
 @Injectable()
 export class PropertiesService {
@@ -20,19 +21,15 @@ export class PropertiesService {
     public RIPE_APP_WEBCOMPONENTS_ENV = "pre";
     public MATOMO_ID = "BuGxbMDR_dev_0ae7dee0ac65f70a4e8cf1b8";
     public IPV4_TRANSFER_LISTING_URL = "";
-    public LIR_ACCOUNT_DETAILS_URL = "";
-    public LIR_API_ACCESS_KEYS_URL = "";
-    public LIR_BILLING_DETAILS_URL = "";
-    public LIR_GENERAL_MEETING_URL = "";
-    public LIR_TICKETS_URL = "";
-    public LIR_TRAINING_URL = "";
-    public LIR_USER_ACCOUNTS_URL = "";
     public LOGIN_URL = "https://access.prepdev.ripe.net/";
     public LOGOUT_URL = "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query";
     public MY_RESOURCES_URL = "myresources/overview";
     public OBJECT_LOOKUP_URL = "lookup";
     public OPEN_ACQUISITION_URL = "";
     public PORTAL_URL = "https://my.prepdev.ripe.net/";
+    public PORTAL_URL_ACCOUNT = "https://my.prepdev.ripe.net/#/account-details";
+    public PORTAL_URL_REQUEST = "https://my.prepdev.ripe.net/#/request";
+    public LIVE_CHAT_KEY = "98e82f81b368ddac660f7980f60227954738de3d5b6eaf8d07fc763f617d80b5";
     public QUERY_PAGE_LINK_TO_OTHER_DB = "";
     public REQUEST_RESOURCES_URL = "";
     public REQUEST_TRANSFER_URL = "";
@@ -41,6 +38,7 @@ export class PropertiesService {
     public RPKI_DASHBOARD_URL = "";
     public SOURCE = "RIPE";
     public DB_WEB_UI_BUILD_TIME = "00:00";
+    public LEGAL = "legal";
 
     constructor(private httpClient: HttpClient) { }
 
@@ -59,15 +57,10 @@ export class PropertiesService {
                         this.ACCESS_URL = response.ACCESS_URL;
                         this.LOGOUT_URL = response.LOGOUT_URL;
                         this.PORTAL_URL = response.PORTAL_URL;
+                        this.PORTAL_URL_ACCOUNT = response.PORTAL_URL_ACCOUNT;
+                        this.PORTAL_URL_REQUEST = response.PORTAL_URL_REQUEST;
                         this.BANNER = response.BANNER;
                         this.MATOMO_ID = response.MATOMO_ID;
-                        this.LIR_ACCOUNT_DETAILS_URL = response.LIR_ACCOUNT_DETAILS_URL;
-                        this.LIR_BILLING_DETAILS_URL = response.LIR_BILLING_DETAILS_URL;
-                        this.LIR_GENERAL_MEETING_URL = response.LIR_GENERAL_MEETING_URL;
-                        this.LIR_USER_ACCOUNTS_URL = response.LIR_USER_ACCOUNTS_URL;
-                        this.LIR_TICKETS_URL = response.LIR_TICKETS_URL;
-                        this.LIR_TRAINING_URL = response.LIR_TRAINING_URL;
-                        this.LIR_API_ACCESS_KEYS_URL = response.LIR_API_ACCESS_KEYS_URL;
                         this.MY_RESOURCES_URL = response.MY_RESOURCES_URL;
                         this.REQUEST_RESOURCES_URL = response.REQUEST_RESOURCES_URL;
                         this.REQUEST_UPDATE_URL = response.REQUEST_UPDATE_URL;
@@ -78,7 +71,7 @@ export class PropertiesService {
                         this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                         this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
                         this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
-                        this.RIPE_APP_WEBCOMPONENTS_ENV = "prod";
+                        this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === "prod" ? "prod" : "pre";
 
                         this.injectProperties();
                     },
@@ -86,7 +79,7 @@ export class PropertiesService {
 
                 );
         } else {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 this.injectProperties();
                 resolve();
             })
@@ -97,7 +90,6 @@ export class PropertiesService {
     private injectProperties() {
         if (typeof loadMatomo === 'function') { loadMatomo(this.MATOMO_ID) }
         if (typeof loadUsersnap === 'function') { loadUsersnap(this.DB_WEB_UI_BUILD_TIME) }
-        // loadMatomo(this.MATOMO_ID);
-        // loadUsersnap(this.DB_WEB_UI_BUILD_TIME);
+        if (typeof loadUserlike === 'function') { loadUserlike(this.LIVE_CHAT_KEY) }
     }
 }

@@ -11,27 +11,22 @@ describe("Resources, update object", () => {
     });
 
     it("should allow editing of the object", () => {
-
-        page.scrollIntoView(page.btnUpdateObjectButton);
+        page.disableLiveChat();
         page.btnUpdateObjectButton.click();
         page.modalInpPassword.sendKeys("TPOL888-MNT");
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
         expect(page.modal.isPresent()).toBe(false);
         expect(page.inpDescr.isPresent()).toBe(true);
-        page.scrollIntoView(page.inpDescr);
         page.inpDescr.sendKeys("Updated test description");
 
-        page.scrollIntoView(page.inpDescr);
         page.btnAddAnAttribute(page.inpDescr).click();
-        page.scrollIntoView(page.modal);
         page.modalBtnSubmit.click();
 
         expect(page.inpDescr2.isPresent()).toBe(true);
         page.btnRemoveAttribute(page.inpDescr2).click();
         expect(page.inpDescr2.isPresent()).toBe(false);
 
-        page.scrollIntoView(page.btnSubmitObject);
         page.btnSubmitObject.click();
         expect(page.successMessage.isPresent()).toBe(true);
     });
@@ -113,7 +108,6 @@ describe("Resources, update object", () => {
         });
 
         it("should not contain delete button for co-maintained by RIPE-NCC-*-MNT", () => {
-            page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys("TDACRUZPER2-MNT");
             page.modalInpAssociate.click();

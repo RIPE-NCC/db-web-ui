@@ -56,15 +56,15 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
         expect(page.modal.isPresent()).toBe(false);
-        page.scrollIntoView(page.btnDeleteObject);
         page.btnDeleteObject.click();
         expect(browser.getCurrentUrl()).toContain("webupdates/delete/ripe/route/211.43.192.0%2F19AS9777?onCancel=webupdates%2Fmodify");
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(false);
         expect(page.infoMessage.getText()).toEqual("The following object(s) have been successfully deleted");
-        // navigating to query page should remove alert component 
-        page.ripeDatabaseMenuItems.get(0).click();
+        // navigating to query page should remove alert component
+        page.ripeDatabaseMenuItem.click();
+        page.ripeDatabaseQueryMenuItems.click();
         expect(browser.getCurrentUrl()).toContain("query");
         expect(page.infoMessage.isPresent()).toBeFalsy();
         page.inpQueryString.sendKeys("193.0.0.0")

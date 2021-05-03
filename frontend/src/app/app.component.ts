@@ -1,11 +1,7 @@
-import {Component, Inject} from "@angular/core";
+import {Component, HostListener, Inject} from "@angular/core";
 import {PropertiesService} from "./properties.service";
 import {WINDOW} from "./core/window.service";
 import {Router} from "@angular/router";
-
-declare var init_mega_menu: any;
-declare var init_popover: any;
-declare var whois_search: any;
 
 @Component({
   selector: "app-db-web-ui",
@@ -15,20 +11,20 @@ export class AppComponent {
 
   public isIE: boolean;
   public isIEOrEdge: boolean;
+  public isOpenMenu: boolean;
+  private innerWidth: number;
 
   constructor(public properties: PropertiesService,
               private router: Router,
-              @Inject(WINDOW) private window: any) {
+              @Inject(WINDOW) public window: any) {
     this.skipHash();
   }
 
   public ngOnInit() {
-    this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent)
+    this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent);
     // TODO isIEOrEdge REMOVE AFTER 1st March 2021
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
-    init_mega_menu();
-    init_popover();
-    whois_search();
+    this.openOrCloseMenu();
   }
 
   private skipHash() {
@@ -36,5 +32,19 @@ export class AppComponent {
     if (hash) {
       this.router.navigateByUrl(hash.substring(1));
     }
+  }
+
+  @HostListener("window:resize", ["$event"])
+  onResize() {
+    this.openOrCloseMenu();
+  }
+
+  open = (event: any) => {
+    this.isOpenMenu = event.detail.open;
+  }
+
+  public openOrCloseMenu() {
+    this.innerWidth = this.window.innerWidth;
+    this.isOpenMenu = this.innerWidth >= 1025;
   }
 }

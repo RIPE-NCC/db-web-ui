@@ -52,6 +52,8 @@ public abstract class AbstractIntegrationTest {
     @BeforeClass
     public static void beforeClass() {
         System.setProperty("portal.url", getMockServerUrl());
+        System.setProperty("portal.url.account", getMockServerUrl());
+        System.setProperty("portal.url.request", getMockServerUrl());
         System.setProperty("crowd.access.url", getMockServerUrl());
         System.setProperty("crowd.login.url", getMockServerUrl());
         System.setProperty("crowd.logout.url", getMockServerUrl());

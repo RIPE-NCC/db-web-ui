@@ -8,13 +8,6 @@ import {Router} from "@angular/router";
 import {WINDOW} from "../../src/app/core/window.service";
 import {By} from "@angular/platform-browser";
 
-// @ts-ignore
-window.init_mega_menu = () => {};
-// @ts-ignore
-window.init_popover = () => {};
-// @ts-ignore
-window.whois_search = () => {};
-
 describe("AppComponent", () => {
     let component: AppComponent;
     let fixture: ComponentFixture<AppComponent>;
@@ -60,4 +53,17 @@ describe("AppComponent", () => {
         expect(appSwitch.properties.logoutredirecturl).toBe("https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query");
     });
 
+    it("shouldn\'t open menu on init for mobile screen size",() => {
+        component.window.innerWidth = 1024;
+        fixture.detectChanges();
+        component.openOrCloseMenu();
+        expect(component.isOpenMenu).toBeFalsy();
+    });
+
+    it("should open menu on init for desktop screen size", () => {
+        component.window.innerWidth = 1025;
+        fixture.detectChanges();
+        component.openOrCloseMenu();
+        expect(component.isOpenMenu).toBeTruthy();
+    });
 });
