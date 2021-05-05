@@ -134,8 +134,8 @@ public class AngularConstantsController {
         constants.setAccess_url(crowdAccessUrl);
         constants.setLogout_url(crowdLogoutUrl);
         constants.setPortalUrl(portalUrl);
-        constants.setPortalUrlAccount(portalUrl);
-        constants.setPortalUrlRequest(portalUrl);
+        constants.setPortalUrlAccount(portalUrlAccount);
+        constants.setPortalUrlRequest(portalUrlRequest);
         constants.setBanner(frontendBanner);
         constants.setMatomo_id(frontendMatomoId);
         constants.setMy_resources_url(leftMenuConfiguration.getMyResourcesUrl());

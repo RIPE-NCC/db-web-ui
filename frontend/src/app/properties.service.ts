@@ -27,8 +27,8 @@ export class PropertiesService {
     public OBJECT_LOOKUP_URL = "lookup";
     public OPEN_ACQUISITION_URL = "";
     public PORTAL_URL = "https://my.prepdev.ripe.net/";
-    public PORTAL_URL_ACCOUNT = "https://my.prepdev.ripe.net/#/account-details";
-    public PORTAL_URL_REQUEST = "https://my.prepdev.ripe.net/#/request";
+    public PORTAL_URL_ACCOUNT = "";
+    public PORTAL_URL_REQUEST = "";
     public LIVE_CHAT_KEY = "98e82f81b368ddac660f7980f60227954738de3d5b6eaf8d07fc763f617d80b5";
     public QUERY_PAGE_LINK_TO_OTHER_DB = "";
     public REQUEST_RESOURCES_URL = "";
