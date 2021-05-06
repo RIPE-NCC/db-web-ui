@@ -34,7 +34,7 @@ export class ForgotMaintainerPasswordComponent {
         if (formValid) {
             console.info("Form is valid, sending data to server.");
             this.forgotMaintainerPasswordService.generatePdfAndEmail(fmp)
-                .subscribe((pdfUrl) =>
+                .subscribe((pdfUrl: string) =>
                     this.generatedPDFUrl = pdfUrl);
         }
     }

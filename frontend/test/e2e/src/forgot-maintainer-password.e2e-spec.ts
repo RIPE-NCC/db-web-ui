@@ -1,6 +1,7 @@
-import {browser, by} from "protractor";
+import {browser, by, protractor} from "protractor";
 
 const page = require("./homePageObject");
+const until = protractor.ExpectedConditions;
 
 describe("Forgot Maintainer Password", () => {
 
@@ -27,6 +28,14 @@ describe("Forgot Maintainer Password", () => {
         expect(page.fmpForm.getText()).toContain("This is not a valid email.");
         page.fmpEmail.clear().sendKeys("test@test.com");
         page.fmpNext.click();
+    });
+
+    // The maximum length of the Request URI for requests to our REST API endpoints is 4096 characters
+    it("shouldn't allow more then 1000 characters", () => {
+        // string of 3824 characters
+        page.fmpReason.clear().sendKeys("KiBrG0sXruIUDeuaCQOCVzYPstA2Rx4JTKGUQygVKyLzLnRMWxQxplEGoxcSLXse5NrtRAiQsgpyhgB9eXeBPG4XWcf6x2pcereH75mmpvedMPBmvUBBPrGu4MLtf7Q6ak8qQ3vcpJizpreLZEmmZsUG4gcwhQdL8oOW81bUHDDhUUvGAiHM7zl6eOnKvS5YgngoErv7zOKJeBDhPfc4sVV7gEpGqXd2180UPM1pXUHlHkVXBazvMAFcaLvRD1HTpyJ4MIA3vVykt72uRNFv9e1774jFEAfed6rTVTI5nIPJKGHyJGUJhiVNGvfsEUnYYOAVkJYsqYx0WZ7o4onYDsqOsJP25tBrVXlOwFwbKC8LLNbuoVH0gZ2ErXkAPmuOTXzmWJOlg7iB6RJFtMqanaBGR629RNN5vVgoYe6Kh4plsPbsQqGM9dSLGLrWCTAoC0c4BGJRpbNbQnfdxNR0RaQyhPKLMCRKbQsP2SUEYIUP2zm761V35Z9hPpIx2gtdMU8kAcoxFgoAJCg2reU4pXQhez8VFaUM2QjwuhUi7A5NMGmfKaDw3GClghgeVdT02YOEVOSo0IcgfzFEJnw8IDF6WpPUV4ngR2HWdEKU63DWm0jS287E4hlGxIdr5odnuH5EbEpMEChQNhQ00mLKTy4b4t6MVPJxbruCc5VRYymGJ9CVSGnFDyZ8FjXn3ovcFldEFKtm5GCc9TQnHNGcOTmSSEDMteKflnqYquGYdEZsjFUUduv1ngwkCBjEcKkukV6uxgy2cdJ0IWBnbi0yXW5rhifN8o9LoY1BBFtjG1ObhzLBQYl2BqWnsMuSSijo5LGjT2QStrdydMWSPyjJrkoSN2Iht8Vj1dEUTUPopMNjrPRX9OesUhVHawVkrujngxPtvhXKqPAfALhpXagg96gDluaoWs1RrAU6xoTDtBEGnMpJKC8KH3sulWyujKVHhXKr6YdlsqddWvGsUqk9W3siGh8HiKlGIRpeSruj 1000 and something more");
+        const reason = page.fmpReason.getAttribute("value");
+        expect(reason).toEqual("KiBrG0sXruIUDeuaCQOCVzYPstA2Rx4JTKGUQygVKyLzLnRMWxQxplEGoxcSLXse5NrtRAiQsgpyhgB9eXeBPG4XWcf6x2pcereH75mmpvedMPBmvUBBPrGu4MLtf7Q6ak8qQ3vcpJizpreLZEmmZsUG4gcwhQdL8oOW81bUHDDhUUvGAiHM7zl6eOnKvS5YgngoErv7zOKJeBDhPfc4sVV7gEpGqXd2180UPM1pXUHlHkVXBazvMAFcaLvRD1HTpyJ4MIA3vVykt72uRNFv9e1774jFEAfed6rTVTI5nIPJKGHyJGUJhiVNGvfsEUnYYOAVkJYsqYx0WZ7o4onYDsqOsJP25tBrVXlOwFwbKC8LLNbuoVH0gZ2ErXkAPmuOTXzmWJOlg7iB6RJFtMqanaBGR629RNN5vVgoYe6Kh4plsPbsQqGM9dSLGLrWCTAoC0c4BGJRpbNbQnfdxNR0RaQyhPKLMCRKbQsP2SUEYIUP2zm761V35Z9hPpIx2gtdMU8kAcoxFgoAJCg2reU4pXQhez8VFaUM2QjwuhUi7A5NMGmfKaDw3GClghgeVdT02YOEVOSo0IcgfzFEJnw8IDF6WpPUV4ngR2HWdEKU63DWm0jS287E4hlGxIdr5odnuH5EbEpMEChQNhQ00mLKTy4b4t6MVPJxbruCc5VRYymGJ9CVSGnFDyZ8FjXn3ovcFldEFKtm5GCc9TQnHNGcOTmSSEDMteKflnqYquGYdEZsjFUUduv1ngwkCBjEcKkukV6uxgy2cdJ0IWBnbi0yXW5rhifN8o9LoY1BBFtjG1ObhzLBQYl2BqWnsMuSSijo5LGjT2QStrdydMWSPyjJrkoSN2Iht8Vj1dEUTUPopMNjrPRX9OesUhVHawVkrujngxPtvhXKqPAfALhpXagg96gDluaoWs1RrAU6xoTDtBEGnMpJKC8KH3sulWyujKVHhXKr6YdlsqddWvGsUqk9W3siGh8HiKlGIRpeSruj");
     });
 
     it("should go to next page, and generate PDF link", () => {
