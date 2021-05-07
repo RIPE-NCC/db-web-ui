@@ -60,13 +60,12 @@ export class MenuComponent {
 
     onNavBarSelected = (event: any) => {
         if (event?.detail?.selected?.url) {
-            const urlPropertieName = event.detail.selected.url;
+            const url = event.detail.selected.url;
             if (event.detail.selected.id === "feedback") {
                 useUsersnapCX();
-            } else if (urlPropertieName.startsWith("http")) {
-                window.location.href = urlPropertieName;
+            } else if (url.startsWith("http")) {
+                window.location.href = url;
             } else {
-                const url = eval("`${this.properties." + urlPropertieName + "}`");
                 if (url.startsWith("http")) {
                     window.location.href = url;
                 } else if (event.detail.selected.id === "sponsored") {

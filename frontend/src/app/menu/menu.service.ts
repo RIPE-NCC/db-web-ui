@@ -64,6 +64,8 @@ export class MenuService {
         this.menu = MenuService.getMenuByEnvironment();
         this.setRoles(userRoles);
         const filteredItemsByRoles = this.menu.main.filter(item => item.roles.some(role => userRoles.includes(role)));
+        // @ts-ignore
+        this.menu.main.forEach(menuItem =>  menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url);
         return {
             main: filteredItemsByRoles,
             footer: this.menu.footer
