@@ -1,5 +1,6 @@
 package net.ripe.whois;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.NetworkConnector;
@@ -115,7 +116,11 @@ public class HttpServerMock {
 
         private void handleResponse(final HttpMethod method, final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
-            Stack<Mock> mockResponse = responseMap.get(request.getRequestURI());
+            final String key = StringUtils.isNotBlank(request.getQueryString())?
+                request.getRequestURI() + "?" + request.getQueryString():
+                request.getRequestURI();
+
+            Stack<Mock> mockResponse = responseMap.get(key);
             if (mockResponse == null || mockResponse.isEmpty()) {
                 LOGGER.warn("Mock not found for {}", request.getRequestURI());
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.format("no mocked response found for %s: %s", method, request.getRequestURI()));
