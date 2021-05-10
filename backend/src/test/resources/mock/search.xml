@@ -1,0 +1,70 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<whois-resources xmlns:xlink="http://www.w3.org/1999/xlink">
+    <service name="search"/>
+    <parameters>
+        <inverse-lookup/>
+        <type-filters/>
+        <flags>
+            <flag value="no-referenced"/>
+        </flags>
+        <query-strings>
+            <query-string value="10.0.0.1"/>
+        </query-strings>
+        <sources/>
+    </parameters>
+    <objects>
+        <object type="inetnum">
+            <link xlink:type="locator" xlink:href="https://rest.db.ripe.net/ripe/inetnum/6.0.0.0 - 13.115.255.255"/>
+            <source id="ripe"/>
+            <primary-key>
+                <attribute name="inetnum" value="6.0.0.0 - 13.115.255.255"/>
+            </primary-key>
+            <attributes>
+                <attribute name="inetnum" value="6.0.0.0 - 13.115.255.255" managed="true"/>
+                <attribute name="netname" value="NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK" managed="true"/>
+                <attribute name="descr" value="IPv4 address block not managed by the RIPE NCC"/>
+                <attribute name="remarks" value="------------------------------------------------------"/>
+                <attribute name="remarks" value=""/>
+                <attribute name="remarks" value="For registration information,"/>
+                <attribute name="remarks" value="you can consult the following sources:"/>
+                <attribute name="remarks" value=""/>
+                <attribute name="remarks" value="IANA"/>
+                <attribute name="remarks" value="http://www.iana.org/assignments/ipv4-address-space"/>
+                <attribute name="remarks" value="http://www.iana.org/assignments/iana-ipv4-special-registry"/>
+                <attribute name="remarks" value="http://www.iana.org/assignments/ipv4-recovered-address-space"/>
+                <attribute name="remarks" value=""/>
+                <attribute name="remarks" value="AFRINIC (Africa)"/>
+                <attribute name="remarks" value="http://www.afrinic.net/ whois.afrinic.net"/>
+                <attribute name="remarks" value=""/>
+                <attribute name="remarks" value="APNIC (Asia Pacific)"/>
+                <attribute name="remarks" value="http://www.apnic.net/ whois.apnic.net"/>
+                <attribute name="remarks" value=""/>
+                <attribute name="remarks" value="ARIN (Northern America)"/>
+                <attribute name="remarks" value="http://www.arin.net/ whois.arin.net"/>
+                <attribute name="remarks" value=""/>
+                <attribute name="remarks" value="LACNIC (Latin America and the Carribean)"/>
+                <attribute name="remarks" value="http://www.lacnic.net/ whois.lacnic.net"/>
+                <attribute name="remarks" value=""/>
+                <attribute name="remarks" value="------------------------------------------------------"/>
+                <attribute name="country" value="EU" comment="Country is really world wide"/>
+                <attribute name="admin-c" value="IANA1-RIPE" referenced-type="role">
+                    <link xlink:type="locator" xlink:href="https://rest.db.ripe.net/ripe/role/IANA1-RIPE"/>
+                </attribute>
+                <attribute name="tech-c" value="IANA1-RIPE" referenced-type="role">
+                    <link xlink:type="locator" xlink:href="https://rest.db.ripe.net/ripe/role/IANA1-RIPE"/>
+                </attribute>
+                <attribute name="status" value="ALLOCATED UNSPECIFIED" managed="true"/>
+                <attribute name="mnt-by" value="RIPE-NCC-HM-MNT" referenced-type="mntner" managed="true">
+                    <link xlink:type="locator" xlink:href="https://rest.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"/>
+                </attribute>
+                <attribute name="created" value="2019-01-07T10:49:33Z"/>
+                <attribute name="last-modified" value="2019-01-07T10:49:33Z"/>
+                <attribute name="source" value="RIPE" managed="true"/>
+            </attributes>
+            <managed>true</managed>
+        </object>
+    </objects>
+    <terms-and-conditions xlink:type="locator" xlink:href="http://www.ripe.net/db/support/db-terms-conditions.pdf"/>
+    <version version="1.99" timestamp="2020-12-03T04:20:05Z" commit-id="5950e3d"/>
+</whois-resources>

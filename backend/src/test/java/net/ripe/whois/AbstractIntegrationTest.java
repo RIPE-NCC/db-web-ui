@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -22,10 +23,15 @@ import java.io.IOException;
  * Ref:
  * https://spring.io/blog/2016/04/15/testing-improvements-in-spring-boot-1-4
  * http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-testing.html
+ * <p>
+ * The @DirtiesContext is necessary because the Mock server is restarted and assigned a different port but the
+ * Spring injection for whois api url etc is not performed between test class runs so the url and actual mock server
+ * port are then out of sync. @DirtiesContext forces the context to be reinitialised, thus fixing this problem.
  */
 @RunWith(SpringRunner.class)
 @ActiveProfiles(profiles = "test")
 @SpringBootTest(classes = {Application.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 public abstract class AbstractIntegrationTest {
 
     protected static final String CROWD_COOKIE_VALUE = "aabbccdd";
@@ -44,13 +50,11 @@ public abstract class AbstractIntegrationTest {
 
     protected static HttpServerMock httpServerMock;
 
-    static {
-        httpServerMock = new HttpServerMock();
-        httpServerMock.start();
-    }
-
     @BeforeClass
     public static void beforeClass() {
+        httpServerMock = new HttpServerMock();
+        httpServerMock.start();
+
         System.setProperty("portal.url", getMockServerUrl());
         System.setProperty("portal.url.account", getMockServerUrl());
         System.setProperty("portal.url.request", getMockServerUrl());
@@ -107,6 +111,10 @@ public abstract class AbstractIntegrationTest {
 
     protected static String getMockServerUrl() {
         return String.format("http://localhost:%d", httpServerMock.getPort());
+    }
+
+    protected String getServerUrl() {
+        return String.format("http://localhost:%d", this.localServerPort);
     }
 
     public static String getResource(final String resource) {
