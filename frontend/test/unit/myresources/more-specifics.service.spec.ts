@@ -21,6 +21,7 @@ describe("MoreSpecificsService", () => {
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
+        httpMock.expectOne({method: "GET", url: "app.constants.json"});
         moreSpecificsService = TestBed.inject(MoreSpecificsService);
     });
 

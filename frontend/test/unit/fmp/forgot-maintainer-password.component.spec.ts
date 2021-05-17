@@ -31,7 +31,7 @@ describe("ForgotMaintainerPasswordComponent", () => {
             providers: [
                 { provide: ForgotMaintainerPasswordService, useValue: forgotMaintainerPasswordService},
                 { provide: UserInfoService, useValue: userInfoService},
-                {provide: Router, useValue: routerMock},
+                { provide: Router, useValue: routerMock},
                 {
                     provide: ActivatedRoute, useValue: {
                         snapshot: {

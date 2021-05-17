@@ -152,7 +152,7 @@ describe("QueryComponent", () => {
                 WhoisObjectViewerComponent,
             ],
             providers: [
-                {provide: QueryService, useValue: queryServiceSpy},
+                { provide: QueryService, useValue: queryServiceSpy},
                 WhoisMetaService,
                 QueryParametersService,
                 PropertiesService,

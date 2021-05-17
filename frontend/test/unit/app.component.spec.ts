@@ -24,10 +24,11 @@ describe("AppComponent", () => {
                 BannerComponent,
             ],
             providers: [
-                PropertiesService,
+                {provide: PropertiesService, useValue: {LOGIN_URL: "https://access.prepdev.ripe.net/",
+                        LOGOUT_URL: "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query",
+                        RIPE_APP_WEBCOMPONENTS_ENV: "pre"}},
                 {provide: Router, useValue: routerMock},
                 {provide: WINDOW, useValue: {location: {}}},
-
             ],
             schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
 

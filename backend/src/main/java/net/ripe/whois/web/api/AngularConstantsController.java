@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,8 +57,6 @@ public class AngularConstantsController {
     private String portalUrlRequest;
     @Value("${frontend.banner:}")
     private String frontendBanner;
-    @Value("${object.lookup.url}")
-    private String objectLookupUrl;
     @Value("${rest.search.url}")
     private String restSearchUrl;
     @Value("${query.linkToOtherDb.text:Are you looking for the other database}")
@@ -84,7 +82,7 @@ public class AngularConstantsController {
         appConstants = generateConstants();
     }
 
-    @RequestMapping(value = "/app.constants.json", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/app.constants.json", produces = "application/json")
     @ResponseBody
     public ResponseEntity getAppConstantsJs(HttpServletResponse response) {
         response.setHeader(CACHE_CONTROL, "no-cache"); // deliberately overrides CacheFilter
@@ -129,30 +127,24 @@ public class AngularConstantsController {
         final AppConstants constants = new AppConstants();
         constants.setEnvironment(environment);
         constants.setSource(ripeSource);
-        constants.setBuild_tag(getImplementationVersion());
-        constants.setLogin_url(crowdLoginUrl);
-        constants.setAccess_url(crowdAccessUrl);
-        constants.setLogout_url(crowdLogoutUrl);
+        constants.setBuildTag(getImplementationVersion());
+        constants.setLoginUrl(crowdLoginUrl);
+        constants.setAccessUrl(crowdAccessUrl);
+        constants.setLogoutUrl(crowdLogoutUrl);
         constants.setPortalUrl(portalUrl);
         constants.setPortalUrlAccount(portalUrlAccount);
         constants.setPortalUrlRequest(portalUrlRequest);
         constants.setBanner(frontendBanner);
-        constants.setMatomo_id(frontendMatomoId);
-        constants.setMy_resources_url(leftMenuConfiguration.getMyResourcesUrl());
-        constants.setRequest_resources_url(leftMenuConfiguration.getRequestResourcesUrl());
-        constants.setRequest_update_url(leftMenuConfiguration.getRequestUpdateUrl());
-        constants.setOpen_acquisition_url(leftMenuConfiguration.getOpenAcquisitionUrl());
-        constants.setRequest_transfer_url(leftMenuConfiguration.getRequestTransferUrl());
-        constants.setIpv4_transfer_listing_url(leftMenuConfiguration.getIpv4TransferListingServiceUrl());
-        constants.setRpki_dashboard_url(leftMenuConfiguration.getRpkiDashboardUrl());
-        constants.setDatabase_query_url(leftMenuConfiguration.getDatabaseQueryUrl());
-        constants.setDatabase_full_text_search_url(leftMenuConfiguration.getDatabaseFullTextSearchUrl());
-        constants.setDatabase_syncupdates_url(leftMenuConfiguration.getDatabaseSyncupdatesUrl());
-        constants.setDatabase_create_url(leftMenuConfiguration.getDatabaseCreateUrl());
-        constants.setObject_lookup_url(objectLookupUrl);
-        constants.setRest_search_url(restSearchUrl);
-        constants.setQuery_page_link_to_other_db(queryPageLinkToOtherDb);
-        constants.setDb_web_ui_build_time(buildProperties.getTime().toString());
+        constants.setMatomoId(frontendMatomoId);
+        constants.setRequestResourcesUrl(leftMenuConfiguration.getRequestResourcesUrl());
+        constants.setRequestUpdateUrl(leftMenuConfiguration.getRequestUpdateUrl());
+        constants.setOpenAcquisitionUrl(leftMenuConfiguration.getOpenAcquisitionUrl());
+        constants.setRequestTransferUrl(leftMenuConfiguration.getRequestTransferUrl());
+        constants.setIpv4TransferListingUrl(leftMenuConfiguration.getIpv4TransferListingServiceUrl());
+        constants.setRpkiDashboardUrl(leftMenuConfiguration.getRpkiDashboardUrl());
+        constants.setRestSearchUrl(restSearchUrl);
+        constants.setQueryPageLinkToOtherDb(queryPageLinkToOtherDb);
+        constants.setDbWebUiBuildTime(buildProperties.getTime().toString());
         return constants;
     }
 
@@ -162,55 +154,43 @@ public class AngularConstantsController {
         @JsonProperty("SOURCE")
         private String source;
         @JsonProperty("BUILD_TAG")
-        private String build_tag;
+        private String buildTag;
         @JsonProperty("LOGIN_URL")
-        private String login_url;
+        private String loginUrl;
         @JsonProperty("ACCESS_URL")
-        private String access_url;
+        private String accessUrl;
         @JsonProperty("LOGOUT_URL")
-        private String logout_url;
+        private String logoutUrl;
         @JsonProperty("PORTAL_URL")
-        private String portal_url;
+        private String portalUrl;
         @JsonProperty("PORTAL_URL_ACCOUNT")
-        private String portal_url_account;
+        private String portalUrlAccount;
         @JsonProperty("PORTAL_URL_REQUEST")
-        private String portal_url_request;
+        private String portalUrlRequest;
         @JsonProperty("BANNER")
         private String banner;
         @JsonProperty("MATOMO_ID")
         private String frontendMatomoId;
-        @JsonProperty("MY_RESOURCES_URL")
-        private String my_resources_url;
         @JsonProperty("REQUEST_RESOURCES_URL")
-        private String request_resources_url;
+        private String requestResourcesUrl;
         @JsonProperty("REQUEST_UPDATE_URL")
-        private String request_update_url;
+        private String requestUpdateUrl;
         @JsonProperty("OPEN_ACQUISITION_URL")
-        private String open_acquisition_url;
+        private String openAcquisitionUrl;
         @JsonProperty("REQUEST_TRANSFER_URL")
-        private String request_transfer_url;
+        private String requestTransferUrl;
         @JsonProperty("IPV4_TRANSFER_LISTING_URL")
-        private String ipv4_transfer_listing_url;
+        private String ipv4TransferListingUrl;
         @JsonProperty("RPKI_DASHBOARD_URL")
-        private String rpki_dashboard_url;
-        @JsonProperty("DATABASE_QUERY_URL")
-        private String database_query_url;
-        @JsonProperty("DATABASE_FULL_TEXT_SEARCH_URL")
-        private String database_full_text_search_url;
-        @JsonProperty("DATABASE_SYNCUPDATES_URL")
-        private String database_syncupdates_url;
-        @JsonProperty("DATABASE_CREATE_URL")
-        private String database_create_url;
-        @JsonProperty("OBJECT_LOOKUP_URL")
-        private String object_lookup_url;
+        private String rpkiDashboardUrl;
         @JsonProperty("REST_SEARCH_URL")
-        private String rest_search_url;
+        private String restSearchUrl;
         @JsonProperty("QUERY_PAGE_LINK_TO_OTHER_DB")
-        private String query_page_link_to_other_db;
+        private String queryPageLinkToOtherDb;
         @JsonProperty("DB_WEB_UI_BUILD_TIME")
-        private String db_web_ui_build_time;
+        private String dbWebUiBuildTime;
         @JsonProperty("LIVE_CHAT_KEY")
-        private String frontend_live_chat_key;
+        private String frontendLiveChatKey;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -220,104 +200,80 @@ public class AngularConstantsController {
             this.source = source;
         }
 
-        public void setBuild_tag(String build_tag) {
-            this.build_tag = build_tag;
+        public void setBuildTag(String buildTag) {
+            this.buildTag = buildTag;
         }
 
-        public void setLogin_url(String login_url) {
-            this.login_url = login_url;
+        public void setLoginUrl(String loginUrl) {
+            this.loginUrl = loginUrl;
         }
 
-        public void setAccess_url(String access_url) {
-            this.access_url = access_url;
+        public void setAccessUrl(String accessUrl) {
+            this.accessUrl = accessUrl;
         }
 
-        public void setLogout_url(String logout_url) {
-            this.logout_url = logout_url;
+        public void setLogoutUrl(String logoutUrl) {
+            this.logoutUrl = logoutUrl;
         }
 
-        public void setPortalUrl(String portal_url) {
-            this.portal_url = portal_url;
+        public void setPortalUrl(String portalUrl) {
+            this.portalUrl = portalUrl;
         }
 
-        public void setPortalUrlAccount(String portal_url_account) {
-            this.portal_url_account = portal_url_account;
+        public void setPortalUrlAccount(String portalUrlAccount) {
+            this.portalUrlAccount = portalUrlAccount;
         }
 
-        public void setPortalUrlRequest(String portal_url_request) {
-            this.portal_url_request = portal_url_request;
+        public void setPortalUrlRequest(String portalUrlRequest) {
+            this.portalUrlRequest = portalUrlRequest;
         }
 
         public void setBanner(String banner) {
             this.banner = banner;
         }
 
-        public void setMatomo_id(String matomo_id) {
-            this.frontendMatomoId = matomo_id;
+        public void setMatomoId(String matomoId) {
+            this.frontendMatomoId = matomoId;
         }
 
-        public void setMy_resources_url(String my_resources_url) {
-            this.my_resources_url = my_resources_url;
+        public void setRequestResourcesUrl(String requestResourcesUrl) {
+            this.requestResourcesUrl = requestResourcesUrl;
         }
 
-        public void setRequest_resources_url(String request_resources_url) {
-            this.request_resources_url = request_resources_url;
+        public void setRequestUpdateUrl(String requestUpdateUrl) {
+            this.requestUpdateUrl = requestUpdateUrl;
         }
 
-        public void setRequest_update_url(String request_update_url) {
-            this.request_update_url = request_update_url;
+        public void setOpenAcquisitionUrl(String openAcquisitionUrl) {
+            this.openAcquisitionUrl = openAcquisitionUrl;
         }
 
-        public void setOpen_acquisition_url(String open_acquisition_url) {
-            this.open_acquisition_url = open_acquisition_url;
+        public void setRequestTransferUrl(String requestTransferUrl) {
+            this.requestTransferUrl = requestTransferUrl;
         }
 
-        public void setRequest_transfer_url(String request_transfer_url) {
-            this.request_transfer_url = request_transfer_url;
+        public void setIpv4TransferListingUrl(String ipv4TransferListingUrl) {
+            this.ipv4TransferListingUrl = ipv4TransferListingUrl;
         }
 
-        public void setIpv4_transfer_listing_url(String ipv4_transfer_listing_url) {
-            this.ipv4_transfer_listing_url = ipv4_transfer_listing_url;
+        public void setRpkiDashboardUrl(String rpkiDashboardUrl) {
+            this.rpkiDashboardUrl = rpkiDashboardUrl;
         }
 
-        public void setRpki_dashboard_url(String rpki_dashboard_url) {
-            this.rpki_dashboard_url = rpki_dashboard_url;
+        public void setRestSearchUrl(String restSearchUrl) {
+            this.restSearchUrl = restSearchUrl;
         }
 
-        public void setDatabase_query_url(String database_query_url) {
-            this.database_query_url = database_query_url;
+        public void setQueryPageLinkToOtherDb(String queryPageLinkToOtherDb) {
+            this.queryPageLinkToOtherDb = queryPageLinkToOtherDb;
         }
 
-        public void setDatabase_full_text_search_url(String database_full_text_search_url) {
-            this.database_full_text_search_url = database_full_text_search_url;
+        public void setDbWebUiBuildTime(String dbWebUiBuildTime) {
+            this.dbWebUiBuildTime = dbWebUiBuildTime;
         }
 
-        public void setDatabase_syncupdates_url(String database_syncupdates_url) {
-            this.database_syncupdates_url = database_syncupdates_url;
-        }
-
-        public void setDatabase_create_url(String database_create_url) {
-            this.database_create_url = database_create_url;
-        }
-
-        public void setObject_lookup_url(String object_lookup_url) {
-            this.object_lookup_url = object_lookup_url;
-        }
-
-        public void setRest_search_url(String rest_search_url) {
-            this.rest_search_url = rest_search_url;
-        }
-
-        public void setQuery_page_link_to_other_db(String query_page_link_to_other_db) {
-            this.query_page_link_to_other_db = query_page_link_to_other_db;
-        }
-
-        public void setDb_web_ui_build_time(String db_web_ui_build_time) {
-            this.db_web_ui_build_time = db_web_ui_build_time;
-        }
-
-        public void setFrontendLiveChatKey(String frontend_live_chat_key) {
-            this.frontend_live_chat_key = frontend_live_chat_key;
+        public void setFrontendLiveChatKey(String frontendLiveChatKey) {
+            this.frontendLiveChatKey = frontendLiveChatKey;
         }
     }
 }

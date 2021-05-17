@@ -1,0 +1,28 @@
+{
+  "requestUrl": "/db-web-ui/app.constants.json",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "ENV": "local",
+    "SOURCE": "RIPE",
+    "BUILD_TAG": "SNAPSHOT",
+    "LOGIN_URL": "https://access.prepdev.ripe.net/",
+    "ACCESS_URL": "https://access.prepdev.ripe.net?originalUrl=https://localhost.ripe.net:8443/db-web-ui/",
+    "LOGOUT_URL": "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query",
+    "PORTAL_URL": "https://my.prepdev.ripe.net/",
+    "PORTAL_URL_ACCOUNT": "https://my.prepdev.ripe.net/#/account-details",
+    "PORTAL_URL_REQUEST": "https://my.prepdev.ripe.net/#/tickets",
+    "BANNER": "Welcome to the localhost version of the RIPE Database.",
+    "MATOMO_ID": "BuGxbMDR_dev_0ae7dee0ac65f70a4e8cf1b8",
+    "REQUEST_RESOURCES_URL": "https://my.prepdev.ripe.net/#/request",
+    "REQUEST_UPDATE_URL": "https://my.prepdev.ripe.net/#/generic-request",
+    "OPEN_ACQUISITION_URL": "https://my.prepdev.ripe.net/#/open-lir-org-change",
+    "REQUEST_TRANSFER_URL": "https://my.prepdev.ripe.net/#/transfers",
+    "IPV4_TRANSFER_LISTING_URL": "https://lirportal.prepdev.ripe.net/member-to-member/",
+    "RPKI_DASHBOARD_URL": "https://my.prepdev.ripe.net/#/rpki",
+    "REST_SEARCH_URL": "https://rest-prepdev.db.ripe.net/",
+    "QUERY_PAGE_LINK_TO_OTHER_DB": "https://apps-test.db.ripe.net/search/query.html",
+    "DB_WEB_UI_BUILD_TIME": "2021-04-19T06:27:41.113Z",
+    "LIVE_CHAT_KEY": null
+  }
+}
