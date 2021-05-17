@@ -64,6 +64,7 @@ describe("ResourcesDataService", () => {
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
+        httpMock.expectOne({method: "GET", url: "app.constants.json"});
         resourcesDataService = TestBed.inject(ResourcesDataService);
     });
 

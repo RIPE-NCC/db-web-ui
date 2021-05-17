@@ -20,7 +20,7 @@ describe("RequireLoginComponent", () => {
                 RequireLoginComponent
             ],
             providers: [
-                PropertiesService,
+                { provide: PropertiesService, useValue: {LOGIN_URL: "https://access.prepdev.ripe.net/"}},
                 { provide: ActivatedRoute, useValue: {snapshot: {queryParamMap: queryParamMock}}}
             ],
         });

@@ -38,6 +38,17 @@ module.exports = {
                 context: '/db-web-ui/api',
                 mockFilenameGenerator: prismFilename
             });
+            prism.create({
+                name: 'e2eTestAppConstants',
+                host: os.hostname(),
+                port: 9002,
+                https: false,
+                mocksPath: './test/e2e/mocks',
+                useApi: true,
+                mode: 'mock',
+                context: '/db-web-ui/app.constants.json',
+                mockFilenameGenerator: prismFilename
+            });
             app.use(prism.middleware)
         },
     }

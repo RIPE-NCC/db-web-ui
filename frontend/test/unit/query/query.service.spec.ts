@@ -17,7 +17,7 @@ describe("QueryService", () => {
                 QueryService,
                 QueryParametersService,
                 WhoisMetaService,
-                {provide: "$log", useValue: {info: () => {}}}
+                { provide: "$log", useValue: {info: () => {}}}
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

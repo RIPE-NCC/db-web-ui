@@ -70,7 +70,6 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("rsng.api.url", getMockServerUrl());
         System.setProperty("syncupdates.api.url", getMockServerUrl());
         System.setProperty("rest.search.url", getMockServerUrl());
-        System.setProperty("my.resources.url", "myresources/overview");
         System.setProperty("lir.account.details.url", "https://my.prepdev.ripe.net/#/account-details");
         System.setProperty("lir.billing.details.url", "https://my.prepdev.ripe.net/#/billing");
         System.setProperty("lir.gm.preferences.url", "https://my.prepdev.ripe.net/#/meetings/44529bcf-7f19-4dc9-8f76-b9043a3973dd");
@@ -83,12 +82,6 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
         System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
         System.setProperty("rpki.dashboard.url", "https://my.prepdev.ripe.net/#/rpki");
-        System.setProperty("my.resources.url", "myresources/overview");
-        System.setProperty("database.query.url", "query");
-        System.setProperty("database.full.text.search.url", "fulltextsearch");
-        System.setProperty("object.lookup.url", "lookup");
-        System.setProperty("database.syncupdates.url", "syncupdates");
-        System.setProperty("database.create.url", "webupdates/select");
         System.setProperty("spring.profiles.active", "test");
     }
 
