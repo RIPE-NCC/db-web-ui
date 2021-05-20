@@ -6,6 +6,8 @@ describe("The query pagina", () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl + "query");
+        page.disableLiveChat();
+        page.removeScrollToTop();
     });
 
     it("should have all its bits on the screen somewhere", () => {

@@ -1,4 +1,4 @@
-import {browser, protractor} from "protractor";
+import {browser, by, protractor} from "protractor";
 
 const page = require("./homePageObject");
 
@@ -6,6 +6,8 @@ describe("The inetnum editor", () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl);
+        page.disableLiveChat();
+        page.removeCookiesBanner();
     });
 
     it("should ask for authentication of parent inetnum", () => {
@@ -91,7 +93,6 @@ describe("The inetnum editor", () => {
     });
 
     it("should sanitized img and script tag - XSS attack", () => {
-        page.disableLiveChat();
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");

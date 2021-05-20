@@ -45,6 +45,7 @@ describe("The CreateMntnerPairComponent", () => {
     });
 
     it("should sanitized img and script tag - XSS attack", () => {
+        page.disableLiveChat();
         page.selectObjectType("role and maintainer pair").click();
         page.btnNavigateToCreate.click();
         page.switchToPersonObject.click();

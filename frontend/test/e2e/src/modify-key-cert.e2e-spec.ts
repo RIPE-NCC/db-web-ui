@@ -9,6 +9,7 @@ describe("Modifying an key-cert", () => {
 
     it("should show error message above certif field", () => {
         browser.get(browser.baseUrl + "webupdates/modify/ripe/key-cert/PGPKEY-TESTKEYCERT");
+        page.disableLiveChat();
         expect(page.modal.isPresent()).toEqual(true);
         expect(page.modalBody.getText()).toContain("SYSTEM");
         page.modalInpPassword.sendKeys("SYSTEM");

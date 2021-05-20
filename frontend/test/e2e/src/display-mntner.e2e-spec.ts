@@ -7,6 +7,7 @@ describe("Display an mntner", () => {
 
     it("should remove Filtered in diplay page after associating SSO mnt", () => {
         browser.get(browser.baseUrl + "webupdates/modify/ripe/mntner/ERICSSON-MNT");
+        page.disableLiveChat();
         expect(page.inpAuth.get(0).getAttribute("value")).toBe("MD5-PW # Filtered");
         browser.wait(until.visibilityOf(page.modalBtnSubmit), 5000, "waited too long");
         page.modalInpPassword.sendKeys("ERICSSON-MNT");

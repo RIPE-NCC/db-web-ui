@@ -6,6 +6,7 @@ describe("Modifying a role object", () => {
 
     it("should be able to modify object even if object type is in capital letters", () => {
         browser.get(browser.baseUrl + "webupdates/modify/RIPE/ROLE/ABDE2-RIPE");
+        page.disableLiveChat();
         page.modalInpPassword.sendKeys("AS8560-MNT");
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
