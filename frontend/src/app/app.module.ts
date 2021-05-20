@@ -37,6 +37,7 @@ import {IeBannerComponent} from "./banner/ie-banner.component";
 import {MenuComponent} from "./menu/menu.component";
 import {MenuService} from "./menu/menu.service";
 import {LegalComponent} from "./footer-legal/legal.component";
+import {LiveChatComponent} from "./livechat/live-chat.component";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {LegalComponent} from "./footer-legal/legal.component";
     MenuComponent,
     ErrorPageComponent,
     NotFoundPageComponent,
-    LegalComponent
+    LegalComponent,
+    LiveChatComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   imports: [

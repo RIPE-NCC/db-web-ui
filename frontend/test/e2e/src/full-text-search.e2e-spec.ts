@@ -6,6 +6,8 @@ describe("The full text search", () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl + "fulltextsearch");
+        page.removeCookiesBanner();
+        page.disableLiveChat();
     });
 
     it("should be able to search using the text box", () => {
@@ -35,8 +37,6 @@ describe("The full text search", () => {
     });
 
     it("should be able to search using advanced options", () => {
-        // accept all cookies so banner doesn't cover app-workspace
-        page.byCss("app-cookie-consent").element(by.css_sr("::sr #close-cookie-consent")).click();
         page.byId("fullTextSearchInput").sendKeys("193.0.0.0 ripe");
         page.byId("fullTextAdvanceModeLink").click();
         browser.executeScript('window.scrollTo(0,300);').then( () => {});

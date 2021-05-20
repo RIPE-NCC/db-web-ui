@@ -23,6 +23,7 @@ describe("Display an aut-num", () => {
 
     it("should contain + in front of each added row", () => {
         browser.get(browser.baseUrl + "webupdates/modify/RIPE-NONAUTH/aut-num/AS24835");
+        page.disableLiveChat();
         page.modalInpPassword.sendKeys("RAYA-MNT");
         page.modalBtnSubmit.click();
         page.scrollIntoView(page.btnSubmitModify);

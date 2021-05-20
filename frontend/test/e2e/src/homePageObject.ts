@@ -340,6 +340,8 @@ module.exports = {
     whoisVersionTag: element(by.css("whois-version")),
     whoisVersion: element(by.css("whois-version")).element(by.css("span")),
 
+    liveChatButton: element(by.css("live-chat button")),
+
     byId: function(id) {
         return element(by.id(id));
     },
@@ -421,11 +423,31 @@ module.exports = {
 
     disableLiveChat: function () {
         browser.executeScript(() => {
-            let elementLiveChat = document.getElementById("userlike");
+            let elementLiveChat = document.getElementById("live-chat");
             if (elementLiveChat) {
                 elementLiveChat.remove();
             }
         })
+    },
+
+    removeScrollToTop: function () {
+        browser.executeScript(() => {
+            let elementScrollToTop = document.getElementById("scroll-to-top");
+            if (elementScrollToTop) {
+                elementScrollToTop.remove();
+            }
+        })
+    },
+
+    removeCookiesBanner: function () {
+        element(by.css("app-cookie-consent")).isDisplayed()
+            .then((displayed) => {
+                if (displayed) {
+                    // accept all cookies so banner doesn't cover app-workspace
+                    element(by.css("app-cookie-consent")).element(by.css_sr("::sr #close-cookie-consent")).click();
+                }
+            });
+
     },
 
     /**

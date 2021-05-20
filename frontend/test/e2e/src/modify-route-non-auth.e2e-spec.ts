@@ -23,6 +23,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
     });
 
     it("should be possible for RC to submit change on out of region route object", () => {
+        page.disableLiveChat();
         page.modalInpPassword.sendKeys("AS4663-RIPE-MNT");
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
