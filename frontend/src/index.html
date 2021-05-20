@@ -132,33 +132,33 @@
 </script>
 <!-- End Matomo Tag Manager -->
 <!-- Userlike - live chat -->
-<!--<script type="text/javascript">-->
-<!--  function loadUserlike(userlikeKey) {-->
-<!--    // after show our custom button first time, then show the original one-->
-<!--    var showCustomChat = true;-->
-<!--    var d=document, s=d.createElement('script'), f=d.getElementsByTagName('script')[0];-->
-<!--    s.type = 'text/javascript';-->
-<!--    s.async = true;-->
-<!--    s.onload = function () {-->
-<!--      userlike.userlikeButtonHandler = function(visible) {-->
-<!--        if (showCustomChat) {-->
-<!--          userlike.userlikeCheckSlotStats(function (callback) {-->
-<!--            var operators = callback.operators;-->
-<!--            var slots = callback.slots;-->
-<!--            if (operators.online === 0) {-->
-<!--              userlikePreview.showOfflineMessageForm();-->
-<!--            } else {-->
-<!--              userlike.userlikeStartChat();-->
-<!--            }-->
-<!--            showCustomChat = false;-->
-<!--          })-->
-<!--        }-->
-<!--      };-->
-<!--    }-->
-<!--    s.src = 'https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/' + userlikeKey + '.js';-->
-<!--    f.parentNode.insertBefore(s,f);-->
-<!--  }-->
-<!--</script>-->
+<script type="text/javascript">
+  function loadUserlike(userlikeKey) {
+    // after show our custom button first time, then show the original one
+    var showCustomChat = true;
+    var d=document, s=d.createElement('script'), f=d.getElementsByTagName('script')[0];
+    s.type = 'text/javascript';
+    s.async = true;
+    s.onload = function () {
+      userlike.userlikeButtonHandler = function(visible) {
+        if (showCustomChat) {
+          userlike.userlikeCheckSlotStats(function (callback) {
+            var operators = callback.operators;
+            var slots = callback.slots;
+            if (operators.online === 0) {
+              userlikePreview.showOfflineMessageForm();
+            } else {
+              userlike.userlikeStartChat();
+            }
+            showCustomChat = false;
+          })
+        }
+      };
+    }
+    s.src = 'https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/' + userlikeKey + '.js';
+    f.parentNode.insertBefore(s,f);
+  }
+</script>
 <!-- End Userlike -->
 </body>
 </html>
