@@ -1,10 +1,6 @@
 <section class="more-specifics">
     <h2>More specifics</h2>
-    <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
-    <refresh *ngIf="showRefreshButton"
-            reason="There was problem reading more specifics resources please try again"
-            (refresh)="ngOnChanges()"></refresh>
-    <div *ngIf="moreSpecifics && !showRefreshButton && !loading">
+    <div *ngIf="moreSpecifics && !showRefreshButton">
         <div class="prefix-filter">
             <div class="input-group">
                 <input type="text"
@@ -58,4 +54,7 @@
             No more specific objects exist.
         </div>
     </div>
+    <refresh *ngIf="showRefreshButton"
+             reason="There was problem reading more specifics resources please try again"
+             (refresh)="ngOnChanges()"></refresh>
 </section>

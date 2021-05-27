@@ -63,10 +63,19 @@ describe("MoreSpecificsComponent", () => {
         expect(component.moreSpecifics.resources[7].resource).toEqual("62.20.0.112 - 62.20.0.119");
         expect(component.moreSpecifics.resources[7].status).toEqual("ASSIGNED PA");
         expect(component.moreSpecifics.resources[7].netname).toEqual("SE-GRSANERING");
+        // should loading next page on scroll
+        component.almostOnScreen();
+        const req2 = httpMock.expectOne({
+            method: "GET",
+            url: "api/whois-internal/api/resources/inetnum/62.20.0.0 - 62.20.255.255/more-specifics.json?filter=&page=1",
+        });
+        expect(req2.request.urlWithParams).toBe("api/whois-internal/api/resources/inetnum/62.20.0.0 - 62.20.255.255/more-specifics.json?filter=&page=1");
+        req2.flush(MORE_SPECIFIC_INETNUM_MOCK);
+        expect(component.moreSpecifics.resources.length).toEqual(16);
 
     });
 
-    it("should instantiate more specific table for inet6num", async () => {
+    it("should instantiate more specific table for inet6num", () => {
         component.objectType = "inet6num";
         component.objectName = "2001:2000:1002::/48";
         component.ngOnChanges();
@@ -77,7 +86,6 @@ describe("MoreSpecificsComponent", () => {
         });
         expect(req.request.urlWithParams).toBe("api/whois-internal/api/resources/inet6num/2001:2000:1002::/48/more-specifics.json?filter=&page=0");
         req.flush(MORE_SPECIFIC_INET6NUM_MOCK);
-        await fixture.whenStable();
         expect(component.moreSpecifics.resources.length).toEqual(1);
         expect(component.moreSpecifics.resources[0].resource).toEqual("2001:2000:1002::/48");
         expect(component.moreSpecifics.resources[0].status).toEqual("ASSIGNED");
@@ -190,7 +198,10 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
                 "used": 8,
                 "blockSize": 32
             }
-        }]
+        }],
+    "totalNumberOfResources": 105,
+    "filteredSize": 105,
+    "pageSize": 2
 };
 const MORE_SPECIFIC_INET6NUM_MOCK = {
     "resources": [
