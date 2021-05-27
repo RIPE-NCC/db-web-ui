@@ -88,7 +88,7 @@ export class MoreSpecificsComponent implements OnChanges {
                     if (pageNr === 0) {
                         this.moreSpecifics = response;
                     } else {
-                        this.moreSpecifics.resources = this.moreSpecifics.resources.concat(response.resources);
+                        this.moreSpecifics.resources.push(...response.resources);
                     }
                     this.calcScroller();
                     this.updateHeight();
