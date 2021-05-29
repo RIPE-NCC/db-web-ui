@@ -145,6 +145,7 @@ public class AngularConstantsController {
         constants.setRestSearchUrl(restSearchUrl);
         constants.setQueryPageLinkToOtherDb(queryPageLinkToOtherDb);
         constants.setDbWebUiBuildTime(buildProperties.getTime().toString());
+        constants.setFrontendLiveChatKey(frontendLiveChatKey);
         return constants;
     }
 

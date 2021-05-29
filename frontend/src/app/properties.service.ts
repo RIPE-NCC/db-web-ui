@@ -31,7 +31,7 @@ export class PropertiesService {
     public PORTAL_URL = "";
     public PORTAL_URL_ACCOUNT = "";
     public PORTAL_URL_REQUEST = "";
-    public LIVE_CHAT_KEY = "98e82f81b368ddac660f7980f60227954738de3d5b6eaf8d07fc763f617d80b5";
+    public LIVE_CHAT_KEY = "";
     public QUERY_PAGE_LINK_TO_OTHER_DB = "";
     public REQUEST_RESOURCES_URL = "";
     public REQUEST_TRANSFER_URL = "";
@@ -70,6 +70,7 @@ export class PropertiesService {
                     this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
                     this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
                     this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === "prod" ? "prod" : "pre";
+                    this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
 
                     this.injectProperties();
                 },

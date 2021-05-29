@@ -19,9 +19,13 @@ export class LiveChatComponent {
     }
 
     public isHideLiveChat() {
-        let hoursMinutesSeconds = new Date().toLocaleTimeString("en-GB", { timeZone: 'Europe/Amsterdam' }).split(':').map(x => parseInt(x))
+        let date = new Date();
+        let currentDay = date.getDay();
+        // don't show for weekends
+        let isWeekend = (currentDay === 6) || (currentDay === 0);
+        let hoursMinutesSeconds = date.toLocaleTimeString("en-GB", { timeZone: 'Europe/Amsterdam' }).split(':').map(x => parseInt(x))
         // don't show before 9h and after 18h
         let isWorkingHours = hoursMinutesSeconds[0] >= 9 && hoursMinutesSeconds[0] < 18;
-        return this.loadedUserLikeScript || !isWorkingHours;
+        return this.loadedUserLikeScript;// || isWeekend || !isWorkingHours;
     }
 }
