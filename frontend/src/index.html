@@ -144,11 +144,9 @@
         if (showCustomChat) {
           userlike.userlikeCheckSlotStats(function (callback) {
             var operators = callback.operators;
-            var slots = callback.slots;
+            userlike.userlikeStartChat();
             if (operators.online === 0) {
               userlikePreview.showOfflineMessageForm();
-            } else {
-              userlike.userlikeStartChat();
             }
             showCustomChat = false;
           })
