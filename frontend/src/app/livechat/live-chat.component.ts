@@ -27,6 +27,6 @@ export class LiveChatComponent {
         let hoursMinutesSeconds = date.toLocaleTimeString("en-GB", { timeZone: 'Europe/Amsterdam' }).split(':').map(x => parseInt(x))
         // don't show before 9h and after 18h
         let isWorkingHours = hoursMinutesSeconds[0] >= 9 && hoursMinutesSeconds[0] < 18;
-        return this.loadedUserLikeScript;// || isWeekend || !isWorkingHours;
+        return this.loadedUserLikeScript || isWeekend || !isWorkingHours;
     }
 }
