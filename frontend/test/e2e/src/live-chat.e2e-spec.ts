@@ -1,8 +1,8 @@
 import {browser} from "protractor";
 
 const page = require("./homePageObject");
-
-describe("live-chat", () => {
+// TODO need to be ignored until RS is not capable to provide support for live chat
+xdescribe("live-chat", () => {
 
     beforeEach(() => {
         browser.get(`${browser.baseUrl}"query"`);
