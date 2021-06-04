@@ -11,6 +11,8 @@ export class AppComponent {
 
   public isIE: boolean;
   public isIEOrEdge: boolean;
+  // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
+  public isDesktopView: boolean;
   public isOpenMenu: boolean;
   private innerWidth: number;
 
@@ -24,7 +26,8 @@ export class AppComponent {
     this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent);
     // TODO isIEOrEdge REMOVE AFTER 1st March 2021
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
-    this.openOrCloseMenu();
+    this.mobileOrDesktopView();
+    this.isOpenMenu = this.isDesktopView;
   }
 
   private skipHash() {
@@ -36,15 +39,16 @@ export class AppComponent {
 
   @HostListener("window:resize", ["$event"])
   onResize() {
-    this.openOrCloseMenu();
+    this.mobileOrDesktopView();
   }
 
   open = (event: any) => {
     this.isOpenMenu = event.detail.open;
   }
 
-  public openOrCloseMenu() {
+  public mobileOrDesktopView() {
     this.innerWidth = this.window.innerWidth;
-    this.isOpenMenu = this.innerWidth >= 1025;
+    this.isDesktopView =  this.innerWidth >= this.properties.BREAKPOINTS_MOBILE_VIEW;
+    this.isOpenMenu = this.isDesktopView;
   }
 }

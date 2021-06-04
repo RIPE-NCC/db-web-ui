@@ -23,6 +23,7 @@ export class PropertiesService {
     public LEGAL = "legal";
     public ENV = "local";
     public RIPE_APP_WEBCOMPONENTS_ENV = "pre";
+    public BREAKPOINTS_MOBILE_VIEW = 1025;
     public MATOMO_ID = "";
     public IPV4_TRANSFER_LISTING_URL = "";
     public LOGIN_URL = "";

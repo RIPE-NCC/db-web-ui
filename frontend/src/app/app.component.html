@@ -68,10 +68,18 @@
 		c-19.98,0-36.55,11.05-36.55,36.13v8.08h70.98V398.61z"/>
 </g>
 </svg>
-  <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
-               [current]="'database'"></app-switcher>
-  <user-login class="web-component" [accessurl]="properties.LOGIN_URL"
-               [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+  <mobile-menu class="web-component"
+               *ngIf="!isDesktopView; else desktopMenu"
+               [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
+               [accessurl]="properties.LOGIN_URL"></mobile-menu>
+  <ng-template #desktopMenu>
+    <app-switcher class="web-component"
+                  [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
+                  [current]="'database'"></app-switcher>
+    <user-login class="web-component"
+                [accessurl]="properties.LOGIN_URL"
+                [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+  </ng-template>
 </ripe-header>
 <main id="app-grid">
     <swe-menu [open]="isOpenMenu"></swe-menu>
