@@ -2,6 +2,6 @@ import {Component} from "@angular/core";
 
 @Component({
     selector: "legal",
-    template: `<legal-accordion></legal-accordion>`,
+    template: `<legal-accordion appname="database"></legal-accordion>`,
 })
 export class LegalComponent {}
