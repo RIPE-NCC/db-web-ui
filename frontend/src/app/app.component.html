@@ -82,7 +82,8 @@
   </ng-template>
 </ripe-header>
 <main id="app-grid">
-    <swe-menu [open]="isOpenMenu"></swe-menu>
+  <swe-menu [open]="isOpenMenu"></swe-menu>
+  <div id="main-wrapper">
     <section id="app-banners-container">
       <ngx-loading-bar></ngx-loading-bar>
       <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning"
@@ -105,4 +106,5 @@
 <!--      TODO enable test live-chat.e2e-spec.ts enabling this component-->
 <!--      <live-chat></live-chat>-->
     </section>
+  </div>
 </main>
