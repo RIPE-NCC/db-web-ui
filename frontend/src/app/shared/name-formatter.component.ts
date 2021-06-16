@@ -3,7 +3,7 @@ import {IpAddressService} from "../myresources/ip-address.service";
 
 @Component({
     selector: "name-formatter",
-    template: `{{ formatted }}`,
+    template: `{{ formatted }}`
 })
 export class NameFormatterComponent implements OnChanges {
 
