@@ -21,17 +21,18 @@
 
 @media only screen and (max-width: 700px) {
     #app-grid {
-        grid-template-columns: [left] 300px [right] auto;
+        grid-template-columns: [left] 100% [right] auto;
+        grid-template-rows: unset !important;
     }
 
     #app-banners-container {
-        grid-column: left / 2 span;
+        grid-column: left / 1 span;
         top: 40px;
         padding-bottom: 0;
     }
 
     #app-workspace {
-        grid-column: left / 2 span;
+        grid-column: left / 1 span;
     }
 }
 
@@ -51,9 +52,9 @@
 }
 
 #app-grid {
-    width: 100%;
     display: grid;
-    grid-template-rows: [topsmall] 40px [topbig] 70px [bc] auto [ws] max-content;
+    width: 100%;
+    grid-template-rows: [topsmall] max-content [topbig] max-content [bc] auto [ws] max-content;
 }
 
 swe-menu {

@@ -1,4 +1,4 @@
-// Shown on My resources page - for all resources listed in tab
+// Shown on Resources page - for all resources listed in tab
 import {Component, Input, SimpleChanges} from "@angular/core";
 import {IpUsageService} from "./ip-usage.service";
 import {ResourceStatusService} from "./resource-status.service";
@@ -9,7 +9,6 @@ import {ResourceStatusService} from "./resource-status.service";
 })
 export class IpUsageOfAllResourcesComponent {
 
-    // Inputs
     @Input()
     public resources: any[];
     @Input()

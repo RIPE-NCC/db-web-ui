@@ -142,6 +142,7 @@ ngb-popover-window.popover {
   z-index: 999999 !important; //needs to be bigger than <ripe-header>: 99999
 }
 
-.modal-dialog {
-  width: 700px !important;
+.table-striped>tbody>tr:nth-child(odd),
+.table-striped>tbody>tr:nth-child(odd) {
+  background-color: #f9f9f9;
 }

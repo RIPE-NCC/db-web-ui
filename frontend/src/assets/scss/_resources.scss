@@ -226,51 +226,6 @@ whois-object > section {
     margin-bottom: 41px;
 }
 
-.resources-ip-usage {
-    color: $dark-grey-cr;
-    font-size: 12px;
-    height: 22px;
-    span {
-        margin-right: 15px;
-    }
-}
-
-ip-usage {
-    @extend %width-100;
-    @extend %float-l;
-    display: inline-block;
-    vertical-align:top;
-    margin: 10px 0 20px 0;
-    .usage-status-box {
-        @extend %float-l;
-        border: 1px solid lightgrey;
-        display: inline-block;
-        width: 30%;
-        height: 120px;
-        padding: 10px;
-        margin-right: 20px;
-        p {
-            display: block;
-            vertical-align: top;
-        }
-        p.box-title {
-            font-size: 20px;
-            padding-top: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        p.box-value {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        p.box-statistic {
-            font-size: 14px;
-            margin-bottom: 0;
-        }
-    }
-}
-
 #clearButton.btn {
     border-radius: 0;
 }

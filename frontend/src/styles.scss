@@ -10,7 +10,9 @@
 @import "assets/scss/datatables.scss";
 @import "assets/scss/display.scss";
 @import "assets/scss/multisync.scss";
-@import "assets/scss/my-resources.scss";
+@import "src/assets/scss/resources.scss";
+@import "src/assets/scss/ip-usage-of-all-resources.scss";
+@import "src/assets/scss/ip-usage.scss";
 @import "assets/scss/whois-object.scss";
 /* Module based CSS */
 @import "assets/scss/uiselect-custom.scss";
@@ -22,6 +24,8 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "assets/scss/_font.scss";
 @import "assets/scss/_live-chat.scss";
+@import "assets/scss/_alerts-drop-down.scss";
+@import "assets/scss/_transfer-drop-down.scss";
 
 //this is needed until we migrate to bootstrap4
 .popover {

@@ -38,7 +38,8 @@
             </tr>
             </thead>
             <tbody [ngStyle]="{height: tableHeight + 'px'}" table-scroller (onScroll)="almostOnScreen()">
-            <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice:0:nrAssociatedObjectToShow; index as i;">
+            <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice:0:nrAssociatedObjectToShow; index as i;"
+                class="break-all-word" >
                 <td class="w30">
                     <a [routerLink]="['/lookup']"
                        [queryParams]="{ source: source, key: associatedObject.origin, type: 'aut-num'}" target="_blank">
