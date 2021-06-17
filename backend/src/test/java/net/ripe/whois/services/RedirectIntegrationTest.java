@@ -34,19 +34,6 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whois_lookup() {
-        final ResponseEntity<String> response =
-            restTemplate.exchange(
-                getServerUrl() + "/whois/lookup/ripe/inetnum/10.0.0.0-10.0.0.255.html",
-                HttpMethod.GET,
-                null,
-                String.class
-            );
-        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
-        assertThat(response.getHeaders().getLocation(), is(URI.create("http://rest.db.ripe.net/ripe/inetnum/10.0.0.0-10.0.0.255.html")));
-    }
-
-    @Test
     public void search_lookup() {
         final ResponseEntity<String> response =
             restTemplate.exchange(
