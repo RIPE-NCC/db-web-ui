@@ -57,9 +57,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search/lookup.html", "/db-web-ui/lookup"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/change-auth$", "/db-web-ui/fmp/"));
-
-        rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/whois/lookup/ripe/(.*)$", "http://rest.db.ripe.net/ripe/$1")));
-
+        
         final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
         defaultRule.setTerminating(true);
         rewriteHandler.addRule(defaultRule);
