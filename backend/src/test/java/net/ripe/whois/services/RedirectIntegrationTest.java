@@ -2,8 +2,11 @@ package net.ripe.whois.services;
 
 import com.amazonaws.util.IOUtils;
 import net.ripe.whois.AbstractIntegrationTest;
-import org.junit.Before;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpScheme;
 import org.junit.Test;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +76,32 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void https_redirect_with_query_param() {
+        final ResponseEntity<String> response =
+            restTemplate.exchange(
+                getServerUrl() + "/search?source=ripe&source=apnic-grs&flags=no-referenced&flags=no-irt&abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&query-string=10.0.0.1",
+                HttpMethod.GET,
+                new HttpEntity<>(getHttpHeaders()),
+                String.class
+            );
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create("https://localhost/search?source=ripe&source=apnic-grs&flags=no-referenced&flags=no-irt&abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&query-string=10.0.0.1")));
+    }
+
+    @Test
+    public void https_redirect() {
+        final ResponseEntity<String> response =
+            restTemplate.exchange(
+                getServerUrl() + "/whois/lookup/ripe/inetnum/10.0.0.0-10.0.0.255.html",
+                HttpMethod.GET,
+                new HttpEntity<>(getHttpHeaders()),
+                String.class
+            );
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create("https://localhost/whois/lookup/ripe/inetnum/10.0.0.0-10.0.0.255.html")));
+    }
+
+    @Test
     public void default_bad_request() {
         final ResponseEntity<String> response =
             restTemplate.exchange(
@@ -102,4 +131,9 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
         assertThat(response.toString().contains("6.0.0.0 - 13.115.255.255"), is(true));
     }
 
+    private HttpHeaders getHttpHeaders() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeader.X_FORWARDED_PROTO.toString(), HttpScheme.HTTP.toString());
+        return httpHeaders;
+    }
 }
