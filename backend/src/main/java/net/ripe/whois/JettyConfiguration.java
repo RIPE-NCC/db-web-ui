@@ -1,6 +1,9 @@
 package net.ripe.whois;
 
+import net.ripe.whois.jetty.HttpTransportRule;
+import net.ripe.whois.jetty.RedirectToHttpsRule;
 import net.ripe.whois.jetty.RedirectWithQueryParamRule;
+import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.ResponsePatternRule;
@@ -45,6 +48,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         rewriteHandler.setRewriteRequestURI(true);
         rewriteHandler.setRewritePathInfo(true);
 
+        rewriteHandler.addRule(new HttpTransportRule(HttpScheme.HTTP, new RedirectToHttpsRule() ));
         rewriteHandler.addRule(new RedirectRegexRule("^/search/abuse-finder.html$", "https://www.ripe.net/support/abuse"));
         rewriteHandler.addRule(new RedirectRegexRule("^/search/geolocation-finder.html$", "https://stat.ripe.net/widget/geoloc"));
 
