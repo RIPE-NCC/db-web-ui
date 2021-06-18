@@ -13,40 +13,30 @@
         font-weight: 400!important;
         font-size: 1.1em!important;
     }
+}
+
+@media only screen and (max-width: 900px) {
+    #app-grid {
+        #main-wrapper, swe-menu app-nav-bar {
+            grid-column: 1/span 2;
+        }
+    }
+}
+
+@media only screen and (min-width: 901px) {
+    #app-grid {
+        grid-template-columns: [left] max-content [right] 0 !important;
+    }
+
     swe-menu {
-        grid-column: left;
-        grid-row: topsmall / 1000 span;
-    }
-}
-
-@media only screen and (max-width: 700px) {
-    #app-grid {
-        grid-template-columns: [left] 100% [right] auto;
-        grid-template-rows: unset !important;
+        app-nav-bar {
+            grid-column: left;
+            grid-column-start: 1;
+            grid-column: span 2/span 2;
+        }
     }
 
-    #app-banners-container {
-        grid-column: left / 1 span;
-        top: 40px;
-        padding-bottom: 0;
-    }
-
-    #app-workspace {
-        grid-column: left / 1 span;
-    }
-}
-
-@media only screen and (min-width: 701px) {
-    #app-grid {
-        grid-template-columns: [left] max-content [right] auto;
-    }
-
-    #app-banners-container {
-        grid-column: right;
-        top: 70px;
-    }
-
-    #app-workspace {
+    #main-wrapper {
         grid-column: right;
     }
 }
@@ -54,26 +44,35 @@
 #app-grid {
     display: grid;
     width: 100%;
-    grid-template-rows: [topsmall] max-content [topbig] max-content [bc] auto [ws] max-content;
+    grid-template-rows: repeat(1, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 swe-menu {
     display: contents; //app-nav-bar must be first children of grid-layout, use `contents` to ignore it, this doesn't work on IE11
     app-nav-bar {
-        grid-column: left;
-        grid-row: topsmall / 1000 span;
+        grid-column-start: 1;
+        grid-column: span 2/span 2;
+        grid-row: 1/-1;
+        top: 70px;
     }
+}
+
+#main-wrapper {
+    position: relative;
+    grid-column-start: 1;
+    grid-column: span 2/span 2;
+    grid-row: 1/-1;
 }
 
 #app-banners-container {
     position: sticky;
     background-color: white;
-    z-index: 99;
+    z-index: 10;
     top: 70px;
 }
 
 #app-workspace {
-    grid-row: ws;
     margin: 24px;
     background-color: white;
 }
