@@ -5,9 +5,18 @@
 <div *ngIf="updateResponse">
     <pre id="updateResultPreview">{{updateResponse}}</pre>
 </div>
-<form class="grey padding ga-syncupdate-form">
+<ng-form class="grey padding ga-syncupdate-form">
     <label for="rpslTextArea">Object Data</label>
     <textarea id="rpslTextArea" name="rpslObject" [(ngModel)]="rpslObject" rows="18" class="full-width form-control margin-bottom">{{rpslObject}}</textarea>
     <button name="btnSyncupdate" (click)="update()" [disabled]="isUpdating" type="button" class="blue-button pull-right">Update</button>
     <submitting-agreement></submitting-agreement>
-</form>
+</ng-form>
+
+<div id="instructionsSyncupdate">
+    <h5>Instructions</h5>
+
+    <p>You can include one or more RPSL objects in the text area above, each object separated by an empty line.</p>
+    <p>To authenticate as a MNTNER, include one or more "password:" attributes on a separate line. If you are logged in to RIPE NCC Access, your credential is submitted automatically.</p>
+    <p>To test an update without making any changes, include a "dry-run:" attribute. <a href="https://labs.ripe.net/author/denis/dry-run-testing-in-the-ripe-database/">More information</a></p>
+    <p>For more information about Syncupdates, please refer to the <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/updating-objects-in-the-ripe-database/6-3-syncupdates">Syncupdates</a> section in the RIPE NCC Database Manual.</p>
+</div>
