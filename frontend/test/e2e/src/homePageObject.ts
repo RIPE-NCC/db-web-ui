@@ -312,6 +312,7 @@ module.exports = {
     inpSyncupdateString: element(by.id("rpslTextArea")),
     viewSyncupdateString: element(by.id("updateResultPreview")),
     btnUpdate: element(by.name("btnSyncupdate")),
+    instructionsSyncupdate: element(by.id("instructionsSyncupdate")),
 
     // full text search page
     fullTextSearchResults: element(by.id("resultsAnchor")).all(by.css(".results")),

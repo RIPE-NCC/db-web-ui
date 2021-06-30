@@ -35,4 +35,12 @@ describe("The syncupdates page", () => {
         expect(page.viewSyncupdateString.getText()).toContain(response);
     });
 
+    it("should contain instruction text", () => {
+        expect(page.instructionsSyncupdate.isPresent()).toBeTruthy();
+        expect(page.instructionsSyncupdate.getText()).toEqual("Instructions\n" +
+            "You can include one or more RPSL objects in the text area above, each object separated by an empty line.\n" +
+            "To authenticate as a MNTNER, include one or more \"password:\" attributes on a separate line. If you are logged in to RIPE NCC Access, your credential is submitted automatically.\n" +
+            "To test an update without making any changes, include a \"dry-run:\" attribute. More information\n" +
+            "For more information about Syncupdates, please refer to the Syncupdates section in the RIPE NCC Database Manual.");
+    });
 });
