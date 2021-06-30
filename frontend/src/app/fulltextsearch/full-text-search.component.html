@@ -12,7 +12,8 @@
         </div>
         <input id="fullTextSearchInput" name="ftquery" type="text" class="form-control" [(ngModel)]="ftquery" placeholder="Search term">
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
-            <i class="fa fa-plus-square"></i>
+            <i *ngIf="!advancedSearch" class="fa fa-plus-square"></i>
+            <i *ngIf="advancedSearch" class="fa fa-minus-square"></i>
             <a class="padding-left link-pointer">{{ advancedSearch && "Basic" || "Advanced" }} Search</a>
         </div>
 
@@ -42,8 +43,8 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="clearfix">
-                <div class="col-md-6 form-group">
+            <div class="d-flex flex-row">
+                <div class="p-4 flex-grow-1">
                     <label for="selectedObjectTypes">Search only within the following objects: </label>
                     <select id="selectedObjectTypes"
                             name="selectedObjectTypes"
@@ -55,11 +56,11 @@
                         <option *ngFor="let o of objectTypes" [value]="o">{{o}}</option>
                     </select>
                     <span class="small link-pointer">
-                        <a (click)="selectAll()">Select all</a> |
-                        <a (click)="selectNone()">Select none</a>
+                        <a class="link-color" (click)="selectAll()">Select all</a> |
+                        <a class="link-color" (click)="selectNone()">Select none</a>
                     </span>
                 </div>
-                <div class="col-md-6 form-group">
+                <div class="p-4 flex-grow-1">
                     <label for="home_search:advancedSearch:selectFieldType">Search within the following fields: </label>
                     <help-marker [label-key]="'fullText.attributeHelpText.title'"></help-marker>
                     <select id="home_search:advancedSearch:selectFieldType"

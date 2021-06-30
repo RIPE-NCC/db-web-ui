@@ -1,4 +1,5 @@
 import {browser} from "protractor";
+import {waitToBeClickable} from "./fixtures";
 
 const page = require("./homePageObject");
 
@@ -16,7 +17,7 @@ describe("Deleting an as-set", () => {
         expect(page.modal.isPresent()).toEqual(false);
     });
 
-    it("should add remarks fields", () => {
+    it("should add remarks fields", async () => {
         page.scrollIntoView(page.btnAddAttribute);
         expect(page.inpRemarks.isPresent()).toEqual(false);
         page.btnAddAttribute.click();
@@ -25,6 +26,7 @@ describe("Deleting an as-set", () => {
         page.selectFromList(page.modalAttributeList, "remarks").click();
         page.modalBtnSubmit.click();
         expect(page.inpRemarks.isPresent()).toEqual(true);
+        await waitToBeClickable(page.btn2ndAddAttribute);
         page.btn2ndAddAttribute.click();
         expect(page.modal.isPresent()).toEqual(true);
         page.selectFromList(page.modalAttributeList, "remarks").click();

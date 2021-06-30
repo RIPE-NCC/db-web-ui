@@ -430,15 +430,6 @@ module.exports = {
         })
     },
 
-    removeScrollToTop: function () {
-        browser.executeScript(() => {
-            let elementScrollToTop = document.getElementById("scroll-to-top");
-            if (elementScrollToTop) {
-                elementScrollToTop.remove();
-            }
-        })
-    },
-
     removeCookiesBanner: function () {
         element(by.css("app-cookie-consent")).isDisplayed()
             .then((displayed) => {

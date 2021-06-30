@@ -1,4 +1,5 @@
 import {browser} from "protractor";
+import {waitToBeClickable} from "./fixtures";
 
 const page = require("./homePageObject");
 
@@ -57,17 +58,20 @@ describe("Modifying an organisation", () => {
             expect(page.modalEditAttrPanel2.getText()).toContain("My organisation\'s postal address has changed");
         });
 
-        it("should open modal edit attribute on click on pen button contact information", () => {
+        it("should open modal edit attribute on click on pen button contact information", async () => {
             page.btnEditAnAttribute(page.inpPhone).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");
             expect(page.modalEditAttrPanel1.getText()).toContain("My organisation\'s telephone number has changed");
+            expect(page.modalClose.isPresent()).toEqual(true);
             page.modalClose.click();
+            await waitToBeClickable(page.btnEditAnAttribute(page.inpFax));
             page.btnEditAnAttribute(page.inpFax).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");
             expect(page.modalEditAttrPanel1.getText()).toContain("My organisation\'s fax number has changed");
             page.modalClose.click();
+            await waitToBeClickable(page.btnEditAnAttribute(page.inpEmail));
             page.btnEditAnAttribute(page.inpEmail).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");

@@ -1,4 +1,5 @@
 import {browser} from "protractor";
+import {waitToBeClickable} from "./fixtures";
 
 const page = require("./homePageObject");
 
@@ -10,7 +11,7 @@ describe("Resources, update object", () => {
         browser.get(browser.baseUrl + "myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
     });
 
-    it("should allow editing of the object", () => {
+    it("should allow editing of the object", async () => {
         page.disableLiveChat();
         page.btnUpdateObjectButton.click();
         page.modalInpPassword.sendKeys("TPOL888-MNT");
@@ -24,6 +25,7 @@ describe("Resources, update object", () => {
         page.modalBtnSubmit.click();
 
         expect(page.inpDescr2.isPresent()).toBe(true);
+        await waitToBeClickable(page.btnRemoveAttribute(page.inpDescr2));
         page.btnRemoveAttribute(page.inpDescr2).click();
         expect(page.inpDescr2.isPresent()).toBe(false);
 

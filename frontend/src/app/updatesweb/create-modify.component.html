@@ -164,15 +164,15 @@
         <submitting-agreement></submitting-agreement>
         <p scroller (onScroll)="showMoreAttributes()"></p>
         <span *ngIf="operation === MODIFY_OPERATION">
-            <input id="btnSubmitModify" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
-            <button (click)="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
+            <input id="btnSubmitModify" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button pull-right" value="Submit"/>
+            <button (click)="cancel()" class="blue-button pull-right" style="border:0;">Cancel</button>
         </span>
         <span *ngIf="operation === CREATE_OPERATION">
-            <input id="btnSubmitCreate" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button pull-right ga-createobj-create" value="Submit"/>
-            <button (click)="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
+            <input id="btnSubmitCreate" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button pull-right" value="Submit"/>
+            <button (click)="cancel()" class="blue-button pull-right" style="border:0;">Cancel</button>
         </span>
         <span *ngIf="operation === MODIFY_OPERATION && !isLirObject() && !isResourceWithNccMntner()">
-            <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
+            <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button pull-left" style="border:0; margin: 0;">Delete this object</button>
         </span>
     </section>
 </div>

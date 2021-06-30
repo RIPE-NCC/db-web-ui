@@ -1,4 +1,4 @@
-import {Component, OnChanges, SimpleChanges} from "@angular/core";
+import {Component} from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
 import {UserInfoService} from "../userinfo/user-info.service";
 
@@ -20,6 +20,8 @@ export class CertificateBannerComponent {
   }
 
   public closeAlert() {
+    const element = document.getElementsByClassName("alert")[0];
+    element.parentNode.removeChild(element);
     localStorage.setItem("certificate-banner", "closed");
   }
 

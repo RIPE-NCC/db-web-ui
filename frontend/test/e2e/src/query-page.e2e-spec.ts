@@ -1,4 +1,5 @@
 import {browser} from "protractor";
+import {waitToBeClickable} from "./fixtures";
 
 const page = require("./homePageObject");
 
@@ -7,7 +8,6 @@ describe("The query pagina", () => {
     beforeEach(() => {
         browser.get(browser.baseUrl + "query");
         page.disableLiveChat();
-        page.removeScrollToTop();
     });
 
     it("should have all its bits on the screen somewhere", () => {
@@ -34,7 +34,7 @@ describe("The query pagina", () => {
         expect(page.inpQueryString.getAttribute("value")).toEqual("193.0.0.0");
     });
 
-    it("should be able to search using the text box and a type checkbox", () => {
+    it("should be able to search using the text box and a type checkbox", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.inpShowFullDetails.click();
@@ -42,6 +42,7 @@ describe("The query pagina", () => {
         page.scrollIntoView(page.inpDontRetrieveRelated);
         page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
+        await waitToBeClickable(page.byId("search:types:6"));
         page.scrollIntoView(page.byId("search:types:6"));
         page.byId("search:types:6").click();
         page.scrollIntoView(page.btnSubmitQuery);
@@ -50,12 +51,13 @@ describe("The query pagina", () => {
         expect(page.inpQueryString.getAttribute("value")).toEqual("193.0.0.0");
     });
 
-    it("should be able to have source dynamic", () => {
+    it("should be able to have source dynamic", async () => {
         page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
         page.queryParamTabs.get(1).click();
+        await waitToBeClickable(page.byId("search:types:6"));
         page.scrollIntoView(page.byId("search:types:6"));
         page.byId("search:types:6").click();
         page.scrollIntoView(page.btnSubmitQuery);
@@ -63,12 +65,13 @@ describe("The query pagina", () => {
         expect(page.resultsSection.getAttribute("innerHTML")).toContain("?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation");
     });
 
-    it("should be able to have source dynamic", () => {
+    it("should be able to have source dynamic", async () => {
         page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("223.0.0.0");
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
         page.queryParamTabs.get(1).click();
+        await waitToBeClickable(page.byId("search:types:6"));
         page.scrollIntoView(page.byId("search:types:6"));
         page.byId("search:types:6").click();
         page.scrollIntoView(page.btnSubmitQuery);
@@ -76,15 +79,17 @@ describe("The query pagina", () => {
         expect(page.resultsSection.getAttribute("innerHTML")).toContain("?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation");
     });
 
-    it("should search by inverse lookup abuse-c", () => {
+    it("should search by inverse lookup abuse-c", async () => {
         page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("ACRO862-RIPE");
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
         page.queryParamTabs.get(1).click();
+        await waitToBeClickable(page.byId("search:types:11"));
         page.scrollIntoView(page.byId("search:types:11")); // organisation
         page.byId("search:types:11").click();
         page.queryParamTabs.get(3).click();
+        await waitToBeClickable(page.byId("search:inverseLookup:0"));
         page.scrollIntoView(page.byId("search:inverseLookup:0")); // organisation
         page.byId("search:inverseLookup:0").click();
         page.scrollIntoView(page.btnSubmitQuery);
@@ -105,10 +110,11 @@ describe("The query pagina", () => {
         expect(page.byName("hierarchyD").isEnabled()).toBeFalsy();
     });
 
-    it("should uncheck domain flag when hierarchial flag is unselected", () => {
+    it("should uncheck domain flag when hierarchial flag is unselected", async () => {
         // click on Hierarchy flags tab
         page.scrollIntoView(page.queryParamTabs.get(2));
         page.queryParamTabs.get(2).click();
+        await waitToBeClickable(page.byName("hierarchyFlags"));
         expect(page.byName("hierarchyFlags").isDisplayed()).toBeTruthy();
         expect(page.byId("all").isSelected()).toBeTruthy();
         page.scrollIntoView(page.byId("all-less"));
@@ -127,11 +133,12 @@ describe("The query pagina", () => {
         expect(page.byName("hierarchyD").isEnabled()).toBeFalsy();
     });
 
-    it("should display selected option in telnet query view only when query string exist", () => {
+    it("should display selected option in telnet query view only when query string exist", async () => {
         page.inpQueryString.sendKeys("193.0.0.0");
         page.scrollIntoView(page.queryParamTabs.get(2));
         // click on Hierarchy flags tab
         page.queryParamTabs.get(2).click();
+        await waitToBeClickable(page.byName("hierarchyFlags"));
         expect(page.byName("hierarchyFlags").isDisplayed()).toBeTruthy();
         page.scrollIntoView(page.byId("one-more"));
         page.byId("one-more").click();
@@ -193,12 +200,13 @@ describe("The query pagina", () => {
         expect(page.lookupHeaderEmailLink.get(1).getAttribute("href")).toContain("?source=ripe&key=AR15400-RIPE&type=role");
     });
 
-    it("should show object banner with suspected abuse contact info", () => {
+    it("should show object banner with suspected abuse contact info", async () => {
         page.inpQueryString.sendKeys("223.0.0.0");
         page.scrollIntoView(page.inpShowFullDetails);
         page.inpShowFullDetails.click();
         // -- just to use same mock
         page.queryParamTabs.get(1).click();
+        await waitToBeClickable(page.byId("search:types:6"));
         page.scrollIntoView(page.byId("search:types:6"));
         page.byId("search:types:6").click();
         page.scrollIntoView(page.btnSubmitQuery);
@@ -245,11 +253,12 @@ describe("The query pagina", () => {
         expect(page.inpQueryString.getAttribute("value")).toEqual("211.43.192.0");
     });
 
-    it("should be able to show out of region route from ripe db without related objects", () => {
+    it("should be able to show out of region route from ripe db without related objects", async () => {
         page.inpQueryString.sendKeys("211.43.192.0");
         page.scrollIntoView(page.inpShowFullDetails);
         page.inpShowFullDetails.click();
         page.queryParamTabs.get(1).click();
+        await waitToBeClickable(page.byId("search:types:17"));
         page.scrollIntoView(page.byId("search:types:17"));
         page.byId("search:types:17").click();
         page.scrollIntoView(page.btnSubmitQuery);
@@ -281,12 +290,13 @@ describe("The query pagina", () => {
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 6).getText()).toContain("2018-07-23T13:00:20Z");
     });
 
-    it("should be able to show out of region route from ripe db without related objects", () => {
+    it("should be able to show out of region route from ripe db without related objects", async () => {
         page.inpQueryString.sendKeys("AS9777");
         page.scrollIntoView(page.inpShowFullDetails);
         page.inpShowFullDetails.click();
         page.scrollIntoView(page.queryParamTabs.get(1));
         page.queryParamTabs.get(1).click();
+        await waitToBeClickable(page.byId("search:types:2"));
         page.scrollIntoView(page.byId("search:types:2"));
         page.byId("search:types:2").click();
         page.scrollIntoView(page.btnSubmitQuery);
