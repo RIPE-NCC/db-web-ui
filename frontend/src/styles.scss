@@ -21,11 +21,13 @@
 @import "assets/scss/flag.scss";
 @import "assets/scss/forgot-maintainer-password.scss";
 @import "assets/scss/certificate-banner.scss";
+@import "assets/scss/font.scss";
+@import "assets/scss/live-chat.scss";
+@import "assets/scss/alerts-drop-down.scss";
+@import "assets/scss/transfer-drop-down.scss";
+@import "assets/scss/hierarchy-selector.scss";
 @import "~@ng-select/ng-select/themes/default.theme.css";
-@import "assets/scss/_font.scss";
-@import "assets/scss/_live-chat.scss";
-@import "assets/scss/_alerts-drop-down.scss";
-@import "assets/scss/_transfer-drop-down.scss";
+@import '~bootstrap/dist/css/bootstrap.min.css';
 
 //this is needed until we migrate to bootstrap4
 .popover {

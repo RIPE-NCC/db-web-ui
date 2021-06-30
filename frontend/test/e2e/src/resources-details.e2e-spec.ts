@@ -1,4 +1,5 @@
 import {browser, by} from "protractor";
+import {waitToBeClickable} from "./fixtures";
 
 const page = require("./homePageObject");
 
@@ -331,7 +332,7 @@ describe("Resources detail", () => {
             expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(7).getAttribute("href")).toContain("?source=ripe-nonauth&key=KOKONET-MNT&type=mntner");
         });
 
-        it("should edit and update out of region aut-num", () => {
+        it("should edit and update out of region aut-num", async () => {
             page.disableLiveChat();
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
@@ -346,6 +347,7 @@ describe("Resources detail", () => {
             page.modalBtnSubmit.click();
 
             expect(page.inpDescr2.isPresent()).toBe(true);
+            await waitToBeClickable(page.btnRemoveAttribute(page.inpDescr2));
             page.btnRemoveAttribute(page.inpDescr2).click();
             expect(page.inpDescr2.isPresent()).toBe(false);
 

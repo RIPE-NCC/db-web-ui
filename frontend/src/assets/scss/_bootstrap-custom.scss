@@ -2,15 +2,27 @@
 .progress-bar {
   background-color: #453e7d !important;
 }
-/* Bootstrap Dropdown */
+.progress {
+  height: 10px;
+  border-radius: 0;
+}
+  /* Bootstrap Dropdown */
 .btn-group.open .dropdown-toggle {
   box-shadow: none !important;
 }
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
   background-image: none !important;
 }
+.dropdown-toggle::after {
+  content: none;
+}
+.dropdown-item:focus, .dropdown-item:hover {
+  background-color: transparent;
+}
+
 .nav-tabs {
-  li {
+  li.nav-item {
+    border: 0;
     a {
       border: none;
       border-radius: 0;
@@ -19,6 +31,12 @@
       background-color: $white;
     }
   }
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+  border-color: $white;
+}
+.nav-link:focus, .nav-link:hover {
+  color: #9d9d9d;
 }
 
 .tooltip {
@@ -141,8 +159,13 @@ ngb-popover-window.popover {
 .modal, .modal-backdrop.show {
   z-index: 999999 !important; //needs to be bigger than <ripe-header>: 99999
 }
+.modal-header .close {
+  padding: 0 !important;
+  margin: 0 !important;
+}
 
 .table-striped>tbody>tr:nth-child(odd),
 .table-striped>tbody>tr:nth-child(odd) {
-  background-color: #f9f9f9;
+  background-color: rgba(0,0,0,0.05);
+  --bs-table-accent-bg: none;
 }

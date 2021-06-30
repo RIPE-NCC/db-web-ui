@@ -1,4 +1,4 @@
-import {browser, by, protractor} from "protractor";
+import {browser, protractor} from "protractor";
 
 const page = require("./homePageObject");
 
@@ -38,7 +38,7 @@ describe("The inetnum editor", () => {
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeFalsy();
     });
 
-    it("should ask for authentication of parent inetnum and handle a bad password properly", () => {
+    it("should ask for authentication of parent inetnum and handle a bad password properly", async () => {
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys("213.159.160.0-213.159.190.255");
@@ -50,6 +50,7 @@ describe("The inetnum editor", () => {
         expect(page.modalBody.getText()).toContain("You have not supplied the correct password for mntner");
         page.scrollIntoView(page.modalClose);
         page.modalClose.click();
+        await browser.sleep(1000);
         expect(page.modal.isPresent()).toBe(false);
         page.inpNetname.sendKeys("bogus-netname1");
         page.scrollIntoView(page.inpCountry); // let's have a look at that link
@@ -115,17 +116,19 @@ describe("The inetnum editor", () => {
         expect(page.prefixErrMsg.getText()).toContain("Syntax error in img src=");
     });
 
-    it("should open description just under field on click on question mark", () => {
+    it("should open description just under field on click on question mark", async () => {
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
         page.inpInetnumQuestionMark.click();
         expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
+        // await browser.sleep(500);
         expect(page.inpInetnumDescription.getText()).toContain("Specifies a range of IPv4 that the inetnum object presents.");
         expect(page.inpNetnameDescription.isDisplayed()).toBeFalsy();
         page.inpNetnameQuestionMark.click();
         expect(page.inpNetnameDescription.isDisplayed()).toBeTruthy();
         expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
         page.inpInetnumQuestionMark.click();
+        await browser.sleep(1000);
         expect(page.inpInetnumDescription.isDisplayed()).toBeFalsy();
         expect(page.inpNetnameDescription.isDisplayed()).toBeTruthy();
     });

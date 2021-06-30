@@ -2,6 +2,7 @@ alerts-drop-down {
   @extend .generic-drop-down;
   button#grey-bell-button {
     &.grey-button{
+      height: 40px;
       .fa-bell-o {
         color: $dark-grey-cr;
         font-size: 18px;
@@ -12,6 +13,7 @@ alerts-drop-down {
   }
   button#red-bell-button {
     &.red-button {
+      height: 40px;
       background-color: #f1dede;
       border: solid 0.1rem $light-red;
       .fa-bell-o {
@@ -25,10 +27,11 @@ alerts-drop-down {
     }
   }
   ul.dropdown-menu {
+    font-size: 14px;
+    width: 220px;
     li{
       &.dropdown-header {
         background-color: $grey;
-        font-size: 14px;
         padding: 4px 10px;
       }
       > span {
@@ -37,7 +40,7 @@ alerts-drop-down {
       }
       > .overlap-link {
         cursor: pointer;
-        line-height: 1em;
+        line-height: 2rem;
         &:hover {
           color: $link;
           background-color: #fbfbfb;

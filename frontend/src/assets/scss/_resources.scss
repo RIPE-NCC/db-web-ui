@@ -9,7 +9,7 @@
     border-bottom: 0;
     margin-top: 5px;
     @extend %width-100;
-    li {
+    li.nav-item {
         a {
             padding: 8px 40px;
             color: #9d9d9d;
@@ -31,7 +31,7 @@
     }
     ul {
         margin-top: 0;
-        li {
+        li.nav-item {
             padding-right: 10px;
             &+li {
                 border-left: 2px $dark-grey solid;
@@ -247,63 +247,6 @@ section.resource-intro {
 section.back-to-my-resources {
     @extend %float-r;
     position: relative;
-    width: 30%;
-    hierarchy-selector {
-        button {
-            @extend %float-r;
-            margin-left: 5px;
-        }
-        ul.dropdown-list {
-            @extend %float-l;
-            @extend %width-100;
-            @extend %brd;
-            display: none;
-            position: absolute;
-            list-style: none;
-            padding: 0;
-            margin: 5px 0 0 0;
-            top: 36px;
-            right: -1px;
-            li {
-                @extend %float-l;
-                @extend %width-100;
-                margin: 0;
-                a {
-                    @extend %float-l;
-                    @extend %width-100;
-                    @extend %brd-b;
-                    @extend %brd-box;
-                    background-color: #fff;
-                    padding: 5px;
-                    color: #333;
-                    &:hover {
-                        background-color: $grey;
-                        text-decoration: none;
-                    }
-                }
-                &:last-child {
-                    a {
-                        background-color: $light-blue;
-                        color: #fff;
-                        border-bottom: none;
-                    }
-                }
-            }
-        }
-        &.open {
-            button.dropdown-button {
-                background-color: $dark-grey;
-                span.caret {
-                    -ms-transform: rotate(180deg); /* IE 9 */
-                    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
-                    transform: rotate(180deg);
-                }
-            }
-            ul.dropdown-list {
-                display: inline-block;
-            }
-        }
-    }
 }
 section.db-object {
     @extend %float-l;

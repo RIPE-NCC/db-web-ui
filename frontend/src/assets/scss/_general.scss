@@ -1,11 +1,104 @@
 body, html {
-    font-size: 1em;
-    font-family: "Open Sans", Helvetica, Sans-serif;
+    font-size: 1rem;
+    font-family: "Public Sans", Sans-serif;
     margin: 0;
+
+    h1 {
+        color: #58595b;
+        font-size: 1.563rem;
+        font-weight: 700
+    }
+    h2 {
+        font-size: 1.25rem;
+        font-weight: 500
+    }
+    h5 {
+        font-size: 1.25rem;
+        font-weight: 500
+    }
+    h6 {
+        font-size: 1.25rem;
+        font-weight: 500
+    }
 
     &.section-manage-ips-and-asns main {
         background: none !important; //overwrite style from template.css
     }
+}
+
+a {
+    color: $link;
+    text-decoration: unset;
+}
+
+a:visited {
+    color: #2a6496
+}
+
+a:hover, a:focus {
+    color: #2a6496
+}
+
+a.tag-link, .tag-link {
+    color: #5c5d60;
+    padding: .2em .5em
+}
+
+.checkbox-inline input[type=checkbox], .checkbox input[type=checkbox], .radio-inline input[type=radio], .radio input[type=radio] {
+    margin-right: 10px;
+}
+
+ul.radio {
+    list-style: none;
+    li {
+        label {
+            padding-left: 20px;
+        }
+    }
+}
+
+a.blue-button, a.red-button {
+    color: #fff;
+}
+.blue-button, .red-button {
+    display: inline-block;
+    padding: .5em 1em;
+    margin: 0 0 0 .3em;
+    color: #fff;
+}
+
+.blue-button {
+    background: #44465D
+}
+
+.red-button {
+    background: #ff002f
+}
+
+.blue-button:hover {
+    background: #080037
+}
+
+.red-button:hover {
+    background: #e80000
+}
+
+.btn.blue-button:focus, .btn.blue-button:hover {
+    color: #fff;
+    background: #080037
+}
+
+.btn.red-button:focus, .btn.red-button:hover {
+    color: #fff;
+    background: #e80000
+}
+
+input.blue-button {
+    border: 0
+}
+
+.padding {
+    padding: 1em
 }
 
 code {
@@ -86,6 +179,9 @@ ul.success-fields {
 }
 
 .modal-content {
+    @media only screen and (min-width: 1025px) {
+        width: 650px;
+    }
     div.modal-body {
         ul {
             li {
@@ -102,7 +198,7 @@ ul.success-fields {
         font: {
             size: 150px;
         }
-        color: #00abab;
+        color: $link;
     }
     h1 {
         font: {
@@ -134,15 +230,6 @@ ul.success-fields {
             size: 6em;
         }
         color: $link;
-    }
-}
-
-ul.radio {
-    list-style: none;
-    li {
-        label {
-            padding-left: 0;
-        }
     }
 }
 
@@ -257,25 +344,12 @@ section .resultlinks {
     line-height: 2.9em;
 }
 .generic-drop-down {
-    button#single-button {
-        height: 36px;
-        padding: 0px 10px;
-        position: relative;
-        > span {
-            font: {
-                size: 300%;
-                weight: bold;
-            }
-            position: relative;
-            top: -8px;
-        }
-    }
     ul.dropdown-menu {
         width: fit-content;
         padding: 0 !important;
         li {
             a:hover {
-                background-color: #fff;
+                background-color: transparent;
                 color: $black;
             }
         }

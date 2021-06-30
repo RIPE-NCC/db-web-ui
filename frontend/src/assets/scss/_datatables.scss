@@ -108,11 +108,6 @@ section.head {
       margin-top: 5px;
     }
   }
-  div.dropdown-button {
-    @extend %float-r;
-    position: relative;
-    width: 200px;
-  }
 
   a.downloading {
     pointer-events: none;

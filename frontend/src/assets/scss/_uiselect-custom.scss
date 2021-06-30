@@ -193,6 +193,7 @@ ul.dropdown-menu {
 	max-height: 300px;
 	> li {
 		@extend %width-100;
+		line-height: 2rem;
 		margin-bottom: 0 !important;
 		a {
 			border-bottom: 1px solid #EAEAEA !important;

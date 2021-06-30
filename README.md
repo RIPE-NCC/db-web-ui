@@ -70,8 +70,12 @@ Frontend
 * `npm run test-remote` _(used on bamboo)_<br>
   Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub` for Angular 6+ with coverage
   
-* `npm run e2e`<br>
-  Runs the Protractor tests on port 9002 without coverage so they are quicker.
+* `npm run e2e-chrome`<br>
+  Runs the Protractor tests on port 9002 in Chrome without coverage so they are quicker.
+
+* `npm run e2e-firefox`<br>
+  Runs the Protractor tests on port 9002 in FireFox without coverage so they are quicker.
+
   
 * `npm run e2e-remote` _(used on bamboo)_<br>
   Runs the Protractor tests in selenium. 
