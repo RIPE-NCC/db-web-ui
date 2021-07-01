@@ -191,19 +191,23 @@
           "configurations": {
             "local": {
               "protractorConfig": "test/e2e/protractor.conf.js",
-              "devServerTarget":  "frontend:serve-mock:local"
+              "devServerTarget": "frontend:serve-mock:local"
             },
             "firefox": {
               "protractorConfig": "test/e2e/protractor.firefox.conf.js",
-              "devServerTarget":  "frontend:serve-mock:local"
+              "devServerTarget": "frontend:serve-mock:local"
             },
             "remote": {
               "protractorConfig": "test/e2e/protractor.remote.conf.js",
-              "devServerTarget":  "frontend:serve-mock:remote"
+              "devServerTarget": "frontend:serve-mock:remote"
             }
           }
         }
       }
-    }},
-  "defaultProject": "frontend"
+    }
+  },
+  "defaultProject": "frontend",
+  "cli": {
+    "analytics": "81bf981f-ca1c-4e1b-9aff-651e1a4771f3"
+  }
 }
