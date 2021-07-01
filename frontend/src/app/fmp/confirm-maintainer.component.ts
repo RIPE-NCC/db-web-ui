@@ -42,7 +42,7 @@ export class ConfirmMaintainerComponent {
                 this.key = link.mntner;
                 this.email = link.email;
                 this.user = link.username;
-                if (!link.hasOwnProperty("expiredDate") || moment(link.expiredDate, moment.ISO_8601).isBefore(moment())) {
+                if (!link.hasOwnProperty("expiredDate") || moment.utc(link.expiredDate, moment.ISO_8601).isBefore(moment.utc())) {
                     this.alertsComponent.addGlobalWarning("Your link has expired");
                     return;
                 }
