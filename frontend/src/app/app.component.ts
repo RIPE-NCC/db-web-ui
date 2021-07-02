@@ -9,8 +9,6 @@ import {Router} from "@angular/router";
 })
 export class AppComponent {
 
-  public isIE: boolean;
-  public isIEOrEdge: boolean;
   // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
   public isDesktopView: boolean;
   public isOpenMenu: boolean;
@@ -23,9 +21,6 @@ export class AppComponent {
   }
 
   public ngOnInit() {
-    this.isIE = /msie\s|trident\//i.test(window.navigator.userAgent);
-    // TODO isIEOrEdge REMOVE AFTER 1st March 2021
-    this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     this.mobileOrDesktopView();
     this.isOpenMenu = this.isDesktopView;
   }
