@@ -1,6 +1,0 @@
-{
-  "requestUrl": "/db-web-ui/api/whois/RIPE-NONAUTH/aut-num/AS24835?password=RAYA-MNT",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {}
-}
