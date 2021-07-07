@@ -27,6 +27,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.stream.StreamSupport;
@@ -54,6 +55,11 @@ public class Application implements AsyncConfigurer {
      * Also used by spring-boot:run phase
      */
     public static void main(String[] args) throws UnknownHostException {
+
+        if (!ZoneId.systemDefault().equals(ZoneId.of("UTC"))) {
+            throw new IllegalStateException(String.format("Illegal timezone: %s. Application timezone should be UTC", ZoneId.systemDefault()));
+        }
+
         final SpringApplication app = new SpringApplication(Application.class);
         app.setBannerMode(Banner.Mode.OFF);
 
