@@ -67,7 +67,6 @@
     "@ngx-loading-bar/http-client": "5.1.1",
     "@technical-design/ripe-app-webcomponents": "1.4.0",
     "@types/crypto-js": "4.0.1",
-    "@webcomponents/webcomponentsjs": "2.5.0",
     "angulartics": "1.6.0",
     "angulartics-piwik": "1.0.6",
     "bootstrap": "4.5.0",
