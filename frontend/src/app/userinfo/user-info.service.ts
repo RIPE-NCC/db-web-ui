@@ -31,6 +31,8 @@ export class UserInfoService {
                 .pipe(
                     map((response: IUserInfo) => {
                         this.loggedInUser = response;
+                        // @ts-ignore add here for usersnap
+                        window.username = response.user.username;
                         return this.loggedInUser;
                     }),
                     catchError((error: any) => {

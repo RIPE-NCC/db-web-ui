@@ -55,6 +55,11 @@
     window.onUsersnapLoad = function(api) {
       api.init({
         consoleRecorder: true,
+        consoleRecorderCfg: {
+          maxMessages: 500, // default 50
+          maxExceptions: 500, // default 50
+          logObjectSize: 20480 // default 2048 bytes
+        },
         fields: {
           comment: {
             defaultValue: '',
@@ -63,7 +68,6 @@
             multiline: true
           },
           email: {
-
             label: 'Your E-mail',
             required: true
           }
@@ -73,13 +77,16 @@
       api.open();
       api.on("open", function(event) {
         event.api.setValue('customData', "db-web-ui-" + buildTag);
+        event.api.setValue('email', window.username);
       });
+      window.Usersnap = api;
     }
     window.onUsersnapCXLoad = function(api) {
       api.init({
         button: null
       });
       api.open();
+      window.UsersnapCX = api;
     }
   }
   function useUsersnap() {
