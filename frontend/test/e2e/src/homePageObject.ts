@@ -342,6 +342,8 @@ module.exports = {
     whoisVersion: element(by.css("whois-version")).element(by.css("span")),
 
     liveChatButton: element(by.css("live-chat button")),
+    liveChatCloseButton: element(by.id("userlike-close")),
+    liveChatWindow: element(by.id("userlike-popup")),
 
     byId: function(id) {
         return element(by.id(id));

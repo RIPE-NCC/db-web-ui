@@ -37,6 +37,7 @@ describe("Resources, update object", () => {
 
         beforeEach(() => {
             browser.get(browser.baseUrl + "myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false");
+            page.removeCookiesBanner();
         });
 
         it("should edit netname", () => {
