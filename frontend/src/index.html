@@ -54,6 +54,7 @@
   function loadUsersnap(buildTag) {
     window.onUsersnapLoad = function(api) {
       api.init({
+        consoleRecorder: true,
         fields: {
           comment: {
             defaultValue: '',

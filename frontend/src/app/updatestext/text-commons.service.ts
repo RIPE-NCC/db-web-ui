@@ -102,7 +102,6 @@ export class TextCommonsService {
                 const objectMntners = this._getObjectMntners(attributes);
                 const originalMntners = method === "Create" ? [] : objectMntners;
                 if (this.mntnerService.needsPasswordAuthentication(ssoMaintainers, originalMntners, objectMntners)) {
-                    needsAuth = true;
                     return this.performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes));
                 }
             }
