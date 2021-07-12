@@ -118,28 +118,34 @@
 <!-- End Matomo Tag Manager -->
 <!-- Userlike - live chat -->
 <script type="text/javascript">
+  var loadScript = true;
   function loadUserlike(userlikeKey) {
-    // after show our custom button first time, then show the original one
-    var showCustomChat = true;
-    var d=document, s=d.createElement('script'), f=d.getElementsByTagName('script')[0];
-    s.type = 'text/javascript';
-    s.async = true;
-    s.onload = function () {
-      userlike.userlikeButtonHandler = function(visible) {
-        if (showCustomChat) {
-          userlike.userlikeCheckSlotStats(function (callback) {
-            var operators = callback.operators;
-            userlike.userlikeStartChat();
-            if (operators.online === 0) {
-              userlikePreview.showOfflineMessageForm();
-            }
-            showCustomChat = false;
-          })
-        }
-      };
+    if (loadScript) {
+      var d=document, s=d.createElement('script'), f=d.getElementsByTagName('script')[0];
+      s.type = 'text/javascript';
+      s.async = true;
+      s.onload = function () {
+        userlike.userlikeButtonHandler = function(visible) {
+          if (loadScript) {
+            userlike.userlikeCheckSlotStats(function (callback) {
+              var operators = callback.operators;
+              userlike.userlikeStartChat();
+              if (operators.online === 0) {
+                userlikePreview.showOfflineMessageForm();
+              }
+              document.cookie = "open-live-chat=true;domain=.ripe.net;path=/;secure";
+            })
+            loadScript = false;
+          } else {
+            document.cookie = "open-live-chat=false;domain=.ripe.net;path=/;secure";
+          }
+        };
+      }
+      s.src = 'https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/' + userlikeKey + '.js';
+      f.parentNode.insertBefore(s,f);
+    } else {
+      document.cookie = "open-live-chat=true;domain=.ripe.net;path=/;secure";
     }
-    s.src = 'https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/' + userlikeKey + '.js';
-    f.parentNode.insertBefore(s,f);
   }
 </script>
 <!-- End Userlike -->

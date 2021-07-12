@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {PropertiesService} from "../properties.service";
+import {CookieService} from "ngx-cookie-service";
 
 declare var loadUserlike: (userlikeKey: string) => any;
 
@@ -9,13 +10,17 @@ declare var loadUserlike: (userlikeKey: string) => any;
 })
 export class LiveChatComponent {
 
-    private loadedUserLikeScript: boolean = false;
+    constructor(private properties: PropertiesService,
+                private cookies: CookieService) {}
 
-    constructor(private properties: PropertiesService) {}
+    public ngOnInit() {
+        if (this.cookies.get("open-live-chat") === "true") {
+            this.loadLiveChat();
+        }
+    }
 
     public loadLiveChat() {
         loadUserlike(this.properties.LIVE_CHAT_KEY);
-        this.loadedUserLikeScript = true;
     }
 
     public isHideLiveChat() {
@@ -27,6 +32,6 @@ export class LiveChatComponent {
         let hoursMinutesSeconds = date.toLocaleTimeString("en-GB", { timeZone: 'Europe/Amsterdam' }).split(':').map(x => parseInt(x))
         // don't show before 9h and after 18h
         let isWorkingHours = hoursMinutesSeconds[0] >= 9 && hoursMinutesSeconds[0] < 18;
-        return this.loadedUserLikeScript || isWeekend || !isWorkingHours;
+        return isWeekend || !isWorkingHours;
     }
 }
