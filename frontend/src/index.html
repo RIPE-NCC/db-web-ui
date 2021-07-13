@@ -94,7 +94,7 @@
       window.Usersnap.open()
     } else {
       var script = document.createElement("script");
-      script.async = 1;
+      script.async = true;
       script.src = "//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad";
       document.getElementsByTagName("head")[0].appendChild(script);
     }
@@ -104,7 +104,7 @@
       window.UsersnapCX.open()
     } else {
       var script = document.createElement("script");
-      script.async = 1;
+      script.async = true;
       script.src = "//widget.usersnap.com/load/cb8e6938-8487-4da6-a917-0482c33bce73?onload=onUsersnapCXLoad";
       document.getElementsByTagName("head")[0].appendChild(script);
     }
