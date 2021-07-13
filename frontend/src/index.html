@@ -54,12 +54,6 @@
   function loadUsersnap(buildTag) {
     window.onUsersnapLoad = function(api) {
       api.init({
-        consoleRecorder: true,
-        consoleRecorderCfg: {
-          maxMessages: 500, // default 50
-          maxExceptions: 500, // default 50
-          logObjectSize: 20480 // default 2048 bytes
-        },
         fields: {
           comment: {
             defaultValue: '',
@@ -68,6 +62,7 @@
             multiline: true
           },
           email: {
+            defaultValue: '',
             label: 'Your E-mail',
             required: true
           }
@@ -77,7 +72,7 @@
       api.open();
       api.on("open", function(event) {
         event.api.setValue('customData', "db-web-ui-" + buildTag);
-        event.api.setValue('email', window.username);
+        event.api.setValue('email', window.username || "");
       });
       window.Usersnap = api;
     }
@@ -94,6 +89,7 @@
       window.Usersnap.open()
     } else {
       var script = document.createElement("script");
+      script.type='text/javascript';
       script.async = true;
       script.src = "//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad";
       document.getElementsByTagName("head")[0].appendChild(script);
@@ -104,6 +100,7 @@
       window.UsersnapCX.open()
     } else {
       var script = document.createElement("script");
+      script.type='text/javascript';
       script.async = true;
       script.src = "//widget.usersnap.com/load/cb8e6938-8487-4da6-a917-0482c33bce73?onload=onUsersnapCXLoad";
       document.getElementsByTagName("head")[0].appendChild(script);
