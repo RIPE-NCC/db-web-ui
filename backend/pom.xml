@@ -437,6 +437,7 @@
                                     <jvmFlag>-XX:+UseContainerSupport</jvmFlag>
                                     <jvmFlag>-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true</jvmFlag>
                                     <jvmFlag>-Dorg.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true</jvmFlag>
+                                    <jvmFlag>-Duser.timezone=UTC</jvmFlag>
                                 </jvmFlags>
                                 <mainClass>net.ripe.whois.Application</mainClass>
                             </container>
