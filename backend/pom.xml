@@ -277,6 +277,11 @@
             <artifactId>snakeyaml</artifactId>
             <version>1.26</version>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.141.59</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -326,6 +331,9 @@
                     <includes>
                         <include>${test.files.unit}</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/net/ripe/whois/selenium/*Test.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -445,6 +453,14 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>selenium</id>
+            <properties>
+                <test.files.integration>**/net/ripe/whois/selenium/**</test.files.integration>
+                <test.files.unit>**/net/ripe/whois/selenium/**</test.files.unit>
+                <test.redirectOutput>true</test.redirectOutput>
+            </properties>
         </profile>
     </profiles>
 
