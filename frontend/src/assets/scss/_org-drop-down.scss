@@ -1,0 +1,13 @@
+#org-drop-down {
+    display: inline-block;
+    width: 100%;
+}
+
+div.registry-selector-container {
+    @extend %flex-r;
+    margin-bottom: 0.5rem;
+    > span {
+        @extend %flex-r;
+        margin: 3px 10px 0 0;
+    }
+}
