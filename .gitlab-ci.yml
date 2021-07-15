@@ -22,6 +22,7 @@ stages:
   - build
   - test
   - deploy
+  - browserstack
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -69,4 +70,17 @@ qa:
       junit:
         - backend/target/surefire-reports/TEST-*.xml
         - backend/target/failsafe-reports/TEST-*.xml
+
+browserstack:
+    stage: browserstack
+    script:
+        - cd backend && mvn verify -Dbrowserstack_key=${BROWSERSTACK_KEY} -Dversion=${CI_COMMIT_SHORT_SHA} -Pselenium
+    needs:
+        - deploy_prod
+    only:
+        - tags
+    artifacts:
+        paths:
+            - backend/target/db-web-ui*.jar
+
 
