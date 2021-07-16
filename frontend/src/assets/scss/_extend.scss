@@ -23,12 +23,20 @@ $orange-lighter: #FFF3D8;
 $white: #FFF;
 $black: #000;
 $link: #00ABAB;
-
+//float - not recommended anymore
 %float-l {
 	float: left;
 }
 %float-r {
 	float: right;
+}
+%flex-r {
+	display: flex;
+	justify-content: flex-end;
+}
+%flex-l {
+	display: flex;
+	justify-content: flex-start;
 }
 %clear-b {
 	clear: both;

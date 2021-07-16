@@ -210,13 +210,16 @@ ul.form-fields {
     border-radius: 0;
 }
 
-.text-error, .text-info {
-	@extend %float-r;
+.text-error, .text-info, .text-note {
+	@extend %flex-r;
+}
+
+.text-error {
+	color: $dark-red;
 }
 
 .text-note {
 	margin-left: 5px;
-	@extend %float-r;
 }
 
 /* Scroll table for Reverse Zone */

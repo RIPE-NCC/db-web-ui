@@ -25,6 +25,7 @@
 @import "assets/scss/live-chat.scss";
 @import "assets/scss/alerts-drop-down.scss";
 @import "assets/scss/transfer-drop-down.scss";
+@import "assets/scss/org-drop-down.scss";
 @import "assets/scss/hierarchy-selector.scss";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '~bootstrap/dist/css/bootstrap.min.css';
@@ -75,9 +76,9 @@ ngb-typeahead-window.dropdown-menu {
     &:hover, &:focus {
       color: #212529;
     }
-
     &.active {
       background: #F5FFFF none !important;
+      color: #212529;
     }
   }
 
