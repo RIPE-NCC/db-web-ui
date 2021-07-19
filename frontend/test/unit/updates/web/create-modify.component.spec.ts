@@ -208,8 +208,8 @@ describe("CreateModifyComponent", () => {
             httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block"}).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, {status: 400, statusText: "error"});
             await fixture.whenStable();
 
-            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-            expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+            expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("\'MY-AS-BLOCK\' is not valid for this object type");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
@@ -222,8 +222,8 @@ describe("CreateModifyComponent", () => {
             httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block"}).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, {status: 400, statusText: "error"});
             await fixture.whenStable();
 
-            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-            expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+            expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("\'MY-AS-BLOCK\' is not valid for this object type");
 
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").$$meta.$$disable).toEqual(true);
@@ -518,8 +518,8 @@ describe("CreateModifyComponent", () => {
         });
 
         it("should report error when fetching sso maintainers fails", () => {
-            expect(component.alertsComponent.hasErrors()).toBe(true);
-            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Error fetching maintainers associated with this SSO account");
+            expect(component.alertsService.alerts.errors.length > 0).toBeTruthy();
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Error fetching maintainers associated with this SSO account");
         });
 
     });

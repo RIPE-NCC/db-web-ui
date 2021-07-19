@@ -13,7 +13,7 @@ import {TextCommonsService} from "./text-commons.service";
 import {MntnerService} from "../updatesweb/mntner.service";
 import {PreferenceService} from "../updatesweb/preference.service";
 import {MessageStoreService} from "../updatesweb/message-store.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 export interface ITextObject {
     rpsl?: any;
@@ -37,9 +37,6 @@ export class TextCreateComponent {
     public override: string;
     public passwords: string[];
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(@Inject(WINDOW) private window: any,
                 public whoisResourcesService: WhoisResourcesService,
                 public whoisMetaService: WhoisMetaService,
@@ -50,6 +47,7 @@ export class TextCreateComponent {
                 public textCommonsService: TextCommonsService,
                 public preferenceService: PreferenceService,
                 public mntnerService: MntnerService,
+                public alertsService: AlertsService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
     }
@@ -57,7 +55,7 @@ export class TextCreateComponent {
     public ngOnInit() {
         this.restCallInProgress = false;
 
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -89,14 +87,14 @@ export class TextCreateComponent {
     }
 
     public submit() {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
 
         console.debug("rpsl:" + this.object.rpsl);
 
         // parse
         const objects = this.rpslService.fromRpsl(this.object.rpsl);
         if (objects.length > 1) {
-            this.alertsComponent.setGlobalError("Only a single object is allowed");
+            this.alertsService.setGlobalError("Only a single object is allowed");
             return;
         }
         this.passwords = objects[0].passwords;
@@ -131,7 +129,7 @@ export class TextCreateComponent {
                                     }, (error: any) => {
                                         this.restCallInProgress = false;
                                         console.error("MntnerService.getAuthForObjectIfNeeded rejected authorisation: ", error);
-                                        this.alertsComponent.addGlobalError("Failed to authenticate parent resource");
+                                        this.alertsService.addGlobalError("Failed to authenticate parent resource");
                                     },
                                 );
                             }
@@ -207,7 +205,7 @@ export class TextCreateComponent {
                 catchError((error: any, caught: Observable<any>) => {
                     this.restCallInProgress = false;
                     console.error("Error fetching mntners for SSO:" + JSON.stringify(error));
-                    this.alertsComponent.setGlobalError("Error fetching maintainers associated with this SSO account");
+                    this.alertsService.setGlobalError("Error fetching maintainers associated with this SSO account");
                     return of(attributes);
                 })).toPromise();
     }
@@ -244,10 +242,10 @@ export class TextCreateComponent {
             }, (error: any) => {
                 this.restCallInProgress = false;
                 const whoisResources = error.data;
-                this.alertsComponent.setAllErrors(whoisResources);
+                this.alertsService.setAllErrors(whoisResources);
                 const attributes = this.whoisResourcesService.getAttributes(whoisResources);
                 if (!_.isEmpty(attributes)) {
-                    this.errorReporterService.log("TextCreate", objectType, this.alertsComponent.getErrors(), attributes);
+                    this.errorReporterService.log("TextCreate", objectType, this.alertsService.alerts.errors, attributes);
                 }
             },
         );

@@ -194,7 +194,7 @@ describe("TextCreateComponent", () => {
             "mnt-irt:       \n" +
             "SOURCE:        RIPE\n");
 
-        expect(textCreateComponent.alertsComponent.getErrors().length).toEqual(0);
+        expect(textCreateComponent.alertsService.alerts.errors.length).toEqual(0);
     });
 
     it("should handle empty sso mntners", async () => {
@@ -225,7 +225,7 @@ describe("TextCreateComponent", () => {
             "mnt-routes:    \n" +
             "mnt-irt:       \n" +
             "SOURCE:        RIPE\n");
-        expect(textCreateComponent.alertsComponent.getErrors().length).toEqual(0);
+        expect(textCreateComponent.alertsService.alerts.errors.length).toEqual(0);
     });
 
     // TODO fix
@@ -269,8 +269,8 @@ describe("TextCreateComponent", () => {
             "mnt-irt:       \n" +
             "SOURCE:        RIPE\n");
 
-        expect(textCreateComponent.alertsComponent.getErrors().length).toEqual(1);
-        expect(textCreateComponent.alertsComponent.getErrors()).toEqual([{plainText: "Error fetching maintainers associated with this SSO account"}]);
+        expect(textCreateComponent.alertsService.alerts.errors.length).toEqual(1);
+        expect(textCreateComponent.alertsService.alerts.errors).toEqual([{plainText: "Error fetching maintainers associated with this SSO account"}]);
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
         expect(routerMock.navigate).not.toHaveBeenCalled();
     });
@@ -286,7 +286,7 @@ describe("TextCreateComponent", () => {
         textCreateComponent.submit();
         await componentFixture.whenStable();
 
-        expect(textCreateComponent.alertsComponent.getErrors()).toEqual([
+        expect(textCreateComponent.alertsService.alerts.errors).toEqual([
             {plainText: "person: Mandatory attribute not set"},
             {plainText: "address: Mandatory attribute not set"},
             {plainText: "phone: Mandatory attribute not set"},
@@ -315,7 +315,7 @@ describe("TextCreateComponent", () => {
         textCreateComponent.submit();
         await componentFixture.whenStable();
 
-        expect(textCreateComponent.alertsComponent.getErrors()).toEqual([
+        expect(textCreateComponent.alertsService.alerts.errors).toEqual([
             {plainText: "Only a single object is allowed"},
         ]);
 
@@ -338,7 +338,7 @@ describe("TextCreateComponent", () => {
         textCreateComponent.submit();
         await componentFixture.whenStable();
 
-        expect(textCreateComponent.alertsComponent.getErrors()).toEqual([
+        expect(textCreateComponent.alertsService.alerts.errors).toEqual([
             {plainText: "wrong: Unknown attribute"}
         ]);
 
@@ -545,15 +545,15 @@ describe("TextCreateComponent", () => {
             },
         }, {statusText: "bad request", status: 400});
 
-        expect(textCreateComponent.alertsComponent.getErrors().length).toEqual(2);
-        const plaintextErrors = _.map(textCreateComponent.alertsComponent.getErrors(), (item) => ({plainText: item.plainText}));
+        expect(textCreateComponent.alertsService.alerts.errors.length).toEqual(2);
+        const plaintextErrors = _.map(textCreateComponent.alertsService.alerts.errors, (item) => ({plainText: item.plainText}));
         expect(plaintextErrors).toEqual([
             {plainText: "Unrecognized source: INVALID_SOURCE"},
             {plainText: "person: \"Tester X\" is not valid for this object type"}
         ]);
 
-        expect(textCreateComponent.alertsComponent.getWarnings().length).toEqual(1);
-        const plaintextWarnings = _.map(textCreateComponent.alertsComponent.getWarnings(), (item) => ({plainText: item.plainText}));
+        expect(textCreateComponent.alertsService.alerts.warnings.length).toEqual(1);
+        const plaintextWarnings = _.map(textCreateComponent.alertsService.alerts.warnings, (item) => ({plainText: item.plainText}));
         expect(plaintextWarnings).toEqual([
             {plainText: "Not authenticated"}
         ]);

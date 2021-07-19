@@ -150,8 +150,7 @@ export class QueryParametersService {
                         } else if (queryParams.hierarchy !== short) {
                             if (!addedHierarchyWarning) {
                                 addedHierarchyWarning = true;
-                                errors.push("ERROR:901: duplicate IP flags passed<br><br>" +
-                                    "More than one IP flag (-l, -L, -m, -M or -x) passed to the server.");
+                                errors.push(`ERROR:901: duplicate IP flags passed. More than one IP flag (-l, -L, -m, -M or -x) passed to the server.`);
                             }
                         }
                     } else if (item === "--resource") {
@@ -173,9 +172,7 @@ export class QueryParametersService {
                         typeOptionPos = idx + 1;
                     } else if (!addedInvalidOptionWarning) {
                         addedInvalidOptionWarning = true;
-                        errors.push("Invalid option: " + item + "<br>" +
-                            "ERROR:111: invalid option supplied<br>" +
-                            "Use help query to see the valid options.");
+                        errors.push(`Invalid option: ${item}. ERROR:111: invalid option supplied. Use help query to see the valid options.`);
                     }
                 } else if (item.indexOf("-") === 0 && item.length > 1) {
                     const opts = item.substring(1);
@@ -187,8 +184,7 @@ export class QueryParametersService {
                             } else if (queryParams.hierarchy !== opts[i]) {
                                 if (!addedHierarchyWarning) {
                                     addedHierarchyWarning = true;
-                                    errors.push("ERROR:901: duplicate IP flags passed<br><br>" +
-                                        "More than one IP flag (-l, -L, -m, -M or -x) passed to the server.");
+                                    errors.push(`ERROR:901: duplicate IP flags passed. More than one IP flag (-l, -L, -m, -M or -x) passed to the server.`);
                                 }
                             }
                         } else if (opts[i] === "r") {
@@ -211,8 +207,7 @@ export class QueryParametersService {
                             sourcesPos = idx + 1;
                         } else if (!addedInvalidOptionWarning) {
                             addedInvalidOptionWarning = true;
-                            errors.push("ERROR:111: invalid option supplied<br>" +
-                                "Use help query to see the valid options.");
+                            errors.push(`ERROR:111: invalid option supplied. Use help query to see the valid options.`);
                         }
                     }
                 } else {

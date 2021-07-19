@@ -1,8 +1,8 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalDeleteObjectComponent} from "./modal-delete-object.component";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "delete-component",
@@ -18,10 +18,8 @@ export class DeleteComponent {
     public deletedObjects: any;
     public skipClearError: boolean = false;
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(private modalService: NgbModal,
+                public alertsService: AlertsService,
                 private activatedRoute: ActivatedRoute) {
         // this page does not raise a modal for authentication. It can be user directly either
         // if you are logged in and the object has your maintainers or if you have provided password
@@ -32,7 +30,7 @@ export class DeleteComponent {
     public ngOnInit() {
         this.modalInProgress = true;
 
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -51,7 +49,7 @@ export class DeleteComponent {
 
     public ngOnDestroy() {
       if (!this.skipClearError) {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
       }
     }
 
@@ -69,7 +67,7 @@ export class DeleteComponent {
             this.modalInProgress = false;
             this.deletedObjects = whoisResources.objects.object;
             console.debug("SUCCESS delete object" + JSON.stringify(whoisResources));
-            this.alertsComponent.setGlobalInfo("The following object(s) have been successfully deleted");
+            this.alertsService.setGlobalSuccess("The following object(s) have been successfully deleted");
         }, (errorResp: any) => {
             this.modalInProgress = false;
             // on error, the modal is dismissed and app redirects to the create-modify component
@@ -77,7 +75,7 @@ export class DeleteComponent {
             this.skipClearError = true;
             console.debug("ERROR deleting object" + JSON.stringify(errorResp));
             if (errorResp.data) {
-                this.alertsComponent.setErrors(errorResp.data);
+                this.alertsService.setErrors(errorResp.data);
             }
         });
     }

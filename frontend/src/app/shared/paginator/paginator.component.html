@@ -1,15 +1,5 @@
 <nav aria-label="Page navigation" [hidden]="hidePaginator">
     <ul class="pagination">
-<!--        <li [ngClass]="{disabled: rewindDisabled}">-->
-<!--            <a aria-label="Previous" (click)="fastFwd(-1 * maxNumPaginatorTabs)">-->
-<!--                <span aria-hidden="true">&laquo;</span>-->
-<!--            </a>-->
-<!--        </li>-->
-        <li [ngClass]="{active: activePage === pg}" *ngFor="let pg of pages"><a (click)="pageSelected(pg)">{{ pg }}</a></li>
-<!--        <li [ngClass]="{disabled: ffDisabled}">-->
-<!--            <a aria-label="Next" (click)="fastFwd(maxNumPaginatorTabs)">-->
-<!--                <span aria-hidden="true">&raquo;</span>-->
-<!--            </a>-->
-<!--        </li>-->
+        <li class="page-item" [ngClass]="{active: activePage === pg}" *ngFor="let pg of pages"><a class="page-link" (click)="pageSelected(pg)">{{ pg }}</a></li>
     </ul>
 </nav>

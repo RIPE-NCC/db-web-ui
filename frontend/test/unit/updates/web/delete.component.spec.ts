@@ -4,7 +4,6 @@ import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/rout
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of, throwError} from "rxjs";
 import {DeleteComponent} from "../../../../src/app/updatesweb/delete.component";
-import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
@@ -35,7 +34,7 @@ describe("DeleteController", () => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [
-                DeleteComponent, AlertsComponent
+                DeleteComponent,
             ],
             providers: [
                 WhoisResourcesService,
@@ -164,7 +163,7 @@ describe("DeleteController", () => {
         fixture.detectChanges();
 
         await fixture.whenStable();
-        expect(component.alertsComponent.getErrors()).toEqual([{
+        expect(component.alertsService.alerts.errors).toEqual([{
             severity: "Error",
             text: "Unrecognized source: %s",
             args: [{value: "INVALID_SOURCE"}],
@@ -185,7 +184,7 @@ describe("DeleteController", () => {
         fixture.detectChanges();
         await fixture.whenStable();
 
-        expect(component.alertsComponent.getErrors()).toEqual([{
+        expect(component.alertsService.alerts.errors).toEqual([{
             severity: "Error",
             text: "Unexpected error: please retry later",
             plainText: "Unexpected error: please retry later"

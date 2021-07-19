@@ -10,7 +10,7 @@ import {OrgDropDownSharedService} from "../../../src/app/dropdown/org-drop-down-
 import {MenuComponent} from "../../../src/app/menu/menu.component";
 import {MenuService} from "../../../src/app/menu/menu.service";
 
-describe("MenuComponent", () => {
+describe("LeftHandMenuComponent", () => {
 
     let component: MenuComponent;
     let menuService: MenuService;
@@ -63,6 +63,12 @@ describe("MenuComponent", () => {
         expect(menuService.roles.ticketing).toBe(true);
         expect(menuService.roles.certification).toBe(true);
         expect(menuService.roles.billing).toBe(true);
+        expect(menuService.roles.admin).toBeTruthy();
+        expect(menuService.roles.general).toBeTruthy();
+        expect(menuService.roles.generalMeeting).toBeTruthy();
+        expect(menuService.roles.ticketing).toBeTruthy();
+        expect(menuService.roles.certification).toBeTruthy();
+        expect(menuService.roles.billing).toBeTruthy();
     });
 
     it("should show just RIPE Database for Training environment", () => {

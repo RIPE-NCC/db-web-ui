@@ -47,7 +47,7 @@ describe("The inetnum editor", () => {
         page.modalInpPassword.sendKeys("xxx");
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
-        expect(page.modalBody.getText()).toContain("You have not supplied the correct password for mntner");
+        expect(page.modalBanner.getText()).toContain("You have not supplied the correct password for mntner");
         page.scrollIntoView(page.modalClose);
         page.modalClose.click();
         await browser.sleep(1000);

@@ -1,5 +1,4 @@
 import {FullTextSearchService} from "./full-text-search.service";
-import {DomSanitizer} from "@angular/platform-browser";
 import {Component} from "@angular/core";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
@@ -7,6 +6,8 @@ import {FullTextResponseService} from "./full-text-response.service";
 import {IAttributeModel, IVersion} from "../shared/whois-response-type.model";
 import {IResultSummary, ISearchResponseModel} from "./types.model";
 import {PropertiesService} from "../properties.service";
+import {Labels} from "../label.constants";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "full-text-search",
@@ -29,7 +30,6 @@ export class FullTextSearchComponent {
     public objectMetadata: any;
     public selectableAttributes: string[] = [];
     public results: any;
-    public showError = "";
     public activePage = 1;
     public numResultsPerPage: number;
 
@@ -46,18 +46,22 @@ export class FullTextSearchComponent {
                 private fullTextResponseService: FullTextResponseService,
                 private whoisMetaService: WhoisMetaService,
                 public properties: PropertiesService,
-                private sanitizer: DomSanitizer) {}
+                public alertsService: AlertsService) {}
 
     public ngOnInit() {
         this.ftquery = "";
         this.objectTypes = Object.keys(this.whoisMetaService.objectTypesMap);
-        this.objectMetadata = this.parseMetadataToLists(this.whoisMetaService.objectTypesMap);
+        this.objectMetadata = FullTextSearchComponent.parseMetadataToLists(this.whoisMetaService.objectTypesMap);
         this.numResultsPerPage = 10;
+    }
+
+    public ngOnDestroy() {
+        this.alertsService.clearAlertMessages();
     }
 
     public searchClicked() {
         if (!this.ftquery.trim()) {
-            this.showError = "fullText.emptyQueryText.text";
+            this.alertsService.setGlobalWarning(Labels["fullText.emptyQueryText.text"]);
             return;
         }
         this.performSearch(0);
@@ -100,7 +104,7 @@ export class FullTextSearchComponent {
     }
 
     private performSearch(start: number) {
-        this.showError = "";
+        this.alertsService.clearAlertMessages();
         if (!this.advancedSearch) {
             this.selectNone();
         }
@@ -130,11 +134,11 @@ export class FullTextSearchComponent {
         this.resultSummary = responseModel.summary;
         this.whoisVersion = this.fullTextResponseService.getVersionFromResponse(resp);
         if (this.results.length === 0) {
-            this.showError = "fullText.emptyRresult.text";
+            this.alertsService.setGlobalWarning(Labels["fullText.emptyRresult.text"]);
         }
     }
 
-    private parseMetadataToLists(metadata: any): { [key: string]: string } {
+    private static parseMetadataToLists(metadata: any): { [key: string]: string } {
         const result = {};
         for (const o of Object.keys(metadata)) {
             const md = metadata[o];

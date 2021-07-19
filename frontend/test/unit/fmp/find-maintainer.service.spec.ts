@@ -39,7 +39,7 @@ describe("FindMaintainerService", () => {
         const validateResp = {"expired": false};
         findMaintainerService.search(maintainerKey)
             .subscribe((respons: any) => {
-                expect(respons.mntnerFound).toBe(true);
+                expect(respons.mntnerFound).toBeTruthy();
                 expect(respons.selectedMaintainer.name).toBe("world");
                 expect(respons.email).toBe("test@ripe.net");
                 done();
@@ -70,7 +70,7 @@ describe("FindMaintainerService", () => {
         const validateResp = {"expired": false};
         findMaintainerService.search(maintainerKey)
             .subscribe((respons: any) => {
-                expect(respons.mntnerFound).toBe(true);
+                expect(respons.mntnerFound).toBeTruthy();
                 expect(respons.selectedMaintainer.name).toBe("world");
                 expect(respons.email).toBe("first@ripe.net");
                 done();
@@ -101,10 +101,10 @@ describe("FindMaintainerService", () => {
         const validateResp = {"expired": false};
         findMaintainerService.search(maintainerKey)
             .subscribe((respons: any) => {
-                expect(respons.mntnerFound).toBe(true);
+                expect(respons.mntnerFound).toBeTruthy();
                 expect(respons.selectedMaintainer.name).toBe("world");
                 expect(respons.email).toBe("first@ripe.net");
-                expect(respons.expired).toBe(false);
+                expect(respons.expired).toBeFalse();
                 done();
             });
         const req = httpMock.expectOne({method: "GET", url: "api/whois-internal/api/fmp-pub/mntner/I-AM-MNT"});

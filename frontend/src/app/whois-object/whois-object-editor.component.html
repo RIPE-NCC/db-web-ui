@@ -1,11 +1,11 @@
-<div class="alert alert-warning" *ngIf="missingMandatoryAttributes.length > 0">
-      Missing mandatory attribute:
-    <ul>
-      <li *ngFor="let attribute of missingMandatoryAttributes">
-        <strong>{{attribute}}</strong>
-      </li>
-    </ul>
-</div>
+<!--<div class="alert alert-warning" *ngIf="missingMandatoryAttributes.length > 0">-->
+<!--      Missing mandatory attribute:-->
+<!--    <ul>-->
+<!--      <li *ngFor="let attribute of missingMandatoryAttributes">-->
+<!--        <strong>{{attribute}}</strong>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--</div>-->
 <section class="visible-field-form">
   <ul class="form-fields appeared-fields">
       <li *ngFor="let attribute of attributes | filteroutAttributeByName: ['mnt-by', 'last-modified', 'created'] | filteroutAttributeByHidden; let i = index"

@@ -137,7 +137,7 @@ describe("DisplayComponent", () => {
 
         expectUserInfo(true);
         await fixture.whenStable();
-        expect(component.loggedIn).toBe(true);
+        expect(component.loggedIn).toBeTruthy();
     });
 
     it("should populate the ui from message-store", () => {
@@ -199,8 +199,8 @@ describe("DisplayComponent", () => {
         }, {status: 403, statusText: "error"});
 
 
-        expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-        expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
+        expect(component.alertsService.alerts.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+        expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
 
         // FIXME ?
         // expect($state.current.name).toBe("webupdates.select");

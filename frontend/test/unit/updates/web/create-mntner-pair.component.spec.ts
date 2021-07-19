@@ -96,7 +96,7 @@ describe("CreateMntnerPairComponent", () => {
 
             component.submit();
 
-            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Error fetching SSO information");
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Error fetching SSO information");
 
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(routerMock.navigate).not.toHaveBeenCalled();
@@ -194,8 +194,8 @@ describe("CreateMntnerPairComponent", () => {
             fixture.detectChanges();
             await fixture.whenStable();
 
-            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-            expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+            expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").$$error).toEqual(`"${MNTNER_NAME}" is not valid for this object type`);
         });
     });
@@ -262,7 +262,7 @@ describe("CreateMntnerPairComponent", () => {
 
             component.submit();
 
-            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Error fetching SSO information");
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Error fetching SSO information");
 
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(routerMock.navigate).not.toHaveBeenCalled();
@@ -360,8 +360,8 @@ describe("CreateMntnerPairComponent", () => {
             fixture.detectChanges();
             await fixture.whenStable();
 
-            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-            expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+            expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").$$error).toEqual(`"${MNTNER_NAME}" is not valid for this object type`);
         });
     });

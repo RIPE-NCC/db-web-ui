@@ -50,7 +50,7 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inet6NumSubject);
 
         const orgAttr = whoisResourcesService.getSingleAttributeOnName(attributes, "org");
-        expect(orgAttr.$$meta.$$disable).toBe(true);
+        expect(orgAttr.$$meta.$$disable).toBeTruthy();
     });
 
     it("should disable netname attribute from inet6num when status is ALLOCATED PA, ALLOCATED UNSPECIFIED or ALLOCATED-BY-RIR", () =>  {
@@ -61,7 +61,7 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inet6NumSubject);
 
         const netnameAttr = whoisResourcesService.getSingleAttributeOnName(attributes, "netname");
-        expect(netnameAttr.$$meta.$$disable).toBe(true);
+        expect(netnameAttr.$$meta.$$disable).toBeTruthy();
     });
 
     it("should not remove sponsoring org from inet6num addable attributes when status is LEGACY", () =>  {
@@ -137,7 +137,7 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
         let mntDomains = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-domains");
-        expect(mntDomains.$$meta.$$disable).toBe(true);
+        expect(mntDomains.$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable mnt-domains with non-ripe maintainers on modify", () =>  {
@@ -159,7 +159,7 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
         let mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-lower");
-        expect(mntLower.$$meta.$$disable).toBe(true);
+        expect(mntLower.$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable mnt-lower with non-ripe maintainers on modify", () =>  {
@@ -181,7 +181,7 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
         let mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-routes");
-        expect(mntLower.$$meta.$$disable).toBe(true);
+        expect(mntLower.$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable mnt-routes with non-ripe maintainers on modify", () =>  {

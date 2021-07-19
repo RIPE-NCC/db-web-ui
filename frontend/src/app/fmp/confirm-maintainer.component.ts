@@ -1,9 +1,9 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as moment from "moment";
 import * as _ from "lodash";
 import {EmailLinkService} from "./email-link.services";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "confirm-maintainer",
@@ -17,21 +17,19 @@ export class ConfirmMaintainerComponent {
     public hashOk: boolean = false;
     public localHash: any;
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(private emailLinkService: EmailLinkService,
+                public alertsService: AlertsService,
                 public activatedRoute: ActivatedRoute,
                 public router: Router) {
     }
 
     public ngOnInit() {
 
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
         console.info("ConfirmMaintainer starts");
         const queryParams = this.activatedRoute.snapshot.queryParams;
         if (!queryParams.hash) {
-            this.alertsComponent.setGlobalError("No hash passed along");
+            this.alertsService.setGlobalError("No hash passed along");
             return;
         }
 
@@ -42,25 +40,26 @@ export class ConfirmMaintainerComponent {
                 this.key = link.mntner;
                 this.email = link.email;
                 this.user = link.username;
+
                 if (!link.hasOwnProperty("expiredDate") || moment.utc(link.expiredDate, moment.ISO_8601).isBefore(moment.utc())) {
-                    this.alertsComponent.addGlobalWarning("Your link has expired");
+                    this.alertsService.addGlobalWarning("Your link has expired");
                     return;
                 }
                 if (link.currentUserAlreadyManagesMntner === true) {
-                    this.alertsComponent.addGlobalWarning(
+                    this.alertsService.addGlobalWarning(
                         `Your RIPE NCC Access account is already associated with this mntner. ` +
                         `You can modify this mntner <a href="${this.makeModificationUrl(this.key)}">here</a>.`);
                     return;
                 }
                 this.hashOk = true;
-                this.alertsComponent.addGlobalInfo("You are logged in with the RIPE NCC Access account " + this.user);
+                this.alertsService.addGlobalInfo("You are logged in with the RIPE NCC Access account " + this.user);
             }, (error: any) => {
                 let msg = "Error fetching email-link";
                 if (!_.isObject(error.data)) {
                     msg = msg.concat(": " + error.data);
                 }
                 console.error(msg);
-                this.alertsComponent.setGlobalError(msg);
+                this.alertsService.setGlobalError(msg);
             });
     }
 
@@ -77,9 +76,9 @@ export class ConfirmMaintainerComponent {
             console.error("Error associating email-link:" + JSON.stringify(error));
 
             if (error.status === 400 && !_.isUndefined(error.data) && error.data.match(/already contains SSO/).length === 1) {
-                this.alertsComponent.setGlobalError(error.data);
+                this.alertsService.setGlobalError(error.data);
             } else {
-                this.alertsComponent.setGlobalError(
+                this.alertsService.setGlobalError(
                 `<p>An error occurred while adding the RIPE NCC Access account to the <span class="mntner">MNTNER</span> object.</p>` +
                 `<p>No changes were made to the <span class="mntner">MNTNER</span> object ${this.key}.</p>` +
                 `<p>If this error continues, please contact us at <a href="mailto:ripe-dbm@ripe.net">ripe-dbm@ripe.net</a> for assistance.</p>`);
@@ -88,8 +87,8 @@ export class ConfirmMaintainerComponent {
     }
 
     public cancelAssociate() {
-        this.alertsComponent.clearAlertMessages();
-        this.alertsComponent.addGlobalWarning(
+        this.alertsService.clearAlertMessages();
+        this.alertsService.addGlobalWarning(
         `<p>No changes were made to the <span class="mntner">MNTNER</span> object ${this.key}.</p>` +
                 `<p>If you wish to add a different RIPE NCC Access account to your <strong>MNTNER</strong> object:` +
                 `<ol>` +

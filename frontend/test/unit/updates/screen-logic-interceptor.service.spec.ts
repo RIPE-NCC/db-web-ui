@@ -54,7 +54,7 @@ describe("ScreenLogicInterceptorService", () => {
         let attributes = interceptor.beforeEdit("Modify", "RIPE", "aut-num", autNumSubject);
 
         let orgAttr = whoisResourcesService.getSingleAttributeOnName(attributes, "org");
-        expect(orgAttr.$$meta.$$disable).toBe(true);
+        expect(orgAttr.$$meta.$$disable).toBeTruthy();
     });
 
     it("should set default source before-edit any object on Create operation", () => {
@@ -69,7 +69,7 @@ describe("ScreenLogicInterceptorService", () => {
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual("source");
         expect(organisation[0].value).toEqual("TEST");
-        expect(organisation[0].$$meta.$$disable).toBe(true);
+        expect(organisation[0].$$meta.$$disable).toBeTruthy();
 
     });
 
@@ -91,7 +91,7 @@ describe("ScreenLogicInterceptorService", () => {
         let attributes = interceptor.beforeEdit("Modify", "RIPE", "aut-num", autNumSubject);
 
         let primaryKey = whoisResourcesService.getSingleAttributeOnName(attributes, "aut-num");
-        expect(primaryKey.$$meta.$$disable).toBe(true);
+        expect(primaryKey.$$meta.$$disable).toBeTruthy();
     });
 
     const _wrap = (type: any, attrs: any) => {

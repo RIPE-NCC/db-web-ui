@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "lodash";
 import {RestService} from "./rest.service";
@@ -9,7 +9,7 @@ import {MessageStoreService} from "./message-store.service";
 import {ErrorReporterService} from "./error-reporter.service";
 import {LinkService} from "./link.service";
 import {IAttributeModel} from "../shared/whois-response-type.model";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "create-self-maintained-maintainer",
@@ -25,9 +25,6 @@ export class CreateSelfMaintainedMaintainerComponent {
     public showAttrsHelp: [];
     private readonly MNT_TYPE: string = "mntner";
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(public whoisResourcesService: WhoisResourcesService,
                 public whoisMetaService: WhoisMetaService,
                 private userInfoService: UserInfoService,
@@ -35,12 +32,13 @@ export class CreateSelfMaintainedMaintainerComponent {
                 public messageStoreService: MessageStoreService,
                 private errorReporterService: ErrorReporterService,
                 private linkService: LinkService,
+                public alertsService: AlertsService,
                 public activatedRoute: ActivatedRoute,
                 public router: Router) {
     }
 
     public ngOnInit() {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
 
         this.adminC = {
             alternatives: [],
@@ -68,7 +66,7 @@ export class CreateSelfMaintainedMaintainerComponent {
                 this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"upd-to", result.user.username);
                 this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"auth", "SSO " + result.user.username);
             }, () => {
-                this.alertsComponent.setGlobalError("Error fetching SSO information");
+                this.alertsService.setGlobalError("Error fetching SSO information");
             },
         );
     }
@@ -80,7 +78,7 @@ export class CreateSelfMaintainedMaintainerComponent {
 
         this.whoisResourcesService.clearErrors(this.maintainerAttributes);
         if (!this.whoisResourcesService.validate(this.maintainerAttributes)) {
-            this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsComponent.getErrors(), this.maintainerAttributes);
+            this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);
         } else {
             this.createObject();
         }
@@ -157,13 +155,13 @@ export class CreateSelfMaintainedMaintainerComponent {
 
                     const primaryKey = this.whoisResourcesService.getPrimaryKey(resp);
                     this.messageStoreService.add(primaryKey, resp);
-                    this.router.navigateByUrl(`webupdates/display/${this.source}/${this.MNT_TYPE}/${primaryKey}`);
+                    this.router.navigateByUrl(`webupdates/display/${this.source}/${this.MNT_TYPE}/${primaryKey}?method=Create`);
                 }, (error: any) => {
                     this.submitInProgress = false;
 
-                    this.alertsComponent.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
-                    this.alertsComponent.setErrors(error.data);
-                    this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsComponent.getErrors(), this.maintainerAttributes);
+                    this.alertsService.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
+                    this.alertsService.setErrors(error.data);
+                    this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);
                 },
             );
     }

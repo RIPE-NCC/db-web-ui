@@ -28,37 +28,37 @@ describe("PrefixService", () => {
 
     describe("IPv4", () => {
         it("should be able to validate a bunch of good prefixes", () => {
-            expect(prefixService.isValidPrefix("22.22.0.0/16")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/17")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/18")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/19")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/20")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/21")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/22")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/23")).toBe(true);
-            expect(prefixService.isValidPrefix("22.22.0.0/24")).toBe(true);
+            expect(prefixService.isValidPrefix("22.22.0.0/16")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/17")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/18")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/19")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/20")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/21")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/22")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/23")).toBeTruthy();
+            expect(prefixService.isValidPrefix("22.22.0.0/24")).toBeTruthy();
         });
 
         it("should fail on out-of-range subnet mask", () => {
-            expect(prefixService.isValidPrefix("22.22.0.0/8")).toBe(false);
-            expect(prefixService.isValidPrefix("22.22.0.0/25")).toBe(false);
+            expect(prefixService.isValidPrefix("22.22.0.0/8")).toBeFalse();
+            expect(prefixService.isValidPrefix("22.22.0.0/25")).toBeFalse();
         });
 
         it("should fail when address bits are masked", () => {
-            expect(prefixService.isValidPrefix("192.168.64.0/17")).toBe(false);
-            expect(prefixService.isValidPrefix("192.168.255.0/18")).toBe(false);
-            expect(prefixService.isValidPrefix("192.168.0.1/24")).toBe(false);
+            expect(prefixService.isValidPrefix("192.168.64.0/17")).toBeFalse();
+            expect(prefixService.isValidPrefix("192.168.255.0/18")).toBeFalse();
+            expect(prefixService.isValidPrefix("192.168.0.1/24")).toBeFalse();
         });
 
         it("should fail when address is not complete", () => {
-            expect(prefixService.isValidPrefix("192.168.0/17")).toBe(false);
+            expect(prefixService.isValidPrefix("192.168.0/17")).toBeFalse();
         });
 
         it("should fail when subnet mask is missing", () => {
-            expect(prefixService.isValidPrefix("192.168.0.0")).toBe(false);
-            expect(prefixService.isValidPrefix("192.168.0.0/")).toBe(false);
-            expect(prefixService.isValidPrefix("192.168.0.0/0")).toBe(false);
-            expect(prefixService.isValidPrefix("192.168.0.0/00")).toBe(false);
+            expect(prefixService.isValidPrefix("192.168.0.0")).toBeFalse();
+            expect(prefixService.isValidPrefix("192.168.0.0/")).toBeFalse();
+            expect(prefixService.isValidPrefix("192.168.0.0/0")).toBeFalse();
+            expect(prefixService.isValidPrefix("192.168.0.0/00")).toBeFalse();
         });
 
         it("should generate some lovely reverse zone records", () => {
@@ -84,31 +84,31 @@ describe("PrefixService", () => {
 
     describe("IPv6", () => {
         it("should be able to validate a bunch of good prefixes", () => {
-            expect(prefixService.isValidPrefix("2001:db8::/48")).toBe(true);
-            expect(prefixService.isValidPrefix("2001:db8::/64")).toBe(true);
-            // expect(prefixService.isValidPrefix("2001:db8::1/19")).toBe(true);
-            // expect(prefixService.isValidPrefix("2001:db8::1/20")).toBe(true);
-            // expect(prefixService.isValidPrefix("2001:db8::1/21")).toBe(true);
-            // expect(prefixService.isValidPrefix("2001:db8::1/22")).toBe(true);
-            // expect(prefixService.isValidPrefix("2001:db8::1/23")).toBe(true);
-            // expect(prefixService.isValidPrefix("2001:db8::1/24")).toBe(true);
+            expect(prefixService.isValidPrefix("2001:db8::/48")).toBeTruthy();
+            expect(prefixService.isValidPrefix("2001:db8::/64")).toBeTruthy();
+            // expect(prefixService.isValidPrefix("2001:db8::1/19")).toBeTruthy();
+            // expect(prefixService.isValidPrefix("2001:db8::1/20")).toBeTruthy();
+            // expect(prefixService.isValidPrefix("2001:db8::1/21")).toBeTruthy();
+            // expect(prefixService.isValidPrefix("2001:db8::1/22")).toBeTruthy();
+            // expect(prefixService.isValidPrefix("2001:db8::1/23")).toBeTruthy();
+            // expect(prefixService.isValidPrefix("2001:db8::1/24")).toBeTruthy();
         });
 
         it("should fail on out-of-range subnet mask", () => {
-            expect(prefixService.isValidPrefix("2001:db8::/0")).toBe(false);
-            //expect(prefixService.isValidPrefix("2001:db8::/128")).toBe(false);
+            expect(prefixService.isValidPrefix("2001:db8::/0")).toBeFalse();
+            //expect(prefixService.isValidPrefix("2001:db8::/128")).toBeFalse();
         });
 
         it("should fail when address bits are masked", () => {
-            expect(prefixService.isValidPrefix("2001:db8::1/48")).toBe(false);
-            expect(prefixService.isValidPrefix("2001:db8::/28")).toBe(false);
+            expect(prefixService.isValidPrefix("2001:db8::1/48")).toBeFalse();
+            expect(prefixService.isValidPrefix("2001:db8::/28")).toBeFalse();
         });
 
         it("should fail when subnet mask is missing", () => {
-            expect(prefixService.isValidPrefix("2001:db8::")).toBe(false);
-            expect(prefixService.isValidPrefix("2001:db8::/")).toBe(false);
-            expect(prefixService.isValidPrefix("2001:db8::/0")).toBe(false);
-            expect(prefixService.isValidPrefix("2001:db8::/00")).toBe(false);
+            expect(prefixService.isValidPrefix("2001:db8::")).toBeFalse();
+            expect(prefixService.isValidPrefix("2001:db8::/")).toBeFalse();
+            expect(prefixService.isValidPrefix("2001:db8::/0")).toBeFalse();
+            expect(prefixService.isValidPrefix("2001:db8::/00")).toBeFalse();
         });
 
         it("should generate some lovely reverse zone records", () => {

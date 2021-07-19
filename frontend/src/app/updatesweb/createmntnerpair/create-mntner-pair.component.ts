@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "lodash";
 import {PropertiesService} from "../../properties.service";
@@ -12,7 +12,7 @@ import {LinkService} from "../link.service";
 import {IAttributeModel} from "../../shared/whois-response-type.model";
 import {IUserInfoResponseData} from "../../dropdown/org-data-type.model";
 import {CreateService} from "../create.service";
-import {AlertsComponent} from "../../shared/alert/alerts.component";
+import {AlertsService} from "../../shared/alert/alerts.service";
 
 @Component({
     selector: "create-mntner-pair",
@@ -31,9 +31,6 @@ export class CreateMntnerPairComponent {
     public linkToRoleOrPerson: string = "person";
     private subscription: any;
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(public whoisResourcesService: WhoisResourcesService,
                 private whoisMetaService: WhoisMetaService,
                 private userInfoService: UserInfoService,
@@ -43,6 +40,7 @@ export class CreateMntnerPairComponent {
                 private errorReporterService: ErrorReporterService,
                 private linkService: LinkService,
                 private properties: PropertiesService,
+                public alertsService: AlertsService,
                 public activatedRoute: ActivatedRoute,
                 public router: Router) {
     }
@@ -79,7 +77,7 @@ export class CreateMntnerPairComponent {
                 this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "auth", "SSO " + result.user.username);
                 this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "upd-to", result.user.username);
             }, () => {
-                this.alertsComponent.setGlobalError("Error fetching SSO information");
+                this.alertsService.setGlobalError("Error fetching SSO information");
             },
         );
     }
@@ -97,11 +95,11 @@ export class CreateMntnerPairComponent {
         }
 
         if (!this.validateForm()) {
-            this.errorReporterService.log("Create", this.objectType, this.alertsComponent.getErrors(), this.objectTypeAttributes);
-            this.errorReporterService.log("Create", "mntner", this.alertsComponent.getErrors(), this.mntnerAttributes);
+            this.errorReporterService.log("Create", this.objectType, this.alertsService.alerts.errors, this.objectTypeAttributes);
+            this.errorReporterService.log("Create", "mntner", this.alertsService.alerts.errors, this.mntnerAttributes);
 
         } else {
-            this.alertsComponent.clearAlertMessages();
+            this.alertsService.clearAlertMessages();
 
             this.submitInProgress = true;
             this.isObjectTypeRole() ? this.createRoleMntnerPair() : this.createPersonMntnerPair();
@@ -136,12 +134,12 @@ export class CreateMntnerPairComponent {
                     const whoisResources = error.data;
 
                     this.validateForm();
-                    this.alertsComponent.addErrors(whoisResources);
-                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, whoisResources);
-                    this.alertsComponent.populateFieldSpecificErrors("mntner", this.mntnerAttributes, whoisResources);
+                    this.alertsService.addAlertMsgs(whoisResources);
+                    this.alertsService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, whoisResources);
+                    this.alertsService.populateFieldSpecificErrors("mntner", this.mntnerAttributes, whoisResources);
 
-                    this.errorReporterService.log("Create", this.objectType, this.alertsComponent.getErrors(), this.objectTypeAttributes);
-                    this.errorReporterService.log("Create", "mntner", this.alertsComponent.getErrors(), this.mntnerAttributes);
+                    this.errorReporterService.log("Create", this.objectType, this.alertsService.alerts.errors, this.objectTypeAttributes);
+                    this.errorReporterService.log("Create", "mntner", this.alertsService.alerts.errors, this.mntnerAttributes);
                 },
             );
     }
@@ -162,12 +160,12 @@ export class CreateMntnerPairComponent {
                     const whoisResources = error.data;
 
                     this.validateForm();
-                    this.alertsComponent.addErrors(whoisResources);
-                    this.alertsComponent.populateFieldSpecificErrors("person", this.objectTypeAttributes, whoisResources);
-                    this.alertsComponent.populateFieldSpecificErrors("mntner", this.mntnerAttributes, whoisResources);
+                    this.alertsService.addAlertMsgs(whoisResources);
+                    this.alertsService.populateFieldSpecificErrors("person", this.objectTypeAttributes, whoisResources);
+                    this.alertsService.populateFieldSpecificErrors("mntner", this.mntnerAttributes, whoisResources);
 
-                    this.errorReporterService.log("Create", "person", this.alertsComponent.getErrors(), this.objectTypeAttributes);
-                    this.errorReporterService.log("Create", "mntner", this.alertsComponent.getErrors(), this.mntnerAttributes);
+                    this.errorReporterService.log("Create", "person", this.alertsService.alerts.errors, this.objectTypeAttributes);
+                    this.errorReporterService.log("Create", "mntner", this.alertsService.alerts.errors, this.mntnerAttributes);
                 },
             );
     }

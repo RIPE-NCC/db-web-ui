@@ -1,4 +1,4 @@
-import {NgModule} from "@angular/core";
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {NgbModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
@@ -7,7 +7,6 @@ import {CredentialsService} from "./credentials.service";
 import {WhoisMetaService} from "./whois-meta.service";
 import {WhoisResourcesService} from "./whois-resources.service";
 import {AlertsService} from "./alert/alerts.service";
-import {AlertsComponent} from "./alert/alerts.component";
 import {HelpMarkerComponent} from "./help-marker.component";
 import {LabelPipe} from "./label.pipe";
 import {PaginationComponent} from "./paginator/pagination.component";
@@ -26,8 +25,10 @@ import {WebAppVersionComponent} from "../version/web-app-version.component";
 import {WhoisVersionComponent} from "../version/whois-version.component";
 import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
 import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
+import {AlertBannersComponent} from "./alert/alert-banners.component";
 
 @NgModule({
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     imports: [
         CommonModule,
         FormsModule,
@@ -36,7 +37,7 @@ import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
         DiffMatchPatchModule
     ],
     declarations: [
-        AlertsComponent,
+        AlertBannersComponent,
         PaginationComponent,
         HelpMarkerComponent,
         LabelPipe,
@@ -64,14 +65,14 @@ import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
         EnvironmentStatusService,
     ],
     entryComponents: [
-        AlertsComponent,
+        AlertBannersComponent,
         PaginationComponent,
         LoadingIndicatorComponent,
         HelpMarkerComponent,
         NameFormatterComponent
     ],
     exports: [
-        AlertsComponent,
+        AlertBannersComponent,
         PaginationComponent,
         HelpMarkerComponent,
         LabelPipe,

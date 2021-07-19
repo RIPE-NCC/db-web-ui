@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ForgotMaintainerPasswordService, IForgotMaintainerPassword} from "./forgot-maintainer-password.service";
 import {UserInfoService} from "../userinfo/user-info.service";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "fmp",
@@ -14,6 +15,7 @@ export class ForgotMaintainerPasswordComponent {
 
     constructor(private forgotMaintainerPasswordService: ForgotMaintainerPasswordService,
                 private userInfoService: UserInfoService,
+                private alertsService: AlertsService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
     }
@@ -30,12 +32,18 @@ export class ForgotMaintainerPasswordComponent {
         this.checkLoggedIn();
     }
 
+    public ngOnDestroy() {
+        this.alertsService.clearAlertMessages();
+    }
+
     public next(fmp: IForgotMaintainerPassword, formValid: boolean) {
         if (formValid) {
             console.info("Form is valid, sending data to server.");
             this.forgotMaintainerPasswordService.generatePdfAndEmail(fmp)
-                .subscribe((pdfUrl: string) =>
-                    this.generatedPDFUrl = pdfUrl);
+                .subscribe((pdfUrl: string) => {
+                    this.generatedPDFUrl = pdfUrl;
+                    this.alertsService.setGlobalSuccess("Success!");
+                });
         }
     }
 

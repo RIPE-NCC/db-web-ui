@@ -2,16 +2,13 @@
 
     <h1>Force delete {{object.type}} {{object.name}}</h1>
 
-
     <section>
-        <div class="alert alert-info">
+        <div>
             Force delete allows you to delete inet(6)num, route(6) and domain objects by using the maintainer of a covering address space object,
             instead of the maintainer of the object itself. This means the "mnt-lower:" of an allocation or the "mnt-by:" of a provider
             independent (PI) or anycast assignment each have the authority to force delete any more specific or related object.
         </div>
     </section>
-
-    <alerts></alerts>
 
     <section class="inner-container">
         <br/>

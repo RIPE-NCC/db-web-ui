@@ -60,11 +60,17 @@ ul.radio {
 a.blue-button, a.red-button {
     color: #fff;
 }
+
 .blue-button, .red-button {
     display: inline-block;
     padding: .5em 1em;
     margin: 0 0 0 .3em;
     color: #fff;
+}
+
+a.blue-button:not([href]),a.blue-button:not([href]):hover {
+    color: $white;
+    text-decoration: none;
 }
 
 .blue-button {
@@ -321,13 +327,8 @@ div.portlet.navigation {
     width: 100%;
 }
 
-#portal-breadcrumbs {
-    display: inline-block;
-    width: 100%;
-}
-
 section .resultlinks {
-    line-height: 2.9em;
+    line-height: 1.8rem;
 }
 .generic-drop-down {
     ul.dropdown-menu {
@@ -339,6 +340,67 @@ section .resultlinks {
                 color: $black;
             }
         }
+    }
+}
+
+.bell-drop-down {
+    @extend .generic-drop-down;
+
+    button#grey-bell-button {
+        &.grey-button {
+            .fa-bell-o {
+                color: $dark-grey-cr;
+                font-size: 18px;
+                font-weight: bold;
+            }
+        }
+
+    }
+
+    button#red-bell-button {
+        &.red-button {
+            background-color: #f1dede;
+            border: solid 0.1rem $light-red;
+
+            .fa-bell-o {
+                color: $dark-red;
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            &:hover {
+                background-color: #e9d6d6;
+            }
+        }
+    }
+
+    ul.dropdown-menu {
+        li {
+            &.dropdown-header {
+                background-color: $grey;
+                font-size: 14px;
+                padding: 4px 10px;
+            }
+
+            > span {
+                margin: 10px;
+                line-height: 1.1em;
+            }
+
+            > .overlap-link {
+                cursor: pointer;
+                line-height: 1em;
+
+                &:hover {
+                    color: $link;
+                    background-color: #fbfbfb;
+                }
+            }
+        }
+    }
+
+    div.popover {
+        width: 100px;
     }
 }
 
@@ -358,5 +420,4 @@ ngx-loading-bar {
     .break-all-word {
         word-break: break-all;
     }
-
 }

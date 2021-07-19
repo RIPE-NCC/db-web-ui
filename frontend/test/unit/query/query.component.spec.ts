@@ -450,11 +450,11 @@ describe("QueryComponent", () => {
             expect(component.qp.source).toEqual("TEST");
             expect(component.whoisCliQuery()).toEqual("-i mntner -T inetnum,inet6num -ld --sources TEST 193.0.0.0");
 
-            expect(component.alertsComponent.getErrors().length).toEqual(4);
-            expect(component.formatError(component.alertsComponent.getErrors()[0])).toEqual("Goodbye,\nand thanks for all the fish");
-            expect(component.formatError(component.alertsComponent.getErrors()[1])).toEqual("So Goodbye, Yellow Brick Road");
-            expect(component.formatError(component.alertsComponent.getErrors()[2])).toEqual("Goodbye, cruel world!");
-            expect(component.formatError(component.alertsComponent.getErrors()[3])).toEqual("Broken message");
+            expect(component.alertsService.alerts.errors.length).toEqual(4);
+            expect(component.formatError(component.alertsService.alerts.errors[0])).toEqual("Goodbye,\nand thanks for all the fish");
+            expect(component.formatError(component.alertsService.alerts.errors[1])).toEqual("So Goodbye, Yellow Brick Road");
+            expect(component.formatError(component.alertsService.alerts.errors[2])).toEqual("Goodbye, cruel world!");
+            expect(component.formatError(component.alertsService.alerts.errors[3])).toEqual("Broken message");
             expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
     });
@@ -479,7 +479,7 @@ describe("QueryComponent", () => {
             expect(component.qp.inverse).toEqual({});
             expect(component.whoisCliQuery()).toEqual("-t aut-num");
             component.doSearch();
-            expect(component.alertsComponent.getErrors().length).toEqual(0);
+            expect(component.alertsService.alerts.errors.length).toEqual(0);
         });
 
         it("should show error messages", () => {
@@ -501,8 +501,8 @@ describe("QueryComponent", () => {
             expect(component.qp.inverse).toEqual({});
             expect(component.whoisCliQuery()).toEqual(" ");
             component.doSearch();
-            expect(component.alertsComponent.getErrors().length).toEqual(1);
-            expect(component.formatError(component.alertsComponent.getErrors()[0])).toEqual("Unknown object type \"zzz\".");
+            expect(component.alertsService.alerts.errors.length).toEqual(1);
+            expect(component.formatError(component.alertsService.alerts.errors[0])).toEqual("Unknown object type \"zzz\".");
         });
     });
 });

@@ -7,7 +7,6 @@ describe("Display an aut-num", () => {
     it("should sanitized img and script tag - XSS attack", () => {
         browser.get(browser.baseUrl + "webupdates/display/RIPE/aut-num/as210089?method=Modify");
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/aut-num/as210089?method=Modify");
-        expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
         expect(page.displayPanelImgTag.isPresent()).toBeFalsy();
         expect(page.displayPanelScriptTag.isPresent()).toBeFalsy();
@@ -16,7 +15,6 @@ describe("Display an aut-num", () => {
     it("should show umlaut", () => {
         browser.get(browser.baseUrl + "webupdates/display/RIPE/aut-num/as210089?method=Modify");
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/aut-num/as210089?method=Modify");
-        expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
         expect(page.displayPanel.getText()).toContain("Ümlaüt");
     });

@@ -1,11 +1,12 @@
-import {Component, OnDestroy, ViewChild} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import * as _ from "lodash";
 import {IErrorMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
 import {IQueryParameters, ITemplateTerm, QueryParametersService} from "./query-parameters.service";
 import {QueryService} from "./query.service";
 import {PropertiesService} from "../properties.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
+import { ViewportScroller } from '@angular/common';
 
 export interface IQueryState {
     source: string;
@@ -40,12 +41,11 @@ export class QueryComponent implements OnDestroy {
         xml: string;
     };
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(public properties: PropertiesService,
                 private queryService: QueryService,
                 private queryParametersService: QueryParametersService,
+                public alertsService: AlertsService,
+                private viewportScroller: ViewportScroller,
                 public activatedRoute: ActivatedRoute,
                 public router: Router) {
         this.qp = {
@@ -59,15 +59,15 @@ export class QueryComponent implements OnDestroy {
             source: ""
         };
         this.subscription = this.activatedRoute.queryParams.subscribe((() => {
-            if (this.alertsComponent) {
-                this.alertsComponent.clearAlertMessages();
+            if (this.alertsService) {
+                this.alertsService.clearAlertMessages();
             }
             this.init();
         }));
     }
 
     public ngOnDestroy() {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
@@ -134,9 +134,7 @@ export class QueryComponent implements OnDestroy {
         }
         const cleanQp = _.cloneDeep(this.qp);
         // Reset on-screen widgets
-        if (this.alertsComponent) {
-            this.alertsComponent.clearAlertMessages();
-        }
+        this.alertsService.clearAlertMessages();
 
         const issues = this.queryParametersService.validate(cleanQp);
         for (const msg of issues.warnings) {
@@ -144,14 +142,14 @@ export class QueryComponent implements OnDestroy {
                 severity: "warning",
                 plainText: msg,
             };
-            this.alertsComponent.addGlobalWarning(this.formatError(war));
+            this.alertsService.addGlobalWarning(this.formatError(war));
         }
         for (const msg of issues.errors) {
             const err: IErrorMessageModel = {
                 severity: "error",
                 plainText: msg,
             };
-            this.alertsComponent.addGlobalError(this.formatError(err));
+            this.alertsService.addGlobalError(this.formatError(err));
         }
         if (issues.errors.length) {
             this.gotoAnchor();
@@ -161,12 +159,16 @@ export class QueryComponent implements OnDestroy {
         if (QueryParametersService.isQueriedTemplate(cleanQp.queryText)) {
             this.showTemplatePanel = issues.errors.length === 0;
             this.queriedTemplateObject = cleanQp.queriedTemplateObject;
+            setTimeout(() => this.gotoAnchor(),0) ;
         } else {
             this.showTemplatePanel = false;
             this.queryService
                 .searchWhoisObjects(cleanQp, this.offset)
                 .subscribe((response: IWhoisResponseModel) => {
                         this.handleWhoisSearch(response);
+                        if (this.offset === 0) {
+                            setTimeout(() => this.gotoAnchor(),0) ;
+                        }
                     },
                     (error: IWhoisResponseModel) => this.handleWhoisSearchError(error));
         }
@@ -249,7 +251,7 @@ export class QueryComponent implements OnDestroy {
             : response.objects.object;
         this.whoisVersion = response.version;
         // multiple term searches can have errors, too
-        this.alertsComponent.setAllErrors(response);
+        this.alertsService.setAllErrors(response);
         const cleanQp = _.cloneDeep(this.qp);
         this.queryParametersService.validate(cleanQp);
         const jsonQueryString = this.queryService.buildQueryStringForLink(cleanQp);
@@ -260,15 +262,12 @@ export class QueryComponent implements OnDestroy {
         } else {
             this.link.perma = this.link.json = this.link.xml = "";
         }
-        if (this.offset === 0) {
-            this.gotoAnchor();
-        }
         this.showScroller = response.objects.object.length >= this.queryService.PAGE_SIZE;
     }
 
     private handleWhoisSearchError(response: IWhoisResponseModel) {
         this.results = response.objects ? response.objects.object : [];
-        this.alertsComponent.setAllErrors(response);
+        this.alertsService.setAllErrors(response);
         this.gotoAnchor();
     }
 
@@ -313,14 +312,14 @@ export class QueryComponent implements OnDestroy {
     }
 
     private gotoAnchor() {
-        if (this.alertsComponent.hasErrors() || this.alertsComponent.hasWarnings()) {
-            QueryComponent.setActiveAnchor("anchorTop");
+        if (this.alertsService.hasErrors() || this.alertsService.hasWarnings()) {
+            this.setActiveAnchor("anchorTop");
         } else {
-            QueryComponent.setActiveAnchor("resultsSection");
+            this.setActiveAnchor("anchorForScrollToResults");
         }
     }
 
-    private static setActiveAnchor(id: string) {
-        document.querySelector(`#${id}`).scrollIntoView();
+    private setActiveAnchor(id: string) {
+        this.viewportScroller.scrollToAnchor(id);
     }
 }

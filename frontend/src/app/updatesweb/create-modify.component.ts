@@ -1,4 +1,4 @@
-import {Component, Inject, ViewChild} from "@angular/core";
+import {Component, Inject} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {debounceTime, distinctUntilChanged, map, mergeMap} from "rxjs/operators";
@@ -28,7 +28,7 @@ import {ModalEditAttributeComponent} from "./modal-edit-attribute.component";
 import {ModalMd5PasswordComponent} from "./modal-md5-password.component";
 import {ModalCreateRoleForAbuseCComponent} from "./modal-create-role-for-abusec.component";
 import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 interface IOptionList {
     status: IStatusOption[];
@@ -77,9 +77,6 @@ export class CreateModifyComponent {
     public isMntHelpShown: boolean = false;
     public showAttrsHelp: [];
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(@Inject(WINDOW) private window: any,
                 public whoisResourcesService: WhoisResourcesService,
                 public attributeMetadataService: AttributeMetadataService,
@@ -98,6 +95,7 @@ export class CreateModifyComponent {
                 public enumService: EnumService,
                 public charsetToolsService: CharsetToolsService,
                 public screenLogicInterceptorService: ScreenLogicInterceptorService,
+                public alertsService: AlertsService,
                 public activatedRoute: ActivatedRoute,
                 public router: Router) {
     }
@@ -161,7 +159,7 @@ export class CreateModifyComponent {
     }
 
     public ngOnDestroy() {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
     }
     /*
      * Functions / callbacks below...
@@ -216,7 +214,7 @@ export class CreateModifyComponent {
                         this.restCallInProgress = false;
                         console.error("MntnerService.getAuthForObjectIfNeeded rejected authorisation: ", error);
                         if (!this.inetnumParentAuthError) {
-                            this.alertsComponent.addGlobalError("Failed to authenticate parent resource");
+                            this.alertsService.addGlobalError("Failed to authenticate parent resource");
                             this.inetnumParentAuthError = true;
                         }
                     },
@@ -427,8 +425,8 @@ export class CreateModifyComponent {
             this.restService.autocomplete(attribute.name, value, true, [])
                 .then((data: any) => {
                     if (_.some(data, (item: any) => {
-                        return this.uniformed(item.type) === this.uniformed(attribute.name) &&
-                            this.uniformed(item.key) === this.uniformed(value);
+                        return CreateModifyComponent.uniformed(item.type) === CreateModifyComponent.uniformed(attribute.name) &&
+                            CreateModifyComponent.uniformed(item.key) === CreateModifyComponent.uniformed(value);
                     })) {
                         attribute.$$error = attribute.name + " " +
                             this.linkService.getModifyLink(this.source, this.objectType, value) +
@@ -459,7 +457,7 @@ export class CreateModifyComponent {
         }
     }
 
-    private uniformed(input: string) {
+    private static uniformed(input: string) {
         if (_.isUndefined(input)) {
             return input;
         }
@@ -521,7 +519,7 @@ export class CreateModifyComponent {
         const modalRef = this.modalService.open(ModalEditAttributeComponent, {windowClass: "modal-edit-attr"});
         modalRef.componentInstance.attr = attr;
         console.debug("openEditAttributeModal for items", attr);
-        modalRef.result.then((selectedItem: any) => {
+        modalRef.result.then(() => {
             console.debug("openEditAttributeModal completed", attr);
         }, (error) => console.log("openEditAttributeModal completed with:", error));
     }
@@ -600,9 +598,9 @@ export class CreateModifyComponent {
                     this.whoisResourcesService.getPrimaryKey(whoisResources), this.PENDING_OPERATION);
             } else {
                 this.validateForm();
-                const firstErr = this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.attributes, whoisResources);
-                this.alertsComponent.setErrors(whoisResources);
-                this.errorReporterService.log(this.operation, this.objectType, this.alertsComponent.getErrors(), this.attributes);
+                const firstErr = this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, whoisResources);
+                this.alertsService.setErrors(whoisResources);
+                this.errorReporterService.log(this.operation, this.objectType, this.alertsService.alerts.errors, this.attributes);
                 this.attributes = this.interceptBeforeEdit(this.operation, this.attributes);
                 if (firstErr) {
                     const anchor = document.querySelector(`#anchor-${firstErr}`);
@@ -617,10 +615,10 @@ export class CreateModifyComponent {
         this.attributes = this.interceptAfterEdit(this.operation, this.attributes);
 
         if (!this.validateForm()) {
-            this.errorReporterService.log(this.operation, this.objectType, this.alertsComponent.getErrors(), this.attributes);
+            this.errorReporterService.log(this.operation, this.objectType, this.alertsService.alerts.errors, this.attributes);
         } else {
             this.stripNulls();
-            this.alertsComponent.clearAlertMessages();
+            this.alertsService.clearAlertMessages();
 
             if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                 this.performAuthentication();
@@ -758,21 +756,21 @@ export class CreateModifyComponent {
             }, (error: any) => {
                 this.restCallInProgress = false;
                 console.error("Error fetching mntners for SSO:" + JSON.stringify(error));
-                this.alertsComponent.setGlobalError("Error fetching maintainers associated with this SSO account");
+                this.alertsService.setGlobalError("Error fetching maintainers associated with this SSO account");
             });
     }
 
     private loadAlerts(errorMessages: string[], warningMessages: string[], infoMessages: string[]) {
         errorMessages.forEach((error: string) => {
-            this.alertsComponent.addGlobalError(error);
+            this.alertsService.addGlobalError(error);
         });
 
         warningMessages.forEach((warning: string) => {
-            this.alertsComponent.addGlobalWarning(warning);
+            this.alertsService.addGlobalWarning(warning);
         });
 
         infoMessages.forEach((info: string) => {
-            this.alertsComponent.addGlobalInfo(info);
+            this.alertsService.addGlobalInfo(info);
         });
     }
 
@@ -881,7 +879,7 @@ export class CreateModifyComponent {
                 }, (error: any) => {
                     this.restCallInProgress = false;
                     console.error("Error fetching sso-mntners details" + JSON.stringify(error));
-                    this.alertsComponent.setGlobalError("Error fetching maintainer details");
+                    this.alertsService.setGlobalError("Error fetching maintainer details");
                 });
                 // now let's see if there are any read-only restrictions on these attributes. There is if any of
                 // these are true:
@@ -894,10 +892,10 @@ export class CreateModifyComponent {
                 try {
                     const whoisResources = error.data;
                     this.wrapAndEnrichResources(this.objectType, error.data);
-                    this.alertsComponent.setErrors(whoisResources);
+                    this.alertsService.setErrors(whoisResources);
                 } catch (e) {
                     console.error("Error fetching sso-mntners for SSO:" + JSON.stringify(error));
-                    this.alertsComponent.setGlobalError("Error fetching maintainers associated with this SSO account");
+                    this.alertsService.setGlobalError("Error fetching maintainers associated with this SSO account");
                 }
             },
         );

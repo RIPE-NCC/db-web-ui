@@ -1,7 +1,5 @@
 <h1>Forgot maintainer password</h1>
 
-<alerts></alerts>
-
 <div>
     <form id="find-maintainer" class="padding grey ga-forgotpass-findmnt-form" (ngSubmit)="selectMaintainer(maintainerKey)">
         <label>Please enter your <span class="mntner">MNTNER</span> name:</label>
@@ -19,7 +17,7 @@
     </form>
 
     <div id="maintainer-container" *ngIf="foundMaintainer?.mntnerFound === true">
-        <div class="alert alert-warning">Please check that this is the correct object before proceeding.</div>
+        <div class="margin-bottom-top">Please check that this is the correct object before proceeding.</div>
         <section>
             <h2>Maintainer Object</h2>
             <div class="margin-top grey padding">
@@ -34,7 +32,7 @@
 
         <div class="grey-border margin-bottom margin-top"></div>
         <div>
-            <div class="alert alert-info">An email containing further instructions will be sent to the address
+            <div class="margin-bottom-top">An email containing further instructions will be sent to the address
                 {{foundMaintainer.email}}.
             </div>
 

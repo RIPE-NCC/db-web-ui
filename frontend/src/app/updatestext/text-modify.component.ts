@@ -1,4 +1,4 @@
-import {Component, Inject, ViewChild} from "@angular/core";
+import {Component, Inject} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {forkJoin} from "rxjs";
 import * as _ from "lodash";
@@ -12,7 +12,7 @@ import {RpslService} from "./rpsl.service";
 import {TextCommonsService} from "./text-commons.service";
 import {CredentialsService} from "../shared/credentials.service";
 import {PreferenceService} from "../updatesweb/preference.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "text-modify",
@@ -30,9 +30,6 @@ export class TextModifyComponent {
     public override: string;
     public passwords: string[] = [];
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(@Inject(WINDOW) private window: any,
                 private whoisResourcesService: WhoisResourcesService,
                 private restService: RestService,
@@ -42,12 +39,13 @@ export class TextModifyComponent {
                 private textCommonsService: TextCommonsService,
                 private credentialsService: CredentialsService,
                 private preferenceService: PreferenceService,
+                public alertsServices: AlertsService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
     }
 
     public ngOnInit() {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsServices.clearAlertMessages();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -82,7 +80,7 @@ export class TextModifyComponent {
     public submit() {
         const objects = this.rpslService.fromRpsl(this.object.rpsl);
         if (objects.length > 1) {
-            this.alertsComponent.setGlobalError("Only a single object is allowed");
+            this.alertsServices.setGlobalError("Only a single object is allowed");
             return;
         }
 
@@ -123,10 +121,10 @@ export class TextModifyComponent {
                         this.restCallInProgress = false;
 
                         const whoisResources = errorWhoisResources.data;
-                        this.alertsComponent.setAllErrors(whoisResources);
+                        this.alertsServices.setAllErrors(whoisResources);
                         const attributes = this.whoisResourcesService.getAttributes(whoisResources);
                         if (!_.isEmpty(attributes)) {
-                            this.errorReporterService.log("TextModify", this.object.type, this.alertsComponent.getErrors(), attributes);
+                            this.errorReporterService.log("TextModify", this.object.type, this.alertsServices.alerts.errors, attributes);
                         }
                     },
                 );
@@ -186,9 +184,9 @@ export class TextModifyComponent {
             }, (error) => {
                 this.restCallInProgress = false;
                 if (error.data) {
-                    this.alertsComponent.setErrors(error.data);
+                    this.alertsServices.setErrors(error.data);
                 } else {
-                    this.alertsComponent.setGlobalError("Error fetching maintainers associated with this SSO account");
+                    this.alertsServices.setGlobalError("Error fetching maintainers associated with this SSO account");
                 }
             },
         );

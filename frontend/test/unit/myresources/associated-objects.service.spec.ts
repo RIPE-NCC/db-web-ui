@@ -79,7 +79,7 @@ describe("AssociatedObjectsService", () => {
                 "aut-num", 0, "")
                 .subscribe(() => {
                     // NOT to be called
-                    expect(true).toBe(false);
+                    expect(true).toBeFalse();
                 }, (error) => {
                     expect(error.status).toBe(400);
                 });

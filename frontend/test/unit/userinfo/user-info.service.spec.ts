@@ -46,7 +46,7 @@ describe("UserInfoService", () => {
         userInfoService.getSelectedOrganisation()
             .subscribe((result: IUserInfoOrganisation) => {
                 // NOT to be called
-                expect(true).toBe(false);
+                expect(true).toBeFalse();
             }, (error) => {
                 expect(error.status).toBe(401);
             });

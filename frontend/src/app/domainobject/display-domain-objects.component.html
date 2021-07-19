@@ -1,7 +1,3 @@
-<div class="alert alert-success">
-    <p>{{objects.length}} object(s) have been successfully created</p>
-</div>
-<alerts></alerts>
 <section class="inner-container">
     <table class="success-fields grey" *ngFor="let object of objects | slice:0:4">
         <tr *ngFor="let attribute of object.attributes.attribute">

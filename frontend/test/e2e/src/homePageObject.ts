@@ -210,6 +210,7 @@ module.exports = {
     modalBtnSubmit: element(by.css("ngb-modal-window")).element(by.css("button[type=submit]")),
     modalClose: element(by.css("ngb-modal-window")).element(by.css(".modal-header")).element(by.css(".close")),
     modalBody: element(by.css("ngb-modal-window")).element(by.css(".modal-body")),
+    modalBanner: element(by.css("ngb-modal-window")).element(by.css(".modal-banner")),
     modalFooter: element(by.css("ngb-modal-window")).element(by.css(".modal-footer")),
     modalSplashBtn: element(by.id("modal-splash-button")),
     modalSplashText: element(by.css("ngb-modal-window")).element(by.css("h1")),
@@ -290,8 +291,8 @@ module.exports = {
     woeSource: element(by.css("whois-object-editor")).element(by.name("source$7")),
     woeBtnAddAttribute: element(by.css("whois-object-editor")).all(by.css(".fa.fa-plus")).first(),
     btnSubmitObject: element(by.css("whois-object-editor")).element(by.css(".blue-button")),
-    successMessage: element(by.css(".alert-success")),
-    infoMessage: element(by.id("alert-info")),
+    successMessage: element(by.css_sr("app-banner::sr .app-banner.level-positive")),
+    infoMessage: element(by.css_sr("app-banner::sr .app-banner.level-info")),
     btnDeleteObjectWhoisEditor: element(by.css("button.red-button")),
     modalDeleteObject: element(by.css("modal-delete-object")),
     btnConfirmModalDelete: element(by.css("modal-delete-object button")),
@@ -317,7 +318,7 @@ module.exports = {
     // full text search page
     fullTextSearchResults: element(by.id("resultsAnchor")).all(by.css(".results")),
     fullTextResultSummaryRow: element(by.css("full-text-result-summary")).element(by.css("tbody")).all(by.css("tr")),
-    warningAlert: element(by.css(".alert-warning")),
+    warningAlert: element(by.css_sr("alert-banners app-banner::sr .app-banner.level-warning .banner-text")),
 
     // FMP page
     fmpForm: element(by.name("fmpform")),
@@ -331,7 +332,7 @@ module.exports = {
     searchMaintainer: element(by.id("find-maintainer")).element(by.id("search-maintainer")),
     inputMaintainer: element(by.id("find-maintainer")).element(by.name("maintainerKey")),
     searchMaintainerCancel: element(by.id("find-maintainer")).element(by.id("search-cancel")),
-    errorAlert: element(by.css(".alert-expired")),
+    errorAlert: element(by.css_sr("app-banner::sr .app-banner.level-alarm")),
     maintainerContainer: element(by.id("maintainer-container")),
 
     checkImg: element(by.css("email-confirmation")).element(by.css(".fa-check")),

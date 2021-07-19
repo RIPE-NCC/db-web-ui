@@ -1,13 +1,13 @@
 <certificate-banner></certificate-banner>
-<section id="anchorTop">
+<section>
+    <a id="anchorTop"></a>
     <div class="visualClear"></div>
     <div class="documentActions"></div>
     <h1 class="documentFirstHeading">RIPE Database Query</h1>
     <div class="documentByLine"><span class="byline"></span></div>
     <div class="documentDescription"></div>
 </section>
-<section>
-    <alerts></alerts>
+<section id="searchSection">
     <form name="searchform" class="grey padding margin-bottom ga-dbsearch-form" (ngSubmit)="submitSearchForm()">
         <div>
             <div>
@@ -414,6 +414,7 @@
             </ul>
             <div [ngbNavOutlet]="navQuery" class="mt-2"></div>
         </div>
+        <a id="anchorForScrollToResults"></a>
         <p [innerHTML]="'query.whoisTelnetOutputLabel.text' | label"></p>
         <pre>{{ whoisCliQuery() }}</pre>
         <button class="blue-button pull-right">Search</button>
@@ -439,11 +440,7 @@
             </a>
         </div>
         <h2>Search results</h2>
-        <div class="clearfix">
-            <div class="alert alert-info col-md-12">
-                <div class="small" [innerHTML]="'msg.searchResultsTandCLink.text' | label"></div>
-            </div>
-        </div>
+        <p [innerHTML]="'msg.searchResults.text' | label"></p>
         <div class="clearfix" *ngFor="let whoisObject of results">
             <div class="resultpane">
                 <lookup [whois-object]="whoisObject" (update-clicked)="updateClicked(whoisObject)"></lookup>
@@ -454,11 +451,7 @@
 </section>
 <section id="templateResultsSection" *ngIf="showTemplatePanel">
     <h2>Search results</h2>
-    <div class="clearfix">
-        <div class="alert alert-info col-md-12">
-            <div class="small" [innerHTML]="'msg.searchResultsTandCLink.text' | label"></div>
-        </div>
-    </div>
+    <p [innerHTML]="'msg.searchResults.text' | label"></p>
     <lookup-template [query]="queriedTemplateObject"></lookup-template>
 </section>
 <whois-version [version]="whoisVersion"></whois-version>

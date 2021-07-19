@@ -79,13 +79,13 @@ describe("primitives of modalDeleteObject", () => {
 
     it("should allow deletion of unreferenced object: undefined refs", () => {
         const refs = {objectType: "mntner", primaryKey: "TEST-MNT"};
-        expect(modalDeleteObjectComponent.isDeletable(refs)).toBe(true);
+        expect(modalDeleteObjectComponent.isDeletable(refs)).toBeTruthy();
     });
 
     it("should allow deletion of unreferenced object: empty refs", () => {
         const empty: any[] = [];
         const refs = {objectType: "route", primaryKey: "193.0.0.0/21AS3333", incoming: empty, outgoing: empty};
-        expect(modalDeleteObjectComponent.isDeletable(refs)).toBe(true);
+        expect(modalDeleteObjectComponent.isDeletable(refs)).toBeTruthy();
     });
 
     it("should allow deletion of self-referenced object", () => {
@@ -94,31 +94,31 @@ describe("primitives of modalDeleteObject", () => {
             objectType: "mntner", primaryKey: "TEST-MNT",
             incoming: [{objectType: "mntner", primaryKey: "TEST-MNT"}], outgoing: empty
         };
-        expect(modalDeleteObjectComponent.isDeletable(refs)).toBe(true);
+        expect(modalDeleteObjectComponent.isDeletable(refs)).toBeTruthy();
     });
 
     it("should allow deletion of simple mntner-person pair", () => {
-        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_TEST_MNT)).toBe(true);
+        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_TEST_MNT)).toBeTruthy();
     });
 
     it("should allow deletion of simple person-mntner pair", () => {
-        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_TEST_PERSON)).toBe(true);
+        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_TEST_PERSON)).toBeTruthy();
     });
 
     it("should not allow deletion of object with other incoming refs", () => {
-        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_UNDELETEABLE_OBJECTS)).toBe(false);
+        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_UNDELETEABLE_OBJECTS)).toBeFalse();
     });
 
     it("should detect that object has no () incoming refs", () => {
-        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", [])).toBe(false);
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", [])).toBeFalse();
     });
 
     it("should detect that object has no () incoming refs", () => {
-        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", [{objectType: "mntner", primaryKey: "TEST-MNT"}])).toBe(false);
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", [{objectType: "mntner", primaryKey: "TEST-MNT"}])).toBeFalse();
     });
 
     it("should detect that object has incoming refs", () => {
-        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", REFS_FOR_TEST_MNT.incoming)).toBe(true);
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", REFS_FOR_TEST_MNT.incoming)).toBeTruthy();
     });
 });
 
@@ -170,7 +170,7 @@ describe("ModalDeleteObjectComponent undeletable object", () => {
 
     it("should decide that object cannot be deleted ", async () => {
         await componentFixture.whenStable();
-        expect(modalDeleteObjectComponent.canBeDeleted).toBe(false);
+        expect(modalDeleteObjectComponent.canBeDeleted).toBeFalse();
     });
 
     it("should not call delete endpoint", async () => {
@@ -256,7 +256,7 @@ describe("ModalDeleteObjectComponent deleteable object ", () => {
 
     it("should decide that object can be deleted ", async () => {
         await componentFixture.whenStable();
-        expect(modalDeleteObjectComponent.canBeDeleted).toBe(true);
+        expect(modalDeleteObjectComponent.canBeDeleted).toBeTruthy();
     });
 
     it("should call delete endpoint without password and close modal", async () => {

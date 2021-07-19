@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {combineLatest, Subscription} from "rxjs";
 import * as _ from "lodash";
@@ -7,7 +7,7 @@ import {MessageStoreService} from "./message-store.service";
 import {RestService} from "./rest.service";
 import {UserInfoService} from "../userinfo/user-info.service";
 import {WebUpdatesCommonsService} from "./web-updates-commons.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "display",
@@ -26,14 +26,12 @@ export class DisplayComponent {
 
     private subscription: Subscription;
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(public whoisResourcesService: WhoisResourcesService,
                 public messageStoreService: MessageStoreService,
                 private restService: RestService,
                 private userInfoService: UserInfoService,
                 private webUpdatesCommonsService: WebUpdatesCommonsService,
+                public alertsService: AlertsService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {}
 
@@ -70,8 +68,9 @@ export class DisplayComponent {
         if (!_.isUndefined(cached)) {
             const whoisResources = this.whoisResourcesService.validateWhoisResources(cached);
             this.attributes = this.whoisResourcesService.getAttributes(whoisResources);
-            this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.attributes, cached);
-            this.alertsComponent.setErrors(whoisResources);
+            this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, cached);
+            this.alertsService.addGlobalSuccesses(`Your object has been successfully ${this.getOperationName()}`);
+            this.alertsService.setErrors(whoisResources);
 
             if (this.method === "Modify") {
                 const diff = this.whoisResourcesService.validateAttributes(this.messageStoreService.get("DIFF"));
@@ -86,43 +85,33 @@ export class DisplayComponent {
                 .subscribe((resp: any) => {
                     this.attributes = this.whoisResourcesService.getAttributes(resp);
                     this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
-                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
-                    this.alertsComponent.setErrors(resp);
+                    this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
+                    this.alertsService.setErrors(resp);
                 }, (resp: any) => {
-                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.attributes, resp.data);
-                    this.alertsComponent.setErrors(resp.data);
+                    this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp.data);
+                    this.alertsService.setErrors(resp.data);
                 },
             );
         }
     }
 
     public ngOnDestroy() {
-      this.alertsComponent.clearAlertMessages();
+      this.alertsService.clearAlertMessages();
     }
 
     /*
      * Methods called from the html-template
      */
     public modifyButtonToBeShown() {
-        return this.alertsComponent && !this.alertsComponent.hasErrors() && !this.isPending();
+        return this.alertsService && !this.alertsService.hasErrors() && !this.isPending();
     }
 
     private isPending() {
         return !_.isUndefined(this.method) && this.method === "Pending";
     }
 
-    public isCreateOrModify() {
-        return !(_.isUndefined(this.method) || this.isPending());
-    }
-
-    public getOperationName() {
-        let name = "";
-        if (this.method === "Create") {
-            name = "created";
-        } else if (this.method === "Modify") {
-            name = "modified";
-        }
-        return name;
+    public getOperationName(): string {
+        return this.method === "Create" ? "created" : "modified";
     }
 
     public navigateToSelect() {
