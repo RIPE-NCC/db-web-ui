@@ -363,7 +363,7 @@ describe("The query pagina", () => {
     });
 
     it("should be able to search --verbose using the text box", () => {
-        page.inpQueryString.sendKeys("-t aut-num\n");
+        page.inpQueryString.sendKeys("-t aut-num");
         page.btnSubmitQuery.click();
         expect(page.inpQueryString.getAttribute("value")).toEqual("-t aut-num");
         expect(page.inpTelnetQuery.getText()).toEqual("-t aut-num");
@@ -376,10 +376,8 @@ describe("The query pagina", () => {
 
     it("should hide template search result after new query is triggered", () => {
         page.scrollIntoView(page.inpQueryString);
-        page.inpQueryString.sendKeys("-t aut-num\n");
-        // page.scrollIntoView(page.btnSubmitQuery);
+        page.inpQueryString.sendKeys("-t aut-num");
         page.btnSubmitQuery.click();
-        // page.scrollIntoView(page.templateSearchResults);
         expect(page.inpQueryString.getAttribute("value")).toEqual("-t aut-num");
         expect(page.inpTelnetQuery.getText()).toEqual("-t aut-num");
         expect(page.templateSearchResults.isDisplayed()).toEqual(true);
@@ -399,7 +397,7 @@ describe("The query pagina", () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
-        page.inpQueryString.sendKeys("1.1.1.1 --resource\n");
+        page.inpQueryString.sendKeys("1.1.1.1 --resource");
         page.btnSubmitQuery.click();
         expect(page.inpTelnetQuery.getText()).toEqual("-B --resource 1.1.1.1");
         expect(page.searchResults.count()).toEqual(3);

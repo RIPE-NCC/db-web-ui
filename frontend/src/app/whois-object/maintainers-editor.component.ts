@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import * as _ from "lodash";
 import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 import {JsUtilService} from "../core/js-utils.service";
@@ -10,7 +10,7 @@ import {IAttributeModel, IMntByModel, IWhoisObjectModel} from "../shared/whois-r
 import {IAuthParams, WebUpdatesCommonsService} from "../updatesweb/web-updates-commons.service";
 import {IMaintainers} from "../updatesweb/create-modify.component";
 import {ObjectUtilService} from "../updatesweb/object-util.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "maintainers-editor",
@@ -44,15 +44,13 @@ export class MaintainersEditorComponent {
 
     private source: string;
 
-    @ViewChild(AlertsComponent, {static: true})
-    private alertsComponent: AlertsComponent;
-
     constructor(private attributeMetadataService: AttributeMetadataService,
                 private credentialsService: CredentialsService,
                 private messageStore: MessageStoreService,
                 private mntnerService: MntnerService,
                 public restService: RestService,
                 private webUpdatesCommonsService: WebUpdatesCommonsService,
+                private alertsService: AlertsService,
                 private jsUtilsService: JsUtilService) {
     }
 
@@ -282,7 +280,7 @@ export class MaintainersEditorComponent {
                     }, (error: any) => {
                         this.restCallInProgress = false;
                         console.error("Error fetching sso-mntners details", error);
-                        this.alertsComponent.setGlobalError("Error fetching maintainer details");
+                        this.alertsService.setGlobalError("Error fetching maintainer details");
                     });
                 // now let's see if there are any read-only restrictions on these attributes. There is if any of
                 // these are true:
@@ -296,10 +294,10 @@ export class MaintainersEditorComponent {
                 try {
                     const whoisResources = error.data;
                     // this.attributes = _wrapAndEnrichResources(this.objectType, error.data);
-                    this.alertsComponent.setErrors(whoisResources);
+                    this.alertsService.setErrors(whoisResources);
                 } catch (e) {
                     console.error("Error fetching sso-mntners for SSO:", error);
-                    this.alertsComponent.setGlobalError("Error fetching maintainers associated with this SSO account");
+                    this.alertsService.setGlobalError("Error fetching maintainers associated with this SSO account");
                 }
             });
     }

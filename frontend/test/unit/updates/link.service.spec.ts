@@ -19,9 +19,9 @@ describe("LinkService", () => {
     });
 
     it("should be linkService defined", () => {
-        expect(_.isUndefined(linkService)).toBe(false);
-        expect(_.isUndefined(linkService.getModifyUrl)).toBe(false);
-        expect(_.isFunction(linkService.getModifyUrl)).toBe(true);
+        expect(_.isUndefined(linkService)).toBeFalse();
+        expect(_.isUndefined(linkService.getModifyUrl)).toBeFalse();
+        expect(_.isFunction(linkService.getModifyUrl)).toBeTruthy();
     });
 
     it("should create a display link for object", () => {

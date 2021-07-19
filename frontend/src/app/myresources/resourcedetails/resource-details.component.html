@@ -17,7 +17,6 @@
 
 <section class="db-object" id="editortop">
     <h2>Object in RIPE Database</h2>
-    <alerts></alerts>
     <loading-indicator class="resource-page-message" *ngIf="loadingResource"></loading-indicator>
     <div *ngIf="whoisObject && !showRefreshButton && !loadingResource">
         <whois-object-viewer *ngIf="!isEditing"

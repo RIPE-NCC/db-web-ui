@@ -48,7 +48,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(false);
-        expect(page.infoMessage.getText()).toEqual("The following object(s) have been successfully deleted");
+        expect(page.successMessage.getText()).toEqual("The following object(s) have been successfully deleted");
     });
 
     it("should remove info message on navigating to query page", () => {
@@ -62,12 +62,12 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(false);
-        expect(page.infoMessage.getText()).toEqual("The following object(s) have been successfully deleted");
+        expect(page.successMessage.getText()).toEqual("The following object(s) have been successfully deleted");
         // navigating to query page should remove alert component
         page.ripeDatabaseMenuItem.click();
         page.ripeDatabaseQueryMenuItems.click();
         expect(browser.getCurrentUrl()).toContain("query");
-        expect(page.infoMessage.isPresent()).toBeFalsy();
+        expect(page.successMessage.isPresent()).toBeFalsy();
         page.inpQueryString.sendKeys("193.0.0.0")
     });
 

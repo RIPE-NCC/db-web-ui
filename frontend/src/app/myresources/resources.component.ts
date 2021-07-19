@@ -13,6 +13,7 @@ import {IUserInfoOrganisation, IUserInfoRegistration} from "../dropdown/org-data
 import {UserInfoService} from "../userinfo/user-info.service";
 import {PropertiesService} from "../properties.service";
 import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "resource-component",
@@ -26,7 +27,6 @@ export class ResourcesComponent implements OnDestroy {
     public loading: boolean = false; // true until resources are loaded to tabs
     public reason = "No resources found";
     public fail: boolean;
-    public showIpAnalyserRedirectBanner: boolean = true;
     public isRedirectedFromIpAnalyser: boolean = false;
     public lastTab: string = "inetnum";
 
@@ -42,6 +42,7 @@ export class ResourcesComponent implements OnDestroy {
     constructor(private resourcesDataService: ResourcesDataService,
                 private userInfoService: UserInfoService,
                 private orgDropDownSharedService: OrgDropDownSharedService,
+                private alertsService: AlertsService,
                 private properties: PropertiesService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
@@ -137,14 +138,10 @@ export class ResourcesComponent implements OnDestroy {
       const item = "shown";
       if (redirect) {
         const shown = localStorage.getItem(item);
-        if (shown === item) {
-          this.showIpAnalyserRedirectBanner = false;
-        } else {
-          this.showIpAnalyserRedirectBanner = redirect;
+        if (shown !== item) {
+          this.alertsService.setGlobalInfo(`Looking for analytics on your IP resource allocation and/or assignments? You can find this now in “My Resources”.`);
           localStorage.setItem(item, item);
         }
-      } else {
-        this.showIpAnalyserRedirectBanner = false;
       }
     }
 

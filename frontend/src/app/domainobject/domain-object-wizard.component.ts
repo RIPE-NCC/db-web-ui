@@ -19,7 +19,7 @@ import {AttributeSharedService} from "../attribute/attribute-shared.service";
 import {IAuthParams, WebUpdatesCommonsService} from "../updatesweb/web-updates-commons.service";
 import {IMaintainers} from "../updatesweb/create-modify.component";
 import {IAttributeModel} from "../shared/whois-response-type.model";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 interface IDomainObject {
     attributes: {
@@ -58,9 +58,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public subscription: any;
     public subscriptionDomaiPrefix: any;
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(@Inject(WINDOW) private window: any,
                 private jsUtils: JsUtilService,
                 private modalService: NgbModal,
@@ -74,6 +71,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                 private messageStoreService: MessageStoreService,
                 private prefixService: PrefixService,
                 private errorReporterService: ErrorReporterService,
+                private alertsService: AlertsService,
                 private location: Location,
                 public activatedRoute: ActivatedRoute,
                 private router: Router) {
@@ -164,7 +162,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                             this.performAuthentication(this.maintainers);
                         }
                     }, () => {
-                        this.alertsComponent.addGlobalError("Error fetching maintainers associated with this SSO account");
+                        this.alertsService.addGlobalError("Error fetching maintainers associated with this SSO account");
                     });
             });
         });
@@ -196,7 +194,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.alreadySubmited = true;
 
         // close the alert message
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
 
         const data = {
             attributes: flattenedAttributes,
@@ -262,7 +260,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private showCreatedDomains(resp: any) {
         this.restCallInProgress = false;
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
         const prefix = _.find(this.attributes, (attr: any) => {
             return attr.name === "prefix";
         });
@@ -274,9 +272,9 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private createDomainsFailed(response: any) {
         this.restCallInProgress = false;
-        this.alertsComponent.addErrors(response.error);
-        if (!_.isEmpty(this.alertsComponent.getErrors())) {
-            this.errorReporterService.log("DomainWizard", "domain", this.alertsComponent.getErrors());
+        this.alertsService.addAlertMsgs(response.error);
+        if (!_.isEmpty(this.alertsService.alerts.errors)) {
+            this.errorReporterService.log("DomainWizard", "domain", this.alertsService.alerts.errors);
         }
         document.querySelector("#domainerrors").scrollIntoView();
     }

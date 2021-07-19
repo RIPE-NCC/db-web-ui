@@ -12,13 +12,6 @@
         </a>
     </div>
     <h2 class="documentFirstHeading">Lookup results</h2>
-    <div class="clearfix">
-        <div *ngIf="!error" class="alert alert-info small" [innerHTML]="'msg.searchResultsTandCLink.text' | label">
-        </div>
-        <div *ngIf="error" class="alert alert-warning">
-            {{ error }}
-        </div>
-    </div>
 </section>
 
 <div *ngIf="whoisResponse" class="resultpane">

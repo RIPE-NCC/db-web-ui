@@ -7,9 +7,6 @@
 </section>
 <section>
     <form class="grey padding margin-bottom" style="overflow:auto" (submit)="searchClicked()">
-        <div class="alert alert-warning" *ngIf="showError">
-            <span [innerHTML]="showError | label"></span>
-        </div>
         <input id="fullTextSearchInput" name="ftquery" type="text" class="form-control" [(ngModel)]="ftquery" placeholder="Search term">
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
             <i *ngIf="!advancedSearch" class="fa fa-plus-square"></i>
@@ -79,12 +76,10 @@
         <submitting-agreement></submitting-agreement>
     </form>
 </section>
-<section *ngIf="results && !showError">
+<section *ngIf="results && results.length > 0">
     <div class="grey padding" id="resultsAnchor">
         <h2>Search results</h2>
-        <div class="alert alert-info small">
-            <span [innerHTML]="'msg.searchResultsFullTextTandCLink.text' | label"></span>
-        </div>
+        <p [innerHTML]="'msg.searchResultsFullTextTandCLink.text' | label"></p>
         <full-text-result-summary *ngIf="resultSummary" [tabledata]="resultSummary" (rowClicked)="addObjectToFilter($event)"></full-text-result-summary>
         <paginator *ngIf="results" [pages]="navbarSyncArray" [active-page]="activePage" [num-results]="numResults" [results-per-page]="numResultsPerPage" (pageClicked)="pageClicked($event)"></paginator>
         <div class="padding">

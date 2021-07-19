@@ -172,7 +172,7 @@ export class WhoisResourcesService {
             return [];
         }
         return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: any) => {
+            .filter((errorMessage: IErrorMessageModel) => {
                 errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Error" && !errorMessage.attribute;
             });
@@ -183,8 +183,7 @@ export class WhoisResourcesService {
             return [];
         }
         return whoisResponse.errormessages.errormessage
-        // FIXME ANY TYPE
-            .filter((errorMessage: any) => {
+            .filter((errorMessage: IErrorMessageModel) => {
                 errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Warning" && !errorMessage.attribute;
             });
@@ -195,8 +194,7 @@ export class WhoisResourcesService {
             return [];
         }
         return whoisResponse.errormessages.errormessage
-        // FIXME ANY TYPE
-            .filter((errorMessage: any) => {
+            .filter((errorMessage: IErrorMessageModel) => {
                 errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Info" && !errorMessage.attribute;
             });
@@ -207,7 +205,7 @@ export class WhoisResourcesService {
             return [];
         }
         return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: any) => {
+            .filter((errorMessage: IErrorMessageModel) => {
                 errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Error";
             });
@@ -218,8 +216,7 @@ export class WhoisResourcesService {
             return [];
         }
         return whoisResponse.errormessages.errormessage
-        // FIXME ANY TYPE
-            .filter((errorMessage: any) => {
+            .filter((errorMessage: IErrorMessageModel) => {
                 errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Warning";
             });
@@ -230,7 +227,7 @@ export class WhoisResourcesService {
             return [];
         }
         return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: any) => {
+            .filter((errorMessage: IErrorMessageModel) => {
                 errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Info";
             });
@@ -247,7 +244,7 @@ export class WhoisResourcesService {
             return [];
         }
         return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: any) => {
+            .filter((errorMessage: IErrorMessageModel) => {
                 if (errorMessage.attribute) {
                     errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                     return errorMessage.attribute.name === attributeName && errorMessage.attribute.value.trim() === attributeValue;

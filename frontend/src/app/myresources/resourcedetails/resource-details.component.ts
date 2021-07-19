@@ -21,7 +21,7 @@ import {IFlag} from "../flag/flag.component";
 import {ModalDeleteObjectComponent} from "../../updatesweb/modal-delete-object.component";
 import {HierarchySelectorService} from "../hierarchyselector/hierarchy-selector.service";
 import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {AlertsComponent} from "../../shared/alert/alerts.component";
+import {AlertsService} from "../../shared/alert/alerts.service";
 
 @Component({
     selector: "resource-details",
@@ -53,9 +53,6 @@ export class ResourceDetailsComponent implements OnDestroy {
     private source: string;
     private subscriptions: any[] = [];
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(private cookies: CookieService,
                 private modalService: NgbModal,
                 private credentialsService: CredentialsService,
@@ -67,6 +64,7 @@ export class ResourceDetailsComponent implements OnDestroy {
                 private restService: RestService,
                 private orgDropDownSharedService: OrgDropDownSharedService,
                 private activatedRoute: ActivatedRoute,
+                private alertsService: AlertsService,
                 private router: Router) {
         const orgSubs = orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             const selectedId = this.cookies.get("activeMembershipId");
@@ -92,13 +90,13 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     public ngOnDestroy() {
         this.subscriptions.forEach(s => s.unsubscribe());
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
     }
 
     public init() {
         this.flags = [];
-        if (this.alertsComponent) {
-            this.alertsComponent.clearAlertMessages();
+        if (this.alertsService) {
+            this.alertsService.clearAlertMessages();
         }
         this.show = {
             editor: false,
@@ -110,7 +108,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         this.sponsored = paramMap.get("sponsored") === "true";
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         if (queryParamMap.has("alertMessage")) {
-            this.alertsComponent.addGlobalInfo(queryParamMap.get("alertMessage"));
+            this.alertsService.addGlobalInfo(queryParamMap.get("alertMessage"));
         }
         this.loadingResource = true;
         this.showRefreshButton = false;
@@ -234,7 +232,7 @@ export class ResourceDetailsComponent implements OnDestroy {
     }
 
     private resetMessages() {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
         // explicitly clear errors on fields before submitting the form, should probably be done elsewhere
         this.whoisObject.attributes.attribute.forEach((a) => {
             a.$$error = "";
@@ -250,7 +248,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         this.isEditing = false;
         this.isDeletable = false;
         this.loadMessages(whoisResources);
-        this.alertsComponent.addGlobalSuccesses("Your object has been successfully updated.");
+        this.alertsService.addGlobalSuccesses("Your object has been successfully updated.");
         document.querySelector("#editortop").scrollIntoView();
     }
 
@@ -258,7 +256,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         if (!whoisResources.errormessages || !whoisResources.errormessages.errormessage) {
             return;
         }
-        this.alertsComponent.addErrors(whoisResources);
+        this.alertsService.addAlertMsgs(whoisResources);
     }
 
     private onSubmitError(whoisResources: {data: IWhoisResponseModel}): void {
@@ -270,8 +268,8 @@ export class ResourceDetailsComponent implements OnDestroy {
             attribute.$$error = WhoisResourcesService.readableError(e);
         });
         this.loadMessages(whoisResources.data);
-        if (this.alertsComponent.getErrors().length === 0) {
-            this.alertsComponent.addGlobalError("Your object NOT updated, please review issues below");
+        if (this.alertsService.alerts.errors.length === 0) {
+            this.alertsService.addGlobalError("Your object NOT updated, please review issues below");
         }
         document.querySelector("#editortop").scrollIntoView();
     }

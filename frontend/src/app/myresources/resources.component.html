@@ -1,10 +1,4 @@
 <section class="my-resources">
-    <div class="alert alert-success alert-dismissible" *ngIf="showIpAnalyserRedirectBanner">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      Looking for analytics on your IP resource allocation and/or assignments? You can find this now in “My Resources”.
-    </div>
     <div class="resources-sponsored-tabs">
         <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]=activeSponsoredTab>
             <li [ngbNavItem]="0" id="0">

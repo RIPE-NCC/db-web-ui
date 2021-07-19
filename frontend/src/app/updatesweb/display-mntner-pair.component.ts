@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {MessageStoreService} from "./message-store.service";
 import {RestService} from "./rest.service";
 import {IAttributeModel} from "../shared/whois-response-type.model";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "display-mntner-pair",
@@ -19,13 +19,11 @@ export class DisplayMntnerPairComponent implements OnInit {
     public objectTypeAttributes: IAttributeModel[];
     public mntnerAttributes: IAttributeModel[];
 
-    @ViewChild(AlertsComponent, {static: true})
-    public alertsComponent: AlertsComponent;
-
     constructor(private whoisResourcesService: WhoisResourcesService,
                 private messageStoreService: MessageStoreService,
                 private restService: RestService,
                 private activatedRoute: ActivatedRoute,
+                public alertsService: AlertsService,
                 private router: Router) {}
 
     public ngOnInit() {
@@ -42,15 +40,16 @@ export class DisplayMntnerPairComponent implements OnInit {
             const whoisResources = this.whoisResourcesService.validateWhoisResources(cachedPersonObject);
             this.objectTypeAttributes = this.whoisResourcesService.getAttributes(whoisResources);
             console.debug("Got person from cache:" + JSON.stringify(this.objectTypeAttributes));
+            this.alertsService.addGlobalSuccesses("Your objects have been successfully created");
         } else {
             this.restService.fetchObject(this.objectSource, this.objectType, this.objectTypeName, null, null)
                 .subscribe((resp: any) => {
                     this.objectTypeAttributes = this.whoisResourcesService.getAttributes(resp);
-                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, resp);
-                    this.alertsComponent.addErrors(resp);
+                    this.alertsService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, resp);
+                    this.alertsService.addAlertMsgs(resp);
                 }, (error: any) => {
-                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, error.data);
-                    this.alertsComponent.addErrors(error.data);
+                    this.alertsService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, error.data);
+                    this.alertsService.addAlertMsgs(error.data);
                 });
         }
 
@@ -63,14 +62,19 @@ export class DisplayMntnerPairComponent implements OnInit {
             this.restService.fetchObject(this.objectSource, "mntner", this.mntnerName, null, null)
                 .subscribe((resp: any) => {
                     this.mntnerAttributes = this.whoisResourcesService.getAttributes(resp);
-                    this.alertsComponent.populateFieldSpecificErrors("mntner", this.mntnerAttributes, resp);
-                    this.alertsComponent.addErrors(resp);
+                    this.alertsService.populateFieldSpecificErrors("mntner", this.mntnerAttributes, resp);
+                    this.alertsService.addAlertMsgs(resp);
                 }, (error: any) => {
-                    this.alertsComponent.populateFieldSpecificErrors("mntner", this.mntnerAttributes, error.data);
-                    this.alertsComponent.addErrors(error.data);
+                    this.alertsService.populateFieldSpecificErrors("mntner", this.mntnerAttributes, error.data);
+                    this.alertsService.addAlertMsgs(error.data);
                 });
         }
     }
+
+    public ngOnDestroy() {
+        this.alertsService.clearAlertMessages();
+    }
+
     public navigateToSelect() {
         return this.router.navigate(["webupdates/select"]);
     }

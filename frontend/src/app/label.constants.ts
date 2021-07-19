@@ -23,7 +23,9 @@ export const Labels = {
     "msg.noResourceHolderFound.text": "Not found",
     "msg.ripeTandCSubmitLink.text": "By submitting this form you explicitly express your agreement with the <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>RIPE Database Terms and Conditions</a>",
     "msg.searchResultsFullTextTandCLink.text": "This is the RIPE Database full text search service.<br>The RIPE Database is subject to <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
-    "msg.searchResultsTandCLink.text": "This is the RIPE Database search service. The objects are in RPSL format.<br>The RIPE Database is subject to <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
+    "msg.searchResults.text": "This is the RIPE Database search service. The objects are in RPSL format. The RIPE Database is subject to <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
+    "msg.searchResultsTandCLink.text": "This is the RIPE Database search service. The objects are in RPSL format. The RIPE Database is subject to Terms and Conditions.",
+    "msg.termsAndConditions.text": "Terms and Conditions",
 
     "query.optionAllDatabases.title": "RIPE, APNIC, AFRINIC, LACNIC, ARIN, ARIN-RR, RADb, NTTCOM and JPIRR",
     "query.optionFullObject.title": "A default query hides some personal information. Check this box to see the full object.",

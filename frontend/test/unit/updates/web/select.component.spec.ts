@@ -207,7 +207,7 @@ describe("SelectController", () => {
                 uuid:"aaaa-bbbb-cccc-dddd",
                 active:true}
             });
-        expect(component.loggedIn).toBe(true);
+        expect(component.loggedIn).toBeTruthy();
 
         component.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
 
@@ -225,7 +225,7 @@ describe("SelectController", () => {
                 active:true}
         });
 
-        expect(component.loggedIn).toBe(true);
+        expect(component.loggedIn).toBeTruthy();
 
         // role-mntnr pair is default selection (top of the drop down list)
         component.navigateToCreate();
@@ -244,7 +244,7 @@ describe("SelectController", () => {
             }
         );
 
-        expect(component.loggedIn).toBe(true);
+        expect(component.loggedIn).toBeTruthy();
 
         component.selected = {
             source: SOURCE,

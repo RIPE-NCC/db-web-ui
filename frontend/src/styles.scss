@@ -5,6 +5,7 @@
 @import "assets/scss/general.scss";
 @import "assets/scss/paginator.scss";
 @import "assets/scss/full-text-search.scss";
+@import "assets/scss/query.scss";
 /* View based CSS */
 @import "assets/scss/create-obj.scss";
 @import "assets/scss/datatables.scss";
@@ -21,6 +22,7 @@
 @import "assets/scss/flag.scss";
 @import "assets/scss/forgot-maintainer-password.scss";
 @import "assets/scss/certificate-banner.scss";
+@import "assets/scss/modal-banner.scss";
 @import "assets/scss/font.scss";
 @import "assets/scss/live-chat.scss";
 @import "assets/scss/alerts-drop-down.scss";
@@ -74,11 +76,11 @@ ngb-typeahead-window.dropdown-menu {
     padding: 10px 8px;
     border-bottom: 1px solid #EAEAEA !important;
     &:hover, &:focus {
-      color: #212529;
+      color: inherit;
     }
     &.active {
       background: #F5FFFF none !important;
-      color: #212529;
+      color: inherit;
     }
   }
 

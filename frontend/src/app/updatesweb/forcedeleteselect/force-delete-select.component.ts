@@ -1,7 +1,7 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {PropertiesService} from "../../properties.service";
-import {AlertsComponent} from "../../shared/alert/alerts.component";
+import {AlertsService} from "../../shared/alert/alerts.service";
 
 @Component({
     selector: "force-delete-select",
@@ -12,15 +12,13 @@ export class ForceDeleteSelectComponent {
     public objectTypes: string[] = ["inetnum", "inet6num", "route", "route6", "domain"];
     public selected: any;
 
-    @ViewChild(AlertsComponent, {static: true})
-    private alertsComponent: AlertsComponent;
-
     constructor(private properties: PropertiesService,
+                private alertsService: AlertsService,
                 private router: Router) {
     }
 
     public ngOnInit() {
-        this.alertsComponent.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
         this.selected = {
             name: undefined,
             objectType: this.objectTypes[0],

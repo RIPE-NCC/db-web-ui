@@ -35,7 +35,7 @@ describe("OrganisationHelperService", () => {
             "name": "e-mail",
             "value": "a@b.c"
         }];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBe(false);
+        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
     });
 
     it("should inform if abuse-c is available", () => {
@@ -49,7 +49,7 @@ describe("OrganisationHelperService", () => {
             "name" : "abuse-c",
             "value" : "some abuse-c"
         }];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBe(true);
+        expect(organisationHelperService.containsAbuseC(attributes)).toBeTruthy();
     });
 
     it("should inform if abuse-c is available but with empty value", () => {
@@ -62,7 +62,7 @@ describe("OrganisationHelperService", () => {
         }, {
             "name" : "abuse-c"
         }];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBe(false);
+        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
     });
 
     it("should inform if abuse-c is available but with empty string", () => {
@@ -76,7 +76,7 @@ describe("OrganisationHelperService", () => {
             "name" : "abuse-c",
             "value" : " "
         }];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBe(false);
+        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
     });
 
     it("should add abuse-c is object type is organisation", () => {
@@ -111,7 +111,7 @@ describe("OrganisationHelperService", () => {
     });
 
     it("should be valid if it is not an organisation object", () => {
-        expect(organisationHelperService.validateAbuseC("mntner", [])).toBe(true);
+        expect(organisationHelperService.validateAbuseC("mntner", [])).toBeTruthy();
     });
 
     it("should be valid if abuse-c is not present", () => {
@@ -123,7 +123,7 @@ describe("OrganisationHelperService", () => {
             "value": "a@b.c"
         }];
 
-        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBe(true);
+        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBeTruthy();
     });
 
     it("should be invalid if abuse-c is empty", () => {
@@ -137,7 +137,7 @@ describe("OrganisationHelperService", () => {
             "name": "abuse-c"
         }];
 
-        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBe(false);
+        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBeFalse();
     });
 
     it("should be set message if abuse-c is empty", () => {
@@ -169,7 +169,7 @@ describe("OrganisationHelperService", () => {
             "value": "a@b.c"
         }];
 
-        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBe(true);
+        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBeTruthy();
     });
 
     it("should be valid if abuse-c is present", () => {
@@ -184,6 +184,6 @@ describe("OrganisationHelperService", () => {
             "value" : "some abuse-c"
         }];
 
-        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBe(true);
+        expect(organisationHelperService.validateAbuseC("organisation", attributes)).toBeTruthy();
     });
 });

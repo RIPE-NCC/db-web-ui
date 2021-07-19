@@ -1,9 +1,11 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, OnChanges, OnDestroy, SimpleChanges} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {LookupService} from "./lookup.service";
 import {PropertiesService} from "../properties.service";
 import {IVersion} from "../shared/whois-response-type.model";
+import {AlertsService} from "../shared/alert/alerts.service";
+import {Labels} from "../label.constants";
 
 @Component({
     selector: "lookup-single",
@@ -24,10 +26,11 @@ export class LookupSingleObjectComponent implements OnDestroy {
     constructor(private lookupService: LookupService,
                 public properties: PropertiesService,
                 public activatedRoute: ActivatedRoute,
+                public alertsService: AlertsService,
                 public router: Router) {
     }
 
-    public ngOnInit() {
+    ngOnInit() {
         this.subscription = this.activatedRoute.queryParams.subscribe((params) => {
             this.source = params.source;
             this.objectType = params.type;
@@ -36,22 +39,25 @@ export class LookupSingleObjectComponent implements OnDestroy {
         });
     }
 
-    public ngOnDestroy() {
+    ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+        this.alertsService.clearAlertMessages();
     }
 
     private init() {
         try {
             this.lookupService.lookupWhoisObject({source: this.source, type: this.objectType, key: this.objectName})
                 .subscribe((response: any) => {
+                    this.alertsService.clearAlertMessages();
                     if (response &&
                         response.objects &&
                         response.objects.object &&
                         response.objects.object.length === 1) {
                         this.whoisResponse = response.objects.object[0];
                         this.whoisVersion = response.version;
+                        this.alertsService.addGlobalInfo(Labels["msg.searchResultsTandCLink.text"], "https://www.ripe.net/db/support/db-terms-conditions.html", Labels["msg.termsAndConditions.text"]);
                     } else {
                         console.warn(
                             "Expected a single object from query. source:", this.source,
@@ -63,11 +69,11 @@ export class LookupSingleObjectComponent implements OnDestroy {
                     if (this.source !== this.properties.SOURCE) {
                         this.goToLookup();
                     } else {
-                        this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
+                        this.alertsService.addGlobalError(`An error occurred looking for ${this.objectType} ${this.objectName}`);
                     }
                 }));
         } catch (e) {
-            this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
+            this.alertsService.addGlobalError(`An error occurred looking for ${this.objectType} ${this.objectName}`);
         }
     }
 

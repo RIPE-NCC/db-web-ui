@@ -96,7 +96,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         expect(orgType.length).toEqual(1);
         expect(orgType[0].name).toEqual("org-type");
         expect(orgType[0].value).toEqual("OTHER");
-        expect(orgType[0].$$meta.$$disable).toBe(true);
+        expect(orgType[0].$$meta.$$disable).toBeTruthy();
 
     });
 
@@ -113,7 +113,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         expect(orgType.length).toEqual(1);
         expect(orgType[0].name).toEqual("org-type");
         expect(orgType[0].value).toEqual("SOME_ORG_TYPE");
-        expect(orgType[0].$$meta.$$disable).toBe(true);
+        expect(orgType[0].$$meta.$$disable).toBeTruthy();
 
     });
 
@@ -144,7 +144,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual("abuse-c");
         expect(abuseC[0].value).toEqual("");
-        // expect(abuseC[0].$$meta.$$missing).toBe(true);
+        // expect(abuseC[0].$$meta.$$missing).toBeTruthy();
         expect(warnings.length).toEqual(1);
         expect(warnings[0]).toContain("<p>There is currently no abuse contact set up for your organisation, which is required under");
         expect(warnings[0]).toContain(`<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>`);
@@ -193,8 +193,8 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
         const mntByList = WhoisResourcesService.getAllAttributesOnName(after, "mnt-by");
         expect(mntByList.length).toEqual(2);
-        expect(mntByList[0].$$meta.$$isLir).toBe(true);
-        expect(mntByList[1].$$meta.$$isLir).toBe(true);
+        expect(mntByList[0].$$meta.$$isLir).toBeTruthy();
+        expect(mntByList[1].$$meta.$$isLir).toBeTruthy();
 
     });
 
@@ -225,23 +225,23 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
         const address = WhoisResourcesService.getAllAttributesOnName(after, "address");
         expect(address.length).toEqual(1);
-        expect(address[0].$$meta.$$isLir).toBe(true);
+        expect(address[0].$$meta.$$isLir).toBeTruthy();
 
         const phone = WhoisResourcesService.getAllAttributesOnName(after, "phone");
         expect(phone.length).toEqual(1);
-        expect(phone[0].$$meta.$$isLir).toBe(true);
+        expect(phone[0].$$meta.$$isLir).toBeTruthy();
 
         const faxNumber = WhoisResourcesService.getAllAttributesOnName(after, "fax-no");
         expect(faxNumber.length).toEqual(1);
-        expect(faxNumber[0].$$meta.$$isLir).toBe(true);
+        expect(faxNumber[0].$$meta.$$isLir).toBeTruthy();
 
         const email = WhoisResourcesService.getAllAttributesOnName(after, "e-mail");
         expect(email.length).toEqual(1);
-        expect(email[0].$$meta.$$isLir).toBe(true);
+        expect(email[0].$$meta.$$isLir).toBeTruthy();
 
         const orgName = WhoisResourcesService.getAllAttributesOnName(after, "org-name");
         expect(orgName.length).toEqual(1);
-        expect(orgName[0].$$meta.$$isLir).toBe(true);
+        expect(orgName[0].$$meta.$$isLir).toBeTruthy();
     });
 
     it("should NOT flag address, phone, fax-no, e-mail and org-name as LIR attribute on Modify operation for non-LIRs", () => {
@@ -285,7 +285,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
         const orgAttr = WhoisResourcesService.getAllAttributesOnName(after, "org");
         expect(orgAttr.length).toEqual(1);
-        expect(orgAttr[0].$$meta.$$disable).toBe(true);
+        expect(orgAttr[0].$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable org on Modify operation for non-LIRs", () => {
@@ -370,7 +370,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
         const mntRef = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-ref");
-        expect(mntRef.$$meta.$$disable).toBe(true);
+        expect(mntRef.$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable mnt-ref with non-ripe maintainers on modify", () => {

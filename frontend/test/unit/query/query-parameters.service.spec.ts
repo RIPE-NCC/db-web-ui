@@ -120,7 +120,7 @@ describe("QueryParameters", () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(2);
-        expect(validationIssues.errors[0]).toContain("ERROR:111: invalid option supplied<br>Use help query to see the valid options.");
+        expect(validationIssues.errors[0]).toContain("ERROR:111: invalid option supplied. Use help query to see the valid options.");
         expect(validationIssues.errors[1]).toEqual("No search term provided");
 
         expect(validationIssues.warnings.length).toEqual(0);

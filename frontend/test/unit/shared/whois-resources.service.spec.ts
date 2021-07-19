@@ -694,17 +694,17 @@ describe("WhoisResourcesService", () => {
             {name: "source", value: "g", $$meta: {$$mandatory: true, $$multiple: false}},
         ]);
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"person"))).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"person"))).toBeFalse();
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "address")[0])).toBe(true);
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "address")[1])).toBe(true);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "address")[0])).toBeTruthy();
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "address")[1])).toBeTruthy();
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "phone")[0])).toBe(false);
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"nic-hdl"))).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "phone")[0])).toBeFalse();
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"nic-hdl"))).toBeFalse();
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"last-modified"))).toBe(true);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"last-modified"))).toBeTruthy();
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"source"))).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"source"))).toBeFalse();
 
 
     });

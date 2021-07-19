@@ -3,7 +3,6 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {FormsModule} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of} from "rxjs";
-import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
 import {PropertiesService} from "../../../../src/app/properties.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
@@ -72,7 +71,7 @@ describe("ForceDeleteController", () => {
 
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule],
-            declarations: [ForceDeleteComponent, AlertsComponent],
+            declarations: [ForceDeleteComponent],
             providers: [
                 {
                     provide: ActivatedRoute, useValue: {
@@ -197,7 +196,7 @@ describe("ForceDeleteController", () => {
         createParams(SOURCE, "mntner", "TPOLYCHNIA-MNT");
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertsComponent.getErrors()[0].plainText)
+        expect(forceDeleteComponent.alertsService.alerts.errors[0].plainText)
             .toBe("Only inetnum, inet6num, route, route6, domain object types are force-deletable");
     });
 
@@ -206,14 +205,14 @@ describe("ForceDeleteController", () => {
         createParams(SOURCE, "inetnum", undefined);
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertsComponent.getErrors()[0].plainText).toBe("Object key is missing");
+        expect(forceDeleteComponent.alertsService.alerts.errors[0].plainText).toBe("Object key is missing");
     });
 
     it("should show error on missing source", () => {
         createParams(undefined, "inetnum", "asdf");
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertsComponent.getErrors()[0].plainText).toBe("Source is missing");
+        expect(forceDeleteComponent.alertsService.alerts.errors[0].plainText).toBe("Source is missing");
     });
 
 
@@ -254,7 +253,7 @@ describe("ForceDeleteController should be able to handle escape objected with sl
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule],
-            declarations: [ForceDeleteComponent, AlertsComponent],
+            declarations: [ForceDeleteComponent],
             providers: [
                 {
                     provide: ActivatedRoute, useValue: {

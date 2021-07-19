@@ -4,9 +4,12 @@
         <h5 class="modal-title">Password authentication</h5>
         <i class="fa fa-close close" aria-label="Close" (click)="cancel()"></i>
     </div>
+    <div *ngIf="selected.message?.length > 0" class="modal-banner alarm">
+        <p>{{selected.message}}</p>
+    </div>
 
     <div class="modal-body">
-        <div *ngIf="resolve.mntners.length === 0" class="alert-expired alert alert-danger">
+        <div *ngIf="resolve.mntners.length === 0" class="modal-banner alarm">
             <span *ngIf="!resolve.isLirObject">
                 You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password.
             </span>
@@ -24,9 +27,6 @@
         </div>
 
         <div *ngIf="(resolve.mntners && resolve.mntners.length > 0)">
-            <div *ngIf="selected.message?.length > 0" class="alert-expired alert alert-danger">
-                <p>{{selected.message}}</p>
-            </div>
             <ul>
                 <li>
                     <label for="selectAuthMntner">Select a maintainer to authenticate the update operation.</label>

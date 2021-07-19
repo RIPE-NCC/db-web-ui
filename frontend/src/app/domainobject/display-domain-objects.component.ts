@@ -1,8 +1,8 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageStoreService} from "../updatesweb/message-store.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {AlertsComponent} from "../shared/alert/alerts.component";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "display-domain-objects",
@@ -13,11 +13,9 @@ export class DisplayDomainObjectsComponent {
     public prefix: string;
     public objects: any;
 
-    @ViewChild(AlertsComponent, {static: true})
-    private alertsComponent: AlertsComponent;
-
     constructor(private messageStoreService: MessageStoreService,
                 private whoisResourcesService: WhoisResourcesService,
+                private alertsService: AlertsService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
     }
@@ -31,8 +29,9 @@ export class DisplayDomainObjectsComponent {
         const whoisResources = this.whoisResourcesService.validateWhoisResources(result.whoisResources);
         this.objects = whoisResources.objects.object;
 
-        this.alertsComponent.clearAlertMessages();
-        this.alertsComponent.addErrors(whoisResources);
+        this.alertsService.clearAlertMessages();
+        this.alertsService.addGlobalSuccesses(`${this.objects.length} object(s) have been successfully created`);
+        this.alertsService.addAlertMsgs(whoisResources);
     }
 
     public navigateToSelect() {

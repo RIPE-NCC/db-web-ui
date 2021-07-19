@@ -50,7 +50,7 @@ describe("ScreenLogicInterceptorService InetNum", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
         const orgAttr = whoisResourcesService.getSingleAttributeOnName(attributes, "org");
-        expect(orgAttr.$$meta.$$disable).toBe(true);
+        expect(orgAttr.$$meta.$$disable).toBeTruthy();
     });
 
     it("should not remove sponsoring org from inetnum addable attributes when status is LEGACY", () => {
@@ -126,7 +126,7 @@ describe("ScreenLogicInterceptorService InetNum", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
         const mntDomains = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-domains");
-        expect(mntDomains.$$meta.$$disable).toBe(true);
+        expect(mntDomains.$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable mnt-domains with non-ripe maintainers on modify", () => {
@@ -148,7 +148,7 @@ describe("ScreenLogicInterceptorService InetNum", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
         const mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-lower");
-        expect(mntLower.$$meta.$$disable).toBe(true);
+        expect(mntLower.$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable mnt-lower with non-ripe maintainers on modify", () => {
@@ -170,7 +170,7 @@ describe("ScreenLogicInterceptorService InetNum", () => {
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
         const mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-routes");
-        expect(mntLower.$$meta.$$disable).toBe(true);
+        expect(mntLower.$$meta.$$disable).toBeTruthy();
     });
 
     it("should NOT disable mnt-routes with non-ripe maintainers on modify", () => {

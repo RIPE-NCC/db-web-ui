@@ -431,48 +431,48 @@ describe("ModalAuthenticationComponent", () => {
     it("should not allow forceDelete if method is forceDelete", () => {
         modalAuthenticationComponent.resolve.allowForcedDelete = true;
         modalAuthenticationComponent.resolve.method = "ForceDelete";
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(false);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeFalse();
     });
 
     it("should allow force delete if objectType is inetnum", () => {
         modalAuthenticationComponent.resolve.objectType = "inetnum";
         modalAuthenticationComponent.resolve.allowForcedDelete = true;
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(true);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeTruthy();
     });
 
     it("should allow force delete if objectType is inet6num", () => {
         modalAuthenticationComponent.resolve.objectType = "inet6num";
         modalAuthenticationComponent.resolve.allowForcedDelete = true;
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(true);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeTruthy();
     });
 
     it("should allow force delete if objectType is route", () => {
         modalAuthenticationComponent.resolve.objectType = "route";
         modalAuthenticationComponent.resolve.allowForcedDelete = true;
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(true);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeTruthy();
     });
 
     it("should allow force delete if objectType is route6", () => {
         modalAuthenticationComponent.resolve.objectType = "route6";
         modalAuthenticationComponent.resolve.allowForcedDelete = true;
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(true);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeTruthy();
     });
 
     it("should allow force delete if objectType is domain", () => {
         modalAuthenticationComponent.resolve.objectType = "domain";
         modalAuthenticationComponent.resolve.allowForcedDelete = true;
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(true);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeTruthy();
     });
 
     it("should not allow force delete if objectType is mntner", () => {
         modalAuthenticationComponent.resolve.objectType = "mntner";
         modalAuthenticationComponent.resolve.allowForcedDelete = true;
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(false);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeFalse();
     });
 
     it("should not allow force delete if objectType has RIPE-NCC-END-MNT", () => {
         modalAuthenticationComponent.resolve.objectType = "inetnum";
         modalAuthenticationComponent.resolve.allowForcedDelete = false;
-        expect(modalAuthenticationComponent.allowForceDelete()).toBe(false);
+        expect(modalAuthenticationComponent.allowForceDelete()).toBeFalse();
     });
 });

@@ -62,11 +62,11 @@ describe("MntnerService", () => {
 
         expect(enriched[0].type).toBe("mntner");
         expect(enriched[0].key).toBe("A-MNT");
-        expect(enriched[0].mine).toBe(true);
+        expect(enriched[0].mine).toBeTruthy();
 
         expect(enriched[1].type).toBe("mntner");
         expect(enriched[1].key).toBe("C-MNT");
-        expect(enriched[1].mine).toBe(false);
+        expect(enriched[1].mine).toBeFalse();
     });
 
     it("should detect RIPE-NCC mntners", () => {
@@ -80,18 +80,18 @@ describe("MntnerService", () => {
 
     it("should detect if object is comaintained", () => {
         const attributes = [{name: "mnt-by", value: "RIPE-NCC-LEGACY-MNT"}];
-        expect(mntnerService.isComaintained(attributes)).toBe(true);
+        expect(mntnerService.isComaintained(attributes)).toBeTruthy();
     });
 
     it("should detect if object is comaintained with multiple mnts", () => {
         const attributes = [{name: "mnt-by", value: "RIPE-NCC-LEGACY-MNT"}, {name: "mnt-by", value: "SOME-MNT"}];
-        expect(mntnerService.isComaintained(attributes)).toBe(true);
+        expect(mntnerService.isComaintained(attributes)).toBeTruthy();
     });
 
     it("should detect if object is NOT comaintained", () => {
         const attributes = [{name: "mnt-by", value: "SOME-MNT"}];
-        expect(mntnerService.isComaintained(attributes)).toBe(false);
-        expect(mntnerService.isComaintained([])).toBe(false);
+        expect(mntnerService.isComaintained(attributes)).toBeFalse();
+        expect(mntnerService.isComaintained([])).toBeFalse();
     });
 
     it("should detect non RIPE-NCC mntners", () => {
@@ -133,11 +133,11 @@ describe("MntnerService", () => {
 
         expect(enriched[0].type).toBe("mntner");
         expect(enriched[0].key).toBe("A-MNT");
-        expect(enriched[0].isNew).toBe(false);
+        expect(enriched[0].isNew).toBeFalse();
 
         expect(enriched[1].type).toBe("mntner");
         expect(enriched[1].key).toBe("C-MNT");
-        expect(enriched[1].isNew).toBe(true);
+        expect(enriched[1].isNew).toBeTruthy();
     });
 
     it("should need authentication for SSO mntner", () => {
@@ -151,8 +151,8 @@ describe("MntnerService", () => {
             {type: "mntner", key: "D-MNT"},
         ];
         // need authentication for D-MNT
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBe(true);
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBe(false);
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeTruthy();
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
 
     });
 
@@ -163,8 +163,8 @@ describe("MntnerService", () => {
         const objectMntners = [
             {type: "mntner", key: "a-mnt"},
         ];
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBe(false);
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBe(false);
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
 
     });
 
@@ -177,8 +177,8 @@ describe("MntnerService", () => {
             {type: "mntner", key: "D-MNT"},
         ];
 
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBe(false);
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBe(false);
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
 
     it("should RIPE-NCC-RPSL-MNT be ignored while determining if authorisation is needed", () => {
@@ -188,8 +188,8 @@ describe("MntnerService", () => {
             {type: "mntner", key: "B-MNT"},
         ];
 
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBe(false);
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBe(false);
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
 
     it("should need authentication for single RIPE-NCC-RPSL-MNT", () => {
@@ -198,8 +198,8 @@ describe("MntnerService", () => {
             {type: "mntner", key: "RIPE-NCC-RPSL-MNT"},
         ];
 
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBe(false);
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBe(false);
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
 
     it("should have authentication when no sso or password", () => {
@@ -211,8 +211,8 @@ describe("MntnerService", () => {
             {type: "mntner", key: "D-MNT"},
         ];
 
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBe(true);
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBe(true);
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeTruthy();
+        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeTruthy();
     });
 
     it("should get mntners that support password auth", () => {

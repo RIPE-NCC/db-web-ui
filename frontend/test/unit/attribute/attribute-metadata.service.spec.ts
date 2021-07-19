@@ -71,7 +71,7 @@ describe("AttributeMetadataService", () => {
 
     it("should not crash", () => {
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
-        expect(!!attributes).toBe(true);
+        expect(!!attributes).toBeTruthy();
         expect(attributes.length).toBe(9);
     });
 
@@ -81,7 +81,7 @@ describe("AttributeMetadataService", () => {
         const type = "inetnum";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
-        expect(isReadOnly).toBe(false);
+        expect(isReadOnly).toBeFalse();
     });
 
     it("should create metadata for co-maintained inetnum object with netname read only", () => {
@@ -90,7 +90,7 @@ describe("AttributeMetadataService", () => {
         const type = "inetnum";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
-        expect(isReadOnly).toBe(true);
+        expect(isReadOnly).toBeTruthy();
     });
 
     it("should create metadata for NOT co-maintained inet6num object with netname NOT read only", () => {
@@ -99,7 +99,7 @@ describe("AttributeMetadataService", () => {
         const type = "inet6num";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
-        expect(isReadOnly).toBe(false);
+        expect(isReadOnly).toBeFalse();
     });
 
     it("should create metadata for co-maintained inet6num object with netname read only", () => {
@@ -108,7 +108,7 @@ describe("AttributeMetadataService", () => {
         const type = "inet6num";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
-        expect(isReadOnly).toBe(true);
+        expect(isReadOnly).toBeTruthy();
     });
 
     it("should create metadata for co-maintained inetnum object with org read only", () => {
@@ -117,7 +117,7 @@ describe("AttributeMetadataService", () => {
         const type = "inetnum";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
-        expect(isReadOnly).toBe(true);
+        expect(isReadOnly).toBeTruthy();
     });
 
     it("should create metadata for NOT co-maintained inetnum object with org NOT read only", () => {
@@ -126,7 +126,7 @@ describe("AttributeMetadataService", () => {
         const type = "inetnum";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
-        expect(isReadOnly).toBe(false);
+        expect(isReadOnly).toBeFalse();
     });
 
     it("should create metadata for co-maintained inet6num object with org read only", () => {
@@ -135,7 +135,7 @@ describe("AttributeMetadataService", () => {
         const type = "inet6num";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
-        expect(isReadOnly).toBe(true);
+        expect(isReadOnly).toBeTruthy();
     });
 
     it("should create metadata for NOT co-maintained inet6num object with org NOT read only", () => {
@@ -144,7 +144,7 @@ describe("AttributeMetadataService", () => {
         const type = "inet6num";
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
-        expect(isReadOnly).toBe(false);
+        expect(isReadOnly).toBeFalse();
     });
 
     it("should be able to calculate validity of an attribute", () => {
@@ -158,19 +158,19 @@ describe("AttributeMetadataService", () => {
 
         attributePk.value = "";
         isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attributePk);
-        expect(isInvalid).toBe(true);
+        expect(isInvalid).toBeTruthy();
 
         // attributePk.value = VALID_PREFIX;
         // isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attributePk);
-        // expect(isInvalid).toBe(false);
+        // expect(isInvalid).toBeFalse();
 
         // attribute.value = "";
         // isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attribute);
-        // expect(isInvalid).toBe(false);
+        // expect(isInvalid).toBeFalse();
 
         attribute.value = "could be anything";
         isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attribute);
-        expect(isInvalid).toBe(false);
+        expect(isInvalid).toBeFalse();
     });
 
     xit("should be able to calculate hidden state of an attribute with no dependencies", () => {
@@ -179,7 +179,7 @@ describe("AttributeMetadataService", () => {
 
         expect(attribute.name).toBe("prefix");
         const isHidden = attributeMetadataService.isHidden(objectType, attributes, attribute);
-        expect(isHidden).toBe(false);
+        expect(isHidden).toBeFalse();
     });
 
     xit("should be able to calculate hidden state of an attribute with dependencies", () => {
@@ -199,11 +199,11 @@ describe("AttributeMetadataService", () => {
         attrNs1.value = "ns1.nowhere.com"; // a valid host name
         attrNs2.value = "ns2.nowhere.com"; // a valid host name
         isHidden = attributeMetadataService.isHidden(objectType, attributes, attrToTest);
-        expect(isHidden).toBe(true);
+        expect(isHidden).toBeTruthy();
 
         attrPrefix.value = VALID_PREFIX;
         isHidden = attributeMetadataService.isHidden(objectType, attributes, attrToTest);
-        expect(isHidden).toBe(false);
+        expect(isHidden).toBeFalse();
     });
 
 });

@@ -1,7 +1,5 @@
 <div [hidden]="modalInProgress">
 
-    <alerts></alerts>
-
     <section *ngFor="let object of deletedObjects" class="inner-container">
         <table class="success-fields grey">
             <tr *ngFor="let attribute of object.attributes.attribute">

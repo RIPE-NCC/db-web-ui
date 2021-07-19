@@ -1,91 +1,131 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable, Output} from "@angular/core";
 import * as _ from "lodash";
 import {IAttributeModel, IErrorMessageModel, IWhoisResponseModel} from "../whois-response-type.model";
 import {WhoisResourcesService} from "../whois-resources.service";
 
+export interface IAlertMessageModel extends IErrorMessageModel {
+    level?: string;
+    text?: string;
+    linkurl?: string;
+    linktext?: string;
+    dismissed?: boolean;
+    menuexpanded?: boolean;
+    permanent?: boolean;
+}
+
+export interface IAlerts {
+    errors: IAlertMessageModel[];
+    warnings: IAlertMessageModel[];
+    infos: IAlertMessageModel[];
+    successes: IAlertMessageModel[];
+}
+
 @Injectable()
 export class AlertsService {
 
-    public errors: IErrorMessageModel[] = [];
-    public warnings: IErrorMessageModel[] = [];
-    public infos: IErrorMessageModel[] = [];
-    public successes: IErrorMessageModel[] = [];
+    @Output()
+    public alertsChanged = new EventEmitter();
+
+    public alerts: IAlerts = {
+        errors: [],
+        warnings: [],
+        infos: [],
+        successes: []
+    };
 
     constructor(public whoisResourcesService: WhoisResourcesService) {
         this.hasErrors();
         this.hasWarnings();
-        this.hasInfos();
     }
 
     public clearAlertMessages() {
-        this.errors = [];
-        this.warnings = [];
-        this.successes = [];
-        this.infos = [];
+        this.alerts = {
+            errors: [],
+            warnings: [],
+            infos: [],
+            successes: []
+        }
+        this.alertsChanged.emit(this.alerts);
     }
 
     public hasErrors(): boolean {
-        return this.errors.length > 0;
+        return this.alerts.errors.length > 0;
     }
 
     public hasWarnings(): boolean {
-        return this.warnings.length > 0;
-    }
-
-    public hasInfos(): boolean {
-        return this.infos.length > 0;
-    }
-
-    public hasSuccesses(): boolean {
-        return this.successes.length > 0;
+        return this.alerts.warnings.length > 0;
     }
 
     public setErrors(whoisResources: IWhoisResponseModel) {
-        this.errors = this.whoisResourcesService.getGlobalErrors(whoisResources);
-        this.warnings = this.whoisResourcesService.getGlobalWarnings(whoisResources);
-        this.infos = this.whoisResourcesService.getGlobalInfos(whoisResources);
+        this.alerts.errors = [...this.alerts.errors, ...this.whoisResourcesService.getGlobalErrors(whoisResources)];
+        this.alerts.warnings = [...this.alerts.warnings, ...this.whoisResourcesService.getGlobalWarnings(whoisResources)];
+        this.alerts.infos = [...this.alerts.infos, ...this.whoisResourcesService.getGlobalInfos(whoisResources)];
+        this.alertsChanged.emit(this.alerts);
     }
 
     public setAllErrors(whoisResources: IWhoisResponseModel) {
-        this.errors = this.whoisResourcesService.getAllErrors(whoisResources);
-        this.warnings = this.whoisResourcesService.getAllWarnings(whoisResources);
-        this.infos = this.whoisResourcesService.getAllInfos(whoisResources);
+        this.alerts.errors = this.whoisResourcesService.getAllErrors(whoisResources);
+        this.alerts.warnings = this.whoisResourcesService.getAllWarnings(whoisResources);
+        this.alerts.infos = this.whoisResourcesService.getAllInfos(whoisResources);
+        this.alertsChanged.emit(this.alerts);
     }
 
-    public addErrors(whoisResources: IWhoisResponseModel) {
+    public addAlertMsgs(whoisResources: IWhoisResponseModel) {
         if (_.isUndefined(whoisResources)) {
-            console.error("AlertService.addErrors: undefined input");
+            console.error("AlertService.addAlertMsgs: undefined input");
         } else {
-            this.errors = this.errors.concat(this.whoisResourcesService.getGlobalErrors(whoisResources));
-            this.warnings = this.warnings.concat(this.whoisResourcesService.getGlobalWarnings(whoisResources));
-            this.infos = this.infos.concat(this.whoisResourcesService.getGlobalInfos(whoisResources));
+            this.alerts.errors = this.alerts.errors.concat(this.whoisResourcesService.getGlobalErrors(whoisResources));
+            this.alerts.warnings = this.alerts.warnings.concat(this.whoisResourcesService.getGlobalWarnings(whoisResources));
+            this.alerts.infos = this.alerts.infos.concat(this.whoisResourcesService.getGlobalInfos(whoisResources));
+            this.alertsChanged.emit(this.alerts);
         }
     }
 
     public setGlobalError(errorMsg: string) {
         this.clearAlertMessages();
-        this.errors.push({plainText: errorMsg});
+        this.alerts.errors.push({plainText: errorMsg});
+        this.alertsChanged.emit(this.alerts);
     }
 
-    public addGlobalWarning(warningMsg: string) {
-        this.warnings.push({plainText: warningMsg});
-    }
-
-    public addGlobalError(errorMsg: string) {
-        this.errors.push({plainText: errorMsg});
+    public setGlobalWarning(warningMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
+        // this.clearAlertMessages();
+        const warning = (linkurl) ? {plainText: warningMsg, linkurl: linkurl, linktext: linktext, permanent: permanent} : {plainText: warningMsg};
+        this.alerts.warnings.push(warning);
+        this.alertsChanged.emit(this.alerts);
     }
 
     public setGlobalInfo(infoMsg: string) {
+        // this.clearAlertMessages();
+        this.alerts.infos.push({plainText: infoMsg});
+        this.alertsChanged.emit(this.alerts);
+    }
+
+    public setGlobalSuccess(successMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
         this.clearAlertMessages();
-        this.infos.push({plainText: infoMsg});
+        const success = (linkurl) ? {plainText: successMsg, linkurl: linkurl, linktext: linktext, permanent: permanent} : {plainText: successMsg};
+        this.alerts.successes.push(success);
+        this.alertsChanged.emit(this.alerts);
     }
 
-    public setGlobalSuccess(successMsg: string) {
-        this.successes.push({plainText: successMsg});
+    public addGlobalError(errorMsg: string) {
+        this.alerts.errors.push({plainText: errorMsg});
+        this.alertsChanged.emit(this.alerts);
     }
 
-    public addGlobalInfo(errorMsg: string) {
-        this.infos.push({plainText: errorMsg});
+    public addGlobalWarning(warningMsg: string) {
+        this.alerts.warnings.push({plainText: warningMsg});
+        this.alertsChanged.emit(this.alerts);
+    }
+
+    public addGlobalInfo(infoMsg: string, linkurl?: string, linktext?: string) {
+        const info = (linkurl) ? {plainText: infoMsg, linkurl: linkurl, linktext: linktext} : {plainText: infoMsg};
+        this.alerts.infos.push(info);
+        this.alertsChanged.emit(this.alerts);
+    }
+
+    public addGlobalSuccesses(successMsg: string) {
+        this.alerts.successes.push({plainText: successMsg});
+        this.alertsChanged.emit(this.alerts);
     }
 
     public populateFieldSpecificErrors(objectType: string, attrs: IAttributeModel[], whoisResources: IWhoisResponseModel) {

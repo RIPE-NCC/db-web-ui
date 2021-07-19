@@ -37,7 +37,7 @@ describe("FullTextSearchComponent", () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(FullTextSearchComponent);
         component = fixture.componentInstance;
-    }); 
+    });
 
     it("should create", () => {
         expect(component).toBeTruthy();
@@ -88,20 +88,20 @@ describe("FullTextSearchComponent", () => {
         fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
         component.searchClicked();
         fixture.detectChanges();
-        expect(component.showError).toEqual("fullText.emptyQueryText.text");
+        expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Empty query - please specify at least one character");
         component.ftquery = "etch-mnt";
         component.searchClicked();
         fixture.detectChanges();
-        expect(component.showError).toBeFalsy();
+        expect(component.alertsService.alerts.warnings.length > 0).toBeFalsy();
         expect(component.numResults).toEqual(7);
         component.searchClicked();
         fixture.detectChanges();
-        expect(component.showError).toBeFalsy();
+        expect(component.alertsService.alerts.warnings.length > 0).toBeFalsy();
         expect(component.numResults).toEqual(7);
         fullTextSearchService.doSearch.and.returnValue(of(responseEmpty));
         component.searchClicked();
         fixture.detectChanges();
-        expect(component.showError).toBeTruthy();
+        expect(component.alertsService.alerts.warnings.length > 0).toBeTruthy();
         expect(component.numResults).toEqual(0);
     });
 

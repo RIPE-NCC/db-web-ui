@@ -1,7 +1,6 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
-import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
 import {DisplayMntnerPairComponent} from "../../../../src/app/updatesweb/display-mntner-pair.component";
 import {MessageStoreService} from "../../../../src/app/updatesweb/message-store.service";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
@@ -34,8 +33,7 @@ describe("displayPairComponent", () => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [
-                DisplayMntnerPairComponent,
-                AlertsComponent
+                DisplayMntnerPairComponent
             ],
             providers: [
                 WhoisResourcesService,
@@ -184,8 +182,8 @@ describe("displayPairComponent", () => {
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true"}).flush(mntnerToDisplay);
 
-        expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-        expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
+        expect(component.alertsService.alerts.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+        expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
 
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();

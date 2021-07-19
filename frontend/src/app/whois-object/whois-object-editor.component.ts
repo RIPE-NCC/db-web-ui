@@ -4,6 +4,7 @@ import {MessageStoreService} from "../updatesweb/message-store.service";
 import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 import {IAttributeModel, IWhoisObjectModel} from "../shared/whois-response-type.model";
 import {PropertiesService} from "../properties.service";
+import {AlertsService} from "../shared/alert/alerts.service";
 
 @Component({
     selector: "whois-object-editor",
@@ -36,6 +37,7 @@ export class WhoisObjectEditorComponent implements OnInit {
 
     constructor(private attributeMetadataService: AttributeMetadataService,
                 private messageStoreService: MessageStoreService,
+                private alertsService: AlertsService,
                 private properties: PropertiesService) {
     }
 
@@ -75,6 +77,9 @@ export class WhoisObjectEditorComponent implements OnInit {
             this.originalAttibutes = _.cloneDeep(this.attributes);
             this.attributeMetadataService.enrich(this.objectType, this.attributes);
             this.missingMandatoryAttributes = this.getMissingMandatoryAttributes();
+        }
+        if (this.missingMandatoryAttributes.length > 0) {
+            this.alertsService.setGlobalWarning(`Missing mandatory attribute: ${this.missingMandatoryAttributes.join(", ")}` );
         }
     }
 
