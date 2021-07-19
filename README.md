@@ -45,6 +45,8 @@ Valid profile names are dev, prepdev, rc and prod.
 
 Properties are read from the /config/application-`<ENV>`.properties file on the classpath.
 
+To run locally add in the vm options: `-Dspring.profiles.active=local -Duser.timezone=UTC`
+
 Frontend
 --------
 > Open a terminal and cd into the `frontend`
