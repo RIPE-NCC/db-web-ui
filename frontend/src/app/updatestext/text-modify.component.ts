@@ -45,8 +45,6 @@ export class TextModifyComponent {
     }
 
     public ngOnInit() {
-        this.alertsServices.clearAlertMessages();
-
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
