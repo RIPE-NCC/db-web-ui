@@ -22,13 +22,15 @@
             </div>
             <ul class="checkbox">
                 <li>
-                    <input type="checkbox" name="qp.showFullObjectDetails" [(ngModel)]="qp.showFullObjectDetails">
-                    <label>Show full object details</label>
+                    <input type="checkbox" id="showFullObjectDetails" name="qp.showFullObjectDetails"
+                           [(ngModel)]="qp.showFullObjectDetails">
+                    <label for="showFullObjectDetails">Show full object details</label>
                     <help-marker [label-key]="'query.optionFullObject.title'"></help-marker>
                 </li>
                 <li>
-                    <input type="checkbox" name="qp.doNotRetrieveRelatedObjects" [(ngModel)]="qp.doNotRetrieveRelatedObjects">
-                    <label>Do not retrieve related objects</label>
+                    <input type="checkbox" id="doNotRetrieveRelatedObjects" name="qp.doNotRetrieveRelatedObjects"
+                           [(ngModel)]="qp.doNotRetrieveRelatedObjects">
+                    <label for="doNotRetrieveRelatedObjects">Do not retrieve related objects</label>
                     <help-marker [label-key]="'query.optionRelatedObjects.title'"></help-marker>
                 </li>
             </ul>
