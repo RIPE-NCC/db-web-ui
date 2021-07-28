@@ -29,6 +29,8 @@ cache:
     - .m2/repository
 
 build:
+  tags:
+    - whois
   stage: build
   before_script:
       - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -41,6 +43,8 @@ build:
       - backend/target/db-web-ui*.jar
 
 e2e:
+    tags:
+      - whois
     stage: test
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
@@ -50,6 +54,8 @@ e2e:
         - cd frontend && npm run e2e-chrome
 
 e2e-firefox:
+    tags:
+      - whois
     stage: test
     script:
       - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
