@@ -20,22 +20,18 @@
                            placeholder="Search term">
                 </div>
             </div>
-            <div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="qp.showFullObjectDetails" [(ngModel)]="qp.showFullObjectDetails">
-                        Show full object details
-                        <help-marker [label-key]="'query.optionFullObject.title'"></help-marker>
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="qp.doNotRetrieveRelatedObjects" [(ngModel)]="qp.doNotRetrieveRelatedObjects">
-                        Do not retrieve related objects
-                        <help-marker [label-key]="'query.optionRelatedObjects.title'"></help-marker>
-                    </label>
-                </div>
-            </div>
+            <ul class="checkbox">
+                <li>
+                    <input type="checkbox" name="qp.showFullObjectDetails" [(ngModel)]="qp.showFullObjectDetails">
+                    <label>Show full object details</label>
+                    <help-marker [label-key]="'query.optionFullObject.title'"></help-marker>
+                </li>
+                <li>
+                    <input type="checkbox" name="qp.doNotRetrieveRelatedObjects" [(ngModel)]="qp.doNotRetrieveRelatedObjects">
+                    <label>Do not retrieve related objects</label>
+                    <help-marker [label-key]="'query.optionRelatedObjects.title'"></help-marker>
+                </li>
+            </ul>
         </div>
         <p>
             You can search up to five terms at once in the search box above, separating them with a semi-colon.
@@ -47,26 +43,23 @@
                     <ng-template ngbNavContent>
                         <ng-form>
                             <div class="padding">
-                                <div class="form-group">
-                                    <div class="radio">
-                                        <label>
+                                <ul class="form-group">
+                                    <li class="radio">
                                             <input id="search:sources:1" type="radio" value="GRS"
                                                    class="ga-grsdb-checkbox" name="qp.source" [(ngModel)]="qp.source">
                                             <label for="search:sources:1">Search resource objects in all available databases</label>
-                                        </label>
                                         <help-marker [label-key]="'query.optionAllDatabases.title'"
                                                      [link]="'https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service'"></help-marker>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
+                                    </li>
+                                    <li class="radio">
                                             <input id="search:sources:0" type="radio" value="RIPE"
                                                    class="ga-ripedb-checkbox" name="qp.source" [(ngModel)]="qp.source">
-                                            <label for="search:sources:0">Search RIPE Database only</label></label>
-                                    </div>
-                                    <div class="help-block small">
+                                            <label for="search:sources:0">Search RIPE Database only</label>
+                                    </li>
+                                    <li class="help-block small">
                                         <span>Are you looking for the <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank">{{properties.SOURCE  === "RIPE" ? "TEST" : "RIPE"}} Database</a>?</span>
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
                         </ng-form>
                     </ng-template>
