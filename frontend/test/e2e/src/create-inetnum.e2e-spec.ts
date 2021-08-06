@@ -121,7 +121,7 @@ describe("The inetnum editor", () => {
         page.btnNavigateToCreate.click();
         page.inpInetnumQuestionMark.click();
         expect(page.inpInetnumDescription.isDisplayed()).toBeTruthy();
-        // await browser.sleep(500);
+        await browser.sleep(100);
         expect(page.inpInetnumDescription.getText()).toContain("Specifies a range of IPv4 that the inetnum object presents.");
         expect(page.inpNetnameDescription.isDisplayed()).toBeFalsy();
         page.inpNetnameQuestionMark.click();

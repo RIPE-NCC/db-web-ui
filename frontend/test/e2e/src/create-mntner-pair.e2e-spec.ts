@@ -31,13 +31,14 @@ describe("The CreateMntnerPairComponent", () => {
         expect(page.prefixErrMsg.getText()).toEqual("Input contains unsupported characters.");
     });
 
-    it("should open description under mntner field on click on question mark", () => {
+    it("should open description under mntner field on click on question mark", async () => {
         page.selectObjectType("role and maintainer pair").click();
         page.btnNavigateToCreate.click();
         page.switchToPersonObject.click();
         expect(page.inpMntnerDescription.isDisplayed()).toBeFalsy();
         page.inpMntnerQuestionMark.click();
         expect(page.inpMntnerDescription.isDisplayed()).toBeTruthy();
+        await browser.sleep(100);
         expect(page.inpMntnerDescription.getText()).toContain("Description");
         expect(page.inpMntnerDescription.getText()).toContain("A unique identifier of the mntner object.");
         expect(page.inpMntnerDescription.getText()).toContain("Syntax");
