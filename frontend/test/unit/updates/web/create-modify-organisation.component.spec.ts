@@ -5,7 +5,6 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {Location} from "@angular/common";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 import {CreateModifyComponent} from "../../../../src/app/updatesweb/create-modify.component";
@@ -49,7 +48,6 @@ describe("CreateModifyComponent for organisation", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
-                NgOptionHighlightModule,
                 HttpClientTestingModule],
             declarations: [CreateModifyComponent],
             providers: [

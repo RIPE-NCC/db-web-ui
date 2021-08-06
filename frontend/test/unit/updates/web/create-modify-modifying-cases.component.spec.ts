@@ -5,7 +5,6 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of, throwError} from "rxjs";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {CreateModifyComponent} from "../../../../src/app/updatesweb/create-modify.component";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
@@ -140,7 +139,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
-                NgOptionHighlightModule,
                 HttpClientTestingModule],
             declarations: [CreateModifyComponent],
             providers: [

@@ -6,7 +6,6 @@ import {By} from "@angular/platform-browser";
 import {DebugElement} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {of, throwError} from "rxjs";
 import {CreateModifyComponent} from "../../../../src/app/updatesweb/create-modify.component";
@@ -49,7 +48,6 @@ describe("CreateModifyComponent", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
-                NgOptionHighlightModule,
                 HttpClientTestingModule],
             declarations: [CreateModifyComponent],
             providers: [

@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
 import {SharedModule} from "../../../src/app/shared/shared.module";
@@ -23,7 +22,6 @@ describe("WhoisObjectViewerComponent", () => {
                     SharedModule,
                     CoreModule,
                     NgSelectModule,
-                    NgOptionHighlightModule,
                     AttributeModule,
                     RouterTestingModule],
                 declarations: [
@@ -67,7 +65,6 @@ describe("WhoisObjectViewerComponent", () => {
                     SharedModule,
                     CoreModule,
                     NgSelectModule,
-                    NgOptionHighlightModule,
                     AttributeModule,
                     RouterTestingModule],
                 declarations: [

@@ -4,7 +4,6 @@ import {ActivatedRoute, convertToParamMap, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {RouterTestingModule} from "@angular/router/testing";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
@@ -45,7 +44,6 @@ describe("CreateMntnerPairComponent", () => {
                     SharedModule,
                     CoreModule,
                     NgSelectModule,
-                    NgOptionHighlightModule,
                     HttpClientTestingModule,
                     RouterTestingModule],
                 declarations: [CreateMntnerPairComponent],

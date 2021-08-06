@@ -4,7 +4,6 @@ import {Location} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {of} from "rxjs";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../../src/app/core/core.module";
@@ -33,7 +32,6 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
-                NgOptionHighlightModule,
                 HttpClientTestingModule],
             declarations: [CreateSelfMaintainedMaintainerComponent],
             providers: [

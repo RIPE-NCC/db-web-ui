@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Location} from "@angular/common";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {SharedModule} from "../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../src/app/core/core.module";
 import {WhoisObjectEditorComponent} from "../../../src/app/whois-object/whois-object-editor.component";
@@ -46,7 +45,6 @@ describe("WhoisObjectEditorComponent", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
-                NgOptionHighlightModule,
                 AttributeModule],
             declarations: [
                 WhoisObjectEditorComponent

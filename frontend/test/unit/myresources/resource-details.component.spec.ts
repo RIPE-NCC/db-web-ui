@@ -3,7 +3,6 @@ import {RouterTestingModule} from "@angular/router/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ActivatedRoute} from "@angular/router";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import * as _ from "lodash";
 import {ResourceStatusService} from "../../../src/app/myresources/resource-status.service";
@@ -56,8 +55,7 @@ describe("ResourceDetailsComponent", () => {
                 CoreModule,
                 NgSelectModule,
                 RouterTestingModule,
-                HttpClientTestingModule,
-                NgOptionHighlightModule
+                HttpClientTestingModule
             ],
             declarations: [
                 ResourceDetailsComponent,
