@@ -97,6 +97,14 @@ describe("WhoisObjectViewerComponent", () => {
             fixture.detectChanges();
             expect(component.show.updateButton).toBeFalsy();
         });
+
+        it("should not show button Update object for RIPE placeholder objects whois object", () => {
+            // Placeholder objects => netname = "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK"
+            component.ngModel = placeholderWhoisObject;
+            component.ngOnChanges();
+            fixture.detectChanges();
+            expect(component.show.updateButton).toBeFalsy();
+        });
     });
 
     const ripeWhoisObject = {
@@ -256,6 +264,71 @@ describe("WhoisObjectViewerComponent", () => {
                 ]
             },
             "managed": false
-        }
-    ;
+        };
+
+    const placeholderWhoisObject = {
+                "type" : "inetnum",
+                "link" : {
+                    "type" : "locator",
+                    "href" : "https://rest-prepdev.db.ripe.net/ripe/inetnum/192.92.157.0 - 192.92.215.255"
+                },
+                "source" : {
+                    "id" : "ripe"
+                },
+                "primary-key" : {
+                    "attribute" : [ {
+                        "name" : "inetnum",
+                        "value" : "192.92.157.0 - 192.92.215.255"
+                    } ]
+                },
+                "attributes" : {
+                    "attribute" : [ {
+                        "name" : "inetnum",
+                        "value" : "192.92.157.0 - 192.92.215.255"
+                    }, {
+                        "name" : "netname",
+                        "value" : "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK"
+                    }, {
+                        "name" : "country",
+                        "value" : "EU",
+                        "comment" : "Country is really world wide"
+                    }, {
+                        "link" : {
+                            "type" : "locator",
+                            "href" : "https://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                        },
+                        "name" : "admin-c",
+                        "value" : "IANA1-RIPE",
+                        "referenced-type" : "role"
+                    }, {
+                        "link" : {
+                            "type" : "locator",
+                            "href" : "https://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                        },
+                        "name" : "tech-c",
+                        "value" : "IANA1-RIPE",
+                        "referenced-type" : "role"
+                    }, {
+                        "name" : "status",
+                        "value" : "ALLOCATED UNSPECIFIED"
+                    }, {
+                        "link" : {
+                            "type" : "locator",
+                            "href" : "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                        },
+                        "name" : "mnt-by",
+                        "value" : "RIPE-NCC-HM-MNT",
+                        "referenced-type" : "mntner"
+                    }, {
+                        "name" : "created",
+                        "value" : "2019-01-07T10:49:13Z"
+                    }, {
+                        "name" : "last-modified",
+                        "value" : "2019-01-07T10:49:13Z"
+                    }, {
+                        "name" : "source",
+                        "value" : "RIPE"
+                    } ]
+                }
+            };
 });

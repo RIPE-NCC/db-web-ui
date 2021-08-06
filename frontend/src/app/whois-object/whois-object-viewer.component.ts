@@ -110,13 +110,19 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     private showUpdateButton() {
-        this.show.updateButton = !this.isSourceGRS();
+        this.show.updateButton = !this.isSourceGRS() && !this.isPlaceholderObjects();
         this.show.loginLink = false;
     }
 
-    private isSourceGRS() {
+    private isSourceGRS(): boolean {
         const source = this.ngModel.source.id.toLowerCase();
         return source.indexOf("grs") > -1;
+    }
+
+    private isPlaceholderObjects(): boolean {
+        return this.ngModel.attributes.attribute
+            .filter(attr => attr.name === "netname" && attr.value === "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK")
+            .length > 0;
     }
 
     ngOnDestroy() {
