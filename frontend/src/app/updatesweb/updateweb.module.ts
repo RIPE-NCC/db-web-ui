@@ -5,7 +5,6 @@ import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {PreferenceService} from "./preference.service";
 import {CharsetToolsService} from "./charset-tools.service";
 import {ErrorReporterService} from "./error-reporter.service";
@@ -43,7 +42,6 @@ import {CreateService} from "./create.service";
         HttpClientModule,
         SharedModule,
         NgSelectModule,
-        NgOptionHighlightModule,
         RouterModule
     ],
     declarations: [
@@ -94,5 +92,4 @@ import {CreateService} from "./create.service";
         ModalEditAttributeComponent
     ]
 })
-export class UpdatesWebModule {
-}
+export class UpdatesWebModule {}
