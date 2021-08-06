@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, ElementRef, ViewChild} from "@angular/core";
 import * as _ from "lodash";
 import {EnvironmentStatusService} from "../shared/environment-status.service";
 import {OrgDropDownSharedService} from "./org-drop-down-shared.service";
@@ -45,9 +45,9 @@ export class OrgDropDownComponent {
 
     public customSearchFn(term: string, item: any) {
         term = term.toLocaleLowerCase();
-        return item.organisationName.toLocaleLowerCase().indexOf(term) > -1 ||
-            (item.regId && item.regId.toLocaleLowerCase().indexOf(term) > -1) ||
-            (item.orgObjectId && item.orgObjectId.toLocaleLowerCase().indexOf(term) > -1);
+        return item.organisationName.toLocaleLowerCase().includes(term) ||
+            (item.regId && item.regId.toLocaleLowerCase().includes(term)) ||
+            (!item.regId && item.orgObjectId && item.orgObjectId.toLocaleLowerCase().includes(term));
     }
 
     private sortOrganisations(orgs: IUserInfoOrganisation[]): IUserInfoOrganisation[] {

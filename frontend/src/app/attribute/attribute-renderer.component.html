@@ -78,15 +78,15 @@
            [disabled]="attribute.$$disable"
            (change)="valueChanged(objectType, attributes)">
     <ng-select *ngIf="isStaticList && attribute.name !== 'status'"
-            [attr.name]="attribute.name"
-            [items]="staticList"
-            bindLabel="key"
-            bindValue="key"
-            placeholder="{{getAttributeShortDescription(attribute.name)}}"
-            [disabled]="attribute.$$meta?.$$disable"
-            [(ngModel)]="attribute.value">
-        <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
-            <div [innerHTML]="displayEnumValue(item)" [ngOptionHighlight]="search">{{item.key}}</div>
+               [attr.name]="attribute.name"
+               [items]="staticList"
+               bindLabel="key"
+               bindValue="key"
+               [placeholder]="getAttributeShortDescription(attribute.name)"
+               [disabled]="attribute.$$meta?.$$disable"
+               [(ngModel)]="attribute.value">
+        <ng-template ng-option-tmp let-item="item">
+            <div [innerHTML]="displayEnumValue(item)">{{item.key}}</div>
         </ng-template>
     </ng-select>
 </ng-template>

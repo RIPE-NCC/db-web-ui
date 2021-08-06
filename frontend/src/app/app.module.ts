@@ -3,7 +3,6 @@ import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 
 import {AppRoutingModule} from "./app-routing.module";
@@ -57,7 +56,6 @@ import {LiveChatComponent} from "./livechat/live-chat.component";
   imports: [
     BrowserModule,
     NgSelectModule,
-    NgOptionHighlightModule,
     FormsModule,
     HttpClientModule,
     SharedModule,

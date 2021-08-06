@@ -44,7 +44,7 @@ export class SelectComponent {
     }
 
     /*
-     * Methods called from the html-teplate
+     * Methods called from the html-template
      */
     public labelForSource(src: string): string {
         return src === "RIPE" ? "RIPE    production database" : "Test database (currently not available)";

@@ -102,8 +102,8 @@
                        placeholder="{{getAttributeShortDescription(attribute.name)}}"
                        [disabled]="attribute.$$meta?.$$disable"
                        [(ngModel)]="attribute.value">
-                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
-                            <div [innerHTML]="displayEnumValue(item)" [ngOptionHighlight]="search">{{item.key}}</div>
+                        <ng-template ng-option-tmp let-item="item">
+                            <div [innerHTML]="displayEnumValue(item)">{{item.key}}</div>
                         </ng-template>
                     </ng-select>
                 </span>

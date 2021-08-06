@@ -10,7 +10,6 @@ import {AttributeModule} from "../attribute/attribute.module";
 import {MaintainersEditorComponent} from "./maintainers-editor.component";
 import {UserInfoService} from "../userinfo/user-info.service";
 import {WebUpdatesCommonsService} from "../updatesweb/web-updates-commons.service";
-import {UpdatesWebModule} from "../updatesweb/updateweb.module";
 
 @NgModule({
     imports: [
@@ -19,7 +18,6 @@ import {UpdatesWebModule} from "../updatesweb/updateweb.module";
         SharedModule,
         AttributeModule,
         NgSelectModule,
-        UpdatesWebModule,
         RouterModule
     ],
     declarations: [
