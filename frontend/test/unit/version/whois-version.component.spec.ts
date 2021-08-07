@@ -1,11 +1,11 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import {WhoisVersionComponent} from "../../../src/app/version/whois-version.component";
 
 describe("WhoisVersionComponent", () => {
     let component: WhoisVersionComponent;
     let fixture: ComponentFixture<WhoisVersionComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [WhoisVersionComponent]
         }).compileComponents();
