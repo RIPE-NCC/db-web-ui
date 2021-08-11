@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import {AppComponent} from "../../src/app/app.component"
 import {PropertiesService} from "../../src/app/properties.service";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
@@ -13,7 +13,7 @@ describe("AppComponent", () => {
     let fixture: ComponentFixture<AppComponent>;
     let routerMock: any;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
         TestBed.configureTestingModule({
             imports: [

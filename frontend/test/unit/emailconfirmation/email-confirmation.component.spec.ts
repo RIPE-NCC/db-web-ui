@@ -1,5 +1,5 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import {ActivatedRoute} from "@angular/router";
 import {of} from "rxjs";
 
@@ -16,7 +16,7 @@ describe("Testing EmailConfirmation with logged in user", () => {
     let httpMock: HttpTestingController;
     let service: EmailConfirmationService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [
@@ -70,7 +70,7 @@ describe("Testing EmailConfirmation with not logged in user", () => {
     let httpMock: HttpTestingController;
     let service: EmailConfirmationService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [
