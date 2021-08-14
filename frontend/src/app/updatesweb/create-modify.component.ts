@@ -74,7 +74,6 @@ export class CreateModifyComponent {
     public MODIFY_OPERATION = "Modify";
     public PENDING_OPERATION = "Pending";
 
-    public isMntHelpShown: boolean = false;
     public showAttrsHelp: [];
 
     constructor(@Inject(WINDOW) private window: any,
@@ -256,56 +255,9 @@ export class CreateModifyComponent {
         });
     }
 
-    public onMntnerAdded(item: any) {
-
-        // enrich with new-flag
-        this.maintainers.object = this.mntnerService.enrichWithNewStatus(this.maintainers.objectOriginal, this.maintainers.object);
-
-        // adjust attributes
-        this.copyAddedMntnerToAttributes(item.key);
-
-        if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
-            this.performAuthentication();
-            return;
-        }
-    }
-
-    public showMntCloseButton(mntner: IMntByModel): boolean {
-        return !this.isModifyWithSingleMntnerRemaining() && this.isRemovable(mntner.key) && !this.isLirObject();
-    }
-
-    public isClearable(): boolean {
-        return this.maintainers.object[0] ? this.showMntCloseButton(this.maintainers.object[0]) : false;
-    }
-
-    public onMntnerRemoved(item: any) {
-
-        if (this.maintainers.object.length === 0) {
-            // make sure we do not remove the last mntner which act as anchor
-            this.keepSingleMntnerInAttrsWithoutValue();
-        } else {
-            // remove it from the attributes right away
-            this.removeMntnerFromAttrs(item);
-        }
-
-        console.debug("onMntnerRemoved: " + JSON.stringify(item) + " object mntners now:" + JSON.stringify(this.maintainers.object));
-        console.debug("onMntnerRemoved: attributes" + JSON.stringify(this.attributes));
-    }
-
-    public isModifyWithSingleMntnerRemaining() {
-        return this.operation === this.MODIFY_OPERATION && this.maintainers.object.length === 1;
-    }
-
-    public mntnerAutocomplete(query: any) {
-        // need to typed characters
-        this.restService.autocomplete("mnt-by", query, true, ["auth"])
-            .then((data: any[]) => {
-                    // mark new
-                    this.maintainers.alternatives = this.mntnerService.stripNccMntners(
-                        this.mntnerService.enrichWithNewStatus(this.maintainers.objectOriginal,
-                            this.filterAutocompleteMntners(this.enrichWithMine(data))), true);
-                },
-            );
+    public updateMaintainers(maintainers: IMaintainers) {
+        this.maintainers = maintainers;
+        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
     // change to private
@@ -391,7 +343,7 @@ export class CreateModifyComponent {
                     return [];
                 });
         } else {
-            // No suggestions since not a reference
+            // No suggestions since nohandleSsoResponset a reference
             return [];
         }
     }
@@ -619,7 +571,6 @@ export class CreateModifyComponent {
         } else {
             this.stripNulls();
             this.alertsService.clearAlertMessages();
-
             if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                 this.performAuthentication();
                 return;
@@ -676,32 +627,9 @@ export class CreateModifyComponent {
         return ObjectUtilService.isLirObject(this.attributes);
     }
 
-    public isMine(mntner: IMntByModel) {
-        return this.mntnerService.isMine(mntner);
-    }
-
-    public isRemovable(mntnerKey: string) {
-        return this.mntnerService.isRemovable(mntnerKey);
-    }
-
-    public hasSSo(mntner: IMntByModel) {
-        return this.mntnerService.hasSSo(mntner);
-    }
-
-    public hasPgp(mntner: IMntByModel) {
-        return this.mntnerService.hasPgp(mntner);
-    }
-
-    public hasMd5(mntner: IMntByModel) {
-        return this.mntnerService.hasMd5(mntner);
-    }
-
-    public isNew(mntner: any) {
-        return this.mntnerService.isNew(mntner);
-    }
-
-
     public isFormValid() {
+        this.attributeMetadataService.enrich(this.objectType, this.attributes);
+        this.attributes.map(attr => {if (attr.name === "mnt-by" && attr.value === "") {attr.$$invalid = false}});
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }
 
@@ -873,9 +801,6 @@ export class CreateModifyComponent {
                     this.maintainers.object = this.mntnerService.enrichWithNewStatus(this.maintainers.objectOriginal, _.flatten(result));
                     console.debug("mntners-object:" + JSON.stringify(this.maintainers.object));
 
-                    if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
-                        this.performAuthentication();
-                    }
                 }, (error: any) => {
                     this.restCallInProgress = false;
                     console.error("Error fetching sso-mntners details" + JSON.stringify(error));
@@ -912,29 +837,6 @@ export class CreateModifyComponent {
         }
     }
 
-    private copyAddedMntnerToAttributes(mntnerName: string) {
-        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", [
-            {name: "mnt-by", value: mntnerName},
-        ]));
-    }
-
-    private keepSingleMntnerInAttrsWithoutValue() {
-        // make sure we do not remove the last mntner which act as anchor
-        _.map(this.attributes, (attr: any) => {
-            if (attr.name === "mnt-by") {
-                attr.value = null;
-                return attr;
-            }
-            return attr;
-        });
-    }
-
-    private removeMntnerFromAttrs(item: any) {
-        _.remove(this.attributes, (i: any) => {
-            return i.name === "mnt-by" && i.value === item.key;
-        });
-    }
-
     private extractEnrichMntnersFromObject(attributes: any[]): any[] {
         // get mntners from response
         const mntnersInObject: any[] = _.filter(attributes, (i: any) => {
@@ -948,14 +850,6 @@ export class CreateModifyComponent {
                 mine: _.includes(_.map(this.maintainers.sso, "key"), mntnerAttr.value),
                 type: "mntner",
             };
-        });
-    }
-
-    private filterAutocompleteMntners(mntners: any[]) {
-        return _.filter(mntners, (mntner) => {
-            // prevent that RIPE-NCC mntners can be added to an object upon create of modify
-            // prevent same mntner to be added multiple times
-            return !this.mntnerService.isNccMntner(mntner.key) && !this.mntnerService.isMntnerOnlist(this.maintainers.object, mntner);
         });
     }
 
@@ -976,20 +870,12 @@ export class CreateModifyComponent {
         return whoisResources;
     }
 
-    private enrichWithMine(mntners: any[]) {
-        return _.map(mntners, (mntner: any) => {
-            // search in selected list
-            mntner.mine = !!this.mntnerService.isMntnerOnlist(this.maintainers.sso, mntner);
-            return mntner;
-        });
-    }
-
     public showPencile(attrName: string): boolean {
         const modalContactFields = ["address", "org-name", "phone", "fax-no", "e-mail"];
         return modalContactFields.indexOf(attrName) > -1;
     }
 
-    private refreshObjectIfNeeded(associationResp: any) {
+    public refreshObjectIfNeeded(associationResp: any) {
         if (this.operation === this.MODIFY_OPERATION && this.objectType === "mntner") {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);

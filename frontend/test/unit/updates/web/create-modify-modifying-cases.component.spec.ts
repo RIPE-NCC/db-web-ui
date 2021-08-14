@@ -492,7 +492,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
         }
     });
 
-    describe("ask for password before modify object with non-sso maintainer with password", () => {
+    xdescribe("ask for password before modify object with non-sso maintainer with password", () => {
 
         const OBJECT_TYPE = "as-block";
         const SOURCE = "RIPE";

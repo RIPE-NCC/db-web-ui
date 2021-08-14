@@ -13,51 +13,12 @@
     <span class="fa fa-pencil-square-o"></span> Edit in text area
 </button>
 
-<div id="createForm">
+<div id="createForm" *ngIf="attributes?.length > 0">
     <h1>{{operation}} &quot;{{objectType}}&quot; object</h1>
-    <section class="form-fields maintainer-fields">
-        <strong>Please enter the maintainers you would like to use as mnt-by</strong>
-        <article class="maintainer-icons">
-            <span class="fa fa-search maintainer-search-icon"></span>
-            <a (click)="isMntHelpShown = !isMntHelpShown" class="btn btn-default ga-help-attr maintainer-help" id="mntnerHelp">
-                <span class="fa fa-question"></span>
-            </a>
-        </article>
-<!-- TODO replace with maintainer-editor component!!!!-->
-        <ng-select id="selectMaintainerDropdown"
-                   name="selectMaintainerDropdown"
-                   bindLabel="key"
-                   [multiple]="true"
-                   [items]="maintainers.alternatives"
-                   [(ngModel)]="maintainers.object"
-                   [hideSelected]="true"
-                   (search)="mntnerAutocomplete($event.term)"
-                   (add)="onMntnerAdded($event)"
-                   [disabled]="isLirObject()"
-                   [clearable]="isClearable()"
-                   (remove)="onMntnerRemoved($event.value)"
-                   placeholder="Type maintainer name">
-            <ng-template ng-label-tmp let-mntner="item" let-clear="clear">
-                <div [ngClass]="{'select-locked': !showMntCloseButton(mntner), 'default': true}">
-                    {{ mntner.key }}
-                    <span class="fa fa-star" *ngIf="isMine(mntner)"></span>
-                    <span class="fa fa-lock" *ngIf="!isRemovable(mntner.key) || isLirObject()"></span>
-                    <span class="ng-value-icon close right" aria-hidden="true"
-                          *ngIf="showMntCloseButton(mntner)"
-                          (click)="clear(mntner)">×</span>
-                </div>
-            </ng-template>
-            <ng-template ng-option-tmp let-mntner="item">
-                <div class="option">
-                    <span class="title">{{ mntner.key }}</span>
-                    <span class="star fa fa-star" *ngIf="isMine(mntner)"></span>
-                    <span class="auth sso" *ngIf="hasSSo(mntner)"> SSO </span>
-                    <span class="auth pgp" *ngIf="hasPgp(mntner)"> PGP </span>
-                    <span class="auth md5" *ngIf="hasMd5(mntner)"> MD5 </span>
-                </div>
-            </ng-template>
-        </ng-select>
-        <description-syntax [showComponent]="isMntHelpShown" [objectType]="objectType" [attrName]="'mnt-by'"></description-syntax>
+    <section class="form-fields">
+        <maintainers-editor [whois-object]="{attributes: {attribute: attributes}, source: {id: source}}"
+                            (authentication-success-clbk)="refreshObjectIfNeeded($event)"
+                            (update-mntners-clbk)="updateMaintainers($event)"></maintainers-editor>
     </section>
     <section class="visible-field-form" *ngIf="maintainers.object.length">
         <ul class="form-fields appeared-fields">
