@@ -146,7 +146,6 @@ export class CreateModifyComponent {
 
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, mandatoryAttributesOnObjectType);
             this.fetchDataForCreate();
-
         } else {
             this.operation = this.MODIFY_OPERATION;
 
@@ -257,11 +256,20 @@ export class CreateModifyComponent {
 
     public updateMaintainers(maintainers: IMaintainers) {
         this.maintainers = maintainers;
+        // delete from attributes all maintainers which doesn't exist in maintainers
+        _.remove(this.attributes, (attr: any) => {
+            return attr.name === "mnt-by" && !maintainers.object.find(mnt => mnt.key === attr.value);
+        });
+        // add maintainers from maintainers object
+        maintainers.object.forEach(mnt => {
+            if (!this.attributes.find(attr => attr.name === "mnt-by" && attr.value === mnt.key)) {
+                this.attributes = this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", [
+                    {name: "mnt-by", value: mnt.key}]);
+            }});
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
-    // change to private
-    public addNiceAutocompleteName(items: any[], attrName: string) {
+    private addNiceAutocompleteName(items: any[], attrName: string) {
         return _.map(items, (item) => {
             let name = "";
             let separator = " / ";

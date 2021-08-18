@@ -33,7 +33,12 @@ export class MaintainersEditorComponent {
     public objectName: string;
 
     // Underlying mntner model
-    public mntners: IMaintainers;
+    public mntners: IMaintainers = {
+        alternatives: [],
+        object: [],
+        objectOriginal: [],
+        sso: [],
+    };
 
     // Interface control
     public restCallInProgress = false;
@@ -57,12 +62,6 @@ export class MaintainersEditorComponent {
     }
 
     public ngOnInit() {
-        this.mntners = {
-            alternatives: [],
-            object: [],
-            objectOriginal: [],
-            sso: [],
-        };
         this.source = this.whoisObject.source.id;
         this.attributes = this.whoisObject.attributes.attribute;
         this.objectType = this.attributes[0].name;
@@ -75,7 +74,6 @@ export class MaintainersEditorComponent {
         } else {
             this.initCreateMode();
         }
-        this.updateMntnersClbk.emit(this.mntners);
     }
 
     public onMntnerAdded(item: IMntByModel): void {
@@ -281,6 +279,7 @@ export class MaintainersEditorComponent {
                                 this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();
                         }
+                        this.updateMntnersClbk.emit(this.mntners);
                     }, (error: any) => {
                         this.restCallInProgress = false;
                         console.error("Error fetching sso-mntners details", error);
