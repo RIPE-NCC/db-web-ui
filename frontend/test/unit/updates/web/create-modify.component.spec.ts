@@ -330,19 +330,6 @@ describe("CreateModifyComponent", () => {
             await fixture.whenStable();
         });
 
-        it("should add a null when removing the last maintainer.", () => {
-
-            component.maintainers.object = [
-                {"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"}
-            ];
-
-            component.updateMaintainers({object: [], objectOriginal: [], sso: []});
-
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "mnt-by").value).toEqual("");
-
-        });
-
-
         it("should add a new user defined attribute", () => {
             //@ts-ignore
             component.addSelectedAttribute({name:"remarks", value: null}, component.attributes[0]);

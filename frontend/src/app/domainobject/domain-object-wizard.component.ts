@@ -180,7 +180,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                 this.attributes = this.whoisResourcesServices.addAttrsSorted(this.attributes, "mnt-by", [
                     {name: "mnt-by", value: mnt.key}]);
             }});
-        this.attributes = this.whoisResourcesServices.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
     public containsInvalidValues() {
