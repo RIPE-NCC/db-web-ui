@@ -213,8 +213,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
                                     }]
                                 }
                             });
-             httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
-                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW", "SSO"]}]);
              await fixture.whenStable();
         });
 
@@ -228,26 +226,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
 
         it("should get name from url", () => {
             expect(component.name).toBe(NAME);
-        });
-
-        it("should populate mntner data", () => {
-            expect(component.maintainers.sso.length).toBe(2);
-            expect(component.maintainers.objectOriginal.length).toBe(1);
-            expect(component.maintainers.object.length).toBe(1);
-
-            expect(component.maintainers.sso[0].key).toEqual("TEST-MNT");
-            expect(component.maintainers.sso[0].type).toEqual("mntner");
-            expect(component.maintainers.object[0].auth).toEqual(["MD5-PW", "SSO"]);
-            expect(component.maintainers.object[0].mine).toEqual(true);
-
-            expect(component.maintainers.objectOriginal[0].key).toEqual("TEST-MNT");
-
-            expect(component.maintainers.object[0].key).toEqual("TEST-MNT");
-            expect(component.maintainers.object[0].type).toEqual("mntner");
-            expect(component.maintainers.object[0].mine).toEqual(true);
-            expect(component.maintainers.object[0].isNew).toEqual(false);
-            expect(component.maintainers.object[0].auth).toEqual(["MD5-PW", "SSO"]);
-
         });
 
         it("should populate the ui based on object-type meta model and source", () => {
@@ -433,25 +411,11 @@ describe("CreateModifyComponent with modifying test cases", () => {
             expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
         });
 
-        it("should report error when fetching maintainer details fails", async () => {
-
-            getSsoMaintainers();
-            getObject();
-            failToGetMaintainerDetails();
-            await fixture.whenStable();
-            expect(component.alertsService.alerts.errors.length > 0).toBeTruthy();
-            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Error fetching maintainer details");
-        });
-
         function getSsoMaintainers() {
             httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
                 {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
                 {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW"], mine: true}
             ]);
-        }
-
-        function failToGetSsoMaintainers() {
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush({ },{status: 404, statusText: "error"});
         }
 
         function getObject() {
@@ -490,6 +454,10 @@ describe("CreateModifyComponent with modifying test cases", () => {
             httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT"})
                 .flush({}, {status: 404, statusText: "error"});
         }
+
+        function failToGetSsoMaintainers() {
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush({ },{status: 404, statusText: "error"});
+        }
     });
 
     xdescribe("ask for password before modify object with non-sso maintainer with password", () => {
@@ -526,8 +494,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
                             }
                         }]}
                 });
-            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT"})
-                .flush([{key: "TEST3-MNT", type: "mntner", auth: ["MD5-PW"]}]);
             modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
             await fixture.whenStable();
         });
@@ -571,8 +537,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
                             }
                         }]
                     }});
-            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
-                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW"]}]);
             await fixture.whenStable();
         });
     });
@@ -608,8 +572,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
                         href: "http://www.ripe.net/db/support/db-terms-conditions.pdf"
                     }
                 });
-            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
-                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW", "SSO"]}]);
             await fixture.whenStable();
         });
 
@@ -668,8 +630,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
                         href: "http://www.ripe.net/db/support/db-terms-conditions.pdf"
                     }
                 });
-            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
-                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW", "SSO"]}]);
             await fixture.whenStable();
         });
     });

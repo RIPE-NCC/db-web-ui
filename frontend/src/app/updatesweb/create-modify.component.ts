@@ -761,14 +761,9 @@ export class CreateModifyComponent {
         const objectToModify = this.restService.fetchObject(this.source, this.objectType, this.name, password);
         forkJoin([mntners, objectToModify])
             .subscribe(response => {
-                const mntnersResponse = response[0];
                 const objectToModifyResponse = response[1];
                 this.restCallInProgress = false;
                 console.debug("[createModifyController] object to modify: " + JSON.stringify(objectToModifyResponse));
-
-                // store mntners for SSO account
-                this.maintainers.sso = mntnersResponse;
-                console.debug("maintainers.sso:" + JSON.stringify(this.maintainers.sso));
 
                 // store object to modify
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
@@ -786,34 +781,9 @@ export class CreateModifyComponent {
                 // prevent warning upon modify with last-modified
                 this.whoisResourcesService.removeAttributeWithName(this.attributes, "last-modified");
 
-                // this is where we must authenticate against
-                this.maintainers.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
-
-                // starting point for further editing
-                this.maintainers.object = this.extractEnrichMntnersFromObject(this.attributes);
-
                 // Post-process attribute before showing using screen-logic-interceptor
                 this.attributes = this.interceptBeforeEdit(this.MODIFY_OPERATION, this.attributes);
 
-                // fetch details of all selected maintainers concurrently
-                this.restCallInProgress = true;
-                this.restService.detailsForMntners(this.maintainers.object).then((result: any[]) => {
-                    this.restCallInProgress = false;
-
-                    // result returns an array for each mntner
-
-                    this.maintainers.objectOriginal = _.flatten(result);
-                    console.debug("mntners-object-original:" + JSON.stringify(this.maintainers.objectOriginal));
-
-                    // of course none of the initial ones are new
-                    this.maintainers.object = this.mntnerService.enrichWithNewStatus(this.maintainers.objectOriginal, _.flatten(result));
-                    console.debug("mntners-object:" + JSON.stringify(this.maintainers.object));
-
-                }, (error: any) => {
-                    this.restCallInProgress = false;
-                    console.error("Error fetching sso-mntners details" + JSON.stringify(error));
-                    this.alertsService.setGlobalError("Error fetching maintainer details");
-                });
                 // now let's see if there are any read-only restrictions on these attributes. There is if any of
                 // these are true:
                 //
@@ -843,22 +813,6 @@ export class CreateModifyComponent {
             });
             this.validateForm();
         }
-    }
-
-    private extractEnrichMntnersFromObject(attributes: any[]): any[] {
-        // get mntners from response
-        const mntnersInObject: any[] = _.filter(attributes, (i: any) => {
-            return i.name === "mnt-by";
-        });
-
-        // determine if mntner is mine
-        return _.map(mntnersInObject, (mntnerAttr: any) => {
-            return {
-                key: mntnerAttr.value,
-                mine: _.includes(_.map(this.maintainers.sso, "key"), mntnerAttr.value),
-                type: "mntner",
-            };
-        });
     }
 
     private validateForm() {
@@ -904,16 +858,11 @@ export class CreateModifyComponent {
                             // save object for later diff in display-screen
                             this.messageStoreService.add("DIFF", _.cloneDeep(this.attributes));
 
-                            console.debug("sso-mntners:" + JSON.stringify(this.maintainers.sso));
-                            console.debug("objectMaintainers:" + JSON.stringify(this.maintainers.object));
-
                         }, () => {
                             this.restCallInProgress = false;
                         },
                     );
             }
-            this.maintainers.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
-            this.maintainers.object = this.extractEnrichMntnersFromObject(this.attributes);
         }
     }
 

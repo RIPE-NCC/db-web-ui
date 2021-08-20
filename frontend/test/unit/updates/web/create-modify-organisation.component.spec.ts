@@ -104,7 +104,6 @@ describe("CreateModifyComponent for organisation", () => {
         const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c");
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush({});
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c").value).toBe("SR11027-RIPE");
     });
 
@@ -114,7 +113,6 @@ describe("CreateModifyComponent for organisation", () => {
         const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c");
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush({});
         expect(component.roleForAbuseC).toBeDefined();
     });
 
@@ -124,7 +122,6 @@ describe("CreateModifyComponent for organisation", () => {
             component.whoisMetaService.enrichAttributesWithMetaInfo(component.objectType, component.attributes )
         );
         await fixture.whenStable();
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush({});
         spyOn(component.organisationHelperService, "updateAbuseC");
         component.submit();
         httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/organisation/ORG-UA300-RIPE"}).flush(DEFAULT_RESPONSE);

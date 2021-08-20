@@ -57,7 +57,7 @@ export class MaintainersEditorComponent {
                 public mntnerService: MntnerService,
                 public restService: RestService,
                 private webUpdatesCommonsService: WebUpdatesCommonsService,
-                private alertsService: AlertsService,
+                public alertsService: AlertsService,
                 private jsUtilsService: JsUtilService) {
     }
 
@@ -231,7 +231,7 @@ export class MaintainersEditorComponent {
     }
 
     private isModifyMode(): boolean {
-        const createdAttr = _.find(this.attributes, (attr: IAttributeModel) => {
+        const createdAttr = this.attributes.find((attr: IAttributeModel) => {
             return attr.name.toUpperCase() === "CREATED";
         });
         return createdAttr && typeof createdAttr.value === "string" && createdAttr.value.length > 0;
