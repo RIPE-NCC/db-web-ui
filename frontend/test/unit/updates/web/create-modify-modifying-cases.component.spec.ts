@@ -195,10 +195,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
             component = fixture.componentInstance;
             component.credentialsService.setCredentials("TEST-MNT", "@123");
             fixture.detectChanges();
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-                            {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
-                            {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW", "SSO"], mine: true}
-                        ]);
             httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123&unfiltered=true"})
                 .flush({objects: {
                                     object: [{
@@ -394,29 +390,12 @@ describe("CreateModifyComponent with modifying test cases", () => {
             fixture.detectChanges();
         });
 
-        it("should report error when fetching sso maintainers fails", () => {
-            getObject();
-            failToGetSsoMaintainers();
-
-            expect(component.alertsService.alerts.errors.length > 0).toBeTruthy();
-            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Error fetching maintainers associated with this SSO account");
-        });
-
         it("should report error when fetching object fails", () => {
-
-            getSsoMaintainers();
             getObjectWithError();
 
             expect(component.alertsService.alerts.warnings.length > 0).toBeTruthy();
             expect(component.alertsService.alerts.warnings[0].plainText).toEqual("Not authenticated");
         });
-
-        function getSsoMaintainers() {
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
-                {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW"], mine: true}
-            ]);
-        }
 
         function getObject() {
             httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true"})
@@ -521,9 +500,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
             })
             component = fixture.componentInstance;
             fixture.detectChanges();
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true}
-            ]);
             httpMock.expectOne({method: "GET", url: "api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true"})
                 .flush({objects: {
                         object: [{
@@ -558,10 +534,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
             })
             component = fixture.componentInstance;
             fixture.detectChanges();
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
-                {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW", "SSO"], mine: true}
-            ]);
             httpMock.expectOne({method: "GET", url: `api/whois/RIPE/${OBJECT_TYPE}/${NAME}?unfiltered=true`})
                 .flush({
                     objects: {
@@ -616,10 +588,6 @@ describe("CreateModifyComponent with modifying test cases", () => {
             })
             component = fixture.componentInstance;
             fixture.detectChanges();
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
-                {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW", "SSO"], mine: true}
-            ]);
             httpMock.expectOne({method: "GET", url: `api/whois/RIPE/${OBJECT_TYPE}/${NAME}?unfiltered=true`})
                 .flush({
                     objects: {

@@ -757,11 +757,8 @@ export class CreateModifyComponent {
         }
         // wait until both have completed
         this.restCallInProgress = true;
-        const mntners = this.restService.fetchMntnersForSSOAccount();
-        const objectToModify = this.restService.fetchObject(this.source, this.objectType, this.name, password);
-        forkJoin([mntners, objectToModify])
-            .subscribe(response => {
-                const objectToModifyResponse = response[1];
+        this.restService.fetchObject(this.source, this.objectType, this.name, password)
+            .subscribe(objectToModifyResponse => {
                 this.restCallInProgress = false;
                 console.debug("[createModifyController] object to modify: " + JSON.stringify(objectToModifyResponse));
 

@@ -89,7 +89,6 @@ describe("CreateModifyComponent for organisation", () => {
         fixture = TestBed.createComponent(CreateModifyComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-        httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
         httpMock.expectOne({method: "GET", url: `api/whois/${SOURCE}/${OBJECT_TYPE}/${NAME}?unfiltered=true`}).flush(DEFAULT_RESPONSE)
         await fixture.whenStable();
     });
