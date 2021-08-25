@@ -74,7 +74,6 @@ export class CreateModifyComponent {
     public MODIFY_OPERATION = "Modify";
     public PENDING_OPERATION = "Pending";
 
-    public isMntHelpShown: boolean = false;
     public showAttrsHelp: [];
 
     constructor(@Inject(WINDOW) private window: any,
@@ -147,7 +146,6 @@ export class CreateModifyComponent {
 
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, mandatoryAttributesOnObjectType);
             this.fetchDataForCreate();
-
         } else {
             this.operation = this.MODIFY_OPERATION;
 
@@ -256,60 +254,22 @@ export class CreateModifyComponent {
         });
     }
 
-    public onMntnerAdded(item: any) {
-
-        // enrich with new-flag
-        this.maintainers.object = this.mntnerService.enrichWithNewStatus(this.maintainers.objectOriginal, this.maintainers.object);
-
-        // adjust attributes
-        this.copyAddedMntnerToAttributes(item.key);
-
-        if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
-            this.performAuthentication();
-            return;
-        }
+    public updateMaintainers(maintainers: IMaintainers) {
+        this.maintainers = maintainers;
+        // delete from attributes all maintainers which doesn't exist in maintainers
+        _.remove(this.attributes, (attr: any) => {
+            return attr.name === "mnt-by" && !maintainers.object.find(mnt => mnt.key === attr.value);
+        });
+        // add maintainers from maintainers object
+        maintainers.object.forEach(mnt => {
+            if (!this.attributes.find(attr => attr.name === "mnt-by" && attr.value === mnt.key)) {
+                this.attributes = this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", [
+                    {name: "mnt-by", value: mnt.key}]);
+            }});
+        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
-    public showMntCloseButton(mntner: IMntByModel): boolean {
-        return !this.isModifyWithSingleMntnerRemaining() && this.isRemovable(mntner.key) && !this.isLirObject();
-    }
-
-    public isClearable(): boolean {
-        return this.maintainers.object[0] ? this.showMntCloseButton(this.maintainers.object[0]) : false;
-    }
-
-    public onMntnerRemoved(item: any) {
-
-        if (this.maintainers.object.length === 0) {
-            // make sure we do not remove the last mntner which act as anchor
-            this.keepSingleMntnerInAttrsWithoutValue();
-        } else {
-            // remove it from the attributes right away
-            this.removeMntnerFromAttrs(item);
-        }
-
-        console.debug("onMntnerRemoved: " + JSON.stringify(item) + " object mntners now:" + JSON.stringify(this.maintainers.object));
-        console.debug("onMntnerRemoved: attributes" + JSON.stringify(this.attributes));
-    }
-
-    public isModifyWithSingleMntnerRemaining() {
-        return this.operation === this.MODIFY_OPERATION && this.maintainers.object.length === 1;
-    }
-
-    public mntnerAutocomplete(query: any) {
-        // need to typed characters
-        this.restService.autocomplete("mnt-by", query, true, ["auth"])
-            .then((data: any[]) => {
-                    // mark new
-                    this.maintainers.alternatives = this.mntnerService.stripNccMntners(
-                        this.mntnerService.enrichWithNewStatus(this.maintainers.objectOriginal,
-                            this.filterAutocompleteMntners(this.enrichWithMine(data))), true);
-                },
-            );
-    }
-
-    // change to private
-    public addNiceAutocompleteName(items: any[], attrName: string) {
+    private addNiceAutocompleteName(items: any[], attrName: string) {
         return _.map(items, (item) => {
             let name = "";
             let separator = " / ";
@@ -391,7 +351,7 @@ export class CreateModifyComponent {
                     return [];
                 });
         } else {
-            // No suggestions since not a reference
+            // No suggestions since nohandleSsoResponset a reference
             return [];
         }
     }
@@ -619,7 +579,6 @@ export class CreateModifyComponent {
         } else {
             this.stripNulls();
             this.alertsService.clearAlertMessages();
-
             if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                 this.performAuthentication();
                 return;
@@ -676,32 +635,9 @@ export class CreateModifyComponent {
         return ObjectUtilService.isLirObject(this.attributes);
     }
 
-    public isMine(mntner: IMntByModel) {
-        return this.mntnerService.isMine(mntner);
-    }
-
-    public isRemovable(mntnerKey: string) {
-        return this.mntnerService.isRemovable(mntnerKey);
-    }
-
-    public hasSSo(mntner: IMntByModel) {
-        return this.mntnerService.hasSSo(mntner);
-    }
-
-    public hasPgp(mntner: IMntByModel) {
-        return this.mntnerService.hasPgp(mntner);
-    }
-
-    public hasMd5(mntner: IMntByModel) {
-        return this.mntnerService.hasMd5(mntner);
-    }
-
-    public isNew(mntner: any) {
-        return this.mntnerService.isNew(mntner);
-    }
-
-
     public isFormValid() {
+        this.attributeMetadataService.enrich(this.objectType, this.attributes);
+        this.attributes.map(attr => {if (attr.name === "mnt-by" && attr.value === "") {attr.$$invalid = false}});
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }
 
@@ -821,18 +757,10 @@ export class CreateModifyComponent {
         }
         // wait until both have completed
         this.restCallInProgress = true;
-        const mntners = this.restService.fetchMntnersForSSOAccount();
-        const objectToModify = this.restService.fetchObject(this.source, this.objectType, this.name, password);
-        forkJoin([mntners, objectToModify])
-            .subscribe(response => {
-                const mntnersResponse = response[0];
-                const objectToModifyResponse = response[1];
+        this.restService.fetchObject(this.source, this.objectType, this.name, password)
+            .subscribe(objectToModifyResponse => {
                 this.restCallInProgress = false;
                 console.debug("[createModifyController] object to modify: " + JSON.stringify(objectToModifyResponse));
-
-                // store mntners for SSO account
-                this.maintainers.sso = mntnersResponse;
-                console.debug("maintainers.sso:" + JSON.stringify(this.maintainers.sso));
 
                 // store object to modify
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
@@ -850,37 +778,9 @@ export class CreateModifyComponent {
                 // prevent warning upon modify with last-modified
                 this.whoisResourcesService.removeAttributeWithName(this.attributes, "last-modified");
 
-                // this is where we must authenticate against
-                this.maintainers.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
-
-                // starting point for further editing
-                this.maintainers.object = this.extractEnrichMntnersFromObject(this.attributes);
-
                 // Post-process attribute before showing using screen-logic-interceptor
                 this.attributes = this.interceptBeforeEdit(this.MODIFY_OPERATION, this.attributes);
 
-                // fetch details of all selected maintainers concurrently
-                this.restCallInProgress = true;
-                this.restService.detailsForMntners(this.maintainers.object).then((result: any[]) => {
-                    this.restCallInProgress = false;
-
-                    // result returns an array for each mntner
-
-                    this.maintainers.objectOriginal = _.flatten(result);
-                    console.debug("mntners-object-original:" + JSON.stringify(this.maintainers.objectOriginal));
-
-                    // of course none of the initial ones are new
-                    this.maintainers.object = this.mntnerService.enrichWithNewStatus(this.maintainers.objectOriginal, _.flatten(result));
-                    console.debug("mntners-object:" + JSON.stringify(this.maintainers.object));
-
-                    if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
-                        this.performAuthentication();
-                    }
-                }, (error: any) => {
-                    this.restCallInProgress = false;
-                    console.error("Error fetching sso-mntners details" + JSON.stringify(error));
-                    this.alertsService.setGlobalError("Error fetching maintainer details");
-                });
                 // now let's see if there are any read-only restrictions on these attributes. There is if any of
                 // these are true:
                 //
@@ -912,53 +812,6 @@ export class CreateModifyComponent {
         }
     }
 
-    private copyAddedMntnerToAttributes(mntnerName: string) {
-        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", [
-            {name: "mnt-by", value: mntnerName},
-        ]));
-    }
-
-    private keepSingleMntnerInAttrsWithoutValue() {
-        // make sure we do not remove the last mntner which act as anchor
-        _.map(this.attributes, (attr: any) => {
-            if (attr.name === "mnt-by") {
-                attr.value = null;
-                return attr;
-            }
-            return attr;
-        });
-    }
-
-    private removeMntnerFromAttrs(item: any) {
-        _.remove(this.attributes, (i: any) => {
-            return i.name === "mnt-by" && i.value === item.key;
-        });
-    }
-
-    private extractEnrichMntnersFromObject(attributes: any[]): any[] {
-        // get mntners from response
-        const mntnersInObject: any[] = _.filter(attributes, (i: any) => {
-            return i.name === "mnt-by";
-        });
-
-        // determine if mntner is mine
-        return _.map(mntnersInObject, (mntnerAttr: any) => {
-            return {
-                key: mntnerAttr.value,
-                mine: _.includes(_.map(this.maintainers.sso, "key"), mntnerAttr.value),
-                type: "mntner",
-            };
-        });
-    }
-
-    private filterAutocompleteMntners(mntners: any[]) {
-        return _.filter(mntners, (mntner) => {
-            // prevent that RIPE-NCC mntners can be added to an object upon create of modify
-            // prevent same mntner to be added multiple times
-            return !this.mntnerService.isNccMntner(mntner.key) && !this.mntnerService.isMntnerOnlist(this.maintainers.object, mntner);
-        });
-    }
-
     private validateForm() {
         return this.whoisResourcesService.validate(this.attributes)
             && this.organisationHelperService.validateAbuseC(this.objectType, this.attributes);
@@ -976,20 +829,12 @@ export class CreateModifyComponent {
         return whoisResources;
     }
 
-    private enrichWithMine(mntners: any[]) {
-        return _.map(mntners, (mntner: any) => {
-            // search in selected list
-            mntner.mine = !!this.mntnerService.isMntnerOnlist(this.maintainers.sso, mntner);
-            return mntner;
-        });
-    }
-
     public showPencile(attrName: string): boolean {
         const modalContactFields = ["address", "org-name", "phone", "fax-no", "e-mail"];
         return modalContactFields.indexOf(attrName) > -1;
     }
 
-    private refreshObjectIfNeeded(associationResp: any) {
+    public refreshObjectIfNeeded(associationResp: any) {
         if (this.operation === this.MODIFY_OPERATION && this.objectType === "mntner") {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);
@@ -1010,16 +855,11 @@ export class CreateModifyComponent {
                             // save object for later diff in display-screen
                             this.messageStoreService.add("DIFF", _.cloneDeep(this.attributes));
 
-                            console.debug("sso-mntners:" + JSON.stringify(this.maintainers.sso));
-                            console.debug("objectMaintainers:" + JSON.stringify(this.maintainers.object));
-
                         }, () => {
                             this.restCallInProgress = false;
                         },
                     );
             }
-            this.maintainers.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
-            this.maintainers.object = this.extractEnrichMntnersFromObject(this.attributes);
         }
     }
 

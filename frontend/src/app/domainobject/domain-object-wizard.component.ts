@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -170,6 +170,16 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     public updateMaintainers(maintainers: IMaintainers) {
         this.maintainers = maintainers;
+        // delete from attributes all maintainers which doesn't exist in maintainers
+        _.remove(this.attributes, (attr: any) => {
+            return attr.name === "mnt-by" && !maintainers.object.find(mnt => mnt.key === attr.value);
+        });
+        // add maintainers from maintainers object
+        maintainers.object.forEach(mnt => {
+            if (!this.attributes.find(attr => attr.name === "mnt-by" && attr.value === mnt.key)) {
+                this.attributes = this.whoisResourcesServices.addAttrsSorted(this.attributes, "mnt-by", [
+                    {name: "mnt-by", value: mnt.key}]);
+            }});
     }
 
     public containsInvalidValues() {

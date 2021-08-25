@@ -365,13 +365,13 @@ export class WhoisResourcesService {
     }
 
     public getAllAttributesWithValueOnName(attributes: IAttributeModel[], attributeName: string) {
-        return _.filter(attributes, (attribute) => {
+        return attributes.filter((attribute) => {
             return attribute.value && attribute.name === attributeName;
         });
     }
 
     public getSingleAttributeOnName(attributes: IAttributeModel[], name: string) {
-        return _.find(attributes, (attr: IAttributeModel) => {
+        return attributes.find((attr: IAttributeModel) => {
             return attr.name === name;
         });
     }
@@ -473,7 +473,7 @@ export class WhoisResourcesService {
     }
 
     public validateWithoutSettingErrors(attributes: IAttributeModel[]) {
-        return !_.some(attributes, (attr: IAttributeModel) => {
+        return !attributes.some((attr: IAttributeModel) => {
             return attr.$$invalid || attr.$$meta.$$mandatory === true && !attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0;
         });
     }

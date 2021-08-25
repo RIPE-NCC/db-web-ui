@@ -34,6 +34,7 @@ import {ModalDeleteObjectComponent} from "./modal-delete-object.component";
 import {ModalMd5PasswordComponent} from "./modal-md5-password.component";
 import {ModalEditAttributeComponent} from "./modal-edit-attribute.component";
 import {CreateService} from "./create.service";
+import {WhoisObjectModule} from "../whois-object/whois-object.module";
 
 @NgModule({
     imports: [
@@ -42,6 +43,7 @@ import {CreateService} from "./create.service";
         HttpClientModule,
         SharedModule,
         NgSelectModule,
+        WhoisObjectModule,
         RouterModule
     ],
     declarations: [

@@ -5,7 +5,7 @@ const until = protractor.ExpectedConditions;
 
 describe("Display an mntner", () => {
 
-    it("should remove Filtered in diplay page after associating SSO mnt", () => {
+    it("should remove Filtered in diplay page after associating SSO mnt", async () => {
         browser.get(browser.baseUrl + "webupdates/modify/ripe/mntner/ERICSSON-MNT");
         page.disableLiveChat();
         expect(page.inpAuth.get(0).getAttribute("value")).toBe("MD5-PW # Filtered");
@@ -16,7 +16,7 @@ describe("Display an mntner", () => {
         expect(page.inpAuth.get(1).getAttribute("value")).toBe("SSO isvonja@ripe.net");
         page.scrollIntoView(page.btnSubmitModify);
         page.btnSubmitModify.click();
-        // after submitting on display page should contain Filtered word
+        // after submitting on display page shouldn't contain Filtered word
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/mntner/ERICSSON-MNT?method=Modify");
         expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();

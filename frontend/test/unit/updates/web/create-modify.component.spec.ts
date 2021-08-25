@@ -2,7 +2,6 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ActivatedRoute, convertToParamMap, Router} from "@angular/router";
 import {Location} from "@angular/common";
-import {By} from "@angular/platform-browser";
 import {DebugElement} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgSelectModule} from "@ng-select/ng-select";
@@ -272,62 +271,25 @@ describe("CreateModifyComponent", () => {
 
         });
 
-        it("should add the selected maintainers to the object before post it.", async () => {
-            modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
-            const DUMMY_RESPONSE = {
-                objects: {
-                    object: [
-                        {
-                            attributes: {
-                                attribute: [
-                                    {name: "as-block", value: "MY-AS-BLOCK"},
-                                    {name: "mnt-by", value: "TEST-MNT"},
-                                    {name: "mnt-by", value: "TEST-MNT-1"},
-                                    {name: "source", value: "RIPE"}
-                                ]
-                            }
-                        }
-                    ]
-                }
-            };
-            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "MY-AS-BLOCK");
-            component.maintainers.object = [
+        xit("should add the selected maintainers to the object - attributes", async () => {
+            const emitedMnts = {maintainers: {object: [
                 {"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"},
                 {"mine":false,"type":"mntner","auth":["SSO"],"key":"TEST-MNT-1"}
-            ];
-
-            component.onMntnerAdded(component.maintainers.object[1]);
-            // ModalAuthenticationComponent should popup
-            expect(modalMock.open).toHaveBeenCalled();
-            component.submit();
+            ]}};
+            expect(component.attributes.length).toEqual(0);
+            fixture.detectChanges();
+            // component.updateMaintainers(emitedMnts);
             await fixture.whenStable();
-            // httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block"}).flush(DUMMY_RESPONSE, {status: 500, statusText: "error"});
-        });
-
-        it("should ask for password after add non-sso maintainer with password.", () => {
-            modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
-            // simulate manual removal of the last and only mntner
-            component.maintainers.object = [];
-            component.onMntnerRemoved({"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"});
-
-            // simulate manual addition of a new mntner with only md5
-            component.maintainers.object = [{"mine":false,"type":"mntner","auth":["MD5"],"key":"TEST-MNT-1"}];
-            component.onMntnerAdded({"mine":false,"type":"mntner","auth":["MD5"],"key":"TEST-MNT-1"});
-
-            expect(modalMock.open).toHaveBeenCalled();
+            expect(component.attributes.length).toEqual(5);
         });
 
         it("should ask for password after upon submit.", () => {
             modalMock.open.and.returnValue({componentInstance: {}, result: throwError("cancel").toPromise()});
 
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "MY-AS-BLOCK");
             // simulate manual addition of a new mntner with only md5
             component.maintainers.object = [{"mine":false,"type":"mntner","auth":["MD5"],"key":"TEST-MNT-1"}];
-            component.onMntnerAdded({"mine":false,"type":"mntner","auth":["MD5"],"key":"TEST-MNT-1"});
-
-            // simulate manual removal of the last and only mntner
-            component.maintainers.object = [];
-            component.onMntnerRemoved({"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"});
-
+            component.updateMaintainers(component.maintainers);
             component.submit();
 
             expect(modalMock.open).toHaveBeenCalled();
@@ -358,25 +320,15 @@ describe("CreateModifyComponent", () => {
                 {"mine":false,"type":"mntner","auth":["SSO"],"key":"TEST-MNT-1"}
             ];
 
-            component.onMntnerRemoved(component.maintainers.object[1]);
+            component.updateMaintainers({
+                object: [{"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"}],
+                objectOriginal: [],
+                sso: []});
             component.submit();
 
             httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block"}).flush(DUMMY_RESPONSE, {status: 500, statusText: "error"});
             await fixture.whenStable();
         });
-
-        it("should add a null when removing the last maintainer.", () => {
-
-            component.maintainers.object = [
-                {"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"}
-            ];
-
-            component.onMntnerRemoved(component.maintainers.object[0]);
-
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "mnt-by").value).toEqual("");
-
-        });
-
 
         it("should add a new user defined attribute", () => {
             //@ts-ignore
@@ -563,26 +515,6 @@ describe("CreateModifyComponent", () => {
             httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush(USER_WITH_MORE_ASSOCIATED_MNT_MOCK);
             fixture.detectChanges();
             await fixture.whenStable();
-        });
-
-        it("should remove mnt-by on backspace one by one", () => {
-            const BACKSPACE_KEYCODE = 8;
-            spyOn(component, "onMntnerRemoved").and.callThrough();
-            expect(component.maintainers.sso.length).toBe(4); // 4 associated maintainer
-            expect(component.maintainers.object.length).toBe(4);
-            expect(component.attributes.length).toBe(8);
-            fixture.detectChanges();
-            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(4);
-            const mntInput = fixture.debugElement.query(By.css("ng-select"));
-            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
-            expect(component.onMntnerRemoved).toHaveBeenCalled(); //method which remove mnt-by from attributes
-            fixture.detectChanges();
-            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(3);
-            expect(component.attributes.length).toBe(7);
-            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
-            fixture.detectChanges();
-            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(2);
-            expect(component.attributes.length).toBe(6);
         });
 
         function triggerKeyDownEvent(element: DebugElement, which: number, key = ''): void {
