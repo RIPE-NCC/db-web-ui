@@ -179,6 +179,9 @@ Open a terminal and cd into the `frontend/app` directory, then type these comman
 Join technical design bot channel on Mattermost to stay up to date with releases and change version in package.json file
 https://gitlab.ripe.net/technical-design/ripe-app-webcomponents
 
+### Update angular
+Use https://update.angular.io
+
 Protractor
 ----------
 

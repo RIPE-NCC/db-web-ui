@@ -22,6 +22,8 @@ export class MaintainersEditorComponent {
     public whoisObject: IWhoisObjectModel;
     @Output("authentication-failed-clbk")
     public authenticationFailedClbk = new EventEmitter();
+    @Output("authentication-success-clbk")
+    public authenticationSuccessClbk = new EventEmitter();
     @Output("update-mntners-clbk")
     public updateMntnersClbk: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,7 +33,12 @@ export class MaintainersEditorComponent {
     public objectName: string;
 
     // Underlying mntner model
-    public mntners: IMaintainers;
+    public mntners: IMaintainers = {
+        alternatives: [],
+        object: [],
+        objectOriginal: [],
+        sso: [],
+    };
 
     // Interface control
     public restCallInProgress = false;
@@ -47,10 +54,10 @@ export class MaintainersEditorComponent {
     constructor(private attributeMetadataService: AttributeMetadataService,
                 private credentialsService: CredentialsService,
                 private messageStore: MessageStoreService,
-                private mntnerService: MntnerService,
+                public mntnerService: MntnerService,
                 public restService: RestService,
                 private webUpdatesCommonsService: WebUpdatesCommonsService,
-                private alertsService: AlertsService,
+                public alertsService: AlertsService,
                 private jsUtilsService: JsUtilService) {
     }
 
@@ -59,20 +66,14 @@ export class MaintainersEditorComponent {
         this.attributes = this.whoisObject.attributes.attribute;
         this.objectType = this.attributes[0].name;
         this.objectName = this.attributes[0].value;
-
-        this.mntners = {
-            alternatives: [],
-            object: [],
-            objectOriginal: [],
-            sso: [],
-        };
-
+        if (this.objectType === "route") {
+            this.objectName += this.attributes.find(attr => attr.name === "origin").value;
+        }
         if (this.isModifyMode()) {
             this.initModifyMode();
         } else {
             this.initCreateMode();
         }
-        this.updateMntnersClbk.emit(this.mntners);
     }
 
     public onMntnerAdded(item: IMntByModel): void {
@@ -92,7 +93,7 @@ export class MaintainersEditorComponent {
     }
 
     public onMntnerRemoved(item: IMntByModel): void {
-        this.mntners.object.filter(mnt => mnt.key !== item.key);
+        this.mntners.object = this.mntners.object.filter(mnt => mnt.key !== item.key);
         // don't remove if it's the last one -- just empty it
         const objectMntBys = this.attributes.filter((attr: IAttributeModel) => {
             return attr.name === "mnt-by";
@@ -158,7 +159,7 @@ export class MaintainersEditorComponent {
                 type: this.objectType,
             },
             operation: this.isModifyMode() ? "Modify" : "Create",
-            successClbk: () => this.onSuccessfulAuthentication(),
+            successClbk: this.onSuccessfulAuthentication,
         };
         this.webUpdatesCommonsService.performAuthentication(authParams);
     }
@@ -175,8 +176,8 @@ export class MaintainersEditorComponent {
         }
     }
 
-    private onSuccessfulAuthentication(): void {
-        console.debug("MaintainersEditorController.onSuccessfulAuthentication", arguments);
+    private onSuccessfulAuthentication = (associationResp: any) => {
+        this.authenticationSuccessClbk.emit(associationResp);
     }
 
     private handleSsoResponse(results: IMntByModel[]): void {
@@ -196,6 +197,7 @@ export class MaintainersEditorComponent {
             this.mergeMaintainers(this.attributes, mntnerAttrs);
             this.attributeMetadataService.enrich(this.objectType, this.attributes);
         }
+        this.updateMntnersClbk.emit(this.mntners);
     }
 
     private handleSsoResponseError(): void {
@@ -229,7 +231,7 @@ export class MaintainersEditorComponent {
     }
 
     private isModifyMode(): boolean {
-        const createdAttr = _.find(this.attributes, (attr: IAttributeModel) => {
+        const createdAttr = this.attributes.find((attr: IAttributeModel) => {
             return attr.name.toUpperCase() === "CREATED";
         });
         return createdAttr && typeof createdAttr.value === "string" && createdAttr.value.length > 0;
@@ -277,6 +279,7 @@ export class MaintainersEditorComponent {
                                 this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();
                         }
+                        this.updateMntnersClbk.emit(this.mntners);
                     }, (error: any) => {
                         this.restCallInProgress = false;
                         console.error("Error fetching sso-mntners details", error);
