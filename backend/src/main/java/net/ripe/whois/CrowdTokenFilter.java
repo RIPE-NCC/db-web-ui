@@ -28,6 +28,7 @@ public class CrowdTokenFilter implements Filter {
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
     private static final String[] UNPROTECTED_URLS = {
             ".*/alerts.component.html",
+            ".*/actuator/health/readiness",
             ".*/api/.*", /* let rest-operation itself decide about authentication */
             ".*/db-web-ui/",
             // on refresh page to not redirect to login page
