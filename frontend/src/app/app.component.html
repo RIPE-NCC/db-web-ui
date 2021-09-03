@@ -88,6 +88,14 @@
       <ngx-loading-bar></ngx-loading-bar>
       <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning"
                   text="{{properties.BANNER}}" permanent="true"></app-banner>
+      <!-- TODO remove on 1st October 2021 - survey-->
+      <app-banner id="survey"
+                  *ngIf="surveyDismissed !== 'true'"
+                  (click)=setSurveyDismissed()
+                  level="info" text="What do you think of our user interface (UI)? Let us know by taking part in our short survey."
+                  linktext="Take the survey."
+                  linkurl="https://www.surveymonkey.com/r/RIPENCCservicesUI">
+      </app-banner>
       <alert-banners></alert-banners>
       <app-cookie-consent></app-cookie-consent>
     </section>
