@@ -300,7 +300,8 @@ module.exports = {
     // Query page
     certificateBanner: element(by.css("certificate-banner")),
     inpQueryString: element(by.name("qp.queryText")),
-    inpTelnetQuery: element(by.name("searchform")).element(by.css("pre")),
+    inpQueryFlagsContainer: element(by.css("query-flags")),
+    inpQueryFlags: element(by.css("query-flags")).all(by.css("flag")),
     inpShowFullDetails: element(by.name("qp.showFullObjectDetails")),
     inpDontRetrieveRelated: element(by.name("qp.doNotRetrieveRelatedObjects")),
     btnSubmitQuery: element(by.name("searchform")).element(by.css("button.blue-button")),

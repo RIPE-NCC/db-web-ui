@@ -1,12 +1,12 @@
 import {Component, OnDestroy} from "@angular/core";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {ViewportScroller} from '@angular/common';
 import * as _ from "lodash";
 import {IErrorMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
 import {IQueryParameters, ITemplateTerm, QueryParametersService} from "./query-parameters.service";
 import {QueryService} from "./query.service";
 import {PropertiesService} from "../properties.service";
 import {AlertsService} from "../shared/alert/alerts.service";
-import { ViewportScroller } from '@angular/common';
 
 export interface IQueryState {
     source: string;
@@ -40,6 +40,7 @@ export class QueryComponent implements OnDestroy {
         perma: string;
         xml: string;
     };
+    public showsQueryFlagsContainer: boolean;
 
     constructor(public properties: PropertiesService,
                 private queryService: QueryService,
@@ -104,6 +105,7 @@ export class QueryComponent implements OnDestroy {
             this.clearResults();
             this.showTemplatePanel = false;
         }
+
     }
 
     public submitSearchForm() {
@@ -181,53 +183,8 @@ export class QueryComponent implements OnDestroy {
         }
     }
 
-    public whoisCliQuery(): string {
-        if (!this.qp.queryText || this.qp.queryText.indexOf(";") > -1) {
-            return " ";
-        }
-        const qpClean = _.cloneDeep(this.qp);
-        if (this.queryParametersService.validate(qpClean).errors.length > 0) {
-            return " ";
-        }
-        if (QueryParametersService.isQueriedTemplate(qpClean.queryText)) {
-            return qpClean.queryText;
-        }
-        const q = [];
-        const invs = QueryParametersService.inverseAsList(qpClean).join(",");
-        const typs = QueryParametersService.typesAsList(qpClean).join(",");
-        if (invs.length) {
-            q.push("-i ");
-            q.push(invs);
-        }
-        if (typs.length) {
-            q.push(" -T ");
-            q.push(typs);
-        }
-        let flags = qpClean.hierarchy || "";
-        if (qpClean.reverseDomain && flags) {
-            flags += "d";
-        }
-        if (qpClean.showFullObjectDetails) {
-            flags += "B";
-        }
-        if (qpClean.doNotRetrieveRelatedObjects) {
-            flags += "r";
-        }
-        if (flags) {
-            q.push(" -" + flags);
-        }
-        if (qpClean.source === "GRS") {
-            q.push(" --resource");
-        } else {
-            q.filter((term: string) => !term.endsWith("--resource"));
-        }
-        const containMoreSources = qpClean.source.includes(",");
-        const notRipeSource = !qpClean.source.includes("RIPE") || !qpClean.source.includes("RIPE-NONAUTH");
-        if (qpClean.source !== "GRS" && (containMoreSources || notRipeSource)){
-            q.push(` --sources ${qpClean.source}`);
-        }
-        q.push(" " + qpClean.queryText);
-        return q.join("").trim();
+    public isShownQueryFlagsContainer(event: boolean) {
+        this.showsQueryFlagsContainer = event;
     }
 
     // Move this to a util queryService and test it properly, i.e. with all expected message variants

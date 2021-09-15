@@ -1,0 +1,24 @@
+{
+  "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&type-filter=ORGANISATION&inverse-attribute=ABUSE-C&flags=rB&offset=0&limit=20&query-string=ANNA",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "link" : {
+      "type" : "locator",
+      "href" : "http://wagyu.prepdev.ripe.net:1080/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&type-filter=ORGANISATION&inverse-attribute=ABUSE-C&flags=rB&offset=0&limit=20&query-string=ACRO862-RIPE"
+    },
+    "errormessages" : {
+      "errormessage" : [ {
+        "severity" : "Error",
+        "text" : "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+        "args" : [ {
+          "value" : "RIPE"
+        } ]
+      } ]
+    },
+    "terms-and-conditions" : {
+      "type" : "locator",
+      "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}

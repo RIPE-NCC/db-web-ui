@@ -5,7 +5,7 @@
     </a>
     <p class="org-name" *ngIf="item.orgName">{{ item.orgName }}</p>
     <div class="flags-container">
-        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text"></flag>
+        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text" uppercase></flag>
     </div>
     <div *ngIf="showProgressbar" class="progressbar-container"
          [ngbTooltip]="'Usage as per RIPE policies: '+ (usedPercentage | number:'1.0-0') +'%'"

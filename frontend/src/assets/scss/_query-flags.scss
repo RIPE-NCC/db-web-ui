@@ -1,0 +1,33 @@
+query-flags {
+  & > div {
+    @extend %brd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    margin-top: -1rem;
+    background-color: white;
+  }
+  .flags-table {
+    display:table;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  .row {
+    display: table-row;
+    width: 100%;
+  }
+  .left-column {
+    display: table-column;
+    width: 180px;
+  }
+  .right-column {
+    display: table-column;
+  }
+  .cell {
+    display: table-cell;
+    padding-bottom: 0.313rem;
+  }
+  flag span.flag {
+    float: none;
+  }
+  margin-bottom: 1rem;
+}

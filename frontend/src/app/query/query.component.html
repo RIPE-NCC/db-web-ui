@@ -19,17 +19,21 @@
                            class="form-control"
                            placeholder="Search term">
                 </div>
+                <query-flags [input-term]="qp.queryText"
+                                       (has-valid-flags)="isShownQueryFlagsContainer($event)"></query-flags>
             </div>
             <ul class="checkbox">
                 <li>
                     <input type="checkbox" id="showFullObjectDetails" name="qp.showFullObjectDetails"
-                           [(ngModel)]="qp.showFullObjectDetails">
+                           [(ngModel)]="qp.showFullObjectDetails"
+                           [disabled]="showsQueryFlagsContainer">
                     <label for="showFullObjectDetails">Show full object details</label>
                     <help-marker [label-key]="'query.optionFullObject.title'"></help-marker>
                 </li>
                 <li>
                     <input type="checkbox" id="doNotRetrieveRelatedObjects" name="qp.doNotRetrieveRelatedObjects"
-                           [(ngModel)]="qp.doNotRetrieveRelatedObjects">
+                           [(ngModel)]="qp.doNotRetrieveRelatedObjects"
+                           [disabled]="showsQueryFlagsContainer">
                     <label for="doNotRetrieveRelatedObjects">Do not retrieve related objects</label>
                     <help-marker [label-key]="'query.optionRelatedObjects.title'"></help-marker>
                 </li>
@@ -48,14 +52,16 @@
                                 <ul class="form-group">
                                     <li class="radio">
                                             <input id="search:sources:1" type="radio" value="GRS"
-                                                   class="ga-grsdb-checkbox" name="qp.source" [(ngModel)]="qp.source">
+                                                   class="ga-grsdb-checkbox" name="qp.source" [(ngModel)]="qp.source"
+                                                   [disabled]="showsQueryFlagsContainer">
                                             <label for="search:sources:1">Search resource objects in all available databases</label>
                                         <help-marker [label-key]="'query.optionAllDatabases.title'"
                                                      [link]="'https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service'"></help-marker>
                                     </li>
                                     <li class="radio">
                                             <input id="search:sources:0" type="radio" value="RIPE"
-                                                   class="ga-ripedb-checkbox" name="qp.source" [(ngModel)]="qp.source">
+                                                   class="ga-ripedb-checkbox" name="qp.source" [(ngModel)]="qp.source"
+                                                   [disabled]="showsQueryFlagsContainer">
                                             <label for="search:sources:0">Search RIPE Database only</label>
                                     </li>
                                     <li class="help-block small">
@@ -77,75 +83,96 @@
                                     <div class="col-md-4">
                                         <ul class="list-unstyled">
                                             <li><input id="search:types:0" type="checkbox" name="qp.types.AS_BLOCK"
-                                                       [(ngModel)]="qp.types.AS_BLOCK"><label for="search:types:0">&nbsp;as-block</label>
+                                                       [(ngModel)]="qp.types.AS_BLOCK"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:0">&nbsp;as-block</label>
                                             </li>
                                             <li><input id="search:types:1" type="checkbox" name="qp.types.AS_SET"
-                                                       [(ngModel)]="qp.types.AS_SET"><label for="search:types:1">&nbsp;as-set</label>
+                                                       [(ngModel)]="qp.types.AS_SET"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:1">&nbsp;as-set</label>
                                             </li>
                                             <li><input id="search:types:2" type="checkbox" name="qp.types.AUT_NUM"
-                                                       [(ngModel)]="qp.types.AUT_NUM"><label for="search:types:2">&nbsp;aut-num</label>
+                                                       [(ngModel)]="qp.types.AUT_NUM"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:2">&nbsp;aut-num</label>
                                             </li>
                                             <li><input id="search:types:3" type="checkbox" name="qp.types.DOMAIN"
-                                                       [(ngModel)]="qp.types.DOMAIN"><label for="search:types:3">&nbsp;domain</label>
+                                                       [(ngModel)]="qp.types.DOMAIN"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:3">&nbsp;domain</label>
                                             </li>
                                             <li><input id="search:types:4" type="checkbox" name="qp.types.FILTER_SET"
-                                                       [(ngModel)]="qp.types.FILTER_SET"><label for="search:types:4">&nbsp;filter-set</label>
+                                                       [(ngModel)]="qp.types.FILTER_SET"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:4">&nbsp;filter-set</label>
                                             </li>
                                             <li><input id="search:types:5" type="checkbox" name="qp.types.INET6NUM"
-                                                       [(ngModel)]="qp.types.INET6NUM"><label for="search:types:5">&nbsp;inet6num</label>
+                                                       [(ngModel)]="qp.types.INET6NUM"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:5">&nbsp;inet6num</label>
                                             </li>
                                             <li><input id="search:types:6" type="checkbox" name="qp.types.INETNUM"
-                                                       [(ngModel)]="qp.types.INETNUM"><label for="search:types:6">&nbsp;inetnum</label>
+                                                       [(ngModel)]="qp.types.INETNUM"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:6">&nbsp;inetnum</label>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="list-unstyled">
                                             <li><input id="search:types:7" type="checkbox" name="qp.types.INET_RTR"
-                                                       [(ngModel)]="qp.types.INET_RTR"><label for="search:types:7">&nbsp;inet-rtr</label>
+                                                       [(ngModel)]="qp.types.INET_RTR"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:7">&nbsp;inet-rtr</label>
                                             </li>
                                             <li><input id="search:types:8" type="checkbox" name="qp.types.IRT"
-                                                       [(ngModel)]="qp.types.IRT"><label
+                                                       [(ngModel)]="qp.types.IRT"
+                                                       [disabled]="showsQueryFlagsContainer"><label
                                                 for="search:types:8">&nbsp;irt</label></li>
                                             <li><input id="search:types:9" type="checkbox" name="qp.types.KEY_CERT"
-                                                       [(ngModel)]="qp.types.KEY_CERT"><label for="search:types:9">&nbsp;key-cert</label>
+                                                       [(ngModel)]="qp.types.KEY_CERT"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:9">&nbsp;key-cert</label>
                                             </li>
                                             <li><input id="search:types:10" type="checkbox" name="qp.types.MNTNER"
-                                                       [(ngModel)]="qp.types.MNTNER"><label for="search:types:10">&nbsp;mntner</label>
+                                                       [(ngModel)]="qp.types.MNTNER"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:10">&nbsp;mntner</label>
                                             </li>
                                             <li><input id="search:types:11" type="checkbox" name="qp.types.ORGANISATION"
-                                                       [(ngModel)]="qp.types.ORGANISATION"><label for="search:types:11">&nbsp;organisation</label>
+                                                       [(ngModel)]="qp.types.ORGANISATION"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:11">&nbsp;organisation</label>
                                             </li>
                                             <li><input id="search:types:12" type="checkbox" name="qp.types.PEERING_SET"
-                                                       [(ngModel)]="qp.types.PEERING_SET"><label for="search:types:12">&nbsp;peering-set</label>
+                                                       [(ngModel)]="qp.types.PEERING_SET"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:12">&nbsp;peering-set</label>
                                             </li>
                                             <li><input id="search:types:13" type="checkbox" name="qp.types.PERSON"
-                                                       [(ngModel)]="qp.types.PERSON"><label for="search:types:13">&nbsp;person</label>
+                                                       [(ngModel)]="qp.types.PERSON"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:13">&nbsp;person</label>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="list-unstyled">
                                             <li><input id="search:types:14" type="checkbox" name="qp.types.POEM"
-                                                       [(ngModel)]="qp.types.POEM"><label
+                                                       [(ngModel)]="qp.types.POEM"
+                                                       [disabled]="showsQueryFlagsContainer"><label
                                                 for="search:types:14">&nbsp;poem</label></li>
                                             <li><input id="search:types:15" type="checkbox" name="qp.types.POETIC_FORM"
-                                                       [(ngModel)]="qp.types.POETIC_FORM"><label for="search:types:15">&nbsp;poetic-form</label>
+                                                       [(ngModel)]="qp.types.POETIC_FORM"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:15">&nbsp;poetic-form</label>
                                             </li>
                                             <li><input id="search:types:16" type="checkbox" name="qp.types.ROLE"
-                                                       [(ngModel)]="qp.types.ROLE"><label
+                                                       [(ngModel)]="qp.types.ROLE"
+                                                       [disabled]="showsQueryFlagsContainer"><label
                                                 for="search:types:16">&nbsp;role</label></li>
                                             <li><input id="search:types:17" type="checkbox" name="qp.types.ROUTE"
-                                                       [(ngModel)]="qp.types.ROUTE"><label for="search:types:17">&nbsp;route</label>
+                                                       [(ngModel)]="qp.types.ROUTE"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:17">&nbsp;route</label>
                                             </li>
                                             <li><input id="search:types:18" type="checkbox" name="qp.types.ROUTE6"
-                                                       [(ngModel)]="qp.types.ROUTE6"><label for="search:types:18">&nbsp;route6</label>
+                                                       [(ngModel)]="qp.types.ROUTE6"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:18">&nbsp;route6</label>
                                             </li>
                                             <li><input id="search:types:19" type="checkbox" name="qp.types.ROUTE_SET"
-                                                       [(ngModel)]="qp.types.ROUTE_SET"><label for="search:types:19">&nbsp;route-set</label>
+                                                       [(ngModel)]="qp.types.ROUTE_SET"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:19">&nbsp;route-set</label>
                                             </li>
                                             <li><input id="search:types:20" type="checkbox" name="qp.types.RTR_SET"
-                                                       [(ngModel)]="qp.types.RTR_SET"><label for="search:types:20">&nbsp;rtr-set</label>
+                                                       [(ngModel)]="qp.types.RTR_SET"
+                                                       [disabled]="showsQueryFlagsContainer"><label for="search:types:20">&nbsp;rtr-set</label>
                                             </li>
                                         </ul>
                                     </div>
@@ -165,49 +192,62 @@
                                 </div>
                                 <div class="radio">
                                     <label for="all">
-                                        <input id="all" type="radio" name="hierarchy" value="" [(ngModel)]="qp.hierarchy" (click)="uncheckReverseDomain()">
+                                        <input id="all" type="radio" name="hierarchy" value=""
+                                               [(ngModel)]="qp.hierarchy" (click)="uncheckReverseDomain()"
+                                               [disabled]="showsQueryFlagsContainer">
                                         No hierarchy flag (default)
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label for="one-less">
-                                        <input id="one-less" type="radio" name="hierarchy" value="l" [(ngModel)]="qp.hierarchy">
+                                        <input id="one-less" type="radio" name="hierarchy" value="l"
+                                               [(ngModel)]="qp.hierarchy"
+                                               [disabled]="showsQueryFlagsContainer">
                                         <code>l</code> - Returns first level less specific inetnum, inet6num or route(6)
                                         objects, excluding exact matches.
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label for="all-less">
-                                        <input id="all-less" type="radio" name="hierarchy" value="L" [(ngModel)]="qp.hierarchy">
+                                        <input id="all-less" type="radio" name="hierarchy" value="L"
+                                               [(ngModel)]="qp.hierarchy"
+                                               [disabled]="showsQueryFlagsContainer">
                                         <code>L</code> - Returns all level less specific inetnum, inet6num or route(6)
                                         objects, including exact matches.
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label for="one-more">
-                                        <input id="one-more" type="radio" name="hierarchy" value="m" [(ngModel)]="qp.hierarchy">
+                                        <input id="one-more" type="radio" name="hierarchy" value="m"
+                                               [(ngModel)]="qp.hierarchy"
+                                               [disabled]="showsQueryFlagsContainer">
                                         <code>m</code> - Returns first level more specific inetnum, inet6num or route(6)
                                         objects, excluding exact matches.
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hierarchy" value="M" [(ngModel)]="qp.hierarchy">
+                                        <input type="radio" name="hierarchy" value="M"
+                                               [(ngModel)]="qp.hierarchy"
+                                               [disabled]="showsQueryFlagsContainer">
                                         <code>M</code> - Returns all level more specific inetnum, inet6num or route(6)
                                         objects, excluding exact matches.
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label for="exact">
-                                        <input id="exact" type="radio" name="hierarchy" value="x" [(ngModel)]="qp.hierarchy">
+                                        <input id="exact" type="radio" name="hierarchy" value="x"
+                                               [(ngModel)]="qp.hierarchy"
+                                               [disabled]="showsQueryFlagsContainer">
                                         <code>x</code> - Requests that only an exact match on a prefix be performed. If no exact match is found no objects are returned.
                                     </label>
                                 </div>
                                 <br>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="hierarchyD" value="d" [(ngModel)]="qp.reverseDomain"
-                                               [disabled]="!qp.hierarchy">
+                                        <input type="checkbox" name="hierarchyD" value="d"
+                                               [(ngModel)]="qp.reverseDomain"
+                                               [disabled]="!qp.hierarchy || showsQueryFlagsContainer">
                                         <p [ngClass]="{'text-muted': !qp.hierarchy}">
                                             <code>d</code> - When used with a hierarchical flags (like --one-less), both address and route object types and domain object types are returned.
                                         </p>
@@ -230,58 +270,68 @@
                                             <li>
                                                 <input id="search:inverseLookup:0" type="checkbox"
                                                        name="qp.inverse.ABUSE_C"
-                                                       [(ngModel)]="qp.inverse.ABUSE_C">
+                                                       [(ngModel)]="qp.inverse.ABUSE_C"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:0">&nbsp;abuse-c</label></li>
                                             <li>
                                             <li>
                                                 <input id="search:inverseLookup:1" type="checkbox"
                                                        name="qp.inverse.ABUSE_MAILBOX"
-                                                       [(ngModel)]="qp.inverse.ABUSE_MAILBOX">
+                                                       [(ngModel)]="qp.inverse.ABUSE_MAILBOX"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:1">&nbsp;abuse-mailbox</label></li>
                                             <li>
                                                 <input id="searchinverseLookup2" type="checkbox"
                                                        name="qp.inverse.ADMIN_C"
-                                                       [(ngModel)]="qp.inverse.ADMIN_C">
+                                                       [(ngModel)]="qp.inverse.ADMIN_C"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="searchinverseLookup2">&nbsp;admin-c</label>
                                             </li>
                                             <li>
                                                 <input id="searchinverseLookup3" type="checkbox"
                                                        name="qp.inverse.AUTH"
-                                                       [(ngModel)]="qp.inverse.AUTH">
+                                                       [(ngModel)]="qp.inverse.AUTH"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="searchinverseLookup3">&nbsp;auth</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:4" type="checkbox"
                                                        name="qp.inverse.AUTHOR"
-                                                       [(ngModel)]="qp.inverse.AUTHOR">
+                                                       [(ngModel)]="qp.inverse.AUTHOR"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:4">&nbsp;author</label></li>
                                             <li>
                                                 <input id="search:inverseLookup:5" type="checkbox"
                                                        name="qp.inverse.FINGERPR"
-                                                       [(ngModel)]="qp.inverse.FINGERPR">
+                                                       [(ngModel)]="qp.inverse.FINGERPR"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:5">&nbsp;fingerpr</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:6" type="checkbox"
                                                        name="qp.inverse.FORM"
-                                                       [(ngModel)]="qp.inverse.FORM">
+                                                       [(ngModel)]="qp.inverse.FORM"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:6">&nbsp;form</label></li>
                                             <li>
                                                 <input id="search:inverseLookup:7" type="checkbox"
                                                        name="qp.inverse.IRT_NFY"
-                                                       [(ngModel)]="qp.inverse.IRT_NFY">
+                                                       [(ngModel)]="qp.inverse.IRT_NFY"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:7">&nbsp;irt-nfy</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:8" type="checkbox"
                                                        name="qp.inverse.LOCAL_AS"
-                                                       [(ngModel)]="qp.inverse.LOCAL_AS">
+                                                       [(ngModel)]="qp.inverse.LOCAL_AS"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:8">&nbsp;local-as</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:9" type="checkbox"
                                                        name="qp.inverse.MBRS_BY_REF"
-                                                       [(ngModel)]="qp.inverse.MBRS_BY_REF">
+                                                       [(ngModel)]="qp.inverse.MBRS_BY_REF"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:9">&nbsp;mbrs-by-ref</label>
                                             </li>
                                         </ul>
@@ -291,54 +341,63 @@
                                             <li>
                                                 <input id="search:inverseLookup:10" type="checkbox"
                                                        name="qp.inverse.MEMBER_OF"
-                                                       [(ngModel)]="qp.inverse.MEMBER_OF">
+                                                       [(ngModel)]="qp.inverse.MEMBER_OF"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:10">&nbsp;member-of</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:11" type="checkbox"
                                                        name="qp.inverse.MNT_BY"
-                                                       [(ngModel)]="qp.inverse.MNT_BY">
+                                                       [(ngModel)]="qp.inverse.MNT_BY"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:11">&nbsp;mnt-by</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:12" type="checkbox"
                                                        name="qp.inverse.MNT_DOMAINS"
-                                                       [(ngModel)]="qp.inverse.MNT_DOMAINS">
+                                                       [(ngModel)]="qp.inverse.MNT_DOMAINS"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:12">&nbsp;mnt-domains</label></li>
                                             <li>
                                                 <input id="search:inverseLookup:13" type="checkbox"
                                                        name="qp.inverse.MNT_IRT"
-                                                       [(ngModel)]="qp.inverse.MNT_IRT">
+                                                       [(ngModel)]="qp.inverse.MNT_IRT"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:13">&nbsp;mnt-irt</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:14" type="checkbox"
                                                        name="qp.inverse.MNT_LOWER"
-                                                       [(ngModel)]="qp.inverse.MNT_LOWER">
+                                                       [(ngModel)]="qp.inverse.MNT_LOWER"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:14">&nbsp;mnt-lower</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:15" type="checkbox"
                                                        name="qp.inverse.MNT_NFY"
-                                                       [(ngModel)]="qp.inverse.MNT_NFY">
+                                                       [(ngModel)]="qp.inverse.MNT_NFY"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:15">&nbsp;mnt-nfy</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:16" type="checkbox"
                                                        name="qp.inverse.MNT_REF"
-                                                       [(ngModel)]="qp.inverse.MNT_REF">
+                                                       [(ngModel)]="qp.inverse.MNT_REF"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:16">&nbsp;mnt-ref</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:17" type="checkbox"
                                                        name="qp.inverse.MNT_ROUTES"
-                                                       [(ngModel)]="qp.inverse.MNT_ROUTES">
+                                                       [(ngModel)]="qp.inverse.MNT_ROUTES"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:17">&nbsp;mnt-routes</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:18" type="checkbox"
                                                        name="qp.inverse.NOTIFY"
-                                                       [(ngModel)]="qp.inverse.NOTIFY">
+                                                       [(ngModel)]="qp.inverse.NOTIFY"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:18">&nbsp;notify</label>
                                             </li>
                                         </ul>
@@ -348,55 +407,64 @@
                                             <li>
                                                 <input id="search:inverseLookup:19" type="checkbox"
                                                        name="qp.inverse.NSERVER"
-                                                       [(ngModel)]="qp.inverse.NSERVER">
+                                                       [(ngModel)]="qp.inverse.NSERVER"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:19">&nbsp;nserver</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:20" type="checkbox"
                                                        name="qp.inverse.ORG"
-                                                       [(ngModel)]="qp.inverse.ORG">
+                                                       [(ngModel)]="qp.inverse.ORG"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:20">&nbsp;org</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:21" type="checkbox"
                                                        name="qp.inverse.ORIGIN"
-                                                       [(ngModel)]="qp.inverse.ORIGIN">
+                                                       [(ngModel)]="qp.inverse.ORIGIN"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:21">&nbsp;origin</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:22" type="checkbox"
                                                        name="qp.inverse.PERSON"
-                                                       [(ngModel)]="qp.inverse.PERSON">
+                                                       [(ngModel)]="qp.inverse.PERSON"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:22">&nbsp;person</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:23" type="checkbox"
                                                        name="qp.inverse.PING_HDL"
-                                                       [(ngModel)]="qp.inverse.PING_HDL">
+                                                       [(ngModel)]="qp.inverse.PING_HDL"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:23">&nbsp;ping-hdl</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:24" type="checkbox"
                                                        name="qp.inverse.REF_NFY"
-                                                       [(ngModel)]="qp.inverse.REF_NFY">
+                                                       [(ngModel)]="qp.inverse.REF_NFY"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:24">&nbsp;ref-nfy</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:25" type="checkbox"
                                                        name="qp.inverse.TECH_C"
-                                                       [(ngModel)]="qp.inverse.TECH_C">
+                                                       [(ngModel)]="qp.inverse.TECH_C"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:25">&nbsp;tech-c</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:26" type="checkbox"
                                                        name="qp.inverse.UPD_TO"
-                                                       [(ngModel)]="qp.inverse.UPD_TO">
+                                                       [(ngModel)]="qp.inverse.UPD_TO"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:26">&nbsp;upd-to</label>
                                             </li>
                                             <li>
                                                 <input id="search:inverseLookup:27" type="checkbox"
                                                        name="qp.inverse.ZONE_C"
-                                                       [(ngModel)]="qp.inverse.ZONE_C">
+                                                       [(ngModel)]="qp.inverse.ZONE_C"
+                                                       [disabled]="showsQueryFlagsContainer">
                                                 <label for="search:inverseLookup:27">&nbsp;zone-c</label>
                                             </li>
                                         </ul>
@@ -410,8 +478,6 @@
             <div [ngbNavOutlet]="navQuery" class="mt-2"></div>
         </div>
         <a id="anchorForScrollToResults"></a>
-        <p [innerHTML]="'query.whoisTelnetOutputLabel.text' | label"></p>
-        <pre>{{ whoisCliQuery() }}</pre>
         <button class="blue-button pull-right">Search</button>
         <submitting-agreement></submitting-agreement>
     </form>

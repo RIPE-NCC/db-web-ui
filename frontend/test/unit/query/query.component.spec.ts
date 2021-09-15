@@ -236,7 +236,6 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({INETNUM: true, INET6NUM: true});
             expect(component.qp.inverse).toEqual({});
             expect(component.qp.source).toEqual("TEST");
-            expect(component.whoisCliQuery()).toEqual("-T inetnum,inet6num -xd --sources TEST 193.0.0.0");
             expect(component.results.length).toEqual(4);
             expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
@@ -265,7 +264,6 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({INETNUM: true, INET6NUM: true});
             expect(component.qp.inverse).toEqual({});
             expect(component.qp.source).toEqual("TEST");
-            expect(component.whoisCliQuery().trim()).toEqual("");
 
             component.doSearch();
             expect(component.results.length).toEqual(0);
@@ -296,12 +294,11 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});
             expect(component.qp.source).toEqual("GRS");
-            expect(component.whoisCliQuery().trim()).toEqual("-Br --resource 193.0.0.0");
             expect(component.results.length).toEqual(4);
             expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
 
-        it("should handle empty flags", () => {
+        it("should handle empty query parameters", () => {
             // @ts-ignore
             component.activatedRoute.snapshot = { queryParamMap: convertToParamMap({
                 searchtext: " 193.0.0.0 ",
@@ -325,7 +322,6 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});
             expect(component.qp.source).toEqual("GRS");
-            expect(component.whoisCliQuery().trim()).toEqual("--resource 193.0.0.0");
             expect(component.results.length).toEqual(4);
             component.lastResultOnScreen();
             expect(component.offset).toEqual(0);
@@ -448,7 +444,6 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({INETNUM: true, INET6NUM: true});
             expect(component.qp.inverse).toEqual({MNTNER: true});
             expect(component.qp.source).toEqual("TEST");
-            expect(component.whoisCliQuery()).toEqual("-i mntner -T inetnum,inet6num -ld --sources TEST 193.0.0.0");
 
             expect(component.alertsService.alerts.errors.length).toEqual(4);
             expect(component.formatError(component.alertsService.alerts.errors[0])).toEqual("Goodbye,\nand thanks for all the fish");
@@ -477,7 +472,6 @@ describe("QueryComponent", () => {
             expect(component.qp.doNotRetrieveRelatedObjects).toEqual(true);
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});
-            expect(component.whoisCliQuery()).toEqual("-t aut-num");
             component.doSearch();
             expect(component.alertsService.alerts.errors.length).toEqual(0);
         });
@@ -491,7 +485,6 @@ describe("QueryComponent", () => {
                 has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])
             })};
             component.init();
-            // fixture.detectChanges();
             expect(component.offset).toEqual(0);
             expect(component.qp.showFullObjectDetails).toEqual(false);
             expect(component.qp.reverseDomain).toEqual(false);
@@ -499,7 +492,6 @@ describe("QueryComponent", () => {
             expect(component.qp.source).toEqual("RIPE");
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});
-            expect(component.whoisCliQuery()).toEqual(" ");
             component.doSearch();
             expect(component.alertsService.alerts.errors.length).toEqual(1);
             expect(component.formatError(component.alertsService.alerts.errors[0])).toEqual("Unknown object type \"zzz\".");

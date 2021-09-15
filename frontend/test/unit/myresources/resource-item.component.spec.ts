@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {ResourceItemComponent} from "../../../src/app/myresources/resource-item.component";
 import {ResourceStatusService} from "../../../src/app/myresources/resource-status.service";
-import {FlagComponent} from "../../../src/app/myresources/flag/flag.component";
+import {FlagComponent} from "../../../src/app/shared/flag/flag.component";
 import {SharedModule} from "../../../src/app/shared/shared.module";
 import {IpAddressService} from "../../../src/app/myresources/ip-address.service";
 
