@@ -4,7 +4,6 @@ import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {SharedModule} from "../shared/shared.module";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
-import {FlagComponent} from "./flag/flag.component";
 import {HierarchySelectorComponent} from "./hierarchyselector/hierarchy-selector.component";
 import {ResourcesDataService} from "./resources-data.service";
 import {MoreSpecificsService} from "./morespecifics/more-specifics.service";
@@ -35,7 +34,6 @@ import {RefreshComponent} from "./refresh/refresh.component";
     declarations: [
         AlertsDropDownComponent,
         TransferDropDownComponent,
-        FlagComponent,
         HierarchySelectorComponent,
         IpUsageComponent,
         IpUsageOfAllResourcesComponent,
@@ -58,7 +56,6 @@ import {RefreshComponent} from "./refresh/refresh.component";
     entryComponents: [
         AlertsDropDownComponent,
         TransferDropDownComponent,
-        FlagComponent,
         HierarchySelectorComponent,
         IpUsageComponent,
         IpUsageOfAllResourcesComponent,

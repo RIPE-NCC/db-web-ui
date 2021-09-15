@@ -17,7 +17,7 @@ import {
 } from "../../shared/whois-response-type.model";
 import {IUserInfoOrganisation, IUserInfoRegistration} from "../../dropdown/org-data-type.model";
 import {PropertiesService} from "../../properties.service";
-import {IFlag} from "../flag/flag.component";
+import {IFlag} from "../../shared/flag/flag.component";
 import {ModalDeleteObjectComponent} from "../../updatesweb/modal-delete-object.component";
 import {HierarchySelectorService} from "../hierarchyselector/hierarchy-selector.service";
 import {WhoisResourcesService} from "../../shared/whois-resources.service";

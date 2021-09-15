@@ -15,11 +15,19 @@ export class FlagComponent {
     @Input()
     public text: string;
     @Input()
-    public tooltip: string;
+    public tooltip?: string;
+    @Input()
+    public uppercase?: boolean;
     public isOpen = false;
     public timer: any;
 
     constructor() {
+    }
+
+    ngOnInit() {
+        if (this.uppercase) {
+            this.text = this.text.toUpperCase();
+        }
     }
 
     public in() {

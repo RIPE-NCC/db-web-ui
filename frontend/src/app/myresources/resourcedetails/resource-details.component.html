@@ -4,7 +4,7 @@
                         [type]="objectType"></name-formatter>
     </h1>
     <div class="flags-container">
-        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text"></flag>
+        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text" uppercase></flag>
     </div>
 </section>
 <section class="back-to-my-resources">

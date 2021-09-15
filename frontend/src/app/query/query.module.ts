@@ -12,6 +12,8 @@ import {TemplateComponent} from "./templatecomponent/template.component";
 import {QueryService} from "./query.service";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
 import {CertificateBannerComponent} from "../banner/certificate-banner.component";
+import {QueryFlagsService} from "./query-flags.service";
+import {QueryFlagsComponent} from "./query-flags.component";
 
 @NgModule({
     imports: [
@@ -26,19 +28,22 @@ import {CertificateBannerComponent} from "../banner/certificate-banner.component
         LookupSingleObjectComponent,
         CertificateBannerComponent,
         QueryComponent,
-        TemplateComponent
+        TemplateComponent,
+        QueryFlagsComponent
     ],
     providers: [
         LookupService,
         QueryParametersService,
         QueryService,
+        QueryFlagsService
     ],
     entryComponents: [
         LookupComponent,
         LookupSingleObjectComponent,
         CertificateBannerComponent,
         QueryComponent,
-        TemplateComponent
+        TemplateComponent,
+        QueryFlagsComponent
     ],
     exports: [
       CertificateBannerComponent,

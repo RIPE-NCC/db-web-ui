@@ -26,6 +26,7 @@ import {WhoisVersionComponent} from "../version/whois-version.component";
 import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
 import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
 import {AlertBannersComponent} from "./alert/alert-banners.component";
+import {FlagComponent} from "./flag/flag.component";
 
 @NgModule({
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -48,6 +49,7 @@ import {AlertBannersComponent} from "./alert/alert-banners.component";
         SubmittingAgreementComponent,
         AttributeInfoComponent,
         DescriptionSyntaxComponent,
+        FlagComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
         SanitizeHtmlPipe,
@@ -69,7 +71,8 @@ import {AlertBannersComponent} from "./alert/alert-banners.component";
         PaginationComponent,
         LoadingIndicatorComponent,
         HelpMarkerComponent,
-        NameFormatterComponent
+        NameFormatterComponent,
+        FlagComponent,
     ],
     exports: [
         AlertBannersComponent,
@@ -82,6 +85,7 @@ import {AlertBannersComponent} from "./alert/alert-banners.component";
         SubmittingAgreementComponent,
         AttributeInfoComponent,
         DescriptionSyntaxComponent,
+        FlagComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
         SanitizeHtmlPipe,

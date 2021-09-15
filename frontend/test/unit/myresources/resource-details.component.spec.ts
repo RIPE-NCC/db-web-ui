@@ -6,7 +6,7 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {CookieService} from "ngx-cookie-service";
 import * as _ from "lodash";
 import {ResourceStatusService} from "../../../src/app/myresources/resource-status.service";
-import {FlagComponent} from "../../../src/app/myresources/flag/flag.component";
+import {FlagComponent} from "../../../src/app/shared/flag/flag.component";
 import {SharedModule} from "../../../src/app/shared/shared.module";
 import {IpAddressService} from "../../../src/app/myresources/ip-address.service";
 import {ResourceDetailsComponent} from "../../../src/app/myresources/resourcedetails/resource-details.component";

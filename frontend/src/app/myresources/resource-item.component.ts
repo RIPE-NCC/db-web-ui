@@ -2,7 +2,7 @@ import {Component, Input} from "@angular/core";
 import {Router} from "@angular/router";
 import {ResourceStatusService} from "./resource-status.service";
 import {Labels} from "../label.constants";
-import {IFlag} from "./flag/flag.component";
+import {IFlag} from "../shared/flag/flag.component";
 
 @Component({
     selector: "resource-item",

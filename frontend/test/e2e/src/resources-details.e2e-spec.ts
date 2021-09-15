@@ -103,7 +103,7 @@ describe("Resources detail", () => {
             expect(page.flags.get(4).getText()).toEqual("2014-03-21");
             expect(page.flags.get(5).getText()).toEqual("NCC#2014033636");
             expect(page.flags.get(6).getText()).toEqual("IRR");
-            expect(page.flags.get(7).getText()).toEqual("RDNS");
+            expect(page.flags.get(7).getText()).toEqual("rDNS");
         });
 
         it("should contain Associated Route Objects table", () => {
@@ -279,13 +279,13 @@ describe("Resources detail", () => {
             expect(page.moreSpecificsTable.isPresent()).toEqual(false);
         });
 
-        it("should contain 4 flags, 1 ticket and 1 date, and IRR and RDNS should be on end", () => {
+        it("should contain 4 flags, 1 ticket and 1 date, and IRR and rDNS should be on end", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
             expect(page.flags.count()).toEqual(6);
             expect(page.flags.get(2).getText()).toEqual("2017-06-19");
             expect(page.flags.get(3).getText()).toEqual("NCC#201001020355");
             expect(page.flags.get(4).getText()).toEqual("IRR");
-            expect(page.flags.get(5).getText()).toEqual("RDNS");
+            expect(page.flags.get(5).getText()).toEqual("rDNS");
         });
 
         it("should contain Associated Route Objects table", () => {
@@ -362,7 +362,7 @@ describe("Resources detail", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
             expect(page.flags.count()).toEqual(2);
             expect(page.flags.get(0).getText()).toEqual("OTHER");
-            expect(page.flags.get(1).getText()).toEqual("KOKONET-BGP");
+            expect(page.flags.get(1).getText()).toEqual("Kokonet-BGP");
         });
     });
 });

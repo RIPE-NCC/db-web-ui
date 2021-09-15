@@ -34,10 +34,9 @@ flag {
         color: $dark-grey-cr;
         display: inline-block;
         padding: 0 5px;
-        text-transform: uppercase;
         white-space: nowrap;
         text-overflow: ellipsis;
-        font-size: 13px;
+        font-size: 0.875rem;
         width: fit-content;
         position: relative;
     }

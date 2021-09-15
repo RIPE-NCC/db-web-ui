@@ -1,0 +1,17 @@
+<div *ngIf="queryFlags?.length > 0">
+    <p>Detected flags in query:</p>
+    <div class="flags-table">
+        <div class="left-column"></div>
+        <div class="right-column"></div>
+        <div class="row" *ngFor="let flag of queryFlags">
+            <div class="cell">
+                <flag *ngIf="flag?.shortFlag" [text]="flag?.shortFlag"></flag>
+                <flag *ngIf="flag?.longFlag" [text]="flag?.longFlag"></flag>
+            </div>
+            <div class="cell">
+                <span>{{flag?.description}}</span>
+            </div>
+        </div>
+    </div>
+    <span [innerHTML]="'query.listOfAllQueryFlagsLabel.text' | label"></span>
+</div>
