@@ -108,6 +108,7 @@ module.exports = {
     selectMaintainerDropdown: element(by.id("selectMaintainerDropdown")),
 
     btnNavigateToCreate: element(by.id("btnNavigateToCreate")),
+    btnNavigateToSearch: element(by.id("btnNavigateToQuery")), // not-found-page
     btnCreateInTextArea: element(by.id("btnCreateInTextArea")),
     btnSwitchToWebCreate: element(by.id("btnSwitchToWebCreate")),
     btnUpdateObjectButton: element(by.css("div.viewerbuttons")).element(by.css("a.blue-button")),
