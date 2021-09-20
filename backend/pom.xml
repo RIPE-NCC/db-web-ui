@@ -19,6 +19,7 @@
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <dnsjava.version>2.1.9</dnsjava.version>
         <freemarker.version>2.3.29</freemarker.version>
+        <sentry.version>5.1.2</sentry.version>
         <google-guava-version>28.2-jre</google-guava-version>
         <jackson.version>2.10.1</jackson.version>
         <javax.inject.version>1</javax.inject.version>
@@ -133,6 +134,16 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk</artifactId>
             <version>1.11.327</version>
+        </dependency>
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-spring-boot-starter</artifactId>
+            <version>${sentry.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-logback</artifactId>
+            <version>${sentry.version}</version>
         </dependency>
         <!-- HTTP2 related -->
         <dependency>
@@ -372,6 +383,10 @@
                 </executions>
                 <configuration>
                     <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <excludeProperties>
+                        <excludeProperty>git.user.*</excludeProperty>
+                    </excludeProperties>
                 </configuration>
             </plugin>
             <plugin>
