@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class SentryConfigurations {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SentryConfigurations.class);
-    
+
     private final String sentryDsn;
     private final String environment;
     private final String commitId;
@@ -45,6 +45,7 @@ public class SentryConfigurations {
 
         Sentry.init(options -> {
             options.setRelease(String.format("%s@%s", environment,  commitId));
+            options.setEnvironment(environment);
             options.setDsn(sentryDsn);
         });
     }
