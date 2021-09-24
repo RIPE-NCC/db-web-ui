@@ -636,8 +636,10 @@ export class CreateModifyComponent {
     }
 
     public isFormValid() {
-        this.attributeMetadataService.enrich(this.objectType, this.attributes);
         this.attributes.map(attr => {if (attr.name === "mnt-by" && attr.value === "") {attr.$$invalid = false}});
+        // enrcih is called from maintainer-editor-component so $$invalid get value true and is never changed,
+        // because of this validation was crushing 
+        this.attributes.map(attr => {attr.$$invalid = false});
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }
 

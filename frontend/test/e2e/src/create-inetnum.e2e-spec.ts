@@ -154,4 +154,27 @@ describe("The inetnum editor", () => {
         expect(page.inpStatusList.get(0).click());
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeFalsy();
     });
+
+    it("should show field validation errors", () => {
+        page.selectObjectType("inetnum").click();
+        page.btnNavigateToCreate.click();
+        page.inpInetnum.sendKeys("5.254.68.40/29");
+        page.inpNetname.click();
+        page.modalInpPassword.sendKeys("VOXILITY-MNT");
+        page.modalInpAssociate.click();
+        page.modalBtnSubmit.click();
+        page.inpNetname.sendKeys("SOMETHING.");
+        page.inpCountry.click();
+        page.inpCountryList.get(2).click();
+        page.inpAdminC.sendKeys("WW2105-RIPE");
+        page.inpTechC.sendKeys("WW2105-RIPE");
+        page.inpAdminC.click();
+        page.scrollIntoView(page.inpStatusLink);
+        page.inpStatusLink.click();
+        page.scrollIntoView(page.inpStatusList.get(0));
+        expect(page.inpStatusList.get(0).click());
+        page.btnSubmitForm.click();
+        expect(page.prefixErrMsg.getText()).toContain("Value 5.254.68.40/29 converted to 5.254.68.40 - 5.254.68.47");
+        expect(page.netnameErrMsg.getText()).toContain("Syntax error in SOMETHING.");
+    });
 });
