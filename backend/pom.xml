@@ -131,11 +131,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>1.11.327</version>
-        </dependency>
-        <dependency>
             <groupId>io.sentry</groupId>
             <artifactId>sentry-spring-boot-starter</artifactId>
             <version>${sentry.version}</version>
@@ -430,44 +425,6 @@
                 <test.files.unit>**/*Test.class</test.files.unit>
                 <test.redirectOutput>true</test.redirectOutput>
             </properties>
-        </profile>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.google.cloud.tools</groupId>
-                        <artifactId>jib-maven-plugin</artifactId>
-                        <version>2.4.0</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>dockerBuild</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <from>
-                                <image>openjdk:11</image>
-                            </from>
-                            <to>
-                                <image>db-web-ui:${git.commit.id}</image>
-                            </to>
-                            <container>
-                                <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                                <jvmFlags>
-                                    <jvmFlag>-XX:+UseContainerSupport</jvmFlag>
-                                    <jvmFlag>-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true</jvmFlag>
-                                    <jvmFlag>-Dorg.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true</jvmFlag>
-                                    <jvmFlag>-Duser.timezone=UTC</jvmFlag>
-                                </jvmFlags>
-                                <mainClass>net.ripe.whois.Application</mainClass>
-                            </container>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
         <profile>
             <id>selenium</id>

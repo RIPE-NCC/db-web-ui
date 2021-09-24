@@ -1,7 +1,7 @@
 package net.ripe.whois.services;
 
-import com.amazonaws.util.IOUtils;
 import net.ripe.whois.AbstractIntegrationTest;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpScheme;
 import org.junit.Test;
