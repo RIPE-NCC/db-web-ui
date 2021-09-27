@@ -11,7 +11,7 @@
     "test": "ng test --configuration=local --watch=false --code-coverage",
     "test-remote": "ng test --configuration=remote --watch=false",
     "lint": "ng lint",
-    "pree2e-chrome": "webdriver-manager update --standalone false --versions.chrome 90.0.4430.24",
+    "pree2e-chrome": "webdriver-manager update --standalone false --versions.chrome 93.0.4577.63",
     "e2e-chrome": "ng e2e --no-webdriver-update --configuration=local",
     "pree2e-firefox": "webdriver-manager update --standalone false",
     "e2e-firefox": "ng e2e --no-webdriver-update --configuration=firefox",
