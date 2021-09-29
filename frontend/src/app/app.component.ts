@@ -13,8 +13,6 @@ export class AppComponent {
   public isDesktopView: boolean;
   public isOpenMenu: boolean;
   private innerWidth: number;
-  // TODO remove on 1st October 2021 - survey
-  public surveyDismissed: string;
 
   constructor(public properties: PropertiesService,
               private router: Router,
@@ -25,8 +23,6 @@ export class AppComponent {
   public ngOnInit() {
     this.mobileOrDesktopView();
     this.isOpenMenu = this.isDesktopView;
-    // TODO remove on 1st October 2021 - survey
-    this.surveyDismissed = localStorage.getItem("surveyDismissed")
   }
 
   private skipHash() {
@@ -49,10 +45,5 @@ export class AppComponent {
     this.innerWidth = this.window.innerWidth;
     this.isDesktopView =  this.innerWidth >= this.properties.BREAKPOINTS_MOBILE_VIEW;
     this.isOpenMenu = this.isDesktopView;
-  }
-
-  // TODO remove on 1st October 2021 - survey
-  public setSurveyDismissed() {
-    localStorage.setItem("surveyDismissed", "true");
   }
 }
