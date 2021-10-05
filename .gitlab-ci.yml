@@ -89,7 +89,7 @@ release:
     script:
         - if [ "$CI_COMMIT_TAG" ]; then NEW_VERSION="$CI_COMMIT_SHORT_SHA"; else NEW_VERSION="$CI_COMMIT_SHORT_SHA-SNAPSHOT"; fi
         - mvn versions:set -DnewVersion=$NEW_VERSION
-        - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package  -DskipTests -DskipITs -Prelease
+        - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package  -DskipTests -DskipITs -Prelease deploy
     extends: .release_template
 
 
