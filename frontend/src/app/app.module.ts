@@ -1,15 +1,17 @@
-import { BrowserModule } from "@angular/platform-browser";
+import {BrowserModule} from "@angular/platform-browser";
 import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {MatIconModule} from "@angular/material/icon";
 
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
 import {NotFoundPageComponent} from "./errorpages/not-found-page.component";
 import {ErrorPageComponent} from "./errorpages/error-page.component";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./shared/shared.module";
 import {UpdatesWebModule} from "./updatesweb/updateweb.module";
 import {UpdatesTextModule} from "./updatestext/update-text.module";
@@ -69,7 +71,8 @@ import {LiveChatComponent} from "./livechat/live-chat.component";
     MyResourcesModule,
     DomainObjectModule,
     UserInfoModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NoopAnimationsModule
   ],
   providers: [
     CookieService,

@@ -7,6 +7,7 @@ import {IQueryParameters, ITemplateTerm, QueryParametersService} from "./query-p
 import {QueryService} from "./query.service";
 import {PropertiesService} from "../properties.service";
 import {AlertsService} from "../shared/alert/alerts.service";
+import {HierarchyFlagsService} from "./hierarchy-flags.service";
 
 export interface IQueryState {
     source: string;
@@ -90,7 +91,7 @@ export class QueryComponent implements OnDestroy {
         this.qp.inverse = queryParamMap.get("inverse")
             ? this.convertListToMapOfBools(queryParamMap.get("inverse").split(";"))
             : {};
-        this.qp.hierarchy = QueryParametersService.longHierarchyFlagToShort(queryParamMap.get("hierarchyFlag"));
+        this.qp.hierarchy = HierarchyFlagsService.longHierarchyFlagToShort(queryParamMap.get("hierarchyFlag"));
         this.qp.reverseDomain = this.flagToBoolean(queryParamMap.get("dflag"), false); // -d
         this.qp.showFullObjectDetails = this.flagToBoolean(queryParamMap.get("bflag"), false); // -B
         this.qp.doNotRetrieveRelatedObjects = this.flagToBoolean(queryParamMap.get("rflag"), true); // -r
@@ -105,7 +106,6 @@ export class QueryComponent implements OnDestroy {
             this.clearResults();
             this.showTemplatePanel = false;
         }
-
     }
 
     public submitSearchForm() {
@@ -185,6 +185,31 @@ export class QueryComponent implements OnDestroy {
 
     public isShownQueryFlagsContainer(event: boolean) {
         this.showsQueryFlagsContainer = event;
+    }
+
+    public countSelectedDropdownItems(list) {
+        let numberSelected = Object.keys(list).filter(element => list[element] === true).length;
+        return numberSelected > 0 ? `(${numberSelected})` : "";
+    }
+
+    public countSelectedDropdownHierarchyFlags() {
+        return !!this.qp.hierarchy && this.qp.hierarchy !== HierarchyFlagsService.hierarchyFlagMap[0].short
+            ? this.qp.reverseDomain ? "(2)" : "(1)"
+            : "";
+    }
+
+    public countSelectedDropdownAdvanceFilter() {
+        let numberSelected = 0;
+        if (this.qp.showFullObjectDetails) {
+            numberSelected++;
+        }
+        if (!this.qp.doNotRetrieveRelatedObjects) {
+            numberSelected++;
+        }
+        if (this.qp.source !== "RIPE") {
+            numberSelected++;
+        }
+        return numberSelected > 0 ? `(${numberSelected})` : "";
     }
 
     // Move this to a util queryService and test it properly, i.e. with all expected message variants

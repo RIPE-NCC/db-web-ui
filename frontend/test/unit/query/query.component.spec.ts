@@ -18,6 +18,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {CertificateBannerComponent} from "../../../src/app/banner/certificate-banner.component";
 import {CookieService} from "ngx-cookie-service";
+import {MatMenuModule} from "@angular/material/menu";
 
 const whoisObjectModelMock = {
     "type" : "inetnum",
@@ -143,7 +144,7 @@ describe("QueryComponent", () => {
     beforeEach(() => {
         queryServiceSpy = jasmine.createSpyObj("QueryService", ["searchWhoisObjects", "searchTemplate", "buildQueryStringForLink", "buildPermalink"]);
         TestBed.configureTestingModule({
-            imports: [ SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+            imports: [ SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([]), MatMenuModule],
             declarations: [
                 QueryComponent,
                 CertificateBannerComponent,
@@ -180,6 +181,56 @@ describe("QueryComponent", () => {
 
     it("should create", () => {
         expect(component).toBeTruthy();
+    });
+
+    it("should count types selected in dropdown", () => {
+        component.init();
+        fixture.detectChanges();
+        expect(component.countSelectedDropdownItems(component.qp.types)).toEqual("");
+        component.qp.types = {DOMAIN: true, INETNUM: true, MNTNER: true};
+        expect(component.countSelectedDropdownItems(component.qp.types)).toEqual("(3)");
+        component.qp.types = {DOMAIN: true, INETNUM: false, MNTNER: true};
+        expect(component.countSelectedDropdownItems(component.qp.types)).toEqual("(2)");
+    });
+
+    it("should count hierarchy flags selected in dropdown", () => {
+        component.init();
+        fixture.detectChanges();
+        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("");
+        component.qp.hierarchy = "l";
+        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(1)");
+        component.qp.hierarchy = "m";
+        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(1)");
+        component.qp.hierarchy = "x";
+        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(1)");
+        component.qp.reverseDomain = true;
+        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(2)");
+    });
+
+    it("should count inverse selected in dropdown", () => {
+        component.init();
+        fixture.detectChanges();
+        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("");
+        component.qp.inverse = {ADMIN_C: true, AUTHOR: true, MNT_BY: true, ORG: true, TECH_C: true, ZONE_C: true};
+        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("(6)");
+        component.qp.inverse = {ADMIN_C: false, AUTHOR: false, MNT_BY: false, ORG: true, TECH_C: false, ZONE_C: true};
+        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("(2)");
+        component.qp.inverse = {ADMIN_C: false, AUTHOR: false, MNT_BY: false, ORG: false, TECH_C: false, ZONE_C: false};
+        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("");
+    });
+
+    it("should count advance filters in dropdown which are not selected by default", () => {
+        component.init();
+        fixture.detectChanges();
+        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("");
+        component.qp.showFullObjectDetails = true;
+        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(1)");
+        component.qp.doNotRetrieveRelatedObjects = false; //by default is true
+        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(2)");
+        component.qp.source = "GRS";
+        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(3)");
+        component.qp.doNotRetrieveRelatedObjects = true; //by default is true
+        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(2)");
     });
 
     describe("with no query string", () => {
