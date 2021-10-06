@@ -304,8 +304,19 @@ module.exports = {
     inpQueryString: element(by.name("qp.queryText")),
     inpQueryFlagsContainer: element(by.css("query-flags")),
     inpQueryFlags: element(by.css("query-flags")).all(by.css("flag")),
-    inpShowFullDetails: element(by.name("qp.showFullObjectDetails")),
-    inpDontRetrieveRelated: element(by.name("qp.doNotRetrieveRelatedObjects")),
+    typeMenu: element(by.id("typeMenu")),
+    hierarchyFlagsMenu: element(by.id("hierarchyFlagsMenu")),
+    inverseLookupMenu: element(by.id("inverseLookupMenu")),
+    advanceFilterMenu: element(by.id("advanceFilterMenu")),
+    hierarchyFlag: element(by.css("hierarchy-flags")),
+    hierarchyFlagSlider: element(by.css("hierarchy-flags")).element(by.css("mat-slider")),
+    hierarchyFlagDescription: element(by.css(".flag-description")),
+    hierarchyDCeckBox: element(by.id("hierarchyD")),
+    hierarchyDCeckBoxInput: element(by.id("hierarchyD")).element(by.css(".mat-checkbox-input")),
+    inpShowFullDetails: element(by.id("showFullObjectDetails")),
+    inpShowFullDetailsInput: element(by.id("showFullObjectDetails")).element(by.css(".mat-checkbox-input")),
+    inpDontRetrieveRelated: element(by.id("doNotRetrieveRelatedObjects")),
+    inpDontRetrieveRelatedInput: element(by.id("doNotRetrieveRelatedObjects")).element(by.css(".mat-checkbox-input")),
     btnSubmitQuery: element(by.name("searchform")).element(by.css("button.blue-button")),
     resultsSection: element(by.id("resultsSection")),
     searchResults: element(by.id("resultsSection")).all(by.css("lookup")),
@@ -528,7 +539,12 @@ module.exports = {
     getMyResourcesTopMenu: function() {
         return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-resources"))
     },
+
     getMyAccountTopMenu: function() {
         return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-account"))
+    },
+
+    clickOnOverlayBackdrop: async function() {
+        await browser.executeScript("const event = new MouseEvent('click', {clientX: 0, clientY: 0}); $('.cdk-overlay-backdrop').trigger(event)");
     }
 };

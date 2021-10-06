@@ -10,23 +10,28 @@ describe("The query pagina", () => {
         page.disableLiveChat();
     });
 
-    it("should have all its bits on the screen somewhere", () => {
+    it("should have all its bits on the screen somewhere", async () => {
         expect(page.inpQueryString.getAttribute("value")).toEqual("");
-        expect(page.inpDontRetrieveRelated.getAttribute("value")).toEqual("on");
-        expect(page.inpShowFullDetails.getAttribute("value")).toEqual("on");
+        page.advanceFilterMenu.click();
+        expect(page.inpDontRetrieveRelatedInput.isSelected()).toBeTruthy();
+        expect(page.inpShowFullDetailsInput.isSelected()).toBeFalsy();
+        await page.clickOnOverlayBackdrop();
 
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click(); // nothing should happen, everything is ok
         expect(page.inpQueryString.getAttribute("value")).toEqual("");
-        expect(page.inpDontRetrieveRelated.getAttribute("value")).toEqual("on");
-        expect(page.inpShowFullDetails.getAttribute("value")).toEqual("on");
+        page.advanceFilterMenu.click();
+        expect(page.inpDontRetrieveRelatedInput.isSelected()).toBeTruthy();
+        expect(page.inpShowFullDetailsInput.isSelected()).toBeFalsy();
     });
 
-    it("should be able to search using the text box", () => {
+    it("should be able to search using the text box", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0"); // press "enter" for a laugh
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         page.scrollIntoView(page.resultsSection);
@@ -37,61 +42,76 @@ describe("The query pagina", () => {
     it("should be able to search using the text box and a type checkbox", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
         page.inpDontRetrieveRelated.click();
-        page.queryParamTabs.get(1).click();
-        await waitToBeClickable(page.byId("search:types:6"));
-        page.scrollIntoView(page.byId("search:types:6"));
-        page.byId("search:types:6").click();
+        await page.clickOnOverlayBackdrop();
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-7"));
+        page.scrollIntoView(page.byId("mat-checkbox-7"));
+        page.byId("mat-checkbox-7").click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
         expect(page.inpQueryString.getAttribute("value")).toEqual("193.0.0.0");
+        expect(browser.getCurrentUrl()).toContain("193.0.0.0");
+        expect(browser.getCurrentUrl()).toContain("types=inetnum");
     });
 
     it("should be able to have source dynamic", async () => {
-        page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("193.0.0.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
-        page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.queryParamTabs.get(1).click();
-        await waitToBeClickable(page.byId("search:types:6"));
-        page.scrollIntoView(page.byId("search:types:6"));
-        page.byId("search:types:6").click();
+        await page.clickOnOverlayBackdrop();
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-7"));
+        page.scrollIntoView(page.byId("mat-checkbox-7"));
+        page.byId("mat-checkbox-7").click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.resultsSection.getAttribute("innerHTML")).toContain("?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation");
     });
 
     it("should be able to have source dynamic", async () => {
-        page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("223.0.0.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
-        page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.queryParamTabs.get(1).click();
-        await waitToBeClickable(page.byId("search:types:6"));
-        page.scrollIntoView(page.byId("search:types:6"));
-        page.byId("search:types:6").click();
+        await page.clickOnOverlayBackdrop();
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-7"));
+        page.scrollIntoView(page.byId("mat-checkbox-7"));
+        page.byId("mat-checkbox-7").click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.resultsSection.getAttribute("innerHTML")).toContain("?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation");
     });
 
     it("should search by inverse lookup abuse-c", async () => {
-        page.scrollIntoView(page.inpShowFullDetails);
         page.inpQueryString.sendKeys("ACRO862-RIPE");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
-        page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.queryParamTabs.get(1).click();
-        await waitToBeClickable(page.byId("search:types:11"));
-        page.scrollIntoView(page.byId("search:types:11")); // organisation
-        page.byId("search:types:11").click();
-        page.queryParamTabs.get(3).click();
-        await waitToBeClickable(page.byId("search:inverseLookup:0"));
-        page.scrollIntoView(page.byId("search:inverseLookup:0")); // organisation
-        page.byId("search:inverseLookup:0").click();
+        await page.clickOnOverlayBackdrop();
+        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (1)");
+        expect(page.typeMenu.getText()).toEqual("Types");
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-12"));
+        page.scrollIntoView(page.byId("mat-checkbox-12")); // organisation
+        page.byId("mat-checkbox-12").click();
+        await page.clickOnOverlayBackdrop();
+        expect(page.typeMenu.getText()).toEqual("Types (1)");
+        expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup");
+        page.inverseLookupMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-23"));
+        page.scrollIntoView(page.byId("mat-checkbox-23")); // organisation
+        page.byId("mat-checkbox-23").click();
+        await page.clickOnOverlayBackdrop();
+        expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup (1)");
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
@@ -101,43 +121,68 @@ describe("The query pagina", () => {
         expect(page.inpQueryFlagsContainer.isDisplayed()).toBeFalsy();
     });
 
+    it("should count not default values as selected items in advance filter dropdown", async () => {
+        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
+        page.advanceFilterMenu.click();
+        page.inpShowFullDetails.click();
+        await page.clickOnOverlayBackdrop();
+        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (1)");
+        page.advanceFilterMenu.click();
+        page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
+        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (2)");
+    });
+
     it("should have selected No hierarchy flag by default on hierarchy tab", () => {
-        page.scrollIntoView(page.queryParamTabs.get(2));
+        page.scrollIntoView(page.hierarchyFlagsMenu);
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
         // click on Hierarchy flags tab
-        page.queryParamTabs.get(2).click();
-        expect(page.byName("hierarchyFlags").isDisplayed()).toBeTruthy();
-        expect(page.byId("all").isSelected()).toBeTruthy();
-        expect(page.byName("hierarchyD").isEnabled()).toBeFalsy();
+        page.hierarchyFlagsMenu.click();
+        expect(page.hierarchyFlag.isDisplayed()).toBeTruthy();
+        expect(page.hierarchyFlagSlider.getAttribute("aria-valuenow")).toEqual("0");
+        expect(page.hierarchyFlagDescription.getText()).toBeTruthy("No hierarchy flag (default).");
+        expect(page.hierarchyDCeckBoxInput.isEnabled()).toBeFalsy();
     });
 
     it("should uncheck domain flag when hierarchial flag is unselected", async () => {
+        // firefox webdriver doesn't support drag and drop
+        if ((await browser.getCapabilities()).get('browserName').toLowerCase() === 'firefox') {
+            return;
+        }
         // click on Hierarchy flags tab
-        page.scrollIntoView(page.queryParamTabs.get(2));
-        page.queryParamTabs.get(2).click();
-        await waitToBeClickable(page.byName("hierarchyFlags"));
-        expect(page.byName("hierarchyFlags").isDisplayed()).toBeTruthy();
-        expect(page.byId("all").isSelected()).toBeTruthy();
-        page.scrollIntoView(page.byId("all-less"));
-        page.byId("all-less").click();
-        expect(page.byId("all-less").isSelected()).toBeTruthy();
-        page.scrollIntoView(page.byName("hierarchyD"));
-        expect(page.byName("hierarchyD").isEnabled()).toBeTruthy();
-        page.byName("hierarchyD").click();
-        expect(page.byName("hierarchyD").isSelected()).toBeTruthy();
-        page.scrollIntoView(page.byId("all"));
-        page.byId("all").click();
-        expect(page.byId("all").isSelected()).toBeTruthy();
-        expect(page.byId("all-less").isSelected()).toBeFalsy();
-        page.scrollIntoView(page.byName("hierarchyD"));
-        expect(page.byName("hierarchyD").isSelected()).toBeFalsy();
-        expect(page.byName("hierarchyD").isEnabled()).toBeFalsy();
+        page.scrollIntoView(page.hierarchyFlagsMenu);
+        page.hierarchyFlagsMenu.click();
+        await waitToBeClickable(page.hierarchyFlag);
+        expect(page.hierarchyFlag.isDisplayed()).toBeTruthy();
+        expect(page.hierarchyFlagSlider.getAttribute("aria-valuenow")).toEqual("0");
+        // move slider to x
+        await browser.actions().dragAndDrop(
+            page.hierarchyFlagSlider,
+            {x:500, y:0}
+        ).perform();
+        expect(page.hierarchyFlagSlider.getAttribute("aria-valuenow")).toEqual("5");
+        expect(page.hierarchyDCeckBoxInput.isEnabled()).toBeTruthy();
+        page.scrollIntoView(page.hierarchyDCeckBoxInput);
+        page.hierarchyDCeckBox.click();
+        expect(page.hierarchyDCeckBoxInput.isSelected()).toBeTruthy();
+        // move slider to x
+        await browser.actions().dragAndDrop(
+            page.hierarchyFlagSlider,
+            {x:3, y:0}
+        ).perform();
+        expect(page.hierarchyDCeckBox.isSelected()).toBeFalsy();
+        expect(page.hierarchyDCeckBoxInput.isEnabled()).toBeFalsy();
+        await page.clickOnOverlayBackdrop();
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags (1)");
     });
 
-    it("should be specified ripe stat link", () => {
+    it("should be specified ripe stat link", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // ripe stat link for should contain inetnum
@@ -154,11 +199,13 @@ describe("The query pagina", () => {
         expect(urlRoute).toEqual("https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb");
     });
 
-    it("should show object banner with text - No abuse contact found", () => {
+    it("should show object banner with text - No abuse contact found", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // ripe stat link for should contain inetnum
@@ -166,11 +213,13 @@ describe("The query pagina", () => {
         expect(page.lookupHeaderQueryPage.getText()).toContain("No abuse contact found");
     });
 
-    it("should show object banner with abuse contact info", () => {
+    it("should show object banner with abuse contact info", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.201.0.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.lookupHeaderQueryPage.isPresent()).toEqual(true);
@@ -182,13 +231,15 @@ describe("The query pagina", () => {
 
     it("should show object banner with suspected abuse contact info", async () => {
         page.inpQueryString.sendKeys("223.0.0.0");
-        page.scrollIntoView(page.inpShowFullDetails);
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
+        await page.clickOnOverlayBackdrop();
         // -- just to use same mock
-        page.queryParamTabs.get(1).click();
-        await waitToBeClickable(page.byId("search:types:6"));
-        page.scrollIntoView(page.byId("search:types:6"));
-        page.byId("search:types:6").click();
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-7"));
+        page.scrollIntoView(page.byId("mat-checkbox-7"));
+        page.byId("mat-checkbox-7").click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         // --
         page.btnSubmitQuery.click();
@@ -201,11 +252,13 @@ describe("The query pagina", () => {
         expect(page.lookupHeaderEmailLink.get(2).getAttribute("href")).toContain("?source=ripe&key=ORG-TEST2-RIPE&type=organisation");
     });
 
-    it("should show checkbox - Highlight RIPE NCC managed values", () => {
+    it("should show checkbox - Highlight RIPE NCC managed values", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.201.0.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         page.scrollIntoView(page.ripeManagedAttributesLabel);
@@ -219,11 +272,13 @@ describe("The query pagina", () => {
 
     });
 
-    it("should be able to show out of region route from ripe db", () => {
+    it("should be able to show out of region route from ripe db", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(3);
@@ -235,12 +290,14 @@ describe("The query pagina", () => {
 
     it("should be able to show out of region route from ripe db without related objects", async () => {
         page.inpQueryString.sendKeys("211.43.192.0");
-        page.scrollIntoView(page.inpShowFullDetails);
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
-        page.queryParamTabs.get(1).click();
-        await waitToBeClickable(page.byId("search:types:17"));
-        page.scrollIntoView(page.byId("search:types:17"));
-        page.byId("search:types:17").click();
+        await page.clickOnOverlayBackdrop();
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-18"));
+        page.scrollIntoView(page.byId("mat-checkbox-18"));
+        page.byId("mat-checkbox-18").click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
@@ -249,21 +306,25 @@ describe("The query pagina", () => {
         expect(page.getRipeStateFromWhoisObjectOnQueryPage(0).getAttribute("href")).toEqual("https://stat.ripe.net/211.43.192.0/19?sourceapp=ripedb");
     });
 
-    it("should contain ripe-nonauth for source in link on attribute value", () => {
+    it("should contain ripe-nonauth for source in link on attribute value", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(2, 0).getAttribute("href")).toContain("?source=ripe-nonauth&key=211.43.192.0%2F19AS9777&type=route");
     });
 
-    it("should contain date in proper format", () => {
+    it("should contain date in proper format", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 5).getText()).toContain("1970-01-01T00:00:00Z");
@@ -272,13 +333,14 @@ describe("The query pagina", () => {
 
     it("should be able to show out of region route from ripe db without related objects", async () => {
         page.inpQueryString.sendKeys("AS9777");
-        page.scrollIntoView(page.inpShowFullDetails);
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
-        page.scrollIntoView(page.queryParamTabs.get(1));
-        page.queryParamTabs.get(1).click();
-        await waitToBeClickable(page.byId("search:types:2"));
-        page.scrollIntoView(page.byId("search:types:2"));
-        page.byId("search:types:2").click();
+        await page.clickOnOverlayBackdrop();
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-3"));
+        page.scrollIntoView(page.byId("mat-checkbox-3"));
+        page.byId("mat-checkbox-3").click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
@@ -295,13 +357,15 @@ describe("The query pagina", () => {
         expect(page.lookupLinkToXmlJSON.get(2).getAttribute("href")).toContain(".json?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE");
     });
 
-    it("should show version of whois after searching", () => {
+    it("should show version of whois after searching", async () => {
         page.scrollIntoView(page.whoisVersionTag);
         expect(page.whoisVersionTag.isDisplayed()).toBeFalsy();
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         page.scrollIntoView(page.whoisVersion);
@@ -354,7 +418,7 @@ describe("The query pagina", () => {
         expect(page.templateSearchResults.getText()).toContain("registry name must be a letter or a digit.");
     });
 
-    it("should hide template search result after new query is triggered", () => {
+    it("should hide template search result after new query is triggered", async () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.sendKeys("-t aut-num");
         page.btnSubmitQuery.click();
@@ -365,8 +429,10 @@ describe("The query pagina", () => {
         expect(page.resultsSection.isDisplayed()).toBeFalsy();
         page.inpQueryString.clear().sendKeys("211.43.192.0");
         page.scrollIntoView(page.certificateBanner);
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.btnSubmitQuery.click();
         expect(page.templateSearchResults.isPresent()).toBeFalsy();
         // doesn't work in ff but cannot be reproduced manually
@@ -374,10 +440,12 @@ describe("The query pagina", () => {
     });
 
     //--resource in query
-    it("should be able to search --resource (source=GRS) using the text box", () => {
+    it("should be able to search --resource (source=GRS) using the text box", async () => {
         page.scrollIntoView(page.inpQueryString);
+        page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
+        await page.clickOnOverlayBackdrop();
         page.inpQueryString.clear().sendKeys("1.1.1.1 --resource");
         expect(page.inpQueryFlagsContainer.isDisplayed()).toEqual(true);
         page.btnSubmitQuery.click();
@@ -388,9 +456,11 @@ describe("The query pagina", () => {
     it("should show query-flags-container and disable rest of search form", () => {
         page.scrollIntoView(page.inpQueryString);
         page.inpQueryString.clear().sendKeys("-i abuse-c -T organisation -Br --sources RIPE ANNA");
-        expect(page.inpQueryFlagsContainer.isDisplayed()).toEqual(true);
-        expect(page.inpShowFullDetails.isEnabled()).toBeFalsy();
-        expect(page.inpDontRetrieveRelated.isEnabled()).toBeFalsy();
+        expect(page.inpQueryFlagsContainer.isDisplayed()).toBeTruthy();
+        expect(page.typeMenu.isPresent()).toBeFalsy();
+        expect(page.hierarchyFlagsMenu.isPresent()).toBeFalsy();
+        expect(page.inverseLookupMenu.isPresent()).toBeFalsy();
+        expect(page.advanceFilterMenu.isPresent()).toBeFalsy();
     });
 
     it("should show query-flags-container with adequate flags", () => {

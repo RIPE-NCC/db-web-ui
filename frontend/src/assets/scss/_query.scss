@@ -1,12 +1,18 @@
-// space between search form and results
-#searchSection {
-    margin-bottom: 5rem;
-    ul {
-        list-style-type: none;
-        margin-block-start: 0rem;
-        margin-block-end: 1em;
-        margin-inline-start: -40px;
-        margin-inline-end: 0px;
-        padding-inline-start: 40px;
+.dropdown-menus-bar{
+    margin-bottom: 1rem !important;
+    button > span.mat-button-wrapper {
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        > span {
+            vertical-align: unset;
+        }
     }
+}
+
+.mat-menu-panel {
+    max-width: unset !important;
+}
+
+.mat-menu-content:not(:empty) {
+    padding: 8px !important;
 }

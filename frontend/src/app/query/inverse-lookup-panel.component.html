@@ -1,0 +1,158 @@
+<div class="padding">
+    <div class="row radio">
+        <div class="col-md-4">
+            <ul class="list-unstyled" (click)="$event.stopPropagation()">
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ABUSE_C">
+                        abuse-c
+                    </mat-checkbox>
+                <li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ABUSE_MAILBOX">
+                        abuse-mailbox
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ADMIN_C">
+                        admin-c
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.AUTH">
+                        auth
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.AUTHOR">
+                        author
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.FINGERPR">
+                        fingerpr
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.FORM">
+                        form
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.IRT_NFY">
+                        irt-nfy
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.LOCAL_AS">
+                        local-as
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MBRS_BY_REF">
+                        mbrs-by-ref
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-unstyled" (click)="$event.stopPropagation()">
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MEMBER_OF">
+                        member-of
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_BY">
+                        mnt-by
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_DOMAINS">
+                        mnt-domains
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_IRT">
+                        mnt-irt
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_LOWER">
+                        mnt-lower
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_NFY">
+                        mnt-nfy
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_REF">
+                        mnt-ref
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_ROUTES">
+                        mnt-routes
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.NOTIFY">
+                        notify
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-unstyled" (click)="$event.stopPropagation()">
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.NSERVER">
+                        nserver
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ORG">
+                        org
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ORIGIN">
+                        origin
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.PERSON">
+                        person
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.PING_HDL">
+                        ping-hdl
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.REF_NFY">
+                        ref-nfy
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.TECH_C">
+                        tech-c
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.UPD_TO">
+                        upd-to
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ZONE_C">
+                        zone-c
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <section>
+        <a href="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"
+           target="_blank"
+           [title]="'query.optionPageInverse.title' | label">
+            Learn more</a>
+    </section>
+</div>

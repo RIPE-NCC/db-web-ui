@@ -77,6 +77,10 @@ swe-menu {
     background-color: white;
 }
 
+#visual-portal-wrapper > div {
+    z-index: 100000; //because of dropdown menus on query page
+}
+
 .web-component {
     font-size: unset; //overwrite style from template.css
 }

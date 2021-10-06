@@ -1,0 +1,124 @@
+<div class="padding">
+    <div class="row radio">
+        <div class="col-md-4">
+            <ul class="list-unstyled" (click)="$event.stopPropagation()">
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.AS_BLOCK">
+                        as-block
+                    </mat-checkbox>
+                <li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.AS_SET">
+                        as-set
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.AUT_NUM">
+                        aut-num
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.DOMAIN">
+                        domain
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.FILTER_SET">
+                        filter-set
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.INET6NUM">
+                        inet6num
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.INETNUM">
+                        inetnum
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-unstyled" (click)="$event.stopPropagation()">
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.INET_RTR">
+                        inet-rtr
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.IRT">
+                        irt
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.KEY_CERT">
+                        key-cert
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.MNTNER">
+                        mntner
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.ORGANISATION">
+                        organisation
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.PEERING_SET">
+                        peering-set
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.PERSON">
+                        person
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-unstyled" (click)="$event.stopPropagation()">
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.POEM">
+                        poem
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.POETIC_FORM">
+                        poetic-form
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.ROLE">
+                        role
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.ROUTE">
+                        route
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.ROUTE6">
+                        route6
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.ROUTE_SET">
+                        route-set
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.types.RTR_SET">
+                        rtr-set
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <section>
+        <a href="https://www.ripe.net/data-tools/support/documentation/ripe-database-query-reference-manual#LinkTarget_3010"
+           target="_blank"
+           [title]="'query.optionPageTypes.title' | label">
+            Learn more</a>
+    </section>
+</div>
