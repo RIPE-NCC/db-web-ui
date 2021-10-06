@@ -12,17 +12,9 @@ include:
     - project: 'swe/gitlab-ci'
       file: '/templates/whitesource-scanning.yml'
 
-    #- project: 'swe-database-team/gitlab-ci'
-    #  file: '/templates/deployment-template.yml'
-
-    - project: 'swe-database-team/gitlab-ci'
-      file: '/templates/release-template.yml'
-
-
 stages:
   - build
   - test
-  - release
   - deploy
   - browserstack
 
@@ -79,20 +71,6 @@ qa:
         - backend/target/surefire-reports/TEST-*.xml
         - backend/target/failsafe-reports/TEST-*.xml
 
-release:
-    stage: release
-    rules:
-        - if: '$CI_COMMIT_TAG'
-          when: always
-        - when: manual
-          allow_failure: false
-    script:
-        - if [ "$CI_COMMIT_TAG" ]; then NEW_VERSION="$CI_COMMIT_SHORT_SHA"; else NEW_VERSION="$CI_COMMIT_SHORT_SHA-SNAPSHOT"; fi
-        - mvn versions:set -DnewVersion=$NEW_VERSION
-        - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package  -DskipTests -DskipITs -Prelease deploy
-    extends: .release_template
-
-
 browserstack:
     stage: browserstack
     script:
@@ -104,7 +82,6 @@ browserstack:
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
-
 
 
 .deploy_template: &deploy_env
@@ -119,9 +96,7 @@ browserstack:
         - echo "$DBASE_SSH_KEY" | tr -d '\r' | ssh-add -
     script:
         - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/swe-database-team/db-operational.git
-        - if [ "$CI_COMMIT_TAG" ]; then NEW_VERSION="$CI_COMMIT_SHORT_SHA"; else NEW_VERSION="$CI_COMMIT_SHORT_SHA-SNAPSHOT"; fi
-        - mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.1:copy -Dartifact=net.ripe.db:whois-db:$NEW_VERSION:jar -DoutputDirectory=target/
-        - find target -name whois-db-$NEW_VERSION.jar -exec cp {} db-operational/deployment/whois-db-$CI_COMMIT_SHORT_SHA.jar \;
+        - find $ARTIFACT_DIR/target -name $ARTIFACT_NAME-*-SNAPSHOT.jar -exec cp {} db-operational/deployment/$ARTIFACT_NAME-$CI_COMMIT_SHORT_SHA.jar \;
         - cd db-operational/deployment
         - ./stage.sh -p $PROJECT_NAME -e $CI_ENVIRONMENT_NAME $ARTIFACT_NAME-$CI_COMMIT_SHORT_SHA.jar
         - ./sync.sh -p $PROJECT_NAME -e $CI_ENVIRONMENT_NAME
@@ -164,3 +139,4 @@ deploy_prod:
     when: manual
     only:
         - tags
+
