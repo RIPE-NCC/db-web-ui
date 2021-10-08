@@ -103,7 +103,6 @@ browserstack:
         paths:
             - backend/target/db-web-ui*.jar
 
-
 .deploy_template: &deploy_env
     stage: deploy
     before_script:
@@ -130,3 +129,10 @@ deploy_dev:
         name: dev
     when: manual
 
+deploy_prod:
+    <<: *deploy_env
+    environment:
+        name: prod
+    when: manual
+    only:
+        - tags
