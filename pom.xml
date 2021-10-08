@@ -54,13 +54,13 @@
         <java.version>11</java.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
     </properties>
-
+<!--
     <repositories>
         <repository>
             <id>ripe-releases</id>
             <url>https://artefacts.ripe.net/repository/maven-public/</url>
         </repository>
-    </repositories>
+    </repositories>-->
 
     <modules>
         <module>frontend</module>
