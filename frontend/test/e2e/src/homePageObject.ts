@@ -214,6 +214,7 @@ module.exports = {
     modalBody: element(by.css("ngb-modal-window")).element(by.css(".modal-body")),
     modalBanner: element(by.css("ngb-modal-window")).element(by.css(".modal-banner")),
     modalFooter: element(by.css("ngb-modal-window")).element(by.css(".modal-footer")),
+    modalFooterForceDeleteLink: element(by.css("ngb-modal-window")).element(by.css(".modal-footer")).element(by.css("a:nth-child(1)")),
     modalSplashBtn: element(by.id("modal-splash-button")),
     modalSplashText: element(by.css("ngb-modal-window")).element(by.css("h1")),
     modalHeader: element(by.css("ngb-modal-window")).element(by.css(".modal-header")),
