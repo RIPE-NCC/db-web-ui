@@ -66,7 +66,7 @@ export class MaintainersEditorComponent {
         this.attributes = this.whoisObject.attributes.attribute;
         this.objectType = this.attributes[0].name;
         this.objectName = this.attributes[0].value;
-        if (this.objectType === "route") {
+        if (this.objectType === "route" || this.objectType === "route6") {
             this.objectName += this.attributes.find(attr => attr.name === "origin").value;
         }
         if (this.isModifyMode()) {
