@@ -159,9 +159,14 @@ ngb-popover-window.popover {
 .modal, .modal-backdrop.show {
   z-index: 999999 !important; //needs to be bigger than <ripe-header>: 99999
 }
-.modal-header .close {
-  padding: 0 !important;
-  margin: 0 !important;
+.modal-header {
+  .close {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .modal-title {
+    margin: 0 !important;
+  }
 }
 
 .table-striped>tbody>tr:nth-child(odd),

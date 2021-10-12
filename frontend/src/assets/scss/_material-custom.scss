@@ -95,4 +95,3 @@ $custom-typography: mat-typography-config(
         $input:         mat-typography-level(inherit, 1.125, 400)
 );
 @include angular-material-typography($custom-typography);
-//@include mat-core($custom-typography);
