@@ -1,9 +1,9 @@
 <div class="modal-content no-rounded">
     <div class="modal-header">
-        <h5 class="modal-title" id="commonModalLabel">
+        <h2 class="modal-title" id="commonModalLabel">
             <span *ngIf="canBeDeleted">Please provide the reason for delete</span>
             <span *ngIf="!canBeDeleted">This object cannot be deleted</span>
-        </h5>
+        </h2>
         <i class="fa fa-close close" aria-label="Close" (click)="cancel()"></i>
     </div>
 
