@@ -58,7 +58,7 @@
     <repositories>
         <repository>
             <id>ripe-releases</id>
-            <url>https://artefacts.ripe.net/repository/maven-public/</url>
+            <url>https://artefacts.ripe.net/repository/maven-releases-ncc/</url>
         </repository>
     </repositories>
 
