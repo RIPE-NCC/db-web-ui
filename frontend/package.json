@@ -1,5 +1,5 @@
 {
-  "name": "whois-webui",
+  "name": "db-web-ui",
   "version": "0.0.0",
   "scripts": {
     "clean": "rm -rf node_modules",

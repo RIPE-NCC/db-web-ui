@@ -18,7 +18,6 @@ include:
     - project: 'swe-database-team/gitlab-ci'
       file: '/templates/release-template.yml'
 
-
 stages:
   - build
   - test
@@ -51,6 +50,11 @@ e2e:
     tags:
       - whois
     stage: test
+    rules:
+        -   if: '$CI_COMMIT_REF_NAME == "master"'
+            when: always
+        -   when: manual
+            allow_failure: true
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
@@ -62,6 +66,11 @@ e2e-firefox:
     tags:
       - whois
     stage: test
+    rules:
+        -   if: '$CI_COMMIT_REF_NAME == "master"'
+            when: always
+        -   when: manual
+            allow_failure: true
     script:
       - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
       - export DISPLAY=:20
@@ -70,6 +79,11 @@ e2e-firefox:
 
 qa:
   stage: test
+  rules:
+      -   if: '$CI_COMMIT_REF_NAME == "master"'
+          when: always
+      -   when: manual
+          allow_failure: true
   script:
     - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
   allow_failure: true
