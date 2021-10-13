@@ -60,6 +60,10 @@
             <id>ripe-releases</id>
             <url>https://artefacts.ripe.net/repository/maven-releases-ncc/</url>
         </repository>
+        <repository>
+            <id>ripe-snapshots</id>
+            <url>https://artefacts.ripe.net/repository/maven-snapshots-ncc/</url>
+        </repository>
     </repositories>
 
     <modules>
