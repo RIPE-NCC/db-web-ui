@@ -36,12 +36,8 @@ build:
   tags:
     - whois
   stage: build
-  before_script:
-      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA} -Prelease
-    - docker tag db-web-ui:${CI_COMMIT_SHA} $CI_REGISTRY_IMAGE/db-web-ui:${CI_COMMIT_SHORT_SHA}
-    - docker push $CI_REGISTRY_IMAGE/db-web-ui:${CI_COMMIT_SHORT_SHA}
   artifacts:
     paths:
       - backend/target/db-web-ui*.jar
@@ -102,8 +98,8 @@ release:
           allow_failure: false
     script:
         - if [ "$CI_COMMIT_TAG" ]; then NEW_VERSION="$CI_COMMIT_SHORT_SHA"; else NEW_VERSION="$CI_COMMIT_SHORT_SHA-SNAPSHOT"; fi
-        - mvn versions:set -DnewVersion=$NEW_VERSION -Dartifact=$ARTIFACT_NAME
-        - mvn -DskipTests -DskipITs -Djar.finalName=$ARTIFACT_NAME-$NEW_VERSION.jar -Prelease deploy
+        - mvn versions:set -DnewVersion=$NEW_VERSION
+        - mvn -DskipTests -DskipITs  deploy
     extends: .release_template
 
 browserstack:

@@ -11,12 +11,12 @@
     </parent>
 
     <groupId>net.ripe.whois</groupId>
-    <artifactId>db-web-ui</artifactId>
+    <artifactId>db-web-ui-parent</artifactId>
     <!-- version is not used (CD server versions artifacts by specifying Implementation-Version (see maven-war-plugin below) -->
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>db-web-ui</name>
+    <name>db-web-ui-parent</name>
 
     <organization>
         <name>RIPE NCC, the Netherlands</name>
