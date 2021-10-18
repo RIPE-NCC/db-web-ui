@@ -13,10 +13,8 @@ include:
     - project: 'swe/gitlab-ci'
       file: '/templates/whitesource-scanning.yml'
     - project: 'swe-database-team/gitlab-ci'
-      ref: 'use_nexus_artifact'
       file: '/templates/release-template.yml'
     - project: 'swe-database-team/gitlab-ci'
-      ref: 'use_nexus_artifact'
       file: '/templates/deployment-template.yml'
 
 stages:
