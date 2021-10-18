@@ -131,7 +131,7 @@ export class RestService {
             throw new TypeError("restService.authenticate source must have a value");
         }
         const params = new HttpParams()
-            .set("password", passwords)
+            .set("password", encodeURIComponent(passwords))
             .set("unfiltered", "true");
         const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, {params})

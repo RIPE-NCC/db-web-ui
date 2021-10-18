@@ -71,4 +71,15 @@ describe("RestService", () => {
         expect(req.request.method).toBe("GET");
         req.flush(3);
     });
+
+    it("should encode password when authenticate mntner", () => {
+        restService.authenticate(null, "RIPE", "mntner", "SVONJA-MNT", "test+123+456")
+            .then((resp) => {
+                expect(resp).toBe("TEST");
+            });
+        // test+123+456 should be encoded to test%252B123%252B456
+        const req = httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/SVONJA-MNT?password=test%252B123%252B456&unfiltered=true"});
+        expect(req.request.method).toBe("GET");
+        req.flush("TEST");
+    });
 });
