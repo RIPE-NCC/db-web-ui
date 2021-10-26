@@ -6,6 +6,7 @@ import {catchError, debounceTime, distinctUntilChanged, map, switchMap, tap} fro
 import * as _ from "lodash";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {IMntByModel} from "../shared/whois-response-type.model";
+import { HttpParameterCodec } from '@angular/common/http';
 
 @Injectable()
 export class RestService {
@@ -130,8 +131,8 @@ export class RestService {
         if (!source) {
             throw new TypeError("restService.authenticate source must have a value");
         }
-        const params = new HttpParams()
-            .set("password", encodeURIComponent(passwords))
+        const params = new HttpParams({ encoder: new CustomHttpParamEncoder() })
+            .set("password", passwords)
             .set("unfiltered", "true");
         const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, {params})
@@ -148,7 +149,7 @@ export class RestService {
     }
 
     public fetchObject(source: string, objectType: string, objectName: string, passwords?: any, unformatted?: any) {
-        let params = new HttpParams();
+        let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
         if (passwords) {
             if (Array.isArray(passwords)) {
                 passwords.forEach(password => params = params.append("password", password));
@@ -176,7 +177,7 @@ export class RestService {
     }
 
     public createObject(source: string, objectType: string, attributes: any, passwords: string[], overrides?: any, unformatted?: any) {
-        let params = new HttpParams();
+        let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
         if (overrides) {
             params = params.set("override",  overrides)
         }
@@ -207,7 +208,7 @@ export class RestService {
     }
 
     public modifyObject(source: string, objectType: string, objectName: any, attributes: any, passwords: any, overrides?: any, unformatted?: any) {
-        let params = new HttpParams();
+        let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
         if (overrides) {params = params.set("override", overrides); }
         if (passwords) {
             if (Array.isArray(passwords)) {
@@ -242,7 +243,7 @@ export class RestService {
 
     public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, passwords: string, dryRun: boolean = false) {
         const service = withReferences ? "references" : "whois";
-        let params = new HttpParams()
+        let params = new HttpParams({ encoder: new CustomHttpParamEncoder() })
             .set("dry-run", String(!!dryRun))
             .set("reason", reason);
         if (passwords) {
@@ -296,4 +297,24 @@ export class RestService {
                     return throwError(error);
                 }));
     }
+}
+
+export class CustomHttpParamEncoder implements HttpParameterCodec {
+
+  encodeKey(key: string): string {
+    return encodeURIComponent(key);
+  }
+
+  encodeValue(value: string): string {
+    return encodeURIComponent(value);
+  }
+
+  decodeKey(key: string): string {
+    return decodeURIComponent(key);
+  }
+
+  decodeValue(value: string): string {
+    return decodeURIComponent(value);
+  }
+
 }
