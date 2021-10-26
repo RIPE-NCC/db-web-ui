@@ -195,7 +195,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
             component = fixture.componentInstance;
             component.credentialsService.setCredentials("TEST-MNT", "@123");
             fixture.detectChanges();
-            httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123&unfiltered=true"})
+            httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123&unfiltered=true"})
                 .flush({objects: {
                                     object: [{
                                         "primary-key": {attribute: [{name: "as-block", value: "MY-AS-BLOCK"}]},
@@ -262,7 +262,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "changed", "dummy@ripe.net");
             component.submit();
             fixture.detectChanges();
-            httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123"})
+            httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123"})
                 .flush({objects: {
                         object: [
                             {
@@ -296,7 +296,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
             component.submit();
             await fixture.whenStable();
 
-            httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123"})
+            httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123"})
                 .flush({objects: {
                         object: [
                             {

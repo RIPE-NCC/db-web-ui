@@ -466,7 +466,7 @@ describe("TextCreateComponent", () => {
 
         httpMock.expectOne({
             method: "POST",
-            url: "api/whois/RIPE/person?override=me,secret,because&unformatted=true"
+            url: "api/whois/RIPE/person?override=me%2Csecret%2Cbecause&unformatted=true"
         }).flush({
             objects: {
                 object: [

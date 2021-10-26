@@ -181,7 +181,7 @@ describe("CreateModifyComponent", () => {
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "A");
             component.submit();
 
-            httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block?password=@123"}).flush(DUMMY_RESPONSE);
+            httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block?password=%40123"}).flush(DUMMY_RESPONSE);
             fixture.detectChanges();
 
             const resp = component.messageStoreService.get("MY-AS-BLOCK");
