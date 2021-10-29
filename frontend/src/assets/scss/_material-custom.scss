@@ -1,0 +1,97 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$mat-blackrussian: (
+        50: #E3E4EC,
+        100: #B8BBD0,
+        200: #8B8FB0,
+        300: #606591,
+        400: #42477D,
+        500: #242B6A,
+        600: #1F2562,
+        700: #171D58,
+        800: #0F154C,
+        900: #080037,
+        A100: #5656FF,
+        A200: #2323FF,
+        A400: #0000EF,
+        A700: #0000D5,
+        contrast: (
+                50: $black-87-opacity,
+                100: $black-87-opacity,
+                200: $black-87-opacity,
+                300: $black-87-opacity,
+                400: $black-87-opacity,
+                500: white,
+                600: white,
+                700: white,
+                800: $white-87-opacity,
+                900: $white-87-opacity,
+                A100: $black-87-opacity,
+                A200: white,
+                A400: white,
+                A700: white,
+        )
+);
+
+$mat-bondiblue: (
+        50: #EOF8F9,
+        100: #B3EDF0,
+        200: #81E1E8,
+        300: #4FD3DE,
+        400: #27CAD8,
+        500: #00C0D3,
+        600: #00B0C0,
+        700: #009BA6,
+        800: #01878E,
+        900: #026364,
+        A100: #A8F4FF,
+        A200: #75EDFF,
+        A400: #42E7FF,
+        A700: #29E3FF,
+        contrast: (
+                50: $black-87-opacity,
+                100: $black-87-opacity,
+                200: $black-87-opacity,
+                300: $black-87-opacity,
+                400: $black-87-opacity,
+                500: white,
+                600: white,
+                700: white,
+                800: $white-87-opacity,
+                900: $white-87-opacity,
+                A100: $black-87-opacity,
+                A200: white,
+                A400: white,
+                A700: white,
+        )
+);
+
+$custom-theme-primary: mat-palette($mat-blackrussian);
+$custom-theme-accent: mat-palette($mat-bondiblue, 700);
+$custom-theme-warn: mat-palette($mat-red);
+
+//TODO THIS WILL BE CHANGED SOON, I AM DISCUSSING IN TD CIRCLE
+//$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
+$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-primary, $custom-theme-warn);
+
+@include angular-material-theme($custom-theme);
+
+$custom-typography: mat-typography-config(
+        $font-family: 'Public Sans',
+        $display-4:     mat-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+        $display-3:     mat-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+        $display-2:     mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+        $display-1:     mat-typography-level(34px, 40px, 400),
+        $headline:      mat-typography-level(1.563rem, 32px, 700),
+        $title:         mat-typography-level(20px, 32px, 500),
+        $subheading-2:  mat-typography-level(16px, 28px, 400),
+        $subheading-1:  mat-typography-level(1rem, 24px, 400),
+        $body-2:        mat-typography-level(14px, 24px, 500),
+        $body-1:        mat-typography-level(1rem, 24px, 400),
+        $caption:       mat-typography-level(12px, 20px, 400),
+        $button:        mat-typography-level(14px, 14px, 500),
+                // Line-height must be unit-less fraction of the font-size.
+        $input:         mat-typography-level(inherit, 1.125, 400)
+);
+@include angular-material-typography($custom-typography);

@@ -143,6 +143,7 @@ module.exports = {
     inpStatusList: element(by.id("createForm")).element(by.css("[name^='status']")).element(by.css(".ng-dropdown-panel-items")).all(by.css(".ng-option")),
     prefixErrMsg: element(by.id("createForm")).element(by.css(".text-error")),
     prefixErrMsgLink: element(by.id("createForm")).element(by.css(".text-error")).element(by.css("a")),
+    netnameErrMsg: element(by.id("createForm")).element(by.css(".attr-1")).element(by.css(".text-error")),
     inpPrefix: element(by.id("createForm")).element(by.name("prefix$0")),
     inpNserver1: element(by.id("createForm")).element(by.name("nserver$1")),
     inpNserver2: element(by.id("createForm")).element(by.name("nserver$2")),
@@ -213,6 +214,7 @@ module.exports = {
     modalBody: element(by.css("ngb-modal-window")).element(by.css(".modal-body")),
     modalBanner: element(by.css("ngb-modal-window")).element(by.css(".modal-banner")),
     modalFooter: element(by.css("ngb-modal-window")).element(by.css(".modal-footer")),
+    modalFooterForceDeleteLink: element(by.css("ngb-modal-window")).element(by.css(".modal-footer")).element(by.css("a:nth-child(1)")),
     modalSplashBtn: element(by.id("modal-splash-button")),
     modalSplashText: element(by.css("ngb-modal-window")).element(by.css("h1")),
     modalHeader: element(by.css("ngb-modal-window")).element(by.css(".modal-header")),
@@ -303,8 +305,19 @@ module.exports = {
     inpQueryString: element(by.name("qp.queryText")),
     inpQueryFlagsContainer: element(by.css("query-flags")),
     inpQueryFlags: element(by.css("query-flags")).all(by.css("flag")),
-    inpShowFullDetails: element(by.name("qp.showFullObjectDetails")),
-    inpDontRetrieveRelated: element(by.name("qp.doNotRetrieveRelatedObjects")),
+    typeMenu: element(by.id("typeMenu")),
+    hierarchyFlagsMenu: element(by.id("hierarchyFlagsMenu")),
+    inverseLookupMenu: element(by.id("inverseLookupMenu")),
+    advanceFilterMenu: element(by.id("advanceFilterMenu")),
+    hierarchyFlag: element(by.css("hierarchy-flags")),
+    hierarchyFlagSlider: element(by.css("hierarchy-flags")).element(by.css("mat-slider")),
+    hierarchyFlagDescription: element(by.css(".flag-description")),
+    hierarchyDCeckBox: element(by.id("hierarchyD")),
+    hierarchyDCeckBoxInput: element(by.id("hierarchyD")).element(by.css(".mat-checkbox-input")),
+    inpShowFullDetails: element(by.id("showFullObjectDetails")),
+    inpShowFullDetailsInput: element(by.id("showFullObjectDetails")).element(by.css(".mat-checkbox-input")),
+    inpDontRetrieveRelated: element(by.id("doNotRetrieveRelatedObjects")),
+    inpDontRetrieveRelatedInput: element(by.id("doNotRetrieveRelatedObjects")).element(by.css(".mat-checkbox-input")),
     btnSubmitQuery: element(by.name("searchform")).element(by.css("button.blue-button")),
     resultsSection: element(by.id("resultsSection")),
     searchResults: element(by.id("resultsSection")).all(by.css("lookup")),
@@ -527,7 +540,12 @@ module.exports = {
     getMyResourcesTopMenu: function() {
         return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-resources"))
     },
+
     getMyAccountTopMenu: function() {
         return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-account"))
+    },
+
+    clickOnOverlayBackdrop: async function() {
+        await browser.executeScript("const event = new MouseEvent('click', {clientX: 0, clientY: 0}); $('.cdk-overlay-backdrop').trigger(event)");
     }
 };

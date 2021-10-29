@@ -94,3 +94,5 @@ browserstack:
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
+
+

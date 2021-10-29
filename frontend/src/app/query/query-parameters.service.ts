@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
 import {IQueryState} from "./query.component";
+import {HierarchyFlagsService} from "./hierarchy-flags.service";
 
 export interface ITemplateTerm {
     templateType: string; // any from allowedTemplateQueries
@@ -54,7 +55,7 @@ export class QueryParametersService {
         return {
             bflag: queryParams.showFullObjectDetails.toString(),
             dflag: queryParams.reverseDomain.toString() || undefined,
-            hierarchyFlag: QueryParametersService.shortHierarchyFlagToLong(queryParams.hierarchy) || undefined,
+            hierarchyFlag: HierarchyFlagsService.shortHierarchyFlagToLong(queryParams.hierarchy) || undefined,
             inverse: QueryParametersService.convertMapOfBoolsToList(queryParams.inverse).join(";") || undefined,
             rflag: queryParams.doNotRetrieveRelatedObjects.toString() || undefined,
             searchtext: queryParams.queryText && queryParams.queryText.trim() || "",
@@ -69,19 +70,6 @@ export class QueryParametersService {
             .map((obj) => {
                 return obj.replace(/_/g, "-").toLocaleLowerCase();
             });
-    }
-
-    public static shortHierarchyFlagToLong(flag: string) {
-        return hierarchyFlagMap[flag] || "";
-    }
-
-    public static longHierarchyFlagToShort(flag: string) {
-        for (const shortFlag of Object.keys(hierarchyFlagMap)) {
-            if (hierarchyFlagMap[shortFlag] === flag) {
-                return shortFlag;
-            }
-        }
-        return "";
     }
 
     public static typesAsList(queryParams: IQueryParameters): string[] {
@@ -143,7 +131,7 @@ export class QueryParametersService {
             .map((item: string, idx: number): string => {
                 if (item.indexOf("--") === 0) {
                     // parse long option
-                    const short = QueryParametersService.longHierarchyFlagToShort(item.substr(2));
+                    const short = HierarchyFlagsService.longHierarchyFlagToShort(item.substr(2));
                     if (short) {
                         if (!queryParams.hierarchy) {
                             queryParams.hierarchy = short;

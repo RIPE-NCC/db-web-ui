@@ -33,11 +33,11 @@ describe("RestService", () => {
         const name = "TEST-MNT";
         const reason = "testing";
 
-        restService.deleteObject(source, objectType, name, reason, false, "password")
+        restService.deleteObject(source, objectType, name, reason, false, "pass +word")
             .subscribe((resp) => {
                 expect(resp).toBe("deleted");
         });
-        const req = httpMock.expectOne({method: "DELETE", url: "api/whois/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=password"});
+        const req = httpMock.expectOne({method: "DELETE", url: "api/whois/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=pass%20%2Bword"});
         expect(req.request.method).toBe("DELETE");
         req.flush("deleted");
     });
@@ -48,11 +48,11 @@ describe("RestService", () => {
         const name = "TEST-MNT";
         const reason = "testing";
 
-        restService.deleteObject(source, objectType, name, reason, true, "password")
+        restService.deleteObject(source, objectType, name, reason, true, "pass +word")
             .subscribe((resp) => {
                 expect(resp).toBe("deleted");
             });
-        const req = httpMock.expectOne({method: "DELETE", url: "api/references/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=password"});
+        const req = httpMock.expectOne({method: "DELETE", url: "api/references/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=pass%20%2Bword"});
         expect(req.request.method).toBe("DELETE");
         req.flush("deleted");
     });
@@ -71,4 +71,48 @@ describe("RestService", () => {
         expect(req.request.method).toBe("GET");
         req.flush(3);
     });
+
+    it("should encode password when authenticate mntner", () => {
+        restService.authenticate(null, "RIPE", "mntner", "SVONJA-MNT", "test 123+&456")
+            .then((resp) => {
+                expect(resp).toBe("TEST");
+            });
+        // test 123+456 should be encoded to test%20123%2B456
+        const req = httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/SVONJA-MNT?password=test%20123%2B%26456&unfiltered=true"});
+        expect(req.request.method).toBe("GET");
+        req.flush("TEST");
+    });
+
+  it("should properly encode on fetchObject", () => {
+    const source = "ripe";
+    const objectType = "ROUTE6";
+    const name = "a000:b000::/43AS123";
+
+    restService.fetchObject(source, objectType, name, "pass +word").subscribe(() => {});
+
+    const req = httpMock.expectOne({method: "GET", url: "api/whois/RIPE/ROUTE6/a000%3Ab000%3A%3A%2F43AS123?password=pass%20%2Bword&unfiltered=true"});
+    expect(req.request.method).toBe("GET");
+  });
+
+  it("should properly encode on modifyObject", () => {
+    const source = "ripe";
+    const objectType = "ROUTE6";
+    const name = "a000:b000::/43AS123";
+
+    restService.modifyObject(source, objectType, name, {},"pass +word").subscribe(() => {});
+
+    const req = httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/ROUTE6/a000:b000::/43AS123?password=pass%20%2Bword"});
+    expect(req.request.method).toBe("PUT");
+  });
+
+  it("should properly encode on createObject", () => {
+    const source = "ripe";
+    const objectType = "ROUTE6";
+
+    restService.createObject(source, objectType, {},[ "pass +word", "pwd+&" ]).subscribe(() => {});
+
+    const req = httpMock.expectOne({method: "POST", url: "api/whois/ripe/ROUTE6?password=pass%20%2Bword&password=pwd%2B%26"});
+    expect(req.request.method).toBe("POST");
+  });
+
 });

@@ -6,6 +6,8 @@
 @import "assets/scss/paginator.scss";
 @import "assets/scss/full-text-search.scss";
 @import "assets/scss/query.scss";
+@import "assets/scss/hierarchy-flags-panel.scss";
+@import "assets/scss/advance-filter-panel.scss";
 /* View based CSS */
 @import "assets/scss/create-obj.scss";
 @import "assets/scss/datatables.scss";
@@ -18,6 +20,7 @@
 /* Module based CSS */
 @import "assets/scss/uiselect-custom.scss";
 @import "assets/scss/bootstrap-custom.scss";
+@import "assets/scss/material-custom.scss";
 /* Custom directives */
 @import "assets/scss/flag.scss";
 @import "assets/scss/forgot-maintainer-password.scss";

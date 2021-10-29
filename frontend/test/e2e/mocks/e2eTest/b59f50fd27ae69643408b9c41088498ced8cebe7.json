@@ -1,0 +1,57 @@
+{
+  "requestUrl": "/db-web-ui/api/whois/RIPE/route6/2a09%3A4c2%3A%3A%2F32AS58057?dry-run=true&reason=dry-run",
+  "contentType": "application/javascript",
+  "statusCode": 401,
+  "data": {
+    "link" : {
+      "type" : "locator",
+      "href" : "http://wagyu.prepdev.ripe.net:1080/RIPE/route6/2a09:4c2::/32AS58057?dry-run=true&reason=dry-run"
+    },
+    "errormessages" : {
+      "errormessage" : [ {
+        "severity" : "Error",
+        "text" : "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+        "args" : [ {
+          "value" : "route6"
+        }, {
+          "value" : "2a09:4c2::/32AS58057"
+        }, {
+          "value" : "mnt-by"
+        }, {
+          "value" : "SBMT"
+        } ]
+      }, {
+        "severity" : "Error",
+        "text" : "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+        "args" : [ {
+          "value" : "inet6num"
+        }, {
+          "value" : "2a09:4c0::/29"
+        }, {
+          "value" : "mnt-lower"
+        }, {
+          "value" : "SBMT"
+        } ]
+      }, {
+        "severity" : "Error",
+        "text" : "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+        "args" : [ {
+          "value" : "inet6num"
+        }, {
+          "value" : "2a09:4c0::/29"
+        }, {
+          "value" : "mnt-by"
+        }, {
+          "value" : "RIPE-NCC-HM-MNT, SBMT"
+        } ]
+      }, {
+        "severity" : "Info",
+        "text" : "Dry-run performed, no changes to the database have been made"
+      } ]
+    },
+    "terms-and-conditions" : {
+      "type" : "locator",
+      "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}

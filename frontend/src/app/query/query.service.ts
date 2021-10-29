@@ -4,7 +4,8 @@ import {catchError, mergeMap, reduce} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import * as _ from "lodash";
 import {IWhoisResponseModel} from "../shared/whois-response-type.model";
-import {IQueryParameters, QueryParametersService} from "./query-parameters.service";
+import {IQueryParameters} from "./query-parameters.service";
+import {HierarchyFlagsService} from "./hierarchy-flags.service";
 
 const EMPTY_MODEL: IWhoisResponseModel = {
     errormessages: {errormessage: []},
@@ -121,7 +122,7 @@ export class QueryService {
             linkParts.push("types=" + typs.join(";"));
         }
         if (qp.hierarchy) {
-            const longFlag = QueryParametersService.shortHierarchyFlagToLong(qp.hierarchy);
+            const longFlag = HierarchyFlagsService.shortHierarchyFlagToLong(qp.hierarchy);
             if (longFlag) {
                 linkParts.push("hierarchyFlag=" + longFlag);
             }
@@ -157,7 +158,7 @@ export class QueryService {
             }
         }
         if (qp.hierarchy) {
-            const f = QueryParametersService.shortHierarchyFlagToLong(qp.hierarchy);
+            const f = HierarchyFlagsService.shortHierarchyFlagToLong(qp.hierarchy);
             if (f) {
                 linkParts.push("flags=" + f);
             }
