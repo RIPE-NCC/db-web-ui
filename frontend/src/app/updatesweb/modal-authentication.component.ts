@@ -125,7 +125,7 @@ export class ModalAuthenticationComponent {
                     }
                 });
             }, (error: any) => {
-                console.error("Authentication error:" + error);
+                console.info("Authentication error:" + error);
 
                 if (!_.isUndefined(error.data)) {
                     this.selected.message = _.reduce(this.whoisResourcesService.getGlobalErrors(error.data), (total, msg) => {
