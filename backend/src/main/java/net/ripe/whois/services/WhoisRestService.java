@@ -56,7 +56,7 @@ public class WhoisRestService implements ExchangeErrorHandler {
 
             (HttpStatusCodeException e) -> {
                 if (e instanceof HttpClientErrorException) {
-                    LOGGER.warn("Whois HTTP status {} will be returned as 200", e.getStatusCode());
+                    LOGGER.info("Whois HTTP status {} will be returned as 200", e.getStatusCode());
                     return new ResponseEntity<>(UriUtils.encode(e.getResponseBodyAsString(), "UTF-8"), HttpStatus.OK);
                 }
                 // e instanceof HttpServerErrorException
