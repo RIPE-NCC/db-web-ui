@@ -131,7 +131,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
             LOGGER.info("Failed to retrieve user info from whois internal {}", e.getMessage());
             throw new RestClientException(e.getStatusCode().value(), "");
         } catch (Exception e){
-            LOGGER.warn("Exception: Failed to parse user info from whois internal {}", e.getMessage());
+            LOGGER.info("Exception: Failed to parse user info from whois internal {}", e.getMessage());
             throw new RestClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
         }
     }
