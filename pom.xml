@@ -11,12 +11,12 @@
     </parent>
 
     <groupId>net.ripe.whois</groupId>
-    <artifactId>whois-webui</artifactId>
+    <artifactId>db-web-ui-parent</artifactId>
     <!-- version is not used (CD server versions artifacts by specifying Implementation-Version (see maven-war-plugin below) -->
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>whois_webui</name>
+    <name>db-web-ui-parent</name>
 
     <organization>
         <name>RIPE NCC, the Netherlands</name>
@@ -39,6 +39,17 @@
         <developerConnection>scm:git:ssh://git@stash.ripe.net:7999/swe/db-web-ui.git</developerConnection>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>ripe-releases</id>
+            <url>https://artefacts.ripe.net/repository/maven-releases-ncc/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ripe-snapshots</id>
+            <url>https://artefacts.ripe.net/repository/maven-snapshots-ncc/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <java.version>11</java.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
@@ -47,7 +58,7 @@
     <repositories>
         <repository>
             <id>ripe-releases</id>
-            <url>https://artefacts.ripe.net/repository/maven-public/</url>
+            <url>https://artefacts.ripe.net/repository/maven-releases-ncc/</url>
         </repository>
     </repositories>
 
