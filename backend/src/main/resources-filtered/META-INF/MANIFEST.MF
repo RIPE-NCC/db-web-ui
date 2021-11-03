@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Implementation-Title: whois-webui
+Implementation-Title: db-web-ui
 Implementation-Version: ${implementation-version}
 Implementation-Vendor: net.ripe.whois

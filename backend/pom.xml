@@ -5,11 +5,11 @@
 
     <parent>
         <groupId>net.ripe.whois</groupId>
-        <artifactId>whois-webui</artifactId>
+        <artifactId>db-web-ui-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>backend</artifactId>
+    <artifactId>db-web-ui</artifactId>
 
     <properties>
         <apache-httpclient>4.5.10</apache-httpclient>
