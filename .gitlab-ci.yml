@@ -75,8 +75,8 @@ qa:
 
 release:
     stage: release
-    when: manual
-    allow_failure: false
+    only:
+        - tags
     script:
         - if [ "$CI_COMMIT_TAG" ]; then NEW_VERSION="$CI_COMMIT_SHORT_SHA"; else NEW_VERSION="$CI_COMMIT_SHORT_SHA-SNAPSHOT"; fi
         - mvn versions:set -DnewVersion=$NEW_VERSION -Dartifact=$ARTIFACT_NAME
