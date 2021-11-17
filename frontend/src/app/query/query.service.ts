@@ -69,7 +69,7 @@ export class QueryService {
 
         // calculate the flags
         let flags = qp.hierarchy || "";
-        if (qp.reverseDomain && flags) {
+        if (qp.reverseDomain) {
             flags += "d";
         }
         if (qp.doNotRetrieveRelatedObjects) {

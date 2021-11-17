@@ -193,9 +193,17 @@ export class QueryComponent implements OnDestroy {
     }
 
     public countSelectedDropdownHierarchyFlags() {
-        return !!this.qp.hierarchy && this.qp.hierarchy !== HierarchyFlagsService.hierarchyFlagMap[0].short
-            ? this.qp.reverseDomain ? "(2)" : "(1)"
-            : "";
+        let count = 0;
+
+        if (this.qp.reverseDomain) {
+            count++;
+        }
+
+        if (!!this.qp.hierarchy && this.qp.hierarchy !== HierarchyFlagsService.hierarchyFlagMap[0].short) {
+            count++;
+        }
+
+        return count > 0? "(" + count + ")" : "";
     }
 
     public countSelectedDropdownAdvanceFilter() {

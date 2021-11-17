@@ -141,10 +141,10 @@ describe("The query pagina", () => {
         expect(page.hierarchyFlag.isDisplayed()).toBeTruthy();
         expect(page.hierarchyFlagSlider.getAttribute("aria-valuenow")).toEqual("0");
         expect(page.hierarchyFlagDescription.getText()).toBeTruthy("No hierarchy flag (default).");
-        expect(page.hierarchyDCeckBoxInput.isEnabled()).toBeFalsy();
+        expect(page.hierarchyDCheckBoxInput.isEnabled()).toBeTruthy();
     });
 
-    it("should uncheck domain flag when hierarchial flag is unselected", async () => {
+    it("should not uncheck domain flag when hierarchial flag is unselected", async () => {
         // firefox webdriver doesn't support drag and drop
         if ((await browser.getCapabilities()).get('browserName').toLowerCase() === 'firefox') {
             return;
@@ -161,19 +161,19 @@ describe("The query pagina", () => {
             {x:500, y:0}
         ).perform();
         expect(page.hierarchyFlagSlider.getAttribute("aria-valuenow")).toEqual("5");
-        expect(page.hierarchyDCeckBoxInput.isEnabled()).toBeTruthy();
-        page.scrollIntoView(page.hierarchyDCeckBoxInput);
-        page.hierarchyDCeckBox.click();
-        expect(page.hierarchyDCeckBoxInput.isSelected()).toBeTruthy();
+        expect(page.hierarchyDCheckBoxInput.isEnabled()).toBeTruthy();
+        page.scrollIntoView(page.hierarchyDCheckBoxInput);
+        page.hierarchyDCheckBox.click();
+        expect(page.hierarchyDCheckBoxInput.isSelected()).toBeTruthy();
         // move slider to x
         await browser.actions().dragAndDrop(
             page.hierarchyFlagSlider,
             {x:3, y:0}
         ).perform();
-        expect(page.hierarchyDCeckBox.isSelected()).toBeFalsy();
-        expect(page.hierarchyDCeckBoxInput.isEnabled()).toBeFalsy();
+        expect(page.hierarchyDCheckBox.isSelected()).toBeFalsy();
+        expect(page.hierarchyDCheckBoxInput.isEnabled()).toBeTruthy();
         await page.clickOnOverlayBackdrop();
-        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags (1)");
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags (2)");
     });
 
     it("should be specified ripe stat link", async () => {
