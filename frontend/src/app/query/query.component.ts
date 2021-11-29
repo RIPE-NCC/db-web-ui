@@ -42,6 +42,7 @@ export class QueryComponent implements OnDestroy {
         xml: string;
     };
     public showsQueryFlagsContainer: boolean;
+    public showsDocsLink: boolean;
 
     constructor(public properties: PropertiesService,
                 private queryService: QueryService,
@@ -50,6 +51,7 @@ export class QueryComponent implements OnDestroy {
                 private viewportScroller: ViewportScroller,
                 public activatedRoute: ActivatedRoute,
                 public router: Router) {
+      this.showsDocsLink = true;
         this.qp = {
             queryText: "",
             types: {},
@@ -134,6 +136,7 @@ export class QueryComponent implements OnDestroy {
             this.clearResults();
             return;
         }
+        this.showsDocsLink = false;
         const cleanQp = _.cloneDeep(this.qp);
         // Reset on-screen widgets
         this.alertsService.clearAlertMessages();
@@ -263,6 +266,7 @@ export class QueryComponent implements OnDestroy {
 
     private clearResults() {
         this.results = [];
+        this.showsDocsLink = true;
         this.offset = 0;
     }
 
