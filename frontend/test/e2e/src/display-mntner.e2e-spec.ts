@@ -18,7 +18,7 @@ describe("Display an mntner", () => {
         page.btnSubmitModify.click();
         // after submitting on display page shouldn't contain Filtered word
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/mntner/ERICSSON-MNT?method=Modify");
-        expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
+        expect(page.successMessage.getText()).toContain("Your object has been successfully modified");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
         expect(page.displayPanel.getText()).not.toContain("Filtered");
     });

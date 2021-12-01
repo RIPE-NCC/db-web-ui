@@ -28,7 +28,7 @@ describe("Display an aut-num", () => {
         page.btnSubmitModify.click();
         // display page after "adding" 3 imports
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE-NONAUTH/aut-num/AS24835?method=Modify");
-        expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
+        expect(page.successMessage.getText()).toContain("Your object has been successfully modified");
         // added 3 imports and + last-modify
         expect(page.panelInsTextDiff.count()).toEqual(4);
         // last-modify
