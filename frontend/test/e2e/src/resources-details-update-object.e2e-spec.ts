@@ -100,7 +100,7 @@ describe("Resources, update object", () => {
             expect(browser.getCurrentUrl()).toContain("myresources/detail/inetnum/3.0.103.0%20-%203.0.127.255/false?alertMessage=The%20inetnum%20for%203.0.103.0%20-%203.0.103.255%20has%20been%20deleted");
             expect(page.infoMessage.isPresent()).toBeTruthy();
             expect(page.infoMessage.getText())
-                .toEqual("The inetnum for 3.0.103.0 - 3.0.103.255 has been deleted");
+                .toContain("The inetnum for 3.0.103.0 - 3.0.103.255 has been deleted");
         });
     });
 

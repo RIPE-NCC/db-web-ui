@@ -490,7 +490,7 @@ describe("The query pagina", () => {
         expect(page.inpQueryFlags.get(1).getText()).toContain("--sources");
         page.btnSubmitQuery.click();
         expect(page.errorAlert.isPresent()).toEqual(true);
-        expect(page.errorAlert.getText()).toEqual("ERROR:111: invalid option supplied. Use help query to see the valid options.");
+        expect(page.errorAlert.getText()).toContain("ERROR:111: invalid option supplied. Use help query to see the valid options.");
     });
 
 });

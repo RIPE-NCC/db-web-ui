@@ -33,7 +33,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         page.scrollIntoView(page.btnSubmitModify);
         page.btnSubmitModify.click();
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/route/211.43.192.0%2F19AS9777?method=Modify");
-        expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
+        expect(page.successMessage.getText()).toContain("Your object has been successfully modified");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
     });
 
@@ -48,7 +48,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(false);
-        expect(page.successMessage.getText()).toEqual("The following object(s) have been successfully deleted");
+        expect(page.successMessage.getText()).toContain("The following object(s) have been successfully deleted");
     });
 
     it("should remove info message on navigating to query page", () => {
@@ -62,7 +62,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(false);
-        expect(page.successMessage.getText()).toEqual("The following object(s) have been successfully deleted");
+        expect(page.successMessage.getText()).toContain("The following object(s) have been successfully deleted");
         // navigating to query page should remove alert component
         page.ripeDatabaseMenuItem.click();
         page.ripeDatabaseQueryMenuItems.click();
