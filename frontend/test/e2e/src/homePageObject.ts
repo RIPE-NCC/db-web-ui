@@ -532,6 +532,12 @@ module.exports = {
     }, el.getWebElement());
   },
 
+  scrollIntoCenteredView: function (el) {
+    browser.executeScript(function (el) {
+      el.scrollIntoView({block: "center"});
+    }, el.getWebElement());
+  },
+
   getWhoisObject: function (parent) {
     return new GetWhoisObject(parent);
   },

@@ -378,6 +378,15 @@ describe("QueryComponent", () => {
             expect(component.offset).toEqual(0);
             expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
+
+        it("should display filters after search", () => {
+            component.init();
+            fixture.detectChanges();
+            expect(component.isFiltersDisplayed()).toEqual(false);
+            component.qp.queryText = "193.0.0.0";
+            component.doSearch();
+            expect(component.isFiltersDisplayed()).toEqual(true);
+        });
     });
 
     describe("during scrolling", () => {
@@ -495,6 +504,7 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({INETNUM: true, INET6NUM: true});
             expect(component.qp.inverse).toEqual({MNTNER: true});
             expect(component.qp.source).toEqual("TEST");
+            expect(component.isFiltersDisplayed()).toEqual(false);
 
             expect(component.alertsService.alerts.errors.length).toEqual(4);
             expect(component.formatError(component.alertsService.alerts.errors[0])).toEqual("Goodbye,\nand thanks for all the fish");
