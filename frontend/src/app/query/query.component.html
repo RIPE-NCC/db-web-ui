@@ -22,7 +22,7 @@
                 <query-flags [input-term]="qp.queryText"
                                        (has-valid-flags)="isShownQueryFlagsContainer($event)"></query-flags>
             </div>
-            <div class="dropdown-menus-bar" *ngIf="!showsQueryFlagsContainer">
+            <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
                 <button mat-button type="button" id="typeMenu"
                         [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">Types {{countSelectedDropdownItems(qp.types)}}
                     <span *ngIf="typesTrigger.menuOpen" class="fa fa-chevron-up"></span>

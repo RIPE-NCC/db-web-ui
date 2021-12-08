@@ -28,6 +28,7 @@ export class QueryComponent implements OnDestroy {
 
     public offset = 0;
     public showScroller = false;
+    public showFilters = false;
     public results: IWhoisObjectModel[];
     public whoisVersion: IVersion;
     public active = 1;
@@ -107,6 +108,7 @@ export class QueryComponent implements OnDestroy {
         if (this.qp.queryText === "") {
             this.clearResults();
             this.showTemplatePanel = false;
+            this.showFilters = false;
         }
     }
 
@@ -190,6 +192,10 @@ export class QueryComponent implements OnDestroy {
         this.showsQueryFlagsContainer = event;
     }
 
+    public isFiltersDisplayed(): boolean {
+        return !this.showsQueryFlagsContainer && this.showFilters;
+    }
+
     public countSelectedDropdownItems(list) {
         let numberSelected = Object.keys(list).filter(element => list[element] === true).length;
         return numberSelected > 0 ? `(${numberSelected})` : "";
@@ -256,6 +262,7 @@ export class QueryComponent implements OnDestroy {
             this.link.perma = this.link.json = this.link.xml = "";
         }
         this.showScroller = response.objects.object.length >= this.queryService.PAGE_SIZE;
+        this.showFilters = true;
     }
 
     private handleWhoisSearchError(response: IWhoisResponseModel) {
