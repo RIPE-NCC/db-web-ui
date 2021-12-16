@@ -63,7 +63,7 @@ public class AngularConstantsController {
     private String queryPageLinkToOtherDb;
     @Value("${syncupdates.api.url}")
     private String syncupdatesApiUrl;
-    @Value("${frontend.livechat.key}")
+    @Value("${frontend.livechat.key:}")
     private String frontendLiveChatKey;
 
     private AppConstants appConstants;

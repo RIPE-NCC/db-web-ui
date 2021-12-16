@@ -122,38 +122,54 @@
 
 </script>
 <!-- End Matomo Tag Manager -->
-<!-- Userlike - live chat -->
+<!-- Zendesk Live chat -->
 <script type="text/javascript">
-  var loadScript = true;
-  function loadUserlike(userlikeKey) {
-    if (loadScript) {
-      var d=document, s=d.createElement('script'), f=d.getElementsByTagName('script')[0];
-      s.type = 'text/javascript';
-      s.async = true;
-      s.onload = function () {
-        userlike.userlikeButtonHandler = function(visible) {
-          if (loadScript) {
-            userlike.userlikeCheckSlotStats(function (callback) {
-              var operators = callback.operators;
-              userlike.userlikeStartChat();
-              if (operators.online === 0) {
-                userlikePreview.showOfflineMessageForm();
+  let loadScript = true;
+  document.cookie = "open-live-chat=false;domain=.ripe.net;path=/;secure";
+
+  function loadZendeskChat(zendeskChatKey) {
+    if(loadScript) {
+        const s = document.createElement('script');
+        const f = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.onload = function () {
+          loadScript = false;
+          document.cookie = "open-live-chat=true;domain=.ripe.net;path=/;secure";
+          document.getElementById("live-chat").remove();
+          window.$zopim || (function (d, s) {
+            const z = $zopim = function (c) {
+              z._.push(c)
+            };
+            const $ = z.s = d.createElement(s);
+            const e = d.getElementsByTagName(s)[0];
+            z.set = function (o) {
+              z.set._.push(o)
+            };
+            z._ = [];
+            z.set._ = [];
+            $.async = true;
+            $.setAttribute('charset', 'utf-8');
+            $.src = 'https://v2.zopim.com/?figDLnpAMOxfQ4nsPxMA6xz8UpKFni9T';
+            z.t = +new Date;
+            $.type = 'text/javascript';
+            e.parentNode.insertBefore($, e)
+
+            // hack to open the chat on first button click
+            const waitForZendesk = setInterval(function () {
+              if (typeof(window.$zopim.livechat) !== 'undefined') {
+                window.$zopim.livechat.window.show();
+                clearInterval(waitForZendesk);
               }
-              document.cookie = "open-live-chat=true;domain=.ripe.net;path=/;secure";
-            })
-            loadScript = false;
-          } else {
-            document.cookie = "open-live-chat=false;domain=.ripe.net;path=/;secure";
-          }
-        };
-      }
-      s.src = 'https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/' + userlikeKey + '.js';
-      f.parentNode.insertBefore(s,f);
-    } else {
-      document.cookie = "open-live-chat=true;domain=.ripe.net;path=/;secure";
+            }, 100);
+          })(document, 'script');
+        }
+        s.src = 'https://static.zdassets.com/ekr/snippet.js?key=' + zendeskChatKey;
+        f.parentNode.insertBefore(s, f);
     }
   }
 </script>
-<!-- End Userlike -->
+<!-- End Zendesk Live chat -->
+
 </body>
 </html>

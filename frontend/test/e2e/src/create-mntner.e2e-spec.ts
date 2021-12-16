@@ -44,6 +44,7 @@ describe("The CreateSelfMntnerComponent", () => {
 
     it("should navigate to create self maintainer page on click on button Create Shared Maintainer", () => {
         browser.get(browser.baseUrl + "webupdates/display/RIPE/person/ES13374-RIPE/mntner/ESMA-MNT");
+        page.disableLiveChat();
         expect(page.btnCreateSharedMaintainer.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnCreateSharedMaintainer);
         page.btnCreateSharedMaintainer.click();
