@@ -1,5 +1,4 @@
-<div class="live-chat" [hidden]="isHideLiveChat()" id="live-chat">
-    <button type="button" id="userlikeCustomTab" data-orientation="bottomRight" (click)="loadLiveChat()">
-        <i class="userlike-symbol userlike-theme-text userlike-theme-button-symbol-color userlike-button-01" style="color: rgb(255, 255, 255);"></i>
-    </button>
+<div class="live-chat" id="live-chat" [hidden]="isHideLiveChat()" (click)="loadLiveChat()">
+    <div class="live-chat-icon">💬</div>
+    <div class="live-chat-text">Chat With Us</div>
 </div>

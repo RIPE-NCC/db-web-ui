@@ -59,6 +59,7 @@ describe("Modifying an organisation", () => {
         });
 
         it("should open modal edit attribute on click on pen button contact information", async () => {
+            page.disableLiveChat();
             page.btnEditAnAttribute(page.inpPhone).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");
