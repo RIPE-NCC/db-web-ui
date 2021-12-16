@@ -105,10 +105,8 @@
   <div class="row">
     <div class="col-sm-6">
       <div class="border padding margin-bottom">
-        <p style="font-weight:600;">Using RIPE Database </p>
-        People who want to query for this information have several options available to them, varying from a web interface to command line tool, as well as a RESTful API.
-        There are several ways in which you can influence the scope of your search.
-
+        <p style="font-weight:600;">Querying the RIPE Database </p>
+          You can query the RIPE Database via the web interface, the RESTful API or a command line tool. Learn more about each option by clicking the link below.
         <p>&nbsp;</p>
         <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation" target="_blank" class="link-color">Read documentation
           <i class="fa fa-external-link"></i>
@@ -118,8 +116,7 @@
     <div class="col-sm-6">
       <div class="border padding margin-bottom">
         <p style="font-weight:600;">RESTful API</p>
-        The RESTful API only processes one object at a time. This is fundamental to the REST paradigm.
-        If you want to process many objects using this API, you need to write a script on the client side to handle the list of objects and feed them.
+        The RESTful API can only process one object at a time. If you want to process several objects simultaneously, you need to write a script on the client side to handle the list of objects and feed them.
 
         <p>&nbsp;</p>
         <a href="https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API" target="_blank" class="link-color">Read more about RESTful API
@@ -135,7 +132,7 @@
       <div class="border padding margin-bottom">
         <p style="font-weight:600;">{{properties.SOURCE  === "RIPE" ? "Test" : "RIPE"}} Database</p>
         <div *ngIf="properties.SOURCE  == 'RIPE'; else inTestEnv">
-          You can use this environment to learn and experiment with RIPE Database. It uses a TEST source and all changes are reverted in the night.
+          You can use this environment to learn and experiment with the RIPE Database. It uses a TEST source. Important: All changes are reverted every day at night.
         </div>
         <ng-template #inTestEnv>
           TEST environment is to learn and experiment with RIPE Database and all changes are reverted in the night. Switch to RIPE Database for live action.
