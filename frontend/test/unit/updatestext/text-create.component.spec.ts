@@ -177,6 +177,7 @@ describe("TextCreateComponent", () => {
             "NETNAME:       \n" +
             "descr:         \n" +
             "COUNTRY:       \n" +
+            "geofeed:       \n" +
             "geoloc:        \n" +
             "language:      \n" +
             "org:           \n" +
@@ -209,6 +210,7 @@ describe("TextCreateComponent", () => {
             "NETNAME:       \n" +
             "descr:         \n" +
             "COUNTRY:       \n" +
+            "geofeed:       \n" +
             "geoloc:        \n" +
             "language:      \n" +
             "org:           \n" +
@@ -252,6 +254,7 @@ describe("TextCreateComponent", () => {
             "NETNAME:       \n" +
             "descr:         \n" +
             "COUNTRY:       \n" +
+            "geofeed:       \n" +
             "geoloc:        \n" +
             "language:      \n" +
             "org:           \n" +

@@ -65,12 +65,12 @@ describe("FullTextSearchComponent", () => {
         component.addObjectToFilter("inetnum"); // Still 1 coz it's already added
         expect(component.selectedObjectTypes.length).toEqual(1);
         // without source attribute
-        expect(component.selectableAttributes.length).toEqual(21);
+        expect(component.selectableAttributes.length).toEqual(22);
         expect(component.queryHash()).toEqual("alltrueinetnum");
 
         component.selectAll();
         expect(component.selectedObjectTypes.length).toEqual(21);
-        expect(component.selectableAttributes.length).toEqual(99);
+        expect(component.selectableAttributes.length).toEqual(100);
         expect(component.queryHash()).toEqual("alltrueas-blockas-setaut-numdomainfilter-setinet-rtrinet6numinetnumirtkey-certmntnerorganisationpeering-setpersonpoempoetic-formrolerouteroute-setroute6rtr-set");
 
         component.selectNone();
