@@ -138,6 +138,7 @@ export class WhoisMetaService {
                 {name: "netname", mandatory: true, multiple: false, refs: this.refs},
                 {name: "descr", mandatory: false, multiple: true, refs: this.refs},
                 {name: "country", mandatory: true, multiple: true, refs: this.refs, isEnum: true},
+                {name: "geofeed", mandatory: false, multiple: false, refs: this.refs},
                 {name: "geoloc", mandatory: false, multiple: false, refs: this.refs},
                 {name: "language", mandatory: false, multiple: true, refs: this.refs, isEnum: true},
                 {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
@@ -166,6 +167,7 @@ export class WhoisMetaService {
                 {name: "netname", mandatory: true, multiple: false, refs: this.refs},
                 {name: "descr", mandatory: false, multiple: true, refs: this.refs},
                 {name: "country", mandatory: true, multiple: true, refs: this.refs, isEnum: true},
+                {name: "geofeed", mandatory: false, multiple: false, refs: this.refs},
                 {name: "geoloc", mandatory: false, multiple: false, refs: this.refs},
                 {name: "language", mandatory: false, multiple: true, refs: this.refs, isEnum: true},
                 {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
@@ -876,6 +878,11 @@ export class WhoisMetaService {
             description: "Specifies the identifier of a registered poem type.",
             // short: undefined,
             syntax: this._shared.poeticForm.syntax,
+        },
+        "geofeed": {
+            description: "A URL referencing a CSV file containing geolocation data for the resource.",
+            // short: undefined,
+            syntax: "A valid URL specifying the HTTPS protocol.",
         },
         "geoloc": {
             description: "The location coordinates for the resource.",
