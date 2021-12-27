@@ -16,3 +16,16 @@
 .mat-menu-content:not(:empty) {
     padding: 8px !important;
 }
+
+#informationSection .col-sm-6 {
+    display: flex;
+    align-items: stretch;
+    div {
+        position: relative;
+    }
+    a {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 1rem;
+    }
+}
