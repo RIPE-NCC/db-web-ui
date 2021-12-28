@@ -136,36 +136,29 @@
         s.onload = function () {
           loadScript = false;
           document.cookie = "open-live-chat=true;domain=.ripe.net;path=/;secure";
-          document.getElementById("live-chat").remove();
-          window.$zopim || (function (d, s) {
-            const z = $zopim = function (c) {
-              z._.push(c)
-            };
-            const $ = z.s = d.createElement(s);
-            const e = d.getElementsByTagName(s)[0];
-            z.set = function (o) {
-              z.set._.push(o)
-            };
-            z._ = [];
-            z.set._ = [];
-            $.async = true;
-            $.setAttribute('charset', 'utf-8');
-            $.src = 'https://v2.zopim.com/?figDLnpAMOxfQ4nsPxMA6xz8UpKFni9T';
-            z.t = +new Date;
-            $.type = 'text/javascript';
-            e.parentNode.insertBefore($, e)
 
-            // hack to open the chat on first button click
-            const waitForZendesk = setInterval(function () {
-              if (typeof(window.$zopim.livechat) !== 'undefined') {
-                window.$zopim.livechat.window.show();
-                clearInterval(waitForZendesk);
-              }
-            }, 100);
-          })(document, 'script');
+          zE('webWidget', 'open');
+
+          zE('webWidget:on', 'close', function() {
+            zE('webWidget', 'hide');
+            document.querySelector('.live-chat-text').innerHTML = "Chat With Us";
+          });
+
+          zE('webWidget:on', 'chat:popout', function() {
+            zE('webWidget', 'hide');
+          });
+
+          zE('webWidget:on', 'chat:unreadMessages', function(number) {
+            document.querySelector('.live-chat-text').innerHTML = number + " new messages!";
+          });
         }
+
+        s.id = "ze-snippet"
         s.src = 'https://static.zdassets.com/ekr/snippet.js?key=' + zendeskChatKey;
         f.parentNode.insertBefore(s, f);
+    } else {
+      zE("webWidget", "show")
+      zE("webWidget", "open")
     }
   }
 </script>
