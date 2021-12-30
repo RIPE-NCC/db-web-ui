@@ -15,7 +15,7 @@
                 </p>
                 <div [hidden]="!attribute.$$error">
     	            <span>{{attribute.$$error}}</span>
-    	            <i class="fa fa-info-circle"></i>
+    	            <i class="fal fa-info-circle"></i>
     	        </div>
             </td>
         </tr>
@@ -24,8 +24,8 @@
 
     <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
 
-    <button (click)="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
+    <button (click)="navigateToSelect()" class="blue-button float-right ga-createobj-backcreate">Back to Create object</button>
     <span [hidden]="!modifyButtonToBeShown()">
-        <button (click)="navigateToModify()"  class="blue-button pull-right ga-createobj-modifyobj">{{loggedIn ? 'Modify' : 'Login to modify'}}</button>
+        <button (click)="navigateToModify()"  class="blue-button float-right ga-createobj-modifyobj">{{loggedIn ? 'Modify' : 'Login to modify'}}</button>
     </span>
 </section>

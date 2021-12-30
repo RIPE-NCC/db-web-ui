@@ -3,7 +3,7 @@ alerts-drop-down {
   button#grey-bell-button {
     &.grey-button{
       height: 40px;
-      .fa-bell-o {
+      .fa-bell {
         color: $dark-grey-cr;
         font-size: 18px;
         font-weight: bold;
@@ -16,7 +16,7 @@ alerts-drop-down {
       height: 40px;
       background-color: #f1dede;
       border: solid 0.1rem $light-red;
-      .fa-bell-o {
+      .fa-bell {
         color: $dark-red;
         font-size: 18px;
         font-weight: bold;

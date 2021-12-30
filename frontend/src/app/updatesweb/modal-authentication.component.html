@@ -2,7 +2,7 @@
 <form (submit)="submit()">
     <div class="modal-header">
         <h2 class="modal-title">Password authentication</h2>
-        <i class="fa fa-close close" aria-label="Close" (click)="cancel()"></i>
+        <i class="fal fa-times close" aria-label="Close" (click)="cancel()"></i>
     </div>
     <div *ngIf="selected.message?.length > 0" class="modal-banner alarm">
         <p>{{selected.message}}</p>
@@ -39,8 +39,8 @@
                 </li>
                 <li>
                     <div>
-                        <label class="pull-left">Provide the password for the selected maintainer</label>
-                        <a class="forgot-password pull-right" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Forgotten MNTNER password?</a>
+                        <label class="float-left">Provide the password for the selected maintainer</label>
+                        <a class="forgot-password float-right" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Forgotten MNTNER password?</a>
                     </div>
                     <input type="password" class="form-control" [(ngModel)]="selected.password" required="true" name="passwordAuth" />
                 </li>

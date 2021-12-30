@@ -180,7 +180,7 @@ ul.success-fields {
     }
 }
 
-.modal.portlet .modal-content i.fa-close {
+.modal.portlet .modal-content i.fa-times {
     padding: 6px 17px;
 }
 
@@ -200,7 +200,7 @@ ul.success-fields {
 
 .not-found {
     text-align: center;
-    i.fa {
+    i.fal {
         font: {
             size: 150px;
         }
@@ -348,7 +348,7 @@ section .resultlinks {
 
     button#grey-bell-button {
         &.grey-button {
-            .fa-bell-o {
+            .fa-bell {
                 color: $dark-grey-cr;
                 font-size: 18px;
                 font-weight: bold;
@@ -362,7 +362,7 @@ section .resultlinks {
             background-color: #f1dede;
             border: solid 0.1rem $light-red;
 
-            .fa-bell-o {
+            .fa-bell {
                 color: $dark-red;
                 font-size: 18px;
                 font-weight: bold;

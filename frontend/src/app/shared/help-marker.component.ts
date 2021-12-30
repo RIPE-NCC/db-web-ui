@@ -7,8 +7,8 @@ import {Labels} from "../label.constants";
                      placement="bottom"
                      triggers="mouseenter:mouseleave">
                     <a [href]="hrefLabel" *ngIf="hrefLabel" target="_blank">
-                        <span class="fa fa-question fa-lg" aria-hidden="true"></span></a>
-                    <span *ngIf='!hrefLabel' class="fa fa-question fa-lg" aria-hidden="true"></span>
+                        <span class="fal fa-question fa-lg" aria-hidden="true"></span></a>
+                    <span *ngIf='!hrefLabel' class="fal fa-question fa-lg" aria-hidden="true"></span>
                </span>`,
 })
 export class HelpMarkerComponent {

@@ -8,7 +8,7 @@
 <ng-form class="grey padding ga-syncupdate-form">
     <label for="rpslTextArea">Object Data</label>
     <textarea id="rpslTextArea" name="rpslObject" [(ngModel)]="rpslObject" rows="18" class="full-width form-control margin-bottom">{{rpslObject}}</textarea>
-    <button name="btnSyncupdate" (click)="update()" [disabled]="isUpdating" type="button" class="blue-button pull-right">Update</button>
+    <button name="btnSyncupdate" (click)="update()" [disabled]="isUpdating" type="button" class="blue-button float-right">Update</button>
     <submitting-agreement></submitting-agreement>
 </ng-form>
 

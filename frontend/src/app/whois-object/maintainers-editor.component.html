@@ -1,10 +1,10 @@
 <section class="maintainer-fields">
     <strong>Please enter the maintainers you would like to use as mnt-by</strong>
     <article class="maintainer-icons">
-        <span class="fa fa-search maintainer-search-icon"></span>
+        <span class="fal fa-search maintainer-search-icon"></span>
         <a class="btn btn-default ga-help-attr maintainer-help"
            (click)="isMntHelpShown = !isMntHelpShown">
-            <span class="fa fa-question"></span>
+            <span class="fal fa-question"></span>
         </a>
     </article>
     <ng-select id="selectMaintainerDropdown"
@@ -22,8 +22,8 @@
         <ng-template ng-label-tmp let-mntner="item" let-clear="clear">
             <div [ngClass]="{'select-locked': !showMntCloseButton(mntner), 'default': true}">
             {{ mntner.key }}
-            <span class="fa fa-star" *ngIf="mntner.mine"></span>
-            <span class="fa fa-lock" *ngIf="!isRemovable(mntner.key) || isLirObject()"></span>
+            <span class="fal fa-star" *ngIf="mntner.mine"></span>
+            <span class="fal fa-lock" *ngIf="!isRemovable(mntner.key) || isLirObject()"></span>
             <span class="ng-value-icon close right" aria-hidden="true"
                   *ngIf="showMntCloseButton(mntner)"
                   (click)="clear(mntner)">×</span>
@@ -32,7 +32,7 @@
         <ng-template ng-option-tmp let-mntner="item">
             <div class="option">
                 <span class="title">{{ mntner.key }}</span>
-                <span class="star fa fa-star" *ngIf="mntner.$$isMine"></span>
+                <span class="star fal fa-star" *ngIf="mntner.$$isMine"></span>
                 <span class="auth sso" *ngIf="hasSSo(mntner)"> SSO </span>
                 <span class="auth pgp" *ngIf="hasPgp(mntner)"> PGP </span>
                 <span class="auth md5" *ngIf="hasMd5(mntner)"> MD5 </span>

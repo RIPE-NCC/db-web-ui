@@ -21,7 +21,7 @@
                 <ul class="input-group-btn">
                     <li>
                         <a class="btn btn-default ga-help-attr" (click)="setVisibilityMntAttrsHelp(attribute.name)">
-                            <span class="fa fa-question"></span>
+                            <span class="fal fa-question"></span>
                         </a>
                     </li>
                 </ul>
@@ -45,7 +45,7 @@
                 <ul class="input-group-btn">
                     <li>
                         <a class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)">
-                            <span class="fa fa-question"></span>
+                            <span class="fal fa-question"></span>
                         </a>
                     </li>
                 </ul>
@@ -54,7 +54,7 @@
         <submitting-agreement></submitting-agreement>
 
         <input type="submit" (click)="submit()" [disabled]="(!isFormValid() || submitInProgress)"
-               class="blue-button pull-right ga-createobj-create" value="Submit" id="btnSubmitCreate"/>
-        <button (click)="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+               class="blue-button float-right ga-createobj-create" value="Submit" id="btnSubmitCreate"/>
+        <button (click)="cancel()" class="blue-button float-right ga-createobj-create" style="border:0;">Cancel</button>
     </section>
 </div>

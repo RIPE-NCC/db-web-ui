@@ -11,7 +11,7 @@
     </div>
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-    <a class="blue-button btn-group pull-right" *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'" (click)="navigateToCreateAssignments()">{{ "resource.createAssignment.text" | label }}</a>
+    <a class="blue-button btn-group float-right" *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'" (click)="navigateToCreateAssignments()">{{ "resource.createAssignment.text" | label }}</a>
     <transfer-drop-down *ngIf="isMemberOrg()" [sponsored-menu]="isShowingSponsored"></transfer-drop-down>
     <alerts-drop-down *ngIf="showAlerts" [selected-org]="this.selectedOrg"></alerts-drop-down>
     <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources"
@@ -29,7 +29,7 @@
                 <p class="resource-page-message"
                    *ngIf="loading === false && ipv4Resources.length === 0">
                     {{ reason.toString() }}
-                    <button *ngIf="fail" (click)="refreshPage()" class="fa fa-refresh"></button>
+                    <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
                 </p>
             </ng-template>
         </li>
@@ -43,7 +43,7 @@
                 <p class="resource-page-message"
                    *ngIf="loading === false && ipv6Resources.length === 0">
                     {{ reason.toString() }}
-                    <button *ngIf="fail" (click)="refreshPage()" class="fa fa-refresh"></button>
+                    <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
                 </p>
             </ng-template>
         </li>
@@ -56,7 +56,7 @@
                 </div>
                 <p class="resource-page-message" *ngIf="loading === false && asnResources.length === 0">
                     {{ reason.toString() }}
-                    <button *ngIf="fail" (click)="refreshPage()" class="fa fa-refresh"></button>
+                    <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
                 </p>
             </ng-template>
         </li>
