@@ -1,4 +1,4 @@
-<div class="btn-group pull-right" ngbDropdown is-open="status.isopen" *ngIf="hasAllocations" placement="bottom-right">
+<div class="btn-group float-right" ngbDropdown is-open="status.isopen" *ngIf="hasAllocations" placement="bottom-right">
 
     <button *ngIf="!hasAlerts"
             id="grey-bell-button"
@@ -7,14 +7,14 @@
             [ngbPopover]="'No alerts'"
             placement="bottom"
             triggers="mouseenter:mouseleave">
-        <i class="fa fa-bell-o fa-bold"></i>
+        <i class="fal fa-bell"></i>
     </button>
     <button *ngIf="hasAlerts"
             id="red-bell-button"
             type="button"
             class="red-button"
             ngbDropdownToggle>
-        <i class="fa fa-bell-o fa-bold"></i>
+        <i class="fal fa-bell"></i>
     </button>
 
     <ul *ngIf="hasAlerts" class="dropdown-menu" ngbDropdownMenu role="menu" aria-labelledby="single-button">

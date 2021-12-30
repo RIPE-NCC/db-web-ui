@@ -10,7 +10,7 @@
                 <p>{{attribute.value}}</p>
                 <div *ngIf="attribute.$$error" class="modify-feedback">
     	            <span>{{attribute.$$error}}</span>
-    	            <i class="fa fa-info-circle"></i>
+    	            <i class="fal fa-info-circle"></i>
     	        </div>
             </td>
         </tr>
@@ -27,7 +27,7 @@
                 <p>{{attribute.value}}</p>
                 <div *ngIf="attribute.$$error" class="modify-feedback">
                     <span>{{attribute.$$error}}</span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="fal fa-info-circle"></i>
                 </div>
             </td>
         </tr>
@@ -37,7 +37,7 @@
     <p>You should only use this maintainer to make changes to your {{objectType}} object.</p>
     <p>To create and update other objects, we recommend you create a "shared maintainer" for your organisation, if you don't already have one. <a target="_blank" href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers#personal-vs-shared">Learn more...</a></p>
 
-    <button (click)="navigateToSharedMntner()" class="blue-button pull-right ga-createobj-modifyobj">Create Shared Maintainer</button>
-    <button (click)="navigateToSelect()" class="blue-button pull-right ga-createobj-modifyobj">Back to Create Object</button>
+    <button (click)="navigateToSharedMntner()" class="blue-button float-right ga-createobj-modifyobj">Create Shared Maintainer</button>
+    <button (click)="navigateToSelect()" class="blue-button float-right ga-createobj-modifyobj">Back to Create Object</button>
 
 </section>

@@ -1,9 +1,9 @@
 
 <button id="btnSwitchToTextModify"
-        class="blue-button pull-right ga-text-modifyobj-switch-mode"
+        class="blue-button float-right ga-text-modifyobj-switch-mode"
         style="border:0;"
         (click)="switchToWebMode()">
-    <span class="fa fa-bars"></span> Edit in single lines
+    <span class="fal fa-bars"></span> Edit in single lines
 </button>
 
 <div>
@@ -25,11 +25,11 @@
             </section>
             <submitting-agreement></submitting-agreement>
 
-            <input type="submit" (click)="submit()" class="blue-button pull-right ga-text-modifyobj-modify" value="Submit"/>
+            <input type="submit" (click)="submit()" class="blue-button float-right ga-text-modifyobj-modify" value="Submit"/>
 
-            <button (click)="cancel()" class="blue-button pull-right ga-text-modifyobj-cancel" style="border:0;"> Cancel </button>
+            <button (click)="cancel()" class="blue-button float-right ga-text-modifyobj-cancel" style="border:0;"> Cancel </button>
 
-            <button (click)="deleteObject()" class="red-button pull-left ga-text-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
+            <button (click)="deleteObject()" class="red-button float-left ga-text-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
 
         </div>
     </form>

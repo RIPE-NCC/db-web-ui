@@ -1,20 +1,63 @@
-.dropdown-menus-bar{
-    margin-bottom: 1rem !important;
-    button > span.mat-button-wrapper {
-        font-size: 1rem !important;
-        font-weight: 400 !important;
-        > span {
-            vertical-align: unset;
-        }
+@use "common-functions" as common;
+
+.query-field {
+  mat-form-field {
+    width: 100% !important;
+  }
+
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .mat-form-field-wrapper {
+    padding: 0 !important;
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  button.mat-icon-button {
+    color: rgba(0,0,0,0.5);
+    vertical-align: text-bottom;
+  }
+}
+
+.dropdown-menus-bar {
+  margin-bottom: 1rem !important;
+  background-color: rgba(0, 0, 0, 0.04);
+  display: flex;
+  justify-content: flex-start;
+  height: 60px;
+  padding: common.spacing(1);
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
+
+  button {
+    margin-right: common.spacing(1);
+    background-color: #FFF;
+
+    &[aria-expanded="true"] {
+      background-color: rgba(0, 0, 0, 0.075);
     }
+
+    span.mat-button-wrapper {
+      > span {
+        margin-left: common.spacing(2);
+        vertical-align: unset;
+      }
+    }
+  }
 }
 
 .mat-menu-panel {
-    max-width: unset !important;
+  max-width: unset !important;
 }
 
 .mat-menu-content:not(:empty) {
-    padding: 8px !important;
+  padding: common.spacing(1) !important;
 }
 
 #informationSection .col-sm-6 {

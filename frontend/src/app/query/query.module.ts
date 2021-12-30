@@ -26,6 +26,8 @@ import {InverseLookupPanelComponent} from "./inverse-lookup-panel.component";
 import {AdvanceFilterPanelComponent} from "./advance-filter-panel.component";
 import {QueryFlagsService} from "./query-flags.service";
 import {QueryFlagsComponent} from "./query-flags.component";
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
     imports: [
@@ -39,7 +41,9 @@ import {QueryFlagsComponent} from "./query-flags.component";
         MatButtonModule,
         MatSliderModule,
         MatCheckboxModule,
-        MatRadioModule
+        MatRadioModule,
+        MatInputModule,
+        MatIconModule
     ],
     declarations: [
         LookupComponent,

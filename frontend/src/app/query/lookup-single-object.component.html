@@ -1,13 +1,13 @@
 <section id="resultsSection">
-    <div *ngIf="!error" class="pull-right resultlinks">
+    <div *ngIf="!error" class="float-right resultlinks">
         <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.xml"
            target="_blank">
-            <i class="fa fa-file-code-o"></i>
+            <i class="fal fa-file-code"></i>
             XML
         </a>&nbsp;
         <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.json"
            target="_blank">
-            <i class="fa fa-file-text-o"></i>
+            <i class="fal fa-file-alt"></i>
             JSON
         </a>
     </div>

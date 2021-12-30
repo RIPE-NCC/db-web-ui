@@ -8,6 +8,7 @@ import {QueryService} from "./query.service";
 import {PropertiesService} from "../properties.service";
 import {AlertsService} from "../shared/alert/alerts.service";
 import {HierarchyFlagsService} from "./hierarchy-flags.service";
+import {FormControl} from "@angular/forms";
 
 export interface IQueryState {
     source: string;
@@ -44,6 +45,7 @@ export class QueryComponent implements OnDestroy {
     };
     public showsQueryFlagsContainer: boolean;
     public showsDocsLink: boolean;
+    public colorControl = new FormControl('primary');
 
     constructor(public properties: PropertiesService,
                 private queryService: QueryService,

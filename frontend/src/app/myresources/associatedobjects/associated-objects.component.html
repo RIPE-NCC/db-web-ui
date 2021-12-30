@@ -14,15 +14,15 @@
                       class="btn"
                       id="clearButton"
                       (click)="filter = ''; applyFilter();">
-                  <span class="fa fa-times"></span>
+                  <span class="fal fa-times close"></span>
               </button>
             </span>
         </div>
-        <span *ngIf="filter; else msgWithoutFilter" class="pull-right">
+        <span *ngIf="filter; else msgWithoutFilter" class="float-right">
             Showing {{resultObject.filteredSize }} out of {{resultObject.totalNumberOfResources}}
         </span>
         <ng-template #msgWithoutFilter>
-            <span class="pull-right">
+            <span class="float-right">
                Total associated {{associatedType}}s: {{resultObject.totalNumberOfResources}}
             </span>
         </ng-template>
