@@ -17,100 +17,46 @@ import java.net.URL;
 import static org.junit.Assert.assertTrue;
 
 @ActiveProfiles(profiles = "selenium")
-public class QueryPageSeleniumTest {
+public class QueryPageSeleniumTest extends AbstractSeleniumTest {
 
-    private String browserstack_url;
-    private String version;
-
-    private final String QUERY_PAGE_URL = "https://apps.db.ripe.net/db-web-ui/query";
     private final String SEARCH_BAR = "qp.queryText";
     private final String SEARCH_RESULT_PANE = "div.resultpane ul li";
     public static final String TEST_OBJECT = "NINJA-SSO-MNT";
 
-    public enum Browser {
-        CHROME,
-        FIREFOX,
-        SAFARI,
-        EDGE
-    }
-
-    @Before
-    public void setUp() {
-        browserstack_url = String.format("https://%s@hub-cloud.browserstack.com/wd/hub", System.getProperty("browserstack_key"));
-        version = System.getProperty("version");
-    }
-
     @Test
     public void should_query_on_Firefox_Windows() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.FIREFOX, "Windows"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.FIREFOX, "Windows", "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Chrome_Windows() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.CHROME, "Windows"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.CHROME, "Windows", "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Edge_Windows() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), desiredCapabilities(Browser.EDGE, "Windows"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), desiredCapabilities(Browser.EDGE, "Windows", "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Firefox_Mac() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.FIREFOX, "OS X"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.FIREFOX, "OS X", "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Chrome_Mac() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.CHROME, "OS X"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  desiredCapabilities(Browser.CHROME, "OS X", "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Safari_Mac() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), desiredCapabilities(Browser.SAFARI, "OS X"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), desiredCapabilities(Browser.SAFARI, "OS X", "Query Page"));
         searchAndVerify(driver);
-    }
-
-    private DesiredCapabilities desiredCapabilities(final Browser browser, final String os) {
-       final DesiredCapabilities caps;
-
-        switch (browser) {
-            case CHROME:
-                 caps = DesiredCapabilities.chrome();
-                 caps.setCapability("name", String.format("%s Chrome", os));
-                 break;
-
-            case FIREFOX:
-                caps = DesiredCapabilities.firefox();
-                caps.setCapability("name", String.format("%s Firefox",  os));
-                break;
-
-            case SAFARI:
-                caps = DesiredCapabilities.safari();
-                caps.setCapability("name", String.format("%s Safari", os));
-                break;
-
-            case EDGE:
-                caps = DesiredCapabilities.edge();
-                caps.setCapability("name", String.format("%s Edge", os));
-                break;
-
-            default: throw new BadRequestException("browser not supported");
-        }
-
-        caps.setCapability("os", os);
-        caps.setCapability("os_version", os.equals("Windows") ? "10" : "Big Sur");
-        caps.setCapability("browser_version", "latest");
-
-        caps.setCapability("build", String.format("Query Page %s", version));
-        caps.setCapability("project", "Whois Browser Test");
-
-        return  caps;
     }
 
     private void searchAndVerify(final WebDriver driver) {
