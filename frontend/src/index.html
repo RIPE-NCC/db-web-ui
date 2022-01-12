@@ -77,13 +77,6 @@
       });
       window.Usersnap = api;
     }
-    window.onUsersnapCXLoad = function(api) {
-      api.init({
-        button: null
-      });
-      api.open();
-      window.UsersnapCX = api;
-    }
   }
   function useUsersnap() {
     if (window.Usersnap) {
@@ -93,17 +86,6 @@
       script.type='text/javascript';
       script.async = true;
       script.src = "//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad";
-      document.getElementsByTagName("head")[0].appendChild(script);
-    }
-  }
-  function useUsersnapCX() {
-    if (window.UsersnapCX) {
-      window.UsersnapCX.open()
-    } else {
-      var script = document.createElement("script");
-      script.type='text/javascript';
-      script.async = true;
-      script.src = "//widget.usersnap.com/load/cb8e6938-8487-4da6-a917-0482c33bce73?onload=onUsersnapCXLoad";
       document.getElementsByTagName("head")[0].appendChild(script);
     }
   }

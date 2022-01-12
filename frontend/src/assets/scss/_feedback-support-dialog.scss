@@ -1,0 +1,34 @@
+@use "common-functions" as common;
+
+.feedback-support-panel {
+
+  mat-dialog-container {
+    padding: common.spacing(0, 0, 3, 0);
+
+    feedback-support-dialog {
+
+      h1 {
+        margin: 0;
+        padding: common.spacing(3, 3, 0, 3);
+        font-weight: 300;
+        color: black;
+      }
+
+      .mat-dialog-actions {
+        padding-bottom: common.spacing(3);
+      }
+
+      .mat-list-item-content {
+        i.mat-list-icon {
+          padding: common.spacing(3);
+          font-size: 18px;
+        }
+
+        .secondary {
+          color: var(--mdc-theme-text-secondary-on-background, rgba(0, 0, 0, 0.54))
+        }
+      }
+
+    }
+  }
+}
