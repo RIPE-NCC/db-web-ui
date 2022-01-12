@@ -8,8 +8,8 @@ import {MenuService} from "./menu.service";
 import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 import {IUserInfoOrganisation} from "../dropdown/org-data-type.model";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-
-declare let useUsersnapCX: () => any;
+import {MatDialog} from "@angular/material/dialog";
+import {FeedbackSupportDialogComponent} from "../feedbacksupport/feedback-support-dialog.component";
 
 @Component({
     selector: "swe-menu",
@@ -30,6 +30,7 @@ export class MenuComponent {
                 public orgDropDownSharedService: OrgDropDownSharedService,
                 private menuService: MenuService,
                 public modalService: NgbModal,
+                public dialog: MatDialog,
                 private location: Location,
                 private router: Router) {
         // mainly because switching between My Resources and Sponsored Resources
@@ -62,7 +63,14 @@ export class MenuComponent {
         if (event?.detail?.selected?.url) {
             const url = event.detail.selected.url;
             if (event.detail.selected.id === "feedback") {
-                useUsersnapCX();
+              const dialogRef = this.dialog.open(FeedbackSupportDialogComponent, {panelClass: 'feedback-support-panel'});
+              dialogRef.afterOpened().subscribe(() => {
+                // this is needed to retrigger render on angular after is closed and activeItem will change
+                this.activeItem = "feedback";
+              })
+              dialogRef.afterClosed().subscribe(() => {
+                this.setActiveMenuItem();
+              });
             } else if (url.startsWith("http")) {
                 window.location.href = url;
             } else {

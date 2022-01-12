@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Location} from "@angular/common";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
+import {MatDialogModule} from "@angular/material/dialog";
 import {IpUsageService} from "../../../src/app/myresources/ip-usage.service";
 import {EnvironmentStatusService} from "../../../src/app/shared/environment-status.service";
 import {PropertiesService} from "../../../src/app/properties.service";
@@ -20,7 +21,8 @@ describe("LeftHandMenuComponent", () => {
         TestBed.configureTestingModule({
             imports: [
                 HttpClientTestingModule,
-                RouterTestingModule],
+                RouterTestingModule,
+                MatDialogModule],
             declarations: [
                 MenuComponent,
             ],

@@ -542,6 +542,10 @@ module.exports = {
         return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-resources"))
     },
 
+    getFeedbackSupportMenu: function() {
+      return element(by.css_sr("app-nav-bar::sr #footer menu-item.top-level::sr .item #title-feedback"))
+    },
+
     getMyAccountTopMenu: function() {
         return element(by.css_sr("app-nav-bar::sr #menu menu-item.top-level::sr .item #title-account"))
     },
