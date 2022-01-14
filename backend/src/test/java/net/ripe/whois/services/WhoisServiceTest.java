@@ -1,14 +1,14 @@
 package net.ripe.whois.services;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -203,7 +203,7 @@ public class WhoisServiceTest {
 
     private MockRestServiceServer mockServer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
     }

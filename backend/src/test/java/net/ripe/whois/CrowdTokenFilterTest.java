@@ -2,11 +2,11 @@ package net.ripe.whois;
 
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.crowd.CachingCrowdSessionChecker;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -23,15 +23,15 @@ import org.springframework.test.context.ContextConfiguration;
 import javax.servlet.FilterChain;
 import javax.servlet.http.Cookie;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = {CrowdTokenFilterTest.TestConfiguration.class})
 public class CrowdTokenFilterTest {
 
@@ -65,7 +65,7 @@ public class CrowdTokenFilterTest {
         }
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         filterChain = mock(FilterChain.class);
 

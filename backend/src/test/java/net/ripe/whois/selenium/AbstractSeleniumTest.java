@@ -1,6 +1,6 @@
 package net.ripe.whois.selenium;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import javax.ws.rs.BadRequestException;
@@ -19,7 +19,7 @@ public abstract class AbstractSeleniumTest {
         EDGE
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         browserstack_url = String.format("https://%s@hub-cloud.browserstack.com/wd/hub", System.getProperty("browserstack_key"));
         version = System.getProperty("version");

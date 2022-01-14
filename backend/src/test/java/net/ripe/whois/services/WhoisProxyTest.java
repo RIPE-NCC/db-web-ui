@@ -1,11 +1,11 @@
 package net.ripe.whois.services;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class WhoisProxyTest {
 
@@ -142,32 +142,34 @@ public class WhoisProxyTest {
         assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois··/fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldRemoveNormaliseUrlWithHtml() {
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
-        whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois··/fmp-int/auditlog/<script>alert('Hi');</script>",
+        assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api" +
+                "/resources//api/whois··/fmp-int/auditlog/<script" +
+                ">alert('Hi');</script>",
             "value=tpolychnia@ripe.net",
             "/api/whois",
-            HTTPS_TEST_WHOIS_RIPE_NET);
+            HTTPS_TEST_WHOIS_RIPE_NET));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldRemoveNormaliseUrlWithSQL() {
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
-        whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois··/fmp-int/auditlog/select from 1 on 1",
+        assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois··/fmp-int/auditlog/select from 1 on 1",
             "value=tpolychnia@ripe.net",
             "/api/whois",
-            HTTPS_TEST_WHOIS_RIPE_NET);
+            HTTPS_TEST_WHOIS_RIPE_NET));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldRemoveAnyInjections() {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
-        whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/..//resources//api/whois../fmp-int/auditlog/select",
+        assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/..//resources//api/whois../fmp-int/auditlog/select",
             "id=2 and 1=2",
             "/api/whois",
-            HTTPS_TEST_WHOIS_RIPE_NET);
+            HTTPS_TEST_WHOIS_RIPE_NET));
 
     }
 

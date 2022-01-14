@@ -1,6 +1,6 @@
 package net.ripe.whois.selenium;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URL;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles(profiles = "selenium")
 public class LiveChatSeleniumTest extends AbstractSeleniumTest {

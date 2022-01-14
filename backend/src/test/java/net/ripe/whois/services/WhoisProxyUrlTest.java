@@ -1,8 +1,9 @@
 package net.ripe.whois.services;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import java.net.URI;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class WhoisProxyUrlTest {
 
@@ -102,41 +103,41 @@ public class WhoisProxyUrlTest {
         assertEquals("https://test.whois.ripe.net/api/resources/api/whois-internal./fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldThrowErrorOnSpecialCharacters() {
         WhoisProxyUrl whoisProxyUrl = new WhoisProxyUrl("/db-web-ui");
-        URI uri = whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog",
+        assertThrows(IllegalStateException.class, () -> whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            "https://test.whois.ripe.net");
+            "https://test.whois.ripe.net"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldRemoveNormaliseUrlWithHtml() {
         WhoisProxyUrl whoisProxyUrl = new WhoisProxyUrl("/db-web-ui");
-        URI uri = whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/<script>alert('Hi');</script>",
+        assertThrows(IllegalStateException.class, () -> whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/<script>alert('Hi');</script>",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            "https://test.whois.ripe.net");
+            "https://test.whois.ripe.net"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldRemoveNormaliseUrlWithSQL() {
         WhoisProxyUrl whoisProxyUrl = new WhoisProxyUrl("/db-web-ui");
-        URI uri = whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/select from 1 on 1",
+        assertThrows(IllegalStateException.class, () -> whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/select from 1 on 1",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            "https://test.whois.ripe.net");
+            "https://test.whois.ripe.net"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldRemoveAnyInjections() {
 
         WhoisProxyUrl whoisProxyUrl = new WhoisProxyUrl("/db-web-ui");
-        whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/..//resources//api/whois-internal../fmp-int/auditlog/select",
+        assertThrows(IllegalStateException.class, () -> whoisProxyUrl.composeProxyUrl("//db-web-ui/api/whois-internal/api/..//resources//api/whois-internal../fmp-int/auditlog/select",
             "id=2 and 1=2",
             "/api/whois-internal",
-            "https://test.whois.ripe.net");
+            "https://test.whois.ripe.net"));
 
     }
 

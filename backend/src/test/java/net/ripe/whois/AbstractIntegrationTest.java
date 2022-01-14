@@ -2,9 +2,9 @@ package net.ripe.whois;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ import java.io.IOException;
  * Spring injection for whois api url etc is not performed between test class runs so the url and actual mock server
  * port are then out of sync. @DirtiesContext forces the context to be reinitialised, thus fixing this problem.
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
 @SpringBootTest(classes = {Application.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
@@ -50,7 +50,7 @@ public abstract class AbstractIntegrationTest {
 
     protected static HttpServerMock httpServerMock;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         httpServerMock = new HttpServerMock();
         httpServerMock.start();
@@ -86,7 +86,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("git.commit.id.abbrev", "0");
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         httpServerMock.stop();
     }

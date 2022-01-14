@@ -4,7 +4,7 @@ import net.ripe.whois.AbstractIntegrationTest;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpScheme;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -103,7 +104,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     @Test
     public void request_with_query_string() throws IOException {
         mock("/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=10.0.0.1",
-            IOUtils.toString(getClass().getResourceAsStream("/mock/search.xml")),
+            IOUtils.toString(getClass().getResourceAsStream("/mock/search.xml"), Charset.defaultCharset()),
             MediaType.APPLICATION_XML,
             HttpStatus.OK.value());
 

@@ -2,14 +2,14 @@ package net.ripe.whois.services;
 
 import net.ripe.whois.AbstractIntegrationTest;
 import net.ripe.whois.CrowdTokenFilter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -40,7 +40,7 @@ public class WhoisSyncupdatesServiceTest {
             "last-modified:   2017-09-20T07:51:01Z\n" +
             "source:          RIPE";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         mockServer = MockRestServiceServer.createServer(restTemplate);
         httpHeaders = new HttpHeaders();

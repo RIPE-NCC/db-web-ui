@@ -6,7 +6,7 @@ import net.ripe.whois.AbstractIntegrationTest;
 import net.ripe.whois.CrowdTokenFilter;
 import net.ripe.whois.web.api.whois.domain.NameValuePair;
 import net.ripe.whois.web.api.whois.domain.WhoisWebDTO;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,9 +18,9 @@ import org.springframework.web.util.UriTemplate;
 import java.net.URI;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class WhoisDomainObjectServiceTest extends AbstractIntegrationTest {
 

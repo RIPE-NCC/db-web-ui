@@ -2,24 +2,23 @@ package net.ripe.whois.web.api.baapps;
 
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BaAppsControllerTest {
 
 
@@ -44,8 +43,7 @@ public class BaAppsControllerTest {
     @InjectMocks
     private BaAppsController subject;
 
-    @Before
-    public void setup() throws Exception {
+    private void mock() throws Exception {
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         // orgObjectId can be null in FYI pseudo-LIRs objects
         UserInfoResponse.Member memberFyi = new UserInfoResponse.Member();
@@ -65,7 +63,8 @@ public class BaAppsControllerTest {
     }
 
     @Test
-    public void get_tickets() {
+    public void get_tickets() throws Exception {
+        mock();
         final ResponseEntity response = subject.getTickets(CROWD_TOKEN, "ORG-RIEN1-RIPE", "AS3333");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(RESOURCE_TICKET_RESPONSE));

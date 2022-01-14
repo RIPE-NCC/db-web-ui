@@ -1,6 +1,6 @@
 package net.ripe.whois;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 
 import javax.ws.rs.core.MediaType;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 
 public class AuthIntegrationTest extends AbstractIntegrationTest {
