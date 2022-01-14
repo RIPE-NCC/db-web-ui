@@ -1,10 +1,9 @@
 package net.ripe.whois.services;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,11 +12,12 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WhoisRestServiceTest {
 
     // dummy test data
@@ -31,7 +31,7 @@ public class WhoisRestServiceTest {
     private final WhoisProxy whoisProxy = new WhoisProxy(CONTEXT_PATH);
     private String body;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         request = mock(HttpServletRequest.class);
         httpHeaders = new HttpHeaders();
@@ -49,11 +49,10 @@ public class WhoisRestServiceTest {
         verify(restTemplate).exchange(new URI("http://localhost/fulltextsearch/select"), HttpMethod.GET, new HttpEntity<>(body, httpHeaders), String.class);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_encode_query_parameters() throws Exception {
+    @Test
+    public void should_encode_query_parameters() {
         when(request.getRequestURI()).thenReturn("/api/rest/fulltextsearch/select");
         when(request.getQueryString()).thenReturn("q=<svg+onload=\"alert('XSS')\">");
-//        when(request.getMethod()).thenReturn(HttpMethod.GET.name());
-        subject.bypass(request, body, httpHeaders);
+        assertThrows(IllegalArgumentException.class, () -> subject.bypass(request, body, httpHeaders));
     }
 }

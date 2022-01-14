@@ -59,7 +59,7 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         // Do not accept compressed response, as it's not handled properly (by whois)
         requestHeaders.remove(HttpHeaders.ACCEPT_ENCODING);
         requestHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
-        requestHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_UTF8_VALUE);
+        requestHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         return handleErrors(() -> stream(request, response, requestBody, requestHeaders), LOGGER);
     }
 

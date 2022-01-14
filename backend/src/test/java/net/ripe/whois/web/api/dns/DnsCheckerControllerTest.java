@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -18,13 +16,14 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static net.ripe.whois.AbstractIntegrationTest.getResource;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DnsCheckerControllerTest {
 
     private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
@@ -36,19 +35,16 @@ public class DnsCheckerControllerTest {
 
     private DnsCheckerController subject;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         subject = new DnsCheckerController(whoisInternalService, dnsClient, false);
         when(whoisInternalService.getUserInfo(CROWD_TOKEN)).thenReturn(new ObjectMapper()
             .readValue(getResource("mock/user-info.json"), UserInfoResponse.class));
-        when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenReturn(Optional.empty());
     }
 
     @Test
     public void success() {
+        when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenReturn(Optional.empty());
         final ResponseEntity<DnsCheckerController.Response> response = subject.status(CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getBody().getMessage(), is("Server is authoritative for 1.2.3.4.in-addr.arpa"));
@@ -59,8 +55,7 @@ public class DnsCheckerControllerTest {
     @Test
     public void inactive_crowd_session() {
         when(whoisInternalService.getUserInfo(CROWD_TOKEN)).thenThrow(new RestClientException(401, "Unauthorized"));
-        thrown.expect(RestClientException.class);
-        subject.status(CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
+        assertThrows(RestClientException.class, () -> subject.status(CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa"));
     }
 
     @Test

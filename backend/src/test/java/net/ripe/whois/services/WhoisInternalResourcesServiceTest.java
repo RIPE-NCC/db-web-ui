@@ -1,9 +1,9 @@
 package net.ripe.whois.services;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WhoisInternalResourcesServiceTest {
 
     // dummy test data
@@ -33,7 +33,7 @@ public class WhoisInternalResourcesServiceTest {
     private WhoisInternalResourcesService subject;
     private MockRestServiceServer mockServer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         request = mock(HttpServletRequest.class);
         httpHeaders = new HttpHeaders();
