@@ -2,8 +2,9 @@ package net.ripe.whois.services;
 
 import net.ripe.whois.AbstractIntegrationTest;
 import net.ripe.whois.LoadBalancerEnabler;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.availability.AvailabilityChangeEvent;
 import org.springframework.boot.availability.ReadinessState;
@@ -19,7 +20,7 @@ public class HealthCheckIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     private LoadBalancerEnabler loadBalancerEnabler;
 
-    @After
+    @AfterEach
     public void reset() {
         AvailabilityChangeEvent.publish(applicationContext, ReadinessState.ACCEPTING_TRAFFIC);
         loadBalancerEnabler.up();
