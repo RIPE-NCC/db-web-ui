@@ -11,8 +11,14 @@ declare var loadZendeskChat: (zendeskChatKey: string) => any;
 })
 export class FeedbackSupportDialogComponent {
 
+  public showChatMenuItem: boolean;
+
   constructor(private properties: PropertiesService,
               private dialogRef: MatDialogRef<FeedbackSupportDialogComponent>) {
+  }
+
+  public ngOnInit() {
+    this.showChatMenuItem = this.properties.LIVE_CHAT_KEY !== "";
   }
 
   sendEmail() {
