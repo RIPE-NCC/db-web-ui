@@ -6,12 +6,16 @@ import {FeedbackSupportDialogComponent} from "../../../src/app/feedbacksupport/f
 import {By} from "@angular/platform-browser";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import createSpy = jasmine.createSpy;
 
 describe("FeedbackSupportDialogComponent", () => {
 
   let component: FeedbackSupportDialogComponent;
   let fixture: ComponentFixture<FeedbackSupportDialogComponent>;
   let propertiesService: PropertiesService;
+  let dialogRef = {
+    close: createSpy(),
+  }
 
   beforeEach(() => {
 
@@ -26,7 +30,7 @@ describe("FeedbackSupportDialogComponent", () => {
       ],
       providers: [
         PropertiesService,
-        { provide: MatDialogRef, useValue: {}}
+        { provide: MatDialogRef, useValue: dialogRef}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
@@ -35,7 +39,7 @@ describe("FeedbackSupportDialogComponent", () => {
     component = fixture.componentInstance;
   });
 
-  it('should create the 3 items', () => {
+  const expectAllItems = () => {
     const allItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
     expect(allItems.length).toBe(3);
 
@@ -47,14 +51,44 @@ describe("FeedbackSupportDialogComponent", () => {
 
     expect(allItems[2].nativeElement.textContent).toContain('Chat');
     expect(allItems[2].nativeElement.textContent).toContain('Launch Chat.');
-  });
+  };
+
+  const expectAllItemsExceptChat = () => {
+    const allItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
+    expect(allItems.length).toBe(2);
+
+    expect(allItems[0].nativeElement.textContent).toContain('Support');
+    expect(allItems[0].nativeElement.textContent).toContain('Need help? Open a ticket.');
+
+    expect(allItems[1].nativeElement.textContent).toContain('Report a bug');
+    expect(allItems[1].nativeElement.textContent).toContain('Something broken? Let us know!');
+  };
+
+  describe('hide chat', () => {
+    it('should hide for test, training and rc env', () => {
+      propertiesService.LIVE_CHAT_KEY = ''
+      fixture.detectChanges();
+
+      expectAllItemsExceptChat();
+    });
+    it('should show for prod', () => {
+      propertiesService.LIVE_CHAT_KEY = 'my secret key'
+      fixture.detectChanges();
+
+      expectAllItems();
+    });
+  })
 
   it('should handle callbacks', () => {
+    propertiesService.LIVE_CHAT_KEY = 'my secret key'
+    fixture.detectChanges();
+
     const allItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
 
     const windowMock = spyOn(window, 'open');
     allItems[0].triggerEventHandler('click', null)
     expect(windowMock).toHaveBeenCalled();
+    expect(dialogRef.close).toHaveBeenCalledTimes(1);
 
     // @ts-ignore
     window.useUsersnap = () => {
@@ -63,6 +97,7 @@ describe("FeedbackSupportDialogComponent", () => {
     const useUsersnapMock = spyOn(window, 'useUsersnap' as never);
     allItems[1].triggerEventHandler('click', null)
     expect(useUsersnapMock).toHaveBeenCalled();
+    expect(dialogRef.close).toHaveBeenCalledTimes(2);
 
     // @ts-ignore
     window.loadZendeskChat = (key) => {
@@ -71,6 +106,7 @@ describe("FeedbackSupportDialogComponent", () => {
     const loadZendeskChatMock = spyOn(window, 'loadZendeskChat' as never);
     allItems[2].triggerEventHandler('click', null)
     // @ts-ignore
-    expect(loadZendeskChatMock).toHaveBeenCalledWith(propertiesService.LIVE_CHAT_KEY);
+    expect(loadZendeskChatMock).toHaveBeenCalledWith('my secret key');
+    expect(dialogRef.close).toHaveBeenCalledTimes(3);
   });
 });

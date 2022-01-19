@@ -11,7 +11,7 @@
       <div mat-line>Report a bug</div>
       <div mat-line class="secondary">Something broken? Let us know!</div>
     </mat-list-item>
-    <mat-list-item (click)="openLiveChat()">
+    <mat-list-item *ngIf="showChatMenuItem" (click)="openLiveChat()">
       <i mat-list-icon class="fal fa-comment-alt"></i>
       <div mat-line>Chat</div>
       <div mat-line class="secondary">Launch Chat.</div>
