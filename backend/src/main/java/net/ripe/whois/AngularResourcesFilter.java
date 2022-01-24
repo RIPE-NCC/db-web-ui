@@ -30,12 +30,12 @@ public class AngularResourcesFilter implements Filter {
                 new HttpServletRequestWrapper(request) {
                     @Override
                     public String getServletPath() {
-                        return REDIRECT_PATH;
+                        return request.getContextPath() + REDIRECT_PATH;
                     }
 
                     @Override
                     public String getRequestURI() {
-                        return REDIRECT_PATH;
+                        return request.getContextPath() + REDIRECT_PATH;
                     }
                 },
                 response);
