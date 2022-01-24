@@ -9,6 +9,9 @@ import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.ResponsePatternRule;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
+import org.eclipse.jetty.server.CustomRequestLog;
+import org.eclipse.jetty.server.RequestLog;
+import org.eclipse.jetty.server.RequestLogWriter;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
@@ -17,6 +20,10 @@ import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.time.ZoneOffset;
+import java.util.regex.Pattern;
+
 /**
  * Spring boot doesn't allow to configure http and https through only application.properties
  * https://github.com/spring-projects/spring-boot/issues/2167
@@ -24,11 +31,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServletWebServerFactory> {
 
+    private static final String EXTENDED_RIPE_LOG_FORMAT = "%{client}a %{host}i - %u %{dd/MMM/yyyy:HH:mm:ss Z|" + ZoneOffset.systemDefault().getId() + "}t \"%r\" %s %O %D \"%{Referer}i\" \"%{User-Agent}i\"";
+
     @Value("${server.http.port:1082}")
     private int httpPort;
 
     @Value("${jetty.hostname:local}")
     private String workerName;
+
+    @Value("${jetty.accesslog.filename}")
+    private String jettyAccessLogFilename;
+
+    @Value("${jetty.accesslog.file-date-format}")
+    private String jettyAccessLogFileDateFormat;
 
     @Override
     public void customize(JettyServletWebServerFactory factory) {
@@ -40,6 +55,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
             sessionIdManager.setWorkerName(workerName);
             server.setSessionIdManager(sessionIdManager);
             server.setHandler(new HandlerList(rewriteHandler(), server.getHandler()));
+            server.setRequestLog(createRequestLog());
         });
     }
 
@@ -76,4 +92,35 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         return redirectRegexRule;
     }
 
+    private RequestLog createRequestLog() {
+        return new CustomRequestLog(new FilteredSlf4jRequestLogWriter(
+            "password", jettyAccessLogFilename, jettyAccessLogFileDateFormat), EXTENDED_RIPE_LOG_FORMAT);
+    }
+
+    private class FilteredSlf4jRequestLogWriter extends RequestLogWriter {
+
+        private final String keyToFilter;
+        // Replace value passed to apikey with "FILTERED" but leave the last 3 characters if its API keys
+        private final Pattern ApiKeyPattern = Pattern.compile("(?<=(?i)(apikey=))(.+?(?=\\S{3}[&|\\s]))");
+        private final Pattern PasswordPattern = Pattern.compile("(?<=(?i)(password=))([^&]*)");
+
+        public FilteredSlf4jRequestLogWriter(String keyToFilter, String jettyAccessLogFilename, String jettyAccessLogFileDateFormat) {
+            super(jettyAccessLogFilename);
+            this.keyToFilter = keyToFilter;
+            setFilenameDateFormat(jettyAccessLogFileDateFormat);
+        }
+
+        @Override
+        public void write(String requestEntry) throws IOException {
+            String filtered;
+
+            if (keyToFilter != null && keyToFilter.equalsIgnoreCase("apikey")) {
+                filtered = ApiKeyPattern.matcher(requestEntry).replaceAll("FILTERED");
+            } else {
+                filtered = PasswordPattern.matcher(requestEntry).replaceAll("FILTERED");
+            }
+
+            super.write(filtered);
+        }
+    }
 }

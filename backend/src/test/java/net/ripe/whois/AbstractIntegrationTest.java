@@ -55,6 +55,7 @@ public abstract class AbstractIntegrationTest {
         httpServerMock = new HttpServerMock();
         httpServerMock.start();
 
+        System.setProperty("jetty.accesslog.filename", "/tmp/output.log");
         System.setProperty("portal.url", getMockServerUrl());
         System.setProperty("portal.url.account", getMockServerUrl());
         System.setProperty("portal.url.request", getMockServerUrl());
