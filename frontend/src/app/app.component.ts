@@ -46,4 +46,8 @@ export class AppComponent {
     this.isDesktopView =  this.innerWidth >= this.properties.BREAKPOINTS_MOBILE_VIEW;
     this.isOpenMenu = this.isDesktopView;
   }
+
+  public isQueryPage(): boolean {
+    return this.router.url.startsWith('/query');
+  }
 }

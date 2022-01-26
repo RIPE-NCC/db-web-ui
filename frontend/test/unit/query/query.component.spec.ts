@@ -160,6 +160,7 @@ describe("QueryComponent", () => {
                 CookieService,
                 { provide: UserInfoService,
                     useValue: {
+                        getUserOrgsAndRoles: () => of(),
                         isLogedIn: () => true,
                         getLoggedInUser: () => of(),
                         getSelectedOrganisation: () => of(),

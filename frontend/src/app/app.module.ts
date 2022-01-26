@@ -2,7 +2,6 @@ import {BrowserModule} from "@angular/platform-browser";
 import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
-import {NgSelectModule} from "@ng-select/ng-select";
 import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
@@ -18,13 +17,11 @@ import {FmpModule} from "./fmp/fmp.module";
 import {FullTextSearchModule} from "./fulltextsearch/full-text-search.module";
 import {QueryModule} from "./query/query.module";
 import {WhoisObjectModule} from "./whois-object/whois-object.module";
-import {OrgDropDownComponent} from "./dropdown/org-drop-down.component";
 import {MyResourcesModule} from "./myresources/my-resources.module";
 import {DomainObjectModule} from "./domainobject/domain-object.module";
 import {UserInfoModule} from "./userinfo/user-info.module";
 import {SyncupdatesService} from "./syncupdates/syncupdates.service";
 import {EmailConfirmationService} from "./emailconfirmation/email-confirmation.service";
-import {OrgDropDownSharedService} from "./dropdown/org-drop-down-shared.service";
 import {MetaDataCleanerInterceptor} from "./interceptor/meta-data-cleaner.interceptor";
 import {HeaderInterceptor} from "./interceptor/header.interceptor";
 import {SyncupdatesComponent} from "./syncupdates/syncupdates.component";
@@ -50,7 +47,6 @@ import {MatLineModule} from "@angular/material/core";
     EmailConfirmationComponent,
     BannerComponent,
     IeBannerComponent,
-    OrgDropDownComponent,
     MenuComponent,
     ErrorPageComponent,
     NotFoundPageComponent,
@@ -61,7 +57,6 @@ import {MatLineModule} from "@angular/material/core";
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   imports: [
     BrowserModule,
-    NgSelectModule,
     FormsModule,
     HttpClientModule,
     SharedModule,
@@ -86,7 +81,6 @@ import {MatLineModule} from "@angular/material/core";
     AuthenticationGuard,
     SyncupdatesService,
     EmailConfirmationService,
-    OrgDropDownSharedService,
     PropertiesService,
     MenuService,
     {provide: APP_INITIALIZER, useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(), deps: [PropertiesService], multi: true},

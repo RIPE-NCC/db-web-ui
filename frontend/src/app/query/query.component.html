@@ -1,3 +1,68 @@
+<section id="searchSection">
+  <form name="searchform" (ngSubmit)="submitSearchForm()">
+    <div>
+      <div class="query-field" [style.fontSize.rem]="1.12">
+        <mat-form-field appearance="fill" [color]=colorControl.value>
+          <mat-label>Enter a search term</mat-label>
+          <input matInput id="queryStringInput"
+                 type="text"
+                 name="qp.queryText"
+                 autocomplete="off"
+                 [(ngModel)]="qp.queryText">
+          <button mat-icon-button matSuffix>
+            <mat-icon matSuffix class="fal fa-search"></mat-icon>
+          </button>
+        </mat-form-field>
+        <div class="query-padding-left">
+        <query-flags [input-term]="qp.queryText"
+                     (has-valid-flags)="isShownQueryFlagsContainer($event)"></query-flags>
+        </div>
+      </div>
+      <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
+        <button mat-button type="button" id="typeMenu"
+                [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">Types {{countSelectedDropdownItems(qp.types)}}
+          <span *ngIf="typesTrigger.menuOpen" class="fal fa-chevron-up"></span>
+          <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
+        </button>
+        <mat-menu #typesMenu="matMenu" yPosition="below">
+          <types-panel [(queryParameters)]="qp"></types-panel>
+        </mat-menu>
+        <button mat-button type="button" id="hierarchyFlagsMenu"
+                [matMenuTriggerFor]="hierarchyFlagsMenu" #hierarchyTrigger="matMenuTrigger">Hierarchy flags {{countSelectedDropdownHierarchyFlags()}}
+          <span *ngIf="hierarchyTrigger.menuOpen" class="fal fa-chevron-up"></span>
+          <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
+        </button>
+        <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below" >
+          <hierarchy-flags [(queryParameters)]="qp"></hierarchy-flags>
+        </mat-menu>
+        <button mat-button type="button" id="inverseLookupMenu"
+                [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">Inverse lookup {{countSelectedDropdownItems(qp.inverse)}}
+          <span *ngIf="inverseLookupTrigger.menuOpen" class="fal fa-chevron-up"></span>
+          <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
+        </button>
+        <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
+          <inverse-lookup-panel [(queryParameters)]="qp"></inverse-lookup-panel>
+        </mat-menu>
+        <button mat-button type="button" id="advanceFilterMenu"
+                [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">Advance
+          filter {{countSelectedDropdownAdvanceFilter()}}
+          <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
+          <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
+        </button>
+        <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
+          <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
+        </mat-menu>
+      </div>
+    </div>
+    <div class="query-padding-left">
+      <submitting-agreement></submitting-agreement>
+    </div>
+    <br />
+  </form>
+</section>
+
+<div class="query-padding">
+<org-drop-down></org-drop-down>
 <certificate-banner></certificate-banner>
 <section>
     <a id="anchorTop"></a>
@@ -6,64 +71,6 @@
     <h1 class="documentFirstHeading">RIPE Database Query</h1>
     <div class="documentByLine"><span class="byline"></span></div>
     <div class="documentDescription"></div>
-</section>
-<section id="searchSection">
-    <form name="searchform" (ngSubmit)="submitSearchForm()">
-        <div>
-            <div class="query-field" [style.fontSize.rem]="1.12">
-                    <mat-form-field appearance="fill" [color]=colorControl.value>
-                        <mat-label>Enter a search term</mat-label>
-                        <input matInput id="queryStringInput"
-                               type="text"
-                               name="qp.queryText"
-                               autocomplete="off"
-                               [(ngModel)]="qp.queryText">
-                        <button mat-icon-button matSuffix>
-                            <mat-icon matSuffix class="fal fa-search"></mat-icon>
-                        </button>
-                    </mat-form-field>
-                <query-flags [input-term]="qp.queryText"
-                                       (has-valid-flags)="isShownQueryFlagsContainer($event)"></query-flags>
-            </div>
-            <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
-                <button mat-button type="button" id="typeMenu"
-                        [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">Types {{countSelectedDropdownItems(qp.types)}}
-                    <span *ngIf="typesTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                    <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                </button>
-                <mat-menu #typesMenu="matMenu" yPosition="below">
-                    <types-panel [(queryParameters)]="qp"></types-panel>
-                </mat-menu>
-                <button mat-button type="button" id="hierarchyFlagsMenu"
-                        [matMenuTriggerFor]="hierarchyFlagsMenu" #hierarchyTrigger="matMenuTrigger">Hierarchy flags {{countSelectedDropdownHierarchyFlags()}}
-                    <span *ngIf="hierarchyTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                    <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                </button>
-                <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below" >
-                    <hierarchy-flags [(queryParameters)]="qp"></hierarchy-flags>
-                </mat-menu>
-                <button mat-button type="button" id="inverseLookupMenu"
-                        [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">Inverse lookup {{countSelectedDropdownItems(qp.inverse)}}
-                    <span *ngIf="inverseLookupTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                    <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                </button>
-                <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
-                    <inverse-lookup-panel [(queryParameters)]="qp"></inverse-lookup-panel>
-                </mat-menu>
-                <button mat-button type="button" id="advanceFilterMenu"
-                        [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">Advance
-                    filter {{countSelectedDropdownAdvanceFilter()}}
-                    <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                    <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                </button>
-                <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
-                    <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
-                </mat-menu>
-            </div>
-        </div>
-        <submitting-agreement></submitting-agreement>
-        <br />
-    </form>
 </section>
 <section id="resultsSection">
     <div *ngIf="results?.length > 0">
@@ -144,3 +151,4 @@
   </div>
 </section>
 <whois-version [version]="whoisVersion"></whois-version>
+</div>

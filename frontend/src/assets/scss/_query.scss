@@ -1,5 +1,7 @@
 @use "common-functions" as common;
 
+$padding: 24px;
+
 .query-field {
   mat-form-field {
     width: 100% !important;
@@ -7,6 +9,7 @@
 
   .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: rgba(0, 0, 0, 0.1);
+    padding-left: $padding;
   }
 
   .mat-form-field-wrapper {
@@ -30,6 +33,7 @@
   justify-content: flex-start;
   height: 60px;
   padding: common.spacing(1);
+  padding-left: $padding;
   @media (max-width: 768px) {
     flex-direction: column;
     height: auto;
@@ -71,4 +75,12 @@
         bottom: 0;
         margin-bottom: 1rem;
     }
+}
+
+.query-padding {
+  padding: $padding
+}
+
+.query-padding-left {
+  padding-left: $padding
 }

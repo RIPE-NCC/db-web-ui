@@ -38,8 +38,8 @@
       <alert-banners></alert-banners>
       <app-cookie-consent></app-cookie-consent>
     </section>
-    <section id="app-workspace">
-      <div id="org-drop-down">
+    <section id="app-workspace" [ngClass]="{'with-padding': !isQueryPage()}">
+      <div id="org-drop-down" *ngIf="!isQueryPage()">
         <org-drop-down></org-drop-down>
       </div>
       <div>

@@ -27,6 +27,9 @@ import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
 import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
 import {AlertBannersComponent} from "./alert/alert-banners.component";
 import {FlagComponent} from "./flag/flag.component";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {OrgDropDownComponent} from "../dropdown/org-drop-down.component";
+import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 
 @NgModule({
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -35,7 +38,8 @@ import {FlagComponent} from "./flag/flag.component";
         FormsModule,
         NgbModule,
         NgbNavModule,
-        DiffMatchPatchModule
+        DiffMatchPatchModule,
+        NgSelectModule
     ],
     declarations: [
         AlertBannersComponent,
@@ -56,7 +60,8 @@ import {FlagComponent} from "./flag/flag.component";
         SanitizeImgHtmlPipe,
         WebAppVersionComponent,
         WhoisVersionComponent,
-        WhoisLineDiffDirective
+        WhoisLineDiffDirective,
+        OrgDropDownComponent
     ],
     providers: [
         CredentialsService,
@@ -65,6 +70,7 @@ import {FlagComponent} from "./flag/flag.component";
         AlertsService,
         // Temporary just until we need different menu on test, training and rc enviroments
         EnvironmentStatusService,
+        OrgDropDownSharedService
     ],
     entryComponents: [
         AlertBannersComponent,
@@ -95,7 +101,8 @@ import {FlagComponent} from "./flag/flag.component";
         TableScrollerDirective,
         WhoisVersionComponent,
         WebAppVersionComponent,
-        WhoisLineDiffDirective
+        WhoisLineDiffDirective,
+        OrgDropDownComponent
     ]
 })
 export class SharedModule {
