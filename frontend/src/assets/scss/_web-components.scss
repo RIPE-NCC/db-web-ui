@@ -60,8 +60,11 @@ swe-menu {
 }
 
 #app-workspace {
-    margin: 24px;
     background-color: white;
+
+  &.with-padding {
+    padding: 24px;
+  }
 }
 
 #visual-portal-wrapper > div {

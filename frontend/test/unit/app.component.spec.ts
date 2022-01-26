@@ -24,11 +24,12 @@ describe("AppComponent", () => {
                 BannerComponent,
             ],
             providers: [
-                {provide: PropertiesService, useValue: {LOGIN_URL: "https://access.prepdev.ripe.net/",
+                {provide: PropertiesService, useValue: {
+                        LOGIN_URL: "https://access.prepdev.ripe.net/",
                         LOGOUT_URL: "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query",
                         RIPE_APP_WEBCOMPONENTS_ENV: "pre",
                         BREAKPOINTS_MOBILE_VIEW: 1025}},
-                {provide: Router, useValue: routerMock},
+                {provide: Router, useValue: {navigate:() => {}, navigateByUrl: () => {}, url: "/not-query"}},
                 {provide: WINDOW, useValue: {location: {}}},
             ],
             schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
