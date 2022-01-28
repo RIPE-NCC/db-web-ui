@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The inetnum editor", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl);
+        browser.get(`${browser.baseUrl}webupdates/select`);
         page.disableLiveChat();
         page.removeCookiesBanner();
     });

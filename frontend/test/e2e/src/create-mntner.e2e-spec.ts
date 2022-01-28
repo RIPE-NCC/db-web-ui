@@ -6,7 +6,7 @@ const until = protractor.ExpectedConditions;
 describe("The CreateSelfMntnerComponent", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl);
+        browser.get(`${browser.baseUrl}webupdates/select`);
     });
 
     it("should redirect to create pair person and maintainer on click on link", () => {

@@ -6,7 +6,7 @@ const until = protractor.ExpectedConditions;
 
 describe("The create domain screen", () => {
     beforeEach(() => {
-        browser.get(browser.baseUrl);
+        browser.get(`${browser.baseUrl}webupdates/select`);
         page.selectObjectType("domain").click();
         page.btnNavigateToCreate.click();
     });

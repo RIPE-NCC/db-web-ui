@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The CreateMntnerPairComponent", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl);
+        browser.get(`${browser.baseUrl}webupdates/select`);
     });
 
     it("should switch to person maintainer pair page on click on person link", () => {
