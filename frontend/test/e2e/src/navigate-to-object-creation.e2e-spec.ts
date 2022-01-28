@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("webupdates homepage", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl);
+        browser.get(`${browser.baseUrl}webupdates/select`);
         // Noisy logs enabled here...
         // browser.manage().logs().get("browser").then(function(browserLog) {
         //    console.log(">>>>>> " + require("util").inspect(browserLog));

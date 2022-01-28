@@ -67,6 +67,6 @@ export const appRoutes: Routes = [
     {path: "error", component: ErrorPageComponent},
     {path: "not-found", component: NotFoundPageComponent},
     {path: "confirmEmail", component: EmailConfirmationComponent},
-    {path: "", redirectTo: "webupdates/select", pathMatch: "full"},
-    {path: "**", redirectTo: "webupdates/select"},
+    {path: "", redirectTo: "query", pathMatch: "full"},
+    {path: "**", redirectTo: "query"},
 ];

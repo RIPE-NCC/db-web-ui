@@ -80,7 +80,8 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search/lookup.html", "/db-web-ui/lookup"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/change-auth$", "/db-web-ui/fmp/"));
-        
+        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
+
         final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
         defaultRule.setTerminating(true);
         rewriteHandler.addRule(defaultRule);
