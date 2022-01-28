@@ -45,6 +45,9 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
     @Value("${jetty.accesslog.file-date-format}")
     private String jettyAccessLogFileDateFormat;
 
+    @Value("${jetty.accesslog.retention-period}")
+    private int jettyAccessLogRetentionPeriod;
+
     @Override
     public void customize(JettyServletWebServerFactory factory) {
         factory.addServerCustomizers(server -> {
@@ -94,7 +97,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
 
     private RequestLog createRequestLog() {
         return new CustomRequestLog(new FilteredSlf4jRequestLogWriter(
-            "password", jettyAccessLogFilename, jettyAccessLogFileDateFormat), EXTENDED_RIPE_LOG_FORMAT);
+            "password", jettyAccessLogFilename, jettyAccessLogFileDateFormat, jettyAccessLogRetentionPeriod), EXTENDED_RIPE_LOG_FORMAT);
     }
 
     private class FilteredSlf4jRequestLogWriter extends RequestLogWriter {
@@ -104,10 +107,12 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         private final Pattern ApiKeyPattern = Pattern.compile("(?<=(?i)(apikey=))(.+?(?=\\S{3}[&|\\s]))");
         private final Pattern PasswordPattern = Pattern.compile("(?<=(?i)(password=))([^&]*)");
 
-        public FilteredSlf4jRequestLogWriter(String keyToFilter, String jettyAccessLogFilename, String jettyAccessLogFileDateFormat) {
+        public FilteredSlf4jRequestLogWriter(String keyToFilter, String jettyAccessLogFilename,
+                                             String jettyAccessLogFileDateFormat, int retainDays) {
             super(jettyAccessLogFilename);
             this.keyToFilter = keyToFilter;
             setFilenameDateFormat(jettyAccessLogFileDateFormat);
+            setRetainDays(retainDays);
         }
 
         @Override
