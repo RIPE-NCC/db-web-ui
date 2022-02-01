@@ -85,6 +85,9 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("rpki.dashboard.url", "https://my.prepdev.ripe.net/#/rpki");
         System.setProperty("spring.profiles.active", "test");
         System.setProperty("git.commit.id.abbrev", "0");
+        System.setProperty("shutdown.pause.sec", "0");
+        System.setProperty("bucket4j.enabled", "false");
+        System.setProperty("ipranges.trusted","127.0.0.1,::1");
     }
 
     @AfterAll

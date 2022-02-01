@@ -1,5 +1,8 @@
 package net.ripe.whois;
 
+import com.giffing.bucket4j.spring.boot.starter.config.cache.SyncCacheResolver;
+import com.giffing.bucket4j.spring.boot.starter.config.cache.jcache.JCacheCacheResolver;
+import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -24,11 +28,15 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
+import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
 import javax.servlet.Filter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.OptionalLong;
 import java.util.concurrent.Executor;
 import java.util.stream.StreamSupport;
 
@@ -134,6 +142,23 @@ public class Application implements AsyncConfigurer {
         cmfb.setCacheManagerName("net.ripe.whois.crowdSessions");
         cmfb.setShared(true);
         return cmfb;
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+        prefix = "bucket4j",
+        value = {"enabled"}
+    )
+    public SyncCacheResolver bucket4jCacheResolver() {
+        final CachingProvider cachingProvider = Caching.getCachingProvider();
+
+        CaffeineConfiguration<Object, Object> configuration = new CaffeineConfiguration<>();
+        configuration.setExpireAfterWrite(OptionalLong.of(Duration.ofHours(1).toNanos()));
+        configuration.setMaximumSize(OptionalLong.of(1000000));
+
+        javax.cache.CacheManager cacheManager = cachingProvider.getCacheManager();
+        cacheManager.createCache("rate-limit-buckets", configuration);
+        return new JCacheCacheResolver(cacheManager);
     }
 
     @Override
