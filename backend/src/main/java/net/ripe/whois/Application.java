@@ -42,12 +42,14 @@ public class Application implements AsyncConfigurer {
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
     private final CustomCacheFilter cacheFilter;
+    private final RemoteAddressFilter remoteAddressFilter;
 
     @Autowired
-    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CustomCacheFilter cacheFilter) {
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CustomCacheFilter cacheFilter, RemoteAddressFilter remoteAddressFilter) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
         this.cacheFilter = cacheFilter;
+        this.remoteAddressFilter = remoteAddressFilter;
     }
 
     /**
@@ -106,6 +108,11 @@ public class Application implements AsyncConfigurer {
     @Bean
     public FilterRegistrationBean cacheFilter() {
         return getFilterRegistrationBeanFor(cacheFilter);
+    }
+
+    @Bean
+    public FilterRegistrationBean remoteIpFilter() {
+        return getFilterRegistrationBeanFor(remoteAddressFilter);
     }
 
     private FilterRegistrationBean getFilterRegistrationBeanFor(final Filter filter) {

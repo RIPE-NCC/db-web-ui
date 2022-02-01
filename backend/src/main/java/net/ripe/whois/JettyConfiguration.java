@@ -3,15 +3,20 @@ package net.ripe.whois;
 import net.ripe.whois.jetty.HttpTransportRule;
 import net.ripe.whois.jetty.RedirectToHttpsRule;
 import net.ripe.whois.jetty.RedirectWithQueryParamRule;
+import net.ripe.whois.jetty.RemoteAddressCustomizer;
 import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.ResponsePatternRule;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
+import org.eclipse.jetty.server.ConnectionFactory;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.CustomRequestLog;
+import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.RequestLogWriter;
+import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
@@ -25,7 +30,7 @@ import java.time.ZoneOffset;
 import java.util.regex.Pattern;
 
 /**
- * Spring boot doesn't allow to configure http and https through only application.properties
+ * Spring boot doesn't allow configuring http and https through only application.properties
  * https://github.com/spring-projects/spring-boot/issues/2167
  */
 @Component
@@ -49,7 +54,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
     private int jettyAccessLogRetentionPeriod;
 
     @Override
-    public void customize(JettyServletWebServerFactory factory) {
+    public void customize(final JettyServletWebServerFactory factory) {
         factory.addServerCustomizers(server -> {
             ServerConnector httpConnector = new ServerConnector(server);
             httpConnector.setPort(httpPort);
@@ -59,7 +64,17 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
             server.setSessionIdManager(sessionIdManager);
             server.setHandler(new HandlerList(rewriteHandler(), server.getHandler()));
             server.setRequestLog(createRequestLog());
+            addRemoteAddressCustomizerToAllConnectors(server);
         });
+    }
+
+    private void addRemoteAddressCustomizerToAllConnectors(final Server server) {
+        for (final Connector connector : server.getConnectors()) {
+            final ConnectionFactory defaultConnectionFactory = connector.getDefaultConnectionFactory();
+            if (defaultConnectionFactory instanceof HttpConnectionFactory) {
+                ((HttpConnectionFactory) defaultConnectionFactory).getHttpConfiguration().addCustomizer(new RemoteAddressCustomizer());
+            }
+        }
     }
 
     private RewriteHandler rewriteHandler() {

@@ -55,7 +55,7 @@ public abstract class AbstractIntegrationTest {
         httpServerMock = new HttpServerMock();
         httpServerMock.start();
 
-        System.setProperty("jetty.accesslog.filename", "/tmp/output.log");
+        System.setProperty("jetty.accesslog.filename", getJettyRequestLogFile());
         System.setProperty("portal.url", getMockServerUrl());
         System.setProperty("portal.url.account", getMockServerUrl());
         System.setProperty("portal.url.request", getMockServerUrl());
@@ -110,6 +110,10 @@ public abstract class AbstractIntegrationTest {
 
     protected String getServerUrl() {
         return String.format("http://localhost:%d", this.localServerPort);
+    }
+
+    protected static String getJettyRequestLogFile() {
+        return "/tmp/output.log";
     }
 
     public static String getResource(final String resource) {
