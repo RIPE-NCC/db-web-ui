@@ -2,6 +2,7 @@ import {Component, HostListener, Inject} from "@angular/core";
 import {PropertiesService} from "./properties.service";
 import {WINDOW} from "./core/window.service";
 import {Router} from "@angular/router";
+import {Location} from "@angular/common";
 
 @Component({
   selector: "app-db-web-ui",
@@ -16,6 +17,7 @@ export class AppComponent {
 
   constructor(public properties: PropertiesService,
               private router: Router,
+              private location: Location,
               @Inject(WINDOW) public window: any) {
     this.skipHash();
   }
@@ -48,6 +50,6 @@ export class AppComponent {
   }
 
   public isQueryPage(): boolean {
-    return this.router.url.startsWith('/query');
+    return this.location.path().startsWith('/query');
   }
 }
