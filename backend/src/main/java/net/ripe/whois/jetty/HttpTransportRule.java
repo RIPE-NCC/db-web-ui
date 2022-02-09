@@ -25,7 +25,7 @@ public class HttpTransportRule extends Rule {
 
     private boolean hasTransport(final HttpServletRequest request) {
         final String header = request.getHeader(HttpHeader.X_FORWARDED_PROTO.toString());
-        return  StringUtils.isEmpty(request.getHeader(HttpHeader.X_FORWARDED_PROTO.toString())) ? false : transport.is(header);
+        return  StringUtils.isEmpty(header) ? false : transport.is(header);
     }
 
     @Override

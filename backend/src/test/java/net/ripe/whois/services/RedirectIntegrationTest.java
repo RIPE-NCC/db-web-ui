@@ -119,6 +119,17 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
         assertThat(response.toString().contains("6.0.0.0 - 13.115.255.255"), is(true));
     }
 
+    @Test
+    public void http_request_with_https_x_forwarded_proto() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeader.X_FORWARDED_PROTO.toString(), HttpScheme.HTTPS.toString());
+
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getServerUrl(), HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttps() + "/db-web-ui/query")));
+    }
+
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeader.X_FORWARDED_PROTO.toString(), HttpScheme.HTTP.toString());
