@@ -7,7 +7,6 @@ describe("The full text search", () => {
     beforeEach(() => {
         browser.get(browser.baseUrl + "fulltextsearch");
         page.removeCookiesBanner();
-        page.disableLiveChat();
     });
 
     it("should be able to search using the text box", () => {

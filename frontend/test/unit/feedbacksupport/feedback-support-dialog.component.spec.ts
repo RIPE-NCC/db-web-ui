@@ -84,6 +84,7 @@ describe("FeedbackSupportDialogComponent", () => {
     fixture.detectChanges();
 
     const allItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
+    expect(allItems).toHaveSize(3);
 
     const windowMock = spyOn(window, 'open');
     allItems[0].triggerEventHandler('click', null)
@@ -99,14 +100,11 @@ describe("FeedbackSupportDialogComponent", () => {
     expect(useUsersnapMock).toHaveBeenCalled();
     expect(dialogRef.close).toHaveBeenCalledTimes(2);
 
-    // @ts-ignore
-    window.loadZendeskChat = (key) => {
-      // do nothing
-    };
-    const loadZendeskChatMock = spyOn(window, 'loadZendeskChat' as never);
+    const livechat = document.createElement('live-chat')
+    const dispatchMock = spyOn(livechat, 'dispatchEvent');
+    document.body.appendChild(livechat)
     allItems[2].triggerEventHandler('click', null)
-    // @ts-ignore
-    expect(loadZendeskChatMock).toHaveBeenCalledWith('my secret key');
+    expect(dispatchMock).toHaveBeenCalledWith(new Event('live-chat-open'));
     expect(dialogRef.close).toHaveBeenCalledTimes(3);
   });
 });

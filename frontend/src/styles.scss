@@ -100,3 +100,9 @@ ngb-typeahead-window.dropdown-menu {
   border: 1px solid #ddd;
   border-bottom-color: transparent;
 }
+
+.space-bottom-for-livechat {
+  @extend %float-l;
+  @extend %width-100;
+  margin-bottom: 3.5em;
+}

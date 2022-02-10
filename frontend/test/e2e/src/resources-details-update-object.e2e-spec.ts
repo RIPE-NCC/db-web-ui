@@ -12,7 +12,6 @@ describe("Resources, update object", () => {
     });
 
     it("should allow editing of the object", async () => {
-        page.disableLiveChat();
         page.btnUpdateObjectButton.click();
         page.modalInpPassword.sendKeys("TPOL888-MNT");
         page.modalInpAssociate.click();
