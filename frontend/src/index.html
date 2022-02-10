@@ -105,47 +105,5 @@
 
 </script>
 <!-- End Matomo Tag Manager -->
-<!-- Zendesk Live chat -->
-<script type="text/javascript">
-  let loadScript = true;
-  document.cookie = "open-live-chat=false;domain=.ripe.net;path=/;secure";
-
-  function loadZendeskChat(zendeskChatKey) {
-    if(loadScript) {
-        const s = document.createElement('script');
-        const f = document.getElementsByTagName('script')[0];
-        s.type = 'text/javascript';
-        s.async = true;
-        s.onload = function () {
-          loadScript = false;
-          document.cookie = "open-live-chat=true;domain=.ripe.net;path=/;secure";
-
-          zE('webWidget', 'open');
-
-          zE('webWidget:on', 'close', function() {
-            zE('webWidget', 'hide');
-            document.querySelector('.live-chat-text').innerHTML = "Chat With Us";
-          });
-
-          zE('webWidget:on', 'chat:popout', function() {
-            zE('webWidget', 'hide');
-          });
-
-          zE('webWidget:on', 'chat:unreadMessages', function(number) {
-            document.querySelector('.live-chat-text').innerHTML = number + " new messages!";
-          });
-        }
-
-        s.id = "ze-snippet"
-        s.src = 'https://static.zdassets.com/ekr/snippet.js?key=' + zendeskChatKey;
-        f.parentNode.insertBefore(s, f);
-    } else {
-      zE("webWidget", "show")
-      zE("webWidget", "open")
-    }
-  }
-</script>
-<!-- End Zendesk Live chat -->
-
 </body>
 </html>

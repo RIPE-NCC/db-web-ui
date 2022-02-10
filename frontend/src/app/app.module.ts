@@ -34,7 +34,6 @@ import {IeBannerComponent} from "./banner/ie-banner.component";
 import {MenuComponent} from "./menu/menu.component";
 import {MenuService} from "./menu/menu.service";
 import {LegalComponent} from "./footer-legal/legal.component";
-import {LiveChatComponent} from "./livechat/live-chat.component";
 import {FeedbackSupportDialogComponent} from "./feedbacksupport/feedback-support-dialog.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatListModule} from "@angular/material/list";
@@ -51,7 +50,6 @@ import {MatLineModule} from "@angular/material/core";
     ErrorPageComponent,
     NotFoundPageComponent,
     LegalComponent,
-    LiveChatComponent,
     FeedbackSupportDialogComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

@@ -23,7 +23,6 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
     });
 
     it("should be possible for RC to submit change on out of region route object", () => {
-        page.disableLiveChat();
         page.modalInpPassword.sendKeys("AS4663-RIPE-MNT");
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
@@ -64,6 +63,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         expect(page.modal.isPresent()).toEqual(false);
         expect(page.successMessage.getText()).toContain("The following object(s) have been successfully deleted");
         // navigating to query page should remove alert component
+        page.scrollIntoView(page.ripeDatabaseMenuItem);
         page.ripeDatabaseMenuItem.click();
         page.ripeDatabaseQueryMenuItems.click();
         expect(browser.getCurrentUrl()).toContain("query");

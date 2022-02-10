@@ -6,7 +6,6 @@ describe("The syncupdates page", () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl + "syncupdates");
-        page.disableLiveChat();
     });
 
     it("should not show preview section if is empty object", () => {

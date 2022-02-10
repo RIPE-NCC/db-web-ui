@@ -438,7 +438,7 @@ module.exports = {
 
     disableLiveChat: function () {
       browser.executeScript(() => {
-        let elementLiveChat = document.getElementById("live-chat");
+        let elementLiveChat = document.getElementsByTagName("live-chat")[0];
         if (elementLiveChat) {
           elementLiveChat.remove();
         }

@@ -7,7 +7,6 @@ describe("The query page", () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl + "query");
-        page.disableLiveChat();
     });
 
     it("should have all its bits on the screen somewhere", async () => {

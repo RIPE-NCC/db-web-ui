@@ -3,7 +3,6 @@ import {PropertiesService} from "../properties.service";
 import {MatDialogRef} from "@angular/material/dialog";
 
 declare let useUsersnap: () => any;
-declare var loadZendeskChat: (zendeskChatKey: string) => any;
 
 @Component({
   selector: "feedback-support-dialog",
@@ -33,7 +32,9 @@ export class FeedbackSupportDialogComponent {
   }
 
   openLiveChat() {
-    loadZendeskChat(this.properties.LIVE_CHAT_KEY);
+    const livechat = document.querySelector('live-chat');
+    livechat.dispatchEvent(new Event('live-chat-open'));
     this.dialogRef.close();
   }
+
 }
