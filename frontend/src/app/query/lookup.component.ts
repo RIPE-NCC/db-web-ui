@@ -7,11 +7,10 @@ import {PropertiesService} from "../properties.service";
     templateUrl: "./lookup.component.html",
 })
 export class LookupComponent implements OnChanges {
-    
+
     @Input("whois-object")
     public whoisObject: IWhoisObjectModel;
-    @Output("update-clicked")
-    public updateClicked = new EventEmitter();
+
     public abuseContactFound = false;
     public abuseContactSuspected = false;
     public abuseContactSuspectedWithoutOrgid: boolean = false;
@@ -27,9 +26,5 @@ export class LookupComponent implements OnChanges {
         this.abuseContactSuspectedWithoutOrgid = this.abuseContactSuspected
             && (!this.whoisObject["abuse-contact"]["org-id"] || this.whoisObject["abuse-contact"]["org-id"] === "");
         this.resourceHolderFound = !!this.whoisObject["resource-holder"];
-    }
-
-    public emitUpdateClicked() {
-        this.updateClicked.emit();
     }
 }

@@ -77,10 +77,6 @@ export class LookupSingleObjectComponent implements OnDestroy {
         }
     }
 
-    public goToUpdate() {
-        this.router.navigate(["webupdates/modify", this.source, this.objectType, this.objectName]);
-    }
-
     public goToLookup() {
         const queryParam = {source: this.properties.SOURCE, type: this.objectType, key: this.objectName};
         this.router.navigate(["lookup"], {queryParams: queryParam});

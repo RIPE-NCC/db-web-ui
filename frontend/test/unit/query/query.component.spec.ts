@@ -427,14 +427,6 @@ describe("QueryComponent", () => {
             expect(component.offset).toEqual(20);
             expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(2);
         });
-
-        it("should react to scroll events", async() => {
-            component.init();
-            fixture.detectChanges();
-            await fixture.whenStable();
-            component.updateClicked(whoisObjectModelMock);
-            expect(component.router.navigate).toHaveBeenCalledWith(["webupdates/modify", "ripe", "inetnum", "88.208.87.32 - 88.208.87.39"]);
-        });
     });
 
     describe("with a failed query", () => {

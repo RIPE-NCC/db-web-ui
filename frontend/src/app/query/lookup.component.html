@@ -27,5 +27,5 @@
                                key: whoisObject['abuse-contact']['org-id'],
                                type: 'organisation'}">{{ whoisObject['abuse-contact']['org-id'] }}</a> for further information.</span>
     </div>
-    <whois-object-viewer [ng-model]="whoisObject" (update-clicked)="emitUpdateClicked()"></whois-object-viewer>
+    <whois-object-viewer [ng-model]="whoisObject" [linkable]="true"></whois-object-viewer>
 </div>

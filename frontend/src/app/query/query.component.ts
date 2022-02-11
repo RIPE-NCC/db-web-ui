@@ -126,11 +126,6 @@ export class QueryComponent implements OnDestroy {
         }
     }
 
-    public updateClicked(model: IWhoisObjectModel): void {
-        const name = model["primary-key"].attribute.map((attr) => attr.value).join("");
-        this.router.navigate(["webupdates/modify", model.source.id, model.type, name]);
-    }
-
     public uncheckReverseDomain() {
         this.qp.reverseDomain = false;
     }
