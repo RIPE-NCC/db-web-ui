@@ -9,7 +9,8 @@
         <span>Login to update </span>
         <i class="fal fa-database"></i>
     </a>
-    <a class="blue-button" (click)="emitUpdateClicked()" *ngIf="show.updateButton">{{ "lookup.updateObjectButton.text" | label }}</a>
+    <a class="blue-button" [routerLink]="['/webupdates/modify', ngModel.source.id, ngModel.type, objectPrimaryKey]" *ngIf="show.updateButton && linkable">{{ "lookup.updateObjectButton.text" | label }}</a>
+    <a class="blue-button" (click)="emitUpdateClicked()" *ngIf="show.updateButton && !linkable">{{ "lookup.updateObjectButton.text" | label }}</a>
     <a class="grey-button ripe-stat-button" href="https://stat.ripe.net/{{ripeStatLink}}?sourceapp=ripedb" *ngIf="show.ripeStatButton" target="_newtab">
         {{ "lookup.ripestatLink.text" | label }}
         <i class="fal fa-external-link"></i>

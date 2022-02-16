@@ -94,7 +94,7 @@
         <p [innerHTML]="'msg.searchResults.text' | label"></p>
         <div class="clearfix" *ngFor="let whoisObject of results">
             <div class="resultpane">
-                <lookup [whois-object]="whoisObject" (update-clicked)="updateClicked(whoisObject)"></lookup>
+                <lookup [whois-object]="whoisObject"></lookup>
             </div>
         </div>
         <p *ngIf="showScroller" scroller (onScroll)="lastResultOnScreen()">

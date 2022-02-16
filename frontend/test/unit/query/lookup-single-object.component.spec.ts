@@ -11,6 +11,7 @@ import {LookupService} from "../../../src/app/query/lookup.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
+import {By} from "@angular/platform-browser";
 
 describe("LookupSingleObjectComponent", () => {
 
@@ -51,22 +52,6 @@ describe("LookupSingleObjectComponent", () => {
     });
 
     describe("should shows an object", () => {
-
-        it("all lovely and that", async() => {
-            lookupServiceSpy.lookupWhoisObject.and.returnValue(of(mockResponse.singleResult));
-            component.activatedRoute.queryParams = of({
-                source: "useTheSource",
-                type: "thetype",
-                key: "thekey",
-                get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
-                has: (hash: string) => true
-            });
-            fixture.detectChanges();
-            await fixture.whenStable();
-            expect(component.whoisResponse).toBeTruthy();
-            component.goToUpdate();
-            expect(component.router.navigate).toHaveBeenCalledWith(["webupdates/modify", "useTheSource", "thetype", "thekey"]);
-        });
 
         it("but not when the params are empty", async() => {
             lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError("That just won't do."));

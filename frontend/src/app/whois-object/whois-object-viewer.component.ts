@@ -13,8 +13,10 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
 
     @Input("ng-model")
     public ngModel: IWhoisObjectModel;
+    @Input("linkable")
+    public linkable?: boolean;
     @Output("update-clicked")
-    public updateClicked = new EventEmitter();
+    public updateClicked? = new EventEmitter();
 
     public nrLinesToShow: number;
     public showMoreButton: boolean;
@@ -30,7 +32,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         loginLink: false,
         ripeManagedToggleControl: false,
         ripeStatButton: false,
-        updateButton: false,
+        updateButton: false
     };
 
     private objLength: number;

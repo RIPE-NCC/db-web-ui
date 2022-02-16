@@ -9,6 +9,7 @@ import {WhoisObjectViewerComponent} from "../../../src/app/whois-object/whois-ob
 import {AttributeModule} from "../../../src/app/attribute/attribute.module";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
+import {By} from "@angular/platform-browser";
 
 describe("WhoisObjectViewerComponent", () => {
 
@@ -101,6 +102,29 @@ describe("WhoisObjectViewerComponent", () => {
             component.ngOnChanges();
             fixture.detectChanges();
             expect(component.show.updateButton).toBeFalsy();
+        });
+
+        it("should contain href to modify page when linkable is true", async() => {
+            component.ngModel = whoisObject;
+            component.linkable = true;
+            component.ngOnChanges();
+            component.show.updateButton = true;
+            component.show.loginLink = false;
+            fixture.detectChanges();
+            await fixture.whenStable();
+            const blueButtons = fixture.debugElement.queryAll(By.css('.blue-button'));
+            expect(blueButtons[0].nativeElement.getAttribute('href')).toBe('/webupdates/modify/ripe/inetnum/62.77.172.236%20-%2062.77.172.239')
+        });
+
+        it("should contain href when linkable is absent", async() => {
+            component.ngModel = whoisObject;
+            component.ngOnChanges();
+            component.show.updateButton = true;
+            component.show.loginLink = false;
+            fixture.detectChanges();
+            await fixture.whenStable();
+            const blueButtons = fixture.debugElement.queryAll(By.css('.blue-button'));
+            expect(blueButtons[0].nativeElement.getAttribute('href')).toBeNull();
         });
     });
 
@@ -328,4 +352,94 @@ describe("WhoisObjectViewerComponent", () => {
                     } ]
                 }
             };
+
+    const whoisObject = {
+          "type" : "inetnum",
+          "link" : {
+            "type" : "locator",
+            "href" : "https://rest-prepdev.db.ripe.net/ripe/inetnum/62.77.172.236 - 62.77.172.239"
+          },
+          "source" : {
+            "id" : "ripe"
+          },
+          "primary-key" : {
+            "attribute" : [ {
+              "name" : "inetnum",
+              "value" : "62.77.172.236 - 62.77.172.239"
+            } ]
+          },
+          "attributes" : {
+            "attribute" : [ {
+              "name" : "inetnum",
+              "value" : "62.77.172.236 - 62.77.172.239"
+            }, {
+              "name" : "netname",
+              "value" : "SEVEN"
+            }, {
+              "name" : "descr",
+              "value" : "***"
+            }, {
+              "name" : "country",
+              "value" : "IE"
+            }, {
+              "link" : {
+                "type" : "locator",
+                "href" : "https://rest-prepdev.db.ripe.net/ripe/person/OR1578-RIPE"
+              },
+              "name" : "admin-c",
+              "value" : "OR1578-RIPE",
+              "referenced-type" : "person"
+            }, {
+              "link" : {
+                "type" : "locator",
+                "href" : "https://rest-prepdev.db.ripe.net/ripe/person/OR1578-RIPE"
+              },
+              "name" : "tech-c",
+              "value" : "OR1578-RIPE",
+              "referenced-type" : "person"
+            }, {
+              "name" : "status",
+              "value" : "ASSIGNED PA"
+            }, {
+              "name" : "notify",
+              "value" : "***@eircom.net"
+            }, {
+              "link" : {
+                "type" : "locator",
+                "href" : "https://rest-prepdev.db.ripe.net/ripe/mntner/TE-MNT"
+              },
+              "name" : "mnt-by",
+              "value" : "TE-MNT",
+              "referenced-type" : "mntner"
+            }, {
+              "name" : "remarks",
+              "value" : "***"
+            }, {
+              "name" : "created",
+              "value" : "2014-03-13T07:26:31Z"
+            }, {
+              "name" : "last-modified",
+              "value" : "2014-03-13T07:26:31Z"
+            }, {
+              "name" : "source",
+              "value" : "RIPE"
+            } ]
+          },
+          "tags" : {
+            "tag" : [ {
+              "id" : "RIPE-USER-RESOURCE"
+            } ]
+          },
+          "resource-holder" : {
+            "key" : "ORG-EA29-RIPE",
+            "name" : "Echo Lima"
+          },
+          "abuse-contact" : {
+            "key" : "ENA33-RIPE",
+            "email" : "wmsupport@eir.ie",
+            "suspect" : false,
+            "org-id" : "ORG-EA29-RIPE"
+          },
+          "managed" : false
+        }
 });
