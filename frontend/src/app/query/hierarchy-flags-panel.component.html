@@ -11,7 +11,7 @@
                 [min]="0"
                 [tickInterval]="1"
                 [(ngModel)]="hierarchyFlag"
-                (change)="setHierarchyFlag()"
+                (input)="setHierarchyFlag($event.value)"
                 aria-labelledby="example-name-label">
         </mat-slider>
         <div class="slider-labels" (click)="$event.stopPropagation()">

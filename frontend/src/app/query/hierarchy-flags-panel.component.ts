@@ -19,9 +19,9 @@ export class HierarchyFlagsPanelComponent implements OnInit {
         this.hierarchyFlag = HierarchyFlagsService.idHierarchyFlagFromShort(this.queryParameters.hierarchy);
     }
 
-    public setHierarchyFlag() {
-        this.queryParameters.hierarchy = HierarchyFlagsService.hierarchyFlagMap[this.hierarchyFlag].short;
-        this.descriptionPreview = HierarchyFlagsService.hierarchyFlagMap[this.hierarchyFlag].description;
+    public setHierarchyFlag(id: number) {
+        this.queryParameters.hierarchy = HierarchyFlagsService.hierarchyFlagMap[id].short;
+        this.descriptionPreview = HierarchyFlagsService.hierarchyFlagMap[id].description;
     }
 
     public getShortHierarchyFlagName(id: number) {
