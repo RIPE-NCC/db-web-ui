@@ -28,42 +28,22 @@ export interface IFooterMenuItem {
     url?: string
 }
 
-export interface IRoles {
-    unauthorised: boolean;
-    admin: boolean;
-    billing: boolean;
-    certification: boolean;
-    general: boolean;
-    generalMeeting: boolean;
-    guest: boolean;
-    myResources: boolean;
-    ticketing: boolean;
-}
-
 @Injectable()
 export class MenuService {
 
     public menu: IMenu;
-    public roles: IRoles;
 
-    constructor(public properties: PropertiesService) {
-        this.roles= {
-            unauthorised: true,
-            admin: false,
-            billing: false,
-            certification: false,
-            general: false,
-            generalMeeting: false,
-            guest: false,
-            myResources: false,
-            ticketing: false,
-        };
-    }
+    constructor(public properties: PropertiesService) {}
 
     createMenu(userRoles: string[]): IMenu {
         this.menu = MenuService.getMenuByEnvironment();
-        this.setRoles(userRoles);
-        const filteredItemsByRoles = this.menu.main.filter(item => item.roles.some(role => userRoles.includes(role)));
+        const filteredItemsByRoles = this.menu.main.filter(item => item.roles.some(role => userRoles.includes(role))).map(item => {
+          if (item.id === "resources" && userRoles.includes('NON-MEMBER')) {
+            return {...item, subtitle: 'My Resources'}
+          } else {
+            return item;
+          }
+        });
         // @ts-ignore
         this.menu.main.forEach(menuItem =>  menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url);
         this.menu.footer.forEach(menuItem =>  menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url);
@@ -80,50 +60,6 @@ export class MenuService {
             return menuTrainingObject;
         } else {
             return menuObject;
-        }
-    }
-
-    private clearRoles() {
-        this.roles.admin = this.roles.general = this.roles.billing
-            = this.roles.generalMeeting = this.roles.ticketing = this.roles.certification
-            = this.roles.myResources = this.roles.guest = false;
-    }
-
-    private setRoles(userRoles: string[]) {
-        this.clearRoles();
-
-        if (!userRoles) {
-            return;
-        }
-        for (const role of userRoles) {
-            switch (role) {
-                case "admin":
-                    this.roles.admin = true;
-                    break;
-                case "billing":
-                    this.roles.billing = true;
-                    break;
-                case "certification":
-                    this.roles.certification = true;
-                    break;
-                case "general":
-                    this.roles.general = true;
-                    break;
-                case "generalMeeting":
-                    this.roles.generalMeeting = true;
-                    break;
-                case "guest":
-                    this.roles.guest = true;
-                    break;
-                case "myResources":
-                    this.roles.myResources = true;
-                    break;
-                case "ticketing":
-                    this.roles.ticketing = true;
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }

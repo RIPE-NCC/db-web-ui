@@ -50,8 +50,12 @@ export class ResourcesComponent implements OnDestroy {
             if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
                 this.selectedOrg = selected;
                 this.loading = true;
-                // go back to the start "My Resources" page
-                this.refreshPage();
+                if (!this.isMemberOrg() && this.isShowingSponsored) {
+                  this.resourcesTabClicked();
+                } else {
+                  // go back to the start "My Resources" page
+                  this.refreshPage();
+                }
             }
         });
         this.subscription = this.activatedRoute.queryParams.subscribe((params => {

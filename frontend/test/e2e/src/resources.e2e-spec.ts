@@ -43,13 +43,14 @@ describe("Resources", () => {
         page.tabMyResources.click();
     });
 
-    it("should show always Sponsores Resources tab after switching organisation without sponsored resources", () => {
+    it("should not show Sponsored Resources tab after switching to an enduser", () => {
         page.tabSponsoredResources.click();
         expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
         page.orgSelector.click();
         // switch selected org to Viollier AG
         page.orgSelectorOptions.get(3).click();
-        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("My Resources");
+        expect(page.tabSponsoredResources.isPresent()).toBeFalsy();
         page.orgSelector.click();
         // switch back selected org to SURFnet
         page.orgSelectorOptions.get(0).click();
