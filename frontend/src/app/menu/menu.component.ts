@@ -40,10 +40,10 @@ export class MenuComponent {
             this.setActiveMenuItem();
         });
         orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
-            if (!selected || !selected.roles) {
+            if (!selected || !selected.roles || selected.roles.length < 1) {
                 return;
             }
-            this.menu = JSON.stringify(this.menuService.createMenu(selected.roles));
+          this.menu = JSON.stringify(this.menuService.createMenu(selected.roles));
         })
     }
 

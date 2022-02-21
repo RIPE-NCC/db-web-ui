@@ -32,7 +32,7 @@ describe("LeftHandMenuComponent", () => {
                 PropertiesService,
                 WINDOW_PROVIDERS,
                 OrgDropDownSharedService,
-                { provide: Location, useValue: {}}
+                {provide: Location, useValue: {path: () => ("")}},
             ]
         });
     });
@@ -59,18 +59,17 @@ describe("LeftHandMenuComponent", () => {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(menuService.roles.admin).toBe(true);
-        expect(menuService.roles.general).toBe(true);
-        expect(menuService.roles.generalMeeting).toBe(true);
-        expect(menuService.roles.ticketing).toBe(true);
-        expect(menuService.roles.certification).toBe(true);
-        expect(menuService.roles.billing).toBe(true);
-        expect(menuService.roles.admin).toBeTruthy();
-        expect(menuService.roles.general).toBeTruthy();
-        expect(menuService.roles.generalMeeting).toBeTruthy();
-        expect(menuService.roles.ticketing).toBeTruthy();
-        expect(menuService.roles.certification).toBeTruthy();
-        expect(menuService.roles.billing).toBeTruthy();
+        expect(component.menu).toContain("My LIR");
+        expect(component.menu).toContain("Requests");
+        expect(component.menu).toContain("Resources");
+        expect(component.menu).toContain("My Resources");
+        expect(component.menu).toContain("Sponsored Resources");
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
+        expect(component.menu).toContain("RPKI");
     });
 
     it("should show just RIPE Database for Training environment", () => {
@@ -153,19 +152,32 @@ describe("LeftHandMenuComponent", () => {
 
     it("should not set anything if user has no roles", () => {
         component.orgDropDownSharedService.setSelectedOrg(null);
-        expect(menuService.roles.admin).toBe(false);
-        expect(menuService.roles.general).toBe(false);
-        expect(menuService.roles.generalMeeting).toBe(false);
-        expect(menuService.roles.ticketing).toBe(false);
-        expect(menuService.roles.certification).toBe(false);
-        expect(menuService.roles.billing).toBe(false);
+        fixture.detectChanges();
+        expect(component.menu).not.toContain("My LIR");
+        expect(component.menu).not.toContain("Requests");
+        // when user is not logged in or doesn't have organisations, show Resources with description 'My Resources, Sponsored Resources'
+        expect(component.menu).toContain("Resources");
+        expect(component.menu).toContain("My Resources");
+        expect(component.menu).not.toContain("\"id\":\"sponsored\""); // Sponsored Resources menu item
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
+        expect(component.menu).not.toContain("RPKI");
         component.orgDropDownSharedService.setSelectedOrg({"roles": [] });
-        expect(menuService.roles.admin).toBe(false);
-        expect(menuService.roles.general).toBe(false);
-        expect(menuService.roles.generalMeeting).toBe(false);
-        expect(menuService.roles.ticketing).toBe(false);
-        expect(menuService.roles.certification).toBe(false);
-        expect(menuService.roles.billing).toBe(false);
+        fixture.detectChanges();
+        expect(component.menu).not.toContain("My LIR");
+        expect(component.menu).not.toContain("Requests");
+        expect(component.menu).toContain("Resources");
+        expect(component.menu).toContain("My Resources");
+        expect(component.menu).not.toContain("\"id\":\"sponsored\""); // Sponsored Resources menu item
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
+        expect(component.menu).not.toContain("RPKI");
     });
 
     it("should set menu for end user role", () => {
@@ -176,23 +188,61 @@ describe("LeftHandMenuComponent", () => {
                 "roles": ["certification", "NON-MEMBER"]
             }
         );
-        expect(menuService.roles.admin).toBe(false);
-        expect(menuService.roles.general).toBe(false);
-        expect(menuService.roles.generalMeeting).toBe(false);
-        expect(menuService.roles.ticketing).toBe(false);
-        expect(menuService.roles.certification).toBe(true);
-        expect(menuService.roles.billing).toBe(false);
+        expect(component.menu).not.toContain("My LIR");
+        expect(component.menu).toContain("Requests");
+        expect(component.menu).toContain("Resources");
+        expect(component.menu).toContain("My Resources");
+        expect(component.menu).not.toContain("Sponsored Resources");
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
+        expect(component.menu).toContain("RPKI");
+    });
+
+    it("should not show Sponsored Resources for End Users", () => {
+        component.orgDropDownSharedService.setSelectedOrg(
+          {
+              orgObjectId: "ORG-OOO2-RIPE",
+              organisationName: "Only One Org",
+              roles: ["certification", "NON-MEMBER"]
+          }
+        );
+        expect(component.menu).not.toContain("\"id\":\"sponsored\"");
+        expect(component.menu).not.toContain("\"subtitle\":\"My Resources, Sponsored Resources\"");
+        expect(component.menu).toContain("\"subtitle\":\"My Resources\"");
+    });
+
+    it("should show Sponsored Resources for Members", () => {
+        component.orgDropDownSharedService.setSelectedOrg(
+          {
+            "membershipId": 7347,
+            "regId": "zz.example",
+            "orgObjectId": "ORG-EIP1-RIPE",
+            "organisationName": "Internet Provider BV",
+            "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
+          }
+        );
+        expect(component.menu).toContain("\"id\":\"sponsored\"");
+        expect(component.menu).toContain("\"subtitle\":\"My Resources, Sponsored Resources\"");
     });
 
     it("should set menu for user role without lir or organisation", () => {
         component.orgDropDownSharedService.setSelectedOrg(
             {}
         );
-        expect(menuService.roles.admin).toBe(false);
-        expect(menuService.roles.general).toBe(false);
-        expect(menuService.roles.generalMeeting).toBe(false);
-        expect(menuService.roles.ticketing).toBe(false);
-        expect(menuService.roles.certification).toBe(false);
-        expect(menuService.roles.billing).toBe(false);
+        fixture.detectChanges();
+        expect(component.menu).not.toContain("My LIR");
+        expect(component.menu).not.toContain("Requests");
+        expect(component.menu).toContain("Resources");
+        expect(component.menu).toContain("My Resources");
+        expect(component.menu).not.toContain("\"id\":\"sponsored\""); // Sponsored Resources menu item
+        expect(component.menu).toContain("RIPE Database");
+        expect(component.menu).toContain("Query the RIPE Database");
+        expect(component.menu).toContain("Full Text Search");
+        expect(component.menu).toContain("Syncupdates");
+        expect(component.menu).toContain("Create an Object");
+        expect(component.menu).not.toContain("RPKI");
     });
 });

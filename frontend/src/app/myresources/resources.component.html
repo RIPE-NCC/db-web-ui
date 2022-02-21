@@ -4,7 +4,7 @@
             <li [ngbNavItem]="0" id="0">
                 <a ngbNavLink (click)="resourcesTabClicked()">My Resources</a>
             </li>
-            <li [ngbNavItem]="1" id="1">
+            <li [ngbNavItem]="1" id="1" *ngIf="isMemberOrg()">
                 <a ngbNavLink (click)="sponsoredResourcesTabClicked()">Sponsored Resources</a>
             </li>
         </ul>
