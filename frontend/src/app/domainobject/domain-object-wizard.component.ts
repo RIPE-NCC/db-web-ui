@@ -48,7 +48,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
      * Initial scope vars
      */
     public maintainers: IMaintainers = {
-        alternatives: [],
         object: [],
         objectOriginal: [],
         sso: [],

@@ -184,7 +184,7 @@ export class CreateMntnerPairComponent {
         }
         if (attr.$$meta.$$primaryKey === true) {
             attr.$$error = "";
-            this.restService.autocomplete(attr.name, attr.value, true, []).then((data: any) => {
+            this.restService.autocomplete(attr.name, attr.value, true, []).toPromise().then((data: any) => {
                     const found = _.find(data, (item: any) => {
                         if (item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase()) {
                             return item;

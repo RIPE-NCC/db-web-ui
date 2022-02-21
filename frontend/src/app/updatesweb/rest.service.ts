@@ -78,7 +78,7 @@ export class RestService {
         return of(query).pipe(
             debounceTime(2000),
             distinctUntilChanged(),
-            switchMap(term => this.queryAutocomplete(attrName, term, extended, attrsToBeReturned))).toPromise();
+            switchMap(term => this.queryAutocomplete(attrName, term, extended, attrsToBeReturned)));
     }
 
     private queryAutocomplete(attrName: string, query: any, extended: any, attrsToBeReturned: string[] = []) {
