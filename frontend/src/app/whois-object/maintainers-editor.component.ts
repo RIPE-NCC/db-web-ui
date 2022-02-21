@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import * as _ from "lodash";
 import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 import {JsUtilService} from "../core/js-utils.service";
@@ -11,12 +11,14 @@ import {IAuthParams, WebUpdatesCommonsService} from "../updatesweb/web-updates-c
 import {IMaintainers} from "../updatesweb/create-modify.component";
 import {ObjectUtilService} from "../updatesweb/object-util.service";
 import {AlertsService} from "../shared/alert/alerts.service";
+import {concat, of, Subject} from "rxjs";
+import {catchError, distinctUntilChanged, map, switchMap, tap} from "rxjs/operators";
 
 @Component({
     selector: "maintainers-editor",
     templateUrl: "./maintainers-editor.component.html",
 })
-export class MaintainersEditorComponent {
+export class MaintainersEditorComponent implements OnInit {
 
     @Input("whois-object")
     public whoisObject: IWhoisObjectModel;
@@ -34,11 +36,14 @@ export class MaintainersEditorComponent {
 
     // Underlying mntner model
     public mntners: IMaintainers = {
-        alternatives: [],
+        alternatives$: undefined,
         object: [],
         objectOriginal: [],
         sso: [],
     };
+    // ng-select
+    public loading = false;
+    public alternativesInput$ = new Subject<string>();
 
     // Interface control
     public restCallInProgress = false;
@@ -62,6 +67,7 @@ export class MaintainersEditorComponent {
     }
 
     public ngOnInit() {
+        this.mntnerAutocomplete();
         this.source = this.whoisObject.source.id;
         this.attributes = this.whoisObject.attributes.attribute;
         this.objectType = this.attributes[0].name;
@@ -78,7 +84,6 @@ export class MaintainersEditorComponent {
 
     public onMntnerAdded(item: IMntByModel): void {
         // enrich with new-flag
-        this.mntners.object.push(item);
         this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.mntners.object);
 
         this.mergeMaintainers(this.attributes, {name: "mnt-by", value: item.key});
@@ -118,20 +123,28 @@ export class MaintainersEditorComponent {
         return this.isModifyMode() && this.mntners.object.length === 1;
     }
 
+    public trackByFn(item: IMntByModel) {
+      return item.key;
+    }
+
     /**
      * Callback from html to support typeahead selection
      *
-     * @param query
      */
-    public mntnerAutocomplete(query: string) {
-        // need to typed characters
-        this.restService.autocomplete("mnt-by", query, true, ["auth"])
-            .then((data: IMntByModel[]) => {
-                // mark new
-                this.mntners.alternatives = this.mntnerService.stripNccMntners(this.mntnerService.enrichWithNewStatus(
-                    this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data))), true);
-            },
-        );
+    public mntnerAutocomplete() {
+      this.mntners.alternatives$ = concat(
+        of([]), // default items
+        this.alternativesInput$.pipe(
+          distinctUntilChanged(),
+          tap(() => this.loading = true),
+          switchMap(term => this.restService.autocomplete("mnt-by", term, true, ["auth"]).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.loading = false)
+          )),
+          map((data: IMntByModel[]) => this.mntnerService.stripNccMntners(this.mntnerService.enrichWithNewStatus(
+            this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data))), true))
+        )
+      );
     }
 
     // hot-wire the mntnerService functions

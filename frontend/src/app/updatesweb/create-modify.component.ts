@@ -35,7 +35,7 @@ interface IOptionList {
 }
 
 export interface IMaintainers {
-    alternatives?: IMntByModel[];
+    alternatives$?: Observable<IMntByModel[]>;
     object: IMntByModel[];
     objectOriginal: IMntByModel[];
     sso: IMntByModel[];
@@ -51,7 +51,6 @@ export class CreateModifyComponent {
     public source: string;
     public objectType: string;
     public maintainers: IMaintainers = {
-        alternatives: [],
         object: [],
         objectOriginal: [],
         sso: [],
@@ -382,7 +381,7 @@ export class CreateModifyComponent {
         // Verify if primary-key not already in use
         if (this.operation === this.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
             const value = attribute.name === "inet6num"? attribute.value.replace(/((?::0\b){2,}):?(?!\S*\b\1:0\b)(\S*)/, "::$2") : attribute.value;
-            this.restService.autocomplete(attribute.name, value, true, [])
+            this.restService.autocomplete(attribute.name, value, true, []).toPromise()
                 .then((data: any) => {
                     if (_.some(data, (item: any) => {
                         return CreateModifyComponent.uniformed(item.type) === CreateModifyComponent.uniformed(attribute.name) &&
@@ -638,7 +637,7 @@ export class CreateModifyComponent {
     public isFormValid() {
         this.attributes.map(attr => {if (attr.name === "mnt-by" && attr.value === "") {attr.$$invalid = false}});
         // enrcih is called from maintainer-editor-component so $$invalid get value true and is never changed,
-        // because of this validation was crushing 
+        // because of this validation was crushing
         this.attributes.map(attr => {attr.$$invalid = false});
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }

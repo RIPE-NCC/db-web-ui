@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "lodash";
 import {RestService} from "./rest.service";
@@ -8,19 +8,25 @@ import {UserInfoService} from "../userinfo/user-info.service";
 import {MessageStoreService} from "./message-store.service";
 import {ErrorReporterService} from "./error-reporter.service";
 import {LinkService} from "./link.service";
-import {IAttributeModel} from "../shared/whois-response-type.model";
+import {IAttributeModel, IMntByModel} from "../shared/whois-response-type.model";
 import {AlertsService} from "../shared/alert/alerts.service";
+import {concat, Observable, of, Subject} from "rxjs";
+import {catchError, distinctUntilChanged, switchMap, tap} from "rxjs/operators";
 
 @Component({
     selector: "create-self-maintained-maintainer",
     templateUrl: "./create-self-maintained-maintainer.component.html",
 })
-export class CreateSelfMaintainedMaintainerComponent {
-    public submitInProgress: boolean = false;
-    public adminC: any;
+export class CreateSelfMaintainedMaintainerComponent implements OnInit {
+    public submitInProgress = false;
+    public adminC = {
+      object: [],
+      alternatives$: undefined,
+    };
     public maintainerAttributes: any;
-    public objectType: string;
     public source: string;
+    public alternativesInput$ = new Subject<string>();
+    public loading = false;
     public isAdminCHelpShown: boolean;
     public showAttrsHelp: [];
     private readonly MNT_TYPE: string = "mntner";
@@ -37,13 +43,9 @@ export class CreateSelfMaintainedMaintainerComponent {
                 public router: Router) {
     }
 
-    public ngOnInit() {
+    ngOnInit() {
+        this.adminCAutocomplete();
         this.alertsService.clearAlertMessages();
-
-        this.adminC = {
-            alternatives: [],
-            object: [],
-        };
 
         this.maintainerAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.MNT_TYPE, this.whoisMetaService.getMandatoryAttributesOnObjectType(this.MNT_TYPE));
 
@@ -96,7 +98,7 @@ export class CreateSelfMaintainedMaintainerComponent {
     }
 
     public fieldVisited(attr: any) {
-        this.restService.autocomplete(attr.name, attr.value, true, [])
+        this.restService.autocomplete(attr.name, attr.value, true, []).toPromise()
             .then((data: any) => {
                 if (_.some(data, (item: any) => {
                     return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
@@ -109,16 +111,22 @@ export class CreateSelfMaintainedMaintainerComponent {
         );
     }
 
-    public adminCAutocomplete(query: any) {
-        this.restService.autocomplete("admin-c", query, true, ["person", "role"])
-            .then((data: any) => {
-                console.debug("autocomplete success:" + JSON.stringify(data));
-                // mark new
-                this.adminC.alternatives = this.stripAlreadySelected(data);
-            }, (error: any) => {
-                console.error("autocomplete error:" + JSON.stringify(error));
-            },
-        );
+    public trackByFn(item: any) {
+      return item.key;
+    }
+
+    public adminCAutocomplete() {
+      this.adminC.alternatives$ = concat(
+        of([]), // default items
+        this.alternativesInput$.pipe(
+          distinctUntilChanged(),
+          tap(() => this.loading = true),
+          switchMap(term => this.restService.autocomplete("admin-c", term, true, ["person", "role"]).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => this.loading = false)
+          ))
+        )
+      );
     }
 
     public hasAdminC() {
@@ -173,9 +181,4 @@ export class CreateSelfMaintainedMaintainerComponent {
         this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"mnt-by", mntner.value);
     }
 
-    private stripAlreadySelected(adminC: any) {
-        return _.filter(adminC, (aC: any) => {
-            return !this.adminC.object !== aC;
-        });
-    }
 }

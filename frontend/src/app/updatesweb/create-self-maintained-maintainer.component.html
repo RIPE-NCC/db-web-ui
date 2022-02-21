@@ -12,10 +12,13 @@
                    name="adminCDropdown"
                    bindLabel="key"
                    [multiple]="true"
-                   [items]="adminC.alternatives"
+                   [items]="adminC.alternatives$ | async"
                    [(ngModel)]="adminC.object"
                    [hideSelected]="true"
-                   (search)="adminCAutocomplete($event.term)"
+                   [minTermLength]="2"
+                   [trackByFn]="trackByFn"
+                   [typeahead]="alternativesInput$"
+                   [loading]="loading"
                    (add)="onAdminCAdded($event)">
             <ng-template ng-label-tmp let-admin="item" let-clear="clear">
                 <div>
@@ -28,7 +31,7 @@
                 <span class="title">{{item.key}} - <b>{{item.person}} {{item.role}}</b></span>
             </ng-template>
         </ng-select>
-        <description-syntax [showComponent]="isAdminCHelpShown" [objectType]="objectType" [attrName]="'admin-c'"></description-syntax>
+        <description-syntax [showComponent]="isAdminCHelpShown" [objectType]="'mntner'" [attrName]="'admin-c'"></description-syntax>
         <div *ngIf="!hasAdminC()">
             <strong>Don't have an administrative contact? <a id="linkToCreatePair" href="webupdates/create/{{source}}/person/self">Create maintainer and person pair</a></strong>
         </div>
@@ -38,7 +41,7 @@
 
         <ul class="form-fields appeared-fields">
 
-            <li *ngFor="let attribute of maintainerAttributes | filteroutAttributeByName: ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']" class="form-group input-group">
+            <li *ngFor="let attribute of maintainerAttributes | filteroutAttributeByName: ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']">
                 <label>{{attribute.name}}</label>
 
                 <span *ngIf="attribute.$$error" class="text-error">
@@ -53,7 +56,7 @@
                        [(ngModel)]="attribute.value"
                        [required]="attribute.$$meta.$$mandatory"
                        (blur)="fieldVisited(attribute)">
-                <description-syntax [showComponent]="showAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="'mntner'"></description-syntax>
+                <description-syntax [showComponent]="showAttrsHelp[attribute.name]" [objectType]="'mntner'" [attrName]="'mntner'"></description-syntax>
                 <ul class="input-group-btn">
                     <li>
                         <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)">
