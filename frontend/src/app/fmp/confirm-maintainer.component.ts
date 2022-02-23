@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as moment from "moment";
 import * as _ from "lodash";
@@ -9,7 +9,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "confirm-maintainer",
     templateUrl: "./confirm-maintainer.component.html",
 })
-export class ConfirmMaintainerComponent {
+export class ConfirmMaintainerComponent implements OnInit {
 
     public key: string = "";
     public email: any;

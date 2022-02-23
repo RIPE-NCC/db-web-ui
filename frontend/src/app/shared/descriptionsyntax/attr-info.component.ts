@@ -1,15 +1,15 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {WhoisMetaService} from "../whois-meta.service";
 
 @Component({
     selector: "attr-info",
     template: `<span [innerHTML]="text"></span>`,
 })
-export class AttributeInfoComponent {
+export class AttributeInfoComponent implements OnInit {
 
     @Input()
     public description: string;
-    @Input("object-type")
+    @Input()
     public objectType: string;
     @Input()
     public syntax: string;

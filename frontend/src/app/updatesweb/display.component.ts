@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {combineLatest, Subscription} from "rxjs";
 import * as _ from "lodash";
@@ -13,7 +13,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "display",
     templateUrl: "./display.component.html",
 })
-export class DisplayComponent {
+export class DisplayComponent implements OnInit, OnDestroy {
 
     public objectSource: string;
     public objectType: string;

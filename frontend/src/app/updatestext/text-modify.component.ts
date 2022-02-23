@@ -1,4 +1,4 @@
-import {Component, Inject} from "@angular/core";
+import {Component, Inject, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {forkJoin} from "rxjs";
 import * as _ from "lodash";
@@ -18,7 +18,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "text-modify",
     templateUrl: "./text-modify.component.html",
 })
-export class TextModifyComponent {
+export class TextModifyComponent implements OnInit {
     public restCallInProgress: boolean = false;
     public noRedirect: boolean = false;
     public object: ITextObject = {

@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "lodash";
 import {PropertiesService} from "../../properties.service";
@@ -18,7 +18,7 @@ import {AlertsService} from "../../shared/alert/alerts.service";
     selector: "create-mntner-pair",
     templateUrl: "./create-mntner-pair.component.html",
 })
-export class CreateMntnerPairComponent {
+export class CreateMntnerPairComponent implements OnInit, OnDestroy {
 
     public submitInProgress: boolean;
     public source: string;

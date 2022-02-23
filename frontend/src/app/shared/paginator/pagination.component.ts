@@ -1,18 +1,18 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
 
 @Component({
     selector: "paginator",
     templateUrl: "./paginator.component.html",
 })
-export class PaginationComponent implements OnChanges {
+export class PaginationComponent implements OnInit, OnChanges {
 
-    @Input("num-results")
+    @Input()
     public numResults: number;
-    @Input("results-per-page")
+    @Input()
     public resultsPerPage: number;
-    @Input("active-page")
+    @Input()
     public activePage: number;
-    @Input("pages")
+    @Input()
     public pages: number[];
     @Output()
     public pageClicked: EventEmitter<number> = new EventEmitter<number>();

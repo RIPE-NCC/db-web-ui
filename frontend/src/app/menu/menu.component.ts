@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {NavigationEnd, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {filter} from "rxjs/operators";
@@ -16,7 +16,7 @@ import {FeedbackSupportDialogComponent} from "../feedbacksupport/feedback-suppor
     template: `<app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)"
                             [menu]="menu" [open]=open [active]="activeItem"></app-nav-bar>`
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit, OnDestroy{
 
     @Input()
     public open: boolean;

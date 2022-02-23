@@ -155,7 +155,7 @@
           "options": {
             "main": "test/unit/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "test/unit/tsconfig.spec.json",
+            "tsConfig": "tsconfig.json",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -175,15 +175,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -209,6 +205,7 @@
   },
   "defaultProject": "frontend",
   "cli": {
-    "analytics": "81bf981f-ca1c-4e1b-9aff-651e1a4771f3"
+    "analytics": "81bf981f-ca1c-4e1b-9aff-651e1a4771f3",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
 import {UserInfoService} from "../userinfo/user-info.service";
 
@@ -6,7 +6,7 @@ import {UserInfoService} from "../userinfo/user-info.service";
   selector: "certificate-banner",
   templateUrl: "./certificate-banner.component.html",
 })
-export class CertificateBannerComponent {
+export class CertificateBannerComponent implements OnInit {
 
   public closed: boolean;
   public member: boolean;

@@ -1,5 +1,5 @@
 import {FullTextSearchService} from "./full-text-search.service";
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
 import {FullTextResponseService} from "./full-text-response.service";
@@ -13,7 +13,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "full-text-search",
     templateUrl: "./full-text-search.component.html",
 })
-export class FullTextSearchComponent {
+export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     // In
     public ftquery: string;

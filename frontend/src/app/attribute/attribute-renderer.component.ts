@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {debounceTime, distinctUntilChanged, map, mergeMap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
@@ -18,7 +18,7 @@ import {ModalCreateRoleForAbuseCComponent} from "../updatesweb/modal-create-role
     selector: "attribute-renderer",
     templateUrl: "./attribute-renderer.component.html",
 })
-export class AttributeRendererComponent {
+export class AttributeRendererComponent implements OnInit {
 
     @Input()
     public attribute: IAttributeModel;
@@ -26,7 +26,7 @@ export class AttributeRendererComponent {
     public attributes: IAttributeModel[];
     @Input()
     private source: string;
-    @Input("object-type")
+    @Input()
     public objectType: string;
     @Input()
     public idx: string;
@@ -208,25 +208,6 @@ export class AttributeRendererComponent {
     /*
      * Local functions
      */
-
-    // Same like in createModify
-    private _getPasswordsForRestCall() {
-        const passwords = [];
-
-        if (this.credentialsService.hasCredentials()) {
-            passwords.push(this.credentialsService.getCredentials().successfulPassword);
-        }
-
-        /*
-         * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-         * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-         */
-        if (["route", "route6", "aut-num"].indexOf(this.objectType)) {
-            passwords.push("RPSL");
-        }
-        return passwords;
-    }
-
     private addAttr(attributes: IAttributeModel[], attribute: IAttributeModel, attributeName: string) {
         let foundIdx = -1;
         if (attribute.$$id) {
@@ -258,7 +239,7 @@ export class AttributeRendererComponent {
     public autocompleteList = (objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) => (userInput$: Observable<string>) => {
         if (attribute.name === "status") {
             // special treatment of the status, it need to react on the changes in parent attribute
-            return of(this.statusAutoCompleteList(objectType, attributes, attribute));
+            return of(this.statusAutoCompleteList(objectType, attribute));
         }
         const metadata = this.attributeMetadataService.getMetadata(objectType, attribute.name);
         if (metadata.refs) {
@@ -297,7 +278,7 @@ export class AttributeRendererComponent {
             return this.restService.autocompleteAdvanced(of(userInput), refs)
                 .then((resp: any) => {
                     return this.addNiceAutocompleteName(this.filterBasedOnAttr(resp, attribute.name), attribute.name);
-                }, (error) => {
+                }, () => {
                     // autocomplete error
                     return [];
                 });
@@ -307,7 +288,7 @@ export class AttributeRendererComponent {
         }
     }
 
-    private statusAutoCompleteList(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {
+    private statusAutoCompleteList(objectType: string, attribute: IAttributeModel) {
         // TODO Add all the parent-child stuff here
         this.attribute.$$statusOptionList = this.enumService.get(objectType, attribute.name);
         return this.attribute.$$statusOptionList;

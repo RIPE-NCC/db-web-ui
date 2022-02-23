@@ -20,7 +20,7 @@ export function debounce(delay: number = 100): MethodDecorator {
 })
 export class ScrollerDirective {
 
-    @Output() onScroll = new EventEmitter();
+    @Output() scrolled = new EventEmitter();
 
     public constructor(private elRef: ElementRef) {
 
@@ -33,7 +33,7 @@ export class ScrollerDirective {
                             document.documentElement.clientHeight + document.body.scrollTop;
         // Emit the event
         if (nearly) {
-            this.onScroll.emit();
+            this.scrolled.emit();
         }
     }
 }

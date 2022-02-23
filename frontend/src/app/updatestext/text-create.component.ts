@@ -1,4 +1,4 @@
-import {Component, Inject, ViewChild} from "@angular/core";
+import {Component, Inject, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable, of} from "rxjs";
 import {catchError, map} from "rxjs/operators";
@@ -26,7 +26,7 @@ export interface ITextObject {
     selector: "text-create",
     templateUrl: "./text-create.component.html",
 })
-export class TextCreateComponent {
+export class TextCreateComponent implements OnInit {
     public restCallInProgress: boolean = false;
     public object: ITextObject = {
         source: "",

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
@@ -16,7 +16,7 @@ interface IModalDelete {
     selector: "modal-delete-object",
     templateUrl: "./modal-delete-object.component.html",
 })
-export class ModalDeleteObjectComponent implements OnDestroy {
+export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
 
     public MAX_REFS_TO_SHOW: number = 5;
 

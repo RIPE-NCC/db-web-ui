@@ -39,7 +39,7 @@
                 </tr>
                 </thead>
                 <!-- height is: 37 + (36 * n visible rows)-->
-                <tbody [ngStyle]="{height: tableHeight + 'px'}" table-scroller (onScroll)="almostOnScreen()">
+                <tbody [ngStyle]="{height: tableHeight + 'px'}" table-scroller (scrolled)="almostOnScreen()">
                 <tr *ngFor="let resource of moreSpecifics.resources"
                     class="break-all-word">
                     <td class="w30"><a [routerLink]="['/myresources/detail', resource.type, resource.resource, sponsored]">
@@ -57,5 +57,5 @@
     </div>
     <refresh *ngIf="showRefreshButton"
              reason="There was problem reading more specifics resources please try again"
-             (refresh)="ngOnChanges()"></refresh>
+             (refreshClbk)="ngOnChanges()"></refresh>
 </section>

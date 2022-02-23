@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageStoreService} from "../updatesweb/message-store.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
@@ -8,7 +8,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "display-domain-objects",
     templateUrl: "./display-domain-objects.component.html",
 })
-export class DisplayDomainObjectsComponent {
+export class DisplayDomainObjectsComponent implements OnInit {
     public source: string;
     public prefix: string;
     public objects: any;

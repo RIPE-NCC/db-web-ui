@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
@@ -14,7 +14,7 @@ interface ISelectedObjectType {
     selector: "select-component",
     templateUrl: "./select.component.html",
 })
-export class SelectComponent {
+export class SelectComponent implements OnInit {
     public selected: ISelectedObjectType;
     public objectTypes: string[];
     public loggedIn: boolean;

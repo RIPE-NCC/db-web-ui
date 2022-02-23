@@ -10,5 +10,4 @@ export class IeBannerComponent {
 
     constructor() {}
 
-    public ngOnInit() {}
 }

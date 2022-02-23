@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {interval} from "rxjs";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
@@ -8,7 +8,7 @@ import {PrefixService} from "./prefix.service";
     selector: "modal-domain-creation-wait",
     templateUrl: "./modal-domain-creation-wait.component.html",
 })
-export class ModalDomainCreationWaitComponent implements OnDestroy {
+export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
 
     public close: any;
     public dismiss: any;

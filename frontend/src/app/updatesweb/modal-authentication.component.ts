@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
@@ -24,7 +24,7 @@ export interface IModalAuthentication {
     selector: "modal-authentication",
     templateUrl: "./modal-authentication.component.html",
 })
-export class ModalAuthenticationComponent {
+export class ModalAuthenticationComponent implements OnInit {
     public close: any;
     @Input()
     public resolve: IModalAuthentication;

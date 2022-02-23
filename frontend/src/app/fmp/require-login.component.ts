@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {PropertiesService} from "../properties.service";
 
@@ -6,7 +6,7 @@ import {PropertiesService} from "../properties.service";
     selector: "require-login",
     templateUrl: "./require-login.component.html",
 })
-export class RequireLoginComponent {
+export class RequireLoginComponent implements OnInit {
 
     public loginUrl: string;
 

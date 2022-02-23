@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {forkJoin, of, throwError} from "rxjs";
 import {catchError, flatMap} from "rxjs/operators";
@@ -23,7 +23,7 @@ interface IObjectFromParameters {
     selector: "force-delete",
     templateUrl: "./force-delete.component.html",
 })
-export class ForceDeleteComponent {
+export class ForceDeleteComponent implements OnInit {
 
     public object: IObjectFromParameters = {
         attributes: [],

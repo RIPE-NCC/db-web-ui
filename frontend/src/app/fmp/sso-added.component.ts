@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {AlertsService} from "../shared/alert/alerts.service";
 
@@ -6,7 +6,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "sso-added",
     templateUrl: "./sso-added.component.html",
 })
-export class SsoAddedComponent {
+export class SsoAddedComponent implements OnInit, OnDestroy {
 
     public mntnerKey: string;
     public user: any;

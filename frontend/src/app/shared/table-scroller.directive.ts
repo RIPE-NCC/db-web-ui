@@ -22,7 +22,7 @@ export function debounce(delay: number = 25): MethodDecorator {
 })
 export class TableScrollerDirective {
 
-    @Output() onScroll = new EventEmitter();
+    @Output() scrolled = new EventEmitter();
 
     private lastRemaining = 9999;
     private lengthThreshold = 200;
@@ -40,7 +40,7 @@ export class TableScrollerDirective {
 
         //if we have reached the threshold
         if (remaining < this.lengthThreshold && (remaining - this.lastRemaining) < 0) {
-            this.onScroll.emit();
+            this.scrolled.emit();
         }
         this.lastRemaining = remaining;
     }

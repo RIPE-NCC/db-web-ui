@@ -20,13 +20,13 @@ import {catchError, distinctUntilChanged, map, switchMap, tap} from "rxjs/operat
 })
 export class MaintainersEditorComponent implements OnInit {
 
-    @Input("whois-object")
+    @Input()
     public whoisObject: IWhoisObjectModel;
-    @Output("authentication-failed-clbk")
+    @Output()
     public authenticationFailedClbk = new EventEmitter();
-    @Output("authentication-success-clbk")
+    @Output()
     public authenticationSuccessClbk = new EventEmitter();
-    @Output("update-mntners-clbk")
+    @Output()
     public updateMntnersClbk: EventEmitter<any> = new EventEmitter<any>();
 
     // Parts of the model used in template
@@ -325,7 +325,7 @@ export class MaintainersEditorComponent implements OnInit {
         });
 
         // determine if mntner is mine
-        const selected: IMntByModel[] = mntnersInObject.map((mntnerAttr: IAttributeModel) => {
+        return mntnersInObject.map((mntnerAttr: IAttributeModel) => {
             let isMine = false;
             for (const mnt of this.mntners.sso) {
                 if (mnt.key === mntnerAttr.value) {
@@ -339,7 +339,6 @@ export class MaintainersEditorComponent implements OnInit {
                 type: "mntner",
             };
         }) as IMntByModel[];
-        return selected;
     }
 
     private enrichWithMine(mntners: IMntByModel[]) {

@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, SimpleChanges} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {LookupService} from "./lookup.service";
@@ -11,7 +11,7 @@ import {Labels} from "../label.constants";
     selector: "lookup-single",
     templateUrl: "./lookup-single-object.component.html",
 })
-export class LookupSingleObjectComponent implements OnDestroy {
+export class LookupSingleObjectComponent implements OnInit, OnDestroy {
 
     public whoisResponse: any;
     public error: string;

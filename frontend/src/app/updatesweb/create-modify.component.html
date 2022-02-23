@@ -16,9 +16,9 @@
 <div id="createForm" *ngIf="attributes?.length > 0">
     <h1>{{operation}} &quot;{{objectType}}&quot; object</h1>
     <section class="form-fields">
-        <maintainers-editor [whois-object]="{attributes: {attribute: attributes}, source: {id: source}}"
-                            (authentication-success-clbk)="refreshObjectIfNeeded($event)"
-                            (update-mntners-clbk)="updateMaintainers($event)"></maintainers-editor>
+        <maintainers-editor [whoisObject]="{attributes: {attribute: attributes}, source: {id: source}}"
+                            (authenticationSuccessClbk)="refreshObjectIfNeeded($event)"
+                            (updateMntnersClbk)="updateMaintainers($event)"></maintainers-editor>
     </section>
     <section class="visible-field-form" *ngIf="maintainers.object.length">
         <ul class="form-fields appeared-fields">
@@ -121,7 +121,7 @@
             </li>
         </ul>
         <submitting-agreement></submitting-agreement>
-        <p scroller (onScroll)="showMoreAttributes()"></p>
+        <p scroller (scrolled)="showMoreAttributes()"></p>
         <span *ngIf="operation === MODIFY_OPERATION">
             <input id="btnSubmitModify" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button float-right" value="Submit"/>
             <button (click)="cancel()" class="blue-button float-right" style="border:0;">Cancel</button>

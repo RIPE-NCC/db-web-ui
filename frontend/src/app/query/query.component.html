@@ -14,8 +14,8 @@
           </button>
         </mat-form-field>
         <div class="query-padding-left">
-        <query-flags [input-term]="qp.queryText"
-                     (has-valid-flags)="isShownQueryFlagsContainer($event)"></query-flags>
+        <query-flags [inputTerm]="qp.queryText"
+                     (hasValidQueryFlags)="isShownQueryFlagsContainer($event)"></query-flags>
         </div>
       </div>
       <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
@@ -94,10 +94,10 @@
         <p [innerHTML]="'msg.searchResults.text' | label"></p>
         <div class="clearfix" *ngFor="let whoisObject of results">
             <div class="resultpane">
-                <lookup [whois-object]="whoisObject"></lookup>
+                <lookup [whoisObject]="whoisObject"></lookup>
             </div>
         </div>
-        <p *ngIf="showScroller" scroller (onScroll)="lastResultOnScreen()">
+        <p *ngIf="showScroller" scroller (scrolled)="lastResultOnScreen()">
             <loading-indicator></loading-indicator>
         </p>
     </div>

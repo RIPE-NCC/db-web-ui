@@ -59,7 +59,7 @@
                 </div>
                 <div class="p-4 flex-grow-1">
                     <label for="home_search:advancedSearch:selectFieldType">Search within the following fields: </label>
-                    <help-marker [label-key]="'fullText.attributeHelpText.title'"></help-marker>
+                    <help-marker [labelKey]="'fullText.attributeHelpText.title'"></help-marker>
                     <select id="home_search:advancedSearch:selectFieldType"
                             name="selectedAttrs"
                             class="form-control"
@@ -81,7 +81,7 @@
         <h2>Search results</h2>
         <p [innerHTML]="'msg.searchResultsFullTextTandCLink.text' | label"></p>
         <full-text-result-summary *ngIf="resultSummary" [tabledata]="resultSummary" (rowClicked)="addObjectToFilter($event)"></full-text-result-summary>
-        <paginator *ngIf="results" [pages]="navbarSyncArray" [active-page]="activePage" [num-results]="numResults" [results-per-page]="numResultsPerPage" (pageClicked)="pageClicked($event)"></paginator>
+        <paginator *ngIf="results" [pages]="navbarSyncArray" [activePage]="activePage" [numResults]="numResults" [resultsPerPage]="numResultsPerPage" (pageClicked)="pageClicked($event)"></paginator>
         <div class="padding">
             <div class="margin-bottom grey-border-top padding-top results" *ngFor="let result of results">
                 <div><a [routerLink]="['/lookup']" [queryParams]="{ source: properties.SOURCE, type: result.name, key: result.lookupKey}" target="_blank">{{ result.name }}: {{ result.lookupKey }}</a></div>
@@ -90,7 +90,7 @@
                 </span>
             </div>
         </div>
-        <paginator [pages]="navbarSyncArray" [active-page]="activePage" [num-results]="numResults" [results-per-page]="numResultsPerPage" (pageClicked)="pageClicked($event)"></paginator>
+        <paginator [pages]="navbarSyncArray" [activePage]="activePage" [numResults]="numResults" [resultsPerPage]="numResultsPerPage" (pageClicked)="pageClicked($event)"></paginator>
     </div>
 </section>
 <whois-version [version]="whoisVersion"></whois-version>

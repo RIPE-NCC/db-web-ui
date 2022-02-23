@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {PropertiesService} from "../properties.service";
 import {MatDialogRef} from "@angular/material/dialog";
 
@@ -8,7 +8,7 @@ declare let useUsersnap: () => any;
   selector: "feedback-support-dialog",
   templateUrl: "./feedback-support-dialog.component.html",
 })
-export class FeedbackSupportDialogComponent {
+export class FeedbackSupportDialogComponent implements OnInit {
 
   public showChatMenuItem: boolean;
 

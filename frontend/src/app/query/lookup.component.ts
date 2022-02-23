@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
+import {Component, Input, OnChanges} from "@angular/core";
 import {IWhoisObjectModel} from "../shared/whois-response-type.model";
 import {PropertiesService} from "../properties.service";
 
@@ -8,7 +8,7 @@ import {PropertiesService} from "../properties.service";
 })
 export class LookupComponent implements OnChanges {
 
-    @Input("whois-object")
+    @Input()
     public whoisObject: IWhoisObjectModel;
 
     public abuseContactFound = false;

@@ -555,7 +555,7 @@ export class AttributeMetadataService {
         // add some custom wizard-related attributes hostname
         metadata.domain.nserver = {minOccurs: 2};
 
-        /* tslint:disable */
+        /* eslint-disable */
         metadata.prefix = {
             "prefix": {
                 hidden: {invalid: ["mnt-by"]},
@@ -579,7 +579,7 @@ export class AttributeMetadataService {
             "last-modified": {minOccurs: 0, maxOccurs: 1},
             "source": {readOnly: true, minOccurs: 1, maxOccurs: 1, hidden: {invalid: ["mnt-by"]}}
         };
-        /* tslint:enable */
+        /* eslint-enable */
 
         // Here we assume that the basic rules are the same for these attributes
         const attrs = ["aut-num", "inetnum", "inet6num"];

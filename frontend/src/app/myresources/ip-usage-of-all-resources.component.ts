@@ -1,5 +1,5 @@
 // Shown on Resources page - for all resources listed in tab
-import {Component, Input, SimpleChanges} from "@angular/core";
+import {Component, Input, OnChanges, SimpleChanges} from "@angular/core";
 import {IpUsageService} from "./ip-usage.service";
 import {ResourceStatusService} from "./resource-status.service";
 
@@ -7,7 +7,7 @@ import {ResourceStatusService} from "./resource-status.service";
     selector: "ip-usage-of-all-resources",
     templateUrl: "./ip-usage-of-all-resources.component.html",
 })
-export class IpUsageOfAllResourcesComponent {
+export class IpUsageOfAllResourcesComponent implements OnChanges {
 
     @Input()
     public resources: any[];
