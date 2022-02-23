@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnChanges} from "@angular/core";
 import * as _ from "lodash";
 import {QueryService} from "../query.service";
 import {ITemplateTerm} from "../query-parameters.service";
@@ -7,7 +7,7 @@ import {ITemplateTerm} from "../query-parameters.service";
     selector: "lookup-template",
     template: `<pre>{{response}}</pre>`,
 })
-export class TemplateComponent {
+export class TemplateComponent implements OnChanges {
 
     @Input()
     public query: ITemplateTerm;

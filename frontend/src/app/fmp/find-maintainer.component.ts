@@ -1,4 +1,4 @@
-import {Component, Inject} from "@angular/core";
+import {Component, Inject, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import * as _ from "lodash";
 import {FindMaintainerService, IFindMaintainer} from "./find-maintainer.service";
@@ -10,7 +10,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "find-maintainer",
     templateUrl: "./find-maintainer.component.html",
 })
-export class FindMaintainerComponent {
+export class FindMaintainerComponent implements OnInit {
 
     public foundMaintainer: IFindMaintainer;
     public maintainerKey: string;

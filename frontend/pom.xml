@@ -40,6 +40,20 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>npm run lint</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                          <executable>npm</executable>
+                          <arguments>
+                              <argument>run</argument>
+                              <argument>lint</argument>
+                          </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>npm run build-aot (compile)</id>
                         <goals>
                             <goal>exec</goal>

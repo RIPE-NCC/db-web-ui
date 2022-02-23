@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ForgotMaintainerPasswordService, IForgotMaintainerPassword} from "./forgot-maintainer-password.service";
 import {UserInfoService} from "../userinfo/user-info.service";
@@ -8,7 +8,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "fmp",
     templateUrl: "./forgot-maintainer-password.component.html",
 })
-export class ForgotMaintainerPasswordComponent {
+export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
 
     public generatedPDFUrl: string;
     public fmpModel: IForgotMaintainerPassword;

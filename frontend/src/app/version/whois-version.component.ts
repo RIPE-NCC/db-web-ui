@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {IVersion} from "../shared/whois-response-type.model";
 
 @Component({
@@ -8,10 +8,9 @@ import {IVersion} from "../shared/whois-response-type.model";
             <span *ngIf="version">RIPE Database Software Version {{version.version}}</span>
         </div>`
 })
-export class WhoisVersionComponent implements OnChanges {
+export class WhoisVersionComponent {
 
     @Input()
     public version: IVersion;
 
-    ngOnChanges() {}
 }

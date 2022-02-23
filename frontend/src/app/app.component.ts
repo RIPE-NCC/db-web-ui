@@ -1,4 +1,4 @@
-import {Component, HostListener, Inject} from "@angular/core";
+import {Component, HostListener, Inject, OnInit} from "@angular/core";
 import {PropertiesService} from "./properties.service";
 import {WINDOW} from "./core/window.service";
 import {Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {Location} from "@angular/common";
   selector: "app-db-web-ui",
   templateUrl: "app.component.html",
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
 
   // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
   public isDesktopView: boolean;

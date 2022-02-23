@@ -12,11 +12,11 @@ import {AlertsService} from "../shared/alert/alerts.service";
 })
 export class WhoisObjectEditorComponent implements OnInit {
 
-    @Input("ng-model")
-    public ngModel: IWhoisObjectModel;
-    @Input("disable-submit")
+    @Input()
+    public model: IWhoisObjectModel;
+    @Input()
     public disableSubmit?: boolean;
-    @Input("deletable")
+    @Input()
     public deletable?: boolean;
 
     public objectName: string;
@@ -26,11 +26,11 @@ export class WhoisObjectEditorComponent implements OnInit {
 
     public attributes: IAttributeModel[];
 
-    @Output("cancel-clicked")
+    @Output()
     public cancelClicked = new EventEmitter();
-    @Output("update-clicked")
+    @Output()
     public updateClicked: EventEmitter<IWhoisObjectModel> = new EventEmitter<IWhoisObjectModel>();
-    @Output("delete-clicked")
+    @Output()
     public deleteClicked = new EventEmitter();
 
     private originalAttibutes: IAttributeModel[];
@@ -43,18 +43,18 @@ export class WhoisObjectEditorComponent implements OnInit {
 
     public ngOnInit() {
         // Assign to short-cut accessor.
-        this.attributes = this.ngModel.attributes.attribute;
+        this.attributes = this.model.attributes.attribute;
         this.addCommentsToValueOfAtrributes(this.attributes);
 
         // the type is always the first attribute
         this.objectName = this.attributes[0].value;
         this.objectType = this.attributes[0].name;
 
-        if (typeof this.ngModel.source !== "undefined") {
-            this.source = this.ngModel.source.id.toUpperCase();
+        if (typeof this.model.source !== "undefined") {
+            this.source = this.model.source.id.toUpperCase();
         } else {
             this.source = this.properties.SOURCE;
-            this.ngModel.source = {
+            this.model.source = {
                 id: this.source,
             };
         }
@@ -84,7 +84,7 @@ export class WhoisObjectEditorComponent implements OnInit {
     }
 
     public btnCancelClicked() {
-        this.ngModel.attributes.attribute = this.attributes = _.cloneDeep(this.originalAttibutes);
+        this.model.attributes.attribute = this.attributes = _.cloneDeep(this.originalAttibutes);
         this.cancelClicked.emit();
     }
 
@@ -92,11 +92,11 @@ export class WhoisObjectEditorComponent implements OnInit {
         if (this.objectType !== "domain" && this.objectType !== "prefix") {
             this.removeEmptyAttributes();
         }
-        this.updateClicked.emit(this.ngModel);
+        this.updateClicked.emit(this.model);
     }
 
     public btnDeleteClicked() {
-        this.deleteClicked.emit(this.ngModel);
+        this.deleteClicked.emit(this.model);
     }
 
     private removeEmptyAttributes() {

@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalDeleteObjectComponent} from "./modal-delete-object.component";
@@ -8,7 +8,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "delete-component",
     templateUrl: "./delete.component.html",
 })
-export class DeleteComponent {
+export class DeleteComponent implements OnInit, OnDestroy {
 
     public modalInProgress: boolean;
     public source: string;

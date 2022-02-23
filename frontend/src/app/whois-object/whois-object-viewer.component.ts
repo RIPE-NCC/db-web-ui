@@ -11,11 +11,11 @@ import {AttributeMetadataService} from "../attribute/attribute-metadata.service"
 })
 export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
 
-    @Input("ng-model")
-    public ngModel: IWhoisObjectModel;
-    @Input("linkable")
+    @Input()
+    public model: IWhoisObjectModel;
+    @Input()
     public linkable?: boolean;
-    @Output("update-clicked")
+    @Output()
     public updateClicked? = new EventEmitter();
 
     public nrLinesToShow: number;
@@ -54,19 +54,19 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     public ngOnChanges() {
-        AttributeMetadataService.splitAttrsCommentsFromValue(this.ngModel.attributes.attribute);
-        this.objLength = this.ngModel.attributes.attribute.length;
+        AttributeMetadataService.splitAttrsCommentsFromValue(this.model.attributes.attribute);
+        this.objLength = this.model.attributes.attribute.length;
         this.nrLinesToShow = this.objLength > 30 ? 25 : 30;
         this.showMoreButton = this.objLength > this.nrLinesToShow;
         this.showMoreInfo = true;
-        this.objectPrimaryKey = this.ngModel["primary-key"].attribute.map((attr) => attr.value).join("");
-        this.pkLink = this.ngModel["primary-key"].attribute[0].name;
-        this.show.ripeStatButton = this.HAS_RIPE_STAT_LINK.indexOf(this.ngModel.type.toLowerCase()) > -1;
+        this.objectPrimaryKey = this.model["primary-key"].attribute.map((attr) => attr.value).join("");
+        this.pkLink = this.model["primary-key"].attribute[0].name;
+        this.show.ripeStatButton = this.HAS_RIPE_STAT_LINK.indexOf(this.model.type.toLowerCase()) > -1;
         if (this.show.ripeStatButton) {
             this.ripeStatLink = this.getRipeStatLink();
         }
         this.userInfoService.isLogedIn() ? this.showUpdateButton() : this.showLoginButton();
-        this.show.ripeManagedToggleControl = this.ngModel.managed;
+        this.show.ripeManagedToggleControl = this.model.managed;
     }
 
     public clickShowMoreLines() {
@@ -80,7 +80,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     public getRipeStatLink(): string {
-        const routeObject = _.find(this.ngModel["primary-key"].attribute, (attr) => {
+        const routeObject = _.find(this.model["primary-key"].attribute, (attr) => {
             return attr.name === "route" || attr.name === "route6";
         });
         return routeObject ? routeObject.value : this.objectPrimaryKey;
@@ -92,15 +92,15 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
 
     public getPkLinksQueryParams() {
         return {
-            source: this.ngModel.source.id,
+            source: this.model.source.id,
             key: this.objectPrimaryKey,
-            type: this.ngModel.type
+            type: this.model.type
         };
     }
 
     public getLocalLinksQueryParams(attr: IAttributeModel) {
         return {
-            source: attr.value === "DUMY-RIPE" ? this.properties.SOURCE : this.ngModel.source.id,
+            source: attr.value === "DUMY-RIPE" ? this.properties.SOURCE : this.model.source.id,
             key: attr.value,
             type: attr["referenced-type"]
         };
@@ -117,12 +117,12 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     private isSourceGRS(): boolean {
-        const source = this.ngModel.source.id.toLowerCase();
+        const source = this.model.source.id.toLowerCase();
         return source.indexOf("grs") > -1;
     }
 
     private isPlaceholderObjects(): boolean {
-        return this.ngModel.attributes.attribute
+        return this.model.attributes.attribute
             .filter(attr => attr.name === "netname" && attr.value === "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK")
             .length > 0;
     }

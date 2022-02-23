@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {Labels} from "../label.constants";
 
 @Component({
@@ -11,9 +11,9 @@ import {Labels} from "../label.constants";
                     <span *ngIf='!hrefLabel' class="fal fa-question fa-lg" aria-hidden="true"></span>
                </span>`,
 })
-export class HelpMarkerComponent {
+export class HelpMarkerComponent implements OnInit {
     // Inputs
-    @Input("label-key")
+    @Input()
     public labelKey: string;
     @Input()
     public link: string;

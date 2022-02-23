@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import * as _ from "lodash";
 import {EnvironmentStatusService} from "../shared/environment-status.service";
 import {OrgDropDownSharedService} from "./org-drop-down-shared.service";
@@ -9,7 +9,7 @@ import {UserInfoService} from "../userinfo/user-info.service";
     selector: "org-drop-down",
     templateUrl: "./org-drop-down.component.html",
 })
-export class OrgDropDownComponent {
+export class OrgDropDownComponent implements OnInit {
 
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];

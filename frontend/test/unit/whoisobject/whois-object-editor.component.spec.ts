@@ -72,7 +72,7 @@ describe("WhoisObjectEditorComponent", () => {
     });
 
     it("should be able to submit attributes", () => {
-        component.ngModel = modifyinetnum();
+        component.model = modifyinetnum();
         fixture.detectChanges();
         component.btnSubmitClicked();
         fixture.detectChanges();
@@ -80,7 +80,7 @@ describe("WhoisObjectEditorComponent", () => {
     });
 
     it("should filter out empty attributes on submit", () => {
-        component.ngModel = modifyinetnum();
+        component.model = modifyinetnum();
         fixture.detectChanges();
         component.attributes.push({name: "descr", value: "keep this one"});
         component.attributes.push({name: "descr", value: ""}); // gets removed
@@ -90,20 +90,20 @@ describe("WhoisObjectEditorComponent", () => {
         component.btnSubmitClicked();
         fixture.detectChanges();
 
-        expect(component.ngModel.attributes.attribute.length).toEqual(6);
+        expect(component.model.attributes.attribute.length).toEqual(6);
         expect(component.missingMandatoryAttributes.length).toBe(5);
-        expect(component.ngModel.type).toBe("inetnum");
+        expect(component.model.type).toBe("inetnum");
     });
 
     it("should be able to suss out missing mandatory attributes", () => {
-        component.ngModel = modifyinetnum();
+        component.model = modifyinetnum();
         fixture.detectChanges();
 
         component.btnSubmitClicked();
         fixture.detectChanges();
 
-        expect(component.ngModel.attributes.attribute.length).toEqual(5);
+        expect(component.model.attributes.attribute.length).toEqual(5);
         expect(component.missingMandatoryAttributes.length).toBe(5);
-        expect(component.ngModel.type).toBe("inetnum");
+        expect(component.model.type).toBe("inetnum");
     });
 });

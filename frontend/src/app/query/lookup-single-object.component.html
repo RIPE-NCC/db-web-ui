@@ -15,8 +15,7 @@
 </section>
 
 <div *ngIf="whoisResponse" class="resultpane">
-    <lookup [whois-object]="whoisResponse">
-    </lookup>
+    <lookup [whoisObject]="whoisResponse"></lookup>
 </div>
 <whois-version [version]="whoisVersion"></whois-version>
 

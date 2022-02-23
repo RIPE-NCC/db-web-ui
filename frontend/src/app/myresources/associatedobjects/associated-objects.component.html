@@ -37,7 +37,7 @@
                 <th class="w50"></th>
             </tr>
             </thead>
-            <tbody [ngStyle]="{height: tableHeight + 'px'}" table-scroller (onScroll)="almostOnScreen()">
+            <tbody [ngStyle]="{height: tableHeight + 'px'}" table-scroller (scrolled)="almostOnScreen()">
             <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice:0:nrAssociatedObjectToShow; index as i;"
                 class="break-all-word" >
                 <td class="w30">
@@ -69,7 +69,7 @@
             <th class="w60"></th>
         </tr>
         </thead>
-        <tbody [ngStyle]="{height: tableHeight + 'px'}" table-scroller (onScroll)="almostOnScreen()">
+        <tbody [ngStyle]="{height: tableHeight + 'px'}" table-scroller (scrolled)="almostOnScreen()">
         <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice:0:nrAssociatedObjectToShow; index as i;">
             <td class="w40">
                 <a [routerLink]="['/lookup']"

@@ -1,11 +1,11 @@
-import {Component, Input, OnChanges} from "@angular/core";
+import {Component, Input, OnChanges, OnInit} from "@angular/core";
 import {IpAddressService} from "../myresources/ip-address.service";
 
 @Component({
     selector: "name-formatter",
     template: `{{ formatted }}`
 })
-export class NameFormatterComponent implements OnChanges {
+export class NameFormatterComponent implements OnInit, OnChanges {
 
     @Input()
     public name: string;

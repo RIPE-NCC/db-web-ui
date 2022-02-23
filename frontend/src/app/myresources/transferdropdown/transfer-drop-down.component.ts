@@ -7,7 +7,7 @@ import {PropertiesService} from "../../properties.service";
 })
 export class TransferDropDownComponent {
 
-    @Input("sponsored-menu")
+    @Input()
     public sponsoredMenu: boolean;
 
     constructor(public properties: PropertiesService) {}

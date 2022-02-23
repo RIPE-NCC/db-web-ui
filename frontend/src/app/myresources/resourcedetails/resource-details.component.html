@@ -20,21 +20,21 @@
     <loading-indicator class="resource-page-message" *ngIf="loadingResource"></loading-indicator>
     <div *ngIf="whoisObject && !showRefreshButton && !loadingResource">
         <whois-object-viewer *ngIf="!isEditing"
-                [ng-model]="whoisObject"
-                (update-clicked)="showObjectEditor()"></whois-object-viewer>
-        <maintainers-editor [whois-object]="whoisObject"
+                [model]="whoisObject"
+                (updateClicked)="showObjectEditor()"></whois-object-viewer>
+        <maintainers-editor [whoisObject]="whoisObject"
                             *ngIf="isEditing"
-                            (authentication-failed-clbk)="hideObjectEditor()"></maintainers-editor>
-        <whois-object-editor [ng-model]="whoisObject"
-                             [disable-submit]="!isEditing"
+                            (authenticationFailedClbk)="hideObjectEditor()"></maintainers-editor>
+        <whois-object-editor [model]="whoisObject"
+                             [disableSubmit]="!isEditing"
                              [deletable]="isDeletable"
                              *ngIf="isEditing"
-                             (cancel-clicked)="hideObjectEditor()"
-                             (update-clicked)="updateButtonClicked($event)"
-                             (delete-clicked)="deleteClicked($event)"></whois-object-editor>
+                             (cancelClicked)="hideObjectEditor()"
+                             (updateClicked)="updateButtonClicked($event)"
+                             (deleteClicked)="deleteClicked($event)"></whois-object-editor>
     </div>
     <refresh *ngIf="showRefreshButton"
-             reason="There was problem reading resource please try again" (refresh)="init()"></refresh>
+             reason="There was problem reading resource please try again" (refreshClbk)="init()"></refresh>
 </section>
 
 <div *ngIf="!showRefreshButton && !loadingResource">

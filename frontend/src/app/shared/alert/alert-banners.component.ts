@@ -1,11 +1,11 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {AlertsService, IAlerts} from "./alerts.service";
 
 @Component({
     selector: "alert-banners",
     templateUrl: "./alert-banners.component.html",
 })
-export class AlertBannersComponent {
+export class AlertBannersComponent implements OnInit, OnDestroy {
     public alerts: IAlerts;
     public subscription: any;
 

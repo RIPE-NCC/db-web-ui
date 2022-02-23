@@ -1,11 +1,11 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: "modal-add-attribute",
     templateUrl: "./modal-add-attribute.component.html",
 })
-export class ModalAddAttributeComponent {
+export class ModalAddAttributeComponent implements OnInit {
 
     public close: any;
     public dismiss: any;

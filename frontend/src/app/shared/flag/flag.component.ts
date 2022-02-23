@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 
 export interface IFlag {
     colour?: string;
@@ -10,7 +10,7 @@ export interface IFlag {
     selector: "flag",
     templateUrl: "./flag.component.html",
 })
-export class FlagComponent {
+export class FlagComponent implements OnInit {
 
     @Input()
     public text: string;

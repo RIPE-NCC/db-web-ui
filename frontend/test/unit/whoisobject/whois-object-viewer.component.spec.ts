@@ -40,19 +40,19 @@ describe("WhoisObjectViewerComponent", () => {
         });
 
         it("should create", () => {
-            component.ngModel = ripeWhoisObject;
+            component.model = ripeWhoisObject;
             expect(component).toBeTruthy();
         });
 
         it("should show button Update object for RIPE whois object", () => {
-            component.ngModel = ripeWhoisObject;
+            component.model = ripeWhoisObject;
             component.ngOnChanges();
             fixture.detectChanges();
             expect(component.show.updateButton).toBeTruthy();
         });
 
         it("should not show button Update object for GRS whois object", () => {
-            component.ngModel = grsWhoisObject;
+            component.model = grsWhoisObject;
             component.ngOnChanges();
             fixture.detectChanges();
             expect(component.show.updateButton).toBeFalsy();
@@ -80,7 +80,7 @@ describe("WhoisObjectViewerComponent", () => {
 
             fixture = TestBed.createComponent(WhoisObjectViewerComponent);
             component = fixture.componentInstance;
-            component.ngModel = ripeWhoisObject;
+            component.model = ripeWhoisObject;
         });
 
         it("should not show button Update object for RIPE whois object", () => {
@@ -90,7 +90,7 @@ describe("WhoisObjectViewerComponent", () => {
         });
 
         it("should not show button Update object for GRS whois object", () => {
-            component.ngModel = grsWhoisObject;
+            component.model = grsWhoisObject;
             component.ngOnChanges();
             fixture.detectChanges();
             expect(component.show.updateButton).toBeFalsy();
@@ -98,14 +98,14 @@ describe("WhoisObjectViewerComponent", () => {
 
         it("should not show button Update object for RIPE placeholder objects whois object", () => {
             // Placeholder objects => netname = "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK"
-            component.ngModel = placeholderWhoisObject;
+            component.model = placeholderWhoisObject;
             component.ngOnChanges();
             fixture.detectChanges();
             expect(component.show.updateButton).toBeFalsy();
         });
 
         it("should contain href to modify page when linkable is true", async() => {
-            component.ngModel = whoisObject;
+            component.model = whoisObject;
             component.linkable = true;
             component.ngOnChanges();
             component.show.updateButton = true;
@@ -117,7 +117,7 @@ describe("WhoisObjectViewerComponent", () => {
         });
 
         it("should contain href when linkable is absent", async() => {
-            component.ngModel = whoisObject;
+            component.model = whoisObject;
             component.ngOnChanges();
             component.show.updateButton = true;
             component.show.loginLink = false;

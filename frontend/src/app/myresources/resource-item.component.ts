@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {ResourceStatusService} from "./resource-status.service";
 import {Labels} from "../label.constants";
@@ -8,7 +8,7 @@ import {IFlag} from "../shared/flag/flag.component";
     selector: "resource-item",
     templateUrl: "./resource-item.component.html",
 })
-export class ResourceItemComponent {
+export class ResourceItemComponent implements OnInit {
 
     @Input()
     public item: any; // IResourceScreenItem;

@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {EmailConfirmationService} from "./email-confirmation.service";
 
@@ -6,7 +6,7 @@ import {EmailConfirmationService} from "./email-confirmation.service";
     selector: "email-confirmation",
     templateUrl: "./email-confirm.component.html",
 })
-export class EmailConfirmationComponent {
+export class EmailConfirmationComponent implements OnInit {
 
     public token: string;
     public validEmail: boolean = false;
@@ -20,10 +20,10 @@ export class EmailConfirmationComponent {
         this.token = this.activatedRoute.snapshot.queryParamMap.get("t");
         this.emailConfirmationService
             .confirmEmail(this.token)
-            .subscribe((success: any) => {
+            .subscribe(() => {
                 this.loading = false;
                 this.validEmail = true;
-            }, (error: any) => {
+            }, () => {
                 this.loading = false;
             });
     }

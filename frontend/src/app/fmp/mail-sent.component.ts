@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {AlertsService} from "../shared/alert/alerts.service";
 
@@ -6,7 +6,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "mail-sent",
     templateUrl: "./mail-sent.component.html",
 })
-export class MailSentComponent {
+export class MailSentComponent implements OnInit, OnDestroy {
 
     public email: string;
 

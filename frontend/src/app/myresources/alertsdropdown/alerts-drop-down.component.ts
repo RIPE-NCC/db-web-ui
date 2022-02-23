@@ -12,7 +12,7 @@ import {UserInfoService} from "../../userinfo/user-info.service";
 })
 export class AlertsDropDownComponent implements OnChanges {
 
-    @Input("selected-org")
+    @Input()
     public selectedOrganisation: IUserInfoOrganisation;
     public overlaps: IIpv4OverlappingInetnumsAnalysis[] = [];
     public syntaxErrors: string[] = [];

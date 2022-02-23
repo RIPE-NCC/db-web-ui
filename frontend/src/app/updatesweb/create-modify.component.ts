@@ -1,8 +1,8 @@
-import {Component, Inject} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {debounceTime, distinctUntilChanged, map, mergeMap} from "rxjs/operators";
-import {forkJoin, Observable, of} from "rxjs";
+import {Observable, of} from "rxjs";
 import * as _ from "lodash";
 import {WINDOW} from "../core/window.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
@@ -45,7 +45,7 @@ export interface IMaintainers {
     selector: "create-modify",
     templateUrl: "./create-modify.component.html",
 })
-export class CreateModifyComponent {
+export class CreateModifyComponent implements OnInit, OnDestroy {
     public optionList: IOptionList = {status: []};
     public name: string;
     public source: string;

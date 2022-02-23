@@ -77,7 +77,6 @@ Frontend
 
 * `npm run e2e-firefox`<br>
   Runs the Protractor tests on port 9002 in FireFox without coverage so they are quicker.
-
   
 * `npm run e2e-remote` _(used on bamboo)_<br>
   Runs the Protractor tests in selenium. 
@@ -90,6 +89,11 @@ Frontend
   `hostname -s` and then resulted host name (for example laptop-123456.local) add<br /> 
   `127.0.0.1       laptop-123456.local` in you host file<br />
   `sudo vi /etc/hosts`_  
+
+### Linting
+* `npm run lint`<br>
+  Lint rules can be found under `frontend/.eslintrc.json`
+
 #### TODO
   Runs the Protractor tests and shows coverage stats in two ways:
   - a text summary in the console

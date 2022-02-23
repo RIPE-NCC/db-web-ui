@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {MessageStoreService} from "./message-store.service";
@@ -10,7 +10,7 @@ import {AlertsService} from "../shared/alert/alerts.service";
     selector: "display-mntner-pair",
     templateUrl: "./display-mntner-pair.component.html",
 })
-export class DisplayMntnerPairComponent implements OnInit {
+export class DisplayMntnerPairComponent implements OnInit, OnDestroy {
 
     public objectSource: string;
     public objectType: string;
