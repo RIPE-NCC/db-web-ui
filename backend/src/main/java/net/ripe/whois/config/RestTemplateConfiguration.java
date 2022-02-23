@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,6 +60,7 @@ public class RestTemplateConfiguration {
     @Bean
     public HttpClient httpClient() {
         return HttpClientBuilder.create()
+                .setConnectionReuseStrategy(NoConnectionReuseStrategy.INSTANCE)
                 .setDefaultRequestConfig(DEFAULT_REQUEST_CONFIG)
                 .setMaxConnTotal(HTTPCLIENT_TOTAL_MAX_CONNECTIONS)
                 .setMaxConnPerRoute(HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE)
