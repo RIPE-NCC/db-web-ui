@@ -27,7 +27,7 @@ public class LiveChatSeleniumTest extends AbstractSeleniumTest {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(LIVE_CHAT_BUTTON)));
 
-            driver.findElement(By.cssSelector(LIVE_CHAT_BUTTON)).findElement(By.id("live-chat")).click();
+            driver.findElement(By.cssSelector(LIVE_CHAT_BUTTON)).click();
 
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("webWidget"));
             final String title = driver.findElement(By.cssSelector("#widgetHeaderTitle")).getText();
