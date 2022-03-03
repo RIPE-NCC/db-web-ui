@@ -73,7 +73,7 @@ export class FindMaintainerComponent {
     }
 
     private checkLoggedIn() {
-        this.userInfoService.getLoggedInUser()
+        this.userInfoService.getUserOrgsAndRoles()
             .subscribe(
                 (res) => res,
                 () => {

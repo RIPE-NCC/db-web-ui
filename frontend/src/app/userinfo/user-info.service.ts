@@ -4,13 +4,12 @@ import {CookieService} from "ngx-cookie-service";
 import {catchError, map, share, timeout} from "rxjs/operators";
 import {Observable, of, throwError} from "rxjs";
 import * as _ from "lodash";
-import {IUserInfo, IUserInfoOrganisation, IUserInfoResponseData} from "../dropdown/org-data-type.model";
+import {IUserInfoOrganisation, IUserInfoResponseData} from "../dropdown/org-data-type.model";
 
 @Injectable()
 export class UserInfoService {
 
     private userInfo: IUserInfoResponseData;
-    private loggedInUser: IUserInfo;
     private selectedOrganisation: IUserInfoOrganisation;
     public userLoggedIn$: EventEmitter<IUserInfoResponseData>;
 
@@ -20,30 +19,11 @@ export class UserInfoService {
     }
 
     public isLogedIn(): boolean {
-        return !_.isUndefined(this.loggedInUser) || !_.isUndefined(this.userInfo);
+        return !_.isUndefined(this.userInfo);
     }
 
-    public getLoggedInUser(): Observable<IUserInfo> {
-        if (this.loggedInUser) {
-            return of(this.loggedInUser);
-        } else {
-            return this.http.get("api/user/info")
-                .pipe(
-                    map((response: IUserInfo) => {
-                        this.loggedInUser = response;
-                        // @ts-ignore add here for usersnap
-                        window.username = response?.user?.username;
-                        return this.loggedInUser;
-                    }),
-                    catchError((error: any) => {
-                        console.error("authenticate error:" + JSON.stringify(error));
-                        return throwError(error);
-                    }));
-        }
-    }
-
-    public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
-        if (this.userInfo) {
+  public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
+      if (this.userInfo) {
             return of(this.userInfo);
         } else {
             return this.http.get("api/whois-internal/api/user/info")
@@ -53,6 +33,8 @@ export class UserInfoService {
                     map((response: IUserInfoResponseData) => {
                         this.userInfo = response;
                         this.userLoggedIn$.emit(response);
+                        // @ts-ignore add here for usersnap
+                        window.username = response?.user?.username;
                         return this.userInfo;
                     }),
                     catchError((error: any) => {

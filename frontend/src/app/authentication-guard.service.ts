@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular
 import {Observable, of} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {UserInfoService} from "./userinfo/user-info.service";
-import {IUserInfo} from "./dropdown/org-data-type.model";
+import {IUserInfoResponseData} from "./dropdown/org-data-type.model";
 import {PropertiesService} from "./properties.service";
 
 @Injectable()
@@ -14,9 +14,9 @@ export class AuthenticationGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        return this.userInfoService.getLoggedInUser()
+        return this.userInfoService.getUserOrgsAndRoles()
             .pipe(
-                map((userInfo: IUserInfo) => true),
+                map((userInfo: IUserInfoResponseData) => true),
                 catchError(() => {
                         this.redirectToLogin(state.url);
                         return of(false);

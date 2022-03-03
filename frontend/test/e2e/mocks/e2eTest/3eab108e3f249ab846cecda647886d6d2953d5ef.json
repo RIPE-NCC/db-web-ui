@@ -1,6 +1,0 @@
-{
-  "requestUrl": "/api/user/info",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {"username":"bad@ripe.net","displayName":"Big Bad Wolfje","expiryDate":[2017,10,11,17,7,50,959],"uuid":"cef5372c-ac38-4bde-863d-2e7b5b44e8c0","active":true}
-}

@@ -17,7 +17,7 @@ describe("FindMaintainerComponent", () => {
 
     beforeEach(() => {
         findMaintainerService = jasmine.createSpyObj("FindMaintainerService", ["search", "sendMail"]);
-        userInfoService = jasmine.createSpyObj("UserInfoService", ["getLoggedInUser"]);
+        userInfoService = jasmine.createSpyObj("UserInfoService", ["getUserOrgsAndRoles"]);
         TestBed.configureTestingModule({
             imports: [SharedModule, CoreModule],
             declarations: [
@@ -40,7 +40,7 @@ describe("FindMaintainerComponent", () => {
     describe("Testing logged in user", () => {
 
         beforeEach(() => {
-            userInfoService.getLoggedInUser.and.returnValue(of(200));
+            userInfoService.getUserOrgsAndRoles.and.returnValue(of(200));
         });
 
         it("should retrieve maintainer data", () => {
@@ -257,7 +257,7 @@ describe("FindMaintainerComponent", () => {
 
     describe("Testing Not logged in user", () => {
         beforeEach(async() => {
-            userInfoService.getLoggedInUser.and.returnValue(throwError(403));
+            userInfoService.getUserOrgsAndRoles.and.returnValue(throwError(403));
             spyOn(component.router, "navigate");
             component.ngOnInit();
             await fixture.whenStable();
