@@ -43,7 +43,7 @@ export class WebUpdatesCommonsService {
                                                                               authParams.maintainers.object);
         // see: https://www.pivotaltracker.com/n/projects/769061
         const allowForcedDelete = !_.find(authParams.maintainers.object, (o: any) => {
-            return this.mntnerService.isNccMntner(o.key);
+            return this.mntnerService.isAnyNccMntner(o.key);
         });
         const modalRef = this.modalService.open(ModalAuthenticationComponent);
         modalRef.componentInstance.resolve = {

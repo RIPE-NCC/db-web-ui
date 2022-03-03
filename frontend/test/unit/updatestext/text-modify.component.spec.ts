@@ -20,6 +20,7 @@ import {CredentialsService} from "../../../src/app/shared/credentials.service";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 import {WINDOW} from "../../../src/app/core/window.service";
 import {SharedModule} from "../../../src/app/shared/shared.module";
+import {PropertiesService} from "../../../src/app/properties.service";
 
 describe("TextModifyComponent", () => {
 
@@ -108,6 +109,7 @@ describe("TextModifyComponent", () => {
                 TextCommonsService,
                 {provide: CredentialsService, useValue: credentialsServiceMock},
                 PrefixService,
+                PropertiesService,
                 {provide: NgbModal, useValue: modalMock},
                 {provide: Location, useValue: {path: () => ""}},
                 {provide: WINDOW, useValue: {}},

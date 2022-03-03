@@ -10,6 +10,7 @@ import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.ser
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 import * as _ from "lodash";
+import {PropertiesService} from "../../../src/app/properties.service";
 
 describe("MntnerService", () => {
     let mntnerService: MntnerService;
@@ -31,6 +32,9 @@ describe("MntnerService", () => {
                 PrefixService,
                 WhoisResourcesService,
                 WhoisMetaService,
+                { provide: PropertiesService, useValue: {
+                        RIPE_NCC_MNTNERS: ["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-HM-PI-MNT", "RIPE-GII-MNT", "RIPE-DBM-MNT", "RIPE-NCC-LOCKED-MNT", "RIPE-ERX-MNT", "RIPE-NCC-LEGACY-MNT", "RIPE-NCC-MNT"],
+                        TOP_RIPE_NCC_MNTNERS: ["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-LEGACY-MNT"]}},
                 { provide: CredentialsService, useValue: credentialServiceMock},
                 { provide: "ModalService", useValue: {}},
                 { provide: "PrefixService", useValue: {}},
@@ -69,13 +73,22 @@ describe("MntnerService", () => {
         expect(enriched[1].mine).toBeFalse();
     });
 
-    it("should detect RIPE-NCC mntners", () => {
-        const nccMntners = ["ripe-ncc-hm-mnt", "ripe-ncc-end-mnt", "RIPE-NCC-LEGACY-MNT"];
-        const ripeOwned = _.filter(nccMntners, (mntnerKey) => {
+    it("should detect top RIPE-NCC mntners", () => {
+        const topNccMntners = ["ripe-ncc-hm-mnt", "ripe-ncc-end-mnt", "RIPE-NCC-LEGACY-MNT"];
+        const ripeOwned = _.filter(topNccMntners, (mntnerKey) => {
             return mntnerService.isNccMntner(mntnerKey);
         });
 
-        expect(ripeOwned.length).toEqual(nccMntners.length);
+        expect(ripeOwned.length).toEqual(topNccMntners.length);
+    });
+
+    it("should detect any RIPE-NCC mntners", () => {
+        const allNccMntners = ["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-HM-PI-MNT", "RIPE-GII-MNT", "RIPE-DBM-MNT", "RIPE-NCC-LOCKED-MNT", "RIPE-ERX-MNT", "RIPE-NCC-LEGACY-MNT", "RIPE-NCC-MNT"];
+        const ripeOwned = _.filter(allNccMntners, (mntnerKey) => {
+            return mntnerService.isAnyNccMntner(mntnerKey);
+        });
+
+        expect(ripeOwned.length).toEqual(allNccMntners.length);
     });
 
     it("should detect if object is comaintained", () => {
@@ -100,11 +113,6 @@ describe("MntnerService", () => {
         });
 
         expect(notRipeOwned.length).toEqual(0);
-    });
-
-    it("should mark RIPE-NCC-RPSL-MNT as removeable", () => {
-        expect(mntnerService.isRemovable("ripe-ncc-rpsl-mnt")).toEqual(true);
-        expect(mntnerService.isRemovable("RIPE-NCC-RPSL-MNT")).toEqual(true);
     });
 
     it("should mark other mntner as removeable", () => {
@@ -181,27 +189,6 @@ describe("MntnerService", () => {
         expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
 
-    it("should RIPE-NCC-RPSL-MNT be ignored while determining if authorisation is needed", () => {
-        const ssoMntners: IMntByModel[] = [];
-        const objectMntners = [
-            {type: "mntner", key: "RIPE-NCC-RPSL-MNT"},
-            {type: "mntner", key: "B-MNT"},
-        ];
-
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
-    });
-
-    it("should need authentication for single RIPE-NCC-RPSL-MNT", () => {
-        const ssoMntners: IMntByModel[] = [];
-        const objectMntners = [
-            {type: "mntner", key: "RIPE-NCC-RPSL-MNT"},
-        ];
-
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
-    });
-
     it("should have authentication when no sso or password", () => {
         const ssoMntners = [
             {type: "mntner", key: "A-MNT", mine: true, auth: ["SSO"]},
@@ -239,10 +226,10 @@ describe("MntnerService", () => {
         expect(mntnersWithPasswordModify[1].key).toBe("D-MNT");
     });
 
-    it("should not not return RIPE-NCC-RPSL-MNT as candidate for authentication", () => {
+    it("should not not return RIPE-DBM-MNT as candidate for authentication", () => {
         const ssoMntners: IMntByModel[] = [];
         const objectMntners = [
-            {type: "mntner", key: "RIPE-NCC-RPSL-MNT", auth: ["MD5-PW"]},
+            {type: "mntner", key: "RIPE-DBM-MNT", auth: ["MD5-PW"]},
             {type: "mntner", key: "A-MNT", auth: ["MD5-PW"]},
         ];
 
@@ -281,10 +268,10 @@ describe("MntnerService", () => {
         expect(mntnersWithoutPasswordModify[1].key).toBe("E-MNT");
     });
 
-    it("should not not return RIPE-NCC-RPSL-MNT as candidate not eligible for authentication", () => {
+    it("should not not return RIPE-GII-MNT as candidate not eligible for authentication", () => {
         const ssoMntners: IMntByModel[] = [];
         const objectMntners = [
-            {type: "mntner", key: "RIPE-NCC-RPSL-MNT", auth: ["SSO", "MD5-PW"]},
+            {type: "mntner", key: "RIPE-GII-MNT", auth: ["SSO", "MD5-PW"]},
             {type: "mntner", key: "A-MNT", auth: ["SSO"]},
         ];
 
@@ -303,7 +290,7 @@ describe("MntnerService", () => {
             {type: "mntner", key: "C-MNT", mine: true, auth: ["SSO", "MD5-PW"]},
         ];
         const objectMntners = [
-            {type: "mntner", key: "RIPE-NCC-RPSL-MNT", auth: ["MD5-PW"]},
+            {type: "mntner", key: "RIPE-DBM-MNT", auth: ["MD5-PW"]},
             {type: "mntner", key: "A-MNT", auth: ["SSO"]},
             {type: "mntner", key: "A-MNT", auth: ["SSO"]},
             {type: "mntner", key: "RIPE-NCC-END-MNT", auth: ["MD5-PW"]},
@@ -329,19 +316,4 @@ describe("MntnerService", () => {
         expect(mntnersWithPasswordModify[0].key).toBe("F-MNT");
     });
 
-    it("should return true with single mntner that is RPSL and false otherwise", () => {
-        let mntners = [
-            {type: "mntner", key: "RIPE-NCC-RPSL-MNT", auth: ["MD5-PW"]},
-            {type: "mntner", key: "A-MNT", auth: ["SSO"]},
-            {type: "mntner", key: "RIPE-NCC-END-MNT", auth: ["MD5-PW"]},
-            {type: "mntner", key: "F-MNT", auth: ["MD5-PW"]},
-            {type: "mntner", key: "C-MNT", auth: ["SSO", "MD5-PW"]},
-        ];
-        expect(mntnerService.isLoneRpslMntner(mntners)).toBeFalsy();
-
-        mntners = [
-            {type: "mntner", key: "RIPE-NCC-RPSL-MNT", auth: ["MD5-PW"]},
-        ];
-        expect(mntnerService.isLoneRpslMntner(mntners)).toBeTruthy();
-    });
 });

@@ -41,6 +41,10 @@ export class PropertiesService {
     public RPKI_DASHBOARD_URL = "";
     public SOURCE = "RIPE";
     public DB_WEB_UI_BUILD_TIME = "00:00";
+    // list of all ripe ncc mntners
+    public RIPE_NCC_MNTNERS = [];
+    // maintainers on top-level allocation and PI assignments
+    public TOP_RIPE_NCC_MNTNERS = [];
 
     constructor(private httpClient: HttpClient) { }
 
@@ -72,6 +76,8 @@ export class PropertiesService {
                     this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
                     this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === "prod" ? "prod" : "pre";
                     this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
+                    this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
+                    this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
 
                     this.injectProperties();
                 },

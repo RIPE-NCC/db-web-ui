@@ -20,6 +20,7 @@ import {TextCommonsService} from "../../../src/app/updatestext/text-commons.serv
 import {CredentialsService} from "../../../src/app/shared/credentials.service";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 import {SharedModule} from "../../../src/app/shared/shared.module";
+import {PropertiesService} from "../../../src/app/properties.service";
 
 describe("TextCreateComponent", () => {
 
@@ -53,7 +54,6 @@ describe("TextCreateComponent", () => {
                 WhoisResourcesService,
                 WhoisMetaService,
                 RestService,
-                // AlertsService,
                 ErrorReporterService,
                 MessageStoreService,
                 RpslService,
@@ -61,6 +61,7 @@ describe("TextCreateComponent", () => {
                 TextCommonsService,
                 CredentialsService,
                 PrefixService,
+                PropertiesService,
                 {provide: Location, useValue: {path: () => ""}},
                 {provide: NgbModal, useValue: modalMock},
 

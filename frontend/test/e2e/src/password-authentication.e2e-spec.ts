@@ -11,6 +11,8 @@ describe("The password authentication dialogue", () => {
     it("should show a single modal which asks for a password", () => {
         expect(page.modalBtnSubmit.isPresent()).toEqual(true);
         expect(page.modalInpMaintainer.getText()).toEqual("NEWNET-MNT");
+        // RIPE NCC MAINTAINERS should be filtered out
+        expect(page.modalInpMaintainer.getText()).not.toContain("RIPE-NCC-MNT");
         page.modalInpAssociate.click();
         page.modalInpPassword.sendKeys("NEWNET-MNT");
         page.modalBtnSubmit.click();

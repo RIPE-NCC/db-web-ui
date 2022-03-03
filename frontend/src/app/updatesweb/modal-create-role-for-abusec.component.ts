@@ -62,7 +62,7 @@ export class ModalCreateRoleForAbuseCComponent {
         attributes = this.whoisResourcesService.validateAttributes(attributes);
         this.inputData.maintainers.forEach((mnt: any) => {
             // remove mnt - for which on backend fail creating role
-            if (typeof mnt.value === "string" && !this.mntnerService.isNccMntner(mnt.value)) {
+            if (typeof mnt.value === "string" && !this.mntnerService.isAnyNccMntner(mnt.value)) {
                 attributes = this.whoisResourcesService.addAttributeAfterType(attributes, {
                     name: "mnt-by",
                     value: mnt.value,

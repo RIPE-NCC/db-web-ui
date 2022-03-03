@@ -501,8 +501,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public isResourceWithNccMntner() {
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
-            return _.some(this.maintainers.objectOriginal, (mntner: any) => {
-                return this.mntnerService.isNccMntner(mntner.key);
+            return this.maintainers.objectOriginal.some((mntner: any) => {
+                return this.mntnerService.isAnyNccMntner(mntner.key);
             });
         }
         return false;
@@ -596,11 +596,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         onSubmitError);
 
             } else {
-                // TODO: Temporary function till RPSL clean up
-                if (this.mntnerService.isLoneRpslMntner(this.maintainers.objectOriginal)) {
-                    passwords.push("RPSL");
-                }
-
                 this.restService.modifyObject(this.source, this.objectType, this.name, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
                     .subscribe(
                         onSubmitSuccess,

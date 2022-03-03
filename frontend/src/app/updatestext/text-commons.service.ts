@@ -162,7 +162,7 @@ export class TextCommonsService {
         const mntnersWithPasswords = this.mntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
         const mntnersWithoutPasswords = this.mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
         const allowForcedDelete = !_.find(objectMntners, (o) => {
-            return this.mntnerService.isNccMntner(o.key);
+            return this.mntnerService.isAnyNccMntner(o.key);
         });
         const modalRef = this.modalService.open(ModalAuthenticationComponent);
         modalRef.componentInstance.resolve = {

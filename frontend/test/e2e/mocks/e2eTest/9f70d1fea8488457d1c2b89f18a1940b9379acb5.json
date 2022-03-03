@@ -2148,6 +2148,15 @@
               {
                 "link": {
                   "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-MNT"
+                },
+                "name": "mnt-by",
+                "value": "RIPE-NCC-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
                   "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/NEWNET-MNT"
                 },
                 "name": "mnt-by",
