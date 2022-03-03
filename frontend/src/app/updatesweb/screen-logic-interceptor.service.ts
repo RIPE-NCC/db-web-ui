@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import {LinkService} from "./link.service";
 import {MessageStoreService} from "./message-store.service";
 import {MntnerService} from "./mntner.service";
-import {IAttributeModel, IMntByModel} from "../shared/whois-response-type.model";
+import {IAttributeModel} from "../shared/whois-response-type.model";
 import {OrganisationHelperService} from "./organisation-helper.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 
@@ -348,7 +348,7 @@ export class ScreenLogicInterceptorService {
     private disableRipeMntIfModifying(method: string, attributes: any) {
         const disable = (type: string) => {
             _.forEach(WhoisResourcesService.getAllAttributesOnName(attributes, type), (attr) => {
-                attr.$$meta.$$disable = this.mntnerService.isNccMntner(attr.value);
+                attr.$$meta.$$disable = this.mntnerService.isAnyNccMntner(attr.value);
             });
         };
 

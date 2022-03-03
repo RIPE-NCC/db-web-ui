@@ -351,7 +351,7 @@ export class MaintainersEditorComponent implements OnInit {
 
     private filterAutocompleteMntners(mntners: IMntByModel[]) {
         return mntners.filter((mntner) => {
-            return !this.mntnerService.isNccMntner(mntner.key)
+            return !this.mntnerService.isAnyNccMntner(mntner.key)
                 && !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner);
         });
     }

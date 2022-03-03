@@ -20,6 +20,9 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
     let MockMntnerService = {
         isNccMntner: (mntnerKey: string) => {
             return _.includes(["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-LEGACY-MNT"], mntnerKey.toUpperCase())
+        },
+        isAnyNccMntner: (mntnerKey: string) => {
+            return _.includes(["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-HM-PI-MNT", "RIPE-GII-MNT", "RIPE-DBM-MNT", "RIPE-NCC-LOCKED-MNT", "RIPE-ERX-MNT", "RIPE-NCC-LEGACY-MNT", "RIPE-NCC-MNT"], mntnerKey.toUpperCase())
         }
     };
 
@@ -177,6 +180,17 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
 
         let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
         whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-routes", "RIPE-NCC-HM-MNT");
+
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
+
+        let mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-routes");
+        expect(mntLower.$$meta.$$disable).toBeTruthy();
+    });
+
+    it("should disable mnt-routes with ripe maintainers on modify", () =>  {
+
+        let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
+        whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-routes", "RIPE-ERX-MNT");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 

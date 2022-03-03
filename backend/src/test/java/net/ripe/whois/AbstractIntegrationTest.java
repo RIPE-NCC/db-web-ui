@@ -88,6 +88,8 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("shutdown.pause.sec", "0");
         System.setProperty("bucket4j.enabled", "false");
         System.setProperty("ipranges.trusted","127.0.0.1,::1");
+        System.setProperty("ripe.ncc.mntners","RIPE-NCC-HM-MNT, RIPE-NCC-END-MNT, RIPE-NCC-HM-PI-MNT, RIPE-GII-MNT, RIPE-DBM-MNT, RIPE-NCC-LOCKED-MNT, RIPE-ERX-MNT, RIPE-NCC-LEGACY-MNT, RIPE-NCC-MNT");
+        System.setProperty("top.ripe.ncc.mntners","RIPE-NCC-HM-MNT, RIPE-NCC-END-MNT, RIPE-NCC-LEGACY-MNT");
     }
 
     @AfterAll

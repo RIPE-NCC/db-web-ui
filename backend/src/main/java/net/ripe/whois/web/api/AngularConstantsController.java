@@ -65,6 +65,11 @@ public class AngularConstantsController {
     private String syncupdatesApiUrl;
     @Value("${frontend.livechat.key:}")
     private String frontendLiveChatKey;
+    @Value("${ripe.ncc.mntners}")
+    private String[] ripeNccMntners;
+    // maintainers on top-level allocation and PI assignments
+    @Value("${top.ripe.ncc.mntners}")
+    private String[] topRipeNccMntners;
 
     private AppConstants appConstants;
 
@@ -146,6 +151,8 @@ public class AngularConstantsController {
         constants.setQueryPageLinkToOtherDb(queryPageLinkToOtherDb);
         constants.setDbWebUiBuildTime(buildProperties.getTime().toString());
         constants.setFrontendLiveChatKey(frontendLiveChatKey);
+        constants.setRipeNccMntners(ripeNccMntners);
+        constants.setTopRipeNccMntners(topRipeNccMntners);
         return constants;
     }
 
@@ -192,6 +199,10 @@ public class AngularConstantsController {
         private String dbWebUiBuildTime;
         @JsonProperty("LIVE_CHAT_KEY")
         private String frontendLiveChatKey;
+        @JsonProperty("RIPE_NCC_MNTNERS")
+        private String[] ripeNccMntners;
+        @JsonProperty("TOP_RIPE_NCC_MNTNERS")
+        private String[] topRipeNccMntners;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -275,6 +286,14 @@ public class AngularConstantsController {
 
         public void setFrontendLiveChatKey(String frontendLiveChatKey) {
             this.frontendLiveChatKey = frontendLiveChatKey;
+        }
+
+        public void setRipeNccMntners(String[] ripeNccMntners) {
+            this.ripeNccMntners = ripeNccMntners;
+        }
+
+        public void setTopRipeNccMntners(String[] topRipeNccMntners) {
+            this.topRipeNccMntners = topRipeNccMntners;
         }
     }
 }

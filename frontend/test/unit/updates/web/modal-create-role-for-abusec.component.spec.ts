@@ -11,6 +11,7 @@ import {ModalCreateRoleForAbuseCComponent} from "../../../../src/app/updatesweb/
 import {MntnerService} from "../../../../src/app/updatesweb/mntner.service";
 import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {PropertiesService} from "../../../../src/app/properties.service";
 
 describe("ModalCreateRoleForAbuseCComponent", () => {
 
@@ -37,6 +38,7 @@ describe("ModalCreateRoleForAbuseCComponent", () => {
                 WhoisMetaService,
                 CredentialsService,
                 PrefixService,
+                PropertiesService,
                 {provide: RestService, useValue: restServiceMock},
                 {provide: Router, useValue: routerMock},
             ],

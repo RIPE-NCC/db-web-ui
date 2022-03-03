@@ -20,6 +20,9 @@ describe("ScreenLogicInterceptorService InetNum", () => {
     let MockMntnerService = {
         isNccMntner: (mntnerKey: string) => {
             return _.includes(["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-LEGACY-MNT"], mntnerKey.toUpperCase())
+        },
+        isAnyNccMntner: (mntnerKey: string) => {
+            return _.includes(["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-HM-PI-MNT", "RIPE-GII-MNT", "RIPE-DBM-MNT", "RIPE-NCC-LOCKED-MNT", "RIPE-ERX-MNT", "RIPE-NCC-LEGACY-MNT", "RIPE-NCC-MNT"], mntnerKey.toUpperCase())
         }
     };
 
