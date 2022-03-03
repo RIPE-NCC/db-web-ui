@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
 import {UserInfoService} from "../userinfo/user-info.service";
+import {IUserInfoResponseData} from "../dropdown/org-data-type.model";
 
 @Component({
   selector: "certificate-banner",
@@ -12,11 +13,14 @@ export class CertificateBannerComponent implements OnInit {
   public member: boolean;
 
   constructor(private cookies: CookieService,
-              private userInfoService: UserInfoService) {}
+              private userInfoService: UserInfoService) {
+    this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
+      this.isUserMember(userInfo);
+    });
+  }
 
   public ngOnInit() {
     this.closed = localStorage.getItem("certificate-banner")  === "closed";
-    this.isUserMember();
   }
 
   public closeAlert() {
@@ -25,20 +29,14 @@ export class CertificateBannerComponent implements OnInit {
     localStorage.setItem("certificate-banner", "closed");
   }
 
-  private isUserMember() {
-
-    //cannot use this.userInfoService.isLogedIn as it does not work with refresh
-    this.userInfoService.getLoggedInUser()
-      .subscribe((user: any) => {
-
-        if(user) {
-          this.userInfoService.getSelectedOrganisation()
-            .subscribe((selOrg: any) => {
-              this.member = selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1;
-            });
-        } else {
-          this.member = false;
-        }
-      });
+  private isUserMember(userInfo: IUserInfoResponseData) {
+    if(userInfo) {
+      this.userInfoService.getSelectedOrganisation()
+        .subscribe((selOrg: any) => {
+          this.member = selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1;
+        });
+    } else {
+      this.member = false;
+    }
   }
 }

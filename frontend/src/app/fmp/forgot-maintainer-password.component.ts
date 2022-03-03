@@ -48,7 +48,7 @@ export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
     }
 
     private checkLoggedIn() {
-        this.userInfoService.getLoggedInUser()
+        this.userInfoService.getUserOrgsAndRoles()
             .subscribe(
                 (res) => res,
                 () => {

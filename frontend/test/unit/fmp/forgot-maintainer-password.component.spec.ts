@@ -22,7 +22,7 @@ describe("ForgotMaintainerPasswordComponent", () => {
         queryParamMock = convertToParamMap({});
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
         forgotMaintainerPasswordService = jasmine.createSpyObj("ForgotMaintainerPasswordService", ["generatePdfAndEmail"]);
-        userInfoService = jasmine.createSpyObj("UserInfoService", ["getLoggedInUser"]);
+        userInfoService = jasmine.createSpyObj("UserInfoService", ["getUserOrgsAndRoles"]);
         TestBed.configureTestingModule({
             imports: [SharedModule, CoreModule],
             declarations: [
@@ -61,7 +61,7 @@ describe("ForgotMaintainerPasswordComponent", () => {
     describe("Testing initialisation logged in", () => {
 
         beforeEach(() => {
-            userInfoService.getLoggedInUser.and.returnValue(of(200));
+            userInfoService.getUserOrgsAndRoles.and.returnValue(of(200));
         });
 
         it("should init controller with empty pdf url", () => {
@@ -92,7 +92,7 @@ describe("ForgotMaintainerPasswordComponent", () => {
         const url = "api/whois-internal/api/fmp-pub/forgotmntnerpassword";
 
         beforeEach (() => {
-            userInfoService.getLoggedInUser.and.returnValue(of(200));
+            userInfoService.getUserOrgsAndRoles.and.returnValue(of(200));
         });
 
         it("should call backend and generate pdf url", () => {
@@ -126,7 +126,7 @@ describe("ForgotMaintainerPasswordComponent", () => {
         beforeEach(() => {
             spyOn(queryParamMock, "has").and.returnValue(true);
             spyOn(queryParamMock, "get").and.returnValue("mnt-key");
-            userInfoService.getLoggedInUser.and.returnValue(throwError({data: 403}));
+            userInfoService.getUserOrgsAndRoles.and.returnValue(throwError({data: 403}));
         });
 
         it("should not logged in user", async () => {

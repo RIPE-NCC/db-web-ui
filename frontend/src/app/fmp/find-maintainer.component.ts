@@ -73,7 +73,7 @@ export class FindMaintainerComponent implements OnInit {
     }
 
     private checkLoggedIn() {
-        this.userInfoService.getLoggedInUser()
+        this.userInfoService.getUserOrgsAndRoles()
             .subscribe(
                 (res) => res,
                 () => {

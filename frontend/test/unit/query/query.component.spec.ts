@@ -162,7 +162,6 @@ describe("QueryComponent", () => {
                     useValue: {
                         getUserOrgsAndRoles: () => of(),
                         isLogedIn: () => true,
-                        getLoggedInUser: () => of(),
                         getSelectedOrganisation: () => of(),
                         userLoggedIn$: of()}},
             ]
