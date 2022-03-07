@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
-import {UserInfoService} from "../userinfo/user-info.service";
-import {IUserInfoResponseData} from "../dropdown/org-data-type.model";
+import {IUserInfoOrganisation} from "../dropdown/org-data-type.model";
+import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 
 @Component({
   selector: "certificate-banner",
@@ -13,9 +13,9 @@ export class CertificateBannerComponent implements OnInit {
   public member: boolean;
 
   constructor(private cookies: CookieService,
-              private userInfoService: UserInfoService) {
-    this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
-      this.isUserMember(userInfo);
+              private orgDropDownSharedService: OrgDropDownSharedService) {
+    this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
+      this.isMemberOrg(selected);
     });
   }
 
@@ -29,12 +29,9 @@ export class CertificateBannerComponent implements OnInit {
     localStorage.setItem("certificate-banner", "closed");
   }
 
-  private isUserMember(userInfo: IUserInfoResponseData) {
-    if(userInfo) {
-      this.userInfoService.getSelectedOrganisation()
-        .subscribe((selOrg: any) => {
-          this.member = selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1;
-        });
+  private isMemberOrg(selectedOrg: IUserInfoOrganisation) {
+    if(selectedOrg) {
+      this.member = selectedOrg.orgObjectId && selectedOrg.roles.indexOf("LIR") > -1;
     } else {
       this.member = false;
     }
