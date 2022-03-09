@@ -3,8 +3,6 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {of, throwError, zip} from "rxjs";
 import {catchError} from "rxjs/operators";
 
-// declare const Address4: any;       // http://ip-address.js.org/#address4
-// declare const Address6: any;       // http://ip-address.js.org/#address6
 import {Address4, Address6} from "ip-address";
 
 @Injectable()
@@ -71,7 +69,7 @@ export class PrefixService {
             const ipv4 = new Address4(prefix);
             if (ipv4.isValid()) {
 
-                // It" used to find the array position that starts with 0. That's why -1.
+                // It used to find the array position that starts with 0. That's why -1.
                 const fixedOctet = Math.ceil(ipv4.subnetMask / 8) - 1;
 
                 const startOctet = parseInt(ipv4.startAddress().address.split(".")[fixedOctet]);
@@ -117,21 +115,28 @@ export class PrefixService {
         return this.http.get(`api/dns/status?ignore404=true&ns=${ns}&record=${rDnsZone}`);
     }
 
-    public isExactMatch(prefixInCidrNotation: string, whoisResourcesPrimaryKey: string): boolean {
+    public isExactMatch(prefixAddress: Address4|Address6, whoisResourcesPrimaryKey: string): boolean {
 
-        let prefixAddress;
-        if (this.isValidIpv4Prefix(prefixInCidrNotation)) {
-            prefixAddress = this.getAddress(prefixInCidrNotation);
+        if (prefixAddress instanceof Address4) {
             const prefixInRangeNotation = prefixAddress.startAddress().address + " - " + prefixAddress.endAddress().address;
 
             return prefixInRangeNotation === whoisResourcesPrimaryKey;
-
         } else {
             const resourceAddress = this.getAddress(whoisResourcesPrimaryKey);
-            prefixAddress = this.getAddress(prefixInCidrNotation);
 
             return ((resourceAddress.endAddress().address === prefixAddress.endAddress().address) &&
                 (resourceAddress.startAddress().address === prefixAddress.startAddress().address));
+        }
+    }
+
+    // creating domain with prefix ipv4/24 or ipv6/32 will create more reverse zones
+    // For example, an allocation such as 10.155.16.0/22 will result in four reverse zones of /24
+    // For example, an allocation such as 2001:db8::/29 will result in eight reverse zones of /32
+    public isSizeOfDomainBlock(address: Address4|Address6) {
+        if (address instanceof Address4) {
+            return address.subnetMask === 24;
+        } else {
+            return address.subnetMask === 32
         }
     }
 

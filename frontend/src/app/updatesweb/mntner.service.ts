@@ -9,6 +9,7 @@ import {IMntByModel} from "../shared/whois-response-type.model";
 import {PrefixService} from "../domainobject/prefix.service";
 import {ModalAuthenticationComponent} from "./modal-authentication.component";
 import {PropertiesService} from "../properties.service";
+import {Address4} from "ip-address";
 
 @Injectable()
 export class MntnerService {
@@ -286,7 +287,8 @@ export class MntnerService {
     }
 
     public getMntsToAuthenticateUsingParent(prefix: any, mntHandler: any) {
-        const objectType = this.prefixService.isValidIpv4Prefix(prefix) ? "inetnum" : "inet6num";
+        const address = this.prefixService.getAddress(prefix);
+        const objectType = address instanceof Address4 ? "inetnum" : "inet6num";
         this.restService.fetchResource(objectType, prefix)
             .then((result: any) => {
 
@@ -294,7 +296,7 @@ export class MntnerService {
                 const wrappedResource = this.whoisResourcesService.validateWhoisResources(result);
 
                 // Find exact or most specific matching inet(num), and collect the following mntners:
-                //     (1) mnt-domains
+                // (1) mnt-domains
                 const resourceAttributes = this.whoisResourcesService.getAttributes(wrappedResource);
 
                 const mntDomains = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-domains");
@@ -304,9 +306,9 @@ export class MntnerService {
 
                 // (2) if NOT exact match, then check for mnt-lower
                 const primaryKey = this.whoisResourcesService.getPrimaryKey(wrappedResource);
-                if (!this.prefixService.isExactMatch(prefix, primaryKey)) {
-                    const mntLowers = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-lower");
 
+                if (!(this.prefixService.isExactMatch(address, primaryKey) && this.prefixService.isSizeOfDomainBlock(address))) {
+                    const mntLowers = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-lower");
                     if (mntLowers.length > 0) {
                         return mntHandler(mntLowers);
                     }
