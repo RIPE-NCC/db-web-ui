@@ -142,6 +142,7 @@ module.exports = {
     inpStatusLink: element(by.id("createForm")).element(by.css("[name^='status']")),
     inpStatusList: element(by.id("createForm")).element(by.css("[name^='status']")).element(by.css(".ng-dropdown-panel-items")).all(by.css(".ng-option")),
     prefixErrMsg: element(by.id("createForm")).element(by.css(".text-error")),
+    prefixInfoMsg: element(by.id("createForm")).element(by.css(".text-info")),
     prefixErrMsgLink: element(by.id("createForm")).element(by.css(".text-error")).element(by.css("a")),
     netnameErrMsg: element(by.id("createForm")).element(by.css(".attr-1")).element(by.css(".text-error")),
     inpPrefix: element(by.id("createForm")).element(by.name("prefix$0")),
