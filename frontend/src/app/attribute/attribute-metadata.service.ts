@@ -281,6 +281,8 @@ export class AttributeMetadataService {
         const cidrAddress = this.prefixService.getAddress(attribute.value);
         if (cidrAddress instanceof Address4 && cidrAddress.subnetMask > 24) {
             attribute.$$error = "Please use the <a target='_blank' href='syncupdates'>Syncupdates page</a> to create a domain object smaller than /24";
+        } else if (cidrAddress instanceof Address4 && cidrAddress.subnetMask < 16) {
+            attribute.$$error = "Cannot create domain objects for prefixes larger than /16";
         } else {
             attribute.$$error = "Invalid prefix notation";
         }
