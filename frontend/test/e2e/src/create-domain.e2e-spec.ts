@@ -199,6 +199,23 @@ describe("The create domain screen", () => {
         }, 5000);
         expect(page.prefixErrMsg.getText()).toContain("Please use the Syncupdates page to create a domain object smaller than /24");
         expect(page.prefixErrMsgLink.getAttribute("href")).toContain("syncupdates");
+        page.inpPrefix.clear();
+        page.inpPrefix.sendKeys("84.48.0.0/15");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
+        expect(page.prefixErrMsg.getText()).toContain("Cannot create domain objects for prefixes larger than /16");
+    });
+
+    it("shouldn't show error messages when creating prefix < 24 and mnt-lower is associated", () => {
+        // creating domain with prefix < 24 will result in more domain objects /24
+        page.scrollIntoView(page.modalSplashBtn);
+        page.modalSplashBtn.click();
+        browser.wait(() => {
+            return browser.isElementPresent(page.inpPrefix);
+        }, 5000);
+        page.inpPrefix.sendKeys("91.109.48.0/21");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
+        expect(page.modal.isPresent()).toBeFalsy();
+        expect(page.prefixInfoMsg.getText()).toContain("Prefix looks OK");
     });
 
     it("shouldn't show error messages when creating prefix < 24 and mnt-lower is associated", () => {
