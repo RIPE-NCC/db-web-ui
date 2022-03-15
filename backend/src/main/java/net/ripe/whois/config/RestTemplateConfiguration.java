@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.DefaultClientConnectionReuseStrategy;
-import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
+import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @SuppressWarnings("UnusedDeclaration")
@@ -34,9 +32,6 @@ public class RestTemplateConfiguration {
 
     // Maximum client connections per route in pool. Default is 2.
     private static final int HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE = 25;
-
-    // Maximum time (in ms) persistent connections can stay idle while kept alive in the connection pool.
-    private static final int HTTPCLIENT_MAX_IDLE_TIME = 25 * 1_000;
 
     private static final RequestConfig DEFAULT_REQUEST_CONFIG = RequestConfig.custom()
                                                                     .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT)
@@ -68,10 +63,7 @@ public class RestTemplateConfiguration {
     @Bean
     public HttpClient httpClient() {
         return HttpClientBuilder.create()
-                .setConnectionReuseStrategy(DefaultClientConnectionReuseStrategy.INSTANCE)
-                .setKeepAliveStrategy(DefaultConnectionKeepAliveStrategy.INSTANCE)
-                .evictExpiredConnections()
-                .evictIdleConnections(HTTPCLIENT_MAX_IDLE_TIME, TimeUnit.MILLISECONDS)
+                .setConnectionReuseStrategy(NoConnectionReuseStrategy.INSTANCE)
                 .setDefaultRequestConfig(DEFAULT_REQUEST_CONFIG)
                 .setMaxConnTotal(HTTPCLIENT_TOTAL_MAX_CONNECTIONS)
                 .setMaxConnPerRoute(HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE)
