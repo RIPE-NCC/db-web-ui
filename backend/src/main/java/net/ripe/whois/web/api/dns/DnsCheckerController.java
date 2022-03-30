@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -48,11 +49,12 @@ public class DnsCheckerController {
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public ResponseEntity<Response> status(@CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken,
-                                         @RequestParam(value = "ns") final String inNs,
-                                         @RequestParam(value = "record") final String inRecord) {
+    public ResponseEntity<Response> status(final HttpServletRequest request,
+                                           @CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken,
+                                           @RequestParam(value = "ns") final String inNs,
+                                           @RequestParam(value = "record") final String inRecord) {
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken);
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr());
         LOGGER.info("DNS check for user {}", userInfoResponse.user.username);
         // tidy up a bit
         final String ns = inNs.trim();

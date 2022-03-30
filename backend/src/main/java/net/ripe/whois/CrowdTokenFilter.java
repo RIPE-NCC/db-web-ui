@@ -128,7 +128,7 @@ public class CrowdTokenFilter implements Filter {
         if (request.getCookies() != null) {
             for (Cookie c : request.getCookies()) {
                 if (CROWD_TOKEN_KEY.equals(c.getName())) {
-                    return sessionChecker.hasActiveToken(c.getValue());
+                    return sessionChecker.hasActiveToken(c.getValue(), request.getRemoteAddr());
                 }
             }
         }

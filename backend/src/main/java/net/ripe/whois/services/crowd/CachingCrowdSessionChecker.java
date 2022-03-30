@@ -20,8 +20,8 @@ public class CachingCrowdSessionChecker {
     }
 
     @Cacheable("net.ripe.whois.crowdSessions")
-    public boolean hasActiveToken(final String crowdToken) {
-        return whoisInternalService.getActiveToken(crowdToken);
+    public boolean hasActiveToken(final String crowdToken, String clientIp) {
+        return whoisInternalService.getActiveToken(crowdToken, clientIp);
     }
 
     @CacheEvict("net.ripe.whois.crowdSessions")
