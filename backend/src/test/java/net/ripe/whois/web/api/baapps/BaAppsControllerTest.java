@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -38,8 +37,6 @@ public class BaAppsControllerTest {
     }
 
     @Mock
-    private HttpServletRequest request;
-    @Mock
     private WhoisInternalService whoisInternalService;
     @Mock
     private ResourceTicketService resourceTicketService;
@@ -55,13 +52,12 @@ public class BaAppsControllerTest {
         UserInfoResponse.Member member = new UserInfoResponse.Member();
         member.membershipId = 123L;
         member.orgObjectId = "ORG-RIEN1-RIPE";
-        userInfoResponse.members = new ArrayList<>() {{
+        userInfoResponse.members = new ArrayList<UserInfoResponse.Member>() {{
             add(memberFyi);
             add(member);
         }};
 
-        when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(CROWD_TOKEN, "")).thenReturn(userInfoResponse);
+        when(whoisInternalService.getUserInfo(CROWD_TOKEN)).thenReturn(userInfoResponse);
         when(resourceTicketService.getTicketsForMember(123L)).thenReturn(RESOURCE_TICKET_MAP);
         when(resourceTicketService.filteredResponse("AS3333", RESOURCE_TICKET_MAP)).thenReturn(RESOURCE_TICKET_RESPONSE);
     }
@@ -69,14 +65,14 @@ public class BaAppsControllerTest {
     @Test
     public void get_tickets() throws Exception {
         mock();
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-RIEN1-RIPE", "AS3333");
+        final ResponseEntity response = subject.getTickets(CROWD_TOKEN, "ORG-RIEN1-RIPE", "AS3333");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(RESOURCE_TICKET_RESPONSE));
     }
 
     @Test
     public void get_tickets_invalid_org_id() {
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "INVALID", "193.0.0.0 - 193.0.23.255");
+        final ResponseEntity response = subject.getTickets(CROWD_TOKEN, "INVALID", "193.0.0.0 - 193.0.23.255");
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));
@@ -84,7 +80,7 @@ public class BaAppsControllerTest {
 
     @Test
     public void get_tickets_invalid_resource() {
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-RIEN1-RIPE", "INVALID");
+        final ResponseEntity response = subject.getTickets(CROWD_TOKEN, "ORG-RIEN1-RIPE", "INVALID");
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));

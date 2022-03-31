@@ -146,8 +146,8 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void get_maintainers_success() {
-        mock("/api/user/info?clientIp=127.0.0.1", getResource("mock/user-info.json"));
-        mock("/api/user/7bc1fcd3-cba2-4fa1-b9d9-215caa9e3346/maintainers?clientIp=127.0.0.1",
+        mock("/api/user/info", getResource("mock/user-info.json"));
+        mock("/api/user/7bc1fcd3-cba2-4fa1-b9d9-215caa9e3346/maintainers",
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                         "<whois-resources xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
                         "<objects>\n" +
@@ -191,7 +191,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void get_maintainers_invalid_cookie() {
-        mock("/api/user/info?clientIp=127.0.0.1", "", MediaType.APPLICATION_JSON, HttpStatus.UNAUTHORIZED.value());
+        mock("/api/user/info", "", MediaType.APPLICATION_JSON, HttpStatus.UNAUTHORIZED.value());
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=invalid");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
@@ -206,7 +206,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void get_resource_tickets() {
-        mock("/api/user/info?clientIp=127.0.0.1", getResource("mock/user-info.json"));
+        mock("/api/user/info", getResource("mock/user-info.json"));
         mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
 
         final HttpHeaders requestHeaders = new HttpHeaders();
@@ -222,7 +222,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void syncupdate_no_object() {
-        mock("/api/user/info?clientIp=127.0.0.1", getResource("mock/user-info.json"));
+        mock("/api/user/info", getResource("mock/user-info.json"));
         mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
 
         final HttpHeaders requestHeaders = new HttpHeaders();

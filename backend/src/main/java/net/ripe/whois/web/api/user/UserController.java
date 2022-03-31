@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -33,14 +32,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getMaintainersCompact(final HttpServletRequest request,
-                                                @CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken) {
+    public ResponseEntity getMaintainersCompact(@CookieValue(value = CROWD_TOKEN_KEY, required = true) final String crowdToken) {
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr());
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken);
 
         try {
             final List<Map<String,Object>> response = whoisInternalService
-                .getMaintainers(userInfoResponse.user.uuid, request.getRemoteAddr());
+                .getMaintainers(userInfoResponse.user.uuid);
 
             // Make sure essentials content-type is set
             final MultiValueMap<String, String> headers = new HttpHeaders();
@@ -55,9 +53,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getUserInfo(final HttpServletRequest request,
-                                      @CookieValue(value = CROWD_TOKEN_KEY, required = false) final String crowdToken) {
-        return new ResponseEntity<>(whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr()), HttpStatus.OK);
+    public ResponseEntity getUserInfo(@CookieValue(value = CROWD_TOKEN_KEY, required = false) final String crowdToken) {
+        return new ResponseEntity<>(whoisInternalService.getUserInfo(crowdToken), HttpStatus.OK);
     }
 }
 

@@ -75,15 +75,14 @@ public class WhoisInternalProxyController extends ApiController {
     }
 
     @RequestMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request,
-                                                   @CookieValue(value = CROWD_TOKEN_KEY, required=false) final String crowdToken) {
+    public ResponseEntity<?> whoisInternalUserInfo(@CookieValue(value = CROWD_TOKEN_KEY, required=false) final String crowdToken) {
 
         if (Strings.isNullOrEmpty(crowdToken)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         try{
-            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr()));
+            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(crowdToken));
         } catch (RestClientException re){
             return new ResponseEntity<>(re.getMessage(), HttpStatus.valueOf(re.getStatus()));
         }

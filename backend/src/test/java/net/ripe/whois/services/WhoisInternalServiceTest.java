@@ -100,20 +100,20 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldFetchMantainersForCookieWithXml() {
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL + "?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
             .andRespond(withSuccess(VALID_XML_RESPONSE, MediaType.APPLICATION_XML));
 
-        whoisInternalService.getMaintainers(USER_UUID.toString(), "127.0.0.1");
+        whoisInternalService.getMaintainers(USER_UUID.toString());
 
         mockServer.verify();
     }
 
     @Test
     public void shouldReturnSuccessResponse() {
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL + "?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
                 .andRespond(withSuccess(VALID_XML_RESPONSE, MediaType.APPLICATION_XML));
 
-        List<Map<String, Object>> response = whoisInternalService.getMaintainers(USER_UUID.toString(), "127.0.0.1");
+        List<Map<String, Object>> response = whoisInternalService.getMaintainers(USER_UUID.toString());
 
         mockServer.verify();
 
@@ -135,11 +135,11 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldReturnErrorResponse() {
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL + "?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_XML).body(ERROR_XML_RESPONSE));
 
         try {
-            whoisInternalService.getMaintainers(USER_UUID.toString(), "127.0.0.1");
+            whoisInternalService.getMaintainers(USER_UUID.toString());
             fail("Should not be reached");
         } catch (RestClientException exc) {
             assertEquals(1, exc.getErrorMessages().size());
@@ -149,22 +149,22 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldRetrieveUserInfo(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info"))
             .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
                 .body(AbstractIntegrationTest.getResource("mock/user-info.json")));
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(CROWD_TOKEN, "127.0.0.1");
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(CROWD_TOKEN);
 
         assertEquals("test@ripe.net", userInfoResponse.user.username);
     }
 
     @Test
     public void shouldThrowExceptionUserInfoError(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info"))
             .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
 
         try{
-            whoisInternalService.getUserInfo(CROWD_TOKEN, "127.0.0.1");
+            whoisInternalService.getUserInfo(CROWD_TOKEN);
         }catch (RestClientException e){
             assertEquals(500, e.getStatus());
             assertEquals("Internal server error", e.getErrorMessages().stream().findFirst().get().getText());
@@ -173,11 +173,11 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldThrowExceptionUserInfoErrorUnAuthorized(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info"))
             .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
         try{
-            whoisInternalService.getUserInfo(CROWD_TOKEN, "127.0.0.1");
+            whoisInternalService.getUserInfo(CROWD_TOKEN);
         }catch (RestClientException e){
             assertEquals(401, e.getStatus());
             assertEquals("", e.getErrorMessages().stream().findFirst().get().getText());
@@ -187,7 +187,7 @@ public class WhoisInternalServiceTest {
     @Test
     public void shouldThrowUnauthorizedWhenCookieAbsent(){
         try {
-            whoisInternalService.getUserInfo(null, "127.0.0.1");
+            whoisInternalService.getUserInfo(null);
         } catch (RestClientException e){
             assertEquals(401, e.getStatus());
         }
@@ -195,10 +195,10 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldThrow503WhenWhoisInternalIsDown(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active"))
                 .andRespond(withStatus(HttpStatus.SERVICE_UNAVAILABLE));
         try {
-            whoisInternalService.getActiveToken(CROWD_TOKEN, "127.0.0.1");
+            whoisInternalService.getActiveToken(CROWD_TOKEN);
         } catch (RestClientException e){
             assertEquals(503, e.getStatus());
         }
@@ -206,8 +206,8 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldReturnFalseWhenActiveTokenUnauthorized(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active?clientIp=127.0.0.1"))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active"))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
-        assertFalse(whoisInternalService.getActiveToken(CROWD_TOKEN, "127.0.0.1"));
+        assertFalse(whoisInternalService.getActiveToken(CROWD_TOKEN));
     }
 }
