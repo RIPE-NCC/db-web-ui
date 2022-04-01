@@ -1,8 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
-    {
-    }
+      {
+          "packagePatterns": ["^bootstrap\/", "^@angular\/"],
+          "enabled": false
+      }
   ],
   "extends": [
     "config:base"
