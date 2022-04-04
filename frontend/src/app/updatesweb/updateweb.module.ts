@@ -35,6 +35,7 @@ import {ModalMd5PasswordComponent} from "./modal-md5-password.component";
 import {ModalEditAttributeComponent} from "./modal-edit-attribute.component";
 import {CreateService} from "./create.service";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
+import {TypeaheadComponent} from "./typeahead.component";
 
 @NgModule({
     imports: [
@@ -61,7 +62,8 @@ import {WhoisObjectModule} from "../whois-object/whois-object.module";
         ModalCreateRoleForAbuseCComponent,
         ModalDeleteObjectComponent,
         ModalMd5PasswordComponent,
-        ModalEditAttributeComponent
+        ModalEditAttributeComponent,
+        TypeaheadComponent
     ],
     providers: [
         PreferenceService,
@@ -77,21 +79,7 @@ import {WhoisObjectModule} from "../whois-object/whois-object.module";
         EnumService,
         CryptService,
         OrganisationHelperService,
-        {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }
-    ],
-    entryComponents: [
-        DisplayComponent,
-        DisplayMntnerPairComponent,
-        SelectComponent,
-        CreateModifyComponent,
-        CreateMntnerPairComponent,
-        CreateSelfMaintainedMaintainerComponent,
-        ModalAddAttributeComponent,
-        ModalAuthenticationComponent,
-        ModalCreateRoleForAbuseCComponent,
-        ModalDeleteObjectComponent,
-        ModalMd5PasswordComponent,
-        ModalEditAttributeComponent
+        { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }
     ]
 })
 export class UpdatesWebModule {}

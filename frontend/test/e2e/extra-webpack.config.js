@@ -26,7 +26,10 @@ module.exports = {
         ]
     },
     devServer: {
-        before: function (app) {
+        setupMiddlewares: function (middlewares, devServer) {
+            if (!devServer) {
+                throw new Error('webpack-dev-server is not defined');
+            }
             prism.create({
                 name: 'e2eTest',
                 host: os.hostname(),
@@ -49,7 +52,8 @@ module.exports = {
                 context: '/db-web-ui/app.constants.json',
                 mockFilenameGenerator: prismFilename
             });
-            app.use(prism.middleware)
+            middlewares.push(prism.middleware)
+            return middlewares;
         },
     }
 };

@@ -40,20 +40,11 @@
                        [required]="attribute.$$meta.$$mandatory"
                        [disabled]="attribute.$$meta.$$disable"
                        (blur)="fieldVisited(attribute)">
-                <input *ngIf="!attribute.$$meta.$$isEnum && isBrowserAutoComplete(attribute)"
-                       type="text"
-                       [attr.name]="attribute.name + '$' + idx"
-                       class="form-control"
-                       placeholder="{{getAttributeShortDescription(attribute.name)}}"
-                       autocomplete="off"
-                       [(ngModel)]="attribute.value"
-                       [required]="attribute.$$meta.$$mandatory"
-                       [disabled]="attribute.$$meta.$$disable"
-                       (blur)="fieldVisited(attribute)"
-                       [ngbTypeahead]="autocompleteAttribute(attribute)"
-                       [resultFormatter]="autocompleteAttributeRFormatter"
-                       [inputFormatter]="autocompleteAttributeIFormatter"
-                       >
+                <typeahead *ngIf="!attribute.$$meta.$$isEnum && isBrowserAutoComplete(attribute)"
+                                     [attribute]="attribute"
+                                     [idx]="idx"
+                                     [placeholder]="getAttributeShortDescription(attribute.name)"
+                                     (blurEmitter)="fieldVisited(attribute)"></typeahead>
                 <span *ngIf="attribute.$$meta.$$isEnum">
                     <ng-select
                        [attr.name]="attribute.name + '$' + idx"

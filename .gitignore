@@ -13,6 +13,7 @@ frontend/tmp/
 frontend/dist/
 frontend/out-tsc/
 frontend/.tscache/
+frontend/.angular/
 # dependencies
 frontend/node_modules/
 frontend/instrumented/

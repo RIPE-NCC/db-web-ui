@@ -17,7 +17,7 @@ describe("Modifying an inet6num", () => {
 
         it("should show input controls in the correct disabled or enabled state", () => {
             expect(page.inpMntnerBox.isPresent()).toEqual(true);
-            expect(page.inpMntnerBox.getAttribute("ng-reflect-is-disabled")).toBeTruthy();
+            expect(page.inpMntnerBox.getAttribute("class")).toContain("ng-select-disabled");
             expect(page.inpMntnerBox.getText()).toContain("XS4ALL-MNT");
             expect(page.inpMntnerBox.getText()).toContain("RIPE-NCC-HM-MNT");
             expect(page.inpNetname.isPresent()).toEqual(true);
@@ -43,7 +43,7 @@ describe("Modifying an inet6num", () => {
         it("should show input controls in the correct disabled or enabled state", function() {
             // maintainer input is enabled
             expect(page.inpMntnerBox.isPresent()).toEqual(true);
-            expect(page.inpMntnerBox.getAttribute("ng-reflect-is-disabled")).toBe("false");
+            expect(page.inpMntnerBox.getAttribute("class")).not.toContain("ng-select-disabled");
             expect(page.inpMntnerBox.getText()).toContain("XS4ALL-MNT");
             expect(page.inpMntnerBox.getText()).toContain("RIPE-NCC-END-MNT");
             // should NOT show netname as read-only

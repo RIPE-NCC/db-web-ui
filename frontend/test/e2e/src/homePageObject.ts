@@ -387,7 +387,7 @@ module.exports = {
     },
 
     btnRemoveAttributeCreatModifyPage: function (attribute) {
-        return attribute.element(by.xpath("..")).element(by.css(".fal.fa-trash"));
+        return attribute.element(by.xpath("../..")).element(by.css(".fal.fa-trash"));
     },
 
     getTableCell: function (tableElement, rowIndex, colIndex) {

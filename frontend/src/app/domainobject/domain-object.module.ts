@@ -27,12 +27,6 @@ import {UpdatesWebModule} from "../updatesweb/updateweb.module";
     providers: [
         PrefixService,
     ],
-    entryComponents: [
-        DisplayDomainObjectsComponent,
-        DomainObjectWizardComponent,
-        ModalDomainObjectSplashComponent,
-        ModalDomainCreationWaitComponent
-    ],
     exports: [
         DisplayDomainObjectsComponent,
         DomainObjectWizardComponent,

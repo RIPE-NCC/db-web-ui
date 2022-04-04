@@ -30,7 +30,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "deployUrl": "/db-web-ui/",
             "baseHref": "/db-web-ui/",
             "assets": [
@@ -50,19 +50,19 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": false,
-              "aot": true,
+              "aot": false,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "15mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -112,8 +112,6 @@
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "frontend:build",
-            "deployUrl": "/db-web-ui/",
-            "baseHref": "/db-web-ui/",
             "disableHostCheck": true,
             "port": 9002,
             "host": "0.0.0.0",
@@ -121,10 +119,13 @@
           },
           "configurations": {
             "local": {
-              "publicHost": "localhost.ripe.net:9002/db-web-ui/"
+              "publicHost": "localhost.ripe.net:9002/db-web-ui/",
+              "browserTarget": "frontend:build:local"
+
             },
             "remote": {
-              "publicHost": "db-tools-1.ripe.net:9002/db-web-ui/"
+              "publicHost": "db-tools-1.ripe.net:9002/db-web-ui/",
+              "browserTarget": "frontend:build:production"
             }
           }
         },
@@ -140,7 +141,7 @@
               "browserTarget": "frontend:build:production"
             },
             "local": {
-              "browserTarget": "frontend:build:production"
+              "browserTarget": "frontend:build:local"
             }
           }
         },

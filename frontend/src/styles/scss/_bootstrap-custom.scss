@@ -1,3 +1,5 @@
+@use "sass:math";
+
 /* Bootstrap Progress bar */
 .progress-bar {
   background-color: #453e7d !important;
@@ -101,7 +103,7 @@ ngb-popover-window.popover {
 
     .arrow::before,
     .arrow::after {
-      border-width: $popover-arrow-height ($popover-arrow-width / 2) 0;
+      border-width: $popover-arrow-height math.div($popover-arrow-width, 2) 0;
     }
 
     .arrow::before {
@@ -124,7 +126,7 @@ ngb-popover-window.popover {
 
     .arrow::before,
     .arrow::after {
-      border-width: 0 ($popover-arrow-width / 2) $popover-arrow-height ($popover-arrow-width / 2);
+      border-width: 0 math.div($popover-arrow-width, 2) $popover-arrow-height math.div($popover-arrow-width, 2);
     }
 
     .arrow::before {
@@ -144,7 +146,7 @@ ngb-popover-window.popover {
       left: 50%;
       display: block;
       width: $popover-arrow-width;
-      margin-left: ($popover-arrow-width / -2);
+      margin-left: math.div($popover-arrow-width, -2);
       content: "";
       border-bottom: $popover-border-width solid $popover-header-bg;
     }
