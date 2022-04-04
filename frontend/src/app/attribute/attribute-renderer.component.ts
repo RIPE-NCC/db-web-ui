@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {debounceTime, distinctUntilChanged, map, mergeMap} from "rxjs/operators";
-import {Observable, of} from "rxjs";
+import {Observable, of, OperatorFunction} from "rxjs";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
 import {CharsetToolsService} from "../updatesweb/charset-tools.service";
@@ -236,24 +236,24 @@ export class AttributeRendererComponent implements OnInit {
         this.attributeMetadataService.enrich(objectType, attributes);
     }
 
-    public autocompleteList = (objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) => (userInput$: Observable<string>) => {
-        if (attribute.name === "status") {
+    autocompleteList: OperatorFunction<string, readonly string[]> = (userInput$: Observable<string>) => {
+        if (this.attribute.name === "status") {
             // special treatment of the status, it need to react on the changes in parent attribute
-            return of(this.statusAutoCompleteList(objectType, attribute));
+            return of(this.statusAutoCompleteList(this.objectType, this.attribute));
         }
-        const metadata = this.attributeMetadataService.getMetadata(objectType, attribute.name);
+        const metadata = this.attributeMetadataService.getMetadata(this.objectType, this.attribute.name);
         if (metadata.refs) {
             return userInput$.pipe(
                 debounceTime(200),
                 distinctUntilChanged(),
-                mergeMap((term) => this.refsAutocomplete(attribute, term, metadata.refs)),
+                mergeMap((term) => this.refsAutocomplete(this.attribute, term, metadata.refs)),
                 map((terms: any[]) => terms.map((term: any) => term))
             )
         }
         return of([]);
     };
 
-    // for chosen item from list put key, otherwise is  value
+    // for chosen item from list put key, otherwise is value
     public autocompleteAttributeIFormatter = (result: any) => result.key ? result.key : result;
     public autocompleteAttributeRFormatter = (result: any) => result.readableName;
 

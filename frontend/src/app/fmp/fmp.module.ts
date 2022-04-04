@@ -32,14 +32,6 @@ import {UserInfoService} from "../userinfo/user-info.service";
         EmailLinkService,
         ForgotMaintainerPasswordService,
         UserInfoService,
-    ],
-    entryComponents: [
-        FindMaintainerComponent,
-        ConfirmMaintainerComponent,
-        ForgotMaintainerPasswordComponent,
-        MailSentComponent,
-        RequireLoginComponent,
-        SsoAddedComponent
     ]
 })
 export class FmpModule {

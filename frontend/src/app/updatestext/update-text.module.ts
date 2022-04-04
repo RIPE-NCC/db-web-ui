@@ -28,10 +28,6 @@ import {TextModifyComponent} from "./text-modify.component";
         RpslService,
         SerialExecutorService,
         TextCommonsService,
-    ],
-    entryComponents: [
-        TextCreateComponent,
-        TextModifyComponent
     ]
 })
 export class UpdatesTextModule {

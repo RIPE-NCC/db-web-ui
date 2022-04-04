@@ -1,8 +1,7 @@
 import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {debounceTime, distinctUntilChanged, map, mergeMap} from "rxjs/operators";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import * as _ from "lodash";
 import {WINDOW} from "../core/window.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
@@ -19,7 +18,6 @@ import {WebUpdatesCommonsService} from "./web-updates-commons.service";
 import {OrganisationHelperService} from "./organisation-helper.service";
 import {ScreenLogicInterceptorService} from "./screen-logic-interceptor.service";
 import {EnumService} from "./enum.service";
-import {CharsetToolsService} from "./charset-tools.service";
 import {ObjectUtilService} from "./object-util.service";
 import {IAttributeModel, IMntByModel, IStatusOption} from "../shared/whois-response-type.model";
 import {STATE} from "./web-updates-state.constants";
@@ -91,7 +89,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 public organisationHelperService: OrganisationHelperService,
                 public preferenceService: PreferenceService,
                 public enumService: EnumService,
-                public charsetToolsService: CharsetToolsService,
                 public screenLogicInterceptorService: ScreenLogicInterceptorService,
                 public alertsService: AlertsService,
                 public activatedRoute: ActivatedRoute,
@@ -268,42 +265,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
-    private addNiceAutocompleteName(items: any[], attrName: string) {
-        return _.map(items, (item) => {
-            let name = "";
-            let separator = " / ";
-            if (item.type === "person") {
-                name = item.person;
-            } else if (item.type === "role") {
-                name = item.role;
-                if (attrName === "abuse-c" && typeof item["abuse-mailbox"] === "string") {
-                    name = name.concat(separator + item["abuse-mailbox"]);
-                }
-            } else if (item.type === "aut-num") {
-                // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
-                name = (_.isArray(item.descr) && item.descr.length)
-                    ? [item["as-name"], separator, item.descr[0]].join("")
-                    : item["as-name"];
-            } else if (_.isString(item["org-name"])) {
-                name = item["org-name"];
-            } else if (_.isArray(item.descr)) {
-                name = item.descr.join("");
-            } else if (_.isArray(item.owner)) {
-                name = item.owner.join("");
-            } else {
-                separator = "";
-            }
-            // item.readableName = this.$sce.trustAsHtml(this.escape(item.key + separator + name));
-            item.readableName = this.escape(item.key + separator + name);
-            return item;
-        });
-    }
-
-    // change to private
-    public escape(input: string) {
-        return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
     public enumAutocomplete(attribute: any) {
         if (!attribute.$$meta.$$isEnum) {
             return [];
@@ -318,51 +279,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         return item.value + " [" + item.key.toUpperCase() + "]";
     }
 
-    // change to private
     public isServerLookupKey(refs: any) {
         return !(_.isUndefined(refs) || refs.length === 0);
-    }
-
-    public autocompleteAttribute = (attribute: IAttributeModel) => (text$: Observable<string>) =>
-        // value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)
-        text$.pipe(
-            debounceTime(200),
-            distinctUntilChanged(),
-            mergeMap((term) => this.referenceAutocomplete(attribute, term)),
-            map((terms: any[]) => terms.map((term: any) => term))
-        );
-
-    // for chosen item from list put key, otherwise is  value
-    public autocompleteAttributeIFormatter = (result: any) => result.key ? result.key : result;
-    public autocompleteAttributeRFormatter = (result: any) => result.readableName;
-
-    public referenceAutocomplete(attribute: IAttributeModel, userInput: string): any {
-        const attrName = attribute.name;
-        const refs = attribute.$$meta.$$refs;
-        const utf8Substituted = this.warnForNonSubstitutableUtf8(attribute, userInput);
-        if (utf8Substituted && this.isServerLookupKey(refs)) {
-
-            return this.restService.autocompleteAdvanced(of(userInput), refs)
-                .then((resp: any): any => {
-                    return this.addNiceAutocompleteName(this.filterBasedOnAttr(resp, attrName), attrName);
-                }, (): any => {
-                    // autocomplete error
-                    return [];
-                });
-        } else {
-            // No suggestions since nohandleSsoResponset a reference
-            return [];
-        }
-    }
-
-    // should be private
-    public filterBasedOnAttr(suggestions: string, attrName: string) {
-        return _.filter(suggestions, (item) => {
-            if (attrName === "abuse-c") {
-                return !_.isEmpty(item["abuse-mailbox"]);
-            }
-            return true;
-        });
     }
 
     public isBrowserAutoComplete(attribute: any) {
@@ -644,21 +562,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     /*
      * private methods
      */
-    private warnForNonSubstitutableUtf8(attribute: any, userInput: string) {
-        if (!this.charsetToolsService.isLatin1(userInput)) {
-            // see if any chars can be substituted
-            const subbedValue = this.charsetToolsService.replaceSubstitutables(userInput);
-            if (!this.charsetToolsService.isLatin1(subbedValue)) {
-                attribute.$$error = "Input contains illegal characters. These will be converted to '?'";
-                return false;
-            } else {
-                attribute.$$error = "";
-                return true;
-            }
-        }
-        return true;
-    }
-
     private fetchDataForCreate() {
         this.restCallInProgress = true;
         this.restService.fetchMntnersForSSOAccount()

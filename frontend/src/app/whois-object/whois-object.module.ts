@@ -29,11 +29,6 @@ import {WebUpdatesCommonsService} from "../updatesweb/web-updates-commons.servic
         WebUpdatesCommonsService,
         UserInfoService,
     ],
-    entryComponents: [
-        WhoisObjectViewerComponent,
-        WhoisObjectEditorComponent,
-        MaintainersEditorComponent
-    ],
     exports: [
         WhoisObjectViewerComponent,
         WhoisObjectEditorComponent,

@@ -64,7 +64,7 @@
            [required]="attribute.$$meta?.$$mandatory"
            [disabled]="attribute.$$disable"
            (blur)="valueTypeAheadChanged(objectType, attribute)"
-           [ngbTypeahead]="autocompleteList(objectType, attributes, attribute)"
+           [ngbTypeahead]="autocompleteList"
            [resultFormatter]="autocompleteAttributeRFormatter"
            [inputFormatter]="autocompleteAttributeIFormatter">
     <input *ngIf="(!isStaticList && !isDinamicList) ||  attribute.name === 'status'"

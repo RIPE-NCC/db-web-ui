@@ -23,10 +23,6 @@ import {AttributeSharedService} from "./attribute-shared.service";
         AttributeMetadataService,
         AttributeSharedService
     ],
-    entryComponents: [
-        AttributeReverseZonesComponent,
-        AttributeRendererComponent
-    ],
     exports: [
         AttributeRendererComponent
     ]

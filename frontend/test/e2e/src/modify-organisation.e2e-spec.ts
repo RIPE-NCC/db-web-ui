@@ -1,4 +1,4 @@
-import {browser} from "protractor";
+import {browser, by} from "protractor";
 import {waitToBeClickable} from "./fixtures";
 
 const page = require("./homePageObject");
@@ -13,7 +13,7 @@ describe("Modifying an organisation", () => {
 
         it("should show the mnt-by field as read-only", () => {
             expect(page.inpMaintainer.isPresent()).toEqual(true);
-            expect(page.inpMntnerBox.getAttribute("ng-reflect-is-disabled")).toBeTruthy();
+            expect(page.inpMntnerBox.getAttribute("class")).toContain("ng-select-disabled");
         });
 
         it("should show the remarks field starting with hash (#)", () => {
@@ -110,8 +110,8 @@ describe("Modifying an organisation", () => {
         });
 
         it("should have disabled country field", () => {
-            expect(page.inpCountry.getAttribute("ng-reflect-model")).toEqual("NL");
-            expect(page.inpCountry.getAttribute("ng-reflect-is-disabled")).toBeTruthy();
+            expect(page.inpCountry.element(by.css('.ng-value-label')).getText()).toEqual("NL");
+            expect(page.inpCountry.getAttribute("class")).toContain("ng-select-disabled");
         });
 
         it("should not have country attribute in modal-add-attribute", () => {

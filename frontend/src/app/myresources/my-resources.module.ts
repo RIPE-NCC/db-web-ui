@@ -53,18 +53,7 @@ import {RefreshComponent} from "./refresh/refresh.component";
         HierarchySelectorService,
         AssociatedObjectsService
     ],
-    entryComponents: [
-        AlertsDropDownComponent,
-        TransferDropDownComponent,
-        HierarchySelectorComponent,
-        IpUsageComponent,
-        IpUsageOfAllResourcesComponent,
-        ResourceDetailsComponent,
-        ResourceItemComponent,
-        ResourcesComponent,
-    ],
-    exports: [
-    ]
+    exports: []
 })
 export class MyResourcesModule {
 }

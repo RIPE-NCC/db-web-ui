@@ -64,16 +64,8 @@ import {MatIconModule} from "@angular/material/icon";
         HierarchyFlagsService,
         QueryFlagsService
     ],
-    entryComponents: [
-        LookupComponent,
-        LookupSingleObjectComponent,
-        CertificateBannerComponent,
-        QueryComponent,
-        TemplateComponent,
-        QueryFlagsComponent
-    ],
     exports: [
-      CertificateBannerComponent,
+        CertificateBannerComponent,
     ]
 })
 export class QueryModule {

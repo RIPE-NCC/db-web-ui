@@ -1,39 +1,39 @@
 /* Extended CSS */
-@import "assets/scss/extend.scss";
+@import "src/styles/scss/extend.scss";
 /* Generic CSS */
-@import "assets/scss/web-components.scss";
-@import "assets/scss/general.scss";
-@import "assets/scss/paginator.scss";
-@import "assets/scss/full-text-search.scss";
-@import "assets/scss/query.scss";
-@import "assets/scss/hierarchy-flags-panel.scss";
-@import "assets/scss/advance-filter-panel.scss";
+@import "src/styles/scss/web-components.scss";
+@import "src/styles/scss/general.scss";
+@import "src/styles/scss/paginator.scss";
+@import "src/styles/scss/full-text-search.scss";
+@import "src/styles/scss/query.scss";
+@import "src/styles/scss/hierarchy-flags-panel.scss";
+@import "src/styles/scss/advance-filter-panel.scss";
 /* View based CSS */
-@import "assets/scss/create-obj.scss";
-@import "assets/scss/datatables.scss";
-@import "assets/scss/display.scss";
-@import "assets/scss/multisync.scss";
-@import "src/assets/scss/resources.scss";
-@import "src/assets/scss/ip-usage-of-all-resources.scss";
-@import "src/assets/scss/ip-usage.scss";
-@import "assets/scss/whois-object.scss";
+@import "src/styles/scss/create-obj.scss";
+@import "src/styles/scss/datatables.scss";
+@import "src/styles/scss/display.scss";
+@import "src/styles/scss/multisync.scss";
+@import "src/styles/scss/resources.scss";
+@import "src/styles/scss/ip-usage-of-all-resources.scss";
+@import "src/styles/scss/ip-usage.scss";
+@import "src/styles/scss/whois-object.scss";
 /* Module based CSS */
-@import "assets/scss/uiselect-custom.scss";
-@import "assets/scss/bootstrap-custom.scss";
-@import "assets/scss/material-custom.scss";
+@import "src/styles/scss/uiselect-custom.scss";
+@import "src/styles/scss/bootstrap-custom.scss";
+@import "src/styles/scss/material-custom.scss";
 /* Custom directives */
-@import "assets/scss/flag.scss";
-@import "assets/scss/forgot-maintainer-password.scss";
-@import "assets/scss/certificate-banner.scss";
-@import "assets/scss/modal-banner.scss";
-@import "assets/scss/font.scss";
-@import "assets/scss/live-chat.scss";
-@import "assets/scss/alerts-drop-down.scss";
-@import "assets/scss/transfer-drop-down.scss";
-@import "assets/scss/org-drop-down.scss";
-@import "assets/scss/query-flags.scss";
-@import "assets/scss/hierarchy-selector.scss";
-@import "assets/scss/feedback-support-dialog";
+@import "src/styles/scss/flag.scss";
+@import "src/styles/scss/forgot-maintainer-password.scss";
+@import "src/styles/scss/certificate-banner.scss";
+@import "src/styles/scss/modal-banner.scss";
+@import "src/styles/scss/font.scss";
+@import "src/styles/scss/live-chat.scss";
+@import "src/styles/scss/alerts-drop-down.scss";
+@import "src/styles/scss/transfer-drop-down.scss";
+@import "src/styles/scss/org-drop-down.scss";
+@import "src/styles/scss/query-flags.scss";
+@import "src/styles/scss/hierarchy-selector.scss";
+@import "src/styles/scss/feedback-support-dialog";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '~bootstrap/dist/css/bootstrap.min.css';
 

@@ -32,7 +32,7 @@ import {OrgDropDownComponent} from "../dropdown/org-drop-down.component";
 import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 
 @NgModule({
-    schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [
         CommonModule,
         FormsModule,
@@ -71,14 +71,6 @@ import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service
         // Temporary just until we need different menu on test, training and rc enviroments
         EnvironmentStatusService,
         OrgDropDownSharedService
-    ],
-    entryComponents: [
-        AlertBannersComponent,
-        PaginationComponent,
-        LoadingIndicatorComponent,
-        HelpMarkerComponent,
-        NameFormatterComponent,
-        FlagComponent,
     ],
     exports: [
         AlertBannersComponent,

@@ -137,7 +137,7 @@
     <div class="col-sm-12 align-self-start">
       <div class="border padding margin-bottom">
         <p style="font-weight:600;">{{properties.SOURCE  === "RIPE" ? "Test" : "RIPE"}} Database</p>
-        <div *ngIf="properties.SOURCE  == 'RIPE'; else inTestEnv">
+        <div *ngIf="properties.SOURCE  === 'RIPE'; else inTestEnv">
           You can use this environment to learn and experiment with the RIPE Database. It uses a TEST source. Important: All changes are reverted every day at night.
         </div>
         <ng-template #inTestEnv>

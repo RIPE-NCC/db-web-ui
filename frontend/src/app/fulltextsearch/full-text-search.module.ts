@@ -22,10 +22,6 @@ import {FullTextSearchComponent} from "./full-text-search.component";
     providers: [
         FullTextResponseService,
         FullTextSearchService,
-    ],
-    entryComponents: [
-        FullTextSearchComponent,
-        FullTextResultSummaryComponent
     ]
 })
 export class FullTextSearchModule {
