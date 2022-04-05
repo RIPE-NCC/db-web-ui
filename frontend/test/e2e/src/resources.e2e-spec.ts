@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Resources", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "myresources/overview");
+        page.navigateTo(browser.baseUrl + "myresources/overview");
     });
 
     it("should show IPv4 resources for an LIR", () => {
@@ -102,8 +102,8 @@ describe("Resources", () => {
         expect(page.btnCreateAssignment.isPresent()).toEqual(false);
     });
 
-    it("should not show Create assignment button on Sponsored Resources tab", () => {
-        page.scrollIntoView(page.tabsMySponsoredResources);
+    it("should not show Create assignment button on Sponsored Resources tab", async () => {
+        await page.scrollIntoCenteredView(page.tabsMySponsoredResources);
         page.tabSponsoredResources.click();
         expect(page.btnCreateAssignment.isPresent()).toEqual(false);
     });

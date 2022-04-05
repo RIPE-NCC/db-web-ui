@@ -1,7 +1,7 @@
 <div>
     <a class="title" [routerLink]="['/myresources/detail', item.type, item.resource, sponsored]">
         <name-formatter [name]="item.resource" [type]="item.type"></name-formatter>
-        <span class="fal fa-chevron-right float-right"></span>
+        <span class="fal fa-chevron-right float-end"></span>
     </a>
     <p class="org-name" *ngIf="item.orgName">{{ item.orgName }}</p>
     <div class="flags-container">

@@ -6,11 +6,11 @@ const page = require("./homePageObject");
 describe("Deleting an as-set", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "webupdates/modify/ripe/as-set/AS196613%253AAS-TEST");
+        page.navigateTo(browser.baseUrl + "webupdates/modify/ripe/as-set/AS196613%253AAS-TEST");
     });
 
-    it("should properly close the reason modal", () => {
-        page.scrollIntoView(page.btnDeleteObject);
+    it("should properly close the reason modal", async () => {
+        await page.scrollIntoCenteredView(page.btnDeleteObject);
         page.btnDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
@@ -18,7 +18,7 @@ describe("Deleting an as-set", () => {
     });
 
     it("should add remarks fields", async () => {
-        page.scrollIntoView(page.btnAddAttribute);
+        await page.scrollIntoCenteredView(page.btnAddAttribute);
         expect(page.inpRemarks.isPresent()).toEqual(false);
         page.btnAddAttribute.click();
         expect(page.modal.isPresent()).toEqual(true);

@@ -8,7 +8,7 @@ describe("Modifying an organisation", () => {
     describe("which is an LIR", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "webupdates/modify/RIPE/organisation/ORG-AGNS1-RIPE");
+            page.navigateTo(browser.baseUrl + "webupdates/modify/RIPE/organisation/ORG-AGNS1-RIPE");
         });
 
         it("should show the mnt-by field as read-only", () => {
@@ -59,7 +59,8 @@ describe("Modifying an organisation", () => {
         });
 
         it("should open modal edit attribute on click on pen button contact information", async () => {
-            page.disableLiveChat();
+            await page.disableLiveChat();
+            await page.scrollIntoCenteredView(page.btnEditAnAttribute(page.inpPhone));
             page.btnEditAnAttribute(page.inpPhone).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating contact information");
@@ -80,8 +81,8 @@ describe("Modifying an organisation", () => {
             page.modalClose.click();
         });
 
-        it("should not contain remove (trush) button next to abuse-c in case of LIR organisation", () => {
-            page.scrollIntoView(page.inpAbuseC);
+        it("should not contain remove (trush) button next to abuse-c in case of LIR organisation", async () => {
+            await page.scrollIntoCenteredView(page.inpAbuseC);
             expect(page.btnRemoveAttributeCreatModifyPage(page.inpAbuseC).isPresent()).toBeFalsy();
         });
 
@@ -93,11 +94,11 @@ describe("Modifying an organisation", () => {
     describe("which is an OTHER type", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "webupdates/modify/ripe/organisation/ORG-ADNL2-RIPE");
+            page.navigateTo(browser.baseUrl + "webupdates/modify/ripe/organisation/ORG-ADNL2-RIPE");
         });
 
-        it("should contain remove (trush) button next to abuse-c in case of LIR organisation", () => {
-            page.scrollIntoView(page.inpAbuseC);
+        it("should contain remove (trush) button next to abuse-c in case of LIR organisation", async () => {
+            await page.scrollIntoCenteredView(page.inpAbuseC);
             expect(page.btnRemoveAttributeCreatModifyPage(page.inpAbuseC).isPresent()).toBeTruthy();
         });
 

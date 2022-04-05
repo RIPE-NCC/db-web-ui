@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The CreateMntnerPairComponent", () => {
 
     beforeEach(() => {
-        browser.get(`${browser.baseUrl}webupdates/select`);
+        page.navigateTo(`${browser.baseUrl}webupdates/select`);
     });
 
     it("should switch to person maintainer pair page on click on person link", () => {
@@ -18,7 +18,7 @@ describe("The CreateMntnerPairComponent", () => {
         expect(browser.getCurrentUrl()).toContain("webupdates/create/RIPE/role/self");
     });
 
-    it("should show syntax error over person field", () => {
+    it("should show syntax error over person field", async () => {
         page.selectObjectType("role and maintainer pair").click();
         page.btnNavigateToCreate.click();
         page.switchToPersonObject.click();
@@ -26,7 +26,7 @@ describe("The CreateMntnerPairComponent", () => {
         page.inpPerson.sendKeys("Üna Švoña");
         page.inpAddress.sendKeys("Utrecht");
         page.inpPhone.sendKeys("+3161234567");
-        page.scrollIntoView(page.btnSubmitForm);
+        await page.scrollIntoCenteredView(page.btnSubmitForm);
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeTruthy();
         expect(page.prefixErrMsg.getText()).toEqual("Input contains unsupported characters.");
     });
@@ -45,7 +45,7 @@ describe("The CreateMntnerPairComponent", () => {
         expect(page.inpMntnerDescription.getText()).toContain("Made up of letters, digits, the underscore \"_\" and hyphen \"-\". The first character of a name must be a letter, and the last character a letter or digit. Note that certain words are reserved by RPSL and cannot be used.");
     });
 
-    it("should sanitized img and script tag - XSS attack", () => {
+    it("should sanitized img and script tag - XSS attack", async () => {
         page.selectObjectType("role and maintainer pair").click();
         page.btnNavigateToCreate.click();
         page.switchToPersonObject.click();
@@ -53,7 +53,7 @@ describe("The CreateMntnerPairComponent", () => {
         page.inpPerson.sendKeys("Ivana Svonja");
         page.inpAddress.sendKeys("Utrecht");
         page.inpPhone.sendKeys("+3161234567");
-        page.scrollIntoView(page.btnSubmitForm);
+        await page.scrollIntoCenteredView(page.btnSubmitForm);
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeFalsy();
         page.btnSubmitForm.click();
         expect(page.prefixErrMsg.getText()).not.toContain("<img");

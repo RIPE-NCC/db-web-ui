@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Display an aut-num", () => {
 
     it("should sanitized img and script tag - XSS attack", () => {
-        browser.get(browser.baseUrl + "webupdates/display/RIPE/aut-num/as210089?method=Modify");
+        page.navigateTo(browser.baseUrl + "webupdates/display/RIPE/aut-num/as210089?method=Modify");
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/aut-num/as210089?method=Modify");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
         expect(page.displayPanelImgTag.isPresent()).toBeFalsy();
@@ -13,17 +13,17 @@ describe("Display an aut-num", () => {
     });
 
     it("should show umlaut", () => {
-        browser.get(browser.baseUrl + "webupdates/display/RIPE/aut-num/as210089?method=Modify");
+        page.navigateTo(browser.baseUrl + "webupdates/display/RIPE/aut-num/as210089?method=Modify");
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/aut-num/as210089?method=Modify");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
         expect(page.displayPanel.getText()).toContain("Ümlaüt");
     });
 
-    it("should contain + in front of each added row", () => {
-        browser.get(browser.baseUrl + "webupdates/modify/RIPE-NONAUTH/aut-num/AS24835");
+    it("should contain + in front of each added row", async () => {
+        page.navigateTo(browser.baseUrl + "webupdates/modify/RIPE-NONAUTH/aut-num/AS24835");
         page.modalInpPassword.sendKeys("RAYA-MNT");
         page.modalBtnSubmit.click();
-        page.scrollIntoView(page.btnSubmitModify);
+        await page.scrollIntoCenteredView(page.btnSubmitModify);
         page.btnSubmitModify.click();
         // display page after "adding" 3 imports
         expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE-NONAUTH/aut-num/AS24835?method=Modify");

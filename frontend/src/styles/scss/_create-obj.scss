@@ -22,7 +22,7 @@ ul.form-fields {
 		position: absolute;
 		width: auto;
 		right: 0;
-        top: 32px;
+        top: 24px;
         @media (min-width:1001px) and (max-width:1278px) {
             top: 23px;
         }
@@ -212,6 +212,10 @@ ul.form-fields {
 
 .text-error, .text-info, .text-note {
 	@extend %flex-r;
+}
+
+.text-info {
+	color: $link !important;
 }
 
 .text-error {

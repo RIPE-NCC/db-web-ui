@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Modifying a resource for a RIPE maintained object", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255");
+        page.navigateTo(browser.baseUrl + "webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255");
     });
 
     it("should show org and sponsoring-org as read-only", () => {

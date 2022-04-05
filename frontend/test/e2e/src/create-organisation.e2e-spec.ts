@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The organisation editor", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "webupdates/create/RIPE/organisation");
+        page.navigateTo(browser.baseUrl + "webupdates/create/RIPE/organisation");
     });
 
     it("should not crash when showing the single line editor", () => {

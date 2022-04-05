@@ -1,8 +1,6 @@
 <div *ngIf="!closed && !member" class="alert alert-light alert-dismissible padding margin-bottom">
 
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
-    <span aria-hidden="true">&times;</span>
-  </button>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="closeAlert()"></button>
   <img src="assets/images/RIPEDB-Associate.png" class="certificate-image"/>
 
   <!--Should have a better way -->
@@ -15,9 +13,7 @@
 </div>
 
 <div *ngIf="!closed && member" class="alert alert-light alert-dismissible padding margin-bottom" role="alert">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
-    <span aria-hidden="true">&times;</span>
-  </button>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="closeAlert()"></button>
   <img src="assets/images/RIPEDB-Associate.png" class="certificate-image"/>
 
   <p style="font-weight:600;">Does your CV show your RIPE Database expertise? </p>

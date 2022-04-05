@@ -5,18 +5,18 @@ const page = require("./homePageObject");
 describe("The route editor", () => {
 
     beforeEach(() => {
-        browser.get(`${browser.baseUrl}webupdates/select`);
+        page.navigateTo(`${browser.baseUrl}webupdates/select`);
     });
 
-    it("should create new route object", () => {
+    it("should create new route object", async () => {
         page.selectObjectType("route").click();
         page.btnNavigateToCreate.click();
         page.inpRoute.sendKeys("211.43.192.0/19");
         page.inpRoute.sendKeys(protractor.Key.TAB);
         // submit button shouldn't be available
-        page.scrollIntoView(page.btnSubmitForm);
+        await page.scrollIntoCenteredView(page.btnSubmitForm);
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeTruthy();
-        page.scrollIntoView(page.inpOrigin);
+        await page.scrollIntoCenteredView(page.inpOrigin);
         page.inpOrigin.sendKeys("AS9777");
 
         expect(page.inpSource.getAttribute("value")).toEqual("RIPE");

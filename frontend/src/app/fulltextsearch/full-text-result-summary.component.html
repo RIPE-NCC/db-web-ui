@@ -2,13 +2,13 @@
     <thead>
     <tr>
         <th scope="col">Number of results - all object types</th>
-        <th scope="col"><span class="float-right">{{ total | number }}</span></th>
+        <th scope="col"><span class="float-end">{{ total | number }}</span></th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let td of tabledata" (click)="emitRowClicked({type:td})">
         <td>{{ td.name }}</td>
-        <td><span class="float-right">{{ td.value | number }}</span></td>
+        <td><span class="float-end">{{ td.value | number }}</span></td>
     </tr>
     </tbody>
 </table>

@@ -23,6 +23,6 @@
         *ngIf="attr.name === pkLink" [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()">{{ attr.value }}</a><span
         *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : ''}}</span><span
         *ngIf="attr.comment && attr.comment !== 'Filtered'">{{(!attr.value || attr.value === '')? '' :' '}}# {{attr.comment}}</span></li></ul></pre>
-<div class="float-right">
+<div class="float-end">
     <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">{{ 'lookup.showAllObjectButton.text' | label }}</div>
 </div>

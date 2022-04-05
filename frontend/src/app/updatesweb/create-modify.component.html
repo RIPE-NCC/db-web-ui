@@ -1,5 +1,5 @@
 <button id="btnCreateInTextArea"
-        class="blue-button float-right ga-modifyobj-switch-mode"
+        class="blue-button float-end ga-modifyobj-switch-mode"
         style="border:0;"
         *ngIf="operation === CREATE_OPERATION"
         (click)="switchToTextMode()">
@@ -7,7 +7,7 @@
 </button>
 <button id="btnEditInTextArea"
         style="border:0;"
-        class="blue-button float-right ga-createobj-switch-mode"
+        class="blue-button float-end ga-createobj-switch-mode"
         *ngIf="operation === MODIFY_OPERATION"
         (click)="switchToTextMode()">
     <span class="fal fa-edit"></span> Edit in text area
@@ -114,15 +114,15 @@
         <submitting-agreement></submitting-agreement>
         <p scroller (scrolled)="showMoreAttributes()"></p>
         <span *ngIf="operation === MODIFY_OPERATION">
-            <input id="btnSubmitModify" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button float-right" value="Submit"/>
-            <button (click)="cancel()" class="blue-button float-right" style="border:0;">Cancel</button>
+            <input id="btnSubmitModify" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button float-end" value="Submit"/>
+            <button (click)="cancel()" class="blue-button float-end" style="border:0;">Cancel</button>
         </span>
         <span *ngIf="operation === CREATE_OPERATION">
-            <input id="btnSubmitCreate" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button float-right" value="Submit"/>
-            <button (click)="cancel()" class="blue-button float-right" style="border:0;">Cancel</button>
+            <input id="btnSubmitCreate" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button float-end" value="Submit"/>
+            <button (click)="cancel()" class="blue-button float-end" style="border:0;">Cancel</button>
         </span>
         <span *ngIf="operation === MODIFY_OPERATION && !isLirObject() && !isResourceWithNccMntner()">
-            <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button float-left" style="border:0; margin: 0;">Delete this object</button>
+            <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button float-start" style="border:0; margin: 0;">Delete this object</button>
         </span>
     </section>
 </div>
