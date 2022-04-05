@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Find Maintainer", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "fmp/");
+        page.navigateTo(browser.baseUrl + "fmp/");
     });
 
     it("should load the page with the search form", () => {
@@ -18,9 +18,9 @@ describe("Find Maintainer", () => {
         expect(page.maintainerContainer.isPresent()).toEqual(false);
     });
 
-    it("should load the maintainer into page after search", () => {
+    it("should load the maintainer into page after search", async () => {
         expect(page.maintainerContainer.isPresent()).toEqual(false);
-        page.scrollIntoView(page.findMaintainerForm);
+        await page.scrollIntoCenteredView(page.findMaintainerForm);
         page.inputMaintainer.clear().sendKeys("shryane-mnt");
         page.searchMaintainer.click();
         expect(page.maintainerContainer.isPresent()).toEqual(true);
@@ -38,9 +38,9 @@ describe("Find Maintainer", () => {
         expect(maintainerContainer).toContain("I do not have access to eshryane@ripe.net. Take me to the manual recovery process");
     });
 
-    it("should hide previous error alert after maintainer was found", () => {
+    it("should hide previous error alert after maintainer was found", async () => {
         expect(page.maintainerContainer.isPresent()).toEqual(false);
-        page.scrollIntoView(page.findMaintainerForm);
+        await page.scrollIntoCenteredView(page.findMaintainerForm);
         page.inputMaintainer.clear().sendKeys("svonja");
         page.searchMaintainer.click();
         expect(page.errorAlert.isPresent()).toEqual(true);

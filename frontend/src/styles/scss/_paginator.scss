@@ -3,6 +3,13 @@ paginator ul li {
   a {
     min-width: 46px;
     text-align: center;
+    &.page-link {
+      color: #242b6a;
+    }
+  }
+  &.page-item.active .page-link {
+      background-color: #242b6a;
+      border-color: #242b6a;
   }
   &.disabled {
     a {

@@ -6,9 +6,9 @@ const page = require("./homePageObject");
 describe("Resources, update object", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         browser.manage().addCookie({name: "activeMembershipId", value: "3629", path: "/"});
-        browser.get(browser.baseUrl + "myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
+        page.navigateTo(browser.baseUrl + "myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
     });
 
     it("should allow editing of the object", async () => {
@@ -27,20 +27,20 @@ describe("Resources, update object", () => {
         await waitToBeClickable(page.btnRemoveAttribute(page.inpDescr2));
         page.btnRemoveAttribute(page.inpDescr2).click();
         expect(page.inpDescr2.isPresent()).toBe(false);
-
+        await page.scrollIntoCenteredView(page.btnSubmitObject);
         page.btnSubmitObject.click();
         expect(page.successMessage.isPresent()).toBe(true);
     });
 
     describe("not comaintained by ripe", () =>  {
 
-        beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false");
-            page.removeCookiesBanner();
+        beforeEach(async () => {
+            await page.navigateTo(browser.baseUrl + "myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false");
+            await page.removeCookiesBanner();
         });
 
-        it("should edit netname", () => {
-            page.scrollIntoView(page.btnUpdateObjectButton);
+        it("should edit netname", async () => {
+            await page.scrollIntoCenteredView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
             page.modalInpAssociate.click();
@@ -56,8 +56,8 @@ describe("Resources, update object", () => {
             expect(page.woeNetname.getAttribute("value")).toBe("some netname");
         });
 
-        it("should add org attribute", () => {
-            page.scrollIntoView(page.btnUpdateObjectButton);
+        it("should add org attribute", async () => {
+            await page.scrollIntoCenteredView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
             page.modalInpAssociate.click();
@@ -73,8 +73,8 @@ describe("Resources, update object", () => {
             expect(page.woeOrg.isPresent()).toBe(true);
         });
 
-        it("should contain delete button for not co-maintained by RIPE-NCC-*-MNT", () => {
-            page.scrollIntoView(page.btnUpdateObjectButton);
+        it("should contain delete button for not co-maintained by RIPE-NCC-*-MNT", async () => {
+            await page.scrollIntoCenteredView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
             page.modalInpAssociate.click();
@@ -84,13 +84,13 @@ describe("Resources, update object", () => {
             expect(page.btnDeleteObjectWhoisEditor.isPresent()).toBe(true);
         });
 
-        it("should delete resource on click on delete button", () => {
-            page.scrollIntoView(page.btnUpdateObjectButton);
+        it("should delete resource on click on delete button", async () => {
+            await page.scrollIntoCenteredView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
-            page.scrollIntoView(page.btnDeleteObjectWhoisEditor);
+            await page.scrollIntoCenteredView(page.btnDeleteObjectWhoisEditor);
             page.btnDeleteObjectWhoisEditor.click();
 
             expect(page.modalDeleteObject.isPresent()).toBe(true);
@@ -106,7 +106,7 @@ describe("Resources, update object", () => {
     describe("comaintained by ripe", () =>  {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/false");
+            page.navigateTo(browser.baseUrl + "myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/false");
         });
 
         it("should not contain delete button for co-maintained by RIPE-NCC-*-MNT", () => {

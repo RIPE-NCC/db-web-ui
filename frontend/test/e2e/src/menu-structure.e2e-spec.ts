@@ -72,7 +72,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
 
     it("should not show Sponsored Resources for End Users", async () => {
         await changeJsonResponseFile(userInfoFile, enduser);
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         await waitForCount(page.topMenuItems, 4);
         expect(page.topMenuItems.count()).toEqual(4);
         page.topMenuItems.get(1).element(by.css_sr("::sr p.title")).getText().then((text) => {
@@ -96,7 +96,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
 
     it("should show menu structure for user with billing role", async () => {
         await changeJsonResponseFile(userInfoFile, userWithBillingRole);
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         await waitForCount(page.topMenuItems, 4);
         expect(page.topMenuItems.count()).toEqual(4);
         expect(page.topMenuItems.get(0).isDisplayed()).toEqual(true);
@@ -133,7 +133,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
 
     it("should show menu structure for user without org or lir", async () => {
         await changeJsonResponseFile(userInfoFile, userWithoutOrgOrLir);
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         await waitForCount(page.topMenuItems, 2);
         expect(page.topMenuItems.count()).toEqual(2);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
@@ -173,7 +173,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
 
     it("should show menu structure for no logged in user", async () => {
         await changeJsonResponseFile(userInfoFile, userNotLoggedIn);
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         await waitForCount(page.topMenuItems, 2);
         expect(page.topMenuItems.count()).toEqual(2);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
@@ -214,7 +214,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
 
     it("should show menu structure for a guest user", async () => {
         await changeJsonResponseFile(userInfoFile, userGuest);
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         await waitForCount(page.topMenuItems, 2);
         expect(page.topMenuItems.count()).toEqual(2);
         page.topMenuItems.get(0).element(by.css_sr("::sr p.title")).getText().then((text) => {
@@ -249,7 +249,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
 
     it("should show menu structure for user with all role", async () => {
         await changeJsonResponseFile(userInfoFile, userWithAllRoles);
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         await waitForCount(page.topMenuItems, 5);
         expect(page.topMenuItems.count()).toEqual(5);
         expect(page.topMenuItems.get(0).isDisplayed()).toEqual(true);

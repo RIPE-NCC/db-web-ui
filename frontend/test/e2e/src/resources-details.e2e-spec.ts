@@ -6,16 +6,16 @@ const page = require("./homePageObject");
 describe("Resources detail", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl);
+        page.navigateTo(browser.baseUrl);
         browser.manage().addCookie({name: "activeMembershipId", value: "3629", path: "/"});
     });
 
     describe("for an ASSIGNED PI inetnum", () => {
         beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
+            page.navigateTo(browser.baseUrl + "myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
         });
 
-        it("should show whois object attributes", () => {
+        it("should show whois object attributes", async () => {
 
             const whoisObject = page.getWhoisObject();
             const attributes = whoisObject.attributes();
@@ -65,7 +65,7 @@ describe("Resources detail", () => {
             expect(page.btn2HierarchySelector.isPresent()).toEqual(true);
 
             const firstCellInTable = page.getContentInTableCell(page.getTableCell(page.moreSpecificsTable, 0, 0), "a");
-            page.scrollIntoView(firstCellInTable);
+            await page.scrollIntoCenteredView(firstCellInTable);
             firstCellInTable.click();
             expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("192.87.0.80/28");
             expect(page.btn1HierarchySelector.isPresent()).toEqual(true);
@@ -92,7 +92,7 @@ describe("Resources detail", () => {
     describe("for inetnum with flags", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false");
+            page.navigateTo(browser.baseUrl + "myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false");
         });
 
         it("should contain 8 flags, 2 tickets and 2 dates", () => {
@@ -140,7 +140,7 @@ describe("Resources detail", () => {
     describe("for inetnum with usage status", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/");
+            page.navigateTo(browser.baseUrl + "myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/");
         });
 
         it("should display address usage", () => {
@@ -159,7 +159,7 @@ describe("Resources detail", () => {
     describe("for inet6num", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/inet6num/2001:7f8::%2F29/");
+            page.navigateTo(browser.baseUrl + "myresources/detail/inet6num/2001:7f8::%2F29/");
         });
 
         it("should show whois object attributes", () => {
@@ -203,10 +203,10 @@ describe("Resources detail", () => {
     describe("for aut-num with loads of attributes", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/aut-num/AS204056/");
+            page.navigateTo(browser.baseUrl + "myresources/detail/aut-num/AS204056/");
         });
 
-        it("should show a partial view that can be expanded", () => {
+        it("should show a partial view that can be expanded", async () => {
 
             const whoisObject = page.getWhoisObject();
             const attributes = whoisObject.attributes();
@@ -247,7 +247,7 @@ describe("Resources detail", () => {
 
             expect(attributes.count()).toEqual(25);
 
-            page.scrollIntoView(whoisObject.showMoreButton());
+            await page.scrollIntoCenteredView(whoisObject.showMoreButton());
             whoisObject.showMoreButton().click();
             expect(whoisObject.isPresent()).toEqual(true);
             expect(whoisObject.showMoreButton().isPresent()).toEqual(false);
@@ -309,7 +309,7 @@ describe("Resources detail", () => {
     describe("for out of region aut-num", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "myresources/detail/aut-num/AS36867/");
+            page.navigateTo(browser.baseUrl + "myresources/detail/aut-num/AS36867/");
         });
 
         it("should show out of region aut-num", () => {
@@ -333,17 +333,17 @@ describe("Resources detail", () => {
         });
 
         it("should edit and update out of region aut-num", async () => {
-            page.disableLiveChat();
-            page.scrollIntoView(page.btnUpdateObjectButton);
+            await page.disableLiveChat();
+            await page.scrollIntoCenteredView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
-            page.scrollIntoView(page.modalInpPassword);
+            await page.scrollIntoCenteredView(page.modalInpPassword);
             page.modalInpPassword.sendKeys("KOKONET-MNT");
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
             expect(page.inpDescr.isPresent()).toBe(true);
             page.inpDescr.sendKeys("Updated test description");
             page.btnAddAnAttribute(page.inpDescr).click();
-            page.scrollIntoView(page.modal);
+            await page.scrollIntoCenteredView(page.modal);
             page.modalBtnSubmit.click();
 
             expect(page.inpDescr2.isPresent()).toBe(true);
@@ -354,6 +354,7 @@ describe("Resources detail", () => {
             // source field should be disabled
             expect(page.woeSource.getAttribute("disabled")).toBeTruthy();
 
+            await page.scrollIntoCenteredView(page.btnSubmitObject);
             page.btnSubmitObject.click();
             expect(page.successMessage.isPresent()).toBe(true);
         });

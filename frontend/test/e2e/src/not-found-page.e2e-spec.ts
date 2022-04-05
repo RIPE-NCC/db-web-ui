@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The NotFoundPageComponent", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "/not-found");
+        page.navigateTo(browser.baseUrl + "/not-found");
     });
 
     it("should navigate to query page click on Search for an object", () => {

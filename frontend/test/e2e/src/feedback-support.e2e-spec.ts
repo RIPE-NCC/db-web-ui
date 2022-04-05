@@ -6,10 +6,10 @@ describe("feedback support dialog", () => {
 
   const dialogSelector = '.feedback-support-panel mat-dialog-container';
 
-  beforeEach(() => {
-    browser.get(browser.baseUrl);
+  beforeEach(async () => {
+    page.navigateTo(browser.baseUrl);
     const feedbackElement = page.getFeedbackSupportMenu();
-    page.scrollIntoView(feedbackElement);
+    await page.scrollIntoCenteredView(feedbackElement);
     feedbackElement.click();
   });
 

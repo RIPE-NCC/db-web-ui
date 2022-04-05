@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The organisation drop-down box", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "myresources/overview");
+        page.navigateTo(browser.baseUrl + "myresources/overview");
     });
 
     it("should be shown when a user has an LIR", () => {

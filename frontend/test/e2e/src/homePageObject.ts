@@ -437,8 +437,8 @@ module.exports = {
       return this.lookupPageObjectLi.get(attributeNumber).all(by.css("span")).get(1);
     },
 
-    disableLiveChat: function () {
-      browser.executeScript(() => {
+    disableLiveChat: async function () {
+      return browser.executeScript(() => {
         let elementLiveChat = document.getElementsByTagName("live-chat")[0];
         if (elementLiveChat) {
           elementLiveChat.remove();
@@ -446,14 +446,15 @@ module.exports = {
       })
     },
 
-    removeCookiesBanner: function () {
-      element(by.css("app-cookie-consent")).isDisplayed()
-          .then((displayed) => {
-              if (displayed) {
-                  // accept all cookies so banner doesn't cover app-workspace
-                  element(by.css_sr("app-cookie-consent ::sr app-banner")).element(by.css_sr("::sr .iscookiebanner button")).click();
-              }
-          });
+    removeCookiesBanner: async function () {
+        const isCookiePresent = await element(by.css("app-cookie-consent")).isPresent();
+        if (isCookiePresent) {
+            const isBannerPresent = await element(by.css_sr("app-cookie-consent ::sr app-banner")).isPresent();
+            if (isBannerPresent) {
+                // accept all cookies so banner doesn't cover app-workspace
+                element(by.css_sr("app-cookie-consent ::sr app-banner")).element(by.css_sr("::sr .iscookiebanner button")).click();
+            }
+        }
     },
 
     /**
@@ -523,16 +524,17 @@ module.exports = {
         return filename;
     },
 
-    scrollIntoView: function (el) {
-        browser.executeScript(function (el) {
-            el.scrollIntoView();
+    scrollIntoCenteredView: async function (el) {
+        await browser.executeScript(function (el) {
+            el.scrollIntoView({block: "center", behavior: 'auto'});
         }, el.getWebElement());
+        // we need to wait a bit until scroll has finished
+        await browser.sleep(300);
     },
 
-    scrollIntoCenteredView: function (el) {
-        browser.executeScript(function (el) {
-            el.scrollIntoView({block: "center"});
-        }, el.getWebElement());
+    scrollTo: async function(x: number,y: number) {
+        await browser.executeScript(`window.scrollTo(${x},${y});`)
+        await browser.sleep(500)
     },
 
     getWhoisObject: function (parent) {
@@ -553,5 +555,17 @@ module.exports = {
 
     clickOnOverlayBackdrop: async function() {
         await browser.executeScript("const event = new MouseEvent('click', {clientX: 0, clientY: 0}); $('.cdk-overlay-backdrop').trigger(event)");
+    },
+
+    navigateTo: async function(url, retries = 5) {
+        try {
+            await browser.get(url)
+        } catch (e) {
+            if (retries === 0) {
+                throw e;
+            }
+            console.warn(`retrying browser.get to ${url}`, e.message);
+            return this.navigateTo(url, retries - 1);
+        }
     }
 };

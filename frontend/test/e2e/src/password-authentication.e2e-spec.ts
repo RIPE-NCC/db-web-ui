@@ -5,10 +5,10 @@ const page = require("./homePageObject");
 describe("The password authentication dialogue", () => {
 
     beforeEach(() => {
-        browser.get("webupdates/modify/ripe/aut-num/AS9191");
+        page.navigateTo("webupdates/modify/ripe/aut-num/AS9191");
     });
 
-    it("should show a single modal which asks for a password", () => {
+    it("should show a single modal which asks for a password", async () => {
         expect(page.modalBtnSubmit.isPresent()).toEqual(true);
         expect(page.modalInpMaintainer.getText()).toEqual("NEWNET-MNT");
         // RIPE NCC MAINTAINERS should be filtered out
@@ -22,7 +22,7 @@ describe("The password authentication dialogue", () => {
         expect(page.allObjectRows.get(394).isPresent()).toEqual(true);
         expect(page.allObjectRows.get(0).isDisplayed()).toEqual(true);
         expect(page.allObjectRows.get(387).isDisplayed()).toEqual(true);
-        page.scrollIntoView(page.btnDeleteObject);
+        await page.scrollIntoCenteredView(page.btnDeleteObject);
     });
 
 });

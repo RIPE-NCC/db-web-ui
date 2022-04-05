@@ -1,7 +1,7 @@
 <h1>Select object type you would like to create</h1>
 
 <section>
-<form id="selectForm" class="grey padding float-left">
+<form id="selectForm" class="grey padding float-start">
     <div>
 	    <label for="objectTypeSelector">Object type</label>
         <select name="objectTypeSelector" id="objectTypeSelector"
@@ -15,7 +15,7 @@
     <br/>
 
     <button id="btnNavigateToCreate"
-            class="blue-button float-right ga-createobj-select"
+            class="blue-button float-end ga-createobj-select"
             (click)="navigateToCreate()">{{loggedIn ? "Create" : "Login to create"}}</button>
 
 </form>

@@ -19,11 +19,11 @@
                       </button>
                 </span>
             </div>
-            <span *ngIf="ipFilter; else msgWithoutFilter" class="float-right">
+            <span *ngIf="ipFilter; else msgWithoutFilter" class="float-end">
                 Showing {{moreSpecifics.filteredSize }} out of {{moreSpecifics.totalNumberOfResources}}
             </span>
             <ng-template #msgWithoutFilter>
-                <span class="float-right">
+                <span class="float-end">
                    Total more specifics: {{moreSpecifics.totalNumberOfResources}}
                 </span>
             </ng-template>

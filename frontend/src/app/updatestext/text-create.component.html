@@ -1,5 +1,5 @@
 <button id="btnSwitchToWebCreate"
-        class="blue-button float-right ga-text-createobj-switch-mode"
+        class="blue-button float-end ga-text-createobj-switch-mode"
         style="border:0;"
         (click)="switchToWebMode()">
     <span class="fal fa-bars"></span> Create in single lines
@@ -23,9 +23,9 @@
             <submitting-agreement></submitting-agreement>
 
             <input type="submit" (click)="submit()" [disabled]="restCallInProgress"
-                   class="blue-button float-right ga-text-createobj-create" value="Submit"/>
+                   class="blue-button float-end ga-text-createobj-create" value="Submit"/>
 
-            <button (click)="cancel()" class="blue-button float-right ga-text-createobj-cancel" style="border:0;">Cancel</button>
+            <button (click)="cancel()" class="blue-button float-end ga-text-createobj-cancel" style="border:0;">Cancel</button>
 
         </div>
     </form>

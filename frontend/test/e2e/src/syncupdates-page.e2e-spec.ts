@@ -5,19 +5,19 @@ const page = require("./homePageObject");
 describe("The syncupdates page", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "syncupdates");
+        page.navigateTo(browser.baseUrl + "syncupdates");
     });
 
-    it("should not show preview section if is empty object", () => {
+    it("should not show preview section if is empty object", async () => {
         page.inpSyncupdateString.sendKeys("");
         expect(page.inpSyncupdateString.getAttribute("value")).toEqual("");
-        page.scrollIntoView(page.btnUpdate);
+        await page.scrollIntoCenteredView(page.btnUpdate);
         page.btnUpdate.click(); // nothing should happen, everything is ok
         expect(page.inpSyncupdateString.getAttribute("value")).toEqual("");
         expect(page.viewSyncupdateString.isPresent()).toEqual(false);
     });
 
-    it("should show preview area in case object is incorrect", () => {
+    it("should show preview area in case object is incorrect", async () => {
         const response =
             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
             "The following paragraph(s) do not look like objects\n" +
@@ -29,7 +29,7 @@ describe("The syncupdates page", () => {
 
         page.inpSyncupdateString.sendKeys("something");
         expect(page.inpSyncupdateString.getAttribute("value")).toEqual("something");
-        page.scrollIntoView(page.btnUpdate);
+        await page.scrollIntoCenteredView(page.btnUpdate);
         page.btnUpdate.click();
         expect(page.viewSyncupdateString.getText()).toContain(response);
     });

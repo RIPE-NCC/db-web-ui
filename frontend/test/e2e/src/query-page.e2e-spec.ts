@@ -5,8 +5,10 @@ const page = require("./homePageObject");
 
 describe("The query page", () => {
 
-    beforeEach(() => {
-        browser.get(browser.baseUrl + "query");
+    beforeEach(async () => {
+        await page.navigateTo(browser.baseUrl + "query");
+        await page.removeCookiesBanner();
+        await page.disableLiveChat();
     });
 
     it("should have all its bits on the screen somewhere", async () => {
@@ -17,7 +19,7 @@ describe("The query page", () => {
         expect(page.advanceFilterMenu.isPresent()).toBeFalsy();
         page.inpQueryString.sendKeys("193.0.0.0");
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.advanceFilterMenu.isPresent()).toBeTruthy();
         page.advanceFilterMenu.click();
@@ -30,14 +32,14 @@ describe("The query page", () => {
         page.inpQueryString.sendKeys("193.0.0.0"); // press "enter" for a laugh
         page.btnSubmitQuery.click();
         // then refine the result after displaying the menu
-        page.scrollIntoCenteredView(page.inpQueryString);
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        page.scrollIntoCenteredView(page.resultsSection);
+        await page.scrollIntoCenteredView(page.resultsSection);
         expect(page.searchResults.count()).toEqual(4);
         expect(page.inpQueryString.getAttribute("value")).toEqual("193.0.0.0");
     });
@@ -48,15 +50,15 @@ describe("The query page", () => {
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
-        page.scrollIntoCenteredView(page.inpDontRetrieveRelated);
+        await page.scrollIntoCenteredView(page.inpDontRetrieveRelated);
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-7"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
         page.byId("mat-checkbox-7").click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
         expect(page.inpQueryString.getAttribute("value")).toEqual("193.0.0.0");
@@ -72,10 +74,10 @@ describe("The query page", () => {
         await page.clickOnOverlayBackdrop();
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-7"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
         page.byId("mat-checkbox-7").click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.resultsSection.getAttribute("innerHTML")).toContain("?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation");
     });
@@ -88,10 +90,10 @@ describe("The query page", () => {
         await page.clickOnOverlayBackdrop();
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-7"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
         page.byId("mat-checkbox-7").click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.resultsSection.getAttribute("innerHTML")).toContain("?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation");
     });
@@ -107,18 +109,18 @@ describe("The query page", () => {
         expect(page.typeMenu.getText()).toEqual("Types");
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-12"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-12")); // organisation
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-12")); // organisation
         page.byId("mat-checkbox-12").click();
         await page.clickOnOverlayBackdrop();
         expect(page.typeMenu.getText()).toEqual("Types (1)");
         expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup");
         page.inverseLookupMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-23"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-23")); // organisation
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-23")); // organisation
         page.byId("mat-checkbox-23").click();
         expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup (1)");
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
         const whoisObject = page.getWhoisObjectViewerOnQueryPage(0);
@@ -141,10 +143,10 @@ describe("The query page", () => {
         expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (2)");
     });
 
-    it("should have selected No hierarchy flag by default on hierarchy tab", () => {
+    it("should have selected No hierarchy flag by default on hierarchy tab", async () => {
         page.inpQueryString.sendKeys("ACRO862-RIPE");
         page.btnSubmitQuery.click();
-        page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
+        await page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
         expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
         // click on Hierarchy flags tab
         page.hierarchyFlagsMenu.click();
@@ -161,10 +163,10 @@ describe("The query page", () => {
         }
         page.inpQueryString.sendKeys("ACRO862-RIPE");
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // click on Hierarchy flags tab
-        page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
+        await page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
         page.hierarchyFlagsMenu.click();
         await waitToBeClickable(page.hierarchyFlag);
         expect(page.hierarchyFlag.isDisplayed()).toBeTruthy();
@@ -176,7 +178,7 @@ describe("The query page", () => {
         ).perform();
         expect(page.hierarchyFlagSlider.getAttribute("aria-valuenow")).toEqual("5");
         expect(page.hierarchyDCheckBoxInput.isEnabled()).toBeTruthy();
-        page.scrollIntoCenteredView(page.hierarchyDCheckBoxInput);
+        await page.scrollIntoCenteredView(page.hierarchyDCheckBoxInput);
         page.hierarchyDCheckBox.click();
         expect(page.hierarchyDCheckBoxInput.isSelected()).toBeTruthy();
         // move slider to x
@@ -191,38 +193,38 @@ describe("The query page", () => {
     });
 
     it("should be specified ripe stat link", async () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.btnSubmitQuery.click();
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // ripe stat link for should contain inetnum
         const ripeStateButtonInetnum = page.getRipeStateFromWhoisObjectOnQueryPage(0);
-        page.scrollIntoCenteredView(ripeStateButtonInetnum);
+        await page.scrollIntoCenteredView(ripeStateButtonInetnum);
         expect(ripeStateButtonInetnum.isPresent()).toEqual(true);
         const urlInet = ripeStateButtonInetnum.getAttribute("href");
         expect(urlInet).toEqual("https://stat.ripe.net/193.0.0.0%20-%20193.0.0.63?sourceapp=ripedb");
         // link for route(6) should contain just route value without AS
         const ripeStateButtonRoute = page.getRipeStateFromWhoisObjectOnQueryPage(3);
-        page.scrollIntoCenteredView(ripeStateButtonRoute);
+        await page.scrollIntoCenteredView(ripeStateButtonRoute);
         expect(ripeStateButtonRoute.isPresent()).toEqual(true);
         const urlRoute = ripeStateButtonRoute.getAttribute("href");
         expect(urlRoute).toEqual("https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb");
     });
 
     it("should show object banner with text - No abuse contact found", async () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
         page.btnSubmitQuery.click();
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // ripe stat link for should contain inetnum
         expect(page.lookupHeaderQueryPage.isPresent()).toEqual(true);
@@ -230,14 +232,14 @@ describe("The query page", () => {
     });
 
     it("should show object banner with abuse contact info", async () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.201.0.0");
         page.btnSubmitQuery.click();
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.lookupHeaderQueryPage.isPresent()).toEqual(true);
         expect(page.lookupHeaderQueryPage.getText()).toContain("Responsible organisation: WITBE NET S.A.");
@@ -255,10 +257,10 @@ describe("The query page", () => {
         // -- just to use same mock
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-7"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-7"));
         page.byId("mat-checkbox-7").click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.lookupHeaderQueryPage.isPresent()).toEqual(true);
         expect(page.lookupHeaderQueryPage.getText()).toContain("Responsible organisation: TEST ORG");
@@ -270,16 +272,16 @@ describe("The query page", () => {
     });
 
     it("should show checkbox - Highlight RIPE NCC managed values", async () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.201.0.0");
         page.btnSubmitQuery.click();
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        page.scrollIntoCenteredView(page.ripeManagedAttributesLabel);
+        await page.scrollIntoCenteredView(page.ripeManagedAttributesLabel);
         expect(page.ripeManagedAttributesLabel.getText()).toContain("Highlight RIPE NCC managed values");
         // unselect
         page.ripeManagedAttributesCheckbox.click();
@@ -297,7 +299,7 @@ describe("The query page", () => {
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(3);
         const nonRipeWhoisObject = page.getWhoisObjectViewerOnQueryPage(2);
@@ -314,10 +316,10 @@ describe("The query page", () => {
         await page.clickOnOverlayBackdrop();
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-18"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-18"));
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-18"));
         page.byId("mat-checkbox-18").click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 7).getText()).toEqual("RIPE-NONAUTH");
@@ -332,7 +334,7 @@ describe("The query page", () => {
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(2, 0).getAttribute("href")).toContain("?source=ripe-nonauth&key=211.43.192.0%2F19AS9777&type=route");
     });
@@ -344,7 +346,7 @@ describe("The query page", () => {
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 5).getText()).toContain("1970-01-01T00:00:00Z");
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 6).getText()).toContain("2018-07-23T13:00:20Z");
@@ -358,10 +360,10 @@ describe("The query page", () => {
         await page.clickOnOverlayBackdrop();
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-3"));
-        page.scrollIntoCenteredView(page.byId("mat-checkbox-3"));
+        await page.scrollIntoCenteredView(page.byId("mat-checkbox-3"));
         page.byId("mat-checkbox-3").click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
         expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 0).getAttribute("href")).toContain("?source=ripe-nonauth&key=AS9777&type=aut-num");
@@ -378,30 +380,30 @@ describe("The query page", () => {
     });
 
     it("should show version of whois after searching", async () => {
-        page.scrollIntoCenteredView(page.whoisVersionTag);
+        await page.scrollIntoCenteredView(page.whoisVersionTag);
         expect(page.whoisVersionTag.isDisplayed()).toBeFalsy();
-        page.scrollIntoCenteredView(page.inpQueryString);
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.sendKeys("211.43.192.0");
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        page.scrollIntoCenteredView(page.whoisVersion);
+        await page.scrollIntoCenteredView(page.whoisVersion);
         expect(page.whoisVersionTag.isDisplayed()).toBeTruthy();
         expect(page.whoisVersion.isDisplayed()).toBeTruthy();
         expect(page.whoisVersion.getText()).toEqual("RIPE Database Software Version 1.97-SNAPSHOT");
     });
 
     // TEMPLATE QUERY -t or --template
-    it("should be able to search --template using the text box", () => {
+    it("should be able to search --template using the text box", async () => {
         page.inpQueryString.sendKeys("-t person\n");
         page.btnSubmitQuery.click();
-        page.scrollIntoCenteredView(page.templateSearchResults);
+        await page.scrollIntoCenteredView(page.templateSearchResults);
         expect(page.inpQueryString.getAttribute("value")).toEqual("-t person");
         // expect(page.inpTelnetQuery.getText()).toEqual("-t person");
         expect(page.templateSearchResults.getText()).toEqual(
@@ -420,8 +422,9 @@ describe("The query page", () => {
             "source:         [mandatory]  [single]     [ ]");
     });
 
-    it("should not show template panel in case of error query", () => {
+    it("should not show template panel in case of error query", async () => {
         page.inpQueryString.sendKeys("something -t notExistingObjectType inet6num\n");
+        await page.scrollIntoCenteredView(page.btnSubmitQuery)
         page.btnSubmitQuery.click();
         expect(page.templateSearchResults.isPresent()).toBeFalsy();
         expect(page.inpQueryFlagsContainer.isDisplayed()).toBeTruthy();
@@ -440,24 +443,24 @@ describe("The query page", () => {
     });
 
     it("should hide template search result after new query is triggered", async () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.sendKeys("-t aut-num");
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.inpQueryString.getAttribute("value")).toEqual("-t aut-num");
         expect(page.inpQueryFlagsContainer.isDisplayed()).toBeTruthy();
-        page.scrollIntoCenteredView(page.templateSearchResults);
         expect(page.templateSearchResults.isDisplayed()).toBeTruthy();
         expect(page.resultsSection.isDisplayed()).toBeFalsy();
         page.inpQueryString.clear().sendKeys("211.43.192.0");
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        page.scrollIntoCenteredView(page.certificateBanner);
+        await page.scrollIntoCenteredView(page.certificateBanner);
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.templateSearchResults.isPresent()).toBeFalsy();
         // doesn't work in ff but cannot be reproduced manually
@@ -469,14 +472,14 @@ describe("The query page", () => {
         page.inpQueryString.sendKeys("1.1.1.1 --resource");
         expect(page.inpQueryFlagsContainer.isDisplayed()).toEqual(true);
         await page.clickOnOverlayBackdrop();
-        page.scrollIntoCenteredView(page.btnSubmitQuery);
+        await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(3);
     });
 
     //query-flags-container
-    it("should show query-flags-container and disable rest of search form", () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+    it("should show query-flags-container and disable rest of search form", async () => {
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.clear().sendKeys("-i abuse-c -T organisation -Br --sources RIPE ANNA");
         expect(page.inpQueryFlagsContainer.isDisplayed()).toBeTruthy();
         expect(page.typeMenu.isPresent()).toBeFalsy();
@@ -485,8 +488,8 @@ describe("The query page", () => {
         expect(page.advanceFilterMenu.isPresent()).toBeFalsy();
     });
 
-    it("should show query-flags-container with adequate flags", () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+    it("should show query-flags-container with adequate flags", async () => {
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.clear().sendKeys("-i abuse-c -T organisation -Br --sources RIPE ANNA");
         const allExpectFlags = ["-i", "--inverse",
             "-T", "--select-types",
@@ -505,8 +508,8 @@ describe("The query page", () => {
         expect(allExpectFlags).toContain(page.inpQueryFlags.get(9).getText());
     });
 
-    it("should show error banner when flag is invalid and valid flag in query flag container", () => {
-        page.scrollIntoCenteredView(page.inpQueryString);
+    it("should show error banner when flag is invalid and valid flag in query flag container", async () => {
+        await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.clear().sendKeys("-z --sources RIPE ANNA");
         expect(page.inpQueryFlags.get(0).getText()).toContain("-s");
         expect(page.inpQueryFlags.get(1).getText()).toContain("--sources");
