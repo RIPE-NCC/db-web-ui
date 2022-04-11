@@ -92,10 +92,10 @@ describe("FeedbackSupportDialogComponent", () => {
     expect(dialogRef.close).toHaveBeenCalledTimes(1);
 
     // @ts-ignore
-    window.useUsersnap = () => {
+    window.useUsersnapCX = () => {
       // do nothing
     };
-    const useUsersnapMock = spyOn(window, 'useUsersnap' as never);
+    const useUsersnapMock = spyOn(window, 'useUsersnapCX' as never);
     allItems[1].triggerEventHandler('click', null)
     expect(useUsersnapMock).toHaveBeenCalled();
     expect(dialogRef.close).toHaveBeenCalledTimes(2);

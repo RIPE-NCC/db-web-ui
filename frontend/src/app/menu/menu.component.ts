@@ -11,9 +11,10 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {MatDialog} from "@angular/material/dialog";
 import {FeedbackSupportDialogComponent} from "../feedbacksupport/feedback-support-dialog.component";
 
+// TODO remove class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots
 @Component({
     selector: "swe-menu",
-    template: `<app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)"
+    template: `<app-nav-bar class="usprivacy" (app-nav-bar-select)="onNavBarSelected($event)"
                             [menu]="menu" [open]=open [active]="activeItem"></app-nav-bar>`
 })
 export class MenuComponent implements OnInit, OnDestroy{

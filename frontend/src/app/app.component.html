@@ -1,37 +1,41 @@
-<ripe-header (ripe-header-menu-toggle)="open($event)" [open]="isOpenMenu">
-  <svg slot="logo-app" style="height:34px" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 4391 551">
-    <linearGradient id="a" x1="69.1" x2="458.1" y1="525.8" y2="136.8" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#24326a"/>
-      <stop offset=".1" stop-color="#283369"/>
-      <stop offset=".1" stop-color="#333567"/>
-      <stop offset=".2" stop-color="#453864"/>
-      <stop offset=".2" stop-color="#5b3d5f"/>
-      <stop offset=".3" stop-color="#764459"/>
-      <stop offset=".4" stop-color="#964e4e"/>
-      <stop offset=".4" stop-color="#bf5b3c"/>
-      <stop offset=".5" stop-color="#ed6b23"/>
-      <stop offset="1" stop-color="#9c9c9c"/>
-    </linearGradient>
-    <path fill="url(#a)" d="M400 226V79L264 0 127 79v147L0 299v158l136 79 128-74 127 74 136-79V299l-127-73zm-136 68-109-63 109-63 108 63-108 63zm-118-47 108 63v125l-108-63V247zm127 63 108-63v125l-108 63V310zM146 90l118-68 117 68v125l-117-68-118 68V90zM19 446V310l108-63v136l118 68-109 63-117-68zm490 0-118 68-109-63 118-68V247l109 63v136z"/>
-    <path fill="#26316a" d="m851 456-74-133h-42v133h-94V79h163c38 0 66 8 90 25 29 22 44 56 44 94 0 46-22 91-71 111l86 147H851zm-59-303h-58v100h58c34 0 55-19 55-50 0-35-23-50-55-50zm214 303V79h93v377h-93zm338-130h-77v130h-94V79h169c83 0 131 51 131 121 0 62-38 126-129 126zm-17-173h-61v100h61c32 0 54-17 54-51 0-33-21-49-54-49zm203 303V79h275v77h-182v72h153v76h-153v75h183v77h-276zm642 0h-157V79h156c83 0 153 45 153 133v106c0 94-73 138-152 138zm-8-300h-55v224h57c34 0 64-22 64-61V216c0-38-29-60-66-60zm387 300-3-31h-2c-23 31-55 37-83 37-53 0-91-28-91-81 0-65 67-90 123-90h48v-22c0-22-15-35-43-35s-41 13-41 28v9h-77v-10c0-61 60-89 123-89s124 26 124 96v127c0 21 3 56 5 61h-83zm-49-117c-26 0-44 8-44 31 0 18 12 30 38 30 32 0 45-18 46-45l1-16h-41zm295-94v118c0 18 6 26 33 26 9 0 21-3 25-3v67c-20 5-45 8-61 8-42 0-83-17-83-76V245h-35v-64h35v-78h86v78h59v64h-59zm274 211-2-31h-3c-23 31-55 37-83 37-53 0-91-28-91-81 0-65 68-90 123-90h48v-22c0-22-15-35-43-35s-41 13-41 28v9h-77v-10c0-61 60-89 123-89s124 26 124 96v127c0 21 3 56 5 61h-83zm-49-117c-25 0-44 8-44 31 0 18 12 30 39 30 31 0 45-18 46-45v-16h-41zm348 124c-26 0-52-12-68-33h-1v26h-85V79h87v131c20-26 50-38 76-38 62 0 102 39 102 103v84c0 65-50 104-111 104zm24-178c0-29-20-45-45-45-22 0-46 12-46 50v64c0 31 24 45 47 45 22 0 44-14 44-46v-68zm311 171-3-31h-2c-23 31-56 37-83 37-53 0-92-28-92-81 0-65 68-90 124-90h48v-22c0-22-15-35-43-35s-41 13-41 28v9h-77v-10c0-61 60-89 123-89s124 26 124 96v127c0 21 3 56 5 61h-83zm-50-117c-25 0-43 8-43 31 0 18 11 30 38 30 32 0 45-18 46-45l1-16h-42zm308 123c-52 0-98-10-132-51l52-46c17 21 46 36 77 36 20 0 42-6 42-24 0-16-14-20-37-24l-21-4-45-13c-34-12-54-33-54-69 0-58 48-95 116-95 55 0 91 13 118 46l-55 42a79 79 0 0 0-60-27c-23 0-38 7-38 22 0 13 13 16 30 19 4 3 32 6 36 7l37 11c39 14 60 40 60 75 0 68-68 95-126 95zm257-116v6c0 29 35 43 63 43 25 0 55-13 67-18l26 62c-27 15-56 24-107 24-66 0-137-34-137-114v-55c0-83 66-122 132-122 64 0 127 36 127 104v70h-171zm87-66c0-30-20-42-42-42-25 0-45 14-45 45v10h87v-13z"/>
-  </svg>
-  <mobile-menu class="web-component"
-               *ngIf="!isDesktopView; else desktopMenu"
-               [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
-               [accessurl]="properties.LOGIN_URL"></mobile-menu>
-  <ng-template #desktopMenu>
-    <app-switcher class="web-component"
-                  [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
-                  [current]="'database'"></app-switcher>
-    <user-login class="web-component"
-                [accessurl]="properties.LOGIN_URL"
-                [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
-  </ng-template>
-</ripe-header>
+<!--TODO remove div class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
+<div class="usprivacy">
+    <ripe-header (ripe-header-menu-toggle)="open($event)" [open]="isOpenMenu">
+      <svg slot="logo-app" style="height:34px" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 4391 551">
+        <linearGradient id="a" x1="69.1" x2="458.1" y1="525.8" y2="136.8" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#24326a"/>
+          <stop offset=".1" stop-color="#283369"/>
+          <stop offset=".1" stop-color="#333567"/>
+          <stop offset=".2" stop-color="#453864"/>
+          <stop offset=".2" stop-color="#5b3d5f"/>
+          <stop offset=".3" stop-color="#764459"/>
+          <stop offset=".4" stop-color="#964e4e"/>
+          <stop offset=".4" stop-color="#bf5b3c"/>
+          <stop offset=".5" stop-color="#ed6b23"/>
+          <stop offset="1" stop-color="#9c9c9c"/>
+        </linearGradient>
+        <path fill="url(#a)" d="M400 226V79L264 0 127 79v147L0 299v158l136 79 128-74 127 74 136-79V299l-127-73zm-136 68-109-63 109-63 108 63-108 63zm-118-47 108 63v125l-108-63V247zm127 63 108-63v125l-108 63V310zM146 90l118-68 117 68v125l-117-68-118 68V90zM19 446V310l108-63v136l118 68-109 63-117-68zm490 0-118 68-109-63 118-68V247l109 63v136z"/>
+        <path fill="#26316a" d="m851 456-74-133h-42v133h-94V79h163c38 0 66 8 90 25 29 22 44 56 44 94 0 46-22 91-71 111l86 147H851zm-59-303h-58v100h58c34 0 55-19 55-50 0-35-23-50-55-50zm214 303V79h93v377h-93zm338-130h-77v130h-94V79h169c83 0 131 51 131 121 0 62-38 126-129 126zm-17-173h-61v100h61c32 0 54-17 54-51 0-33-21-49-54-49zm203 303V79h275v77h-182v72h153v76h-153v75h183v77h-276zm642 0h-157V79h156c83 0 153 45 153 133v106c0 94-73 138-152 138zm-8-300h-55v224h57c34 0 64-22 64-61V216c0-38-29-60-66-60zm387 300-3-31h-2c-23 31-55 37-83 37-53 0-91-28-91-81 0-65 67-90 123-90h48v-22c0-22-15-35-43-35s-41 13-41 28v9h-77v-10c0-61 60-89 123-89s124 26 124 96v127c0 21 3 56 5 61h-83zm-49-117c-26 0-44 8-44 31 0 18 12 30 38 30 32 0 45-18 46-45l1-16h-41zm295-94v118c0 18 6 26 33 26 9 0 21-3 25-3v67c-20 5-45 8-61 8-42 0-83-17-83-76V245h-35v-64h35v-78h86v78h59v64h-59zm274 211-2-31h-3c-23 31-55 37-83 37-53 0-91-28-91-81 0-65 68-90 123-90h48v-22c0-22-15-35-43-35s-41 13-41 28v9h-77v-10c0-61 60-89 123-89s124 26 124 96v127c0 21 3 56 5 61h-83zm-49-117c-25 0-44 8-44 31 0 18 12 30 39 30 31 0 45-18 46-45v-16h-41zm348 124c-26 0-52-12-68-33h-1v26h-85V79h87v131c20-26 50-38 76-38 62 0 102 39 102 103v84c0 65-50 104-111 104zm24-178c0-29-20-45-45-45-22 0-46 12-46 50v64c0 31 24 45 47 45 22 0 44-14 44-46v-68zm311 171-3-31h-2c-23 31-56 37-83 37-53 0-92-28-92-81 0-65 68-90 124-90h48v-22c0-22-15-35-43-35s-41 13-41 28v9h-77v-10c0-61 60-89 123-89s124 26 124 96v127c0 21 3 56 5 61h-83zm-50-117c-25 0-43 8-43 31 0 18 11 30 38 30 32 0 45-18 46-45l1-16h-42zm308 123c-52 0-98-10-132-51l52-46c17 21 46 36 77 36 20 0 42-6 42-24 0-16-14-20-37-24l-21-4-45-13c-34-12-54-33-54-69 0-58 48-95 116-95 55 0 91 13 118 46l-55 42a79 79 0 0 0-60-27c-23 0-38 7-38 22 0 13 13 16 30 19 4 3 32 6 36 7l37 11c39 14 60 40 60 75 0 68-68 95-126 95zm257-116v6c0 29 35 43 63 43 25 0 55-13 67-18l26 62c-27 15-56 24-107 24-66 0-137-34-137-114v-55c0-83 66-122 132-122 64 0 127 36 127 104v70h-171zm87-66c0-30-20-42-42-42-25 0-45 14-45 45v10h87v-13z"/>
+      </svg>
+      <mobile-menu class="web-component"
+                   *ngIf="!isDesktopView; else desktopMenu"
+                   [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
+                   [accessurl]="properties.LOGIN_URL"></mobile-menu>
+      <ng-template #desktopMenu>
+        <app-switcher class="web-component"
+                      [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
+                      [current]="'database'"></app-switcher>
+        <user-login class="web-component"
+                    [accessurl]="properties.LOGIN_URL"
+                    [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+      </ng-template>
+    </ripe-header>
+</div>
 <main id="app-grid">
   <swe-menu [open]="isOpenMenu"></swe-menu>
   <div id="main-wrapper">
-    <section id="app-banners-container">
+    <!--TODO remove class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
+    <section id="app-banners-container" class="usprivacy">
       <ngx-loading-bar></ngx-loading-bar>
       <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning"
                   text="{{properties.BANNER}}" permanent="true"></app-banner>

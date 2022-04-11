@@ -53,41 +53,25 @@
 <!-- Usersnap widget: always on -->
 <script>
   function loadUsersnap(buildTag) {
-    window.onUsersnapLoad = function(api) {
-      api.init({
-        fields: {
-          comment: {
-            defaultValue: '',
-            label: 'Your message',
-            required: true,
-            multiline: true
-          },
-          email: {
-            defaultValue: '',
-            label: 'Your E-mail',
-            required: true
-          }
-        },
-        button: null
-      });
-      api.open();
-      api.on("open", function(event) {
-        event.api.setValue('customData', "db-web-ui-" + buildTag);
-        event.api.setValue('email', window.username || "");
-      });
-      window.Usersnap = api;
+    window.onUsersnapCXLoad = function(api) {
+        api.init({
+            button: null
+        });
+        api.open();
+        window.UsersnapCX = api;
     }
   }
-  function useUsersnap() {
-    if (window.Usersnap) {
-      window.Usersnap.open()
-    } else {
-      var script = document.createElement("script");
-      script.type='text/javascript';
-      script.async = true;
-      script.src = "//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad";
-      document.getElementsByTagName("head")[0].appendChild(script);
-    }
+  function useUsersnapCX() {
+      if (window.UsersnapCX) {
+          window.UsersnapCX.open()
+      } else {
+          console.log("Load window.UsersnapCX")
+          var script = document.createElement("script");
+          script.type='text/javascript';
+          script.async = true;
+          script.src = "https://widget.usersnap.com/load/23af85c0-b461-4c01-bdf5-a1c36a854023?onload=onUsersnapCXLoad";
+          document.getElementsByTagName("head")[0].appendChild(script);
+      }
   }
 </script>
 <!-- End Usersnap widget -->
