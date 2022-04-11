@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {PropertiesService} from "../properties.service";
 import {MatDialogRef} from "@angular/material/dialog";
 
-declare let useUsersnap: () => any;
+declare let useUsersnapCX: () => any;
 
 @Component({
   selector: "feedback-support-dialog",
@@ -27,7 +27,7 @@ export class FeedbackSupportDialogComponent implements OnInit {
   }
 
   openUsersnap() {
-    useUsersnap();
+    useUsersnapCX();
     this.dialogRef.close();
   }
 
