@@ -36,8 +36,14 @@ whois-object-viewer {
     border-style: solid;
 }
 
-.showripemanaged > .ripemanaged {
-    background: #d1effe;
+.showripemanaged {
+    & > .ripemanaged {
+        background: #d1effe;
+    }
+
+    li {
+        white-space: break-spaces;
+    }
 }
 
 @media screen and (max-width: 700px) {
