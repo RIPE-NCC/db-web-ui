@@ -1,8 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 import {PropertiesService} from "../properties.service";
 import {MatDialogRef} from "@angular/material/dialog";
+import {UserInfoService} from "../userinfo/user-info.service";
 
-declare let useUsersnapCX: () => any;
+declare let useUsersnapCX: (sso_email?: string) => any;
 
 @Component({
   selector: "feedback-support-dialog",
@@ -13,7 +14,8 @@ export class FeedbackSupportDialogComponent implements OnInit {
   public showChatMenuItem: boolean;
 
   constructor(private properties: PropertiesService,
-              private dialogRef: MatDialogRef<FeedbackSupportDialogComponent>) {
+              private dialogRef: MatDialogRef<FeedbackSupportDialogComponent>,
+              private userInfoService: UserInfoService) {
   }
 
   public ngOnInit() {
@@ -27,7 +29,11 @@ export class FeedbackSupportDialogComponent implements OnInit {
   }
 
   openUsersnap() {
-    useUsersnapCX();
+    if (this.userInfoService.isLogedIn()) {
+        this.userInfoService.getUserOrgsAndRoles().subscribe(user => useUsersnapCX(user.user.username))
+    } else {
+        useUsersnapCX();
+    }
     this.dialogRef.close();
   }
 

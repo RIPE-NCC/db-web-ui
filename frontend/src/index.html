@@ -57,15 +57,19 @@
         api.init({
             button: null
         });
+        api.on("open", function(event) {
+                event.api.setValue('custom', "db-web-ui-" + buildTag);
+                event.api.setValue('visitor', window.username || "");
+        });
         api.open();
         window.UsersnapCX = api;
     }
   }
-  function useUsersnapCX() {
+  function useUsersnapCX(sso_email) {
       if (window.UsersnapCX) {
           window.UsersnapCX.open()
       } else {
-          console.log("Load window.UsersnapCX")
+          window.username = sso_email;
           var script = document.createElement("script");
           script.type='text/javascript';
           script.async = true;
