@@ -7,6 +7,7 @@ import {By} from "@angular/platform-browser";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import createSpy = jasmine.createSpy;
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 
 describe("FeedbackSupportDialogComponent", () => {
 
@@ -30,6 +31,7 @@ describe("FeedbackSupportDialogComponent", () => {
       ],
       providers: [
         PropertiesService,
+        UserInfoService,
         { provide: MatDialogRef, useValue: dialogRef}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
