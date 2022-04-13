@@ -21,7 +21,6 @@ include:
 
 stages:
   - build
-  - test
   - release
   - deploy
   - browserstack
