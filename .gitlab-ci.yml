@@ -1,4 +1,6 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:5c77c953
+image:
+    name: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:5c77c953
+    entrypoint: [ '/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
