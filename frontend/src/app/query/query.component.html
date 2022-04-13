@@ -13,9 +13,9 @@
             <mat-icon matSuffix class="fal fa-search"></mat-icon>
           </button>
         </mat-form-field>
-        <div class="query-padding">
-        <query-flags [inputTerm]="qp.queryText"
-                     (hasValidQueryFlags)="isShownQueryFlagsContainer($event)"></query-flags>
+        <div class="query-padding-left query-padding-right">
+            <query-flags [inputTerm]="qp.queryText"
+                         (hasValidQueryFlags)="isShownQueryFlagsContainer($event)"></query-flags>
         </div>
       </div>
       <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
