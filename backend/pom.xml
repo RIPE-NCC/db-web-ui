@@ -350,7 +350,7 @@
                 <version>${maven-sortpom-plugin.version}</version>
                 <configuration>
                     <argLine>${argLine} -Xmx256m</argLine>
-                                        <!-- Force alphabetical order to have a reproducible build -->
+                    <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
                     <redirectTestOutputToFile>${test.redirectOutput}</redirectTestOutputToFile>
                     <includes>
