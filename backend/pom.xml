@@ -12,24 +12,24 @@
     <artifactId>db-web-ui</artifactId>
 
     <properties>
-        <apache-httpclient>4.5.10</apache-httpclient>
-        <assertj-core.version>3.14.0</assertj-core.version>
-        <awaitility.version>4.0.1</awaitility.version>
-        <commons-io.version>2.6</commons-io.version>
+        <apache-httpclient>4.5.13</apache-httpclient>
+        <assertj-core.version>3.22.0</assertj-core.version>
+        <awaitility.version>4.2.0</awaitility.version>
+        <commons-io.version>2.11.0</commons-io.version>
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <dnsjava.version>2.1.9</dnsjava.version>
-        <freemarker.version>2.3.29</freemarker.version>
-        <sentry.version>5.1.2</sentry.version>
-        <google-guava-version>28.2-jre</google-guava-version>
-        <jackson.version>2.10.1</jackson.version>
+        <freemarker.version>2.3.31</freemarker.version>
+        <sentry.version>5.7.0</sentry.version>
+        <google-guava-version>31.1-jre</google-guava-version>
+        <jackson.version>2.13.2</jackson.version>
         <javax.inject.version>1</javax.inject.version>
-        <jodatime.version>2.9.2</jodatime.version>
-        <json-path.version>2.4.0</json-path.version>
-        <maven-enforcer-plugin.version>3.0.0-M4</maven-enforcer-plugin.version>
-        <maven-sortpom-plugin.version>3.0.0-M4</maven-sortpom-plugin.version>
+        <jodatime.version>2.10.14</jodatime.version>
+        <json-path.version>2.7.0</json-path.version>
+        <maven-enforcer-plugin.version>3.0.0-M5</maven-enforcer-plugin.version>
+        <maven-sortpom-plugin.version>3.0.0-M5</maven-sortpom-plugin.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.plugins.version>3.1.1</maven.plugins.version>
-        <reflection.version>0.9.12</reflection.version>
+        <reflection.version>0.10.2</reflection.version>
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <sonar.sources>src/main</sonar.sources>
@@ -269,12 +269,12 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
-            <version>2.8.2</version>
+            <version>3.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>jcache</artifactId>
-            <version>2.8.2</version>
+            <version>3.0.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -300,12 +300,12 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.26</version>
+            <version>1.30</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
+            <version>4.1.2</version>
         </dependency>
     </dependencies>
 
@@ -386,7 +386,7 @@
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
-                <version>2.2.6</version>
+                <version>4.9.10</version>
                 <executions>
                     <execution>
                         <id>get-the-git-infos</id>
