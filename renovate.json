@@ -2,7 +2,11 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
       {
-          "packagePatterns": ["^bootstrap\/", "^@angular\/"],
+          "matchPackagePatterns": ["^bootstrap\/", "^@angular\/"],
+          "enabled": false
+      },
+      {
+          "matchPackageNames": ["net.ripe.whois:db-web-ui-parent"],
           "enabled": false
       }
   ],
