@@ -36,7 +36,7 @@
         <sonar.tests>src/test</sonar.tests>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>2.6.6</spring-boot.version>
-        <whois.version>99759e8b</whois.version>
+        <whois.version>86985583</whois.version>
     </properties>
 
     <dependencyManagement>
@@ -227,31 +227,11 @@
             <groupId>net.ripe.db</groupId>
             <artifactId>whois-client</artifactId>
             <version>${whois.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.ripe.db</groupId>
             <artifactId>whois-rpsl</artifactId>
             <version>${whois.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.giffing.bucket4j.spring.boot.starter</groupId>
