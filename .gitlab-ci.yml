@@ -36,10 +36,22 @@ build:
     - whois
   stage: build
   script:
-    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA} -Prelease
+    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
   artifacts:
     paths:
       - backend/target/db-web-ui*.jar
+
+backend:
+    tags:
+      - whois
+    stage: test
+    script:
+      - cd backend && mvn test
+    artifacts:
+      reports:
+        junit:
+          - backend/target/surefire-reports/TEST-*.xml
+          - backend/target/failsafe-reports/TEST-*.xml
 
 e2e:
     tags:
@@ -65,13 +77,8 @@ e2e-firefox:
 qa:
   stage: test
   script:
-    - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
+    - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN} -DskipTests
   allow_failure: true
-  artifacts:
-    reports:
-      junit:
-        - backend/target/surefire-reports/TEST-*.xml
-        - backend/target/failsafe-reports/TEST-*.xml
 
 release:
     stage: release
