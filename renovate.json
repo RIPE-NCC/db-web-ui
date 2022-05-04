@@ -6,7 +6,7 @@
           "enabled": false
       },
       {
-          "matchPackageNames": ["net.ripe.whois:db-web-ui-parent"],
+          "matchPackageNames": ["net.ripe.whois:db-web-ui-parent", "org.seleniumhq.selenium:selenium-java"],
           "enabled": false
       }
   ],

@@ -480,7 +480,7 @@ export class WhoisResourcesService {
 
     public getAddableAttributes(attributes: IAttributeModel[], objectType: string, attrs: IAttributeModel[]) {
         return _.filter(this.whoisMetaService.getAllAttributesOnObjectType(objectType), (attr: IAttributeModel) => {
-            if (attr.name === "created  ") {
+            if (attr.name === "created") {
                 return false;
             } else if (attr.name === "last-modified") {
                 return false;
