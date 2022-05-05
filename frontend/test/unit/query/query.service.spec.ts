@@ -3,6 +3,8 @@ import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angu
 import {QueryService} from "../../../src/app/query/query.service";
 import {IQueryParameters, QueryParametersService} from "../../../src/app/query/query-parameters.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
+import {PropertiesService} from "../../../src/app/properties.service";
+import {ObjectTypesEnum} from "../../../src/app/query/object-types.enum";
 
 describe("QueryService", () => {
 
@@ -17,6 +19,7 @@ describe("QueryService", () => {
                 QueryService,
                 QueryParametersService,
                 WhoisMetaService,
+                { provide: PropertiesService, useValue: { SOURCE: "TEST" }},
                 { provide: "$log", useValue: {info: () => {}}}
             ],
         });
@@ -193,6 +196,56 @@ describe("QueryService", () => {
         expect(req5.request.params.get("offset")).toBe("0");
         expect(req5.request.params.get("limit")).toBe("20");
         req5.flush(mockResponse.ossett);
+    });
+
+    it("should recognise ipv4 type and return inetnum, route and domain types", () => {
+        expect(queryService.getTypesAppropriateToQuery("88.85.63.31")).toEqual(["inetnum", "domain", "route"]);
+        expect(queryService.getTypesAppropriateToQuery("62.77.172.236/30")).toEqual(["inetnum", "domain", "route"]);
+        expect(queryService.getTypesAppropriateToQuery("62.77.172.236/30 ")).toEqual(["inetnum", "domain", "route"]);
+        expect(queryService.getTypesAppropriateToQuery("62.77.172.236 - 62.77.172.239")).toEqual(["inetnum", "domain", "route"]);
+        expect(queryService.getTypesAppropriateToQuery("62.77.172.236/30 something")).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it("should recognise ipv6 type and return inet6num, route6 and domain types", () => {
+        expect(queryService.getTypesAppropriateToQuery("2a10:a980::/29")).toEqual(["inet6num", "domain", "route6"]);
+        expect(queryService.getTypesAppropriateToQuery(" 2a10:a980::/29")).toEqual(["inet6num", "domain", "route6"]);
+        expect(queryService.getTypesAppropriateToQuery("2a10:a980::/29 something")).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it("should recognise domain type and return domain type", () => {
+        expect(queryService.getTypesAppropriateToQuery("21.38.194.in-addr.arpa")).toEqual(["domain"]);
+        expect(queryService.getTypesAppropriateToQuery(" 21.38.194.in-addr.arpa ")).toEqual(["domain"]);
+        expect(queryService.getTypesAppropriateToQuery("21.38.194.in-addr.arpa something")).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it("should recognise route type and return route type", () => {
+        expect(queryService.getTypesAppropriateToQuery("194.38.21.0/24AS48693")).toEqual(["route"]);
+        expect(queryService.getTypesAppropriateToQuery(" 194.38.21.0/24AS48693 ")).toEqual(["route"]);
+        expect(queryService.getTypesAppropriateToQuery("194.38.21.0/24AS48693 something")).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it("should recognise route6 type and return route6 type", () => {
+        expect(queryService.getTypesAppropriateToQuery("2a0c:4dc0::/29AS203959")).toEqual(["route6"]);
+        expect(queryService.getTypesAppropriateToQuery(" 2a0c:4dc0::/29AS203959 ")).toEqual(["route6"]);
+        expect(queryService.getTypesAppropriateToQuery("2a0c:4dc0::/29AS203959 something")).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it("should recognise organisation type and return organisation type", () => {
+        expect(queryService.getTypesAppropriateToQuery("ORG-BG244-TEST")).toEqual(["organisation", "person", "role"]);
+        expect(queryService.getTypesAppropriateToQuery(" org-CCSH2-TEST ")).toEqual(["organisation", "person", "role"]);
+        expect(queryService.getTypesAppropriateToQuery("ORG-CCSH2-TEST something")).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it("should recognise person/role type and return person and role types", () => {
+        expect(queryService.getTypesAppropriateToQuery("AK21593-TEST")).toEqual(["organisation", "person", "role"]);
+        expect(queryService.getTypesAppropriateToQuery(" cro40296-test ")).toEqual(["organisation", "person", "role"]);
+        expect(queryService.getTypesAppropriateToQuery("CRO40296-TEST something")).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it("should recognise mntner type and return mntner types", () => {
+        expect(queryService.getTypesAppropriateToQuery("SHW-MNT")).toEqual(["mntner"]);
+        expect(queryService.getTypesAppropriateToQuery(" shw-mnt ")).toEqual(["mntner"]);
+        expect(queryService.getTypesAppropriateToQuery("shw-mnt something")).toEqual(Object.values(ObjectTypesEnum));
     });
 
     const mockResponse = {

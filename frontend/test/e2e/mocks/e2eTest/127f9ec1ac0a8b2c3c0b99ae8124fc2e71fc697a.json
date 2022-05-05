@@ -1,0 +1,222 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=223.0.0.0",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {},
+            "flags": {
+                "flag": [
+                    {
+                        "value": "no-referenced"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "223.0.0.0"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/220.158.200.0 - 223.25.119.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "220.158.200.0 - 223.25.119.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "220.158.200.0 - 223.25.119.255",
+                                "managed": true
+                            },
+                            {
+                                "name": "netname",
+                                "value": "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK",
+                                "managed": true
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "EU",
+                                "comment": "Country is really world wide"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "IANA1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "IANA1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ALLOCATED UNSPECIFIED",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-HM-MNT",
+                                "referenced-type": "mntner",
+                                "managed": true
+                            },
+                            {
+                                "name": "created",
+                                "value": "2022-02-14T14:48:35Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2022-02-14T14:48:35Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "managed": true
+                            }
+                        ]
+                    },
+                    "managed": true
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.103-SNAPSHOT",
+            "timestamp": "2022-03-15T10:12:39Z",
+            "commit-id": "472412e"
+        }
+    }
+}

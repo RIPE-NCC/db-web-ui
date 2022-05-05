@@ -20,6 +20,12 @@ describe("IpAddressService", () => {
         ipAddressService = TestBed.inject(IpAddressService);
     });
 
+    it("should return true for ipv4 addres in range or CIDR", () => {
+        expect(IpAddressService.isValidIpv4("10.0.128.0 - 10.0.131.255")).toBeTruthy();
+        expect(IpAddressService.isValidIpv4("10.0.128.0-10.0.131.255")).toBeTruthy();
+        expect(IpAddressService.isValidIpv4("10.0.128.0/22")).toBeTruthy();
+    });
+
     it("IPv4 Start Address", () => {
         expect(ipAddressService.getIpv4Start({
             string: "10.0.128.0 - 10.0.131.255",

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
+import {Component, Input, OnInit, Output, EventEmitter, OnChanges} from "@angular/core";
 import {IQueryParameters} from "./query-parameters.service";
 import {HierarchyFlagsService} from "./hierarchy-flags.service";
 
@@ -6,7 +6,7 @@ import {HierarchyFlagsService} from "./hierarchy-flags.service";
     selector: "hierarchy-flags",
     templateUrl: "./hierarchy-flags-panel.component.html",
 })
-export class HierarchyFlagsPanelComponent implements OnInit {
+export class HierarchyFlagsPanelComponent implements OnInit, OnChanges {
 
     @Input()
     public queryParameters: IQueryParameters;
@@ -16,6 +16,10 @@ export class HierarchyFlagsPanelComponent implements OnInit {
     public descriptionPreview: string = HierarchyFlagsService.hierarchyFlagMap[this.hierarchyFlag].description;
 
     public ngOnInit() {
+        this.hierarchyFlag = HierarchyFlagsService.idHierarchyFlagFromShort(this.queryParameters.hierarchy);
+    }
+
+    public ngOnChanges(): void {
         this.hierarchyFlag = HierarchyFlagsService.idHierarchyFlagFromShort(this.queryParameters.hierarchy);
     }
 

@@ -19,6 +19,7 @@ import {RouterTestingModule} from "@angular/router/testing";
 import {CertificateBannerComponent} from "../../../src/app/banner/certificate-banner.component";
 import {CookieService} from "ngx-cookie-service";
 import {MatMenuModule} from "@angular/material/menu";
+import {ObjectTypesEnum} from "../../../src/app/query/object-types.enum";
 
 const whoisObjectModelMock = {
     "type" : "inetnum",
@@ -142,7 +143,7 @@ describe("QueryComponent", () => {
     let queryParametersService: QueryParametersService;
 
     beforeEach(() => {
-        queryServiceSpy = jasmine.createSpyObj("QueryService", ["searchWhoisObjects", "searchTemplate", "buildQueryStringForLink", "buildPermalink"]);
+        queryServiceSpy = jasmine.createSpyObj("QueryService", ["searchWhoisObjects", "searchTemplate", "buildQueryStringForLink", "buildPermalink", "getTypesAppropriateToQuery"]);
         TestBed.configureTestingModule({
             imports: [ SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([]), MatMenuModule],
             declarations: [
@@ -186,51 +187,212 @@ describe("QueryComponent", () => {
     it("should count types selected in dropdown", () => {
         component.init();
         fixture.detectChanges();
-        expect(component.countSelectedDropdownItems(component.qp.types)).toEqual("");
+        expect(component.numberSelectedTypes).toEqual(0);
         component.qp.types = {DOMAIN: true, INETNUM: true, MNTNER: true};
-        expect(component.countSelectedDropdownItems(component.qp.types)).toEqual("(3)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedTypes).toEqual(3);
         component.qp.types = {DOMAIN: true, INETNUM: false, MNTNER: true};
-        expect(component.countSelectedDropdownItems(component.qp.types)).toEqual("(2)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedTypes).toEqual(2);
     });
 
     it("should count hierarchy flags selected in dropdown", () => {
         component.init();
         fixture.detectChanges();
-        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("");
+        expect(component.numberSelectedHierarchyItems).toEqual(0);
         component.qp.hierarchy = "l";
-        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(1)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedHierarchyItems).toEqual(1);
         component.qp.hierarchy = "m";
-        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(1)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedHierarchyItems).toEqual(1);
         component.qp.hierarchy = "x";
-        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(1)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedHierarchyItems).toEqual(1);
         component.qp.reverseDomain = true;
-        expect(component.countSelectedDropdownHierarchyFlags()).toEqual("(2)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedHierarchyItems).toEqual(2);
+    });
+
+    it("should disable hierarchy flags dropdown when search term is some ObjectTypesEnum which is not inetnum, inet6num, route, route6, domain, route, route6", () => {
+        component.init();
+        component.availableTypes = [ObjectTypesEnum.INETNUM];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeFalsy();
+        component.availableTypes = [ObjectTypesEnum.INET6NUM];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeFalsy();
+        component.availableTypes = [ObjectTypesEnum.ROUTE];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeFalsy();
+        component.availableTypes = [ObjectTypesEnum.ROUTE6];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeFalsy();
+        component.availableTypes = [ObjectTypesEnum.DOMAIN];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeFalsy();
+        component.availableTypes = [ObjectTypesEnum.AS_BLOCK];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.AS_SET];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.AUT_NUM];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.FILTER_SET];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.INET_RTR];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.IRT];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.KEY_CERT];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.MNTNER];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.ORGANISATION];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.PEERING_SET];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.PEERING_SET];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.PERSON];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.POEM];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.POETIC_FORM];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.ROLE];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.ROUTE_SET];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+        component.availableTypes = [ObjectTypesEnum.RTR_SET];
+        fixture.detectChanges();
+        expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
+    });
+
+    it("should enable all types, set all types from ObjectTypesEnum", () => {
+        component.init();
+        component.availableTypes = [ObjectTypesEnum.INETNUM];
+        fixture.detectChanges();
+        component.enableAllTypesCheckboxes();
+        expect(component.availableTypes.length).toEqual(21);
     });
 
     it("should count inverse selected in dropdown", () => {
         component.init();
         fixture.detectChanges();
-        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("");
+        expect(component.numberSelectedInverseLookups).toEqual(0);
         component.qp.inverse = {ADMIN_C: true, AUTHOR: true, MNT_BY: true, ORG: true, TECH_C: true, ZONE_C: true};
-        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("(6)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedInverseLookups).toEqual(6);
         component.qp.inverse = {ADMIN_C: false, AUTHOR: false, MNT_BY: false, ORG: true, TECH_C: false, ZONE_C: true};
-        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("(2)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedInverseLookups).toEqual(2);
         component.qp.inverse = {ADMIN_C: false, AUTHOR: false, MNT_BY: false, ORG: false, TECH_C: false, ZONE_C: false};
-        expect(component.countSelectedDropdownItems(component.qp.inverse)).toEqual("");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedInverseLookups).toEqual(0);
     });
 
     it("should count advance filters in dropdown which are not selected by default", () => {
         component.init();
         fixture.detectChanges();
-        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("");
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(0);
         component.qp.showFullObjectDetails = true;
-        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(1)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(1);
         component.qp.doNotRetrieveRelatedObjects = false; //by default is true
-        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(2)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(2);
         component.qp.source = "GRS";
-        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(3)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(3);
         component.qp.doNotRetrieveRelatedObjects = true; //by default is true
-        expect(component.countSelectedDropdownAdvanceFilter()).toEqual("(2)");
+        fixture.detectChanges();
+        component.isFilteringResults();
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(2);
+    });
+
+    it("should change count of selected item just after isFilteringResults() was called", () => {
+        component.init();
+        fixture.detectChanges();
+        expect(component.numberSelectedTypes).toEqual(0);
+        expect(component.numberSelectedHierarchyItems).toEqual(0);
+        expect(component.numberSelectedInverseLookups).toEqual(0);
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(0);
+        component.qp.types = {DOMAIN: true, INETNUM: true, MNTNER: true};
+        component.qp.hierarchy = "l";
+        component.qp.inverse = {ADMIN_C: true, AUTHOR: true, MNT_BY: true, ORG: true, TECH_C: true, ZONE_C: true};
+        component.qp.doNotRetrieveRelatedObjects = false; //by default is true
+        expect(component.numberSelectedTypes).toEqual(0);
+        expect(component.numberSelectedHierarchyItems).toEqual(0);
+        expect(component.numberSelectedInverseLookups).toEqual(0);
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(0);
+        component.isFilteringResults()
+        expect(component.numberSelectedTypes).toEqual(3);
+        expect(component.numberSelectedHierarchyItems).toEqual(1);
+        expect(component.numberSelectedInverseLookups).toEqual(6);
+        expect(component.numberSelectedAdvanceFilterItems).toEqual(1);
+    });
+
+    it("should return number as a string in brackets or empty string", () => {
+        component.init();
+        fixture.detectChanges();
+        expect(component.printNumberSelected(0)).toEqual("");
+        expect(component.printNumberSelected(1)).toEqual("(1)");
+        expect(component.printNumberSelected(55)).toEqual("(55)");
+    });
+
+    it("should reset all checkboxes in filters - dropdowns, setting qp on default", () => {
+        component.init();
+        fixture.detectChanges();
+        component.qp.types = {DOMAIN: true, INETNUM: true, MNTNER: true};
+        component.qp.hierarchy = "l";
+        component.qp.inverse = {ADMIN_C: true, AUTHOR: true, MNT_BY: true, ORG: true, TECH_C: true, ZONE_C: true};
+        component.qp.doNotRetrieveRelatedObjects = false; //by default is true
+        component.resetFilters();
+        expect(component.qp.types).toEqual({});
+        expect(component.qp.hierarchy).toBeUndefined();
+        expect(component.qp.reverseDomain).toBeFalsy();
+        expect(component.qp.inverse).toEqual({});
+        expect(component.qp.showFullObjectDetails).toBeFalsy()
+        expect(component.qp.doNotRetrieveRelatedObjects).toBeTruthy();
+        expect(component.qp.source).toEqual("RIPE");
+    });
+
+    it("should toggle PermaLinks panel", () => {
+        component.init();
+        fixture.detectChanges();
+        expect(component.showPermaLinks).toBeFalsy();
+        component.togglePermaLinks();
+        expect(component.showPermaLinks).toBeTruthy();
+        component.togglePermaLinks();
+        expect(component.showPermaLinks).toBeFalsy();
     });
 
     describe("with no query string", () => {
@@ -246,6 +408,16 @@ describe("QueryComponent", () => {
             expect(component.qp.source).toEqual("RIPE");
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});
+        });
+
+        it("should show DocsLinks Panel and not to show Filters-dropdowns and Share button", () => {
+            component.init();
+            fixture.detectChanges();
+            expect(component.results.length).toEqual(0);
+            expect(component.showFilters).toBeFalsy();
+            expect(component.showPermaLinks).toBeFalsy();
+            expect(component.showNoResultsMsg).toBeFalsy();
+            expect(component.showsDocsLink).toBeTruthy();
         });
     });
 
@@ -278,7 +450,6 @@ describe("QueryComponent", () => {
                 } )} ;
 
             component.init();
-            fixture.detectChanges();
             expect(component.offset).toEqual(0);
             expect(component.qp.queryText).toEqual("193.0.0.0");
             expect(component.qp.showFullObjectDetails).toEqual(false);
@@ -336,7 +507,6 @@ describe("QueryComponent", () => {
                 has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])
             })};
             component.init();
-            fixture.detectChanges();
             expect(component.offset).toEqual(0);
             expect(component.qp.queryText).toEqual("193.0.0.0");
             expect(component.qp.showFullObjectDetails).toEqual(true);
@@ -364,7 +534,6 @@ describe("QueryComponent", () => {
                 has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])
             })};
             component.init();
-            fixture.detectChanges();
             expect(component.offset).toEqual(0);
             expect(component.qp.queryText).toEqual("193.0.0.0");
             expect(component.qp.showFullObjectDetails).toEqual(false);
@@ -386,6 +555,20 @@ describe("QueryComponent", () => {
             component.qp.queryText = "193.0.0.0";
             component.doSearch();
             expect(component.isFiltersDisplayed()).toEqual(true);
+        });
+
+        it("should show Filters-dropdowns and Share button, DocsLinks panel shouldn't be visible", () => {
+            component.init();
+            fixture.detectChanges();
+            component.qp.queryText = "193.0.0.0";
+            component.doSearch();
+            expect(component.results.length).toEqual(4);
+            expect(component.showFilters).toBeTruthy();
+            expect(component.showPermaLinks).toBeFalsy();
+            component.togglePermaLinks();
+            expect(component.showPermaLinks).toBeTruthy();
+            expect(component.showNoResultsMsg).toBeFalsy();
+            expect(component.showsDocsLink).toBeFalsy();
         });
     });
 
@@ -417,7 +600,6 @@ describe("QueryComponent", () => {
                 has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])
             })};
             component.init();
-            fixture.detectChanges();
             await fixture.whenStable();
             component.offset = 0;
             expect(component.results.length).toEqual(1);
@@ -463,6 +645,13 @@ describe("QueryComponent", () => {
                         args: [
                             {value: "Goodbye"}
                         ]
+                    },
+                    {
+                        severity: "Error",
+                        text: "ERROR:101: no entries found No entries found in source RIPE.",
+                        args: [
+                            {value: "ERROR:101: no entries found No entries found in source RIPE."}
+                        ]
                     }
                 ]
             }
@@ -505,6 +694,28 @@ describe("QueryComponent", () => {
             expect(component.formatError(component.alertsService.alerts.errors[3])).toEqual("Broken message");
             expect(queryServiceSpy.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
+
+        it("should show 'No results..' message and hide ERROR:101", () => {
+            // @ts-ignore
+            component.activatedRoute.snapshot = {
+                queryParamMap: convertToParamMap({
+                    searchtext: " 193.0.0.0 ",
+                    types: "inetnum;inet6num",
+                    inverse: "mntner",
+                    hierarchyFlag: "one-less",
+                    rflag: "false",
+                    dflag: "true",
+                    bflag: "",
+                    source: "TEST",
+                    get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
+                    has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])
+                })
+            };
+            component.init();
+            fixture.detectChanges();
+            expect(component.alertsService.alerts.errors.length).toEqual(4);
+            expect(component.showNoResultsMsg).toBeTruthy();
+        });
     });
 
     describe("with a --template query", () => {
@@ -527,6 +738,7 @@ describe("QueryComponent", () => {
             expect(component.qp.inverse).toEqual({});
             component.doSearch();
             expect(component.alertsService.alerts.errors.length).toEqual(0);
+            expect(component.showNoResultsMsg).toBeFalsy();
         });
 
         it("should show error messages", () => {
@@ -548,6 +760,7 @@ describe("QueryComponent", () => {
             component.doSearch();
             expect(component.alertsService.alerts.errors.length).toEqual(1);
             expect(component.formatError(component.alertsService.alerts.errors[0])).toEqual("Unknown object type \"zzz\".");
+            expect(component.showNoResultsMsg).toBeTruthy();
         });
     });
 });

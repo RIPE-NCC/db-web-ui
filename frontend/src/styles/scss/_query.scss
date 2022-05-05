@@ -3,6 +3,10 @@
 $padding: 24px;
 
 .query-field {
+  margin-bottom: 1rem;
+  &.with-results {
+    margin-bottom: 0;
+  }
   mat-form-field {
     width: 100% !important;
   }
@@ -29,15 +33,22 @@ $padding: 24px;
 .dropdown-menus-bar {
   margin-bottom: 1rem !important;
   background-color: rgba(0, 0, 0, 0.04);
-  display: flex;
-  justify-content: flex-start;
   height: 60px;
   padding: common.spacing(1);
   padding-left: $padding;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    height: auto;
-  }
+
+    &.expanded {
+        margin-bottom: 0 !important;
+    }
+
+    .dropdown-menus-bar-buttons {
+        display: flex;
+        justify-content: flex-start;
+        @media (max-width: 768px) {
+            flex-direction: column;
+            height: auto;
+        }
+    }
 
   button {
     margin-right: common.spacing(1);
@@ -53,11 +64,48 @@ $padding: 24px;
         vertical-align: unset;
       }
     }
+    &.perma-link {
+        background-color: transparent;
+        margin-left: auto;
+        font-size: 20px;
+    }
   }
+}
+
+.perm-xml-json-resultlinks {
+    line-height: 1.8rem;
+    border-top: 1px solid silver;
+    margin-bottom: 1rem !important;
+    background-color: rgba(0, 0, 0, 0.04);
+    padding: common.spacing(1);
+    padding-left: $padding;
+    padding-right: $padding;
+    .perm-xml-json {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .controls {
+        display: flex;
+        padding-bottom: 0.5rem;
+        input {
+            width: 100%;
+            background-color: #fefefe;
+        }
+        button {
+            margin-left: 8px;
+        }
+    }
 }
 
 .mat-menu-panel {
   max-width: unset !important;
+}
+
+.mat-tooltip {
+  font-size: 12px !important;
 }
 
 .mat-menu-content:not(:empty) {

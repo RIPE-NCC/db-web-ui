@@ -1,17 +1,15 @@
 import {Injectable} from "@angular/core";
 import {IResourceRangeModel} from "./resource-type.model";
-
-     // https://github.com/andyperlitch/jsbn
-// declare const Address4: any;       // http://ip-address.js.org/#address4
-// declare const Address6: any;       // http://ip-address.js.org/#address6
-// FIXME [IS] check what is better approach
 import {Address4, Address6} from "ip-address";
 
-declare const BigInteger: any;
 const ipv4RangeRegex = new RegExp(/([\d.]+)\s?-\s?([\d.]+)/);
 
 @Injectable()
 export class IpAddressService {
+
+    public static isValidIpv4(searchTerm: string): boolean {
+        return IpAddressService.isValidV4(searchTerm) || IpAddressService.isValidRange(searchTerm)
+    }
 
     public static isValidV4(v4: string): boolean {
         return new Address4(v4).isValid();
