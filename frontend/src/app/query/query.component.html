@@ -1,14 +1,15 @@
 <section id="searchSection">
   <form name="searchform" (ngSubmit)="submitSearchForm()">
     <div>
-      <div class="query-field" [style.fontSize.rem]="1.12">
+      <div class="query-field" [ngClass]="{'with-results': isFiltersDisplayed()}" [style.fontSize.rem]="1.12">
         <mat-form-field appearance="fill" [color]=colorControl.value>
           <mat-label>Enter a search term</mat-label>
           <input matInput id="queryStringInput"
                  type="text"
                  name="qp.queryText"
                  autocomplete="off"
-                 [(ngModel)]="qp.queryText">
+                 [(ngModel)]="qp.queryText"
+                 (ngModelChange)="enableAllTypesCheckboxes()">
           <button mat-icon-button matSuffix>
             <mat-icon matSuffix class="fal fa-search"></mat-icon>
           </button>
@@ -18,40 +19,67 @@
                          (hasValidQueryFlags)="isShownQueryFlagsContainer($event)"></query-flags>
         </div>
       </div>
-      <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
-        <button mat-button type="button" id="typeMenu"
-                [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">Types {{countSelectedDropdownItems(qp.types)}}
-          <span *ngIf="typesTrigger.menuOpen" class="fal fa-chevron-up"></span>
-          <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
-        </button>
-        <mat-menu #typesMenu="matMenu" yPosition="below">
-          <types-panel [(queryParameters)]="qp"></types-panel>
-        </mat-menu>
-        <button mat-button type="button" id="hierarchyFlagsMenu"
-                [matMenuTriggerFor]="hierarchyFlagsMenu" #hierarchyTrigger="matMenuTrigger">Hierarchy flags {{countSelectedDropdownHierarchyFlags()}}
-          <span *ngIf="hierarchyTrigger.menuOpen" class="fal fa-chevron-up"></span>
-          <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
-        </button>
-        <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below" >
-          <hierarchy-flags [(queryParameters)]="qp"></hierarchy-flags>
-        </mat-menu>
-        <button mat-button type="button" id="inverseLookupMenu"
-                [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">Inverse lookup {{countSelectedDropdownItems(qp.inverse)}}
-          <span *ngIf="inverseLookupTrigger.menuOpen" class="fal fa-chevron-up"></span>
-          <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
-        </button>
-        <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
-          <inverse-lookup-panel [(queryParameters)]="qp"></inverse-lookup-panel>
-        </mat-menu>
-        <button mat-button type="button" id="advanceFilterMenu"
-                [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">Advance
-          filter {{countSelectedDropdownAdvanceFilter()}}
-          <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
-          <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
-        </button>
-        <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
-          <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
-        </mat-menu>
+      <div class="dropdown-menus-bar" [ngClass]="{expanded: showPermaLinks}" *ngIf="isFiltersDisplayed()">
+          <div class="dropdown-menus-bar-buttons">
+              <button mat-button type="button" id="typeMenu"
+                      [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">Types {{printNumberSelected(this.numberSelectedTypes)}}
+                  <span *ngIf="typesTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                  <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
+              </button>
+              <mat-menu #typesMenu="matMenu" yPosition="below">
+                  <types-panel [(queryParameters)]="qp" [availableTypes]="availableTypes"></types-panel>
+              </mat-menu>
+              <button mat-button type="button" id="hierarchyFlagsMenu"
+                      [matMenuTriggerFor]="hierarchyFlagsMenu" #hierarchyTrigger="matMenuTrigger"
+                      [disabled]="isDisabledHierarchyDropdown()">Hierarchy flags {{printNumberSelected(this.numberSelectedHierarchyItems)}}
+                  <span *ngIf="hierarchyTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                  <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
+              </button>
+              <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below">
+                  <hierarchy-flags [(queryParameters)]="qp"></hierarchy-flags>
+              </mat-menu>
+              <button mat-button type="button" id="inverseLookupMenu"
+                      [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">Inverse lookup {{printNumberSelected(numberSelectedInverseLookups)}}
+                  <span *ngIf="inverseLookupTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                  <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
+              </button>
+              <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
+                  <inverse-lookup-panel [(queryParameters)]="qp" [availableTypes]="availableTypes"></inverse-lookup-panel>
+              </mat-menu>
+              <button mat-button type="button" id="advanceFilterMenu"
+                      [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">Advance
+                  filter {{printNumberSelected(this.numberSelectedAdvanceFilterItems)}}
+                  <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                  <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
+              </button>
+              <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
+                  <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
+              </mat-menu>
+              <button mat-raised-button color="primary" [disableRipple]="true" id="applyFilters"
+                  [disabled]="!isFilteringResults()" (click)="submitSearchForm()">APPLY FILTERS</button>
+              <a mat-button color="accent" type="button" id="resetFilters"
+                  [disabled]="!isFilteringResults()" (click)="resetFilters()">Reset filters</a>
+              <button *ngIf="link.perma" class="perma-link" mat-icon-button matSuffix matTooltip="Share Panel" matTooltipPosition="left"
+                      [disabled]="results?.length === 0" (click)="togglePermaLinks(); false">
+                  <mat-icon *ngIf="!showPermaLinks" matSuffix class="fal fa-share-alt"></mat-icon>
+                  <mat-icon *ngIf="showPermaLinks" matSuffix class="fas fa-share-alt"></mat-icon>
+              </button>
+          </div>
+      </div>
+    </div>
+    <div class="perm-xml-json-resultlinks" *ngIf="showFilters && showPermaLinks">
+      <div class="perm-xml-json">
+        <span><i class="fal fa-link" title="Permanent link to the results for this query."></i> PERMA</span>
+        <a href="{{ link.xml }}" title="XML format of the results for this query." target="_blank">
+            <i class="fal fa-file-code"></i> XML
+        </a>
+        <a href="{{ link.json }}" title="JSON format of the results for this query." target="_blank">
+            <i class="fal fa-file-alt"></i> JSON
+        </a>
+      </div>
+      <div class="controls">
+        <input matInput disabled [value]="link.perma">
+        <button mat-raised-button color="primary" (click)="false" [cdkCopyToClipboard]="link.perma">COPY URL</button>
       </div>
     </div>
     <div class="query-padding-left">
@@ -68,29 +96,13 @@
     <a id="anchorTop"></a>
     <div class="visualClear"></div>
     <div class="documentActions"></div>
-    <h1 class="documentFirstHeading">RIPE Database Query</h1>
+    <h1 class="documentFirstHeading" *ngIf="showsDocsLink">RIPE Database Query</h1>
+    <h1 class="documentFirstHeading" *ngIf="!showsDocsLink">Search results</h1>
     <div class="documentByLine"><span class="byline"></span></div>
     <div class="documentDescription"></div>
 </section>
 <section id="resultsSection">
     <div *ngIf="results?.length > 0">
-        <div class="float-end resultlinks" *ngIf="link.perma">
-            <a href="{{ link.perma }}">
-                <i class="fal fa-link" title="Permanent link to the results for this query."></i>
-                PERMA
-            </a>&nbsp;
-            <a href="{{ link.xml }}"
-               title="XML format of the results for this query." target="_blank">
-                <i class="fal fa-file-code"></i>
-                XML
-            </a>&nbsp;
-            <a href="{{ link.json }}"
-               title="JSON format of the results for this query." target="_blank">
-                <i class="fal fa-file-alt"></i>
-                JSON
-            </a>
-        </div>
-        <h2>Search results</h2>
         <p [innerHTML]="'msg.searchResults.text' | label"></p>
         <div class="clearfix" *ngFor="let whoisObject of results">
             <div class="resultpane">
@@ -101,9 +113,9 @@
             <loading-indicator></loading-indicator>
         </p>
     </div>
+    <div *ngIf="showNoResultsMsg" class="resultpane no-result-msg">No results found, try changing the search term or filters</div>
 </section>
 <section id="templateResultsSection" *ngIf="showTemplatePanel">
-    <h2>Search results</h2>
     <p [innerHTML]="'msg.searchResults.text' | label"></p>
     <lookup-template [query]="queriedTemplateObject"></lookup-template>
 </section>

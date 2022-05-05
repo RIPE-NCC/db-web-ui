@@ -193,13 +193,13 @@ describe("QueryParameters", () => {
 
     it("should parse inverse lookup abuse-c", () => {
 
-        qp.queryText = " -i abuse-c -T organisation -B ACRO862-RIPE";
+        qp.queryText = " -i abuse-c -T organisation -B AR24917-RIPE";
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(0);
         expect(validationIssues.warnings.length).toEqual(0);
 
-        expect(qp.queryText).toEqual("ACRO862-RIPE");
+        expect(qp.queryText).toEqual("AR24917-RIPE");
         expect(qp.showFullObjectDetails).toEqual(true);
         expect(qp.reverseDomain).toEqual(false);
         expect(qp.doNotRetrieveRelatedObjects).toEqual(false);

@@ -1,4 +1,4 @@
-import {browser} from "protractor";
+import {browser, protractor} from "protractor";
 import {waitToBeClickable} from "./fixtures";
 
 const page = require("./homePageObject");
@@ -99,7 +99,7 @@ describe("The query page", () => {
     });
 
     it("should search by inverse lookup abuse-c", async () => {
-        page.inpQueryString.sendKeys("ACRO862-RIPE");
+        page.inpQueryString.sendKeys("AR24917-RIPE");
         page.btnSubmitQuery.click();
         expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
         page.advanceFilterMenu.click();
@@ -125,12 +125,12 @@ describe("The query page", () => {
         expect(page.searchResults.count()).toEqual(1);
         const whoisObject = page.getWhoisObjectViewerOnQueryPage(0);
         expect(whoisObject.isPresent()).toEqual(true);
-        expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 1).getText()).toEqual("Aloses Telekom Hizm. San. ve Tic. Ltd. Sti.");
+        expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 1).getText()).toEqual("Metropolitan Networks UK Ltd");
         expect(page.inpQueryFlagsContainer.isDisplayed()).toBeFalsy();
     });
 
     it("should not count default values as selected items in advance filter dropdown", async () => {
-        page.inpQueryString.sendKeys("ACRO862-RIPE");
+        page.inpQueryString.sendKeys("AR24917-RIPE");
         page.btnSubmitQuery.click();
         expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
         page.advanceFilterMenu.click();
@@ -143,11 +143,226 @@ describe("The query page", () => {
         expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (2)");
     });
 
+    it("should have disabled hierarchy tab - when search term is recognised like type from ObjectTypesEnum and is not inetnum, inet6num, domain, route, route6", () => {
+        page.inpQueryString.sendKeys("AR24917-RIPE");
+        page.btnSubmitQuery.click();
+        page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
+        // click on Hierarchy flags tab
+        expect(page.hierarchyFlagsMenu.isEnabled()).toBeFalsy();
+    });
+
+    it("should have enabled hierarchy tab when search term is not recognised as type inetnum, inet6num, domain, route or route6, organisation, person/role or maintainer", () => {
+        page.inpQueryString.sendKeys("223.0.0.0 something");
+        page.btnSubmitQuery.click();
+        page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
+        expect(page.hierarchyFlagsMenu.isEnabled()).toBeTruthy();
+    });
+
+    it("should have enabled all checkbox in Types dropdown and Inverse Lookup when search term is not recognised as type inetnum, inet6num, domain, route or route6, organisation, person/role or maintainer", async () => {
+        page.inpQueryString.sendKeys("223.0.0.0 something");
+        page.btnSubmitQuery.click();
+        page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
+        expect(page.hierarchyFlagsMenu.isEnabled()).toBeTruthy();
+        // checkboxs in Types dropdown
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-1"));
+        page.scrollIntoCenteredView(page.byId("mat-checkbox-1"));
+        expect(page.byId("mat-checkbox-1").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-2").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-3").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-4").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-5").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-6").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-7").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-8").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-9").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-10").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-11").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-12").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-13").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-14").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-15").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-16").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-17").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-18").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-19").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-20").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-21").isEnabled()).toBeTruthy();
+        await page.clickOnOverlayBackdrop();
+        // checkboxs in Inverse Lookup dropdown
+        page.inverseLookupMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-23"));
+        expect(page.byId("mat-checkbox-23").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-24").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-25").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-26").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-27").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-28").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-29").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-30").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-31").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-32").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-33").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-34").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-35").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-36").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-37").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-38").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-39").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-40").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-41").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-42").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-43").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-44").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-45").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-46").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-47").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-48").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-49").isEnabled()).toBeTruthy();
+        expect(page.byId("mat-checkbox-50").isEnabled()).toBeTruthy();
+    });
+
+    it("should have enabled just person/role, role and organisation checkbox in Types dropdown when type is person", async () => {
+        page.inpQueryString.sendKeys("AR24917-RIPE");
+        page.btnSubmitQuery.click();
+        page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
+        expect(page.hierarchyFlagsMenu.isEnabled()).toBeFalsy();
+        // checkbox in Types dropdown
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-12"));
+        page.scrollIntoCenteredView(page.byId("mat-checkbox-12"));
+        expect(page.byCss("#mat-checkbox-1 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-2 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-3 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-4 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-5 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-6 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-7 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-8 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-9 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-10 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-11 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-12").isEnabled()).toBeTruthy(); // organisation
+        expect(page.byCss("#mat-checkbox-13 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-14").isEnabled()).toBeTruthy(); // person
+        expect(page.byCss("#mat-checkbox-15 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-16 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-17").isEnabled()).toBeTruthy(); // role
+        expect(page.byCss("#mat-checkbox-18 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-19 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-20 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-21 input").getAttribute("disabled")).toBeTruthy();
+        await page.clickOnOverlayBackdrop();
+        // checkboxs in Inverse Lookup dropdown
+        page.inverseLookupMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-23"));
+        expect(page.byId("mat-checkbox-23").isEnabled()).toBeTruthy(); // abuse-c
+        expect(page.byId("mat-checkbox-24").isEnabled()).toBeTruthy(); //abuse-mailbox
+        expect(page.byId("mat-checkbox-25").isEnabled()).toBeTruthy(); //admin-c
+        expect(page.byCss("#mat-checkbox-26 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-27 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-28 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-29 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-30 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-31 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-32 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-33 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-34").isEnabled()).toBeTruthy(); // mnt-by
+        expect(page.byCss("#mat-checkbox-35 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-36 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-37 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-38 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-39").isEnabled()).toBeTruthy(); //mnt-ref
+        expect(page.byCss("#mat-checkbox-40 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-41").isEnabled()).toBeTruthy(); // notify
+        expect(page.byCss("#mat-checkbox-42 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-43").isEnabled()).toBeTruthy(); // org
+        expect(page.byCss("#mat-checkbox-44 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-45").isEnabled()).toBeTruthy(); // person
+        expect(page.byCss("#mat-checkbox-46 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-47").isEnabled()).toBeTruthy(); //ref-nfy
+        expect(page.byId("mat-checkbox-48").isEnabled()).toBeTruthy(); //tech-c
+        expect(page.byCss("#mat-checkbox-49 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-50 input").getAttribute("disabled")).toBeTruthy();
+    });
+
+    it("should have enabled just inetnum, route and domain checkbox in Types dropdown when type is inetnum", async () => {
+        page.inpQueryString.sendKeys("223.0.0.0");
+        page.btnSubmitQuery.click();
+        page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
+        expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
+        expect(page.hierarchyFlagsMenu.isEnabled()).toBeTruthy();
+        // checkbox in Types dropdown
+        page.typeMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-4"));
+        page.scrollIntoCenteredView(page.byId("mat-checkbox-4"));
+        expect(page.byCss("#mat-checkbox-1 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-2 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-3 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-4").isEnabled()).toBeTruthy(); // domain
+        expect(page.byCss("#mat-checkbox-5 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-6 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-7").isEnabled()).toBeTruthy(); // inetnum
+        expect(page.byCss("#mat-checkbox-8 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-9 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-10 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-11 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-12 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-13 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-14 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-15 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-16 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-17 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-18").isEnabled()).toBeTruthy(); // route
+        expect(page.byCss("#mat-checkbox-19 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-20 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-21 input").getAttribute("disabled")).toBeTruthy();
+        await page.clickOnOverlayBackdrop();
+        // checkboxs in Inverse Lookup dropdown
+        page.inverseLookupMenu.click();
+        await waitToBeClickable(page.byId("mat-checkbox-23"));
+        page.scrollIntoCenteredView(page.byId("mat-checkbox-23"));
+        expect(page.byId("mat-checkbox-23").isEnabled()).toBeTruthy(); // abuse-c
+        expect(page.byCss("#mat-checkbox-24 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-25").isEnabled()).toBeTruthy(); // admin-c
+        expect(page.byCss("#mat-checkbox-26 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-27 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-28 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-29 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-30 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-31 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-32 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-33").isEnabled()).toBeTruthy(); // member-of
+        expect(page.byId("mat-checkbox-34").isEnabled()).toBeTruthy(); // mnt-by
+        expect(page.byId("mat-checkbox-35").isEnabled()).toBeTruthy(); // mnt-domain
+        expect(page.byId("mat-checkbox-36").isEnabled()).toBeTruthy(); // mnt-irt
+        expect(page.byId("mat-checkbox-37").isEnabled()).toBeTruthy(); // mnt-lower
+        expect(page.byCss("#mat-checkbox-38 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-39 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-40").isEnabled()).toBeTruthy(); // mnt-routes
+        expect(page.byId("mat-checkbox-41").isEnabled()).toBeTruthy(); // notify
+        expect(page.byId("mat-checkbox-42").isEnabled()).toBeTruthy(); // nserver
+        expect(page.byId("mat-checkbox-43").isEnabled()).toBeTruthy(); // org
+        expect(page.byId("mat-checkbox-44").isEnabled()).toBeTruthy(); // origin
+        expect(page.byCss("#mat-checkbox-45 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-46").isEnabled()).toBeTruthy(); // ping-hdl
+        expect(page.byCss("#mat-checkbox-47 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-48").isEnabled()).toBeTruthy(); //tech-c
+        expect(page.byCss("#mat-checkbox-49 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byId("mat-checkbox-50").isEnabled()).toBeTruthy(); // zone-c
+    });
+
     it("should have selected No hierarchy flag by default on hierarchy tab", async () => {
-        page.inpQueryString.sendKeys("ACRO862-RIPE");
+        page.inpQueryString.sendKeys("223.0.0.0");
         page.btnSubmitQuery.click();
         await page.scrollIntoCenteredView(page.hierarchyFlagsMenu);
         expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags");
+        // should have enabled hierarchy tab - when search term is recognised like type inetnum, inet6num, domain, route or route6
+        expect(page.hierarchyFlagsMenu.isEnabled()).toBeTruthy();
         // click on Hierarchy flags tab
         page.hierarchyFlagsMenu.click();
         expect(page.hierarchyFlag.isDisplayed()).toBeTruthy();
@@ -161,7 +376,7 @@ describe("The query page", () => {
         if ((await browser.getCapabilities()).get('browserName').toLowerCase() === 'firefox') {
             return;
         }
-        page.inpQueryString.sendKeys("ACRO862-RIPE");
+        page.inpQueryString.sendKeys("223.0.0.0");
         await page.clickOnOverlayBackdrop();
         await page.scrollIntoCenteredView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
@@ -192,6 +407,113 @@ describe("The query page", () => {
         expect(page.hierarchyFlagsMenu.getText()).toEqual("Hierarchy flags (2)");
     });
 
+    it("should reset all dropdowns checkboxes to default on click Reset filters button", async () => {
+        page.inpQueryString.sendKeys("223.0.0.0 all");
+        page.btnSubmitQuery.click();
+        page.typeMenu.click();
+        page.byCss("#mat-checkbox-1").click();
+        page.byCss("#mat-checkbox-4").click();
+        page.byCss("#mat-checkbox-19").click();
+        await page.clickOnOverlayBackdrop();
+        page.inverseLookupMenu.click();
+        page.byCss("#mat-checkbox-30").click();
+        page.byCss("#mat-checkbox-36").click();
+        await page.clickOnOverlayBackdrop();
+        page.advanceFilterMenu.click();
+        page.byCss("#showFullObjectDetails").click();
+        await page.clickOnOverlayBackdrop();
+        expect(page.typeMenu.getText()).toEqual("Types (3)");
+        expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup (2)");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (1)");
+        page.btnResetFilters.click();
+        page.typeMenu.click();
+        expect(page.byCss("#mat-checkbox-1 input").isSelected()).toBeFalsy();
+        expect(page.byCss("#mat-checkbox-4 input").isSelected()).toBeFalsy();
+        expect(page.byCss("#mat-checkbox-19 input").isSelected()).toBeFalsy();
+        await page.clickOnOverlayBackdrop();
+        page.inverseLookupMenu.click();
+        expect(page.byCss("#mat-checkbox-30 input").isSelected()).toBeFalsy();
+        expect(page.byCss("#mat-checkbox-36 input").isSelected()).toBeFalsy();
+        await page.clickOnOverlayBackdrop();
+        page.advanceFilterMenu.click();
+        expect(page.byCss("#showFullObjectDetails").isSelected()).toBeFalsy();
+        expect(page.typeMenu.getText()).toEqual("Types");
+        expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
+    });
+
+    it("should disable Apply Filters and Reset filters if there is no selected checkboxes in filters dropdowns", async () => {
+        page.inpQueryString.sendKeys("223.0.0.0 all");
+        page.btnSubmitQuery.click();
+        expect(page.btnApplyFilters.isEnabled()).toBeFalsy();
+        expect(page.btnResetFilters.getAttribute("disabled")).toBeTruthy();
+        page.typeMenu.click();
+        page.byCss("#mat-checkbox-1").click();
+        page.byCss("#mat-checkbox-10").click();
+        await page.clickOnOverlayBackdrop();
+        expect(page.btnApplyFilters.isEnabled()).toBeTruthy();
+        expect(page.btnResetFilters.getAttribute("disabled")).toBeFalsy();
+        page.btnResetFilters.click();
+        expect(page.btnApplyFilters.isEnabled()).toBeFalsy();
+        expect(page.btnResetFilters.getAttribute("disabled")).toBeTruthy();
+    });
+
+    it("should uncheck checkbox if it become disabled after search", async () => {
+        page.inpQueryString.sendKeys("223.0.0.0 all");
+        page.btnSubmitQuery.click();
+        expect(page.noResultsMsgPanel.isDisplayed()).toBeTruthy();
+        expect(page.noResultsMsgPanel.getText()).toEqual("No results found, try changing the search term or filters");
+        page.typeMenu.click();
+        page.byCss("#mat-checkbox-1").click();
+        page.byCss("#mat-checkbox-4").click();
+        page.inpQueryString.clear();
+        page.inpQueryString.sendKeys("223.0.0.0");
+        await page.clickOnOverlayBackdrop();
+        await page.scrollIntoCenteredView(page.btnApplyFilters);
+        page.btnApplyFilters.click();
+        page.typeMenu.click();
+        expect(page.byCss("#mat-checkbox-1 input").getAttribute("disabled")).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-1 input").isSelected()).toBeFalsy();//should be unchecked
+        expect(page.byCss("#mat-checkbox-4 input").isSelected()).toBeTruthy();
+        expect(page.byCss("#mat-checkbox-4 input").isEnabled()).toBeTruthy();
+    });
+
+    it("should have share button disable if there is no results", async () => {
+        page.inpQueryString.sendKeys("223.0.0.0 all");
+        page.btnSubmitQuery.click();
+        expect(page.btnShare.isEnabled()).toBeFalsy();
+    });
+
+    it("should have share button enabled if there is results", async () => {
+        page.inpQueryString.sendKeys("AS9777");
+        page.btnSubmitQuery.click();
+        expect(page.btnShare.isEnabled()).toBeTruthy();
+    });
+
+    it("should contain perm, xml and json links in Share Panel", async () => {
+        // firefox webdriver doesn't support browser.actions().sendKeys
+        if ((await browser.getCapabilities()).get('browserName').toLowerCase() === 'firefox') {
+            return;
+        }
+        page.inpQueryString.sendKeys("AS9777");
+        page.btnSubmitQuery.click();
+        page.btnShare.click();
+        //COPY URL
+        expect(page.permLink.getAttribute("value")).toContain("/db-web-ui/query?searchtext=AS9777&rflag=true&source=RIPE&bflag=false");
+        page.btnCopyPermLink.click();
+        page.inpQueryString.click();
+        // paste for local mac
+        await browser.actions().sendKeys(protractor.Key.COMMAND, 'v').perform();
+        // paste for CI
+        await browser.actions().sendKeys(protractor.Key.CONTROL, 'v').perform();
+        expect(page.inpQueryString.getAttribute("value")).toContain("/db-web-ui/query?searchtext=AS9777&rflag=true&source=RIPE&bflag=false");
+        page.inpQueryString.clear().sendKeys("AS9777");
+        // XML
+        expect(page.linksToXmlJSON.get(0).getAttribute("href")).toContain(".xml?query-string=AS9777&flags=no-referenced&flags=no-irt&source=RIPE");
+        // JSON
+        expect(page.linksToXmlJSON.get(0).getAttribute("href")).toContain(".xml?query-string=AS9777&flags=no-referenced&flags=no-irt&source=RIPE");
+    });
+
     it("should be specified ripe stat link", async () => {
         await page.scrollIntoCenteredView(page.inpQueryString);
         page.inpQueryString.sendKeys("193.0.0.0");
@@ -214,6 +536,13 @@ describe("The query page", () => {
         expect(ripeStateButtonRoute.isPresent()).toEqual(true);
         const urlRoute = ripeStateButtonRoute.getAttribute("href");
         expect(urlRoute).toEqual("https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb");
+    });
+
+    it("shouldn't show banner with ERORR:101 but 'No results..' message in panel", async () => {
+        page.inpQueryString.sendKeys("223.0.0.0 all");
+        page.btnSubmitQuery.click();
+        expect(page.noResultsMsgPanel.getText()).toEqual("No results found, try changing the search term or filters");
+        expect(page.errorMessage.isPresent()).toEqual(false); //banner is not shown
     });
 
     it("should show object banner with text - No abuse contact found", async () => {
@@ -373,10 +702,11 @@ describe("The query page", () => {
         expect(page.inpQueryString.getAttribute("value")).toEqual("AS9777");
         expect(page.getRipeStateFromWhoisObjectOnQueryPage(0).getAttribute("href")).toEqual("https://stat.ripe.net/AS9777?sourceapp=ripedb");
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 21).getText()).toEqual("RIPE-NONAUTH");
+        page.btnShare.click();
         // XML
-        expect(page.lookupLinkToXmlJSON.get(1).getAttribute("href")).toContain(".xml?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE");
+        expect(page.linksToXmlJSON.get(0).getAttribute("href")).toContain(".xml?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE");
         // JSON
-        expect(page.lookupLinkToXmlJSON.get(2).getAttribute("href")).toContain(".json?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE");
+        expect(page.linksToXmlJSON.get(1).getAttribute("href")).toContain(".json?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE");
     });
 
     it("should show version of whois after searching", async () => {

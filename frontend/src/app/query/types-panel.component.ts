@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {IQueryParameters} from "./query-parameters.service";
+import {ObjectTypesEnum} from "./object-types.enum";
 
-// TODO Maybe merge types-panel and inverse-lookup-panel into one component - depend on final design
 @Component({
     selector: "types-panel",
     templateUrl: "./types-panel.component.html",
@@ -9,8 +9,23 @@ import {IQueryParameters} from "./query-parameters.service";
 export class TypesPanelComponent {
 
     @Input()
+    public availableTypes: string[];
+    @Input()
     public queryParameters: IQueryParameters;
     @Output()
     public queryParametersChange = new EventEmitter<IQueryParameters>();
+    readonly ObjectTypesEnum = ObjectTypesEnum;
 
+    isDisabled(type: ObjectTypesEnum) {
+        let disabled = !this.availableTypes.includes(type);
+        if (disabled) {
+            this.uncheckDisabledCheckbox(type)
+        }
+        return disabled;
+    }
+
+    private uncheckDisabledCheckbox(attribute: ObjectTypesEnum) {
+        let enumKey = Object.keys(ObjectTypesEnum)[Object.values(ObjectTypesEnum).indexOf(attribute)];
+        this.queryParameters.types[enumKey] = false;
+    }
 }

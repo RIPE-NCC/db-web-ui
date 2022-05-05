@@ -3,98 +3,60 @@
         <div class="col-md-4">
             <ul class="list-unstyled" (click)="$event.stopPropagation()">
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ABUSE_C">
-                        abuse-c
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ABUSE_C"
+                                  [disabled]="isDisabled(InverseAttrsEnum.ABUSE_C)">
+                        {{ InverseAttrsEnum.ABUSE_C }}
                     </mat-checkbox>
                 <li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ABUSE_MAILBOX">
-                        abuse-mailbox
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ABUSE_MAILBOX"
+                                  [disabled]="isDisabled(InverseAttrsEnum.ABUSE_MAILBOX)">
+                        {{ InverseAttrsEnum.ABUSE_MAILBOX }}
                     </mat-checkbox>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ADMIN_C">
-                        admin-c
-                    </mat-checkbox>
-                </li>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.AUTH">
-                        auth
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ADMIN_C"
+                                  [disabled]="isDisabled(InverseAttrsEnum.ADMIN_C)">
+                        {{ InverseAttrsEnum.ADMIN_C }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.AUTHOR">
-                        author
-                    </mat-checkbox>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.FINGERPR">
-                        fingerpr
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.AUTH"
+                                  [disabled]="isDisabled(InverseAttrsEnum.AUTH)">
+                        {{ InverseAttrsEnum.AUTH }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.FORM">
-                        form
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.AUTHOR"
+                                  [disabled]="isDisabled(InverseAttrsEnum.AUTHOR)">
+                        {{ InverseAttrsEnum.AUTHOR }}
                     </mat-checkbox>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.IRT_NFY">
-                        irt-nfy
-                    </mat-checkbox>
-                </li>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.LOCAL_AS">
-                        local-as
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.FINGERPR"
+                                  [disabled]="isDisabled(InverseAttrsEnum.FINGERPR)">
+                        {{ InverseAttrsEnum.FINGERPR }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MBRS_BY_REF">
-                        mbrs-by-ref
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.FORM"
+                                  [disabled]="isDisabled(InverseAttrsEnum.FORM)">
+                        {{ InverseAttrsEnum.FORM }}
                     </mat-checkbox>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-4">
-            <ul class="list-unstyled" (click)="$event.stopPropagation()">
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MEMBER_OF">
-                        member-of
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.IRT_NFY"
+                                  [disabled]="isDisabled(InverseAttrsEnum.IRT_NFY)">
+                        {{ InverseAttrsEnum.IRT_NFY }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_BY">
-                        mnt-by
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.LOCAL_AS"
+                                  [disabled]="isDisabled(InverseAttrsEnum.LOCAL_AS)">
+                        {{ InverseAttrsEnum.LOCAL_AS }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_DOMAINS">
-                        mnt-domains
-                    </mat-checkbox>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_IRT">
-                        mnt-irt
-                    </mat-checkbox>
-                </li>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_LOWER">
-                        mnt-lower
-                    </mat-checkbox>
-                </li>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_NFY">
-                        mnt-nfy
-                    </mat-checkbox>
-                </li>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_REF">
-                        mnt-ref
-                    </mat-checkbox>
-                </li>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_ROUTES">
-                        mnt-routes
-                    </mat-checkbox>
-                </li>
-                <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.NOTIFY">
-                        notify
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MBRS_BY_REF"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MBRS_BY_REF)">
+                        {{ InverseAttrsEnum.MBRS_BY_REF }}
                     </mat-checkbox>
                 </li>
             </ul>
@@ -102,48 +64,114 @@
         <div class="col-md-4">
             <ul class="list-unstyled" (click)="$event.stopPropagation()">
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.NSERVER">
-                        nserver
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MEMBER_OF"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MEMBER_OF)">
+                        {{ InverseAttrsEnum.MEMBER_OF }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ORG">
-                        org
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_BY"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MNT_BY)">
+                        {{ InverseAttrsEnum.MNT_BY }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ORIGIN">
-                        origin
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_DOMAINS"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MNT_DOMAINS)">
+                        {{ InverseAttrsEnum.MNT_DOMAINS }}
+                    </mat-checkbox>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_IRT"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MNT_IRT)">
+                        {{ InverseAttrsEnum.MNT_IRT }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.PERSON">
-                        person
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_LOWER"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MNT_LOWER)">
+                        {{ InverseAttrsEnum.MNT_LOWER }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.PING_HDL">
-                        ping-hdl
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_NFY"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MNT_NFY)">
+                        {{ InverseAttrsEnum.MNT_NFY }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.REF_NFY">
-                        ref-nfy
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_REF"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MNT_REF)">
+                        {{ InverseAttrsEnum.MNT_REF }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.TECH_C">
-                        tech-c
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.MNT_ROUTES"
+                                  [disabled]="isDisabled(InverseAttrsEnum.MNT_ROUTES)">
+                        {{ InverseAttrsEnum.MNT_ROUTES }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.UPD_TO">
-                        upd-to
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.NOTIFY"
+                                  [disabled]="isDisabled(InverseAttrsEnum.NOTIFY)">
+                        {{ InverseAttrsEnum.NOTIFY }}
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-unstyled" (click)="$event.stopPropagation()">
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.NSERVER"
+                        [disabled]="isDisabled(InverseAttrsEnum.NSERVER)">
+                        {{ InverseAttrsEnum.NSERVER }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ZONE_C">
-                        zone-c
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ORG"
+                                  [disabled]="isDisabled(InverseAttrsEnum.ORG)">
+                        {{ InverseAttrsEnum.ORG }}
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ORIGIN"
+                                  [disabled]="isDisabled(InverseAttrsEnum.ORIGIN)">
+                        {{ InverseAttrsEnum.ORIGIN }}
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.PERSON"
+                                  [disabled]="isDisabled(InverseAttrsEnum.PERSON)">
+                        {{ InverseAttrsEnum.PERSON }}
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.PING_HDL"
+                                  [disabled]="isDisabled(InverseAttrsEnum.PING_HDL)">
+                        {{ InverseAttrsEnum.PING_HDL }}
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.REF_NFY"
+                                  [disabled]="isDisabled(InverseAttrsEnum.REF_NFY)">
+                        {{ InverseAttrsEnum.REF_NFY }}
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.TECH_C"
+                                  [disabled]="isDisabled(InverseAttrsEnum.TECH_C)">
+                        {{ InverseAttrsEnum.TECH_C }}
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.UPD_TO"
+                                  [disabled]="isDisabled(InverseAttrsEnum.UPD_TO)">
+                        {{ InverseAttrsEnum.UPD_TO }}
+                    </mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.ZONE_C"
+                                  [disabled]="isDisabled(InverseAttrsEnum.ZONE_C)">
+                        {{ InverseAttrsEnum.ZONE_C }}
                     </mat-checkbox>
                 </li>
             </ul>

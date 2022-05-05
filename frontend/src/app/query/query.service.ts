@@ -6,6 +6,9 @@ import * as _ from "lodash";
 import {IWhoisResponseModel} from "../shared/whois-response-type.model";
 import {IQueryParameters} from "./query-parameters.service";
 import {HierarchyFlagsService} from "./hierarchy-flags.service";
+import {IpAddressService} from "../myresources/ip-address.service";
+import {ObjectTypesEnum} from "./object-types.enum";
+import {PropertiesService} from "../properties.service";
 
 const EMPTY_MODEL: IWhoisResponseModel = {
     errormessages: {errormessage: []},
@@ -33,7 +36,8 @@ export class QueryService {
 
     public PAGE_SIZE: number = 20;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                private propertiesService: PropertiesService) {
     }
 
     // this is request to whois library and response is not json that's why {responseType: "text" as "json"}
@@ -183,6 +187,41 @@ export class QueryService {
             });
         }
         return linkParts.join("&");
+    }
+
+    public getTypesAppropriateToQuery(searchText: string): string[] {
+        let types: string[] = [];
+        const searchTerm = searchText.trim()
+        const route = searchTerm.split("AS");
+        if (IpAddressService.isValidIpv4(searchTerm)) {
+            types.push(ObjectTypesEnum.INETNUM);
+            types.push(ObjectTypesEnum.DOMAIN);
+            types.push(ObjectTypesEnum.ROUTE);
+        } else if (IpAddressService.isValidV6(searchTerm)) {
+            types.push(ObjectTypesEnum.INET6NUM);
+            types.push(ObjectTypesEnum.DOMAIN);
+            types.push(ObjectTypesEnum.ROUTE6);
+        } else if (searchTerm.endsWith(".in-addr.arpa") || searchTerm.endsWith(".ip6.arpa")) {
+            types.push(ObjectTypesEnum.DOMAIN);
+        } else if (IpAddressService.isValidIpv4(route[0]) && /^\d+$/.test(route[1])) {
+            types.push(ObjectTypesEnum.ROUTE);
+        } else if (IpAddressService.isValidV6(route[0]) && /^\d+$/.test(route[1])) {
+            types.push(ObjectTypesEnum.ROUTE6);
+        } else if (searchTerm.toUpperCase().startsWith("ORG-") && searchTerm.toUpperCase().endsWith(`-${this.propertiesService.SOURCE}`)) {
+            types.push(ObjectTypesEnum.ORGANISATION);
+            types.push(ObjectTypesEnum.PERSON);
+            types.push(ObjectTypesEnum.ROLE);
+        } else if (searchTerm.toUpperCase().endsWith(`-${this.propertiesService.SOURCE}`)) {
+            types.push(ObjectTypesEnum.ORGANISATION);
+            types.push(ObjectTypesEnum.PERSON);
+            types.push(ObjectTypesEnum.ROLE);
+        } else if (searchTerm.toUpperCase().endsWith("-MNT")) {
+            types.push(ObjectTypesEnum.MNTNER);
+        }
+        if (types.length === 0) {
+            types = Object.values(ObjectTypesEnum);
+        }
+        return types;
     }
 
     private convertMapOfBoolsToList(boolMap: { [key: string]: boolean }): string[] {
