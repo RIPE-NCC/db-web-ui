@@ -35,6 +35,13 @@ whois-object-viewer {
     align-items: center;
 }
 
+.no-result-msg {
+    display: flex;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+}
+
 .viewerbuttons {
     position: absolute;
     right: 37px;
