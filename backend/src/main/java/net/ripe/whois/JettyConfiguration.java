@@ -41,6 +41,9 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
     @Value("${server.http.port:1082}")
     private int httpPort;
 
+    @Value("${jetty.idle.timeout:60}")
+    private int idleTimeout;
+
     @Value("${jetty.hostname:local}")
     private String workerName;
 
@@ -58,6 +61,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         factory.addServerCustomizers(server -> {
             ServerConnector httpConnector = new ServerConnector(server);
             httpConnector.setPort(httpPort);
+            httpConnector.setIdleTimeout(idleTimeout * 1_000L);
             server.addConnector(httpConnector);
             DefaultSessionIdManager sessionIdManager = new DefaultSessionIdManager(server);
             sessionIdManager.setWorkerName(workerName);
