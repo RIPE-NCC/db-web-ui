@@ -17,5 +17,6 @@
 <div *ngIf="whoisResponse" class="resultpane">
     <lookup [whoisObject]="whoisResponse"></lookup>
 </div>
+<div *ngIf="!whoisResponse" class="resultpane no-result-msg">No results found.</div>
 <whois-version [version]="whoisVersion"></whois-version>
 

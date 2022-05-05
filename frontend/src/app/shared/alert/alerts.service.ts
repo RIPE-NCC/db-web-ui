@@ -65,9 +65,14 @@ export class AlertsService {
 
     public setAllErrors(whoisResources: IWhoisResponseModel) {
         this.alerts.errors = this.whoisResourcesService.getAllErrors(whoisResources);
+        this.filterOutError101();
         this.alerts.warnings = this.whoisResourcesService.getAllWarnings(whoisResources);
         this.alerts.infos = this.whoisResourcesService.getAllInfos(whoisResources);
         this.alertsChanged.emit(this.alerts);
+    }
+
+    private filterOutError101() {
+        this.alerts.errors = this.alerts.errors.filter(error => !error.text.toUpperCase().includes("ERROR:101"));
     }
 
     public addAlertMsgs(whoisResources: IWhoisResponseModel) {
@@ -88,14 +93,12 @@ export class AlertsService {
     }
 
     public setGlobalWarning(warningMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
-        // this.clearAlertMessages();
         const warning = (linkurl) ? {plainText: warningMsg, linkurl: linkurl, linktext: linktext, permanent: permanent} : {plainText: warningMsg};
         this.alerts.warnings.push(warning);
         this.alertsChanged.emit(this.alerts);
     }
 
     public setGlobalInfo(infoMsg: string) {
-        // this.clearAlertMessages();
         this.alerts.infos.push({plainText: infoMsg});
         this.alertsChanged.emit(this.alerts);
     }

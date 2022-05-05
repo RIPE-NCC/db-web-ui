@@ -9,6 +9,7 @@ import {PropertiesService} from "../properties.service";
 import {AlertsService} from "../shared/alert/alerts.service";
 import {HierarchyFlagsService} from "./hierarchy-flags.service";
 import {FormControl} from "@angular/forms";
+import {ObjectTypesEnum} from "./object-types.enum";
 
 export interface IQueryState {
     source: string;
@@ -29,8 +30,16 @@ export class QueryComponent implements OnDestroy {
 
     public offset = 0;
     public showScroller = false;
+    // filter panel - dropdowns Types, Hierarchy, Inverse Lookup and Advance Filters
     public showFilters = false;
+    public numberSelectedTypes = 0;
+    public numberSelectedHierarchyItems = 0;
+    public numberSelectedInverseLookups = 0;
+    public numberSelectedAdvanceFilterItems = 0;
+    public showPermaLinks = false;
+
     public results: IWhoisObjectModel[];
+    public showNoResultsMsg = false;
     public whoisVersion: IVersion;
     public active = 1;
 
@@ -46,9 +55,11 @@ export class QueryComponent implements OnDestroy {
     public showsQueryFlagsContainer: boolean;
     public showsDocsLink: boolean;
     public colorControl = new FormControl('primary');
+    // Types in dropdown
+    public availableTypes: string[] = [];
 
     constructor(public properties: PropertiesService,
-                private queryService: QueryService,
+                public queryService: QueryService,
                 private queryParametersService: QueryParametersService,
                 public alertsService: AlertsService,
                 private viewportScroller: ViewportScroller,
@@ -110,7 +121,8 @@ export class QueryComponent implements OnDestroy {
         if (this.qp.queryText === "") {
             this.clearResults();
             this.showTemplatePanel = false;
-            this.showFilters = false;
+            this.showFilters = false; // by default don't open share button with perma, xml and json links
+            this.showPermaLinks = false;
         }
     }
 
@@ -124,6 +136,33 @@ export class QueryComponent implements OnDestroy {
         } else {
             this.router.navigate(["query"], {queryParams: formQueryParam});
         }
+    }
+
+    // remove all checked filters in dropdowns
+    public resetFilters() {
+        this.qp.types = {};
+        this.qp.inverse = {};
+        this.resetHierarchyDropdown();
+        this.resetAdvanceFilter();
+        this.submitSearchForm();
+    }
+
+    private resetHierarchyDropdown() {
+        this.qp.hierarchy = undefined;
+        this.qp.reverseDomain = false;
+        this.numberSelectedHierarchyItems = 0;
+        // since we don't use [(ngModel)] on HierarchyFlagsPanelComponent, we need to manually trigger the render of the component
+        this.qp = {...this.qp};
+    }
+
+    private resetAdvanceFilter() {
+        this.qp.showFullObjectDetails = false;
+        this.qp.doNotRetrieveRelatedObjects = true;
+        this.qp.source = this.properties.SOURCE;
+    }
+
+    public togglePermaLinks() {
+        this.showPermaLinks = !this.showPermaLinks;
     }
 
     public uncheckReverseDomain() {
@@ -156,6 +195,7 @@ export class QueryComponent implements OnDestroy {
             this.alertsService.addGlobalError(this.formatError(err));
         }
         if (issues.errors.length) {
+            this.showNoResultsMsg = true;
             this.gotoAnchor();
             return;
         }
@@ -193,26 +233,22 @@ export class QueryComponent implements OnDestroy {
         return !this.showsQueryFlagsContainer && this.showFilters;
     }
 
-    public countSelectedDropdownItems(list) {
-        let numberSelected = Object.keys(list).filter(element => list[element] === true).length;
-        return numberSelected > 0 ? `(${numberSelected})` : "";
+    private countSelectedDropdownItems(list): number {
+        return Object.keys(list).filter(element => list[element] === true).length;
     }
 
-    public countSelectedDropdownHierarchyFlags() {
+    private countSelectedDropdownHierarchyFlags(): number {
         let count = 0;
-
         if (this.qp.reverseDomain) {
             count++;
         }
-
         if (!!this.qp.hierarchy && this.qp.hierarchy !== HierarchyFlagsService.hierarchyFlagMap[0].short) {
             count++;
         }
-
-        return count > 0? "(" + count + ")" : "";
+        return count;
     }
 
-    public countSelectedDropdownAdvanceFilter() {
+    private countSelectedDropdownAdvanceFilter(): number {
         let numberSelected = 0;
         if (this.qp.showFullObjectDetails) {
             numberSelected++;
@@ -223,7 +259,19 @@ export class QueryComponent implements OnDestroy {
         if (this.qp.source !== "RIPE") {
             numberSelected++;
         }
-        return numberSelected > 0 ? `(${numberSelected})` : "";
+        return numberSelected;
+    }
+
+    public printNumberSelected(numberSelectedItems: number) {
+        return numberSelectedItems > 0 ? `(${numberSelectedItems})` : "";
+    }
+
+    public isFilteringResults() {
+        this.numberSelectedTypes = this.countSelectedDropdownItems(this.qp.types);
+        this.numberSelectedHierarchyItems = this.countSelectedDropdownHierarchyFlags();
+        this.numberSelectedInverseLookups = this.countSelectedDropdownItems(this.qp.inverse);
+        this.numberSelectedAdvanceFilterItems = this.countSelectedDropdownAdvanceFilter();
+        return (this.numberSelectedTypes + this.numberSelectedHierarchyItems + this.numberSelectedInverseLookups + this.numberSelectedAdvanceFilterItems) > 0;
     }
 
     // Move this to a util queryService and test it properly, i.e. with all expected message variants
@@ -241,10 +289,26 @@ export class QueryComponent implements OnDestroy {
         return resultArr.reverse().join("").trim().replace(/\n/g, "<br>");
     }
 
+    // enable all types in Types dropdown
+    public enableAllTypesCheckboxes() {
+        this.availableTypes = Object.values(ObjectTypesEnum);
+    }
+
+    public isDisabledHierarchyDropdown() {
+        const enableHierarchyForTypes: string [] = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.DOMAIN.valueOf(), ObjectTypesEnum.ROUTE.valueOf(), ObjectTypesEnum.ROUTE6.valueOf()];
+        const isDisabled = !this.availableTypes.some(type => enableHierarchyForTypes.includes(type));
+        // remove number of filter
+        if (isDisabled) {
+            this.resetHierarchyDropdown();
+        }
+        return isDisabled;
+    }
+
     private handleWhoisSearch(response: IWhoisResponseModel) {
         this.results = (this.results)
             ? this.results.concat(response.objects.object)
             : response.objects.object;
+        this.isNoResultsMsgShown();
         this.whoisVersion = response.version;
         // multiple term searches can have errors, too
         this.alertsService.setAllErrors(response);
@@ -252,7 +316,7 @@ export class QueryComponent implements OnDestroy {
         this.queryParametersService.validate(cleanQp);
         const jsonQueryString = this.queryService.buildQueryStringForLink(cleanQp);
         if (jsonQueryString) {
-            this.link.perma = "query?" + this.queryService.buildPermalink(cleanQp);
+            this.link.perma = window.location.origin + "/db-web-ui/query?" + this.queryService.buildPermalink(cleanQp);
             this.link.json = this.properties.REST_SEARCH_URL + "search.json?" + jsonQueryString;
             this.link.xml = this.properties.REST_SEARCH_URL + "search.xml?" + jsonQueryString;
         } else {
@@ -260,16 +324,24 @@ export class QueryComponent implements OnDestroy {
         }
         this.showScroller = response.objects.object.length >= this.queryService.PAGE_SIZE;
         this.showFilters = true;
+        this.showPermaLinks = false; // by default don't open share button with perma, xml and json links
+        this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
     }
 
     private handleWhoisSearchError(response: IWhoisResponseModel) {
         this.results = response.objects ? response.objects.object : [];
+        this.isNoResultsMsgShown();
         this.alertsService.setAllErrors(response);
         this.gotoAnchor();
     }
 
+    private isNoResultsMsgShown() {
+        this.showNoResultsMsg = this.results.length === 0;
+    }
+
     private clearResults() {
         this.results = [];
+        this.showNoResultsMsg = false;
         this.showsDocsLink = true;
         this.offset = 0;
     }

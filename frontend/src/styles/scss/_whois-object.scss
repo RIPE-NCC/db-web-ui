@@ -28,6 +28,13 @@ whois-object-viewer {
   border-radius: 4px;
 }
 
+.no-result-msg {
+    display: flex;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+}
+
 .viewerbuttons {
     position: absolute;
     right: 37px;

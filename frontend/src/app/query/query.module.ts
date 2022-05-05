@@ -28,6 +28,8 @@ import {QueryFlagsService} from "./query-flags.service";
 import {QueryFlagsComponent} from "./query-flags.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
+import {ClipboardModule} from "@angular/cdk/clipboard";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
     imports: [
@@ -43,7 +45,9 @@ import {MatIconModule} from "@angular/material/icon";
         MatCheckboxModule,
         MatRadioModule,
         MatInputModule,
-        MatIconModule
+        MatIconModule,
+        ClipboardModule,
+        MatTooltipModule
     ],
     declarations: [
         LookupComponent,
