@@ -26,6 +26,7 @@ import javax.servlet.http.Cookie;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -81,7 +82,7 @@ public class CrowdTokenFilterTest {
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
-        verify(crowdSessionChecker, never()).hasActiveToken(anyString());
+        verify(crowdSessionChecker, never()).hasActiveToken(anyString(), anyString());
 
         assertThat(response.getStatus(), is(302));
         assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit"));
@@ -91,7 +92,7 @@ public class CrowdTokenFilterTest {
     public void response_302_if_expired_crowd_cookie_present() throws Exception {
         request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
 
-        when(crowdSessionChecker.hasActiveToken("value")).thenReturn(false);
+        when(crowdSessionChecker.hasActiveToken(eq("value"), anyString())).thenReturn(false);
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
@@ -103,7 +104,7 @@ public class CrowdTokenFilterTest {
     public void proceed_if_valid_crowd_cookie_present() throws Exception {
         request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
 
-        when(crowdSessionChecker.hasActiveToken("value")).thenReturn(true);
+        when(crowdSessionChecker.hasActiveToken(eq("value"), anyString())).thenReturn(true);
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
@@ -202,7 +203,7 @@ public class CrowdTokenFilterTest {
         request = new MockHttpServletRequest("GET", "/db-web-ui/webupdates/create/RIPE/role/self");
         request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
 
-        when(crowdSessionChecker.hasActiveToken("value")).thenThrow(new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), ""));
+        when(crowdSessionChecker.hasActiveToken(eq("value"), anyString())).thenThrow(new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), ""));
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
