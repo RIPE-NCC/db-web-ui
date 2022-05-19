@@ -2,26 +2,34 @@
 
 .feedback-support-panel {
 
+    min-width: 296px;
+
   mat-dialog-container {
     padding: common.spacing(0, 0, 3, 0);
 
     feedback-support-dialog {
 
-      h1 {
+      h2 {
         margin: 0;
-        padding: common.spacing(3, 3, 0, 3);
+        padding: common.spacing(2, 3, 0, 3);
         font-weight: 300;
         color: black;
       }
 
       .mat-dialog-actions {
         padding-bottom: common.spacing(3);
+
+          @media only screen and (max-width: 900px) {
+              .mat-list-base .mat-list-item .mat-line {
+                  white-space: normal;
+              }
+          }
       }
 
       .mat-list-item-content {
         i.mat-list-icon {
-          padding: common.spacing(3);
-          font-size: 18px;
+          padding: common.spacing(3, 2, 3, 2);
+          font-size: 24px;
         }
 
         .secondary {

@@ -45,7 +45,7 @@ describe("FeedbackSupportDialogComponent", () => {
     const allItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
     expect(allItems.length).toBe(3);
 
-    expect(allItems[0].nativeElement.textContent).toContain('Support');
+    expect(allItems[0].nativeElement.textContent).toContain('Contact our support team');
     expect(allItems[0].nativeElement.textContent).toContain('Need help? Open a ticket.');
 
     expect(allItems[1].nativeElement.textContent).toContain('Report a bug');
@@ -59,7 +59,7 @@ describe("FeedbackSupportDialogComponent", () => {
     const allItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
     expect(allItems.length).toBe(2);
 
-    expect(allItems[0].nativeElement.textContent).toContain('Support');
+    expect(allItems[0].nativeElement.textContent).toContain('Contact our support team');
     expect(allItems[0].nativeElement.textContent).toContain('Need help? Open a ticket.');
 
     expect(allItems[1].nativeElement.textContent).toContain('Report a bug');
