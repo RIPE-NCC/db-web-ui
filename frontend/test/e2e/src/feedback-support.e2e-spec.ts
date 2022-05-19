@@ -14,7 +14,7 @@ describe("feedback support dialog", () => {
   });
 
   it("should open dialog on click", () => {
-    expect(page.byCss(`${dialogSelector} h1`).getText()).toContain('What are you looking for?')
+    expect(page.byCss(`${dialogSelector} h2`).getText()).toContain('Feedback and Support')
   });
 
   it('should show all dialog options', () => {
@@ -22,7 +22,7 @@ describe("feedback support dialog", () => {
     expect(allItems.count()).toBe(3)
 
     const email = allItems.get(0);
-    expect(email.getText()).toContain('Support');
+    expect(email.getText()).toContain('Contact our support team');
     expect(email.getText()).toContain('Need help? Open a ticket.');
 
     const usersnap = allItems.get(1);

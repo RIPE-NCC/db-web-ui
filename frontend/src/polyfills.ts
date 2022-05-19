@@ -62,9 +62,10 @@ import {
   LegalAccordion,
   RipeHeader,
   UserLogin,
-  LiveChat
+  LiveChat,
+  MobileMenu
 } from '@technical-design/ripe-app-webcomponents'
 
 // eslint-disable-next-line no-unused-vars
-const components = [AppBanner, AppNavBar, AppCookieConsent, AppSwitcher, RipeHeader, UserLogin, LegalAccordion, LiveChat]
+const components = [AppBanner, AppNavBar, AppCookieConsent, AppSwitcher, RipeHeader, UserLogin, LegalAccordion, LiveChat, MobileMenu]
 
