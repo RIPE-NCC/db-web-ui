@@ -101,11 +101,11 @@ describe("The query page", () => {
     it("should search by inverse lookup abuse-c", async () => {
         page.inpQueryString.sendKeys("AR24917-RIPE");
         page.btnSubmitQuery.click();
-        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advanced filter");
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         await page.clickOnOverlayBackdrop();
-        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (1)");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advanced filter (1)");
         expect(page.typeMenu.getText()).toEqual("Types");
         page.typeMenu.click();
         await waitToBeClickable(page.byId("mat-checkbox-12"));
@@ -129,18 +129,18 @@ describe("The query page", () => {
         expect(page.inpQueryFlagsContainer.isDisplayed()).toBeFalsy();
     });
 
-    it("should not count default values as selected items in advance filter dropdown", async () => {
+    it("should not count default values as selected items in advanced filter dropdown", async () => {
         page.inpQueryString.sendKeys("AR24917-RIPE");
         page.btnSubmitQuery.click();
-        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advanced filter");
         page.advanceFilterMenu.click();
         page.inpShowFullDetails.click();
         await page.clickOnOverlayBackdrop();
-        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (1)");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advanced filter (1)");
         page.advanceFilterMenu.click();
         page.inpDontRetrieveRelated.click();
         await page.clickOnOverlayBackdrop();
-        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (2)");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advanced filter (2)");
     });
 
     it("should have disabled hierarchy tab - when search term is recognised like type from ObjectTypesEnum and is not inetnum, inet6num, domain, route, route6", () => {
@@ -424,7 +424,7 @@ describe("The query page", () => {
         await page.clickOnOverlayBackdrop();
         expect(page.typeMenu.getText()).toEqual("Types (3)");
         expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup (2)");
-        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter (1)");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advanced filter (1)");
         page.btnResetFilters.click();
         page.typeMenu.click();
         expect(page.byCss("#mat-checkbox-1 input").isSelected()).toBeFalsy();
@@ -439,23 +439,23 @@ describe("The query page", () => {
         expect(page.byCss("#showFullObjectDetails").isSelected()).toBeFalsy();
         expect(page.typeMenu.getText()).toEqual("Types");
         expect(page.inverseLookupMenu.getText()).toEqual("Inverse lookup");
-        expect(page.advanceFilterMenu.getText()).toEqual("Advance filter");
+        expect(page.advanceFilterMenu.getText()).toEqual("Advanced filter");
     });
 
-    it("should disable Apply Filters and Reset filters if there is no selected checkboxes in filters dropdowns", async () => {
+    it("should disable Reset filters if there is no selected checkboxes in filters dropdowns, Apply Filters always enabled", async () => {
         page.inpQueryString.sendKeys("223.0.0.0 all");
         page.btnSubmitQuery.click();
-        expect(page.btnApplyFilters.isEnabled()).toBeFalsy();
-        expect(page.btnResetFilters.getAttribute("disabled")).toBeTruthy();
+        expect(page.btnApplyFilters.isEnabled()).toBeTruthy();
+        expect(page.btnResetFilters.isEnabled()).toBeFalsy();
         page.typeMenu.click();
         page.byCss("#mat-checkbox-1").click();
         page.byCss("#mat-checkbox-10").click();
         await page.clickOnOverlayBackdrop();
         expect(page.btnApplyFilters.isEnabled()).toBeTruthy();
-        expect(page.btnResetFilters.getAttribute("disabled")).toBeFalsy();
+        expect(page.btnResetFilters.isEnabled()).toBeTruthy();
         page.btnResetFilters.click();
-        expect(page.btnApplyFilters.isEnabled()).toBeFalsy();
-        expect(page.btnResetFilters.getAttribute("disabled")).toBeTruthy();
+        expect(page.btnApplyFilters.isEnabled()).toBeTruthy();
+        expect(page.btnResetFilters.isEnabled()).toBeFalsy();
     });
 
     it("should uncheck checkbox if it become disabled after search", async () => {
@@ -702,6 +702,7 @@ describe("The query page", () => {
         expect(page.inpQueryString.getAttribute("value")).toEqual("AS9777");
         expect(page.getRipeStateFromWhoisObjectOnQueryPage(0).getAttribute("href")).toEqual("https://stat.ripe.net/AS9777?sourceapp=ripedb");
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 21).getText()).toEqual("RIPE-NONAUTH");
+        await page.scrollIntoCenteredView(page.btnShare);
         page.btnShare.click();
         // XML
         expect(page.linksToXmlJSON.get(0).getAttribute("href")).toContain(".xml?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE");

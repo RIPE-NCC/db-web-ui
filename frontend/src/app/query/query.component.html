@@ -47,7 +47,7 @@
                   <inverse-lookup-panel [(queryParameters)]="qp" [availableTypes]="availableTypes"></inverse-lookup-panel>
               </mat-menu>
               <button mat-button type="button" id="advanceFilterMenu"
-                      [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">Advance
+                      [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">Advanced
                   filter {{printNumberSelected(this.numberSelectedAdvanceFilterItems)}}
                   <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
                   <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
@@ -56,9 +56,9 @@
                   <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
               </mat-menu>
               <button mat-raised-button color="primary" [disableRipple]="true" id="applyFilters"
-                  [disabled]="!isFilteringResults()" (click)="submitSearchForm()">APPLY FILTERS</button>
-              <a mat-button color="accent" type="button" id="resetFilters"
-                  [disabled]="!isFilteringResults()" (click)="resetFilters()">Reset filters</a>
+                  (click)="submitSearchForm()">APPLY FILTERS</button>
+              <button mat-raised-button [disableRipple]="true" id="resetFilters"
+                   [disabled]="!isFilteringResults()" (click)="resetFilters()">RESET FILTERS</button>
               <button *ngIf="link.perma" class="perma-link" mat-icon-button matSuffix matTooltip="Share Panel" matTooltipPosition="left"
                       [disabled]="results?.length === 0" (click)="togglePermaLinks(); false">
                   <mat-icon *ngIf="!showPermaLinks" matSuffix class="fal fa-share-alt"></mat-icon>

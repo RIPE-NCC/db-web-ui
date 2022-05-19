@@ -316,7 +316,7 @@ describe("QueryComponent", () => {
         expect(component.numberSelectedInverseLookups).toEqual(0);
     });
 
-    it("should count advance filters in dropdown which are not selected by default", () => {
+    it("should count advanced filters in dropdown which are not selected by default", () => {
         component.init();
         fixture.detectChanges();
         expect(component.numberSelectedAdvanceFilterItems).toEqual(0);
