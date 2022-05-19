@@ -37,6 +37,7 @@ export class QueryComponent implements OnDestroy {
     public numberSelectedInverseLookups = 0;
     public numberSelectedAdvanceFilterItems = 0;
     public showPermaLinks = false;
+    public searched = false;
 
     public results: IWhoisObjectModel[];
     public showNoResultsMsg = false;
@@ -170,6 +171,7 @@ export class QueryComponent implements OnDestroy {
     }
 
     public doSearch() {
+        this.searched = true;
         if (!this.qp.queryText) {
             this.clearResults();
             return;
