@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:5c77c953
+image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:931889ee
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
@@ -101,5 +101,3 @@ browserstack:
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
-
-
