@@ -1,13 +1,12 @@
-import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {IQueryParameters} from "./query-parameters.service";
-import {ObjectTypesEnum} from "./object-types.enum";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ObjectTypesEnum } from './object-types.enum';
+import { IQueryParameters } from './query-parameters.service';
 
 @Component({
-    selector: "types-panel",
-    templateUrl: "./types-panel.component.html",
+    selector: 'types-panel',
+    templateUrl: './types-panel.component.html',
 })
 export class TypesPanelComponent {
-
     @Input()
     public availableTypes: string[];
     @Input()
@@ -19,7 +18,7 @@ export class TypesPanelComponent {
     isDisabled(type: ObjectTypesEnum) {
         let disabled = !this.availableTypes.includes(type);
         if (disabled) {
-            this.uncheckDisabledCheckbox(type)
+            this.uncheckDisabledCheckbox(type);
         }
         return disabled;
     }

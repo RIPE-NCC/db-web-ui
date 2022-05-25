@@ -1,5 +1,5 @@
-import {IMoreSpecificResource} from "./morespecifics/more-specifics.service";
-import {IWhoisObjectModel} from "../shared/whois-response-type.model";
+import { IWhoisObjectModel } from '../shared/whois-response-type.model';
+import { IMoreSpecificResource } from './morespecifics/more-specifics.service';
 
 export interface IResourceModel {
     resource: string;
@@ -103,8 +103,8 @@ export interface IIpv4AllocationAnalysis {
 }
 
 interface IIpv4ViolationsAnalysis {
-    inetnumSyntaxErrors: string[ ];
-    overlappingInetnums: IIpv4OverlappingInetnumsAnalysis[ ];
+    inetnumSyntaxErrors: string[];
+    overlappingInetnums: IIpv4OverlappingInetnumsAnalysis[];
 }
 
 export interface IIpv4OverlappingInetnumsAnalysis {

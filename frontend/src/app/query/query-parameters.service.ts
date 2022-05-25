@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import * as _ from "lodash";
-import {WhoisMetaService} from "../shared/whois-meta.service";
-import {IQueryState} from "./query.component";
-import {HierarchyFlagsService} from "./hierarchy-flags.service";
+import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
+import { WhoisMetaService } from '../shared/whois-meta.service';
+import { HierarchyFlagsService } from './hierarchy-flags.service';
+import { IQueryState } from './query.component';
 
 export interface ITemplateTerm {
     templateType: string; // any from allowedTemplateQueries
@@ -10,36 +10,34 @@ export interface ITemplateTerm {
 }
 
 export interface IQueryParameters {
-    queryText: string,
-    queriedTemplateObject?: ITemplateTerm,
-    types: { [objectName: string]: boolean },
-    inverse: { [attrName: string]: boolean },
-    hierarchy: string,
-    reverseDomain: boolean,
-    doNotRetrieveRelatedObjects: boolean,
-    showFullObjectDetails: boolean,
+    queryText: string;
+    queriedTemplateObject?: ITemplateTerm;
+    types: { [objectName: string]: boolean };
+    inverse: { [attrName: string]: boolean };
+    hierarchy: string;
+    reverseDomain: boolean;
+    doNotRetrieveRelatedObjects: boolean;
+    showFullObjectDetails: boolean;
     // TODO Replace source with Set type asap IE allow it
-    source: string
+    source: string;
 }
 
-const templateQueries = ["-t", "--template"];
-const verboseQueries = ["-v", "--verbose"];
+const templateQueries = ['-t', '--template'];
+const verboseQueries = ['-v', '--verbose'];
 const allowedTemplateQueries = templateQueries.concat(verboseQueries);
 const hierarchyFlagMap = {
-    L: "all-less",
-    M: "all-more",
-    l: "one-less",
-    m: "one-more",
-    x: "exact",
+    L: 'all-less',
+    M: 'all-more',
+    l: 'one-less',
+    m: 'one-more',
+    x: 'exact',
 };
 
 @Injectable()
 export class QueryParametersService {
+    constructor(private metaService: WhoisMetaService) {}
 
-    constructor(private metaService: WhoisMetaService) {
-    }
-
-    public validate(queryParams: IQueryParameters): { errors: string[], warnings: string[] } {
+    public validate(queryParams: IQueryParameters): { errors: string[]; warnings: string[] } {
         if (!queryParams.queryText.trim()) {
             return;
         }
@@ -56,11 +54,11 @@ export class QueryParametersService {
             bflag: queryParams.showFullObjectDetails.toString(),
             dflag: queryParams.reverseDomain.toString() || undefined,
             hierarchyFlag: HierarchyFlagsService.shortHierarchyFlagToLong(queryParams.hierarchy) || undefined,
-            inverse: QueryParametersService.convertMapOfBoolsToList(queryParams.inverse).join(";") || undefined,
+            inverse: QueryParametersService.convertMapOfBoolsToList(queryParams.inverse).join(';') || undefined,
             rflag: queryParams.doNotRetrieveRelatedObjects.toString() || undefined,
-            searchtext: queryParams.queryText && queryParams.queryText.trim() || "",
+            searchtext: (queryParams.queryText && queryParams.queryText.trim()) || '',
             source: queryParams.source,
-            types: QueryParametersService.convertMapOfBoolsToList(queryParams.types).join(";") || undefined,
+            types: QueryParametersService.convertMapOfBoolsToList(queryParams.types).join(';') || undefined,
         };
     }
 
@@ -68,7 +66,7 @@ export class QueryParametersService {
         return Object.keys(boolMap)
             .filter((key) => boolMap[key])
             .map((obj) => {
-                return obj.replace(/_/g, "-").toLocaleLowerCase();
+                return obj.replace(/_/g, '-').toLocaleLowerCase();
             });
     }
 
@@ -85,7 +83,7 @@ export class QueryParametersService {
         return terms.some((term: string) => _.includes(allowedTemplateQueries, term));
     }
 
-    private validateQueriedTemplate(queryParams: IQueryParameters): {errors: string[], warnings: string[]} {
+    private validateQueriedTemplate(queryParams: IQueryParameters): { errors: string[]; warnings: string[] } {
         const warnings: string[] = [];
         const errors: string[] = [];
         const terms: string[] = queryParams.queryText.split(/ +/);
@@ -95,27 +93,29 @@ export class QueryParametersService {
         terms.map((term: string, index: number) => {
             if (allowedTemplateQueries.indexOf(term) > -1) {
                 _.includes(templateQueries, term) ? countTemplateQueries++ : countVerboseQueries++;
-                templateTerms.push({templateType: terms[index], objectType: terms[index + 1]});
+                templateTerms.push({ templateType: terms[index], objectType: terms[index + 1] });
             }
         });
         const validTemplateTypes = templateTerms.filter((objectType: ITemplateTerm) => this.metaService.isExistingObjectTypes(objectType.objectType));
-        queryParams.queryText = "";
+        queryParams.queryText = '';
         if (templateTerms.length === 1 && !templateTerms[0].objectType) {
-            errors.push("Invalid option supplied.");
+            errors.push('Invalid option supplied.');
         } else if (validTemplateTypes.length === 0) {
             errors.push(`Unknown object type "${templateTerms[0].objectType}".`);
         } else {
-            if ((_.includes(templateQueries, validTemplateTypes[0].templateType) && countTemplateQueries > 1)
-                || (_.includes(verboseQueries, validTemplateTypes[0].templateType) && countVerboseQueries > 1)) {
+            if (
+                (_.includes(templateQueries, validTemplateTypes[0].templateType) && countTemplateQueries > 1) ||
+                (_.includes(verboseQueries, validTemplateTypes[0].templateType) && countVerboseQueries > 1)
+            ) {
                 warnings.push(`The flag "${validTemplateTypes[0].templateType}" cannot be used multiple times.`);
             }
             queryParams.queriedTemplateObject = validTemplateTypes[0];
-            queryParams.queryText = validTemplateTypes[0].templateType + " " + validTemplateTypes[0].objectType;
+            queryParams.queryText = validTemplateTypes[0].templateType + ' ' + validTemplateTypes[0].objectType;
         }
-        return {errors, warnings};
+        return { errors, warnings };
     }
 
-    private validateQuery(queryParams: IQueryParameters): {errors: string[], warnings: string[]} {
+    private validateQuery(queryParams: IQueryParameters): { errors: string[]; warnings: string[] } {
         const warnings: string[] = [];
         const errors: string[] = [];
 
@@ -129,7 +129,7 @@ export class QueryParametersService {
             .map((item: string) => item.trim())
             .filter((item: string) => item.length)
             .map((item: string, idx: number): string => {
-                if (item.indexOf("--") === 0) {
+                if (item.indexOf('--') === 0) {
                     // parse long option
                     const short = HierarchyFlagsService.longHierarchyFlagToShort(item.substr(2));
                     if (short) {
@@ -141,28 +141,28 @@ export class QueryParametersService {
                                 errors.push(`ERROR:901: duplicate IP flags passed. More than one IP flag (-l, -L, -m, -M or -x) passed to the server.`);
                             }
                         }
-                    } else if (item === "--resource") {
-                        queryParams.source = "GRS";
-                    } else if (item === "--sources") {
+                    } else if (item === '--resource') {
+                        queryParams.source = 'GRS';
+                    } else if (item === '--sources') {
                         sourcesPos = idx + 1;
-                    } else if (item === "--no-referenced") {
+                    } else if (item === '--no-referenced') {
                         queryParams.doNotRetrieveRelatedObjects = true;
-                    } else if (item === "--reverse-domain") {
+                    } else if (item === '--reverse-domain') {
                         queryParams.reverseDomain = true;
-                    } else if (item === "--no-filtering") {
+                    } else if (item === '--no-filtering') {
                         queryParams.showFullObjectDetails = true;
-                    } else if (item === "--inverse") {
+                    } else if (item === '--inverse') {
                         invOptionPos = idx + 1;
-                    } else if (item === "--select-types") {
+                    } else if (item === '--select-types') {
                         if (typeOptionPos > -1) {
-                            errors.push("Error parsing object type");
+                            errors.push('Error parsing object type');
                         }
                         typeOptionPos = idx + 1;
                     } else if (!addedInvalidOptionWarning) {
                         addedInvalidOptionWarning = true;
                         errors.push(`Invalid option: ${item}. ERROR:111: invalid option supplied. Use help query to see the valid options.`);
                     }
-                } else if (item.indexOf("-") === 0 && item.length > 1) {
+                } else if (item.indexOf('-') === 0 && item.length > 1) {
                     const opts = item.substring(1);
                     for (let i = 0; i < opts.length; i++) {
                         // parse short options
@@ -175,23 +175,23 @@ export class QueryParametersService {
                                     errors.push(`ERROR:901: duplicate IP flags passed. More than one IP flag (-l, -L, -m, -M or -x) passed to the server.`);
                                 }
                             }
-                        } else if (opts[i] === "r") {
+                        } else if (opts[i] === 'r') {
                             queryParams.doNotRetrieveRelatedObjects = true;
-                        } else if (opts[i] === "d") {
+                        } else if (opts[i] === 'd') {
                             queryParams.reverseDomain = true;
-                        } else if (opts[i] === "B") {
+                        } else if (opts[i] === 'B') {
                             queryParams.showFullObjectDetails = true;
-                        } else if (opts[i] === "i") {
+                        } else if (opts[i] === 'i') {
                             invOptionPos = idx + 1;
-                        } else if (opts[i] === "T") {
+                        } else if (opts[i] === 'T') {
                             // -Tmntner, case without space
-                            if (i+1 < opts.length) {
+                            if (i + 1 < opts.length) {
                                 this.setType(opts.substring(1), queryParams);
                                 break;
                             } else {
                                 typeOptionPos = idx + 1;
                             }
-                        } else if (opts[i] === "s") {
+                        } else if (opts[i] === 's') {
                             sourcesPos = idx + 1;
                         } else if (!addedInvalidOptionWarning) {
                             addedInvalidOptionWarning = true;
@@ -202,11 +202,12 @@ export class QueryParametersService {
                     // either it's an source, an inverse or a type or the search term
                     if (idx === invOptionPos) {
                         // inverse option spec
-                        const invs = item.split(";")
+                        const invs = item
+                            .split(';')
                             .map((term) => term.trim())
                             .filter((term) => term.length);
                         invs.forEach((inv) => {
-                            const mapKey = inv.toUpperCase().replace(/-/g, "_");
+                            const mapKey = inv.toUpperCase().replace(/-/g, '_');
                             queryParams.inverse[mapKey] = true;
                         });
                         invOptionPos = -1;
@@ -223,41 +224,45 @@ export class QueryParametersService {
                 if (invOptionPos > -1) {
                     if (invOptionPos === typeOptionPos) {
                         // error: expecting inverse and types in the same position
-                        errors.push("Parse error. Inverse and type flags cannot be used together");
+                        errors.push('Parse error. Inverse and type flags cannot be used together');
                     } else if (idx > invOptionPos) {
-                        errors.push("Option: --inverse requires an argument");
+                        errors.push('Option: --inverse requires an argument');
                     }
                 }
                 if (invOptionPos > -1 && idx > invOptionPos) {
-                    errors.push("Option: --select-types requires an argument");
+                    errors.push('Option: --select-types requires an argument');
                 }
-                return "";
+                return '';
             });
         if (invOptionPos !== -1) {
-            errors.push("Inverse flag specified without value");
+            errors.push('Inverse flag specified without value');
         }
         if (typeOptionPos !== -1) {
-            errors.push("Object type flag specified without value");
+            errors.push('Object type flag specified without value');
         }
         if (sourcesPos !== -1) {
-            errors.push("Source specified without value");
+            errors.push('Source specified without value');
         }
-        if ((queryParams.queryText.indexOf("-s") > -1 || queryParams.queryText.indexOf("--sources") > -1) && queryParams.queryText.indexOf("--resource") > -1) {
+        if ((queryParams.queryText.indexOf('-s') > -1 || queryParams.queryText.indexOf('--sources') > -1) && queryParams.queryText.indexOf('--resource') > -1) {
             errors.push(`The flags "--resource" and "-s, --sources" cannot be used together.`);
         }
-        queryParams.queryText = terms.filter((term) => term.length).join(" ").trim();
+        queryParams.queryText = terms
+            .filter((term) => term.length)
+            .join(' ')
+            .trim();
         if (!queryParams.queryText) {
-            errors.push("No search term provided");
+            errors.push('No search term provided');
         }
-        return {errors, warnings};
+        return { errors, warnings };
     }
 
     private setType(item: string, queryParams: IQueryParameters) {
-        const types = item.split(/[;|,]/)
+        const types = item
+            .split(/[;|,]/)
             .map((term) => term.trim())
             .filter((term) => term.length);
         types.forEach((type) => {
-            const mapKey = type.toUpperCase().replace(/-/g, "_");
+            const mapKey = type.toUpperCase().replace(/-/g, '_');
             queryParams.types[mapKey] = true;
         });
     }

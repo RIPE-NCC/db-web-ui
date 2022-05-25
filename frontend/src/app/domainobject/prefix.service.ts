@@ -1,13 +1,11 @@
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {of, throwError, zip} from "rxjs";
-import {catchError} from "rxjs/operators";
-
-import {Address4, Address6} from "ip-address";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Address4, Address6 } from 'ip-address';
+import { of, throwError, zip } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class PrefixService {
-
     constructor(private http: HttpClient) {}
 
     /**
@@ -65,37 +63,34 @@ export class PrefixService {
         const zones = [];
 
         if (prefix && this.isValidPrefix(prefix)) {
-
             const ipv4 = new Address4(prefix);
             if (ipv4.isValid()) {
-
                 // It used to find the array position that starts with 0. That's why -1.
                 const fixedOctet = Math.ceil(ipv4.subnetMask / 8) - 1;
 
-                const startOctet = parseInt(ipv4.startAddress().address.split(".")[fixedOctet]);
-                const endOctet = parseInt(ipv4.endAddress().address.split(".")[fixedOctet]);
-                const reverseBNet = ipv4.addressMinusSuffix.split(".").slice(0, fixedOctet).reverse().join(".");
+                const startOctet = parseInt(ipv4.startAddress().address.split('.')[fixedOctet]);
+                const endOctet = parseInt(ipv4.endAddress().address.split('.')[fixedOctet]);
+                const reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0, fixedOctet).reverse().join('.');
 
                 for (i = startOctet; i <= endOctet; i++) {
-                    zoneName = i + "." + reverseBNet + ".in-addr.arpa";
-                    zones.push({name: "reverse-zone", value: zoneName});
+                    zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
+                    zones.push({ name: 'reverse-zone', value: zoneName });
                 }
-
             } else {
                 const ipv6 = new Address6(prefix);
                 if (!ipv6.error) {
-                    const startZone = ipv6.startAddress().reverseForm().split(".");
-                    const endZone = ipv6.endAddress().reverseForm().split(".");
-                    while (startZone[0] === "0" && endZone[0] === "f") {
+                    const startZone = ipv6.startAddress().reverseForm().split('.');
+                    const endZone = ipv6.endAddress().reverseForm().split('.');
+                    while (startZone[0] === '0' && endZone[0] === 'f') {
                         startZone.splice(0, 1);
                         endZone.splice(0, 1);
                     }
-                    const commonNibbles = startZone.slice(1).join(".");
+                    const commonNibbles = startZone.slice(1).join('.');
                     const startNibble = parseInt(startZone[0], 16);
                     const endNibble = parseInt(endZone[0], 16);
                     for (i = startNibble; i <= endNibble; i++) {
-                        zoneName = i.toString(16) + "." + commonNibbles;
-                        zones.push({name: "reverse-zone", value: zoneName});
+                        zoneName = i.toString(16) + '.' + commonNibbles;
+                        zones.push({ name: 'reverse-zone', value: zoneName });
                     }
                 }
             }
@@ -105,56 +100,52 @@ export class PrefixService {
 
     public checkNameserverAsync(ns: any, rDnsZone: any) {
         if (!ns) {
-            return throwError("checkNameserverAsync called without ns");
+            return throwError('checkNameserverAsync called without ns');
         }
 
         if (!rDnsZone) {
-            return throwError("checkNameserverAsync called without rDnsZone");
+            return throwError('checkNameserverAsync called without rDnsZone');
         }
 
         return this.http.get(`api/dns/status?ignore404=true&ns=${ns}&record=${rDnsZone}`);
     }
 
-    public isExactMatch(prefixAddress: Address4|Address6, whoisResourcesPrimaryKey: string): boolean {
-
+    public isExactMatch(prefixAddress: Address4 | Address6, whoisResourcesPrimaryKey: string): boolean {
         if (prefixAddress instanceof Address4) {
-            const prefixInRangeNotation = prefixAddress.startAddress().address + " - " + prefixAddress.endAddress().address;
+            const prefixInRangeNotation = prefixAddress.startAddress().address + ' - ' + prefixAddress.endAddress().address;
 
             return prefixInRangeNotation === whoisResourcesPrimaryKey;
         } else {
             const resourceAddress = this.getAddress(whoisResourcesPrimaryKey);
 
-            return ((resourceAddress.endAddress().address === prefixAddress.endAddress().address) &&
-                (resourceAddress.startAddress().address === prefixAddress.startAddress().address));
+            return (
+                resourceAddress.endAddress().address === prefixAddress.endAddress().address &&
+                resourceAddress.startAddress().address === prefixAddress.startAddress().address
+            );
         }
     }
 
     // creating domain with prefix ipv4/24 or ipv6/32 will create more reverse zones
     // For example, an allocation such as 10.155.16.0/22 will result in four reverse zones of /24
     // For example, an allocation such as 2001:db8::/29 will result in eight reverse zones of /32
-    public isSizeOfDomainBlock(address: Address4|Address6) {
+    public isSizeOfDomainBlock(address: Address4 | Address6) {
         if (address instanceof Address4) {
             return address.subnetMask === 24;
         } else {
-            return address.subnetMask === 32
+            return address.subnetMask === 32;
         }
     }
 
     public findExistingDomainsForPrefix(prefixStr: string) {
         const createRequest = (flag: string) => {
-            const params = new HttpParams()
-                .set("flags", flag)
-                .set("ignore404", String(true))
-                .set("query-string", prefixStr)
-                .set("type-filter", "domain");
-            return this.http.get("api/rest/search", {params, observe: "response"})
-                .pipe(catchError(err => of({})));
+            const params = new HttpParams().set('flags', flag).set('ignore404', String(true)).set('query-string', prefixStr).set('type-filter', 'domain');
+            return this.http.get('api/rest/search', { params, observe: 'response' }).pipe(catchError((err) => of({})));
         };
-        return zip(createRequest("drx"), createRequest("drM"))
+        return zip(createRequest('drx'), createRequest('drM'));
     }
 
     public getDomainCreationStatus(source: string) {
-        return this.http.get(`api/whois/domain-objects/${source}/status`, { observe: "response" });
+        return this.http.get(`api/whois/domain-objects/${source}/status`, { observe: 'response' });
     }
 
     private isValidIp4Cidr(address: any) {
@@ -171,7 +162,7 @@ export class PrefixService {
 
         // check that subnet mask covers all address bits
         const bits = address.getBitsBase2();
-        const last1 = bits.lastIndexOf("1");
+        const last1 = bits.lastIndexOf('1');
 
         return last1 < address.subnetMask;
     }
@@ -188,7 +179,7 @@ export class PrefixService {
 
         // check that subnet mask covers all address bits
         const bits = address.getBitsBase2();
-        const last1 = bits.lastIndexOf("1");
+        const last1 = bits.lastIndexOf('1');
 
         return last1 < address.subnetMask;
     }

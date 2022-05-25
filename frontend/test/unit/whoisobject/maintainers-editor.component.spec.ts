@@ -1,28 +1,26 @@
-import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {By} from "@angular/platform-browser";
-import {DebugElement} from "@angular/core";
-import {Router} from "@angular/router";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {of} from "rxjs";
-import {NgSelectModule} from "@ng-select/ng-select";
-import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
-import {MessageStoreService} from "../../../src/app/updatesweb/message-store.service";
-import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
-import {RestService} from "../../../src/app/updatesweb/rest.service"
-import {PropertiesService} from "../../../src/app/properties.service";
-import {PrefixService} from "../../../src/app/domainobject/prefix.service";
-import {MaintainersEditorComponent} from "../../../src/app/whois-object/maintainers-editor.component";
-import {SharedModule} from "../../../src/app/shared/shared.module";
-import {CoreModule} from "../../../src/app/core/core.module";
-import {AttributeSharedService} from "../../../src/app/attribute/attribute-shared.service";
-import {WebUpdatesCommonsService} from "../../../src/app/updatesweb/web-updates-commons.service";
-import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { of } from 'rxjs';
+import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
+import { AttributeSharedService } from '../../../src/app/attribute/attribute-shared.service';
+import { CoreModule } from '../../../src/app/core/core.module';
+import { PrefixService } from '../../../src/app/domainobject/prefix.service';
+import { PropertiesService } from '../../../src/app/properties.service';
+import { SharedModule } from '../../../src/app/shared/shared.module';
+import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
+import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
+import { RestService } from '../../../src/app/updatesweb/rest.service';
+import { WebUpdatesCommonsService } from '../../../src/app/updatesweb/web-updates-commons.service';
+import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
+import { MaintainersEditorComponent } from '../../../src/app/whois-object/maintainers-editor.component';
 
-describe("MaintainersEditorComponent", () => {
-
-    describe("- create mode", () => {
-
+describe('MaintainersEditorComponent', () => {
+    describe('- create mode', () => {
         let httpMock: HttpTestingController;
         let component: MaintainersEditorComponent;
         let fixture: ComponentFixture<MaintainersEditorComponent>;
@@ -31,17 +29,11 @@ describe("MaintainersEditorComponent", () => {
         const BACKSPACE_KEYCODE = 8;
 
         beforeEach(() => {
-            modalMock = jasmine.createSpyObj("NgbModal", ["open"]);
-            webUpdatesCommonsServiceMock = jasmine.createSpyObj("WebUpdatesCommonsService", ["performAuthentication"]);
+            modalMock = jasmine.createSpyObj('NgbModal', ['open']);
+            webUpdatesCommonsServiceMock = jasmine.createSpyObj('WebUpdatesCommonsService', ['performAuthentication']);
             TestBed.configureTestingModule({
-                imports: [
-                    SharedModule,
-                    CoreModule,
-                    NgSelectModule,
-                    HttpClientTestingModule],
-                declarations: [
-                    MaintainersEditorComponent
-                ],
+                imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
+                declarations: [MaintainersEditorComponent],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,
@@ -49,17 +41,17 @@ describe("MaintainersEditorComponent", () => {
                     MessageStoreService,
                     RestService,
                     {
-                        provide: Router, useValue: {
-                            navigate: () => {
-                            }
-                        }
+                        provide: Router,
+                        useValue: {
+                            navigate: () => {},
+                        },
                     },
                     PropertiesService,
                     PrefixService,
                     WebUpdatesCommonsService,
                     UserInfoService,
-                    {provide: NgbModal, useValue: modalMock}
-                ]
+                    { provide: NgbModal, useValue: modalMock },
+                ],
             });
             httpMock = TestBed.inject(HttpTestingController);
             fixture = TestBed.createComponent(MaintainersEditorComponent);
@@ -71,120 +63,116 @@ describe("MaintainersEditorComponent", () => {
             httpMock.verify();
         });
 
-        it("should ask for password after add non-sso maintainer with password - create case.", async () => {
-            modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
-            spyOn(component.restService, "fetchMntnersForSSOAccount")
-                .and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
-            spyOn(component, "onMntnerRemoved");
+        it('should ask for password after add non-sso maintainer with password - create case.', async () => {
+            modalMock.open.and.returnValue({ componentInstance: {}, result: of().toPromise() });
+            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
+            spyOn(component, 'onMntnerRemoved');
             fixture.detectChanges();
             await fixture.whenStable();
             // simulate manual removal of the last and only mntner
-            const mntInput = fixture.debugElement.query(By.css("ng-select"));
+            const mntInput = fixture.debugElement.query(By.css('ng-select'));
             triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
             expect(component.onMntnerRemoved).toHaveBeenCalled();
             expect(component.mntners.object.length === 0).toBeTruthy();
 
             // simulate manual addition of a new mntner with only md5
-            component.mntners.object = [{"mine": false, "type": "mntner", "auth": ["MD5"], "key": "TEST-MNT-1"}];
-            component.onMntnerAdded({"mine": false, "type": "mntner", "auth": ["MD5"], "key": "TEST-MNT-1"});
+            component.mntners.object = [{ mine: false, type: 'mntner', auth: ['MD5'], key: 'TEST-MNT-1' }];
+            component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['MD5'], key: 'TEST-MNT-1' });
             await fixture.whenStable();
             expect(modalMock.open).toHaveBeenCalled();
         });
 
-        it("should add a null when removing the last maintainer.", async () => {
-            spyOn(component.restService, "fetchMntnersForSSOAccount")
-                .and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
+        it('should add a null when removing the last maintainer.', async () => {
+            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
             fixture.detectChanges();
             expect(component.mntners.object.length).toEqual(1);
-            expect(component.mntners.object[0].key).toEqual("TEST-MNT");
+            expect(component.mntners.object[0].key).toEqual('TEST-MNT');
             // remove last mntner
             component.onMntnerRemoved(component.mntners.object[0]);
             await fixture.whenStable();
-            expect(component.attributes.find(attr => attr.name === "mnt-by").value).toEqual("");
+            expect(component.attributes.find((attr) => attr.name === 'mnt-by').value).toEqual('');
         });
 
-        it("should add the selected maintainers to the object emit update-mntners-clbk", async () => {
-            spyOn(component.updateMntnersClbk, "emit");
-            spyOn(component.mntnerService, "needsPasswordAuthentication").and.returnValue(false);
+        it('should add the selected maintainers to the object emit update-mntners-clbk', async () => {
+            spyOn(component.updateMntnersClbk, 'emit');
+            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(false);
             fixture.detectChanges();
             expect(component.mntners.object.length).toEqual(0);
-            component.onMntnerAdded({"mine": false, "type": "mntner", "auth": ["SSO"], "key": "TEST-MNT-1"});
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
+            component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' });
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
             await fixture.whenStable();
             expect(component.mntners.object.length).toEqual(2);
             expect(component.updateMntnersClbk.emit).toHaveBeenCalled();
         });
 
-        it("should remove the selected maintainers from the object emit update-mntners-clbk", async () => {
-            spyOn(component.updateMntnersClbk, "emit");
-            spyOn(component.mntnerService, "needsPasswordAuthentication").and.returnValue(false);
+        it('should remove the selected maintainers from the object emit update-mntners-clbk', async () => {
+            spyOn(component.updateMntnersClbk, 'emit');
+            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(false);
             fixture.detectChanges();
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([{
-                "mine": false,
-                "type": "mntner",
-                "auth": ["MD5"],
-                "key": "TEST-MNT-1"
-            }]);
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
+                {
+                    mine: false,
+                    type: 'mntner',
+                    auth: ['MD5'],
+                    key: 'TEST-MNT-1',
+                },
+            ]);
             await fixture.whenStable();
-            component.mntners.object = [{"mine": false, "type": "mntner", "auth": ["SSO"], "key": "TEST-MNT-1"}];
+            component.mntners.object = [{ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' }];
             expect(component.mntners.object.length).toEqual(1);
-            component.onMntnerRemoved({"mine": false, "type": "mntner", "auth": ["SSO"], "key": "TEST-MNT-1"});
+            component.onMntnerRemoved({ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' });
             await fixture.whenStable();
             expect(component.mntners.object.length).toEqual(0);
             expect(component.mntners.sso.length).toEqual(1);
             expect(component.updateMntnersClbk.emit).toHaveBeenCalled();
         });
 
-        it("should remove mnt-by on backspace one by one", async () => {
-            spyOn(component.restService, "fetchMntnersForSSOAccount")
-                .and.returnValue(of(USER_WITH_MORE_ASSOCIATED_MNT_MOCK));
-            spyOn(component, "onMntnerRemoved").and.callThrough();
+        it('should remove mnt-by on backspace one by one', async () => {
+            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_MORE_ASSOCIATED_MNT_MOCK));
+            spyOn(component, 'onMntnerRemoved').and.callThrough();
             fixture.detectChanges();
             await fixture.whenStable();
             expect(component.attributes.length).toBe(12);
             fixture.detectChanges();
-            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(4);
-            const mntInput = fixture.debugElement.query(By.css("ng-select"));
+            expect(fixture.debugElement.queryAll(By.css('#selectMaintainerDropdown .ng-value')).length).toBe(4);
+            const mntInput = fixture.debugElement.query(By.css('ng-select'));
             triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
             expect(component.onMntnerRemoved).toHaveBeenCalled(); //method which remove mnt-by from attributes
             fixture.detectChanges();
-            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(3);
+            expect(fixture.debugElement.queryAll(By.css('#selectMaintainerDropdown .ng-value')).length).toBe(3);
             expect(component.attributes.length).toBe(11);
             triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
             fixture.detectChanges();
-            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(2);
+            expect(fixture.debugElement.queryAll(By.css('#selectMaintainerDropdown .ng-value')).length).toBe(2);
             expect(component.attributes.length).toBe(10);
         });
 
-        it("should populate mntner data", async () => {
-            spyOn(component.restService, "fetchMntnersForSSOAccount")
-                .and.returnValue(of(MNTNERS_SSO_ACCOUNT_RESPONS));
+        it('should populate mntner data', async () => {
+            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(MNTNERS_SSO_ACCOUNT_RESPONS));
             fixture.detectChanges();
             await fixture.whenStable();
             expect(component.mntners.sso.length).toBe(2);
             expect(component.mntners.objectOriginal.length).toBe(0);
             expect(component.mntners.object.length).toBe(2);
 
-            expect(component.mntners.sso[0].key).toEqual("TEST-MNT");
-            expect(component.mntners.sso[0].type).toEqual("mntner");
-            expect(component.mntners.sso[1].key).toEqual("TESTSSO-MNT");
-            expect(component.mntners.sso[1].type).toEqual("mntner");
+            expect(component.mntners.sso[0].key).toEqual('TEST-MNT');
+            expect(component.mntners.sso[0].type).toEqual('mntner');
+            expect(component.mntners.sso[1].key).toEqual('TESTSSO-MNT');
+            expect(component.mntners.sso[1].type).toEqual('mntner');
 
-            expect(component.mntners.object[0].key).toEqual("TEST-MNT");
-            expect(component.mntners.object[0].type).toEqual("mntner");
+            expect(component.mntners.object[0].key).toEqual('TEST-MNT');
+            expect(component.mntners.object[0].type).toEqual('mntner');
             expect(component.mntners.object[0].mine).toEqual(true);
-            expect(component.mntners.object[0].auth).toEqual(["SSO"]);
+            expect(component.mntners.object[0].auth).toEqual(['SSO']);
 
-            expect(component.mntners.object[1].key).toEqual("TESTSSO-MNT");
-            expect(component.mntners.object[1].type).toEqual("mntner");
+            expect(component.mntners.object[1].key).toEqual('TESTSSO-MNT');
+            expect(component.mntners.object[1].type).toEqual('mntner');
             expect(component.mntners.object[1].mine).toEqual(true);
-            expect(component.mntners.object[1].auth).toEqual(["MD5-PW", "SSO"]);
-
+            expect(component.mntners.object[1].auth).toEqual(['MD5-PW', 'SSO']);
         });
     });
 
-    describe("- modify mode", () => {
-
+    describe('- modify mode', () => {
         let httpMock: HttpTestingController;
         let component: MaintainersEditorComponent;
         let fixture: ComponentFixture<MaintainersEditorComponent>;
@@ -193,17 +181,11 @@ describe("MaintainersEditorComponent", () => {
         const BACKSPACE_KEYCODE = 8;
 
         beforeEach(() => {
-            modalMock = jasmine.createSpyObj("NgbModal", ["open"]);
-            webUpdatesCommonsServiceMock = jasmine.createSpyObj("WebUpdatesCommonsService", ["performAuthentication"]);
+            modalMock = jasmine.createSpyObj('NgbModal', ['open']);
+            webUpdatesCommonsServiceMock = jasmine.createSpyObj('WebUpdatesCommonsService', ['performAuthentication']);
             TestBed.configureTestingModule({
-                imports: [
-                    SharedModule,
-                    CoreModule,
-                    NgSelectModule,
-                    HttpClientTestingModule],
-                declarations: [
-                    MaintainersEditorComponent
-                ],
+                imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
+                declarations: [MaintainersEditorComponent],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,
@@ -211,17 +193,17 @@ describe("MaintainersEditorComponent", () => {
                     MessageStoreService,
                     RestService,
                     {
-                        provide: Router, useValue: {
-                            navigate: () => {
-                            }
-                        }
+                        provide: Router,
+                        useValue: {
+                            navigate: () => {},
+                        },
                     },
                     PropertiesService,
                     PrefixService,
                     WebUpdatesCommonsService,
                     UserInfoService,
-                    {provide: NgbModal, useValue: modalMock}
-                ]
+                    { provide: NgbModal, useValue: modalMock },
+                ],
             });
             httpMock = TestBed.inject(HttpTestingController);
             fixture = TestBed.createComponent(MaintainersEditorComponent);
@@ -233,21 +215,23 @@ describe("MaintainersEditorComponent", () => {
             httpMock.verify();
         });
 
-        it("should report error when fetching maintainer details fails", async () => {
+        it('should report error when fetching maintainer details fails', async () => {
             fixture.detectChanges();
             // get SSO maintainers
-            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
-                {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW"], mine: true}
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
+                { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
+                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true },
             ]);
             // fail to get maintainer details
-            httpMock.expectOne({
-                method: "GET",
-                url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
-                .flush({}, {status: 404, statusText: "error"});
+            httpMock
+                .expectOne({
+                    method: 'GET',
+                    url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT',
+                })
+                .flush({}, { status: 404, statusText: 'error' });
             await fixture.whenStable();
             expect(component.alertsService.alerts.errors.length > 0).toBeTruthy();
-            expect(component.alertsService.alerts.errors[0].plainText).toEqual("Error fetching maintainer details");
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual('Error fetching maintainer details');
         });
     });
 
@@ -255,170 +239,180 @@ describe("MaintainersEditorComponent", () => {
         element.triggerEventHandler('keydown', {
             which: which,
             key: key,
-            preventDefault: () => {
-            },
+            preventDefault: () => {},
         });
     }
 });
 
 const NG_MODEL = () => ({
-    "attributes": {
-        "attribute": [
+    attributes: {
+        attribute: [
             {
-                "name": "prefix",
-                "value": "",
-                "$$error": "",
-                "$$info": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": false,
-                "$$id": "attr-0"
+                name: 'prefix',
+                value: '',
+                $$error: '',
+                $$info: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: false,
+                $$id: 'attr-0',
             },
             {
-                "name": "nserver",
-                "value": "",
-                "$$error": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": false,
-                "$$id": "attr-1"
+                name: 'nserver',
+                value: '',
+                $$error: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: false,
+                $$id: 'attr-1',
             },
             {
-                "name": "nserver",
-                "value": "",
-                "$$error": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": false,
-                "$$id": "attr-2"
+                name: 'nserver',
+                value: '',
+                $$error: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: false,
+                $$id: 'attr-2',
             },
             {
-                "name": "reverse-zone",
-                "value": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": false,
-                "$$id": "attr-3"
+                name: 'reverse-zone',
+                value: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: false,
+                $$id: 'attr-3',
             },
             {
-                "name": "admin-c",
-                "value": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": false,
-                "$$id": "attr-4"
+                name: 'admin-c',
+                value: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: false,
+                $$id: 'attr-4',
             },
             {
-                "name": "tech-c",
-                "value": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": false,
-                "$$id": "attr-5"
+                name: 'tech-c',
+                value: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: false,
+                $$id: 'attr-5',
             },
             {
-                "name": "zone-c",
-                "value": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": false,
-                "$$id": "attr-6"
+                name: 'zone-c',
+                value: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: false,
+                $$id: 'attr-6',
             },
             {
-                "name": "mnt-by",
-                "value": "",
-                "$$invalid": true,
-                "$$hidden": false,
-                "$$disable": false,
-                "$$id": "attr-7"
+                name: 'mnt-by',
+                value: '',
+                $$invalid: true,
+                $$hidden: false,
+                $$disable: false,
+                $$id: 'attr-7',
             },
             {
-                "name": "source",
-                "value": "",
-                "$$invalid": true,
-                "$$hidden": true,
-                "$$disable": true,
-                "$$id": "attr-8"
-            }
-        ]
+                name: 'source',
+                value: '',
+                $$invalid: true,
+                $$hidden: true,
+                $$disable: true,
+                $$id: 'attr-8',
+            },
+        ],
     },
-    "source": {
-        "id": "RIPE"
-    }
+    source: {
+        id: 'RIPE',
+    },
 });
 
 const ORG_MOCK = () => ({
-    "type": "organisation",
-    "link": {
-        "type": "locator",
-        "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE"
+    type: 'organisation',
+    link: {
+        type: 'locator',
+        href: 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE',
     },
-    "source": {
-        "id": "ripe"
+    source: {
+        id: 'ripe',
     },
-    "primary-key": {
-        "attribute": [{
-            "name": "organisation",
-            "value": "ORG-UA300-RIPE"
-        }]
-    },
-    "attributes": {
-        "attribute": [{
-            "name": "organisation",
-            "value": "ORG-UA300-RIPE"
-        }, {
-            "name": "org-name",
-            "value": "uhuuu"
-        }, {
-            "name": "org-type",
-            "value": "OTHER"
-        }, {
-            "name": "address",
-            "value": "Singel 258"
-        }, {
-            "name": "e-mail",
-            "value": "tdacruzper@ripe.net"
-        }, {
-            "link": {
-                "type": "locator",
-                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+    'primary-key': {
+        attribute: [
+            {
+                name: 'organisation',
+                value: 'ORG-UA300-RIPE',
             },
-            "name": "mnt-ref",
-            "value": "IS-NET-MNT",
-            "referenced-type": "mntner"
-        }, {
-            "link": {
-                "type": "locator",
-                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+        ],
+    },
+    attributes: {
+        attribute: [
+            {
+                name: 'organisation',
+                value: 'ORG-UA300-RIPE',
             },
-            "name": "mnt-by",
-            "value": "TEST-MNT",
-            "referenced-type": "mntner"
-        }, {
-            "name": "created",
-            "value": "2015-12-02T14:01:06Z"
-        }, {
-            "name": "last-modified",
-            "value": "2015-12-02T14:01:06Z"
-        }, {
-            "name": "source",
-            "value": "RIPE"
-        }]
-    }
+            {
+                name: 'org-name',
+                value: 'uhuuu',
+            },
+            {
+                name: 'org-type',
+                value: 'OTHER',
+            },
+            {
+                name: 'address',
+                value: 'Singel 258',
+            },
+            {
+                name: 'e-mail',
+                value: 'tdacruzper@ripe.net',
+            },
+            {
+                link: {
+                    type: 'locator',
+                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT',
+                },
+                name: 'mnt-ref',
+                value: 'IS-NET-MNT',
+                'referenced-type': 'mntner',
+            },
+            {
+                link: {
+                    type: 'locator',
+                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT',
+                },
+                name: 'mnt-by',
+                value: 'TEST-MNT',
+                'referenced-type': 'mntner',
+            },
+            {
+                name: 'created',
+                value: '2015-12-02T14:01:06Z',
+            },
+            {
+                name: 'last-modified',
+                value: '2015-12-02T14:01:06Z',
+            },
+            {
+                name: 'source',
+                value: 'RIPE',
+            },
+        ],
+    },
 });
 
 const USER_WITH_MORE_ASSOCIATED_MNT_MOCK = [
-    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO"], "key": "TE-MNT"},
-    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO", "PGPKEY-261AA554", "PGPKEY-F91A0E57"], "key": "MAINT-AFILIAS"},
-    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO"], "key": "BBC-MNT"},
-    {"mine": true, "type": "mntner", "auth": ["SSO"], "key": "TEST-MNT"}
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TE-MNT' },
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO', 'PGPKEY-261AA554', 'PGPKEY-F91A0E57'], key: 'MAINT-AFILIAS' },
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'BBC-MNT' },
+    { mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' },
 ];
 
-const USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK = [
-    {"mine": true, "type": "mntner", "auth": ["SSO"], "key": "TEST-MNT"}
-];
+const USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK = [{ mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' }];
 
 const MNTNERS_SSO_ACCOUNT_RESPONS = [
-    {key:"TEST-MNT", type: "mntner", auth:["SSO"], mine:true},
-    {key:"TESTSSO-MNT", type: "mntner", auth:["MD5-PW","SSO"], mine:true}
+    { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
+    { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO'], mine: true },
 ];

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 
 export interface IFlag {
     colour?: string;
@@ -7,11 +7,10 @@ export interface IFlag {
 }
 
 @Component({
-    selector: "flag",
-    templateUrl: "./flag.component.html",
+    selector: 'flag',
+    templateUrl: './flag.component.html',
 })
 export class FlagComponent implements OnInit {
-
     @Input()
     public text: string;
     @Input()
@@ -21,8 +20,7 @@ export class FlagComponent implements OnInit {
     public isOpen = false;
     public timer: any;
 
-    constructor() {
-    }
+    constructor() {}
 
     ngOnInit() {
         if (this.uppercase) {

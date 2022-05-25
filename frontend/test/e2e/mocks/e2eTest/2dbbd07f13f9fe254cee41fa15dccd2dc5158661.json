@@ -1,97 +1,97 @@
 {
-  "requestUrl": "/api/whois-internal/api/resources/aut-num/AS36867",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "resources": [],
-    "totalNumberOfResources": 0,
-    "filteredSize": 0,
-    "pageSize": 0,
-    "object": {
-      "type": "aut-num",
-      "link": {
-        "type": "locator",
-        "href": "http://rest-dev.db.ripe.net/ripe-nonauth/aut-num/AS36867"
-      },
-      "source": {
-        "id": "ripe-nonauth"
-      },
-      "primary-key": {
-        "attribute": [
-          {
-            "name": "aut-num",
-            "value": "AS36867"
-          }
-        ]
-      },
-      "attributes": {
-        "attribute": [
-          {
-            "name": "aut-num",
-            "value": "AS36867"
-          },
-          {
-            "name": "as-name",
-            "value": "Kokonet-BGP"
-          },
-          {
-            "name": "descr",
-            "value": "Kokonet Ltd Seychelles ISP"
-          },
-          {
+    "requestUrl": "/api/whois-internal/api/resources/aut-num/AS36867",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "resources": [],
+        "totalNumberOfResources": 0,
+        "filteredSize": 0,
+        "pageSize": 0,
+        "object": {
+            "type": "aut-num",
             "link": {
-              "type": "locator",
-              "href": "https://rest-dev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+                "type": "locator",
+                "href": "http://rest-dev.db.ripe.net/ripe-nonauth/aut-num/AS36867"
             },
-            "name": "org",
-            "value": "ORG-Sb3-RIPE",
-            "referenced-type": "organisation"
-          },
-          {
-            "link": {
-              "type": "locator",
-              "href": "https://rest-dev.db.ripe.net/ripe/role/SNS1-RIPE"
+            "source": {
+                "id": "ripe-nonauth"
             },
-            "name": "admin-c",
-            "value": "SNS1-RIPE",
-            "referenced-type": "role"
-          },
-          {
-            "link": {
-              "type": "locator",
-              "href": "https://rest-dev.db.ripe.net/ripe/person/JK9622-RIPE"
+            "primary-key": {
+                "attribute": [
+                    {
+                        "name": "aut-num",
+                        "value": "AS36867"
+                    }
+                ]
             },
-            "name": "tech-c",
-            "value": "JK9622-RIPE",
-            "referenced-type": "person"
-          },
-          {
-            "name": "status",
-            "value": "OTHER"
-          },
-          {
-            "link": {
-              "type": "locator",
-              "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/KOKONET-MNT"
-            },
-            "name": "mnt-by",
-            "value": "KOKONET-MNT",
-            "referenced-type": "mntner"
-          },
-          {
-            "name": "created",
-            "value": "2005-08-26T10:56:16Z"
-          },
-          {
-            "name": "last-modified",
-            "value": "2018-07-30T10:34:16Z"
-          },
-          {
-            "name": "source",
-            "value": "RIPE-NONAUTH"
-          }
-        ]
-      }
+            "attributes": {
+                "attribute": [
+                    {
+                        "name": "aut-num",
+                        "value": "AS36867"
+                    },
+                    {
+                        "name": "as-name",
+                        "value": "Kokonet-BGP"
+                    },
+                    {
+                        "name": "descr",
+                        "value": "Kokonet Ltd Seychelles ISP"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-dev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+                        },
+                        "name": "org",
+                        "value": "ORG-Sb3-RIPE",
+                        "referenced-type": "organisation"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-dev.db.ripe.net/ripe/role/SNS1-RIPE"
+                        },
+                        "name": "admin-c",
+                        "value": "SNS1-RIPE",
+                        "referenced-type": "role"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-dev.db.ripe.net/ripe/person/JK9622-RIPE"
+                        },
+                        "name": "tech-c",
+                        "value": "JK9622-RIPE",
+                        "referenced-type": "person"
+                    },
+                    {
+                        "name": "status",
+                        "value": "OTHER"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/KOKONET-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "KOKONET-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "name": "created",
+                        "value": "2005-08-26T10:56:16Z"
+                    },
+                    {
+                        "name": "last-modified",
+                        "value": "2018-07-30T10:34:16Z"
+                    },
+                    {
+                        "name": "source",
+                        "value": "RIPE-NONAUTH"
+                    }
+                ]
+            }
+        }
     }
-  }
 }

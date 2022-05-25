@@ -19,7 +19,7 @@ export interface IAttributeModel {
     name: string;
     value?: string | any;
     link?: IWhoisLinkModel;
-    "referenced-type"?: string;
+    'referenced-type'?: string;
     $$error?: string;
     $$info?: string;
     $$invalid?: boolean;
@@ -29,18 +29,18 @@ export interface IAttributeModel {
     $$statusOptionList?: IStatusOption[];
     $$hidden?: boolean;
     $$disable?: boolean;
-    $$hashKey?:string;
+    $$hashKey?: string;
     $$meta?: {
-        $$idx?: number,
-        $$mandatory?: boolean,
-        $$multiple?: boolean,
-        $$primaryKey?: boolean,
-        $$refs?: string[],
-        $$searchable?: boolean,
-        $$isEnum?: boolean,
-        $$isLir?: boolean,
-        $$disable?: boolean,
-        $$short?: string
+        $$idx?: number;
+        $$mandatory?: boolean;
+        $$multiple?: boolean;
+        $$primaryKey?: boolean;
+        $$refs?: string[];
+        $$searchable?: boolean;
+        $$isEnum?: boolean;
+        $$isLir?: boolean;
+        $$disable?: boolean;
+        $$short?: string;
     };
 }
 
@@ -55,57 +55,59 @@ export interface IWhoisObjectModel {
     source: {
         id: string;
     };
-    "primary-key"?: {
+    'primary-key'?: {
         attribute: IAttributeModel[];
     };
     attributes: {
         attribute: IAttributeModel[];
     };
-    "resource-holder"?: {
-        key: string,
-        name: string
-    }
-    "abuse-contact"? : IAbuseCModel;
+    'resource-holder'?: {
+        key: string;
+        name: string;
+    };
+    'abuse-contact'?: IAbuseCModel;
     managed?: boolean;
     version?: IVersion;
 }
 
 interface IAbuseCModel {
-    "key" : string,
-    "email" : string,
-    "suspect"? : boolean,
-    "org-id"? : string
+    key: string;
+    email: string;
+    suspect?: boolean;
+    'org-id'?: string;
 }
 
 export interface IVersion {
-    version: string
-    timestamp: string
+    version: string;
+    timestamp: string;
 }
 
 export interface IWhoisResponseModel {
     link?: IWhoisLinkModel;
     errormessages?: {
-        errormessage: IErrorMessageModel[],
+        errormessage: IErrorMessageModel[];
     };
     service?: {
-        name: string,
+        name: string;
     };
     parameters?: {
-        "inverse-lookup": {},
-        "type-filters": {},
-        flags: {},
-        "query-strings": {
-            "query-string": [{
-                value: string;
-            }],
-        },
-        sources: {},
+        'inverse-lookup': {};
+        'type-filters': {};
+        flags: {};
+        'query-strings': {
+            'query-string': [
+                {
+                    value: string;
+                },
+            ];
+        };
+        sources: {};
     };
     objects?: {
         object: IWhoisObjectModel[];
     };
-    "terms-and-conditions"?: any;
-    version?: IVersion
+    'terms-and-conditions'?: any;
+    version?: IVersion;
 }
 
 export interface IMntByModel {

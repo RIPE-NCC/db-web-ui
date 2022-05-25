@@ -1,16 +1,12 @@
 {
-  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=SHRYANE-MNT",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": [
-    {
-      "key": "SHRYANE-MNT",
-      "type": "mntner",
-      "auth": [
-        "MD5-PW",
-        "SSO",
-        "PGPKEY-28F6CD6C"
-      ]
-    }
-  ]
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=SHRYANE-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "SHRYANE-MNT",
+            "type": "mntner",
+            "auth": ["MD5-PW", "SSO", "PGPKEY-28F6CD6C"]
+        }
+    ]
 }

@@ -1,11 +1,10 @@
-import {EventEmitter, Injectable} from "@angular/core";
-import {IAttributeModel} from "../shared/whois-response-type.model";
+import { EventEmitter, Injectable } from '@angular/core';
+import { IAttributeModel } from '../shared/whois-response-type.model';
 
 @Injectable()
 export class AttributeSharedService {
-
     public attributeStateChanged$: EventEmitter<IAttributeModel>;
-    public domainPrefixOk$:  EventEmitter<string>;
+    public domainPrefixOk$: EventEmitter<string>;
 
     private attribute: IAttributeModel;
     private domainPrefix: string;

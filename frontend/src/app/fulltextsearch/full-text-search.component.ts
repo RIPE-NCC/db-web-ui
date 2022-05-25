@@ -1,23 +1,22 @@
-import {FullTextSearchService} from "./full-text-search.service";
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import * as _ from "lodash";
-import {WhoisMetaService} from "../shared/whois-meta.service";
-import {FullTextResponseService} from "./full-text-response.service";
-import {IAttributeModel, IVersion} from "../shared/whois-response-type.model";
-import {IResultSummary, ISearchResponseModel} from "./types.model";
-import {PropertiesService} from "../properties.service";
-import {Labels} from "../label.constants";
-import {AlertsService} from "../shared/alert/alerts.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+import { Labels } from '../label.constants';
+import { PropertiesService } from '../properties.service';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { WhoisMetaService } from '../shared/whois-meta.service';
+import { IAttributeModel, IVersion } from '../shared/whois-response-type.model';
+import { FullTextResponseService } from './full-text-response.service';
+import { FullTextSearchService } from './full-text-search.service';
+import { IResultSummary, ISearchResponseModel } from './types.model';
 
 @Component({
-    selector: "full-text-search",
-    templateUrl: "./full-text-search.component.html",
+    selector: 'full-text-search',
+    templateUrl: './full-text-search.component.html',
 })
 export class FullTextSearchComponent implements OnInit, OnDestroy {
-
     // In
     public ftquery: string;
-    public advmode = "all";
+    public advmode = 'all';
     public advancedSearch = false;
     public selectedObjectTypes: string[] = [];
     public selectedAttrs: string[] = [];
@@ -37,19 +36,21 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
     // can share it (via 2-way binding) and will be sync'd.
     public navbarSyncArray: number[] = [];
 
-    private lastHash = "";
+    private lastHash = '';
 
     // attributes which are skipped in fulltext search on whois side
-    private readonly attrsNotConsiderableByWhois: string[] = ["source", "certif", "changed"];
+    private readonly attrsNotConsiderableByWhois: string[] = ['source', 'certif', 'changed'];
 
-    constructor(private searchService: FullTextSearchService,
-                private fullTextResponseService: FullTextResponseService,
-                private whoisMetaService: WhoisMetaService,
-                public properties: PropertiesService,
-                public alertsService: AlertsService) {}
+    constructor(
+        private searchService: FullTextSearchService,
+        private fullTextResponseService: FullTextResponseService,
+        private whoisMetaService: WhoisMetaService,
+        public properties: PropertiesService,
+        public alertsService: AlertsService,
+    ) {}
 
     public ngOnInit() {
-        this.ftquery = "";
+        this.ftquery = '';
         this.objectTypes = Object.keys(this.whoisMetaService.objectTypesMap);
         this.objectMetadata = FullTextSearchComponent.parseMetadataToLists(this.whoisMetaService.objectTypesMap);
         this.numResultsPerPage = 10;
@@ -61,7 +62,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     public searchClicked() {
         if (!this.ftquery.trim()) {
-            this.alertsService.setGlobalWarning(Labels["fullText.emptyQueryText.text"]);
+            this.alertsService.setGlobalWarning(Labels['fullText.emptyQueryText.text']);
             return;
         }
         this.performSearch(0);
@@ -98,7 +99,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
             }
         }
         this.selectedObjectTypes = [];
-        this.selectedObjectTypes.push(this.objectTypes.find(t => t === type.toLowerCase()));
+        this.selectedObjectTypes.push(this.objectTypes.find((t) => t === type.toLowerCase()));
         this.objectTypeChanged();
         this.performSearch(0);
     }
@@ -108,18 +109,15 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         if (!this.advancedSearch) {
             this.selectNone();
         }
-        this.searchService.doSearch(
-            this.ftquery.trim(),
-            start,
-            this.advancedSearch,
-            this.advmode,
-            this.selectedObjectTypes || [],
-            this.selectedAttrs || [])
-            .subscribe((resp: ISearchResponseModel) => this.handleResponse(resp),
+        this.searchService
+            .doSearch(this.ftquery.trim(), start, this.advancedSearch, this.advmode, this.selectedObjectTypes || [], this.selectedAttrs || [])
+            .subscribe(
+                (resp: ISearchResponseModel) => this.handleResponse(resp),
                 (err) => {
-                this.results = [];
-                console.error("performSearch error", err);
-            });
+                    this.results = [];
+                    console.error('performSearch error', err);
+                },
+            );
     }
 
     private handleResponse(resp: ISearchResponseModel) {
@@ -134,7 +132,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         this.resultSummary = responseModel.summary;
         this.whoisVersion = this.fullTextResponseService.getVersionFromResponse(resp);
         if (this.results.length === 0) {
-            this.alertsService.setGlobalWarning(Labels["fullText.emptyRresult.text"]);
+            this.alertsService.setGlobalWarning(Labels['fullText.emptyRresult.text']);
         }
     }
 
@@ -161,7 +159,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
                 }
             }
         }
-        const allAttrsConsiderableByWhois = allAttrs.filter((item)  => this.attrsNotConsiderableByWhois.indexOf(item) < 0);
+        const allAttrsConsiderableByWhois = allAttrs.filter((item) => this.attrsNotConsiderableByWhois.indexOf(item) < 0);
         return allAttrsConsiderableByWhois.sort();
     }
 
@@ -170,8 +168,8 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
             this.ftquery,
             this.advmode,
             this.advancedSearch,
-            this.selectedObjectTypes.map((t) => t).join(""),
-            this.selectedAttrs.map((t) => t).join(""),
-        ].join("");
+            this.selectedObjectTypes.map((t) => t).join(''),
+            this.selectedAttrs.map((t) => t).join(''),
+        ].join('');
     }
 }

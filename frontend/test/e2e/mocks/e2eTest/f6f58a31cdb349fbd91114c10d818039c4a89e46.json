@@ -1,32 +1,32 @@
 {
-  "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-VA397-RIPE&type=inetnum",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "stats": {
-      "numInetnums": 1,
-      "numInet6nums": 0,
-      "numAutnums": 0,
-      "numSponsoredInetnums": 0,
-      "numSponsoredInet6nums": 0,
-      "numSponsoredAutnums": 0
-    },
-    "orgId": "ORG-VA397-RIPE",
-    "resources": [
-      {
-        "type": "inetnum",
-        "resource": "194.11.156.0 - 194.11.159.255",
-        "status": "ASSIGNED PI",
-        "netname": "VIOLLIER-BLOCK-4",
-        "usage": {
-          "total": 1024,
-          "used": 0,
-          "blockSize": 32
-        }
-      }
-    ],
-    "totalNumberOfResources": 1,
-    "filteredSize": 1,
-    "pageSize": 1
-  }
+    "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-VA397-RIPE&type=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "stats": {
+            "numInetnums": 1,
+            "numInet6nums": 0,
+            "numAutnums": 0,
+            "numSponsoredInetnums": 0,
+            "numSponsoredInet6nums": 0,
+            "numSponsoredAutnums": 0
+        },
+        "orgId": "ORG-VA397-RIPE",
+        "resources": [
+            {
+                "type": "inetnum",
+                "resource": "194.11.156.0 - 194.11.159.255",
+                "status": "ASSIGNED PI",
+                "netname": "VIOLLIER-BLOCK-4",
+                "usage": {
+                    "total": 1024,
+                    "used": 0,
+                    "blockSize": 32
+                }
+            }
+        ],
+        "totalNumberOfResources": 1,
+        "filteredSize": 1,
+        "pageSize": 1
+    }
 }

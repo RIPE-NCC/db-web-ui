@@ -1,56 +1,56 @@
 @keyframes slideFromBottom {
-  0% {
-    transform: translateY(30px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+    0% {
+        transform: translateY(30px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .live-chat {
-  z-index: 10;
-  position: fixed;
-  border: 0px;
-  width: 180px;
-  height: 30px;
-  right: 10px;
-  bottom: 0;
-  animation: 0.6s ease-in-out 0s 1 slideFromBottom;
-  animation-fill-mode: forwards;
-  cursor: pointer;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  background-color: rgb(8, 0, 55);
+    z-index: 10;
+    position: fixed;
+    border: 0px;
+    width: 180px;
+    height: 30px;
+    right: 10px;
+    bottom: 0;
+    animation: 0.6s ease-in-out 0s 1 slideFromBottom;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: rgb(8, 0, 55);
 }
 
 .live-chat-text {
-  position: relative;
-  display: flex;
-  font-weight: bold;
-  font-family: Verdana, Geneva, sans-serif;
-  font-size: 12px;
-  color: rgb(255, 255, 255);
-  line-height: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
-  overflow: hidden;
+    position: relative;
+    display: flex;
+    font-weight: bold;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    line-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: hidden;
 }
 
 .live-chat-icon {
-  font-family: 'zopim', 'Segoe UI Symbol', 'Arial Unicode MS', 'Lucida Sans Unicode', sans-serif;
-  position: relative;
-  display: flex;
-  -webkit-box-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  align-items: center;
-  width: 36px;
-  min-width: 36px;
-  float: left;
-  height: 30px;
-  padding: 0px;
-  background-color: rgb(41, 34, 88);
-  border: 0px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+    font-family: 'zopim', 'Segoe UI Symbol', 'Arial Unicode MS', 'Lucida Sans Unicode', sans-serif;
+    position: relative;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 36px;
+    min-width: 36px;
+    float: left;
+    height: 30px;
+    padding: 0px;
+    background-color: rgb(41, 34, 88);
+    border: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }

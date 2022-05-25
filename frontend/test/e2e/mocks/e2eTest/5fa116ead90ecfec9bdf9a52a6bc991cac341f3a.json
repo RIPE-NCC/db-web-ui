@@ -1,6 +1,6 @@
 {
-  "requestUrl": "/api/whois/autocomplete?extended=true&field=aut-num&query=AS9777",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {}
+    "requestUrl": "/api/whois/autocomplete?extended=true&field=aut-num&query=AS9777",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
 }

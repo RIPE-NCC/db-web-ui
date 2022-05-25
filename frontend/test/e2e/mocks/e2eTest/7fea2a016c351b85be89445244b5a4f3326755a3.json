@@ -1,100 +1,100 @@
 {
-  "data": {
-    "objects": {
-      "object": [
-        {
-          "type": "mntner",
-          "link": {
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/UUNETDE-I"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "UUNETDE-I"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "UUNETDE-I"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$2Lo/D97E$I6a74Uedrp68mUwaO7dY/1"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "SSO bad@ripe.net"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "Verizon Germany maintainer for inetnum objects"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/USB1-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "USB1-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/HE15-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "HE15-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@de.uu.net"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "***@de.uu.net"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MCI-EMEA-M-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "MCI-EMEA-M-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-07-11T11:49:53Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-08-03T09:27:52Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
             "type": "locator",
-            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/UUNETDE-I"
-          },
-          "source": {
-            "id": "ripe"
-          },
-          "primary-key": {
-            "attribute": [
-              {
-                "name": "mntner",
-                "value": "UUNETDE-I"
-              }
-            ]
-          },
-          "attributes": {
-            "attribute": [
-              {
-                "name": "mntner",
-                "value": "UUNETDE-I"
-              },
-              {
-                "name": "auth",
-                "value": "MD5-PW $1$2Lo/D97E$I6a74Uedrp68mUwaO7dY/1"
-              },
-              {
-                "name": "auth",
-                "value": "SSO bad@ripe.net"
-              },
-              {
-                "name": "descr",
-                "value": "Verizon Germany maintainer for inetnum objects"
-              },
-              {
-                "link": {
-                  "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/person/USB1-RIPE"
-                },
-                "name": "admin-c",
-                "value": "USB1-RIPE",
-                "referenced-type": "person"
-              },
-              {
-                "link": {
-                  "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/HE15-RIPE"
-                },
-                "name": "tech-c",
-                "value": "HE15-RIPE",
-                "referenced-type": "role"
-              },
-              {
-                "name": "upd-to",
-                "value": "***@de.uu.net"
-              },
-              {
-                "name": "mnt-nfy",
-                "value": "***@de.uu.net"
-              },
-              {
-                "link": {
-                  "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MCI-EMEA-M-MNT"
-                },
-                "name": "mnt-by",
-                "value": "MCI-EMEA-M-MNT",
-                "referenced-type": "mntner"
-              },
-              {
-                "name": "created",
-                "value": "2002-07-11T11:49:53Z"
-              },
-              {
-                "name": "last-modified",
-                "value": "2016-08-03T09:27:52Z"
-              },
-              {
-                "name": "source",
-                "value": "RIPE"
-              }
-            ]
-          }
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
         }
-      ]
     },
-    "terms-and-conditions": {
-      "type": "locator",
-      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
-    }
-  },
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/whois/RIPE/mntner/UUNETDE-I?password=UUNETDE-I&unfiltered=true"
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/RIPE/mntner/UUNETDE-I?password=UUNETDE-I&unfiltered=true"
 }

@@ -1,25 +1,24 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {debounceTime, distinctUntilChanged, map, mergeMap} from "rxjs/operators";
-import {Observable, of, OperatorFunction} from "rxjs";
-import * as _ from "lodash";
-import {WhoisMetaService} from "../shared/whois-meta.service";
-import {CharsetToolsService} from "../updatesweb/charset-tools.service";
-import {RestService} from "../updatesweb/rest.service";
-import {CredentialsService} from "../shared/credentials.service";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {EnumService} from "../updatesweb/enum.service";
-import {AttributeMetadataService} from "./attribute-metadata.service";
-import {IAttributeModel} from "../shared/whois-response-type.model";
-import {ModalAddAttributeComponent} from "../updatesweb/modal-add-attribute.component";
-import {ModalCreateRoleForAbuseCComponent} from "../updatesweb/modal-create-role-for-abusec.component";
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import { Observable, of, OperatorFunction } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
+import { CredentialsService } from '../shared/credentials.service';
+import { WhoisMetaService } from '../shared/whois-meta.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { IAttributeModel } from '../shared/whois-response-type.model';
+import { CharsetToolsService } from '../updatesweb/charset-tools.service';
+import { EnumService } from '../updatesweb/enum.service';
+import { ModalAddAttributeComponent } from '../updatesweb/modal-add-attribute.component';
+import { ModalCreateRoleForAbuseCComponent } from '../updatesweb/modal-create-role-for-abusec.component';
+import { RestService } from '../updatesweb/rest.service';
+import { AttributeMetadataService } from './attribute-metadata.service';
 
 @Component({
-    selector: "attribute-renderer",
-    templateUrl: "./attribute-renderer.component.html",
+    selector: 'attribute-renderer',
+    templateUrl: './attribute-renderer.component.html',
 })
 export class AttributeRendererComponent implements OnInit {
-
     @Input()
     public attribute: IAttributeModel;
     @Input()
@@ -40,15 +39,16 @@ export class AttributeRendererComponent implements OnInit {
     private roleForAbuseC: any;
     public widgetReverseZone: boolean;
 
-    constructor(private attributeMetadataService: AttributeMetadataService,
-                private whoisMetaService: WhoisMetaService,
-                private charsetToolsService: CharsetToolsService,
-                private restService: RestService,
-                private enumService: EnumService,
-                private modalService: NgbModal,
-                private credentialsService: CredentialsService,
-                private whoisResourcesService: WhoisResourcesService) {
-    }
+    constructor(
+        private attributeMetadataService: AttributeMetadataService,
+        private whoisMetaService: WhoisMetaService,
+        private charsetToolsService: CharsetToolsService,
+        private restService: RestService,
+        private enumService: EnumService,
+        private modalService: NgbModal,
+        private credentialsService: CredentialsService,
+        private whoisResourcesService: WhoisResourcesService,
+    ) {}
 
     /*
      * this variables we can see because they're bound by our directive: attributeRenderer
@@ -64,7 +64,7 @@ export class AttributeRendererComponent implements OnInit {
         this.isHelpShown = false;
         this.isMntHelpShown = false;
 
-        if (this.attribute.name === "source") {
+        if (this.attribute.name === 'source') {
             this.attribute.value = this.source;
             if (!this.attribute.$$meta) {
                 this.attribute.$$meta = {};
@@ -72,7 +72,7 @@ export class AttributeRendererComponent implements OnInit {
             this.attribute.$$meta.$$disable = true;
             this.attribute.$$invalid = false;
         }
-        this.widgetReverseZone = this.attribute.name === "reverse-zone";
+        this.widgetReverseZone = this.attribute.name === 'reverse-zone';
         this.checkIsList();
     }
 
@@ -96,51 +96,58 @@ export class AttributeRendererComponent implements OnInit {
             if (md.hasOwnProperty(attributeName)) {
                 const metadata = this.attributeMetadataService.getMetadata(objectType, attributeName);
 
-                if (!this.isReadOnly(metadata, objectType, attributes) && this.canBeAdded(objectType, attributes, {name: attributeName, value: undefined})) {
-                    addableAttributes.push({name: attributeName});
+                if (!this.isReadOnly(metadata, objectType, attributes) && this.canBeAdded(objectType, attributes, { name: attributeName, value: undefined })) {
+                    addableAttributes.push({ name: attributeName });
                 }
             }
         }
-        const modalRef = this.modalService.open(ModalAddAttributeComponent, {size: "lg"});
+        const modalRef = this.modalService.open(ModalAddAttributeComponent, { size: 'lg' });
         modalRef.componentInstance.items = addableAttributes;
-        console.debug("openAddAttributeModal for items", addableAttributes);
-        modalRef.result.then(selectedItem => {
-            console.debug("openAddAttributeModal completed with:", selectedItem);
-            this.addAttr(attributes, attribute, selectedItem.name);
-        }, failResponse => {
-            console.debug("openAddAttributeModal completed with error:", failResponse);
-        });
+        console.debug('openAddAttributeModal for items', addableAttributes);
+        modalRef.result.then(
+            (selectedItem) => {
+                console.debug('openAddAttributeModal completed with:', selectedItem);
+                this.addAttr(attributes, attribute, selectedItem.name);
+            },
+            (failResponse) => {
+                console.debug('openAddAttributeModal completed with error:', failResponse);
+            },
+        );
     }
 
     // Should show bell icon for abuse-c in case value is not specified and objectType is organisation
     public shouldShowBellIcon(attribute: IAttributeModel) {
-        return attribute.name === "abuse-c" && !attribute.value;
+        return attribute.name === 'abuse-c' && !attribute.value;
     }
 
     // Same like in createModify
     public createRoleForAbuseCAttribute() {
         const maintainers = _.filter(this.attributes, (attr: any) => {
-            if (attr.name === "mnt-by") {
-                return {name: "mnt-by", value: attr.key};
+            if (attr.name === 'mnt-by') {
+                return { name: 'mnt-by', value: attr.key };
             }
         });
         const inputData = {
             maintainers: maintainers,
             passwords: this.credentialsService.getPasswordsForRestCall(this.objectType),
-            source: this.source
+            source: this.source,
         };
-        const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, {size: "lg"});
+        const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });
         modalRef.componentInstance.inputData = inputData;
-        modalRef.result.then((roleAttrs: any) => {
-            this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes("role", roleAttrs);
-            this.attribute.value = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, "nic-hdl").value;
-            this.attribute.$$success = "Role object for abuse-c successfully created";
-        }, (error: any) => {
-            if (error !== "cancel") { // dismissing modal will hit this function with the string "cancel" in error arg
-                // TODO: pass more specific errors from REST? [RM]
-                this.attribute.$$error = "The role object for the abuse-c attribute was not created";
-            }
-        });
+        modalRef.result.then(
+            (roleAttrs: any) => {
+                this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes('role', roleAttrs);
+                this.attribute.value = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, 'nic-hdl').value;
+                this.attribute.$$success = 'Role object for abuse-c successfully created';
+            },
+            (error: any) => {
+                if (error !== 'cancel') {
+                    // dismissing modal will hit this function with the string "cancel" in error arg
+                    // TODO: pass more specific errors from REST? [RM]
+                    this.attribute.$$error = 'The role object for the abuse-c attribute was not created';
+                }
+            },
+        );
     }
 
     public removeAttribute(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {
@@ -165,11 +172,11 @@ export class AttributeRendererComponent implements OnInit {
     }
 
     public canAddExtraAttributes(objectType: string) {
-        return objectType.toUpperCase() !== "PREFIX";
+        return objectType.toUpperCase() !== 'PREFIX';
     }
 
     public canBeAdded(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {
-        if (attribute.name === "reverse-zone") {
+        if (attribute.name === 'reverse-zone') {
             return false;
         }
         // count the attributes which match "attribute"
@@ -222,7 +229,7 @@ export class AttributeRendererComponent implements OnInit {
             });
         }
         if (foundIdx > -1) {
-            attributes.splice(foundIdx + 1, 0, {name: attributeName, value: undefined});
+            attributes.splice(foundIdx + 1, 0, { name: attributeName, value: undefined });
             this.attributeMetadataService.enrich(this.objectType, attributes);
         }
     }
@@ -237,7 +244,7 @@ export class AttributeRendererComponent implements OnInit {
     }
 
     autocompleteList: OperatorFunction<string, readonly string[]> = (userInput$: Observable<string>) => {
-        if (this.attribute.name === "status") {
+        if (this.attribute.name === 'status') {
             // special treatment of the status, it need to react on the changes in parent attribute
             return of(this.statusAutoCompleteList(this.objectType, this.attribute));
         }
@@ -247,21 +254,21 @@ export class AttributeRendererComponent implements OnInit {
                 debounceTime(200),
                 distinctUntilChanged(),
                 mergeMap((term) => this.refsAutocomplete(this.attribute, term, metadata.refs)),
-                map((terms: any[]) => terms.map((term: any) => term))
-            )
+                map((terms: any[]) => terms.map((term: any) => term)),
+            );
         }
         return of([]);
     };
 
     // for chosen item from list put key, otherwise is value
-    public autocompleteAttributeIFormatter = (result: any) => result.key ? result.key : result;
+    public autocompleteAttributeIFormatter = (result: any) => (result.key ? result.key : result);
     public autocompleteAttributeRFormatter = (result: any) => result.readableName;
 
     public displayEnumValue(item: any) {
         if (item.key === item.value) {
             return item.key;
         }
-        return item.value + " [" + item.key.toUpperCase() + "]";
+        return item.value + ' [' + item.key.toUpperCase() + ']';
     }
 
     private getStaticList() {
@@ -275,13 +282,15 @@ export class AttributeRendererComponent implements OnInit {
     private refsAutocomplete(attribute: IAttributeModel, userInput: any, refs: any): any {
         const utf8Substituted = this.warnForNonSubstitutableUtf8(attribute, userInput);
         if (utf8Substituted && this.isServerLookupKey(refs)) {
-            return this.restService.autocompleteAdvanced(of(userInput), refs)
-                .then((resp: any) => {
+            return this.restService.autocompleteAdvanced(of(userInput), refs).then(
+                (resp: any) => {
                     return this.addNiceAutocompleteName(this.filterBasedOnAttr(resp, attribute.name), attribute.name);
-                }, () => {
+                },
+                () => {
                     // autocomplete error
                     return [];
-                });
+                },
+            );
         } else {
             // No suggestions since not a reference
             return [];
@@ -303,10 +312,10 @@ export class AttributeRendererComponent implements OnInit {
             // see if any chars can be substituted
             const subbedValue = this.charsetToolsService.replaceSubstitutables(userInput);
             if (!this.charsetToolsService.isLatin1(subbedValue)) {
-                attribute.$$error = "Input contains illegal characters. These will be converted to \"?\"";
+                attribute.$$error = 'Input contains illegal characters. These will be converted to "?"';
                 return false;
             } else {
-                attribute.$$error = "";
+                attribute.$$error = '';
                 return true;
             }
         }
@@ -315,8 +324,8 @@ export class AttributeRendererComponent implements OnInit {
 
     private filterBasedOnAttr(suggestions: any, attrName: string) {
         return _.filter(suggestions, (item: any) => {
-            if (attrName === "abuse-c") {
-                return !_.isEmpty(item["abuse-mailbox"]);
+            if (attrName === 'abuse-c') {
+                return !_.isEmpty(item['abuse-mailbox']);
             }
             return true;
         });
@@ -324,38 +333,37 @@ export class AttributeRendererComponent implements OnInit {
 
     private addNiceAutocompleteName(items: any, attrName: string) {
         return _.map(items, (item: any) => {
-            let name = "";
-            let separator = " / ";
-            if (item.type === "person") {
+            let name = '';
+            let separator = ' / ';
+            if (item.type === 'person') {
                 name = item.person;
-            } else if (item.type === "role") {
+            } else if (item.type === 'role') {
                 name = item.role;
-                if (attrName === "abuse-c" && typeof item["abuse-mailbox"] === "string") {
-                    name = name.concat(separator + item["abuse-mailbox"]);
+                if (attrName === 'abuse-c' && typeof item['abuse-mailbox'] === 'string') {
+                    name = name.concat(separator + item['abuse-mailbox']);
                 }
-            } else if (item.type === "aut-num") {
+            } else if (item.type === 'aut-num') {
                 // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
                 if (_.isArray(item.descr) && item.descr.length) {
-                    name = [item["as-name"], separator, item.descr[0]].join("");
+                    name = [item['as-name'], separator, item.descr[0]].join('');
                 } else {
-                    name = item["as-name"];
+                    name = item['as-name'];
                 }
-            } else if (typeof item["org-name"] === "string") {
-                name = item["org-name"];
+            } else if (typeof item['org-name'] === 'string') {
+                name = item['org-name'];
             } else if (_.isArray(item.descr)) {
-                name = item.descr.join("");
+                name = item.descr.join('');
             } else if (_.isArray(item.owner)) {
-                name = item.owner.join("");
+                name = item.owner.join('');
             } else {
-                separator = "";
+                separator = '';
             }
-            item.readableName = (item.key + separator + name).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            item.readableName = (item.key + separator + name).replace(/</g, '&lt;').replace(/>/g, '&gt;');
             return item;
         });
     }
 
     private isReadOnly(metadata: any, objectType: string, attributes: IAttributeModel[]) {
-        return typeof metadata.readOnly === "function" ?
-            metadata.readOnly(objectType, attributes) : metadata.readOnly;
+        return typeof metadata.readOnly === 'function' ? metadata.readOnly(objectType, attributes) : metadata.readOnly;
     }
 }

@@ -1,15 +1,13 @@
-import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {RefreshComponent} from "../../../src/app/myresources/refresh/refresh.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RefreshComponent } from '../../../src/app/myresources/refresh/refresh.component';
 
-describe("RefreshComponent", () => {
+describe('RefreshComponent', () => {
     let component: RefreshComponent;
     let fixture: ComponentFixture<RefreshComponent>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                RefreshComponent,
-            ]
+            declarations: [RefreshComponent],
         });
     });
 
@@ -18,7 +16,7 @@ describe("RefreshComponent", () => {
         component = fixture.componentInstance;
     });
 
-    it("should create", () => {
+    it('should create', () => {
         expect(component).toBeTruthy();
     });
 });

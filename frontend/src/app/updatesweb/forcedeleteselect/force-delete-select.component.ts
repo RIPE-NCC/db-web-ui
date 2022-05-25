@@ -1,21 +1,17 @@
-import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
-import {PropertiesService} from "../../properties.service";
-import {AlertsService} from "../../shared/alert/alerts.service";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PropertiesService } from '../../properties.service';
+import { AlertsService } from '../../shared/alert/alerts.service';
 
 @Component({
-    selector: "force-delete-select",
-    templateUrl: "./force-delete-select.component.html",
+    selector: 'force-delete-select',
+    templateUrl: './force-delete-select.component.html',
 })
 export class ForceDeleteSelectComponent implements OnInit {
-
-    public objectTypes: string[] = ["inetnum", "inet6num", "route", "route6", "domain"];
+    public objectTypes: string[] = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
     public selected: any;
 
-    constructor(private properties: PropertiesService,
-                private alertsService: AlertsService,
-                private router: Router) {
-    }
+    constructor(private properties: PropertiesService, private alertsService: AlertsService, private router: Router) {}
 
     public ngOnInit() {
         this.alertsService.clearAlertMessages();
@@ -31,6 +27,6 @@ export class ForceDeleteSelectComponent implements OnInit {
     }
 
     public isFormValid(): boolean {
-        return this.selected.name !== undefined && this.selected.name !== "";
+        return this.selected.name !== undefined && this.selected.name !== '';
     }
 }

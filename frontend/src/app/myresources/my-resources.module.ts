@@ -1,36 +1,30 @@
-import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {RouterModule} from "@angular/router";
-import {SharedModule} from "../shared/shared.module";
-import {WhoisObjectModule} from "../whois-object/whois-object.module";
-import {HierarchySelectorComponent} from "./hierarchyselector/hierarchy-selector.component";
-import {ResourcesDataService} from "./resources-data.service";
-import {MoreSpecificsService} from "./morespecifics/more-specifics.service";
-import {IpAddressService} from "./ip-address.service";
-import {IpUsageService} from "./ip-usage.service";
-import {IpUsageComponent} from "./ip-usage.component";
-import {IpUsageOfAllResourcesComponent} from "./ip-usage-of-all-resources.component";
-import {ResourceDetailsComponent} from "./resourcedetails/resource-details.component";
-import {ResourceItemComponent} from "./resource-item.component";
-import {ResourcesComponent} from "./resources.component";
-import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.component";
-import {ResourceStatusService} from "./resource-status.service";
-import {TransferDropDownComponent} from "./transferdropdown/transfer-drop-down.component";
-import {AssociatedObjectsComponent} from "./associatedobjects/associated-objects.component";
-import {AssociatedObjectsService} from "./associatedobjects/associated-objects.service";
-import {MoreSpecificsComponent} from "./morespecifics/more-specifics.component";
-import {HierarchySelectorService} from "./hierarchyselector/hierarchy-selector.service";
-import {RefreshComponent} from "./refresh/refresh.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
+import { WhoisObjectModule } from '../whois-object/whois-object.module';
+import { AlertsDropDownComponent } from './alertsdropdown/alerts-drop-down.component';
+import { AssociatedObjectsComponent } from './associatedobjects/associated-objects.component';
+import { AssociatedObjectsService } from './associatedobjects/associated-objects.service';
+import { HierarchySelectorComponent } from './hierarchyselector/hierarchy-selector.component';
+import { HierarchySelectorService } from './hierarchyselector/hierarchy-selector.service';
+import { IpAddressService } from './ip-address.service';
+import { IpUsageOfAllResourcesComponent } from './ip-usage-of-all-resources.component';
+import { IpUsageComponent } from './ip-usage.component';
+import { IpUsageService } from './ip-usage.service';
+import { MoreSpecificsComponent } from './morespecifics/more-specifics.component';
+import { MoreSpecificsService } from './morespecifics/more-specifics.service';
+import { RefreshComponent } from './refresh/refresh.component';
+import { ResourceItemComponent } from './resource-item.component';
+import { ResourceStatusService } from './resource-status.service';
+import { ResourceDetailsComponent } from './resourcedetails/resource-details.component';
+import { ResourcesDataService } from './resources-data.service';
+import { ResourcesComponent } from './resources.component';
+import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        SharedModule,
-        WhoisObjectModule,
-        RouterModule
-    ],
+    imports: [CommonModule, FormsModule, SharedModule, WhoisObjectModule, RouterModule],
     declarations: [
         AlertsDropDownComponent,
         TransferDropDownComponent,
@@ -42,7 +36,7 @@ import {RefreshComponent} from "./refresh/refresh.component";
         ResourcesComponent,
         MoreSpecificsComponent,
         AssociatedObjectsComponent,
-        RefreshComponent
+        RefreshComponent,
     ],
     providers: [
         IpAddressService,
@@ -51,9 +45,8 @@ import {RefreshComponent} from "./refresh/refresh.component";
         ResourceStatusService,
         ResourcesDataService,
         HierarchySelectorService,
-        AssociatedObjectsService
+        AssociatedObjectsService,
     ],
-    exports: []
+    exports: [],
 })
-export class MyResourcesModule {
-}
+export class MyResourcesModule {}

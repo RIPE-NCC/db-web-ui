@@ -1,580 +1,698 @@
 {
-	"requestUrl": "/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(193.0.0.0)%20AND%20(object-type:inetnum)&start=0&wt=json",
-	"contentType": "application/javascript",
-	"statusCode": 200,
-	"data": {
-		"result": {
-			"name": "response",
-			"numFound": 3,
-			"start": 0,
-			"docs": [{
-				"doc": {
-					"strs": [{
-						"str": {
-							"name": "primary-key",
-							"value": "8359112"
-						}
-					}, {
-						"str": {
-							"name": "object-type",
-							"value": "inetnum"
-						}
-					}, {
-						"str": {
-							"name": "lookup-key",
-							"value": "193.0.0.0 - 195.255.255.255"
-						}
-					}, {
-						"str": {
-							"name": "inetnum",
-							"value": "193.0.0.0 - 195.255.255.255"
-						}
-					}, {
-						"str": {
-							"name": "netname",
-							"value": "EU-ZZ-193"
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "To determine the registration information for a more"
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "specific range, please try a more specific query."
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "If you see this object as a result of a single IP query,"
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "it means the IP address is currently in the free pool of"
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "address space managed by the RIPE NCC."
-						}
-					}, {
-						"str": {
-							"name": "country",
-							"value": "EU # Country is in fact world wide"
-						}
-					}, {
-						"str": {
-							"name": "admin-c",
-							"value": "IANA1-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "tech-c",
-							"value": "IANA1-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "status",
-							"value": "ALLOCATED UNSPECIFIED"
-						}
-					}, {
-						"str": {
-							"name": "mnt-by",
-							"value": "RIPE-NCC-HM-MNT"
-						}
-					}, {
-						"str": {
-							"name": "created",
-							"value": "2010-03-11T11:17:15Z"
-						}
-					}, {
-						"str": {
-							"name": "last-modified",
-							"value": "2015-09-23T13:18:26Z"
-						}
-					}]
-				}
-			}, {
-				"doc": {
-					"strs": [{
-						"str": {
-							"name": "primary-key",
-							"value": "2084439"
-						}
-					}, {
-						"str": {
-							"name": "object-type",
-							"value": "inetnum"
-						}
-					}, {
-						"str": {
-							"name": "lookup-key",
-							"value": "193.0.0.0 - 193.0.7.255"
-						}
-					}, {
-						"str": {
-							"name": "inetnum",
-							"value": "193.0.0.0 - 193.0.7.255"
-						}
-					}, {
-						"str": {
-							"name": "netname",
-							"value": "RIPE-NCC"
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "RIPE Network Coordination Centre"
-						}
-					}, {
-						"str": {
-							"name": "org",
-							"value": "ORG-RIEN1-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "Amsterdam, Netherlands"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "Used for RIPE NCC infrastructure"
-						}
-					}, {
-						"str": {
-							"name": "country",
-							"value": "NL"
-						}
-					}, {
-						"str": {
-							"name": "admin-c",
-							"value": "JDR-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "admin-c",
-							"value": "BRD-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "tech-c",
-							"value": "OPS4-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "status",
-							"value": "ASSIGNED PI"
-						}
-					}, {
-						"str": {
-							"name": "created",
-							"value": "2003-03-17T12:15:57Z"
-						}
-					}, {
-						"str": {
-							"name": "last-modified",
-							"value": "2017-03-29T14:09:10Z"
-						}
-					}, {
-						"str": {
-							"name": "mnt-by",
-							"value": "RIPE-NCC-MNT"
-						}
-					}]
-				}
-			}, {
-				"doc": {
-					"strs": [{
-						"str": {
-							"name": "primary-key",
-							"value": "15319200"
-						}
-					}, {
-						"str": {
-							"name": "object-type",
-							"value": "inetnum"
-						}
-					}, {
-						"str": {
-							"name": "lookup-key",
-							"value": "193.0.0.0 - 193.0.0.63"
-						}
-					}, {
-						"str": {
-							"name": "inetnum",
-							"value": "193.0.0.0 - 193.0.0.63"
-						}
-					}, {
-						"str": {
-							"name": "netname",
-							"value": "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK"
-						}
-					}, {
-						"str": {
-							"name": "descr",
-							"value": "IPv4 address block not managed by the RIPE NCC"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "------------------------------------------------------"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": ""
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "You can find the whois server to query, or the"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "IANA registry to query on this web page:"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "http://www.iana.org/assignments/ipv4-address-space"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": ""
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "You can access databases of other RIR's at:"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": ""
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "AFRINIC (Africa)"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "http://www.afrinic.net/ whois.afrinic.net"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": ""
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "APNIC (Asia Pacific)"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "http://www.apnic.net/ whois.apnic.net"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": ""
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "ARIN (Northern America)"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "http://www.arin.net/ whois.arin.net"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": ""
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "LACNIC (Latin America and the Carribean)"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "http://www.lacnic.net/ whois.lacnic.net"
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": ""
-						}
-					}, {
-						"str": {
-							"name": "remarks",
-							"value": "------------------------------------------------------"
-						}
-					}, {
-						"str": {
-							"name": "country",
-							"value": "EU # Country is really world wide"
-						}
-					}, {
-						"str": {
-							"name": "org",
-							"value": "ORG-IANA1-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "admin-c",
-							"value": "IANA1-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "tech-c",
-							"value": "IANA1-RIPE"
-						}
-					}, {
-						"str": {
-							"name": "status",
-							"value": "ALLOCATED UNSPECIFIED"
-						}
-					}, {
-						"str": {
-							"name": "mnt-by",
-							"value": "RIPE-NCC-HM-MNT"
-						}
-					}, {
-						"str": {
-							"name": "mnt-lower",
-							"value": "RIPE-NCC-HM-MNT"
-						}
-					}, {
-						"str": {
-							"name": "mnt-routes",
-							"value": "RIPE-NCC-RPSL-MNT"
-						}
-					}, {
-						"str": {
-							"name": "created",
-							"value": "2016-04-25T13:00:50Z"
-						}
-					}, {
-						"str": {
-							"name": "last-modified",
-							"value": "2016-04-25T13:00:50Z"
-						}
-					}]
-				}
-			}]
-		},
-		"lsts": [{
-			"lst": {
-				"name": "responseHeader",
-				"ints": [{
-					"int": {
-						"name": "status",
-						"value": "0"
-					}
-				}, {
-					"int": {
-						"name": "QTime",
-						"value": "24"
-					}
-				}],
-				"strs": null,
-				"lsts": [{
-					"lst": {
-						"name": "params",
-						"ints": null,
-						"strs": [{
-							"str": {
-								"name": "q",
-								"value": "(193.0.0.0) AND (object-type:inetnum)"
-							}
-						}, {
-							"str": {
-								"name": "rows",
-								"value": "10"
-							}
-						}, {
-							"str": {
-								"name": "start",
-								"value": "0"
-							}
-						}, {
-							"str": {
-								"name": "hl",
-								"value": "true"
-							}
-						}, {
-							"str": {
-								"name": "hl.simple.pre",
-								"value": "<b>"
-							}
-						}, {
-							"str": {
-								"name": "hl.simple.post",
-								"value": "</b>"
-							}
-						}, {
-							"str": {
-								"name": "wt",
-								"value": "json"
-							}
-						}, {
-							"str": {
-								"name": "facet",
-								"value": "true"
-							}
-						}],
-						"lsts": null,
-						"arrs": null
-					}
-				}],
-				"arrs": null
-			}
-		}, {
-			"lst": {
-				"name": "highlighting",
-				"ints": null,
-				"strs": null,
-				"lsts": [{
-					"lst": {
-						"name": "8359112",
-						"ints": null,
-						"strs": null,
-						"lsts": null,
-						"arrs": [{
-							"arr": {
-								"name": "object-type",
-								"str": {
-									"name": null,
-									"value": "<b>inetnum</b>"
-								}
-							}
-						}, {
-							"arr": {
-								"name": "lookup-key",
-								"str": {
-									"name": null,
-									"value": "<b>193.0.0.0</b> - 195.255.255.255"
-								}
-							}
-						}, {
-							"arr": {
-								"name": "inetnum",
-								"str": {
-									"name": null,
-									"value": "<b>193.0.0.0</b> - 195.255.255.255"
-								}
-							}
-						}]
-					}
-				}, {
-					"lst": {
-						"name": "2084439",
-						"ints": null,
-						"strs": null,
-						"lsts": null,
-						"arrs": [{
-							"arr": {
-								"name": "object-type",
-								"str": {
-									"name": null,
-									"value": "<b>inetnum</b>"
-								}
-							}
-						}, {
-							"arr": {
-								"name": "lookup-key",
-								"str": {
-									"name": null,
-									"value": "<b>193.0.0.0</b> - 193.0.7.255"
-								}
-							}
-						}, {
-							"arr": {
-								"name": "inetnum",
-								"str": {
-									"name": null,
-									"value": "<b>193.0.0.0</b> - 193.0.7.255"
-								}
-							}
-						}]
-					}
-				}, {
-					"lst": {
-						"name": "15319200",
-						"ints": null,
-						"strs": null,
-						"lsts": null,
-						"arrs": [{
-							"arr": {
-								"name": "object-type",
-								"str": {
-									"name": null,
-									"value": "<b>inetnum</b>"
-								}
-							}
-						}, {
-							"arr": {
-								"name": "lookup-key",
-								"str": {
-									"name": null,
-									"value": "<b>193.0.0.0</b> - 193.0.0.63"
-								}
-							}
-						}, {
-							"arr": {
-								"name": "inetnum",
-								"str": {
-									"name": null,
-									"value": "<b>193.0.0.0</b> - 193.0.0.63"
-								}
-							}
-						}]
-					}
-				}],
-				"arrs": null
-			}
-		}, {
-			"lst": {
-				"name": "facet_counts",
-				"ints": null,
-				"strs": null,
-				"lsts": [{
-					"lst": {
-						"name": "facet_fields",
-						"ints": null,
-						"strs": null,
-						"lsts": [{
-							"lst": {
-								"name": "object-type",
-								"ints": [{
-									"int": {
-										"name": "inetnum",
-										"value": "3"
-									}
-								}],
-								"strs": null,
-								"lsts": null,
-								"arrs": null
-							}
-						}],
-						"arrs": null
-					}
-				}],
-				"arrs": null
-			}
-		}]
-	}
+    "requestUrl": "/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(193.0.0.0)%20AND%20(object-type:inetnum)&start=0&wt=json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "result": {
+            "name": "response",
+            "numFound": 3,
+            "start": 0,
+            "docs": [
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "8359112"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 195.255.255.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 195.255.255.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "EU-ZZ-193"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "To determine the registration information for a more"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "specific range, please try a more specific query."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "If you see this object as a result of a single IP query,"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "it means the IP address is currently in the free pool of"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "address space managed by the RIPE NCC."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "EU # Country is in fact world wide"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "IANA1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "IANA1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ALLOCATED UNSPECIFIED"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2010-03-11T11:17:15Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2015-09-23T13:18:26Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "2084439"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 193.0.7.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 193.0.7.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "RIPE-NCC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE Network Coordination Centre"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-RIEN1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Amsterdam, Netherlands"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Used for RIPE NCC infrastructure"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "NL"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "JDR-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "BRD-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "OPS4-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED PI"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2003-03-17T12:15:57Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2017-03-29T14:09:10Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "15319200"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 193.0.0.63"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 193.0.0.63"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "IPv4 address block not managed by the RIPE NCC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "------------------------------------------------------"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "You can find the whois server to query, or the"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "IANA registry to query on this web page:"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "http://www.iana.org/assignments/ipv4-address-space"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "You can access databases of other RIR's at:"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "AFRINIC (Africa)"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "http://www.afrinic.net/ whois.afrinic.net"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "APNIC (Asia Pacific)"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "http://www.apnic.net/ whois.apnic.net"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "ARIN (Northern America)"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "http://www.arin.net/ whois.arin.net"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "LACNIC (Latin America and the Carribean)"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "http://www.lacnic.net/ whois.lacnic.net"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "------------------------------------------------------"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "EU # Country is really world wide"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-IANA1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "IANA1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "IANA1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ALLOCATED UNSPECIFIED"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-lower",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-routes",
+                                    "value": "RIPE-NCC-RPSL-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2016-04-25T13:00:50Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2016-04-25T13:00:50Z"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "lsts": [
+            {
+                "lst": {
+                    "name": "responseHeader",
+                    "ints": [
+                        {
+                            "int": {
+                                "name": "status",
+                                "value": "0"
+                            }
+                        },
+                        {
+                            "int": {
+                                "name": "QTime",
+                                "value": "24"
+                            }
+                        }
+                    ],
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "params",
+                                "ints": null,
+                                "strs": [
+                                    {
+                                        "str": {
+                                            "name": "q",
+                                            "value": "(193.0.0.0) AND (object-type:inetnum)"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "rows",
+                                            "value": "10"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "start",
+                                            "value": "0"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl",
+                                            "value": "true"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.simple.pre",
+                                            "value": "<b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.simple.post",
+                                            "value": "</b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "wt",
+                                            "value": "json"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "facet",
+                                            "value": "true"
+                                        }
+                                    }
+                                ],
+                                "lsts": null,
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "highlighting",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "8359112",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>inetnum</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "lookup-key",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0</b> - 195.255.255.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0</b> - 195.255.255.255"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "2084439",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>inetnum</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "lookup-key",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0</b> - 193.0.7.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0</b> - 193.0.7.255"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "15319200",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>inetnum</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "lookup-key",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0</b> - 193.0.0.63"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0</b> - 193.0.0.63"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "facet_counts",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "facet_fields",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": [
+                                    {
+                                        "lst": {
+                                            "name": "object-type",
+                                            "ints": [
+                                                {
+                                                    "int": {
+                                                        "name": "inetnum",
+                                                        "value": "3"
+                                                    }
+                                                }
+                                            ],
+                                            "strs": null,
+                                            "lsts": null,
+                                            "arrs": null
+                                        }
+                                    }
+                                ],
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            }
+        ]
+    }
 }

@@ -1,12 +1,11 @@
-import {Component, Input} from "@angular/core";
-import {PropertiesService} from "../../properties.service";
+import { Component, Input } from '@angular/core';
+import { PropertiesService } from '../../properties.service';
 
 @Component({
-    selector: "transfer-drop-down",
-    templateUrl: "./transfer-drop-down.component.html",
+    selector: 'transfer-drop-down',
+    templateUrl: './transfer-drop-down.component.html',
 })
 export class TransferDropDownComponent {
-
     @Input()
     public sponsoredMenu: boolean;
 

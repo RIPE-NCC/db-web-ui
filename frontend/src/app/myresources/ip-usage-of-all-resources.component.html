@@ -1,12 +1,12 @@
 <div class="resources-ip-usage">
     <p *ngIf="type === 'inetnum' && !sponsored">
-    <span>Total allocated: {{total}}</span>
-        <span>Total allocated used: {{used}}</span>
-        <span>Total allocated free: {{free}}</span>
+        <span>Total allocated: {{ total }}</span>
+        <span>Total allocated used: {{ used }}</span>
+        <span>Total allocated free: {{ free }}</span>
     </p>
     <p *ngIf="type === 'inet6num' && !sponsored">
-    <span>Total allocated subnets: {{ipv6CalcTotal}}</span>
-        <span>Total allocated subnets used: {{ipv6CalcUsed}}</span>
-        <span>Total allocated subnets free: {{ipv6CalcFree}}</span>
+        <span>Total allocated subnets: {{ ipv6CalcTotal }}</span>
+        <span>Total allocated subnets used: {{ ipv6CalcUsed }}</span>
+        <span>Total allocated subnets free: {{ ipv6CalcFree }}</span>
     </p>
 </div>

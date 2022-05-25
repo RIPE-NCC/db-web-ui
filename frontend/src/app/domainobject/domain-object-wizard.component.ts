@@ -1,25 +1,25 @@
-import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Location} from "@angular/common";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import * as _ from "lodash";
-import {WINDOW} from "../core/window.service";
-import {JsUtilService} from "../core/js-utils.service";
-import {RestService} from "../updatesweb/rest.service";
-import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {MntnerService} from "../updatesweb/mntner.service";
-import {CredentialsService} from "../shared/credentials.service";
-import {MessageStoreService} from "../updatesweb/message-store.service";
-import {ErrorReporterService} from "../updatesweb/error-reporter.service";
-import {PrefixService} from "./prefix.service";
-import {ModalDomainObjectSplashComponent} from "./modal-domain-object-splash.component";
-import {ModalDomainCreationWaitComponent} from "./modal-domain-creation-wait.component";
-import {AttributeSharedService} from "../attribute/attribute-shared.service";
-import {IAuthParams, WebUpdatesCommonsService} from "../updatesweb/web-updates-commons.service";
-import {IMaintainers} from "../updatesweb/create-modify.component";
-import {IAttributeModel} from "../shared/whois-response-type.model";
-import {AlertsService} from "../shared/alert/alerts.service";
+import { Location } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
+import { AttributeSharedService } from '../attribute/attribute-shared.service';
+import { JsUtilService } from '../core/js-utils.service';
+import { WINDOW } from '../core/window.service';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { CredentialsService } from '../shared/credentials.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { IAttributeModel } from '../shared/whois-response-type.model';
+import { IMaintainers } from '../updatesweb/create-modify.component';
+import { ErrorReporterService } from '../updatesweb/error-reporter.service';
+import { MessageStoreService } from '../updatesweb/message-store.service';
+import { MntnerService } from '../updatesweb/mntner.service';
+import { RestService } from '../updatesweb/rest.service';
+import { IAuthParams, WebUpdatesCommonsService } from '../updatesweb/web-updates-commons.service';
+import { ModalDomainCreationWaitComponent } from './modal-domain-creation-wait.component';
+import { ModalDomainObjectSplashComponent } from './modal-domain-object-splash.component';
+import { PrefixService } from './prefix.service';
 
 interface IDomainObject {
     attributes: {
@@ -31,11 +31,10 @@ interface IDomainObject {
 }
 
 @Component({
-    selector: "domain-object-wizard",
-    templateUrl: "./domain-object-wizard.component.html",
+    selector: 'domain-object-wizard',
+    templateUrl: './domain-object-wizard.component.html',
 })
 export class DomainObjectWizardComponent implements OnInit, OnDestroy {
-
     public objectType: string;
     //TODO check if make sense to convert to IWhoisObjectModel
     public domainObject: IDomainObject;
@@ -57,51 +56,50 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public subscription: any;
     public subscriptionDomaiPrefix: any;
 
-    constructor(@Inject(WINDOW) private window: any,
-                private jsUtils: JsUtilService,
-                private modalService: NgbModal,
-                private restService: RestService,
-                private attributeMetadataService: AttributeMetadataService,
-                private attributeSharedService: AttributeSharedService,
-                private whoisResourcesServices: WhoisResourcesService,
-                private mntnerService: MntnerService,
-                private webUpdatesCommonsService: WebUpdatesCommonsService,
-                private credentialsService: CredentialsService,
-                private messageStoreService: MessageStoreService,
-                private prefixService: PrefixService,
-                private errorReporterService: ErrorReporterService,
-                private alertsService: AlertsService,
-                private location: Location,
-                public activatedRoute: ActivatedRoute,
-                private router: Router) {
-
-        this.subscription = attributeSharedService.attributeStateChanged$
-            .subscribe(() => {
-                attributeMetadataService.enrich(this.objectType, this.attributes);
-            });
-        this.subscriptionDomaiPrefix = attributeSharedService.domainPrefixOk$
-            .subscribe((prefixValue: string) => {
-                this.onValidPrefix(prefixValue);
-            });
+    constructor(
+        @Inject(WINDOW) private window: any,
+        private jsUtils: JsUtilService,
+        private modalService: NgbModal,
+        private restService: RestService,
+        private attributeMetadataService: AttributeMetadataService,
+        private attributeSharedService: AttributeSharedService,
+        private whoisResourcesServices: WhoisResourcesService,
+        private mntnerService: MntnerService,
+        private webUpdatesCommonsService: WebUpdatesCommonsService,
+        private credentialsService: CredentialsService,
+        private messageStoreService: MessageStoreService,
+        private prefixService: PrefixService,
+        private errorReporterService: ErrorReporterService,
+        private alertsService: AlertsService,
+        private location: Location,
+        public activatedRoute: ActivatedRoute,
+        private router: Router,
+    ) {
+        this.subscription = attributeSharedService.attributeStateChanged$.subscribe(() => {
+            attributeMetadataService.enrich(this.objectType, this.attributes);
+        });
+        this.subscriptionDomaiPrefix = attributeSharedService.domainPrefixOk$.subscribe((prefixValue: string) => {
+            this.onValidPrefix(prefixValue);
+        });
     }
 
     public ngOnInit() {
         // show splash screen
         this.openModalDomainSplash();
         const paramMap = this.activatedRoute.snapshot.paramMap;
-        this.objectType = paramMap.get("objectType") === "domain" ? "prefix" : paramMap.get("objectType");
+        this.objectType = paramMap.get('objectType') === 'domain' ? 'prefix' : paramMap.get('objectType');
 
         this.domainObject = {
             attributes: {
                 attribute: this.attributeMetadataService.determineAttributesForNewObject(this.objectType),
             },
             source: {
-                id: paramMap.get("source"),
+                id: paramMap.get('source'),
             },
         };
 
         this.attributes = this.domainObject.attributes.attribute;
-        this.source = paramMap.get("source");
+        this.source = paramMap.get('source');
         /*
          * Main
          */
@@ -122,13 +120,15 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private openModalDomainSplash(): void {
         const modalRef = this.modalService.open(ModalDomainObjectSplashComponent);
-        modalRef.result
-            .then(result => {
+        modalRef.result.then(
+            (result) => {
                 modalRef.close();
-            }, dismiss => {
+            },
+            (dismiss) => {
                 modalRef.close();
-                this.router.navigate(["webupdates/select"]);
-            });
+                this.router.navigate(['webupdates/select']);
+            },
+        );
     }
 
     /*
@@ -136,33 +136,34 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
      */
     public onValidPrefix = (prefixValue: any) => {
         const revZonesAttr = _.find(this.attributes, (attr: any) => {
-            return attr.name === "reverse-zone";
+            return attr.name === 'reverse-zone';
         });
         revZonesAttr.value = this.prefixService.getReverseDnsZones(prefixValue);
 
         this.mntnerService.getMntsToAuthenticateUsingParent(prefixValue, (mntners: any) => {
-
-            const mySsos = _.map(this.maintainers.sso, "key");
+            const mySsos = _.map(this.maintainers.sso, 'key');
 
             // NB don't use the stupid enrichWithSso call cz it's lame
             const enriched = _.map(mntners, (mntnerAttr: any) => {
                 return {
                     key: mntnerAttr.value,
                     mine: _.includes(mySsos, mntnerAttr.value),
-                    type: "mntner",
+                    type: 'mntner',
                 };
             });
             this.restService.detailsForMntners(enriched).then((enrichedMntners: any) => {
                 this.maintainers.objectOriginal = enrichedMntners;
-                this.restService.fetchMntnersForSSOAccount()
-                    .subscribe((results: any) => {
+                this.restService.fetchMntnersForSSOAccount().subscribe(
+                    (results: any) => {
                         this.maintainers.sso = results;
                         if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                             this.performAuthentication(this.maintainers);
                         }
-                    }, () => {
-                        this.alertsService.addGlobalError("Error fetching maintainers associated with this SSO account");
-                    });
+                    },
+                    () => {
+                        this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
+                    },
+                );
             });
         });
     };
@@ -171,22 +172,21 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.maintainers = maintainers;
         // delete from attributes all maintainers which doesn't exist in maintainers
         _.remove(this.attributes, (attr: any) => {
-            return attr.name === "mnt-by" && !maintainers.object.find(mnt => mnt.key === attr.value);
+            return attr.name === 'mnt-by' && !maintainers.object.find((mnt) => mnt.key === attr.value);
         });
         // add maintainers from maintainers object
-        maintainers.object.forEach(mnt => {
-            if (!this.attributes.find(attr => attr.name === "mnt-by" && attr.value === mnt.key)) {
-                this.attributes = this.whoisResourcesServices.addAttrsSorted(this.attributes, "mnt-by", [
-                    {name: "mnt-by", value: mnt.key}]);
-            }});
+        maintainers.object.forEach((mnt) => {
+            if (!this.attributes.find((attr) => attr.name === 'mnt-by' && attr.value === mnt.key)) {
+                this.attributes = this.whoisResourcesServices.addAttrsSorted(this.attributes, 'mnt-by', [{ name: 'mnt-by', value: mnt.key }]);
+            }
+        });
     }
 
     public containsInvalidValues() {
-        return this.attributes.findIndex(attr => attr.$$invalid) > -1;
+        return this.attributes.findIndex((attr) => attr.$$invalid) > -1;
     }
 
     public submitButtonClicked() {
-
         if (this.containsInvalidValues()) {
             return;
         }
@@ -211,43 +211,44 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
             type: this.objectType,
         };
 
-        this.restService.createDomainObject(data, this.source)
-            .subscribe((response: any) => {
-                const modalRef = this.modalService.open(ModalDomainCreationWaitComponent);
-                modalRef.componentInstance.resolve = {
-                    attributes: data.attributes,
-                    source: this.source,
-                };
-                modalRef.result.then(response => {
+        this.restService.createDomainObject(data, this.source).subscribe((response: any) => {
+            const modalRef = this.modalService.open(ModalDomainCreationWaitComponent);
+            modalRef.componentInstance.resolve = {
+                attributes: data.attributes,
+                source: this.source,
+            };
+            modalRef.result.then(
+                (response) => {
                     if (response.status === 200) {
                         this.alreadySubmited = false;
                         return this.showCreatedDomains(response);
                     }
                     modalRef.close();
-                }, failResponse => {
+                },
+                (failResponse) => {
                     modalRef.close();
                     this.alreadySubmited = false;
                     return this.createDomainsFailed(failResponse);
-                });
-                }
+                },
             );
+        });
     }
 
     public cancel() {
-        if (this.window.confirm("You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.")) {
-            this.router.navigate(["webupdates/select"]);
+        if (this.window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+            this.router.navigate(['webupdates/select']);
         }
     }
 
     private flattenStructure(attributes: any) {
         const flattenedAttributes: any[] = [];
         _.forEach(attributes, (attr: any) => {
-            if (this.jsUtils.typeOf(attr.value) === "array") {
+            if (this.jsUtils.typeOf(attr.value) === 'array') {
                 _.forEach(attr.value, (atr: any) => {
-                    flattenedAttributes.push({name: atr.name, value: atr.value || ""});
+                    flattenedAttributes.push({ name: atr.name, value: atr.value || '' });
                 });
             } else {
-                flattenedAttributes.push({name: attr.name, value: attr.value || ""});
+                flattenedAttributes.push({ name: attr.name, value: attr.value || '' });
             }
         });
         return flattenedAttributes;
@@ -271,10 +272,10 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.restCallInProgress = false;
         this.alertsService.clearAlertMessages();
         const prefix = _.find(this.attributes, (attr: any) => {
-            return attr.name === "prefix";
+            return attr.name === 'prefix';
         });
         this.attributeMetadataService.resetDomainLookups(prefix.value);
-        this.messageStoreService.add("result", {prefix: prefix.value, whoisResources: resp.body});
+        this.messageStoreService.add('result', { prefix: prefix.value, whoisResources: resp.body });
 
         return this.router.navigateByUrl(`webupdates/wizard/${this.source}/${this.objectType}/success`);
     }
@@ -283,8 +284,8 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.restCallInProgress = false;
         this.alertsService.addAlertMsgs(response.error);
         if (!_.isEmpty(this.alertsService.alerts.errors)) {
-            this.errorReporterService.log("DomainWizard", "domain", this.alertsService.alerts.errors);
+            this.errorReporterService.log('DomainWizard', 'domain', this.alertsService.alerts.errors);
         }
-        document.querySelector("#domainerrors").scrollIntoView();
+        document.querySelector('#domainerrors').scrollIntoView();
     }
 }

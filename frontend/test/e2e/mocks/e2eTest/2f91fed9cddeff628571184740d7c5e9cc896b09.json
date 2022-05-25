@@ -1,67 +1,67 @@
 {
-  "requestUrl": "/api/whois/autocomplete?attribute=person&attribute=role&extended=true&field=admin-c&query=IV",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": [
-    {
-      "key": "IV1-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV10",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV1003-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV1004-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV1007-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV1008-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV101-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV1010-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV1011-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    },
-    {
-      "key": "IV1013-RIPE",
-      "type": "person",
-      "role": null,
-      "person": "Name Removed"
-    }
-  ]
+    "requestUrl": "/api/whois/autocomplete?attribute=person&attribute=role&extended=true&field=admin-c&query=IV",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "IV1-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV10",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV1003-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV1004-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV1007-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV1008-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV101-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV1010-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV1011-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        },
+        {
+            "key": "IV1013-RIPE",
+            "type": "person",
+            "role": null,
+            "person": "Name Removed"
+        }
+    ]
 }

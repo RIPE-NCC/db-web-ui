@@ -1,25 +1,25 @@
 <div *ngIf="!closed && !member" class="alert alert-light alert-dismissible padding margin-bottom">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="closeAlert()"></button>
+    <img src="assets/images/RIPEDB-Associate.png" class="certificate-image" />
 
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="closeAlert()"></button>
-  <img src="assets/images/RIPEDB-Associate.png" class="certificate-image"/>
+    <!--Should have a better way -->
+    <p style="font-weight: 600">Earn the RIPE Database Associate certification</p>
 
-  <!--Should have a better way -->
-  <p style="font-weight:600;">Earn the RIPE Database Associate certification </p>
-
-  Do you use the RIPE Database regularly as a researching and data registration tool?
-  You can earn a verifiable digital badge from the RIPE NCC that certifies your skills and expertise in using RIPE Database.
-  <div class="documentByLine"><span class="byline"></span></div>
-  <a href="https://www.ripe.net/support/certified-professionals" target="_blank" class="link-color">Find out more</a> about how you can earn the RIPE Database Associate badge and get certified!
+    Do you use the RIPE Database regularly as a researching and data registration tool? You can earn a verifiable digital badge from the RIPE NCC that certifies
+    your skills and expertise in using RIPE Database.
+    <div class="documentByLine"><span class="byline"></span></div>
+    <a href="https://www.ripe.net/support/certified-professionals" target="_blank" class="link-color">Find out more</a> about how you can earn the RIPE Database
+    Associate badge and get certified!
 </div>
 
 <div *ngIf="!closed && member" class="alert alert-light alert-dismissible padding margin-bottom" role="alert">
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="closeAlert()"></button>
-  <img src="assets/images/RIPEDB-Associate.png" class="certificate-image"/>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="closeAlert()"></button>
+    <img src="assets/images/RIPEDB-Associate.png" class="certificate-image" />
 
-  <p style="font-weight:600;">Does your CV show your RIPE Database expertise? </p>
+    <p style="font-weight: 600">Does your CV show your RIPE Database expertise?</p>
 
-  Do you use the RIPE Database regularly as a researching and data registration tool?
-  You can earn a verifiable digital badge that certifies your skills and expertise in using RIPE Database.
-  Each RIPE NCC LIR has three exam vouchers that can be used until 31 January 2021.
-  <a href="https://www.ripe.net/support/certified-professionals" target="_blank" class="link-color">Use your voucher</a>, schedule your exam and get certified!
+    Do you use the RIPE Database regularly as a researching and data registration tool? You can earn a verifiable digital badge that certifies your skills and
+    expertise in using RIPE Database. Each RIPE NCC LIR has three exam vouchers that can be used until 31 January 2021.
+    <a href="https://www.ripe.net/support/certified-professionals" target="_blank" class="link-color">Use your voucher</a>, schedule your exam and get
+    certified!
 </div>

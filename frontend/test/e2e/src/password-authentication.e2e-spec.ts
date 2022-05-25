@@ -1,20 +1,17 @@
-import {browser} from "protractor";
+const page = require('./homePageObject');
 
-const page = require("./homePageObject");
-
-describe("The password authentication dialogue", () => {
-
+describe('The password authentication dialogue', () => {
     beforeEach(() => {
-        page.navigateTo("webupdates/modify/ripe/aut-num/AS9191");
+        page.navigateTo('webupdates/modify/ripe/aut-num/AS9191');
     });
 
-    it("should show a single modal which asks for a password", async () => {
+    it('should show a single modal which asks for a password', async () => {
         expect(page.modalBtnSubmit.isPresent()).toEqual(true);
-        expect(page.modalInpMaintainer.getText()).toEqual("NEWNET-MNT");
+        expect(page.modalInpMaintainer.getText()).toEqual('NEWNET-MNT');
         // RIPE NCC MAINTAINERS should be filtered out
-        expect(page.modalInpMaintainer.getText()).not.toContain("RIPE-NCC-MNT");
+        expect(page.modalInpMaintainer.getText()).not.toContain('RIPE-NCC-MNT');
         page.modalInpAssociate.click();
-        page.modalInpPassword.sendKeys("NEWNET-MNT");
+        page.modalInpPassword.sendKeys('NEWNET-MNT');
         page.modalBtnSubmit.click();
 
         // i'm unhappy with this test. it should be able to detect if an element is visible or not
@@ -24,5 +21,4 @@ describe("The password authentication dialogue", () => {
         expect(page.allObjectRows.get(387).isDisplayed()).toEqual(true);
         await page.scrollIntoCenteredView(page.btnDeleteObject);
     });
-
 });

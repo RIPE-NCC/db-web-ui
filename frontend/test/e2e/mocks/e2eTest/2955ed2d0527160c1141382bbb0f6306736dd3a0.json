@@ -1,10 +1,12 @@
 {
-	"requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=etchells-mnt",
-	"contentType": "application/javascript",
-	"statusCode": 200,
-	"data": [{
-		"key": "etchells-mnt",
-		"type": "mntner",
-		"auth": ["MD5-PW", "SSO"]
-	}]
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=etchells-mnt",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "etchells-mnt",
+            "type": "mntner",
+            "auth": ["MD5-PW", "SSO"]
+        }
+    ]
 }

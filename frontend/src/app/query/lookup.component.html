@@ -2,30 +2,35 @@
     <div class="lookupheader" *ngIf="header">
         Responsible organisation:
         <span *ngIf="resourceHolderFound">
-            <a [routerLink]="['/lookup']"
-               [queryParams]="{source: whoisObject['source'].id,
-                               key: whoisObject['resource-holder'].key,
-                               type: 'organisation'}"
-               target="_blank">{{ whoisObject['resource-holder'].name }}</a>
-        </span><span *ngIf="!resourceHolderFound">
-        {{ "msg.noResourceHolderFound.text" | label }}</span>
-        <br>
+            <a
+                [routerLink]="['/lookup']"
+                [queryParams]="{ source: whoisObject['source'].id, key: whoisObject['resource-holder'].key, type: 'organisation' }"
+                target="_blank"
+                >{{ whoisObject['resource-holder'].name }}</a
+            > </span
+        ><span *ngIf="!resourceHolderFound"> {{ 'msg.noResourceHolderFound.text' | label }}</span>
+        <br />
         <span *ngIf="abuseContactFound">
             Abuse contact info:
-            <a [routerLink]="['/lookup']"
-               [queryParams]="{source: whoisObject['source'].id,
-                               key: whoisObject['abuse-contact'].key,
-                               type: 'role'}"
-               target="_blank">{{ whoisObject['abuse-contact'].email}}</a>
-        </span><span *ngIf="!abuseContactFound">
-        <i>{{ "msg.noAbuseContactFound.text" | label }}</i>
+            <a
+                [routerLink]="['/lookup']"
+                [queryParams]="{ source: whoisObject['source'].id, key: whoisObject['abuse-contact'].key, type: 'role' }"
+                target="_blank"
+                >{{ whoisObject['abuse-contact'].email }}</a
+            > </span
+        ><span *ngIf="!abuseContactFound">
+            <i>{{ 'msg.noAbuseContactFound.text' | label }}</i>
         </span>
         <br />
-        <span *ngIf="abuseContactSuspected && !abuseContactSuspectedWithoutOrgid">Abuse-mailbox validation failed. Please refer to <a
+        <span *ngIf="abuseContactSuspected && !abuseContactSuspectedWithoutOrgid"
+            >Abuse-mailbox validation failed. Please refer to
+            <a
                 [routerLink]="['/lookup']"
-                [queryParams]="{source: whoisObject['source'].id,
-                               key: whoisObject['abuse-contact']['org-id'],
-                               type: 'organisation'}">{{ whoisObject['abuse-contact']['org-id'] }}</a> for further information.</span>
+                [queryParams]="{ source: whoisObject['source'].id, key: whoisObject['abuse-contact']['org-id'], type: 'organisation' }"
+                >{{ whoisObject['abuse-contact']['org-id'] }}</a
+            >
+            for further information.</span
+        >
     </div>
     <whois-object-viewer [model]="whoisObject" [linkable]="true"></whois-object-viewer>
 </div>

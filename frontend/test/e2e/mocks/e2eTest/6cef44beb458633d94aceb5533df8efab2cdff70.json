@@ -1,1113 +1,1112 @@
 {
-  "requestUrl": "/api/whois-internal/api/resources/inetnum/194.171.0.0%20-%20194.171.255.255/more-specifics.json?filter=&page=0",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data":
-  {
-     "resources":[
-        {
-           "resource":"194.171.0.0 - 194.171.1.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SURFNET-TEST-PREFIXES",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.2.0 - 194.171.2.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SNET-AT-RU",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.3.0 - 194.171.3.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SN-CIDR-PART-V",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.4.0 - 194.171.4.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KNAWNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.5.0 - 194.171.5.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"METEONET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.6.0 - 194.171.6.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"UVTNET-D",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.7.0 - 194.171.7.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NKI-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.8.0 - 194.171.8.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KNAW-NIOO",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.9.0 - 194.171.9.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Graafschapcollege-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.10.0 - 194.171.10.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SOLIS-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.11.0 - 194.171.13.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"IHE-NET",
-           "usage":{
-              "total":768,
-              "used":768,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.14.0 - 194.171.14.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"MAASTRO-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.17.0 - 194.171.17.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SNET-AT-RU",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.18.0 - 194.171.18.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"INHOLLAND_ALK",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.19.0 - 194.171.23.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"INHOLLAND_ALK",
-           "usage":{
-              "total":1280,
-              "used":1280,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.24.0 - 194.171.24.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KNAWNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.25.0 - 194.171.25.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SNET-AT-SARA",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.26.0 - 194.171.27.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SNET-AT-SARA",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.29.0 - 194.171.29.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"AMCNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.31.0 - 194.171.31.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"CWI-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.32.0 - 194.171.32.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"CWI-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.34.0 - 194.171.34.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"ROC-Horizon-College-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.35.0 - 194.171.35.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"INHOLLAND_ISC",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.36.0 - 194.171.37.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"INHOLLAND_ROT",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.38.0 - 194.171.38.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"IHE-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.40.0 - 194.171.40.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KNAWNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.41.0 - 194.171.41.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"CATHARIJNEKADE",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.42.0 - 194.171.47.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"HDH-NET",
-           "usage":{
-              "total":1536,
-              "used":1536,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.48.0 - 194.171.48.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"ROC-EHV-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.49.0 - 194.171.49.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"UVH-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.51.0 - 194.171.51.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NOVA-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.53.0 - 194.171.53.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SURFmarket-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.54.0 - 194.171.54.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"CTT-PORT-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.55.0 - 194.171.56.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"OBANET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.57.0 - 194.171.57.255",
-           "status":"assigned PA",
-           "type":"inetnum",
-           "netname":"kabk-net",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.58.0 - 194.171.59.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"HDH-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.60.0 - 194.171.60.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"WUR-net",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.61.0 - 194.171.61.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-5-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.62.0 - 194.171.63.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-6-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.64.0 - 194.171.64.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.65.0 - 194.171.65.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"WUR-net",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.66.0 - 194.171.66.127",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Leeuwenborgh-NET",
-           "usage":{
-              "total":128,
-              "used":128,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.67.0 - 194.171.67.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"WKAPNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.68.0 - 194.171.68.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"AMOLF-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.69.0 - 194.171.69.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"AMOLF-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.70.0 - 194.171.70.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"AMOLF-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.71.0 - 194.171.71.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Aventus-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.72.0 - 194.171.72.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"CFI-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.73.0 - 194.171.73.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"pluryn-net",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.74.0 - 194.171.75.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"IPABO-NET",
-           "usage":{
-              "total":512,
-              "used":1024,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.76.0 - 194.171.76.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"ROC-ALFA-LAN",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.77.0 - 194.171.77.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"DUO-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.78.0 - 194.171.78.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NBLC",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.79.0 - 194.171.79.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"DUO-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.80.0 - 194.171.80.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SWOV",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.81.0 - 194.171.81.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"IDCOLLEGE-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.82.0 - 194.171.83.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NIKHEF-Hisparc-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.84.0 - 194.171.85.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NLDA-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.86.0 - 194.171.86.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"RU-SD-LAN",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.87.0 - 194.171.87.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"RU-SANS-LAN",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.88.0 - 194.171.88.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Trimbos-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.89.0 - 194.171.90.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"CHSEDE-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.91.0 - 194.171.91.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Floretti-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.92.0 - 194.171.92.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"HSVENLO-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.93.0 - 194.171.93.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"RMV-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.94.0 - 194.171.95.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"RUL-NL",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.96.0 - 194.171.103.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NIKHEF-NET",
-           "usage":{
-              "total":2048,
-              "used":2048,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.104.0 - 194.171.104.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KW1C-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.106.0 - 194.171.106.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"RUL-NL",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.107.16 - 194.171.107.31",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"HUYSNET",
-           "usage":{
-              "total":16,
-              "used":16,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.108.0 - 194.171.108.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SOLIS-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.109.0 - 194.171.109.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"CBG-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.110.0 - 194.171.111.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"AMOLF-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.113.0 - 194.171.113.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"MAASNET-ext1",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.114.0 - 194.171.115.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"AMCNET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.117.0 - 194.171.117.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"TNO-VOEDING",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.119.0 - 194.171.119.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KNAWNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.121.0 - 194.171.121.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"ROCMN-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.122.0 - 194.171.122.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SOMT-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.124.0 - 194.171.127.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"HSLEIDEN-NET",
-           "usage":{
-              "total":1024,
-              "used":1024,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.128.0 - 194.171.135.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KIM",
-           "usage":{
-              "total":2048,
-              "used":2048,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.136.0 - 194.171.137.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.138.0 - 194.171.139.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.140.0 - 194.171.141.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-2-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.142.0 - 194.171.143.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-3-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.144.0 - 194.171.144.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KNAWNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.146.0 - 194.171.147.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"Artez-4-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.150.0 - 194.171.150.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"ZONMW-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.152.0 - 194.171.152.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KNAWNET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.154.0 - 194.171.154.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"OGN-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.156.0 - 194.171.159.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"ROCMN-NET",
-           "usage":{
-              "total":1024,
-              "used":1024,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.160.0 - 194.171.160.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"AOCOOST-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.162.0 - 194.171.162.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"HELICON-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.165.0 - 194.171.165.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"KONBIB-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.166.0 - 194.171.166.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"RKD-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.167.0 - 194.171.167.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SNET-AT-UVT",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.168.0 - 194.171.168.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NWO",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.170.0 - 194.171.170.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"GOQ-NET",
-           "usage":{
-              "total":256,
-              "used":256,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.172.0 - 194.171.175.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"SURFNET-SIPLAN-NET",
-           "usage":{
-              "total":1024,
-              "used":1024,
-              "blockSize":32
-           }
-        },
-        {
-           "resource":"194.171.178.0 - 194.171.179.255",
-           "status":"ASSIGNED PA",
-           "type":"inetnum",
-           "netname":"NHTV-NET",
-           "usage":{
-              "total":512,
-              "used":512,
-              "blockSize":32
-           }
-        }
-     ],
-     "totalNumberOfResources":123,
-     "filteredSize":123,
-     "pageSize":100
-  }
+    "requestUrl": "/api/whois-internal/api/resources/inetnum/194.171.0.0%20-%20194.171.255.255/more-specifics.json?filter=&page=0",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "resources": [
+            {
+                "resource": "194.171.0.0 - 194.171.1.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SURFNET-TEST-PREFIXES",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.2.0 - 194.171.2.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SNET-AT-RU",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.3.0 - 194.171.3.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SN-CIDR-PART-V",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.4.0 - 194.171.4.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KNAWNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.5.0 - 194.171.5.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "METEONET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.6.0 - 194.171.6.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "UVTNET-D",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.7.0 - 194.171.7.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NKI-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.8.0 - 194.171.8.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KNAW-NIOO",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.9.0 - 194.171.9.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Graafschapcollege-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.10.0 - 194.171.10.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SOLIS-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.11.0 - 194.171.13.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "IHE-NET",
+                "usage": {
+                    "total": 768,
+                    "used": 768,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.14.0 - 194.171.14.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "MAASTRO-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.17.0 - 194.171.17.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SNET-AT-RU",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.18.0 - 194.171.18.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "INHOLLAND_ALK",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.19.0 - 194.171.23.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "INHOLLAND_ALK",
+                "usage": {
+                    "total": 1280,
+                    "used": 1280,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.24.0 - 194.171.24.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KNAWNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.25.0 - 194.171.25.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SNET-AT-SARA",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.26.0 - 194.171.27.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SNET-AT-SARA",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.29.0 - 194.171.29.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "AMCNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.31.0 - 194.171.31.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "CWI-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.32.0 - 194.171.32.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "CWI-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.34.0 - 194.171.34.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "ROC-Horizon-College-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.35.0 - 194.171.35.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "INHOLLAND_ISC",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.36.0 - 194.171.37.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "INHOLLAND_ROT",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.38.0 - 194.171.38.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "IHE-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.40.0 - 194.171.40.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KNAWNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.41.0 - 194.171.41.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "CATHARIJNEKADE",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.42.0 - 194.171.47.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "HDH-NET",
+                "usage": {
+                    "total": 1536,
+                    "used": 1536,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.48.0 - 194.171.48.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "ROC-EHV-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.49.0 - 194.171.49.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "UVH-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.51.0 - 194.171.51.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NOVA-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.53.0 - 194.171.53.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SURFmarket-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.54.0 - 194.171.54.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "CTT-PORT-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.55.0 - 194.171.56.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "OBANET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.57.0 - 194.171.57.255",
+                "status": "assigned PA",
+                "type": "inetnum",
+                "netname": "kabk-net",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.58.0 - 194.171.59.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "HDH-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.60.0 - 194.171.60.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "WUR-net",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.61.0 - 194.171.61.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-5-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.62.0 - 194.171.63.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-6-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.64.0 - 194.171.64.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.65.0 - 194.171.65.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "WUR-net",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.66.0 - 194.171.66.127",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Leeuwenborgh-NET",
+                "usage": {
+                    "total": 128,
+                    "used": 128,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.67.0 - 194.171.67.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "WKAPNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.68.0 - 194.171.68.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "AMOLF-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.69.0 - 194.171.69.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "AMOLF-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.70.0 - 194.171.70.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "AMOLF-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.71.0 - 194.171.71.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Aventus-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.72.0 - 194.171.72.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "CFI-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.73.0 - 194.171.73.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "pluryn-net",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.74.0 - 194.171.75.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "IPABO-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 1024,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.76.0 - 194.171.76.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "ROC-ALFA-LAN",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.77.0 - 194.171.77.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "DUO-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.78.0 - 194.171.78.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NBLC",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.79.0 - 194.171.79.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "DUO-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.80.0 - 194.171.80.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SWOV",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.81.0 - 194.171.81.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "IDCOLLEGE-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.82.0 - 194.171.83.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NIKHEF-Hisparc-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.84.0 - 194.171.85.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NLDA-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.86.0 - 194.171.86.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "RU-SD-LAN",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.87.0 - 194.171.87.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "RU-SANS-LAN",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.88.0 - 194.171.88.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Trimbos-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.89.0 - 194.171.90.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "CHSEDE-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.91.0 - 194.171.91.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Floretti-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.92.0 - 194.171.92.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "HSVENLO-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.93.0 - 194.171.93.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "RMV-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.94.0 - 194.171.95.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "RUL-NL",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.96.0 - 194.171.103.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NIKHEF-NET",
+                "usage": {
+                    "total": 2048,
+                    "used": 2048,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.104.0 - 194.171.104.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KW1C-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.106.0 - 194.171.106.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "RUL-NL",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.107.16 - 194.171.107.31",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "HUYSNET",
+                "usage": {
+                    "total": 16,
+                    "used": 16,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.108.0 - 194.171.108.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SOLIS-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.109.0 - 194.171.109.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "CBG-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.110.0 - 194.171.111.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "AMOLF-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.113.0 - 194.171.113.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "MAASNET-ext1",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.114.0 - 194.171.115.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "AMCNET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.117.0 - 194.171.117.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "TNO-VOEDING",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.119.0 - 194.171.119.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KNAWNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.121.0 - 194.171.121.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "ROCMN-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.122.0 - 194.171.122.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SOMT-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.124.0 - 194.171.127.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "HSLEIDEN-NET",
+                "usage": {
+                    "total": 1024,
+                    "used": 1024,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.128.0 - 194.171.135.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KIM",
+                "usage": {
+                    "total": 2048,
+                    "used": 2048,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.136.0 - 194.171.137.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.138.0 - 194.171.139.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.140.0 - 194.171.141.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-2-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.142.0 - 194.171.143.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-3-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.144.0 - 194.171.144.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KNAWNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.146.0 - 194.171.147.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "Artez-4-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.150.0 - 194.171.150.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "ZONMW-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.152.0 - 194.171.152.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KNAWNET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.154.0 - 194.171.154.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "OGN-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.156.0 - 194.171.159.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "ROCMN-NET",
+                "usage": {
+                    "total": 1024,
+                    "used": 1024,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.160.0 - 194.171.160.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "AOCOOST-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.162.0 - 194.171.162.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "HELICON-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.165.0 - 194.171.165.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "KONBIB-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.166.0 - 194.171.166.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "RKD-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.167.0 - 194.171.167.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SNET-AT-UVT",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.168.0 - 194.171.168.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NWO",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.170.0 - 194.171.170.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "GOQ-NET",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.172.0 - 194.171.175.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "SURFNET-SIPLAN-NET",
+                "usage": {
+                    "total": 1024,
+                    "used": 1024,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "194.171.178.0 - 194.171.179.255",
+                "status": "ASSIGNED PA",
+                "type": "inetnum",
+                "netname": "NHTV-NET",
+                "usage": {
+                    "total": 512,
+                    "used": 512,
+                    "blockSize": 32
+                }
+            }
+        ],
+        "totalNumberOfResources": 123,
+        "filteredSize": 123,
+        "pageSize": 100
+    }
 }

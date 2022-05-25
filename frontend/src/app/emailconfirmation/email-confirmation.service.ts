@@ -1,19 +1,17 @@
-import {HttpClient, HttpParams, HttpUrlEncodingCodec} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import { HttpClient, HttpParams, HttpUrlEncodingCodec } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class EmailConfirmationService {
+    private readonly API_BASE_URL: string = 'api/whois-internal/api/abuse-validation/validate-token';
 
-    private readonly API_BASE_URL: string = "api/whois-internal/api/abuse-validation/validate-token";
-
-    constructor(private http: HttpClient) {
-    }
+    constructor(private http: HttpClient) {}
 
     public confirmEmail(token: string): Observable<any> {
         if (!token) {
-            console.error("Confirming email", token);
-            throw new TypeError("ResourcesDataService.fetchParentResource failed: not a resource");
+            console.error('Confirming email', token);
+            throw new TypeError('ResourcesDataService.fetchParentResource failed: not a resource');
         }
 
         // temporary hack to work around Anglar not uri encoding equals signs:

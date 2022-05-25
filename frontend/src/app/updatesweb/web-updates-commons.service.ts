@@ -1,19 +1,19 @@
-import {Injectable} from "@angular/core";
-import {Router} from "@angular/router";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import * as _ from "lodash";
-import {AlertsService} from "../shared/alert/alerts.service";
-import {MntnerService} from "./mntner.service";
-import {IMaintainers} from "./create-modify.component";
-import {ModalAuthenticationComponent} from "./modal-authentication.component";
-import {IAttributeModel} from "../shared/whois-response-type.model";
-import {PropertiesService} from "../properties.service";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import { PropertiesService } from '../properties.service';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { IAttributeModel } from '../shared/whois-response-type.model';
+import { IMaintainers } from './create-modify.component';
+import { MntnerService } from './mntner.service';
+import { ModalAuthenticationComponent } from './modal-authentication.component';
 
 export interface IAuthParams {
     maintainers: IMaintainers;
     object: {
         name: string;
-        source: string
+        source: string;
         type: string;
     };
     isLirObject?: boolean;
@@ -24,23 +24,26 @@ export interface IAuthParams {
 
 @Injectable()
 export class WebUpdatesCommonsService {
-
-    constructor(private router: Router,
-                private alertService: AlertsService,
-                private mntnerService: MntnerService,
-                private modalService: NgbModal,
-                public properties: PropertiesService) {
-    }
+    constructor(
+        private router: Router,
+        private alertService: AlertsService,
+        private mntnerService: MntnerService,
+        private modalService: NgbModal,
+        public properties: PropertiesService,
+    ) {}
 
     public performAuthentication(authParams: IAuthParams) {
-        console.debug("Perform authentication", authParams.maintainers);
-        const mntnersWithPasswords = this.mntnerService.getMntnersForPasswordAuthentication(authParams.maintainers.sso,
-                                                                                            authParams.maintainers.objectOriginal,
-                                                                                            authParams.maintainers.object);
-        const mntnersWithoutPasswords =
-            this.mntnerService.getMntnersNotEligibleForPasswordAuthentication(authParams.maintainers.sso,
-                                                                              authParams.maintainers.objectOriginal,
-                                                                              authParams.maintainers.object);
+        console.debug('Perform authentication', authParams.maintainers);
+        const mntnersWithPasswords = this.mntnerService.getMntnersForPasswordAuthentication(
+            authParams.maintainers.sso,
+            authParams.maintainers.objectOriginal,
+            authParams.maintainers.object,
+        );
+        const mntnersWithoutPasswords = this.mntnerService.getMntnersNotEligibleForPasswordAuthentication(
+            authParams.maintainers.sso,
+            authParams.maintainers.objectOriginal,
+            authParams.maintainers.object,
+        );
         // see: https://www.pivotaltracker.com/n/projects/769061
         const allowForcedDelete = !_.find(authParams.maintainers.object, (o: any) => {
             return this.mntnerService.isAnyNccMntner(o.key);
@@ -54,34 +57,37 @@ export class WebUpdatesCommonsService {
             mntnersWithoutPassword: mntnersWithoutPasswords,
             allowForcedDelete: !!allowForcedDelete,
             isLirObject: !!authParams.isLirObject,
-            source: authParams.object.source
+            source: authParams.object.source,
         };
-        modalRef.result.then(result => {
-            this.alertService.clearAlertMessages();
-            const selectedMntner = result.$value.selectedItem;
-            console.debug("selected mntner:" + selectedMntner);
-            const associationResp = result.$value.response;
-            console.debug("associationResp:" + associationResp);
-            if (this.mntnerService.isMine(selectedMntner)) {
-                // has been successfully associated in authentication modal
-                authParams.maintainers.sso.push(selectedMntner);
-                // mark starred in selected
-                authParams.maintainers.object = this.mntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
-            }
-            console.debug("After auth: maintainers.sso:", authParams.maintainers.sso);
-            console.debug("After auth: maintainers.object:", authParams.maintainers.object);
-            if (_.isFunction(authParams.successClbk)) {
-                authParams.successClbk(associationResp);
-            }
-        }, failResponse => {
-            if (failResponse !== "forceDelete" && _.isFunction(authParams.failureClbk)) {
-                authParams.failureClbk();
-            }
-        });
+        modalRef.result.then(
+            (result) => {
+                this.alertService.clearAlertMessages();
+                const selectedMntner = result.$value.selectedItem;
+                console.debug('selected mntner:' + selectedMntner);
+                const associationResp = result.$value.response;
+                console.debug('associationResp:' + associationResp);
+                if (this.mntnerService.isMine(selectedMntner)) {
+                    // has been successfully associated in authentication modal
+                    authParams.maintainers.sso.push(selectedMntner);
+                    // mark starred in selected
+                    authParams.maintainers.object = this.mntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
+                }
+                console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
+                console.debug('After auth: maintainers.object:', authParams.maintainers.object);
+                if (_.isFunction(authParams.successClbk)) {
+                    authParams.successClbk(associationResp);
+                }
+            },
+            (failResponse) => {
+                if (failResponse !== 'forceDelete' && _.isFunction(authParams.failureClbk)) {
+                    authParams.failureClbk();
+                }
+            },
+        );
     }
 
     public addLinkToReferenceAttributes(attributes: IAttributeModel[], objectSource: string) {
-        const parser = document.createElement("a");
+        const parser = document.createElement('a');
         return _.map(attributes, (attribute: any) => {
             if (!_.isUndefined(attribute.link)) {
                 attribute.link.href = this._displayUrl(parser, attribute, objectSource);
@@ -93,7 +99,8 @@ export class WebUpdatesCommonsService {
     public navigateToDisplay(objectSource: string, objectType: string, objectName: string, operation: string) {
         if (operation) {
             this.router.navigateByUrl(`webupdates/display/${objectSource}/${objectType}/${encodeURIComponent(objectName)}?method=${operation}`);
-        } else { // operation create or modify was canceled
+        } else {
+            // operation create or modify was canceled
             this.router.navigateByUrl(`webupdates/display/${objectSource}/${objectType}/${encodeURIComponent(objectName)}`);
         }
     }
@@ -108,7 +115,7 @@ export class WebUpdatesCommonsService {
 
     private _displayUrl(parser: any, attribute: IAttributeModel, objectSource: string) {
         parser.href = attribute.link.href;
-        const parts = parser.pathname.split("/");
-        return `webupdates/display/${this.properties.SOURCE}/${attribute["referenced-type"]}/${_.last(parts)}`;
+        const parts = parser.pathname.split('/');
+        return `webupdates/display/${this.properties.SOURCE}/${attribute['referenced-type']}/${_.last(parts)}`;
     }
 }

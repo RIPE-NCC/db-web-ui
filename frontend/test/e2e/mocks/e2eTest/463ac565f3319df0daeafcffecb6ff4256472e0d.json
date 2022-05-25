@@ -1,6 +1,6 @@
 {
-  "requestUrl": "/api/whois/autocomplete?extended=true&field=mntner&query=UNA-TEST-MNT",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": []
+    "requestUrl": "/api/whois/autocomplete?extended=true&field=mntner&query=UNA-TEST-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
 }

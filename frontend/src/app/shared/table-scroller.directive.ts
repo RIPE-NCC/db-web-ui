@@ -1,6 +1,6 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Inject, Output} from "@angular/core";
-import {DOCUMENT} from "@angular/common";
-import {WINDOW} from "../core/window.service";
+import { DOCUMENT } from '@angular/common';
+import { Directive, ElementRef, EventEmitter, HostListener, Inject, Output } from '@angular/core';
+import { WINDOW } from '../core/window.service';
 
 export function debounce(delay: number = 25): MethodDecorator {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -18,31 +18,25 @@ export function debounce(delay: number = 25): MethodDecorator {
 }
 
 @Directive({
-    selector: "[table-scroller]"
+    selector: '[table-scroller]',
 })
 export class TableScrollerDirective {
-
     @Output() scrolled = new EventEmitter();
 
     private lastRemaining = 9999;
     private lengthThreshold = 200;
-    public constructor(private elRef: ElementRef,
-                       @Inject(DOCUMENT) private document: Document,
-                       @Inject(WINDOW) private window) {
+    public constructor(private elRef: ElementRef, @Inject(DOCUMENT) private document: Document, @Inject(WINDOW) private window) {}
 
-    }
-
-    @HostListener("scroll", ["$event"])
+    @HostListener('scroll', ['$event'])
     @debounce()
     onListenerTriggered(event: UIEvent): void {
         // @ts-ignore
         const remaining = event.target.scrollHeight - (event.target.clientHeight + event.target.scrollTop);
 
         //if we have reached the threshold
-        if (remaining < this.lengthThreshold && (remaining - this.lastRemaining) < 0) {
+        if (remaining < this.lengthThreshold && remaining - this.lastRemaining < 0) {
             this.scrolled.emit();
         }
         this.lastRemaining = remaining;
     }
-
 }

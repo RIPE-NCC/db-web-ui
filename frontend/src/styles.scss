@@ -1,109 +1,109 @@
 /* Extended CSS */
-@import "src/styles/scss/extend.scss";
+@import 'src/styles/scss/extend.scss';
 /* Generic CSS */
-@import "src/styles/scss/web-components.scss";
-@import "src/styles/scss/general.scss";
-@import "src/styles/scss/paginator.scss";
-@import "src/styles/scss/full-text-search.scss";
-@import "src/styles/scss/query.scss";
-@import "src/styles/scss/hierarchy-flags-panel.scss";
-@import "src/styles/scss/advance-filter-panel.scss";
+@import 'src/styles/scss/web-components.scss';
+@import 'src/styles/scss/general.scss';
+@import 'src/styles/scss/paginator.scss';
+@import 'src/styles/scss/full-text-search.scss';
+@import 'src/styles/scss/query.scss';
+@import 'src/styles/scss/hierarchy-flags-panel.scss';
+@import 'src/styles/scss/advance-filter-panel.scss';
 /* View based CSS */
-@import "src/styles/scss/create-obj.scss";
-@import "src/styles/scss/datatables.scss";
-@import "src/styles/scss/display.scss";
-@import "src/styles/scss/multisync.scss";
-@import "src/styles/scss/resources.scss";
-@import "src/styles/scss/ip-usage-of-all-resources.scss";
-@import "src/styles/scss/ip-usage.scss";
-@import "src/styles/scss/whois-object.scss";
+@import 'src/styles/scss/create-obj.scss';
+@import 'src/styles/scss/datatables.scss';
+@import 'src/styles/scss/display.scss';
+@import 'src/styles/scss/multisync.scss';
+@import 'src/styles/scss/resources.scss';
+@import 'src/styles/scss/ip-usage-of-all-resources.scss';
+@import 'src/styles/scss/ip-usage.scss';
+@import 'src/styles/scss/whois-object.scss';
 /* Module based CSS */
-@import "src/styles/scss/uiselect-custom.scss";
-@import "src/styles/scss/bootstrap-custom.scss";
-@import "src/styles/scss/material-custom.scss";
+@import 'src/styles/scss/uiselect-custom.scss';
+@import 'src/styles/scss/bootstrap-custom.scss';
+@import 'src/styles/scss/material-custom.scss';
 /* Custom directives */
-@import "src/styles/scss/flag.scss";
-@import "src/styles/scss/forgot-maintainer-password.scss";
-@import "src/styles/scss/certificate-banner.scss";
-@import "src/styles/scss/modal-banner.scss";
-@import "src/styles/scss/font.scss";
-@import "src/styles/scss/live-chat.scss";
-@import "src/styles/scss/alerts-drop-down.scss";
-@import "src/styles/scss/transfer-drop-down.scss";
-@import "src/styles/scss/org-drop-down.scss";
-@import "src/styles/scss/query-flags.scss";
-@import "src/styles/scss/hierarchy-selector.scss";
-@import "src/styles/scss/feedback-support-dialog.scss";
-@import "src/styles/scss/syncupdates.scss";
-@import "~@ng-select/ng-select/themes/default.theme.css";
+@import 'src/styles/scss/flag.scss';
+@import 'src/styles/scss/forgot-maintainer-password.scss';
+@import 'src/styles/scss/certificate-banner.scss';
+@import 'src/styles/scss/modal-banner.scss';
+@import 'src/styles/scss/font.scss';
+@import 'src/styles/scss/live-chat.scss';
+@import 'src/styles/scss/alerts-drop-down.scss';
+@import 'src/styles/scss/transfer-drop-down.scss';
+@import 'src/styles/scss/org-drop-down.scss';
+@import 'src/styles/scss/query-flags.scss';
+@import 'src/styles/scss/hierarchy-selector.scss';
+@import 'src/styles/scss/feedback-support-dialog.scss';
+@import 'src/styles/scss/syncupdates.scss';
+@import '~@ng-select/ng-select/themes/default.theme.css';
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
 //this is needed until we migrate to bootstrap4
 .popover {
-  display: block !important;
+    display: block !important;
 
-  .popover-body {
-    padding: 9px 14px;
-  }
+    .popover-body {
+        padding: 9px 14px;
+    }
 }
 
 .tooltip {
-  &.show {
-    opacity: 1;
-  }
+    &.show {
+        opacity: 1;
+    }
 }
 
 .fade {
-  &.show {
-    opacity: 1;
-  }
+    &.show {
+        opacity: 1;
+    }
 }
 
 .modal-backdrop.show {
-  opacity: .5;
+    opacity: 0.5;
 }
 
 .modal.show .modal-dialog {
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
 }
 
 ngb-typeahead-window.dropdown-menu {
-  width: 100%;
-  overflow: auto;
-  max-height: 300px;
-
-  button.dropdown-item {
     width: 100%;
-    text-align: left;
-    display: block;
-    border: none;
-    background-color: transparent;
-    padding: 10px 8px;
-    border-bottom: 1px solid #EAEAEA !important;
-    &:hover, &:focus {
-      color: inherit;
-    }
-    &.active {
-      background: #F5FFFF none !important;
-      color: inherit;
-    }
-  }
+    overflow: auto;
+    max-height: 300px;
 
+    button.dropdown-item {
+        width: 100%;
+        text-align: left;
+        display: block;
+        border: none;
+        background-color: transparent;
+        padding: 10px 8px;
+        border-bottom: 1px solid #eaeaea !important;
+        &:hover,
+        &:focus {
+            color: inherit;
+        }
+        &.active {
+            background: #f5ffff none !important;
+            color: inherit;
+        }
+    }
 }
 [hidden] {
-  display: none !important;
+    display: none !important;
 }
 
 #portal-columns #content .grey .nav-tabs li a.active {
-  color: #ff9600;
-  cursor: default;
-  border: 1px solid #ddd;
-  border-bottom-color: transparent;
+    color: #ff9600;
+    cursor: default;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
 }
 
 .space-bottom-for-livechat {
-  @extend %float-l;
-  @extend %width-100;
-  margin-bottom: 3.5em;
+    @extend %float-l;
+    @extend %width-100;
+    margin-bottom: 3.5em;
 }

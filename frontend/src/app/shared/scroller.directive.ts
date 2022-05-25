@@ -1,4 +1,4 @@
-import {Directive, HostListener, EventEmitter, Output, ElementRef} from "@angular/core";
+import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
 
 export function debounce(delay: number = 100): MethodDecorator {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -16,21 +16,19 @@ export function debounce(delay: number = 100): MethodDecorator {
 }
 
 @Directive({
-    selector: "[scroller]"
+    selector: '[scroller]',
 })
 export class ScrollerDirective {
-
     @Output() scrolled = new EventEmitter();
 
-    public constructor(private elRef: ElementRef) {
+    public constructor(private elRef: ElementRef) {}
 
-    }
-
-    @HostListener("window:scroll", ["$event"])
+    @HostListener('window:scroll', ['$event'])
     @debounce()
     onListenerTriggered(event: UIEvent): void {
-        const nearly = this.elRef.nativeElement.getBoundingClientRect().top > 0 && this.elRef.nativeElement.getBoundingClientRect().top <
-                            document.documentElement.clientHeight + document.body.scrollTop;
+        const nearly =
+            this.elRef.nativeElement.getBoundingClientRect().top > 0 &&
+            this.elRef.nativeElement.getBoundingClientRect().top < document.documentElement.clientHeight + document.body.scrollTop;
         // Emit the event
         if (nearly) {
             this.scrolled.emit();

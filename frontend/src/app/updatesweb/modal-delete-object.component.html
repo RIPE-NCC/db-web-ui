@@ -8,14 +8,13 @@
     </div>
 
     <div class="modal-body margin-left">
-
         <div *ngIf="restCallInProgress">
             <p>Retrieving information. Please wait.</p>
         </div>
 
         <div *ngIf="canBeDeleted">
-            <label for="reason">Reason</label><br/>
-            <input class="form-control" type="text" name="reason" id="reason" [(ngModel)]="reason" autocomplete="off">
+            <label for="reason">Reason</label><br />
+            <input class="form-control" type="text" name="reason" id="reason" [(ngModel)]="reason" autocomplete="off" />
         </div>
 
         <div *ngIf="hasNonSelfIncomingRefs(inputData.objectType, inputData.name, incomingReferences)">
@@ -23,15 +22,17 @@
             <p *ngIf="canBeDeleted">Please note that this will also delete the following objects:</p>
 
             <ul class="bullets">
-                <ng-container *ngFor="let ref of incomingReferences | slice:0:MAX_REFS_TO_SHOW">
-                    <li *ngIf="!isEqualTo(inputData.objectType, inputData.name, ref )">
+                <ng-container *ngFor="let ref of incomingReferences | slice: 0:MAX_REFS_TO_SHOW">
+                    <li *ngIf="!isEqualTo(inputData.objectType, inputData.name, ref)">
                         <div>
-                            {{ref.objectType}} - <a target="_blank" href="{{displayUrl(ref)}}">{{ref.primaryKey}}</a>
+                            {{ ref.objectType }} - <a target="_blank" href="{{ displayUrl(ref) }}">{{ ref.primaryKey }}</a>
                         </div>
                     </li>
                 </ng-container>
             </ul>
-            <p *ngIf="incomingReferences.length > MAX_REFS_TO_SHOW">There are {{incomingReferences.length}}-{{MAX_REFS_TO_SHOW}} more objects referring to {{inputData.objectType}} {{inputData.name}}</p>
+            <p *ngIf="incomingReferences.length > MAX_REFS_TO_SHOW">
+                There are {{ incomingReferences.length }}-{{ MAX_REFS_TO_SHOW }} more objects referring to {{ inputData.objectType }} {{ inputData.name }}
+            </p>
         </div>
     </div>
 
@@ -43,6 +44,4 @@
             <button class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" (click)="cancel()">Return to object</button>
         </div>
     </div>
-
 </div>
-

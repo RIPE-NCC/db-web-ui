@@ -1,15 +1,12 @@
 {
-  "data": [
-    {
-      "key": "UUNETDE-I",
-      "type": "mntner",
-      "auth": [
-        "MD5-PW",
-        "SSO"
-      ]
-    }
-  ],
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=UUNETDE-I"
+    "data": [
+        {
+            "key": "UUNETDE-I",
+            "type": "mntner",
+            "auth": ["MD5-PW", "SSO"]
+        }
+    ],
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=UUNETDE-I"
 }

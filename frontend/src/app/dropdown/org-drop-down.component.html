@@ -1,16 +1,24 @@
 <div class="registry-selector-container" *ngIf="organisations.length && !trainingEnv">
     <span>You are editing</span>
-    <ng-select id="organisation-selector"
-               [items]="organisations"
-               bindLabel="organisationName"
-               [ngModel]="selectedOrg"
-               [clearable]="false"
-               (change)="organisationSelected($event)"
-               [searchFn]="customSearchFn">
+    <ng-select
+        id="organisation-selector"
+        [items]="organisations"
+        bindLabel="organisationName"
+        [ngModel]="selectedOrg"
+        [clearable]="false"
+        (change)="organisationSelected($event)"
+        [searchFn]="customSearchFn"
+    >
         <ng-template ng-option-tmp let-org="item" let-search="searchTerm">
-            <div><span>{{org.organisationName}}</span></div>
-            <small *ngIf="org.regId"><span>{{org.regId}}</span></small>
-            <small *ngIf="!org.regId"><span>{{org.orgObjectId}}</span></small>
+            <div>
+                <span>{{ org.organisationName }}</span>
+            </div>
+            <small *ngIf="org.regId"
+                ><span>{{ org.regId }}</span></small
+            >
+            <small *ngIf="!org.regId"
+                ><span>{{ org.orgObjectId }}</span></small
+            >
         </ng-template>
     </ng-select>
 </div>

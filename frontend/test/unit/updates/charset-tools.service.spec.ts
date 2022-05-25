@@ -1,10 +1,9 @@
-import {TestBed} from "@angular/core/testing";
-import {CharsetToolsService} from "../../../src/app/updatesweb/charset-tools.service";
-import {UpdatesWebModule} from "../../../src/app/updatesweb/updateweb.module";
-import {IAttributeModel} from "../../../src/app/shared/whois-response-type.model";
+import { TestBed } from '@angular/core/testing';
+import { IAttributeModel } from '../../../src/app/shared/whois-response-type.model';
+import { CharsetToolsService } from '../../../src/app/updatesweb/charset-tools.service';
+import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
-describe("updates: CharsetToolsService", () => {
-
+describe('updates: CharsetToolsService', () => {
     let subject: CharsetToolsService;
 
     beforeEach(() => {
@@ -12,7 +11,7 @@ describe("updates: CharsetToolsService", () => {
             imports: [UpdatesWebModule],
             providers: [
                 CharsetToolsService,
-                { provide: "$log",  useValue: {debug: () => {} } }, // <- just because of testing AbuseCTableComponent here
+                { provide: '$log', useValue: { debug: () => {} } }, // <- just because of testing AbuseCTableComponent here
             ],
         });
         subject = TestBed.inject(CharsetToolsService);
@@ -34,49 +33,48 @@ describe("updates: CharsetToolsService", () => {
      ð	ñ	ò	ó	ô	õ	ö	÷	ø	ù	ú	û	ü	ý	þ	ÿ
      */
 
-    it("should handle undefined string", () => {
+    it('should handle undefined string', () => {
         expect(subject.isLatin1(undefined)).toEqual(true);
     });
 
-    it("should handle empty string", () => {
-        expect(subject.isLatin1("")).toEqual(true);
+    it('should handle empty string', () => {
+        expect(subject.isLatin1('')).toEqual(true);
     });
 
-    it("should recognize latin-1 string", () => {
+    it('should recognize latin-1 string', () => {
         expect(subject.isLatin1("'hello'")).toEqual(true);
     });
 
     // handle extended us-ascii
-    it("should recognize all as us-ascii string", () => {
+    it('should recognize all as us-ascii string', () => {
         expect(subject.isLatin1("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~")).toEqual(true);
     });
 
     // handle extended part of ascii(=latin1)
-    it("should recognize extended latin1 string", () => {
-        expect(subject.isLatin1(" ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ")).toEqual(true);
+    it('should recognize extended latin1 string', () => {
+        expect(subject.isLatin1(' ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ')).toEqual(true);
     });
 
-    it("should recognize escaped utf-8 string", () => {
-        expect(subject.isLatin1("%u0430")).toEqual(true);
+    it('should recognize escaped utf-8 string', () => {
+        expect(subject.isLatin1('%u0430')).toEqual(true);
     });
 
-    it("should recognize utf-8 string", () => {
-        expect(subject.isLatin1("Здравствуйте")).toEqual(false);
+    it('should recognize utf-8 string', () => {
+        expect(subject.isLatin1('Здравствуйте')).toEqual(false);
     });
 
-    it("should replace certain latin-1 characters", () =>  {
-        expect(subject.replaceSubstitutables("emdash\u2013test")).toEqual("emdash-test");
-        expect(subject.replaceSubstitutables("endash\u2014test")).toEqual("endash-test");
-        expect(subject.replaceSubstitutables("nbsp\u00A0test")).toEqual("nbsp test");
-        expect(subject.replaceSubstitutables("mixed\u2013\u2014\u00A0test")).toEqual("mixed-- test");
-        expect(subject.replaceSubstitutables("multiple\u2013\u2013\u00A0\u2014\u2014test")).toEqual("multiple-- --test");
-        expect(subject.replaceSubstitutables("r\u00F8\u00e5")).toEqual("røå");
+    it('should replace certain latin-1 characters', () => {
+        expect(subject.replaceSubstitutables('emdash\u2013test')).toEqual('emdash-test');
+        expect(subject.replaceSubstitutables('endash\u2014test')).toEqual('endash-test');
+        expect(subject.replaceSubstitutables('nbsp\u00A0test')).toEqual('nbsp test');
+        expect(subject.replaceSubstitutables('mixed\u2013\u2014\u00A0test')).toEqual('mixed-- test');
+        expect(subject.replaceSubstitutables('multiple\u2013\u2013\u00A0\u2014\u2014test')).toEqual('multiple-- --test');
+        expect(subject.replaceSubstitutables('r\u00F8\u00e5')).toEqual('røå');
     });
 
-    it("should replace invalid chars with ?", () => {
-        const chinesDescAttr: IAttributeModel = {name: "desc", value: "test漢字"};
+    it('should replace invalid chars with ?', () => {
+        const chinesDescAttr: IAttributeModel = { name: 'desc', value: 'test漢字' };
         subject.replaceUtf8(chinesDescAttr);
-        expect(chinesDescAttr.value).toEqual("test??");
+        expect(chinesDescAttr.value).toEqual('test??');
     });
-
 });

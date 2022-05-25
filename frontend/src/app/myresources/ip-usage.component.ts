@@ -1,13 +1,12 @@
-import {Component, Input, OnChanges, SimpleChanges} from "@angular/core";
-import {IUsage} from "./resource-type.model";
-import {IpUsageService} from "./ip-usage.service";
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { IpUsageService } from './ip-usage.service';
+import { IUsage } from './resource-type.model';
 
 @Component({
-    selector: "ip-usage",
-    templateUrl: "./ip-usage.component.html",
+    selector: 'ip-usage',
+    templateUrl: './ip-usage.component.html',
 })
 export class IpUsageComponent implements OnChanges {
-
     // Inputs
     @Input()
     public type: string;
@@ -30,7 +29,7 @@ export class IpUsageComponent implements OnChanges {
     }
 
     private calcPercentage() {
-        this.percentageUsed = Math.round(this.usage.used * 100 / this.usage.total);
+        this.percentageUsed = Math.round((this.usage.used * 100) / this.usage.total);
         this.percentageFree = 100 - this.percentageUsed;
     }
 

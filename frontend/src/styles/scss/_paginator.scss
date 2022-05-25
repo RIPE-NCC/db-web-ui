@@ -1,29 +1,29 @@
 paginator ul li {
-  cursor: pointer;
-  a {
-    min-width: 46px;
-    text-align: center;
-    &.page-link {
-      color: #242b6a;
-    }
-  }
-  &.page-item.active .page-link {
-      background-color: #242b6a;
-      border-color: #242b6a;
-  }
-  &.disabled {
+    cursor: pointer;
     a {
-      color: #999 !important;
-      cursor: none;
-      &:hover {
-        background: #eee !important;
-      }
+        min-width: 46px;
+        text-align: center;
+        &.page-link {
+            color: #242b6a;
+        }
     }
-  }
+    &.page-item.active .page-link {
+        background-color: #242b6a;
+        border-color: #242b6a;
+    }
+    &.disabled {
+        a {
+            color: #999 !important;
+            cursor: none;
+            &:hover {
+                background: #eee !important;
+            }
+        }
+    }
 }
 
-#content ul.pagination>li {
-  display: inline;
+#content ul.pagination > li {
+    display: inline;
 }
 
 .full-text-result-summary tbody tr {
