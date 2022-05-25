@@ -1,11 +1,11 @@
 {
-  "status": 200,
-  "data": {
-    "ns": "ns2.xs4all.nl",
-    "code": 0,
-    "message": "Server is authoritative for 110.17.212.in-addr.arpa"
-  },
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/dns/status?ignore404=true&ns=ns2.xs4all.nl&record=110.17.212.in-addr.arpa"
+    "status": 200,
+    "data": {
+        "ns": "ns2.xs4all.nl",
+        "code": 0,
+        "message": "Server is authoritative for 110.17.212.in-addr.arpa"
+    },
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/dns/status?ignore404=true&ns=ns2.xs4all.nl&record=110.17.212.in-addr.arpa"
 }

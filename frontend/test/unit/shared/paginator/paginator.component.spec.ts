@@ -1,17 +1,14 @@
-import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {PaginationComponent} from "../../../../src/app/shared/paginator/pagination.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PaginationComponent } from '../../../../src/app/shared/paginator/pagination.component';
 
-describe("PaginationComponent", () => {
-
+describe('PaginationComponent', () => {
     let component: PaginationComponent;
     let fixture: ComponentFixture<PaginationComponent>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                PaginationComponent
-            ],
-        })
+            declarations: [PaginationComponent],
+        });
     });
 
     beforeEach(() => {
@@ -19,12 +16,12 @@ describe("PaginationComponent", () => {
         component = fixture.componentInstance;
     });
 
-    it("should not crash", () => {
+    it('should not crash', () => {
         fixture.detectChanges();
         expect(component.hidePaginator).toEqual(false);
     });
 
-    it("should show all results on 1 page", () => {
+    it('should show all results on 1 page', () => {
         component.numResults = 5;
         component.resultsPerPage = 100;
 
@@ -33,7 +30,7 @@ describe("PaginationComponent", () => {
         expect(component.activePage).toEqual(1);
     });
 
-    it("should figure out how many pages to show and go there", () => {
+    it('should figure out how many pages to show and go there', () => {
         component.numResults = 400;
         component.resultsPerPage = 10;
 

@@ -45,27 +45,24 @@
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js';  // Included with Angular CLI.
-
-
+import '@angular/localize/init';
+import {
+    AppBanner,
+    AppCookieConsent,
+    AppNavBar,
+    AppSwitcher,
+    LegalAccordion,
+    LiveChat,
+    MobileMenu,
+    RipeHeader,
+    UserLogin,
+} from '@technical-design/ripe-app-webcomponents';
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-import "ip-address/lib/ipv4";
-import "ip-address/lib/ipv6";
-import "@angular/localize/init";
-import {
-  AppBanner,
-  AppCookieConsent,
-  AppNavBar,
-  AppSwitcher,
-  LegalAccordion,
-  RipeHeader,
-  UserLogin,
-  LiveChat,
-  MobileMenu
-} from '@technical-design/ripe-app-webcomponents'
+import 'ip-address/lib/ipv4';
+import 'ip-address/lib/ipv6';
+import 'zone.js'; // Included with Angular CLI.
 
 // eslint-disable-next-line no-unused-vars
-const components = [AppBanner, AppNavBar, AppCookieConsent, AppSwitcher, RipeHeader, UserLogin, LegalAccordion, LiveChat, MobileMenu]
-
+const components = [AppBanner, AppNavBar, AppCookieConsent, AppSwitcher, RipeHeader, UserLogin, LegalAccordion, LiveChat, MobileMenu];

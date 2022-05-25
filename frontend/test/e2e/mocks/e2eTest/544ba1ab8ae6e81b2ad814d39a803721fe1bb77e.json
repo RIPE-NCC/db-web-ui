@@ -3,15 +3,17 @@
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
-        "resources": [{
-            "type": "aut-num",
-            "resource": "AS204056",
-            "status": "ASSIGNED",
-            "orgName": "ORG-EIP1-RIPE",
-            "iRR": true,
-            "rDNS": true,
-            "asname": "asnametest"
-        }],
+        "resources": [
+            {
+                "type": "aut-num",
+                "resource": "AS204056",
+                "status": "ASSIGNED",
+                "orgName": "ORG-EIP1-RIPE",
+                "iRR": true,
+                "rDNS": true,
+                "asname": "asnametest"
+            }
+        ],
         "totalNumberOfResources": 0,
         "filteredSize": 0,
         "pageSize": 0,

@@ -1,24 +1,25 @@
-body, html {
+body,
+html {
     font-size: 1rem;
-    font-family: "Public Sans", Sans-serif;
+    font-family: 'Public Sans', Sans-serif;
     margin: 0;
 
     h1 {
         color: #58595b;
         font-size: 1.563rem;
-        font-weight: 700
+        font-weight: 700;
     }
     h2 {
         font-size: 1.25rem;
-        font-weight: 500
+        font-weight: 500;
     }
     h5 {
         font-size: 1.25rem;
-        font-weight: 500
+        font-weight: 500;
     }
     h6 {
         font-size: 1.25rem;
-        font-weight: 500
+        font-weight: 500;
     }
 
     &.section-manage-ips-and-asns main {
@@ -32,19 +33,24 @@ a {
 }
 
 a:visited {
-    color: #2a6496
+    color: #2a6496;
 }
 
-a:hover, a:focus {
-    color: #2a6496
+a:hover,
+a:focus {
+    color: #2a6496;
 }
 
-a.tag-link, .tag-link {
+a.tag-link,
+.tag-link {
     color: #5c5d60;
-    padding: .2em .5em
+    padding: 0.2em 0.5em;
 }
 
-.checkbox-inline input[type=checkbox], .checkbox input[type=checkbox], .radio-inline input[type=radio], .radio input[type=radio] {
+.checkbox-inline input[type='checkbox'],
+.checkbox input[type='checkbox'],
+.radio-inline input[type='radio'],
+.radio input[type='radio'] {
     margin-right: 10px;
 }
 
@@ -57,54 +63,59 @@ ul.radio {
     }
 }
 
-a.blue-button, a.red-button {
+a.blue-button,
+a.red-button {
     color: #fff;
 }
 
-.blue-button, .red-button {
+.blue-button,
+.red-button {
     display: inline-block;
-    padding: .5em 1em;
-    margin: 0 0 0 .3em;
+    padding: 0.5em 1em;
+    margin: 0 0 0 0.3em;
     color: #fff;
 }
 
-a.blue-button:not([href]),a.blue-button:not([href]):hover {
+a.blue-button:not([href]),
+a.blue-button:not([href]):hover {
     color: $white;
     text-decoration: none;
 }
 
 .blue-button {
-    background: #44465D
+    background: #44465d;
 }
 
 .red-button {
-    background: #ff002f
+    background: #ff002f;
 }
 
 .blue-button:hover {
-    background: #080037
+    background: #080037;
 }
 
 .red-button:hover {
-    background: #e80000
+    background: #e80000;
 }
 
-.btn.blue-button:focus, .btn.blue-button:hover {
+.btn.blue-button:focus,
+.btn.blue-button:hover {
     color: #fff;
-    background: #080037
+    background: #080037;
 }
 
-.btn.red-button:focus, .btn.red-button:hover {
+.btn.red-button:focus,
+.btn.red-button:hover {
     color: #fff;
-    background: #e80000
+    background: #e80000;
 }
 
 input.blue-button {
-    border: 0
+    border: 0;
 }
 
 .padding {
-    padding: 1em
+    padding: 1em;
 }
 
 code {
@@ -136,8 +147,8 @@ button {
 %btn {
     display: inline-block;
     color: #fff;
-    padding: .5em 1em;
-    margin: 0 0 0 .3em;
+    padding: 0.5em 1em;
+    margin: 0 0 0 0.3em;
     border: 0;
     cursor: pointer;
     text-decoration: none !important;
@@ -244,7 +255,8 @@ ul.success-fields {
     div.modal-header {
         background-color: #080037;
         color: #fff;
-        h5, i {
+        h5,
+        i {
             color: #fff;
         }
         .close {
@@ -295,7 +307,8 @@ div.portlet.navigation {
                     display: block !important;
                 }
             }
-            &.active a:hover, a:hover {
+            &.active a:hover,
+            a:hover {
                 text-decoration: none !important;
             }
         }
@@ -314,12 +327,17 @@ div.portlet.navigation {
 }
 
 // Angular CSS reset
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
     display: none !important;
 }
 
 .lookupheader {
-    background-color: #F5E075;
+    background-color: #f5e075;
     margin-bottom: 10px;
     padding: 15px;
     vertical-align: top;
@@ -354,7 +372,6 @@ section .resultlinks {
                 font-weight: bold;
             }
         }
-
     }
 
     button#red-bell-button {

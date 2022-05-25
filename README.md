@@ -130,23 +130,31 @@ Login to the DEV or PREPDEV environments using the SSO username db-staff@ripe.ne
 IntelliJ Preferences
 --------------------
 * Editor
-	* File Types
-		* Ignore Files and Folders
-			* node_modules
-			* dist
-	* Code Style
-		* Use single class import (do not allow .* asterisk imports)
+    * File Types
+        * Ignore Files and Folders
+            * node_modules
+            * dist
+    * Code Style
+        * Use single class import (do not allow .* asterisk imports)
 
 * Project Structure
         * Project Settings
                 * Project
-                        * Project SDK: 1.8
-                        * Language level: 1.8
+                        * Project SDK: 11
+                        * Language level: 11
+
+* Plugins
+    * Install Prettier plugin
+
 * Languages & Frameworks
     * TypeScript
-        * Use TypeScript Service
-        * Code Quality Tools
-        		* TSLint: Enable
+        * TypeScript language service
+        * TSLint
+            * Automatic TSLint configuration
+    * JavaScript
+        * Prettier
+            * Prettier package: ~/projects/db-web-ui/frontend/node_modules/prettier
+            * Check On 'Reformat Code' action 
 
 Architecture
 ------------

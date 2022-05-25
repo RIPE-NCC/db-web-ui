@@ -1,5 +1,5 @@
 {
-    "data": [ ],
+    "data": [],
     "statusCode": 200,
     "contentType": "application/json",
     "requestUrl": "/api/whois-internal/api/fmp-pub/forgotmntnerpassword"

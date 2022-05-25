@@ -1,17 +1,12 @@
 {
-  "data": [
-    {
-      "key": "MNT-LGI",
-      "type": "mntner",
-      "auth": [
-        "SSO",
-        "SSO",
-        "MD5-PW",
-        "SSO"
-      ]
-    }
-  ],
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=ETCHELLS-MNT"
+    "data": [
+        {
+            "key": "MNT-LGI",
+            "type": "mntner",
+            "auth": ["SSO", "SSO", "MD5-PW", "SSO"]
+        }
+    ],
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=ETCHELLS-MNT"
 }

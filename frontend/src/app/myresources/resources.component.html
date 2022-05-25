@@ -1,6 +1,6 @@
 <section class="my-resources">
     <div class="resources-sponsored-tabs">
-        <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]=activeSponsoredTab>
+        <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeSponsoredTab">
             <li [ngbNavItem]="0" id="0">
                 <a ngbNavLink (click)="resourcesTabClicked()">My Resources</a>
             </li>
@@ -11,12 +11,12 @@
     </div>
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-    <a class="blue-button btn-group float-end" *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'" (click)="navigateToCreateAssignments()">{{ "resource.createAssignment.text" | label }}</a>
+    <a class="blue-button btn-group float-end" *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'" (click)="navigateToCreateAssignments()">{{
+        'resource.createAssignment.text' | label
+    }}</a>
     <transfer-drop-down *ngIf="isMemberOrg()" [sponsoredMenu]="isShowingSponsored"></transfer-drop-down>
     <alerts-drop-down *ngIf="showAlerts" [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
-    <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources"
-                               [type]="lastTab"
-                               [sponsored]="isShowingSponsored">
+    <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
     </ip-usage-of-all-resources>
     <ul ngbNav #navIpv46ASN="ngbNav" id="ipv4-ipv6-asn-tabs" class="nav-tabs" [(activeId)]="lastTab" (navChange)="tabClicked($event)">
         <li [ngbNavItem]="'inetnum'" id="inetnum">
@@ -26,8 +26,7 @@
                 <div class="resource-list" *ngFor="let resource of ipv4Resources">
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
-                <p class="resource-page-message"
-                   *ngIf="loading === false && ipv4Resources.length === 0">
+                <p class="resource-page-message" *ngIf="loading === false && ipv4Resources.length === 0">
                     {{ reason.toString() }}
                     <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
                 </p>
@@ -40,8 +39,7 @@
                 <div class="resource-list" *ngFor="let resource of ipv6Resources">
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
-                <p class="resource-page-message"
-                   *ngIf="loading === false && ipv6Resources.length === 0">
+                <p class="resource-page-message" *ngIf="loading === false && ipv6Resources.length === 0">
                     {{ reason.toString() }}
                     <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
                 </p>

@@ -1,35 +1,35 @@
-import {Injectable} from "@angular/core";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import * as _ from "lodash";
-import {CredentialsService} from "../shared/credentials.service";
-import {RestService} from "./rest.service";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {WhoisMetaService} from "../shared/whois-meta.service";
-import {IMntByModel} from "../shared/whois-response-type.model";
-import {PrefixService} from "../domainobject/prefix.service";
-import {ModalAuthenticationComponent} from "./modal-authentication.component";
-import {PropertiesService} from "../properties.service";
-import {Address4} from "ip-address";
+import { Injectable } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Address4 } from 'ip-address';
+import * as _ from 'lodash';
+import { PrefixService } from '../domainobject/prefix.service';
+import { PropertiesService } from '../properties.service';
+import { CredentialsService } from '../shared/credentials.service';
+import { WhoisMetaService } from '../shared/whois-meta.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { IMntByModel } from '../shared/whois-response-type.model';
+import { ModalAuthenticationComponent } from './modal-authentication.component';
+import { RestService } from './rest.service';
 
 @Injectable()
 export class MntnerService {
-
     private readonly nccHmMntner: string;
     private readonly nccHmPiMntner: string;
 
-    constructor(private credentialsService: CredentialsService,
-                private whoisResourcesService: WhoisResourcesService,
-                private whoisMetaService: WhoisMetaService,
-                private modalService: NgbModal,
-                private restService: RestService,
-                private prefixService: PrefixService,
-                private propertiesService: PropertiesService) {
-        this.nccHmMntner = "RIPE-NCC-HM-MNT";
-        this.nccHmPiMntner = "RIPE-NCC-HM-PI-MNT";
+    constructor(
+        private credentialsService: CredentialsService,
+        private whoisResourcesService: WhoisResourcesService,
+        private whoisMetaService: WhoisMetaService,
+        private modalService: NgbModal,
+        private restService: RestService,
+        private prefixService: PrefixService,
+        private propertiesService: PropertiesService,
+    ) {
+        this.nccHmMntner = 'RIPE-NCC-HM-MNT';
+        this.nccHmPiMntner = 'RIPE-NCC-HM-PI-MNT';
     }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Promise<any> {
-
         const object = {
             name,
             source,
@@ -38,10 +38,10 @@ export class MntnerService {
 
         return new Promise((resolve: any, reject: any) => {
             if (!this.isSsoAuthorisedForMntByOrLower(whoisObject, ssoAccts)) {
-                const mntByAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, "mnt-by");
-                const mntLowerAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, "mnt-lower");
+                const mntByAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, 'mnt-by');
+                const mntLowerAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, 'mnt-lower');
                 const parentMntners = mntByAttrs.concat(mntLowerAttrs).map((mntner: any) => {
-                    return {key: mntner.value};
+                    return { key: mntner.value };
                 });
 
                 // check if we've already got a passwd
@@ -52,23 +52,21 @@ export class MntnerService {
                     return resolve();
                 }
                 // pop up an auth box
-                this.restService.detailsForMntners(parentMntners)
-                    .then((enrichedMntners: IMntByModel[]) => {
-                        const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                        const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                        const modalRef = this.modalService.open(ModalAuthenticationComponent);
-                        modalRef.componentInstance.resolve = {
-                            method: operation,
-                            objectType: object.type,
-                            objectName: object.name,
-                            mntners: mntnersWithPasswords,
-                            mntnersWithoutPassword: mntnersWithoutPasswords,
-                            allowForcedDelete: false,
-                            isLirObject: false,
-                            source: object.source
-                        };
-                        return modalRef.result
-                            .then(resolve, reject);
+                this.restService.detailsForMntners(parentMntners).then((enrichedMntners: IMntByModel[]) => {
+                    const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                    const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                    const modalRef = this.modalService.open(ModalAuthenticationComponent);
+                    modalRef.componentInstance.resolve = {
+                        method: operation,
+                        objectType: object.type,
+                        objectName: object.name,
+                        mntners: mntnersWithPasswords,
+                        mntnersWithoutPassword: mntnersWithoutPasswords,
+                        allowForcedDelete: false,
+                        isLirObject: false,
+                        source: object.source,
+                    };
+                    return modalRef.result.then(resolve, reject);
                 }, reject);
             } else {
                 resolve();
@@ -77,11 +75,11 @@ export class MntnerService {
     }
 
     public isSsoAuthorisedForMntByOrLower(object: any, maintainers: IMntByModel[]) {
-        const mntBys = WhoisResourcesService.getAllAttributesOnName(object, "mnt-by");
-        const mntLowers = WhoisResourcesService.getAllAttributesOnName(object, "mnt-lower");
+        const mntBys = WhoisResourcesService.getAllAttributesOnName(object, 'mnt-by');
+        const mntLowers = WhoisResourcesService.getAllAttributesOnName(object, 'mnt-lower');
         const ssoAccts = maintainers.filter((mntner: IMntByModel) => {
             return mntner.auth.find((auth) => {
-                return auth === "SSO";
+                return auth === 'SSO';
             });
         });
         const match = mntBys.concat(mntLowers).find((item: any) => {
@@ -106,7 +104,7 @@ export class MntnerService {
 
     public isComaintained(attributes: any) {
         return attributes.some((attr: any) => {
-            if (attr.name.toUpperCase() === "MNT-BY") {
+            if (attr.name.toUpperCase() === 'MNT-BY') {
                 return this.isNccMntner(attr.value);
             } else {
                 return false;
@@ -116,7 +114,7 @@ export class MntnerService {
 
     public isComaintainedWithNccHmMntner(attributes: any) {
         return attributes.some((attr: any) => {
-            if (attr.name.toUpperCase() === "MNT-BY") {
+            if (attr.name.toUpperCase() === 'MNT-BY') {
                 return this.isNccHmMntner(attr.value) || this.isNccHmPiMntner(attr.value);
             } else {
                 return false;
@@ -144,7 +142,7 @@ export class MntnerService {
         }
 
         return mntner.auth.some((i: string) => {
-            return i.startsWith("MD5");
+            return i.startsWith('MD5');
         });
     }
 
@@ -161,7 +159,7 @@ export class MntnerService {
             return false;
         }
         return mntner.auth.some((i: string) => {
-            return i.startsWith("SSO");
+            return i.startsWith('SSO');
         });
     }
 
@@ -170,7 +168,7 @@ export class MntnerService {
             return false;
         }
         return mntner.auth.some((i: string) => {
-            return i.startsWith("PGP");
+            return i.startsWith('PGP');
         });
     }
 
@@ -200,26 +198,26 @@ export class MntnerService {
     public needsPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
         if (originalObjectMntners.length === 0) {
             // it is a create
-            originalObjectMntners = objectMntners.filter(mnt => !this.isMntnerOnlist(ssoMntners, mnt));
+            originalObjectMntners = objectMntners.filter((mnt) => !this.isMntnerOnlist(ssoMntners, mnt));
             // filter out sso maintainers from objectMaintainers, so we can made check just on originalMainatiners
         }
         const mntners = this.enrichWithSsoStatus(ssoMntners, originalObjectMntners);
 
         if (mntners.length === 0) {
-            console.debug("needsPasswordAuthentication: no: No mntners left to authenticate against");
+            console.debug('needsPasswordAuthentication: no: No mntners left to authenticate against');
             return false;
         }
 
         if (MntnerService.oneOfOriginalMntnersIsMine(originalObjectMntners)) {
-            console.debug("needsPasswordAuthentication: no: One of selected mntners is mine");
+            console.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
             return false;
         }
 
         if (this.oneOfOriginalMntnersHasCredential(originalObjectMntners)) {
-            console.debug("needsPasswordAuthentication: no: One of selected mntners has credentials");
+            console.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
             return false;
         }
-        console.debug("needsPasswordAuthentication: yes");
+        console.debug('needsPasswordAuthentication: yes');
         return true;
     }
 
@@ -230,7 +228,7 @@ export class MntnerService {
             input = objectMntners;
         }
         const mntners = this.enrichWithSsoStatus(ssoMntners, input);
-        return _.uniqBy(mntners, "key").filter((mntner)  => {
+        return _.uniqBy(mntners, 'key').filter((mntner) => {
             if (mntner.mine === true) {
                 return false;
             } else if (this.isAnyNccMntner(mntner.key)) {
@@ -252,8 +250,7 @@ export class MntnerService {
             input = objectMntners;
         }
         const mntners = this.enrichWithSsoStatus(ssoMntners, input);
-        return _.uniqBy(mntners, "key").filter((mntner) => {
-
+        return _.uniqBy(mntners, 'key').filter((mntner) => {
             if (mntner.mine === true) {
                 return false;
             } else if (this.isAnyNccMntner(mntner.key)) {
@@ -266,11 +263,11 @@ export class MntnerService {
     }
 
     public mntbyDescription(objectType: string) {
-        return this.whoisMetaService.getAttributeDescription(objectType, "mnt-by");
+        return this.whoisMetaService.getAttributeDescription(objectType, 'mnt-by');
     }
 
     public mntbySyntax(objectType: string): any {
-        return this.whoisMetaService.getAttributeSyntax(objectType, "mnt-by");
+        return this.whoisMetaService.getAttributeSyntax(objectType, 'mnt-by');
     }
 
     public stripNccMntners(mntners: IMntByModel[], allowEmptyResult: boolean) {
@@ -288,40 +285,41 @@ export class MntnerService {
 
     public getMntsToAuthenticateUsingParent(prefix: any, mntHandler: any) {
         const address = this.prefixService.getAddress(prefix);
-        const objectType = address instanceof Address4 ? "inetnum" : "inet6num";
-        this.restService.fetchResource(objectType, prefix)
-            .then((result: any) => {
+        const objectType = address instanceof Address4 ? 'inetnum' : 'inet6num';
+        this.restService.fetchResource(objectType, prefix).then(
+            (result: any) => {
+                if (result && result.objects && _.isArray(result.objects.object)) {
+                    const wrappedResource = this.whoisResourcesService.validateWhoisResources(result);
 
-            if (result && result.objects && _.isArray(result.objects.object)) {
-                const wrappedResource = this.whoisResourcesService.validateWhoisResources(result);
+                    // Find exact or most specific matching inet(num), and collect the following mntners:
+                    // (1) mnt-domains
+                    const resourceAttributes = this.whoisResourcesService.getAttributes(wrappedResource);
 
-                // Find exact or most specific matching inet(num), and collect the following mntners:
-                // (1) mnt-domains
-                const resourceAttributes = this.whoisResourcesService.getAttributes(wrappedResource);
-
-                const mntDomains = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-domains");
-                if (mntDomains.length > 0) {
-                    return mntHandler(mntDomains);
-                }
-
-                // (2) if NOT exact match, then check for mnt-lower
-                const primaryKey = this.whoisResourcesService.getPrimaryKey(wrappedResource);
-
-                if (!(this.prefixService.isExactMatch(address, primaryKey) && this.prefixService.isSizeOfDomainBlock(address))) {
-                    const mntLowers = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-lower");
-                    if (mntLowers.length > 0) {
-                        return mntHandler(mntLowers);
+                    const mntDomains = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, 'mnt-domains');
+                    if (mntDomains.length > 0) {
+                        return mntHandler(mntDomains);
                     }
-                }
 
-                // (3) mnt-by
-                const mntBys = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-by");
-                return mntHandler(mntBys);
-            }
-        }, () => {
-            // TODO: error handling
-            return mntHandler([]);
-        });
+                    // (2) if NOT exact match, then check for mnt-lower
+                    const primaryKey = this.whoisResourcesService.getPrimaryKey(wrappedResource);
+
+                    if (!(this.prefixService.isExactMatch(address, primaryKey) && this.prefixService.isSizeOfDomainBlock(address))) {
+                        const mntLowers = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, 'mnt-lower');
+                        if (mntLowers.length > 0) {
+                            return mntHandler(mntLowers);
+                        }
+                    }
+
+                    // (3) mnt-by
+                    const mntBys = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, 'mnt-by');
+                    return mntHandler(mntBys);
+                }
+            },
+            () => {
+                // TODO: error handling
+                return mntHandler([]);
+            },
+        );
     }
 
     private static oneOfOriginalMntnersIsMine(originalObjectMntners: IMntByModel[]) {

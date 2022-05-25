@@ -1,31 +1,30 @@
-<h1>{{objectType}} &quot;{{objectName}}&quot;</h1>
+<h1>{{ objectType }} &quot;{{ objectName }}&quot;</h1>
 
 <section class="inner-container">
     <table class="success-fields grey" *ngIf="!isDiff()">
         <tr *ngFor="let attribute of attributes">
             <td width="20%">
-                <label>{{attribute.name}}:</label>
+                <label>{{ attribute.name }}:</label>
             </td>
             <td>
                 <p [hidden]="attribute.link">
-                        {{attribute.value}}
+                    {{ attribute.value }}
                 </p>
                 <p [hidden]="!attribute.link">
-                        <a [href]="attribute.link?.href">{{attribute.value}}</a>
+                    <a [href]="attribute.link?.href">{{ attribute.value }}</a>
                 </p>
                 <div [hidden]="!attribute.$$error">
-    	            <span>{{attribute.$$error}}</span>
-    	            <i class="fal fa-info-circle"></i>
-    	        </div>
+                    <span>{{ attribute.$$error }}</span>
+                    <i class="fal fa-info-circle"></i>
+                </div>
             </td>
         </tr>
     </table>
-
 
     <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
 
     <button (click)="navigateToSelect()" class="blue-button float-end ga-createobj-backcreate">Back to Create object</button>
     <span [hidden]="!modifyButtonToBeShown()">
-        <button (click)="navigateToModify()"  class="blue-button float-end ga-createobj-modifyobj">{{loggedIn ? 'Modify' : 'Login to modify'}}</button>
+        <button (click)="navigateToModify()" class="blue-button float-end ga-createobj-modifyobj">{{ loggedIn ? 'Modify' : 'Login to modify' }}</button>
     </span>
 </section>

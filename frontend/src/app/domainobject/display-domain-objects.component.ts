@@ -1,29 +1,30 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MessageStoreService} from "../updatesweb/message-store.service";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {AlertsService} from "../shared/alert/alerts.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { MessageStoreService } from '../updatesweb/message-store.service';
 
 @Component({
-    selector: "display-domain-objects",
-    templateUrl: "./display-domain-objects.component.html",
+    selector: 'display-domain-objects',
+    templateUrl: './display-domain-objects.component.html',
 })
 export class DisplayDomainObjectsComponent implements OnInit {
     public source: string;
     public prefix: string;
     public objects: any;
 
-    constructor(private messageStoreService: MessageStoreService,
-                private whoisResourcesService: WhoisResourcesService,
-                private alertsService: AlertsService,
-                private activatedRoute: ActivatedRoute,
-                private router: Router) {
-    }
+    constructor(
+        private messageStoreService: MessageStoreService,
+        private whoisResourcesService: WhoisResourcesService,
+        private alertsService: AlertsService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+    ) {}
 
     public ngOnInit() {
-        this.source = this.activatedRoute.snapshot.queryParamMap.get("source");
+        this.source = this.activatedRoute.snapshot.queryParamMap.get('source');
 
-        const result = this.messageStoreService.get("result");
+        const result = this.messageStoreService.get('result');
         this.prefix = result.prefix;
 
         const whoisResources = this.whoisResourcesService.validateWhoisResources(result.whoisResources);
@@ -35,6 +36,6 @@ export class DisplayDomainObjectsComponent implements OnInit {
     }
 
     public navigateToSelect() {
-        this.router.navigate(["webupdates/select"]);
+        this.router.navigate(['webupdates/select']);
     }
 }

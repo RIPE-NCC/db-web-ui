@@ -15,7 +15,6 @@ export interface IUserInfo {
     username: string;
     displayName: string;
     uuid: string;
-
 }
 export interface IUserInfoResponseData {
     user: IUserInfo;

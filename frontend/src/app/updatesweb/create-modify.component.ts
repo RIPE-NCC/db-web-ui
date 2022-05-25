@@ -1,32 +1,32 @@
-import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Observable} from "rxjs";
-import * as _ from "lodash";
-import {WINDOW} from "../core/window.service";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {WhoisMetaService} from "../shared/whois-meta.service";
-import {MessageStoreService} from "./message-store.service";
-import {CredentialsService} from "../shared/credentials.service";
-import {RestService} from "./rest.service";
-import {MntnerService} from "./mntner.service";
-import {ErrorReporterService} from "./error-reporter.service";
-import {LinkService} from "./link.service";
-import {PreferenceService} from "./preference.service";
-import {ResourceStatusService} from "../myresources/resource-status.service";
-import {WebUpdatesCommonsService} from "./web-updates-commons.service";
-import {OrganisationHelperService} from "./organisation-helper.service";
-import {ScreenLogicInterceptorService} from "./screen-logic-interceptor.service";
-import {EnumService} from "./enum.service";
-import {ObjectUtilService} from "./object-util.service";
-import {IAttributeModel, IMntByModel, IStatusOption} from "../shared/whois-response-type.model";
-import {STATE} from "./web-updates-state.constants";
-import {ModalAddAttributeComponent} from "./modal-add-attribute.component";
-import {ModalEditAttributeComponent} from "./modal-edit-attribute.component";
-import {ModalMd5PasswordComponent} from "./modal-md5-password.component";
-import {ModalCreateRoleForAbuseCComponent} from "./modal-create-role-for-abusec.component";
-import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
-import {AlertsService} from "../shared/alert/alerts.service";
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
+import { WINDOW } from '../core/window.service';
+import { ResourceStatusService } from '../myresources/resource-status.service';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { CredentialsService } from '../shared/credentials.service';
+import { WhoisMetaService } from '../shared/whois-meta.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { IAttributeModel, IMntByModel, IStatusOption } from '../shared/whois-response-type.model';
+import { EnumService } from './enum.service';
+import { ErrorReporterService } from './error-reporter.service';
+import { LinkService } from './link.service';
+import { MessageStoreService } from './message-store.service';
+import { MntnerService } from './mntner.service';
+import { ModalAddAttributeComponent } from './modal-add-attribute.component';
+import { ModalCreateRoleForAbuseCComponent } from './modal-create-role-for-abusec.component';
+import { ModalEditAttributeComponent } from './modal-edit-attribute.component';
+import { ModalMd5PasswordComponent } from './modal-md5-password.component';
+import { ObjectUtilService } from './object-util.service';
+import { OrganisationHelperService } from './organisation-helper.service';
+import { PreferenceService } from './preference.service';
+import { RestService } from './rest.service';
+import { ScreenLogicInterceptorService } from './screen-logic-interceptor.service';
+import { WebUpdatesCommonsService } from './web-updates-commons.service';
+import { STATE } from './web-updates-state.constants';
 
 interface IOptionList {
     status: IStatusOption[];
@@ -40,11 +40,11 @@ export interface IMaintainers {
 }
 
 @Component({
-    selector: "create-modify",
-    templateUrl: "./create-modify.component.html",
+    selector: 'create-modify',
+    templateUrl: './create-modify.component.html',
 })
 export class CreateModifyComponent implements OnInit, OnDestroy {
-    public optionList: IOptionList = {status: []};
+    public optionList: IOptionList = { status: [] };
     public name: string;
     public source: string;
     public objectType: string;
@@ -67,36 +67,37 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public roleForAbuseC: any;
     public personRe: RegExp = new RegExp(/^[A-Z][A-Z0-9\\.`'_-]{0,63}(?: [A-Z0-9\\.`'_-]{1,64}){0,9}$/i);
 
-    public CREATE_OPERATION = "Create";
-    public MODIFY_OPERATION = "Modify";
-    public PENDING_OPERATION = "Pending";
+    public CREATE_OPERATION = 'Create';
+    public MODIFY_OPERATION = 'Modify';
+    public PENDING_OPERATION = 'Pending';
 
     public showAttrsHelp: [];
 
-    constructor(@Inject(WINDOW) private window: any,
-                public whoisResourcesService: WhoisResourcesService,
-                public attributeMetadataService: AttributeMetadataService,
-                public whoisMetaService: WhoisMetaService,
-                public messageStoreService: MessageStoreService,
-                public credentialsService: CredentialsService,
-                public restService: RestService,
-                public modalService: NgbModal,
-                public mntnerService: MntnerService,
-                public errorReporterService: ErrorReporterService,
-                public linkService: LinkService,
-                public resourceStatusService: ResourceStatusService,
-                public webUpdatesCommonsService: WebUpdatesCommonsService,
-                public organisationHelperService: OrganisationHelperService,
-                public preferenceService: PreferenceService,
-                public enumService: EnumService,
-                public screenLogicInterceptorService: ScreenLogicInterceptorService,
-                public alertsService: AlertsService,
-                public activatedRoute: ActivatedRoute,
-                public router: Router) {
-    }
+    constructor(
+        @Inject(WINDOW) private window: any,
+        public whoisResourcesService: WhoisResourcesService,
+        public attributeMetadataService: AttributeMetadataService,
+        public whoisMetaService: WhoisMetaService,
+        public messageStoreService: MessageStoreService,
+        public credentialsService: CredentialsService,
+        public restService: RestService,
+        public modalService: NgbModal,
+        public mntnerService: MntnerService,
+        public errorReporterService: ErrorReporterService,
+        public linkService: LinkService,
+        public resourceStatusService: ResourceStatusService,
+        public webUpdatesCommonsService: WebUpdatesCommonsService,
+        public organisationHelperService: OrganisationHelperService,
+        public preferenceService: PreferenceService,
+        public enumService: EnumService,
+        public screenLogicInterceptorService: ScreenLogicInterceptorService,
+        public alertsService: AlertsService,
+        public activatedRoute: ActivatedRoute,
+        public router: Router,
+    ) {}
 
     public ngOnInit() {
-        this.optionList = {status: []};
+        this.optionList = { status: [] };
 
         this.inetnumParentAuthError = false;
         this.restCallInProgress = false;
@@ -104,21 +105,18 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
         const queryMap = this.activatedRoute.snapshot.queryParamMap;
-        this.source = paramMap.get("source");
-        this.objectType = paramMap.get("objectType");
+        this.source = paramMap.get('source');
+        this.objectType = paramMap.get('objectType');
 
-        if (paramMap.has("objectName")) {
-            this.name = decodeURIComponent(paramMap.get("objectName"));
+        if (paramMap.has('objectName')) {
+            this.name = decodeURIComponent(paramMap.get('objectName'));
         }
         // set the statuses which apply to the objectType (if any)
         this.optionList.status = this.resourceStatusService.get(this.objectType);
 
-        const redirect = !queryMap.has("noRedirect");
+        const redirect = !queryMap.has('noRedirect');
 
-        console.debug("Url params: source:" + this.source +
-            ". type:" + this.objectType +
-            ", uid:" + this.name +
-            ", redirect:" + redirect);
+        console.debug('Url params: source:' + this.source + '. type:' + this.objectType + ', uid:' + this.name + ', redirect:' + redirect);
 
         // switch to text-screen if cookie says so and cookie is not to be ignored
         if (this.preferenceService.isTextMode() && redirect) {
@@ -136,7 +134,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             // Populate empty attributes based on meta-info
             const mandatoryAttributesOnObjectType = this.whoisMetaService.getMandatoryAttributesOnObjectType(this.objectType);
             if (_.isEmpty(mandatoryAttributesOnObjectType)) {
-                this.router.navigate(["not-found"]);
+                this.router.navigate(['not-found']);
                 return;
             }
 
@@ -184,7 +182,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         // if parent wasn't found but we got an event anyway, use the default
         if (parent) {
             parentStatusAttr = _.find(parent.attributes.attribute, (attr: IAttributeModel) => {
-                return "status" === attr.name;
+                return 'status' === attr.name;
             });
             if (parentStatusAttr && parentStatusAttr.value) {
                 parentStatusValue = parentStatusAttr.value;
@@ -200,19 +198,20 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (parent && parent.attributes) {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
-            this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name)
-                .then(() => {
-                        this.restCallInProgress = false;
-                        this.inetnumParentAuthError = false;
-                    }, (error: any) => {
-                        this.restCallInProgress = false;
-                        console.error("MntnerService.getAuthForObjectIfNeeded rejected authorisation: ", error);
-                        if (!this.inetnumParentAuthError) {
-                            this.alertsService.addGlobalError("Failed to authenticate parent resource");
-                            this.inetnumParentAuthError = true;
-                        }
-                    },
-                );
+            this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).then(
+                () => {
+                    this.restCallInProgress = false;
+                    this.inetnumParentAuthError = false;
+                },
+                (error: any) => {
+                    this.restCallInProgress = false;
+                    console.error('MntnerService.getAuthForObjectIfNeeded rejected authorisation: ', error);
+                    if (!this.inetnumParentAuthError) {
+                        this.alertsService.addGlobalError('Failed to authenticate parent resource');
+                        this.inetnumParentAuthError = true;
+                    }
+                },
+            );
         }
     }
 
@@ -221,47 +220,51 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
      */
     // Should show bell icon for abuse-c in case value is not specified and objectType is organisation
     public shouldShowBellIcon(attribute: any) {
-        return attribute.name === "abuse-c" && !attribute.value;
+        return attribute.name === 'abuse-c' && !attribute.value;
     }
 
     public createRoleForAbuseCAttribute(abuseAttr: any) {
         const maintainers = _.map(this.maintainers.object, (o: any) => {
-            return {name: "mnt-by", value: o.key};
+            return { name: 'mnt-by', value: o.key };
         });
         abuseAttr.$$error = undefined;
         abuseAttr.$$success = undefined;
         const inputData = {
             maintainers: maintainers,
             passwords: this.credentialsService.getPasswordsForRestCall(this.objectType),
-            source: this.source
+            source: this.source,
         };
-        const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, {size: "lg"});
+        const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });
         modalRef.componentInstance.inputData = inputData;
-        modalRef.result.then((roleAttrs: any) => {
-            this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes("role", roleAttrs);
-            const nicHdl =  this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, "nic-hdl").value;
-            this.attributes = this.whoisResourcesService.setSingleAttributeOnName(this.attributes, "abuse-c", nicHdl);
-            abuseAttr.$$success = "Role object for abuse-c successfully created";
-        }, (error: any) => {
-            if (error !== "cancel") { // dismissing modal will hit this function with the string "cancel" in error arg
-                // TODO: pass more specific errors from REST? [RM]
-                abuseAttr.$$error = "The role object for the abuse-c attribute was not created";
-            }
-        });
+        modalRef.result.then(
+            (roleAttrs: any) => {
+                this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes('role', roleAttrs);
+                const nicHdl = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, 'nic-hdl').value;
+                this.attributes = this.whoisResourcesService.setSingleAttributeOnName(this.attributes, 'abuse-c', nicHdl);
+                abuseAttr.$$success = 'Role object for abuse-c successfully created';
+            },
+            (error: any) => {
+                if (error !== 'cancel') {
+                    // dismissing modal will hit this function with the string "cancel" in error arg
+                    // TODO: pass more specific errors from REST? [RM]
+                    abuseAttr.$$error = 'The role object for the abuse-c attribute was not created';
+                }
+            },
+        );
     }
 
     public updateMaintainers(maintainers: IMaintainers) {
         this.maintainers = maintainers;
         // delete from attributes all maintainers which doesn't exist in maintainers
         _.remove(this.attributes, (attr: any) => {
-            return attr.name === "mnt-by" && !maintainers.object.find(mnt => mnt.key === attr.value);
+            return attr.name === 'mnt-by' && !maintainers.object.find((mnt) => mnt.key === attr.value);
         });
         // add maintainers from maintainers object
-        maintainers.object.forEach(mnt => {
-            if (!this.attributes.find(attr => attr.name === "mnt-by" && attr.value === mnt.key)) {
-                this.attributes = this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", [
-                    {name: "mnt-by", value: mnt.key}]);
-            }});
+        maintainers.object.forEach((mnt) => {
+            if (!this.attributes.find((attr) => attr.name === 'mnt-by' && attr.value === mnt.key)) {
+                this.attributes = this.whoisResourcesService.addAttrsSorted(this.attributes, 'mnt-by', [{ name: 'mnt-by', value: mnt.key }]);
+            }
+        });
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
@@ -276,7 +279,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (item.key === item.value) {
             return item.key;
         }
-        return item.value + " [" + item.key.toUpperCase() + "]";
+        return item.value + ' [' + item.key.toUpperCase() + ']';
     }
 
     public isServerLookupKey(refs: any) {
@@ -292,44 +295,55 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (attribute.value && attribute.value.key) {
             attribute.value = attribute.value.key;
         }
-        if (attribute.name === "person") {
-            attribute.$$error = (!attribute.value || this.personRe.exec(attribute.value)) ? "" : "Input contains unsupported characters.";
+        if (attribute.name === 'person') {
+            attribute.$$error = !attribute.value || this.personRe.exec(attribute.value) ? '' : 'Input contains unsupported characters.';
             attribute.$$invalid = !!attribute.$$error;
         }
         // Verify if primary-key not already in use
         if (this.operation === this.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
-            const value = attribute.name === "inet6num"? attribute.value.replace(/((?::0\b){2,}):?(?!\S*\b\1:0\b)(\S*)/, "::$2") : attribute.value;
-            this.restService.autocomplete(attribute.name, value, true, []).toPromise()
-                .then((data: any) => {
-                    if (_.some(data, (item: any) => {
-                        return CreateModifyComponent.uniformed(item.type) === CreateModifyComponent.uniformed(attribute.name) &&
-                            CreateModifyComponent.uniformed(item.key) === CreateModifyComponent.uniformed(value);
-                    })) {
-                        attribute.$$error = attribute.name + " " +
-                            this.linkService.getModifyLink(this.source, this.objectType, value) +
-                            " already exists";
-                    } else {
-                        attribute.$$error = "";
-                    }
-                }, (error: any) => {
-                    console.error("Autocomplete error " + JSON.stringify(error));
-                });
+            const value = attribute.name === 'inet6num' ? attribute.value.replace(/((?::0\b){2,}):?(?!\S*\b\1:0\b)(\S*)/, '::$2') : attribute.value;
+            this.restService
+                .autocomplete(attribute.name, value, true, [])
+                .toPromise()
+                .then(
+                    (data: any) => {
+                        if (
+                            _.some(data, (item: any) => {
+                                return (
+                                    CreateModifyComponent.uniformed(item.type) === CreateModifyComponent.uniformed(attribute.name) &&
+                                    CreateModifyComponent.uniformed(item.key) === CreateModifyComponent.uniformed(value)
+                                );
+                            })
+                        ) {
+                            attribute.$$error = attribute.name + ' ' + this.linkService.getModifyLink(this.source, this.objectType, value) + ' already exists';
+                        } else {
+                            attribute.$$error = '';
+                        }
+                    },
+                    (error: any) => {
+                        console.error('Autocomplete error ' + JSON.stringify(error));
+                    },
+                );
         }
 
         if (this.operation === this.CREATE_OPERATION && attribute.value) {
-            if (this.objectType === "aut-num" && attribute.name === "aut-num" ||
-                this.objectType === "inetnum" && attribute.name === "inetnum" ||
-                this.objectType === "inet6num" && attribute.name === "inet6num") {
-                this.restService.fetchParentResource(this.objectType, attribute.value)
-                    .then((result: any) => {
+            if (
+                (this.objectType === 'aut-num' && attribute.name === 'aut-num') ||
+                (this.objectType === 'inetnum' && attribute.name === 'inetnum') ||
+                (this.objectType === 'inet6num' && attribute.name === 'inet6num')
+            ) {
+                this.restService.fetchParentResource(this.objectType, attribute.value).then(
+                    (result: any) => {
                         let parent;
                         if (result && result.objects && _.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
                         }
                         this.resourceParentFound(parent);
-                    }, () => {
+                    },
+                    () => {
                         this.resourceParentFound(null);
-                    });
+                    },
+                );
             }
         }
     }
@@ -363,7 +377,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             });
         }
         if (foundIdx > -1) {
-            attributes.splice(foundIdx + 1, 0, {name: attributeName, value: undefined});
+            attributes.splice(foundIdx + 1, 0, { name: attributeName, value: undefined });
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, attributes);
         }
     }
@@ -373,7 +387,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public removeAttribute(attr: any) {
-        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.whoisResourcesService.removeAttribute(this.attributes, attr));
+        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(
+            this.objectType,
+            this.whoisResourcesService.removeAttribute(this.attributes, attr),
+        );
     }
 
     public displayAddAttributeDialog(attr: any) {
@@ -383,22 +400,29 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.screenLogicInterceptorService.beforeAddAttribute(this.operation, this.source, this.objectType, this.attributes, originalAddableAttributes),
             (attrPred: any) => {
                 return !attrPred.$$meta.$$isLir;
-            });
+            },
+        );
 
-        const modalRef = this.modalService.open(ModalAddAttributeComponent, {size: "lg"});
+        const modalRef = this.modalService.open(ModalAddAttributeComponent, { size: 'lg' });
         modalRef.componentInstance.items = addableAttributes;
-        modalRef.result.then((selectedItem: any) => {
-            this.addSelectedAttribute(selectedItem, attr);
-        }, (error) => console.log("openAddAttributeModal completed with:", error));
+        modalRef.result.then(
+            (selectedItem: any) => {
+                this.addSelectedAttribute(selectedItem, attr);
+            },
+            (error) => console.log('openAddAttributeModal completed with:', error),
+        );
     }
 
     public displayEditAttributeDialog(attr: IAttributeModel) {
-        const modalRef = this.modalService.open(ModalEditAttributeComponent, {windowClass: "modal-edit-attr"});
+        const modalRef = this.modalService.open(ModalEditAttributeComponent, { windowClass: 'modal-edit-attr' });
         modalRef.componentInstance.attr = attr;
-        console.debug("openEditAttributeModal for items", attr);
-        modalRef.result.then(() => {
-            console.debug("openEditAttributeModal completed", attr);
-        }, (error) => console.log("openEditAttributeModal completed with:", error));
+        console.debug('openEditAttributeModal for items', attr);
+        modalRef.result.then(
+            () => {
+                console.debug('openEditAttributeModal completed', attr);
+            },
+            (error) => console.log('openEditAttributeModal completed with:', error),
+        );
     }
 
     public addSelectedAttribute(selectedAttributeType: IAttributeModel, attr: IAttributeModel) {
@@ -407,18 +431,21 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public displayMd5DialogDialog(attr: IAttributeModel) {
-        const modalRef = this.modalService.open(ModalMd5PasswordComponent, {size: "lg"});
-        console.debug("openMd5Modal");
-        modalRef.result.then((md5Value: any) => {
-            console.debug("openMd5Modal completed with:", md5Value);
-            attr.value = md5Value;
-        }, (reason: any) => {
-            console.debug("openMd5Modal cancelled because: " + reason);
-        });
+        const modalRef = this.modalService.open(ModalMd5PasswordComponent, { size: 'lg' });
+        console.debug('openMd5Modal');
+        modalRef.result.then(
+            (md5Value: any) => {
+                console.debug('openMd5Modal completed with:', md5Value);
+                attr.value = md5Value;
+            },
+            (reason: any) => {
+                console.debug('openMd5Modal cancelled because: ' + reason);
+            },
+        );
     }
 
     public isResourceWithNccMntner() {
-        if (this.objectType === "inetnum" || this.objectType === "inet6num") {
+        if (this.objectType === 'inetnum' || this.objectType === 'inet6num') {
             return this.maintainers.objectOriginal.some((mntner: any) => {
                 return this.mntnerService.isAnyNccMntner(mntner.key);
             });
@@ -431,13 +458,11 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public submit() {
-
         const onSubmitSuccess = (whoisResources: any) => {
             this.restCallInProgress = false;
 
             // Post-process attribute after submit-success using screen-logic-interceptor
             if (this.interceptOnSubmitSuccess(this.operation, this.whoisResourcesService.getAttributes(whoisResources)) === false) {
-
                 // It's ok to just let it happen or fail.
                 this.organisationHelperService.updateAbuseC(this.source, this.objectType, this.roleForAbuseC, this.attributes);
 
@@ -451,7 +476,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         };
 
         const onSubmitError = (resp: any) => {
-
             const whoisResources = resp.data;
             const errorMessages: string[] = [];
             const warningMessages: string[] = [];
@@ -462,17 +486,27 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             // This interceptor allows us to convert error into success
             // This could change in the future
-            const intercepted = this.screenLogicInterceptorService.afterSubmitError(this.operation,
-                this.source, this.objectType,
-                resp.status, resp.data,
-                errorMessages, warningMessages, infoMessages);
+            const intercepted = this.screenLogicInterceptorService.afterSubmitError(
+                this.operation,
+                this.source,
+                this.objectType,
+                resp.status,
+                resp.data,
+                errorMessages,
+                warningMessages,
+                infoMessages,
+            );
 
             // Post-process attribute after submit-error using screen-logic-interceptor
             if (intercepted) {
                 this.loadAlerts(errorMessages, warningMessages, infoMessages);
                 /* Instruct downstream screen (typically display screen) that object is in pending state */
-                this.webUpdatesCommonsService.navigateToDisplay(this.source, this.objectType,
-                    this.whoisResourcesService.getPrimaryKey(whoisResources), this.PENDING_OPERATION);
+                this.webUpdatesCommonsService.navigateToDisplay(
+                    this.source,
+                    this.objectType,
+                    this.whoisResourcesService.getPrimaryKey(whoisResources),
+                    this.PENDING_OPERATION,
+                );
             } else {
                 this.validateForm();
                 const firstErr = this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, whoisResources);
@@ -508,22 +542,19 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             AttributeMetadataService.splitAttrsCommentsFromValue(this.attributes, true);
 
             if (!this.name) {
-                this.restService.createObject(this.source, this.objectType, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
-                    .subscribe(
-                        onSubmitSuccess,
-                        onSubmitError);
-
+                this.restService
+                    .createObject(this.source, this.objectType, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
+                    .subscribe(onSubmitSuccess, onSubmitError);
             } else {
-                this.restService.modifyObject(this.source, this.objectType, this.name, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
-                    .subscribe(
-                        onSubmitSuccess,
-                        onSubmitError);
+                this.restService
+                    .modifyObject(this.source, this.objectType, this.name, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
+                    .subscribe(onSubmitSuccess, onSubmitError);
             }
         }
     }
 
     public switchToTextMode() {
-        console.debug("Switching to text-mode");
+        console.debug('Switching to text-mode');
 
         this.preferenceService.setTextMode();
         if (!this.name) {
@@ -534,8 +565,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public cancel() {
-        if (this.window.confirm("You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.")) {
-            this.router.navigate(["webupdates/select"]);
+        if (this.window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+            this.router.navigate(['webupdates/select']);
         }
     }
 
@@ -548,15 +579,21 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public isFormValid() {
-        this.attributes.map(attr => {if (attr.name === "mnt-by" && attr.value === "") {attr.$$invalid = false}});
+        this.attributes.map((attr) => {
+            if (attr.name === 'mnt-by' && attr.value === '') {
+                attr.$$invalid = false;
+            }
+        });
         // enrcih is called from maintainer-editor-component so $$invalid get value true and is never changed,
         // because of this validation was crushing
-        this.attributes.map(attr => {attr.$$invalid = false});
+        this.attributes.map((attr) => {
+            attr.$$invalid = false;
+        });
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }
 
     public setVisibilityAttrsHelp(attributeName: string) {
-        this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName]
+        this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName];
     }
 
     /*
@@ -564,35 +601,38 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
      */
     private fetchDataForCreate() {
         this.restCallInProgress = true;
-        this.restService.fetchMntnersForSSOAccount()
-            .subscribe((results: any) => {
+        this.restService.fetchMntnersForSSOAccount().subscribe(
+            (results: any) => {
                 let attributes;
                 this.restCallInProgress = false;
                 this.maintainers.sso = results;
                 if (this.maintainers.sso.length > 0) {
-
                     this.maintainers.objectOriginal = [];
                     // populate ui-select box with sso-mntners
                     this.maintainers.object = _.cloneDeep(this.maintainers.sso);
 
                     // copy mntners to attributes (for later submit)
                     const mntnerAttrs = _.map(this.maintainers.sso, (i: any) => {
-                        return {name: "mnt-by", value: i.key};
+                        return { name: 'mnt-by', value: i.key };
                     });
 
-                    attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
-                        this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", mntnerAttrs));
+                    attributes = this.whoisResourcesService.wrapAndEnrichAttributes(
+                        this.objectType,
+                        this.whoisResourcesService.addAttrsSorted(this.attributes, 'mnt-by', mntnerAttrs),
+                    );
                 } else {
                     attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
                 }
                 // Post-process attributes before showing using screen-logic-interceptor
                 this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
-                this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
-            }, (error: any) => {
+                this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
+            },
+            (error: any) => {
                 this.restCallInProgress = false;
-                console.error("Error fetching mntners for SSO:" + JSON.stringify(error));
-                this.alertsService.setGlobalError("Error fetching maintainers associated with this SSO account");
-            });
+                console.error('Error fetching mntners for SSO:' + JSON.stringify(error));
+                this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
+            },
+        );
     }
 
     private loadAlerts(errorMessages: string[], warningMessages: string[], infoMessages: string[]) {
@@ -613,9 +653,15 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         const errorMessages: string[] = [];
         const warningMessages: string[] = [];
         const infoMessages: string[] = [];
-        const interceptedAttrs = this.screenLogicInterceptorService.beforeEdit(method,
-            this.source, this.objectType, attributes,
-            errorMessages, warningMessages, infoMessages);
+        const interceptedAttrs = this.screenLogicInterceptorService.beforeEdit(
+            method,
+            this.source,
+            this.objectType,
+            attributes,
+            errorMessages,
+            warningMessages,
+            infoMessages,
+        );
 
         this.loadAlerts(errorMessages, warningMessages, infoMessages);
 
@@ -626,9 +672,15 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         const errorMessages: string[] = [];
         const warningMessages: string[] = [];
         const infoMessages: string[] = [];
-        const interceptedAttrs = this.screenLogicInterceptorService.afterEdit(method,
-            this.source, this.objectType, attributes,
-            errorMessages, warningMessages, infoMessages);
+        const interceptedAttrs = this.screenLogicInterceptorService.afterEdit(
+            method,
+            this.source,
+            this.objectType,
+            attributes,
+            errorMessages,
+            warningMessages,
+            infoMessages,
+        );
 
         this.loadAlerts(errorMessages, warningMessages, infoMessages);
 
@@ -640,42 +692,46 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         const warningMessages: string[] = [];
         const infoMessages: string[] = [];
 
-        const interceptedAttrs = this.screenLogicInterceptorService.afterSubmitSuccess(method,
-            this.source, this.objectType, responseAttributes,
-            warningMessages, infoMessages);
+        const interceptedAttrs = this.screenLogicInterceptorService.afterSubmitSuccess(
+            method,
+            this.source,
+            this.objectType,
+            responseAttributes,
+            warningMessages,
+            infoMessages,
+        );
         this.loadAlerts(errorMessages, warningMessages, infoMessages);
 
         return interceptedAttrs;
     }
 
     private fetchDataForModify() {
-
         let password = null;
         if (this.credentialsService.hasCredentials()) {
             password = this.credentialsService.getCredentials().successfulPassword;
         }
         // wait until both have completed
         this.restCallInProgress = true;
-        this.restService.fetchObject(this.source, this.objectType, this.name, password)
-            .subscribe(objectToModifyResponse => {
+        this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe(
+            (objectToModifyResponse) => {
                 this.restCallInProgress = false;
-                console.debug("[createModifyController] object to modify: " + JSON.stringify(objectToModifyResponse));
+                console.debug('[createModifyController] object to modify: ' + JSON.stringify(objectToModifyResponse));
 
                 // store object to modify
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
 
                 // show description under fields
-                this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
+                this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
                 // Create empty attribute with warning for each missing mandatory attribute
                 this.insertMissingMandatoryAttributes();
 
                 // save object for later diff in display-screen
-                this.messageStoreService.add("DIFF", _.cloneDeep(this.attributes));
+                this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
 
                 // prevent warning upon modify with last-modified
-                this.whoisResourcesService.removeAttributeWithName(this.attributes, "last-modified");
+                this.whoisResourcesService.removeAttributeWithName(this.attributes, 'last-modified');
 
                 // Post-process attribute before showing using screen-logic-interceptor
                 this.attributes = this.interceptBeforeEdit(this.MODIFY_OPERATION, this.attributes);
@@ -686,15 +742,16 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 // * this is an inet(6)num and it has a "sponsoring-org" attribute which refers to an LIR
                 // * this is an inet(6)num and it has a "org" attribute which refers to an LIR
                 // * this is an organisation with an "org-type: LIR" attribute and attribute.name is address|fax|e-mail|phone
-            },(error: any) => {
+            },
+            (error: any) => {
                 this.restCallInProgress = false;
                 try {
                     const whoisResources = error.data;
                     this.wrapAndEnrichResources(this.objectType, error.data);
                     this.alertsService.setErrors(whoisResources);
                 } catch (e) {
-                    console.error("Error fetching sso-mntners for SSO:" + JSON.stringify(error));
-                    this.alertsService.setGlobalError("Error fetching maintainers associated with this SSO account");
+                    console.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
+                    this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
                 }
             },
         );
@@ -704,16 +761,17 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         const missingMandatories = this.whoisResourcesService.getMissingMandatoryAttributes(this.attributes, this.objectType);
         if (missingMandatories.length > 0) {
             _.each(missingMandatories, (item) => {
-                this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
-                    this.whoisResourcesService.addMissingMandatoryAttribute(this.attributes, this.objectType, item));
+                this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(
+                    this.objectType,
+                    this.whoisResourcesService.addMissingMandatoryAttribute(this.attributes, this.objectType, item),
+                );
             });
             this.validateForm();
         }
     }
 
     private validateForm() {
-        return this.whoisResourcesService.validate(this.attributes)
-            && this.organisationHelperService.validateAbuseC(this.objectType, this.attributes);
+        return this.whoisResourcesService.validate(this.attributes) && this.organisationHelperService.validateAbuseC(this.objectType, this.attributes);
     }
 
     private stripNulls() {
@@ -729,35 +787,35 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public showPencile(attrName: string): boolean {
-        const modalContactFields = ["address", "org-name", "phone", "fax-no", "e-mail"];
+        const modalContactFields = ['address', 'org-name', 'phone', 'fax-no', 'e-mail'];
         return modalContactFields.indexOf(attrName) > -1;
     }
 
     public refreshObjectIfNeeded(associationResp: any) {
-        if (this.operation === this.MODIFY_OPERATION && this.objectType === "mntner") {
+        if (this.operation === this.MODIFY_OPERATION && this.objectType === 'mntner') {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);
                 // save object for later diff in display-screen
-                this.messageStoreService.add("DIFF",  _.cloneDeep(this.attributes));
+                this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
             } else {
                 let password = null;
                 if (this.credentialsService.hasCredentials()) {
                     password = this.credentialsService.getCredentials().successfulPassword;
                 }
                 this.restCallInProgress = true;
-                this.restService.fetchObject(this.source, this.objectType, this.name, password)
-                    .subscribe((result: any) => {
-                            this.restCallInProgress = false;
+                this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe(
+                    (result: any) => {
+                        this.restCallInProgress = false;
 
-                            this.attributes = this.whoisResourcesService.getAttributes(result);
+                        this.attributes = this.whoisResourcesService.getAttributes(result);
 
-                            // save object for later diff in display-screen
-                            this.messageStoreService.add("DIFF", _.cloneDeep(this.attributes));
-
-                        }, () => {
-                            this.restCallInProgress = false;
-                        },
-                    );
+                        // save object for later diff in display-screen
+                        this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
+                    },
+                    () => {
+                        this.restCallInProgress = false;
+                    },
+                );
             }
         }
     }
@@ -786,5 +844,5 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     private onSuccessfulAuthentication = (associationResp: any) => {
         this.refreshObjectIfNeeded(associationResp);
-    }
+    };
 }

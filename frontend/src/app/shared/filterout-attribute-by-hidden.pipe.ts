@@ -1,10 +1,9 @@
-import {Pipe, PipeTransform} from "@angular/core";
-import {IAttributeModel} from "./whois-response-type.model";
+import { Pipe, PipeTransform } from '@angular/core';
+import { IAttributeModel } from './whois-response-type.model';
 
-@Pipe({name: "filteroutAttributeByHidden", pure: false})
+@Pipe({ name: 'filteroutAttributeByHidden', pure: false })
 export class FilteroutAttributeByHiddenPipe implements PipeTransform {
-
     transform(items: Array<IAttributeModel>): Array<IAttributeModel> {
-        return items.filter(item => !item.$$hidden);
+        return items.filter((item) => !item.$$hidden);
     }
 }

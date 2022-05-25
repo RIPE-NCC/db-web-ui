@@ -1,12 +1,11 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {WhoisMetaService} from "../whois-meta.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { WhoisMetaService } from '../whois-meta.service';
 
 @Component({
-    selector: "attr-info",
+    selector: 'attr-info',
     template: `<span [innerHTML]="text"></span>`,
 })
 export class AttributeInfoComponent implements OnInit {
-
     @Input()
     public description: string;
     @Input()
@@ -14,7 +13,7 @@ export class AttributeInfoComponent implements OnInit {
     @Input()
     public syntax: string;
 
-    public text = "";
+    public text = '';
 
     constructor(private whoisMetaService: WhoisMetaService) {}
 

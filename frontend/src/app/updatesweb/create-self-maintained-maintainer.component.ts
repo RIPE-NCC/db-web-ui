@@ -1,27 +1,27 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import * as _ from "lodash";
-import {RestService} from "./rest.service";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {WhoisMetaService} from "../shared/whois-meta.service";
-import {UserInfoService} from "../userinfo/user-info.service";
-import {MessageStoreService} from "./message-store.service";
-import {ErrorReporterService} from "./error-reporter.service";
-import {LinkService} from "./link.service";
-import {IAttributeModel, IMntByModel} from "../shared/whois-response-type.model";
-import {AlertsService} from "../shared/alert/alerts.service";
-import {concat, Observable, of, Subject} from "rxjs";
-import {catchError, distinctUntilChanged, switchMap, tap} from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash';
+import { concat, of, Subject } from 'rxjs';
+import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { WhoisMetaService } from '../shared/whois-meta.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { IAttributeModel } from '../shared/whois-response-type.model';
+import { UserInfoService } from '../userinfo/user-info.service';
+import { ErrorReporterService } from './error-reporter.service';
+import { LinkService } from './link.service';
+import { MessageStoreService } from './message-store.service';
+import { RestService } from './rest.service';
 
 @Component({
-    selector: "create-self-maintained-maintainer",
-    templateUrl: "./create-self-maintained-maintainer.component.html",
+    selector: 'create-self-maintained-maintainer',
+    templateUrl: './create-self-maintained-maintainer.component.html',
 })
 export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     public submitInProgress = false;
     public adminC = {
-      object: [],
-      alternatives$: undefined,
+        object: [],
+        alternatives$: undefined,
     };
     public maintainerAttributes: any;
     public source: string;
@@ -29,46 +29,55 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     public loading = false;
     public isAdminCHelpShown: boolean;
     public showAttrsHelp: [];
-    private readonly MNT_TYPE: string = "mntner";
+    private readonly MNT_TYPE: string = 'mntner';
 
-    constructor(public whoisResourcesService: WhoisResourcesService,
-                public whoisMetaService: WhoisMetaService,
-                private userInfoService: UserInfoService,
-                private restService: RestService,
-                public messageStoreService: MessageStoreService,
-                private errorReporterService: ErrorReporterService,
-                private linkService: LinkService,
-                public alertsService: AlertsService,
-                public activatedRoute: ActivatedRoute,
-                public router: Router) {
-    }
+    constructor(
+        public whoisResourcesService: WhoisResourcesService,
+        public whoisMetaService: WhoisMetaService,
+        private userInfoService: UserInfoService,
+        private restService: RestService,
+        public messageStoreService: MessageStoreService,
+        private errorReporterService: ErrorReporterService,
+        private linkService: LinkService,
+        public alertsService: AlertsService,
+        public activatedRoute: ActivatedRoute,
+        public router: Router,
+    ) {}
 
     ngOnInit() {
         this.adminCAutocomplete();
         this.alertsService.clearAlertMessages();
 
-        this.maintainerAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.MNT_TYPE, this.whoisMetaService.getMandatoryAttributesOnObjectType(this.MNT_TYPE));
+        this.maintainerAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(
+            this.MNT_TYPE,
+            this.whoisMetaService.getMandatoryAttributesOnObjectType(this.MNT_TYPE),
+        );
 
         const paramMap = this.activatedRoute.snapshot.paramMap;
-        this.source = paramMap.get("source");
-        this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"source", this.source);
+        this.source = paramMap.get('source');
+        this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes, 'source', this.source);
 
-        this.showAttrsHelp = this.maintainerAttributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
+        this.showAttrsHelp = this.maintainerAttributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
-        if (queryParamMap.has("admin")) {
-            const item = {type: "person", key: queryParamMap.get("admin")};
+        if (queryParamMap.has('admin')) {
+            const item = { type: 'person', key: queryParamMap.get('admin') };
             this.adminC.object.push(item);
             this.onAdminCAdded(item);
         }
 
         // kick off ajax-call to fetch email address of logged-in user
-        this.userInfoService.getUserOrgsAndRoles()
-            .subscribe((result: any) => {
-                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"upd-to", result.user.username);
-                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"auth", "SSO " + result.user.username);
-            }, () => {
-                this.alertsService.setGlobalError("Error fetching SSO information");
+        this.userInfoService.getUserOrgsAndRoles().subscribe(
+            (result: any) => {
+                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes, 'upd-to', result.user.username);
+                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(
+                    this.maintainerAttributes,
+                    'auth',
+                    'SSO ' + result.user.username,
+                );
+            },
+            () => {
+                this.alertsService.setGlobalError('Error fetching SSO information');
             },
         );
     }
@@ -76,11 +85,11 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     public submit() {
         this.populateMissingAttributes();
 
-        console.info("submit attrs:" + JSON.stringify(this.maintainerAttributes));
+        console.info('submit attrs:' + JSON.stringify(this.maintainerAttributes));
 
         this.whoisResourcesService.clearErrors(this.maintainerAttributes);
         if (!this.whoisResourcesService.validate(this.maintainerAttributes)) {
-            this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);
+            this.errorReporterService.log('Create', this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);
         } else {
             this.createObject();
         }
@@ -92,41 +101,46 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     }
 
     public cancel() {
-        if (window.confirm("You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.")) {
-            this.router.navigate(["webupdates/select"]);
+        if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+            this.router.navigate(['webupdates/select']);
         }
     }
 
     public fieldVisited(attr: any) {
-        this.restService.autocomplete(attr.name, attr.value, true, []).toPromise()
+        this.restService
+            .autocomplete(attr.name, attr.value, true, [])
+            .toPromise()
             .then((data: any) => {
-                if (_.some(data, (item: any) => {
-                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
-                })) {
-                    attr.$$error = attr.name + " " + this.linkService.getModifyLink(this.source, attr.name, attr.value) + " already exists";
+                if (
+                    _.some(data, (item: any) => {
+                        return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                    })
+                ) {
+                    attr.$$error = attr.name + ' ' + this.linkService.getModifyLink(this.source, attr.name, attr.value) + ' already exists';
                 } else {
-                    attr.$$error = "";
+                    attr.$$error = '';
                 }
-            },
-        );
+            });
     }
 
     public trackByFn(item: any) {
-      return item.key;
+        return item.key;
     }
 
     public adminCAutocomplete() {
-      this.adminC.alternatives$ = concat(
-        of([]), // default items
-        this.alternativesInput$.pipe(
-          distinctUntilChanged(),
-          tap(() => this.loading = true),
-          switchMap(term => this.restService.autocomplete("admin-c", term, true, ["person", "role"]).pipe(
-            catchError(() => of([])), // empty list on error
-            tap(() => this.loading = false)
-          ))
-        )
-      );
+        this.adminC.alternatives$ = concat(
+            of([]), // default items
+            this.alternativesInput$.pipe(
+                distinctUntilChanged(),
+                tap(() => (this.loading = true)),
+                switchMap((term) =>
+                    this.restService.autocomplete('admin-c', term, true, ['person', 'role']).pipe(
+                        catchError(() => of([])), // empty list on error
+                        tap(() => (this.loading = false)),
+                    ),
+                ),
+            ),
+        );
     }
 
     public hasAdminC() {
@@ -134,21 +148,25 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     }
 
     public onAdminCAdded(item: any) {
-        console.debug("onAdminCAdded:" + JSON.stringify(item));
-        this.maintainerAttributes = this.whoisResourcesService.addAttributeAfterType(this.maintainerAttributes, {name: "admin-c", value: item.key}, {name: "admin-c"});
+        console.debug('onAdminCAdded:' + JSON.stringify(item));
+        this.maintainerAttributes = this.whoisResourcesService.addAttributeAfterType(
+            this.maintainerAttributes,
+            { name: 'admin-c', value: item.key },
+            { name: 'admin-c' },
+        );
         this.maintainerAttributes = this.whoisMetaService.enrichAttributesWithMetaInfo(this.MNT_TYPE, this.maintainerAttributes);
         this.maintainerAttributes = this.whoisResourcesService.validateAttributes(this.maintainerAttributes);
     }
 
     public onAdminCRemoved(item: any) {
-        console.debug("onAdminCRemoved:" + JSON.stringify(item));
+        console.debug('onAdminCRemoved:' + JSON.stringify(item));
         _.remove(this.maintainerAttributes, (i: any) => {
-            return i.name === "admin-c" && i.value === item.key;
+            return i.name === 'admin-c' && i.value === item.key;
         });
     }
 
     public setVisibilityAttrsHelp(attributeName: string) {
-        this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName]
+        this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName];
     }
 
     private createObject() {
@@ -157,28 +175,28 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
         const obj = this.whoisResourcesService.turnAttrsIntoWhoisObject(this.maintainerAttributes);
 
         this.submitInProgress = true;
-        this.restService.createObject(this.source, this.MNT_TYPE, obj, null)
-            .subscribe((resp: any) => {
-                    this.submitInProgress = false;
+        this.restService.createObject(this.source, this.MNT_TYPE, obj, null).subscribe(
+            (resp: any) => {
+                this.submitInProgress = false;
 
-                    const primaryKey = this.whoisResourcesService.getPrimaryKey(resp);
-                    this.messageStoreService.add(primaryKey, resp);
-                    this.router.navigateByUrl(`webupdates/display/${this.source}/${this.MNT_TYPE}/${primaryKey}?method=Create`);
-                }, (error: any) => {
-                    this.submitInProgress = false;
+                const primaryKey = this.whoisResourcesService.getPrimaryKey(resp);
+                this.messageStoreService.add(primaryKey, resp);
+                this.router.navigateByUrl(`webupdates/display/${this.source}/${this.MNT_TYPE}/${primaryKey}?method=Create`);
+            },
+            (error: any) => {
+                this.submitInProgress = false;
 
-                    this.alertsService.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
-                    this.alertsService.setErrors(error.data);
-                    this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);
-                },
-            );
+                this.alertsService.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
+                this.alertsService.setErrors(error.data);
+                this.errorReporterService.log('Create', this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);
+            },
+        );
     }
 
     private populateMissingAttributes() {
         this.maintainerAttributes = this.whoisResourcesService.validateAttributes(this.maintainerAttributes);
 
         const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.maintainerAttributes, this.MNT_TYPE);
-        this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"mnt-by", mntner.value);
+        this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes, 'mnt-by', mntner.value);
     }
-
 }

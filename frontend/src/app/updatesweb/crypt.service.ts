@@ -1,14 +1,13 @@
-import {Injectable} from "@angular/core";
-import * as CryptoJS from "crypto-js";
+import { Injectable } from '@angular/core';
+import * as CryptoJS from 'crypto-js';
 
 // libc crypt implementation, based on Apache commons-codec Md5Crypt
 // depends on CryptJS library
 @Injectable()
 export class CryptService {
-
-    private b64t: string = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private prefix: string = "$1$";
-    private separator: string = "$";
+    private b64t: string = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    private prefix: string = '$1$';
+    private separator: string = '$';
     private rounds: number = 1000;
 
     public crypt(key: string) {
@@ -23,7 +22,7 @@ export class CryptService {
 
         let ii: number = keyLen;
         while (ii > 0) {
-            ctx.concat(this._copyBytes(finalb, 0, (ii > 16 ? 16 : ii)));
+            ctx.concat(this._copyBytes(finalb, 0, ii > 16 ? 16 : ii));
             ii -= 16;
         }
 
@@ -31,7 +30,7 @@ export class CryptService {
         const j = 0;
         while (ii > 0) {
             if ((ii & 1) === 1) {
-                ctx.concat(CryptoJS.enc.Hex.parse("00"));
+                ctx.concat(CryptoJS.enc.Hex.parse('00'));
             } else {
                 ctx.concat(CryptoJS.enc.Utf8.parse(key.substring(j, j + 1)));
             }
@@ -101,7 +100,7 @@ export class CryptService {
     private _b64from24bit(b2: number, b1: number, b0: number, outLen: number): string {
         let w = ((b2 << 16) & 0x00ffffff) | ((b1 << 8) & 0x00ffff) | (b0 & 0xff);
         let n = outLen;
-        let result = "";
+        let result = '';
         while (n-- > 0) {
             result += this.b64t[w & 0x3f];
             w >>= 6;
@@ -110,9 +109,9 @@ export class CryptService {
     }
 
     private _generateSalt(length: number) {
-        let result = "";
+        let result = '';
         for (let index = 0; index < length; index++) {
-            const offset = Math.floor((Math.random() * this.b64t.length));
+            const offset = Math.floor(Math.random() * this.b64t.length);
             result = result.concat(this.b64t[offset]);
         }
         return result;

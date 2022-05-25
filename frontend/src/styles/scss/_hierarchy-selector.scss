@@ -1,48 +1,48 @@
 hierarchy-selector {
-  @extend .generic-drop-down;
-  button#single-button {
-    @extend %float-r;
-    margin-left: 5px;
-  }
+    @extend .generic-drop-down;
+    button#single-button {
+        @extend %float-r;
+        margin-left: 5px;
+    }
 
-  ul.dropdown-menu {
-    @extend %float-l;
-    @extend %width-100;
-    @extend %brd;
-    display: none;
-    position: absolute;
-    list-style: none;
-    padding: 0;
-    margin: 5px 0 0 0;
-    top: 36px;
-    right: -1px;
-    li {
-      @extend %float-l;
-      @extend %width-100;
-      margin: 0;
-      cursor: pointer;
-      a {
+    ul.dropdown-menu {
         @extend %float-l;
         @extend %width-100;
-        @extend %brd-b;
-        @extend %brd-box;
-        background-color: #fff;
-        padding: 5px;
-        color: #333;
+        @extend %brd;
+        display: none;
+        position: absolute;
+        list-style: none;
+        padding: 0;
+        margin: 5px 0 0 0;
+        top: 36px;
+        right: -1px;
+        li {
+            @extend %float-l;
+            @extend %width-100;
+            margin: 0;
+            cursor: pointer;
+            a {
+                @extend %float-l;
+                @extend %width-100;
+                @extend %brd-b;
+                @extend %brd-box;
+                background-color: #fff;
+                padding: 5px;
+                color: #333;
 
-        &:hover {
-          background-color: $grey;
-          text-decoration: none;
-        }
-      }
+                &:hover {
+                    background-color: $grey;
+                    text-decoration: none;
+                }
+            }
 
-      &:last-child {
-        a {
-          background-color: $light-blue;
-          color: #fff;
-          border-bottom: none;
+            &:last-child {
+                a {
+                    background-color: $light-blue;
+                    color: #fff;
+                    border-bottom: none;
+                }
+            }
         }
-      }
     }
-  }
 }

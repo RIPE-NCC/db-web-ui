@@ -1,20 +1,20 @@
 {
-  "requestUrl": "/api/whois-internal/api/resources?sponsoring-org-id=ORG-VA397-RIPE&type=inetnum",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "stats": {
-      "numInetnums": 1,
-      "numInet6nums": 1,
-      "numAutnums": 0,
-      "numSponsoredInetnums": 0,
-      "numSponsoredInet6nums": 0,
-      "numSponsoredAutnums": 0
-    },
-    "sponsoring-org-id": "ORG-VA397-RIPE",
-    "resources": [],
-    "totalNumberOfResources": 1,
-    "filteredSize": 1,
-    "pageSize": 1
-  }
+    "requestUrl": "/api/whois-internal/api/resources?sponsoring-org-id=ORG-VA397-RIPE&type=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "stats": {
+            "numInetnums": 1,
+            "numInet6nums": 1,
+            "numAutnums": 0,
+            "numSponsoredInetnums": 0,
+            "numSponsoredInet6nums": 0,
+            "numSponsoredAutnums": 0
+        },
+        "sponsoring-org-id": "ORG-VA397-RIPE",
+        "resources": [],
+        "totalNumberOfResources": 1,
+        "filteredSize": 1,
+        "pageSize": 1
+    }
 }

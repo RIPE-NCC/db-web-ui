@@ -1,105 +1,145 @@
-<button id="btnCreateInTextArea"
-        class="blue-button float-end ga-modifyobj-switch-mode"
-        style="border:0;"
-        *ngIf="operation === CREATE_OPERATION"
-        (click)="switchToTextMode()">
+<button
+    id="btnCreateInTextArea"
+    class="blue-button float-end ga-modifyobj-switch-mode"
+    style="border: 0"
+    *ngIf="operation === CREATE_OPERATION"
+    (click)="switchToTextMode()"
+>
     <span class="fal fa-edit"></span> Create in text area
 </button>
-<button id="btnEditInTextArea"
-        style="border:0;"
-        class="blue-button float-end ga-createobj-switch-mode"
-        *ngIf="operation === MODIFY_OPERATION"
-        (click)="switchToTextMode()">
+<button
+    id="btnEditInTextArea"
+    style="border: 0"
+    class="blue-button float-end ga-createobj-switch-mode"
+    *ngIf="operation === MODIFY_OPERATION"
+    (click)="switchToTextMode()"
+>
     <span class="fal fa-edit"></span> Edit in text area
 </button>
 
 <div id="createForm" *ngIf="attributes?.length > 0">
-    <h1>{{operation}} &quot;{{objectType}}&quot; object</h1>
+    <h1>{{ operation }} &quot;{{ objectType }}&quot; object</h1>
     <section class="form-fields">
-        <maintainers-editor [whoisObject]="{attributes: {attribute: attributes}, source: {id: source}}"
-                            (authenticationSuccessClbk)="refreshObjectIfNeeded($event)"
-                            (updateMntnersClbk)="updateMaintainers($event)"></maintainers-editor>
+        <maintainers-editor
+            [whoisObject]="{ attributes: { attribute: attributes }, source: { id: source } }"
+            (authenticationSuccessClbk)="refreshObjectIfNeeded($event)"
+            (updateMntnersClbk)="updateMaintainers($event)"
+        ></maintainers-editor>
     </section>
     <section class="visible-field-form" *ngIf="maintainers.object.length">
         <ul class="form-fields appeared-fields">
-            <li class="attr-{{idx}}" *ngFor="let attribute of attributes | filteroutAttributeByName: ['mnt-by', 'last-modified', 'created'] | slice:0:nrAttributesToRender; index as idx;">
-
-                <label id="anchor-{{attribute.name}}" >{{attribute.name}}</label>
+            <li
+                class="attr-{{ idx }}"
+                *ngFor="
+                    let attribute of attributes | filteroutAttributeByName: ['mnt-by', 'last-modified', 'created'] | slice: 0:nrAttributesToRender;
+                    index as idx
+                "
+            >
+                <label id="anchor-{{ attribute.name }}">{{ attribute.name }}</label>
                 <span *ngIf="attribute.$$error" class="text-error">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
-                <span *ngIf="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
+                <span *ngIf="attribute.$$success" class="text-success">{{ attribute.$$success }}</span>
 
-                <input *ngIf="!attribute.$$meta.$$isEnum && !isBrowserAutoComplete(attribute)"
-                       type="text"
-                       [attr.name]="attribute.name + '$' + idx"
-                       class="form-control"
-                       placeholder="{{getAttributeShortDescription(attribute.name)}}"
-                       autocomplete="off"
-                       [(ngModel)]="attribute.value"
-                       [required]="attribute.$$meta.$$mandatory"
-                       [disabled]="attribute.$$meta.$$disable"
-                       (blur)="fieldVisited(attribute)">
-                <typeahead *ngIf="!attribute.$$meta.$$isEnum && isBrowserAutoComplete(attribute)"
-                                     [attribute]="attribute"
-                                     [idx]="idx"
-                                     [placeholder]="getAttributeShortDescription(attribute.name)"
-                                     (blurEmitter)="fieldVisited(attribute)"></typeahead>
+                <input
+                    *ngIf="!attribute.$$meta.$$isEnum && !isBrowserAutoComplete(attribute)"
+                    type="text"
+                    [attr.name]="attribute.name + '$' + idx"
+                    class="form-control"
+                    placeholder="{{ getAttributeShortDescription(attribute.name) }}"
+                    autocomplete="off"
+                    [(ngModel)]="attribute.value"
+                    [required]="attribute.$$meta.$$mandatory"
+                    [disabled]="attribute.$$meta.$$disable"
+                    (blur)="fieldVisited(attribute)"
+                />
+                <typeahead
+                    *ngIf="!attribute.$$meta.$$isEnum && isBrowserAutoComplete(attribute)"
+                    [attribute]="attribute"
+                    [idx]="idx"
+                    [placeholder]="getAttributeShortDescription(attribute.name)"
+                    (blurEmitter)="fieldVisited(attribute)"
+                ></typeahead>
                 <span *ngIf="attribute.$$meta.$$isEnum">
                     <ng-select
-                       [attr.name]="attribute.name + '$' + idx"
-                       [items]="attribute.name === 'status' ? optionList.status : enumAutocomplete(attribute)"
-                       bindLabel="key"
-                       bindValue="key"
-                       placeholder="{{getAttributeShortDescription(attribute.name)}}"
-                       [disabled]="attribute.$$meta?.$$disable"
-                       [(ngModel)]="attribute.value">
+                        [attr.name]="attribute.name + '$' + idx"
+                        [items]="attribute.name === 'status' ? optionList.status : enumAutocomplete(attribute)"
+                        bindLabel="key"
+                        bindValue="key"
+                        placeholder="{{ getAttributeShortDescription(attribute.name) }}"
+                        [disabled]="attribute.$$meta?.$$disable"
+                        [(ngModel)]="attribute.value"
+                    >
                         <ng-template ng-option-tmp let-item="item">
-                            <div [innerHTML]="displayEnumValue(item)">{{item.key}}</div>
+                            <div [innerHTML]="displayEnumValue(item)">{{ item.key }}</div>
                         </ng-template>
                     </ng-select>
                 </span>
-                <description-syntax [showComponent]="showAttrsHelp[attribute.name + '$' + idx]" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>
+                <description-syntax
+                    [showComponent]="showAttrsHelp[attribute.name + '$' + idx]"
+                    [objectType]="objectType"
+                    [attrName]="attribute.name"
+                ></description-syntax>
                 <ul class="input-group-btn">
                     <li *ngIf="canAttributeBeDuplicated(attribute)">
-                        <a id="duplicateAttribute" class="btn btn-default ga-add-dup" title="Add another attribute of this type"
-                           (click)="duplicateAttribute(attribute)">
+                        <a
+                            id="duplicateAttribute"
+                            class="btn btn-default ga-add-dup"
+                            title="Add another attribute of this type"
+                            (click)="duplicateAttribute(attribute)"
+                        >
                             <span class="fal fa-arrow-down degree-25"></span>
                         </a>
                     </li>
                     <li>
-                        <a id="addAnyAttribute" class="btn btn-default ga-add-attr" title="Add any attribute (opens dialog)"
-                           (click)="displayAddAttributeDialog(attribute)">
+                        <a
+                            id="addAnyAttribute"
+                            class="btn btn-default ga-add-attr"
+                            title="Add any attribute (opens dialog)"
+                            (click)="displayAddAttributeDialog(attribute)"
+                        >
                             <span class="fal fa-plus"></span>
                         </a>
                     </li>
                     <li *ngIf="canAttributeBeRemoved(attribute)">
-                        <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                           (click)="removeAttribute(attribute)">
+                        <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute" (click)="removeAttribute(attribute)">
                             <span class="fal fa-trash"></span>
                         </a>
                     </li>
                     <li>
-                        <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
-                           (click)="displayMd5DialogDialog(attribute)" *ngIf="attribute.name === 'auth'">
+                        <a
+                            id="changePassword"
+                            class="btn btn-default ga-pass-attr"
+                            title="Add/change Password (opens dialog)"
+                            (click)="displayMd5DialogDialog(attribute)"
+                            *ngIf="attribute.name === 'auth'"
+                        >
                             <span class="fal fa-lock fa-3"></span>
                         </a>
                     </li>
                     <li>
-                        <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
-                           (click)="createRoleForAbuseCAttribute(attribute)" *ngIf="shouldShowBellIcon(attribute)">
+                        <a
+                            id="createRoleForAbuseCAttribute"
+                            class="btn btn-default ga-add-dup"
+                            title="Create new role to use as abuse-c"
+                            (click)="createRoleForAbuseCAttribute(attribute)"
+                            *ngIf="shouldShowBellIcon(attribute)"
+                        >
                             <span class="fal fa-bell degree-25"></span>
                         </a>
                     </li>
                     <li *ngIf="attribute.$$meta.$$isLir">
-                        <a title="Request to update" class="btn btn-default ga-edit-attr"
-                           *ngIf="showPencile(attribute.name)"
-                           (click)="displayEditAttributeDialog(attribute)">
+                        <a
+                            title="Request to update"
+                            class="btn btn-default ga-edit-attr"
+                            *ngIf="showPencile(attribute.name)"
+                            (click)="displayEditAttributeDialog(attribute)"
+                        >
                             <span class="fal fa-pencil"></span>
                         </a>
                     </li>
                     <li>
-                        <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name + '$' + idx)" >
+                        <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name + '$' + idx)">
                             <span class="fal fa-question"></span>
                         </a>
                     </li>
@@ -114,15 +154,31 @@
         <submitting-agreement></submitting-agreement>
         <p scroller (scrolled)="showMoreAttributes()"></p>
         <span *ngIf="operation === MODIFY_OPERATION">
-            <input id="btnSubmitModify" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button float-end" value="Submit"/>
-            <button (click)="cancel()" class="blue-button float-end" style="border:0;">Cancel</button>
+            <input
+                id="btnSubmitModify"
+                type="submit"
+                (click)="submit()"
+                [disabled]="!isFormValid() || restCallInProgress"
+                class="blue-button float-end"
+                value="Submit"
+            />
+            <button (click)="cancel()" class="blue-button float-end" style="border: 0">Cancel</button>
         </span>
         <span *ngIf="operation === CREATE_OPERATION">
-            <input id="btnSubmitCreate" type="submit" (click)="submit()" [disabled]="!isFormValid() || restCallInProgress" class="blue-button float-end" value="Submit"/>
-            <button (click)="cancel()" class="blue-button float-end" style="border:0;">Cancel</button>
+            <input
+                id="btnSubmitCreate"
+                type="submit"
+                (click)="submit()"
+                [disabled]="!isFormValid() || restCallInProgress"
+                class="blue-button float-end"
+                value="Submit"
+            />
+            <button (click)="cancel()" class="blue-button float-end" style="border: 0">Cancel</button>
         </span>
         <span *ngIf="operation === MODIFY_OPERATION && !isLirObject() && !isResourceWithNccMntner()">
-            <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button float-start" style="border:0; margin: 0;">Delete this object</button>
+            <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button float-start" style="border: 0; margin: 0">
+                Delete this object
+            </button>
         </span>
     </section>
 </div>

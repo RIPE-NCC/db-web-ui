@@ -1,20 +1,13 @@
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable, of} from "rxjs";
-import {timeout, share, catchError} from "rxjs/operators";
-import {IMoreSpecificsApiResult} from "./morespecifics/more-specifics.service";
-import {
-    IIpv4Analysis,
-    IIPv4ResourcesResponse,
-    IIPv6ResourcesResponse,
-    IResourceOverviewResponseModel, IResourceTickets
-} from "./resource-type.model";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError, timeout } from 'rxjs/operators';
+import { IMoreSpecificsApiResult } from './morespecifics/more-specifics.service';
+import { IIpv4Analysis, IIPv4ResourcesResponse, IIPv6ResourcesResponse, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
 
 @Injectable()
 export class ResourcesDataService {
-
-    constructor(private http: HttpClient) {
-    }
+    constructor(private http: HttpClient) {}
 
     public fetchResource(objectName: string, type: string): Observable<IMoreSpecificsApiResult> {
         return this.http.get<IMoreSpecificsApiResult>(`api/whois-internal/api/resources/${type}/${objectName}`);
@@ -28,37 +21,30 @@ export class ResourcesDataService {
         return this.http.get<IIPv4ResourcesResponse>(`api/whois-internal/api/resources/inet6num/${objectName}`);
     }
 
-    public fetchResources(orgId: string,
-                          resourceType: string,
-                          sponsored: boolean): Observable<IResourceOverviewResponseModel> {
+    public fetchResources(orgId: string, resourceType: string, sponsored: boolean): Observable<IResourceOverviewResponseModel> {
         if (!resourceType) {
-            console.error("fetchResources failed. No resourceType given");
+            console.error('fetchResources failed. No resourceType given');
             return;
         }
-        const params = new HttpParams()
-            .set(sponsored ? "sponsoring-org-id": "org-id", orgId)
-            .set("type", resourceType);
-        return this.http.get<IResourceOverviewResponseModel>("api/whois-internal/api/resources", {params})
-            .pipe(timeout(60000));
+        const params = new HttpParams().set(sponsored ? 'sponsoring-org-id' : 'org-id', orgId).set('type', resourceType);
+        return this.http.get<IResourceOverviewResponseModel>('api/whois-internal/api/resources', { params }).pipe(timeout(60000));
     }
 
     public fetchIpv4Analysis(orgId: string): Observable<IIpv4Analysis> {
-        const params = new HttpParams()
-            .set("org-id", orgId);
-        return this.http.get<IIpv4Analysis>("api/whois-internal/api/resources/ipanalyser/ipv4.json", {params})
-            .pipe(
-                timeout(30000));
+        const params = new HttpParams().set('org-id', orgId);
+        return this.http.get<IIpv4Analysis>('api/whois-internal/api/resources/ipanalyser/ipv4.json', { params }).pipe(timeout(30000));
     }
 
     public fetchTicketsAndDates(orgId: string, resource: string): Observable<IResourceTickets> {
-        return this.http
-          .get<IResourceTickets>(`api/ba-apps/resources/${orgId}/${resource}`)
-          .pipe(catchError(error => {
-            console.debug("Error on tickets retrieval", error);
-            return of({
-              tickets:{
-                [resource]: []
-              }})
-          }));
+        return this.http.get<IResourceTickets>(`api/ba-apps/resources/${orgId}/${resource}`).pipe(
+            catchError((error) => {
+                console.debug('Error on tickets retrieval', error);
+                return of({
+                    tickets: {
+                        [resource]: [],
+                    },
+                });
+            }),
+        );
     }
 }

@@ -16,7 +16,9 @@
             cursor: pointer;
             &:hover {
             }
-            &.active, &.active:focus, &.active:hover {
+            &.active,
+            &.active:focus,
+            &.active:hover {
                 @extend %active-state;
             }
         }
@@ -33,21 +35,23 @@
         margin-top: 0;
         li.nav-item {
             padding-right: 10px;
-            &+li {
+            & + li {
                 border-left: 2px $dark-grey solid;
                 padding-left: 10px;
                 padding-right: 0;
             }
 
             a {
-                color: #C1C1C1;
+                color: #c1c1c1;
                 text-decoration: none;
                 padding: 0;
                 background-color: transparent;
                 &:hover {
                     color: $link;
                 }
-                &.active, &.active:hover, &.active:focus {
+                &.active,
+                &.active:hover,
+                &.active:focus {
                     border: none;
                     color: $black;
                     background-color: transparent;
@@ -108,7 +112,7 @@ div.resource-list {
         div.progress-bar {
             min-width: 0;
             background-image: none;
-            background-color: #44465D !important;
+            background-color: #44465d !important;
             box-shadow: none;
             height: 10px;
             border-radius: 0;
@@ -258,6 +262,6 @@ section.more-specifics {
     @extend %width-100;
 }
 section.associated-objects {
-  @extend %float-l;
-  @extend %width-100;
+    @extend %float-l;
+    @extend %width-100;
 }

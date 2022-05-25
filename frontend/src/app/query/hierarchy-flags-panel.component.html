@@ -1,38 +1,39 @@
 <div class="padding">
     <section class="flag-description">
-        <span>{{descriptionPreview}}</span>
+        <span>{{ descriptionPreview }}</span>
     </section>
     <div class="slider-component">
         <mat-slider
-                (click)="$event.stopPropagation()"
-                class="example-margin"
-                [step]="1"
-                [max]="5"
-                [min]="0"
-                [tickInterval]="1"
-                [(ngModel)]="hierarchyFlag"
-                (input)="setHierarchyFlag($event.value)"
-                aria-labelledby="example-name-label">
+            (click)="$event.stopPropagation()"
+            class="example-margin"
+            [step]="1"
+            [max]="5"
+            [min]="0"
+            [tickInterval]="1"
+            [(ngModel)]="hierarchyFlag"
+            (input)="setHierarchyFlag($event.value)"
+            aria-labelledby="example-name-label"
+        >
         </mat-slider>
         <div class="slider-labels" (click)="$event.stopPropagation()">
-            <div>{{getShortHierarchyFlagName(0)}}</div>
-            <div>{{getShortHierarchyFlagName(1)}}</div>
-            <div>{{getShortHierarchyFlagName(2)}}</div>
-            <div>{{getShortHierarchyFlagName(3)}}</div>
-            <div>{{getShortHierarchyFlagName(4)}}</div>
-            <div>{{getShortHierarchyFlagName(5)}}</div>
+            <div>{{ getShortHierarchyFlagName(0) }}</div>
+            <div>{{ getShortHierarchyFlagName(1) }}</div>
+            <div>{{ getShortHierarchyFlagName(2) }}</div>
+            <div>{{ getShortHierarchyFlagName(3) }}</div>
+            <div>{{ getShortHierarchyFlagName(4) }}</div>
+            <div>{{ getShortHierarchyFlagName(5) }}</div>
         </div>
     </div>
-    <mat-checkbox class="example-margin"
-                  [(ngModel)]="queryParameters.reverseDomain"
-                  id="hierarchyD"
-                  (click)="$event.stopPropagation()">
+    <mat-checkbox class="example-margin" [(ngModel)]="queryParameters.reverseDomain" id="hierarchyD" (click)="$event.stopPropagation()">
         <code>d</code> - Return address, route and domain object types.
     </mat-checkbox>
     <section>
-        <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/queries-for-ip-networks"
-           target="_blank"
-           [title]="'query.optionPageHierarchy.title' | label">
-            Learn more</a>
+        <a
+            href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/queries-for-ip-networks"
+            target="_blank"
+            [title]="'query.optionPageHierarchy.title' | label"
+        >
+            Learn more</a
+        >
     </section>
 </div>

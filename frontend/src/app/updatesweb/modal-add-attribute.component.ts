@@ -1,12 +1,11 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: "modal-add-attribute",
-    templateUrl: "./modal-add-attribute.component.html",
+    selector: 'modal-add-attribute',
+    templateUrl: './modal-add-attribute.component.html',
 })
 export class ModalAddAttributeComponent implements OnInit {
-
     public close: any;
     public dismiss: any;
     public resolve: any;
@@ -15,8 +14,7 @@ export class ModalAddAttributeComponent implements OnInit {
     public items: any;
     public selected: any;
 
-    public constructor(private activeModal: NgbActiveModal) {
-    }
+    public constructor(private activeModal: NgbActiveModal) {}
 
     public ngOnInit() {
         this.orderItemsByName();

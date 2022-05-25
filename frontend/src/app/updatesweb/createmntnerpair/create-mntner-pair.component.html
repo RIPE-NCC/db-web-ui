@@ -1,22 +1,23 @@
 <div id="createForm">
     <section class="visible-field-form">
-        <h1>Create {{objectType}} and maintainer pair</h1>
+        <h1>Create {{ objectType }} and maintainer pair</h1>
 
         <ul class="form-fields appeared-fields">
-
             <li *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName: ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']">
-                <label>{{attribute.name}}</label>
+                <label>{{ attribute.name }}</label>
                 <span *ngIf="attribute.$$error" class="text-error">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
-                <input type="text"
-                       [attr.name]="attribute.name"
-                       [(ngModel)]="attribute.value"
-                       class="form-control"
-                       placeholder="{{attribute.$$meta?.$$short}}"
-                       autocomplete="off"
-                       [required]="attribute.$$meta?.$$mandatory"
-                       (blur)="fieldVisited(attribute)">
+                <input
+                    type="text"
+                    [attr.name]="attribute.name"
+                    [(ngModel)]="attribute.value"
+                    class="form-control"
+                    placeholder="{{ attribute.$$meta?.$$short }}"
+                    autocomplete="off"
+                    [required]="attribute.$$meta?.$$mandatory"
+                    (blur)="fieldVisited(attribute)"
+                />
                 <description-syntax [showComponent]="showMntAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="'mntner'"></description-syntax>
                 <ul class="input-group-btn">
                     <li>
@@ -28,19 +29,23 @@
             </li>
 
             <li *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName: ['nic-hdl', 'mnt-by', 'source']">
-                <label>{{attribute.name}}</label>
+                <label>{{ attribute.name }}</label>
                 <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">
-                    <strong>Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{linkToRoleOrPerson}}</a></strong>
+                    <strong
+                        >Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{ linkToRoleOrPerson }}</a></strong
+                    >
                 </span>
-                <span *ngIf="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
-                <input type="text"
-                       [attr.name]="attribute.name"
-                       [(ngModel)]="attribute.value"
-                       class="form-control"
-                       placeholder="{{attribute.$$meta?.$$short}}"
-                       autocomplete="off"
-                       [required]="attribute.$$meta?.$$mandatory"
-                       (blur)="fieldVisited(attribute)">
+                <span *ngIf="attribute.$$error" class="text-error">{{ attribute.$$error }}</span>
+                <input
+                    type="text"
+                    [attr.name]="attribute.name"
+                    [(ngModel)]="attribute.value"
+                    class="form-control"
+                    placeholder="{{ attribute.$$meta?.$$short }}"
+                    autocomplete="off"
+                    [required]="attribute.$$meta?.$$mandatory"
+                    (blur)="fieldVisited(attribute)"
+                />
                 <description-syntax [showComponent]="showAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>
                 <ul class="input-group-btn">
                     <li>
@@ -53,8 +58,14 @@
         </ul>
         <submitting-agreement></submitting-agreement>
 
-        <input type="submit" (click)="submit()" [disabled]="(!isFormValid() || submitInProgress)"
-               class="blue-button float-end ga-createobj-create" value="Submit" id="btnSubmitCreate"/>
-        <button (click)="cancel()" class="blue-button float-end ga-createobj-create" style="border:0;">Cancel</button>
+        <input
+            type="submit"
+            (click)="submit()"
+            [disabled]="!isFormValid() || submitInProgress"
+            class="blue-button float-end ga-createobj-create"
+            value="Submit"
+            id="btnSubmitCreate"
+        />
+        <button (click)="cancel()" class="blue-button float-end ga-createobj-create" style="border: 0">Cancel</button>
     </section>
 </div>

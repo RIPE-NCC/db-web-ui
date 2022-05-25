@@ -1,92 +1,109 @@
 {
-  "requestUrl": "/api/whois/RIPE/mntner/SYSTEM?password=SYSTEM&unfiltered=true",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "objects":{
-      "object":[
-        {
-          "type" : "mntner",
-          "link" : {
-            "type" : "locator",
-            "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/SYSTEM"
-          },
-          "source" : {
-            "id" : "ripe"
-          },
-          "primary-key" : {
-            "attribute" : [ {
-              "name" : "mntner",
-              "value" : "SYSTEM"
-            } ]
-          },
-          "attributes" : {
-            "attribute" : [ {
-              "name" : "mntner",
-              "value" : "SYSTEM"
-            }, {
-              "name" : "auth",
-              "value" : "MD5-PW $1$gReEwhY/$zHs201tSCzk/8wigRf/5N1"
-            }, {
-              "name" : "descr",
-              "value" : "System Business Consulting network"
-            }, {
-              "link" : {
-                "type" : "locator",
-                "href" : "http://rest-prepdev.db.ripe.net/ripe/person/SYS3-RIPE"
-              },
-              "name" : "admin-c",
-              "value" : "SYS3-RIPE",
-              "referenced-type" : "person"
-            }, {
-              "link" : {
-                "type" : "locator",
-                "href" : "http://rest-prepdev.db.ripe.net/ripe/person/SYS3-RIPE"
-              },
-              "name" : "tech-c",
-              "value" : "SYS3-RIPE",
-              "referenced-type" : "person"
-            }, {
-              "name" : "upd-to",
-              "value" : "***@saper.info"
-            }, {
-              "name" : "mnt-nfy",
-              "value" : "***@saper.info"
-            }, {
-              "link" : {
-                "type" : "locator",
-                "href" : "http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-B0636ED9"
-              },
-              "name" : "auth",
-              "value" : "PGPKEY-B0636ED9",
-              "referenced-type" : "key-cert"
-            }, {
-              "name" : "notify",
-              "value" : "***@saper.info"
-            }, {
-              "link" : {
-                "type" : "locator",
-                "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/SYSTEM"
-              },
-              "name" : "mnt-by",
-              "value" : "SYSTEM",
-              "referenced-type" : "mntner"
-            }, {
-              "name" : "created",
-              "value" : "1970-01-01T00:00:00Z"
-            }, {
-              "name" : "last-modified",
-              "value" : "2018-10-12T09:23:09Z"
-            }, {
-              "name" : "source",
-              "value" : "RIPE"
-            } ]
-          }
-        } ]
+    "requestUrl": "/api/whois/RIPE/mntner/SYSTEM?password=SYSTEM&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SYSTEM"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "SYSTEM"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "SYSTEM"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$gReEwhY/$zHs201tSCzk/8wigRf/5N1"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "System Business Consulting network"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/SYS3-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "SYS3-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/SYS3-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "SYS3-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@saper.info"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "***@saper.info"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-B0636ED9"
+                                },
+                                "name": "auth",
+                                "value": "PGPKEY-B0636ED9",
+                                "referenced-type": "key-cert"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@saper.info"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SYSTEM"
+                                },
+                                "name": "mnt-by",
+                                "value": "SYSTEM",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "1970-01-01T00:00:00Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2018-10-12T09:23:09Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
         },
-        "terms-and-conditions" : {
-          "type" : "locator",
-          "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
         }
-  }
+    }
 }

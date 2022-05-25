@@ -1,9 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import * as _ from "lodash";
-import {RestService} from "./rest.service";
-import {CredentialsService} from "../shared/credentials.service";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import { CredentialsService } from '../shared/credentials.service';
+import { RestService } from './rest.service';
 
 interface IModalDelete {
     name: string;
@@ -13,27 +13,22 @@ interface IModalDelete {
 }
 
 @Component({
-    selector: "modal-delete-object",
-    templateUrl: "./modal-delete-object.component.html",
+    selector: 'modal-delete-object',
+    templateUrl: './modal-delete-object.component.html',
 })
 export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
-
     public MAX_REFS_TO_SHOW: number = 5;
 
     @Input()
     public inputData: IModalDelete;
 
-    public reason = "I don\'t need this object";
+    public reason = "I don't need this object";
     public incomingReferences: any;
     public canBeDeleted: boolean;
     public restCallInProgress = false;
     private isDismissed: boolean = true;
 
-    constructor(private router: Router,
-                private activeModal: NgbActiveModal,
-                public restService: RestService,
-                public credentialsService: CredentialsService) {
-    }
+    constructor(private router: Router, private activeModal: NgbActiveModal, public restService: RestService, public credentialsService: CredentialsService) {}
 
     public ngOnInit() {
         this.getReferences(this.inputData.source, this.inputData.objectType, this.inputData.name);
@@ -57,11 +52,12 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
             password = this.credentialsService.getCredentials().successfulPassword;
         }
 
-        this.restService.deleteObject(this.inputData.source, this.inputData.objectType, this.inputData.name, this.reason, deleteWithRefs, password)
-            .subscribe((resp: any) => {
+        this.restService.deleteObject(this.inputData.source, this.inputData.objectType, this.inputData.name, this.reason, deleteWithRefs, password).subscribe(
+            (resp: any) => {
                 this.isDismissed = false;
                 this.activeModal.close(resp);
-            }, (error: any) => {
+            },
+            (error: any) => {
                 this.activeModal.dismiss(error);
             },
         );
@@ -94,27 +90,27 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
             // direct incoming references
             if (this.isEqualTo(parent.objectType, parent.primaryKey, first)) {
                 // self ref
-                console.debug(first.primaryKey + " is first level self-ref");
+                console.debug(first.primaryKey + ' is first level self-ref');
                 return true;
             } else if (first.incoming) {
                 return _.every(first.incoming, (second: any) => {
                     // secondary incoming references
                     if (this.isEqualTo(first.objectType, first.primaryKey, second)) {
                         // self ref
-                        console.debug(second.primaryKey + " is second level self-ref");
+                        console.debug(second.primaryKey + ' is second level self-ref');
                         return true;
                     } else if (this.isEqualTo(parent.objectType, parent.primaryKey, second)) {
                         // cross reference with parent
-                        console.debug(second.primaryKey + " is second level cross-ref");
+                        console.debug(second.primaryKey + ' is second level cross-ref');
                         return true;
                     } else {
-                        console.debug(second.primaryKey + " is an external ref");
+                        console.debug(second.primaryKey + ' is an external ref');
                         return false;
                     }
                 });
             }
         });
-        console.debug("objectDeletable:" + objectDeletable);
+        console.debug('objectDeletable:' + objectDeletable);
         return objectDeletable;
     }
 
@@ -126,19 +122,20 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
 
     public getReferences(source: string, objectType: string, name: string) {
         this.restCallInProgress = true;
-        this.restService.getReferences(source, objectType, name, this.MAX_REFS_TO_SHOW.toString())
-            .then((resp: any) => {
-                    this.restCallInProgress = false;
-                    this.canBeDeleted = this.isDeletable(resp);
-                    this.incomingReferences = resp.incoming;
-                }, (error: any) => {
-                    this.restCallInProgress = false;
-                    this.activeModal.dismiss(error.data);
-                },
-            );
+        this.restService.getReferences(source, objectType, name, this.MAX_REFS_TO_SHOW.toString()).then(
+            (resp: any) => {
+                this.restCallInProgress = false;
+                this.canBeDeleted = this.isDeletable(resp);
+                this.incomingReferences = resp.incoming;
+            },
+            (error: any) => {
+                this.restCallInProgress = false;
+                this.activeModal.dismiss(error.data);
+            },
+        );
     }
 
     public transitionToState(source: string, objectType: string, pkey: string, onCancelPath: string) {
-        this.router.navigate([onCancelPath, source, objectType, pkey])
+        this.router.navigate([onCancelPath, source, objectType, pkey]);
     }
 }

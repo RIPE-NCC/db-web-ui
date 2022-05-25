@@ -1,23 +1,21 @@
-import {Component, OnInit} from "@angular/core";
-import * as _ from "lodash";
-import {EnvironmentStatusService} from "../shared/environment-status.service";
-import {OrgDropDownSharedService} from "./org-drop-down-shared.service";
-import {IUserInfoOrganisation, IUserInfoResponseData} from "./org-data-type.model";
-import {UserInfoService} from "../userinfo/user-info.service";
+import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+import { EnvironmentStatusService } from '../shared/environment-status.service';
+import { UserInfoService } from '../userinfo/user-info.service';
+import { IUserInfoOrganisation, IUserInfoResponseData } from './org-data-type.model';
+import { OrgDropDownSharedService } from './org-drop-down-shared.service';
 
 @Component({
-    selector: "org-drop-down",
-    templateUrl: "./org-drop-down.component.html",
+    selector: 'org-drop-down',
+    templateUrl: './org-drop-down.component.html',
 })
 export class OrgDropDownComponent implements OnInit {
-
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];
     // Temporary until we need different application on Test, Training and RC environment
     public trainingEnv: boolean;
 
-    constructor(private userInfoService: UserInfoService,
-                private orgDropDownSharedService: OrgDropDownSharedService) {
+    constructor(private userInfoService: UserInfoService, private orgDropDownSharedService: OrgDropDownSharedService) {
         this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
             this.initOrgsAndMemebers(userInfo);
         });
@@ -25,16 +23,18 @@ export class OrgDropDownComponent implements OnInit {
 
     public ngOnInit() {
         this.trainingEnv = EnvironmentStatusService.isTrainingEnv();
-        this.userInfoService.getUserOrgsAndRoles()
-            .subscribe((userInfo: IUserInfoResponseData): void => {
+        this.userInfoService.getUserOrgsAndRoles().subscribe(
+            (userInfo: IUserInfoResponseData): void => {
                 if (!userInfo) {
                     return;
                 }
                 this.initOrgsAndMemebers(userInfo);
-            }, (err: Error): void => {
-                console.warn("err", err);
+            },
+            (err: Error): void => {
+                console.warn('err', err);
                 return;
-            });
+            },
+        );
     }
 
     public organisationSelected(event: any): void {
@@ -45,9 +45,11 @@ export class OrgDropDownComponent implements OnInit {
 
     public customSearchFn(term: string, item: any) {
         term = term.toLocaleLowerCase();
-        return item.organisationName.toLocaleLowerCase().includes(term) ||
+        return (
+            item.organisationName.toLocaleLowerCase().includes(term) ||
             (item.regId && item.regId.toLocaleLowerCase().includes(term)) ||
-            (!item.regId && item.orgObjectId && item.orgObjectId.toLocaleLowerCase().includes(term));
+            (!item.regId && item.orgObjectId && item.orgObjectId.toLocaleLowerCase().includes(term))
+        );
     }
 
     private sortOrganisations(orgs: IUserInfoOrganisation[]): IUserInfoOrganisation[] {
@@ -72,13 +74,12 @@ export class OrgDropDownComponent implements OnInit {
             this.sortOrganisations(members);
         }
         this.organisations = members.concat(orgs);
-        this.userInfoService.getSelectedOrganisation()
-            .subscribe((org: IUserInfoOrganisation) => {
-                if (this.selectedOrg !== org) {
-                    this.orgDropDownSharedService.setSelectedOrg(org);
-                    this.userInfoService.setSelectedOrganisation(org);
-                    this.selectedOrg = org;
-                }
-            });
+        this.userInfoService.getSelectedOrganisation().subscribe((org: IUserInfoOrganisation) => {
+            if (this.selectedOrg !== org) {
+                this.orgDropDownSharedService.setSelectedOrg(org);
+                this.userInfoService.setSelectedOrganisation(org);
+                this.selectedOrg = org;
+            }
+        });
     }
 }

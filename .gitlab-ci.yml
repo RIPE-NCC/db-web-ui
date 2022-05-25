@@ -79,8 +79,7 @@ e2e-firefox:
       - export DISPLAY=:20
       - Xvfb :20 -screen 0 1920x1080x16 &
       - cd frontend && npm run e2e-firefox
-    when:
-        manual
+    when: manual
 
 qa:
   stage: test

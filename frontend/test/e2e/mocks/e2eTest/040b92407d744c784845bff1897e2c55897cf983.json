@@ -1,10 +1,10 @@
 {
-  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=AS3254-MNT",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-            "key" : "AS3254-MNT",
-            "type" : "mntner",
-            "auth" : [ "MD5-PW" ]
-          }
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=AS3254-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "key": "AS3254-MNT",
+        "type": "mntner",
+        "auth": ["MD5-PW"]
+    }
 }

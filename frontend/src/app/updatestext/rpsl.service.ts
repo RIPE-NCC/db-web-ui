@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
-import * as _ from "lodash";
-import {IAttributeModel} from "../shared/whois-response-type.model";
+import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
+import { IAttributeModel } from '../shared/whois-response-type.model';
 
 export interface IRpslObject {
     attributes: IAttributeModel[];
@@ -11,7 +11,6 @@ export interface IRpslObject {
 
 @Injectable()
 export class RpslService {
-
     private TOTAL_ATTR_LENGTH: number = 15;
 
     public toRpsl(obj: IRpslObject) {
@@ -22,36 +21,36 @@ export class RpslService {
         // otherwise we will inherit existing formatting
         const f = _.first(obj.attributes);
         if (!_.isUndefined(f)) {
-            if ((_.isUndefined(f.value) || _.isEmpty(f.value)) || f.value === "AUTO-1") {
+            if (_.isUndefined(f.value) || _.isEmpty(f.value) || f.value === 'AUTO-1') {
                 spacing = this.TOTAL_ATTR_LENGTH;
             }
         }
 
-        let rpslData = "";
+        let rpslData = '';
         _.each(obj.attributes, (item) => {
-            rpslData = rpslData.concat(_.padEnd(item.name + ":", spacing, " "));
+            rpslData = rpslData.concat(_.padEnd(item.name + ':', spacing, ' '));
             if (!_.isUndefined(item.value)) {
                 rpslData = rpslData.concat(item.value);
             }
             if (!_.isUndefined(item.comment)) {
-                rpslData = rpslData.concat(" # " + item.comment);
+                rpslData = rpslData.concat(' # ' + item.comment);
             }
 
-            rpslData = rpslData.concat("\n");
+            rpslData = rpslData.concat('\n');
         });
 
         if (!_.isUndefined(obj.deleteReason)) {
-            rpslData = rpslData.concat("delete:" + obj.deleteReason + "\n");
+            rpslData = rpslData.concat('delete:' + obj.deleteReason + '\n');
         }
 
         if (!_.isUndefined(obj.passwords) && obj.passwords.length > 0) {
             _.each(obj.passwords, (pwd) => {
-                rpslData = rpslData.concat("password:" + pwd + "\n");
+                rpslData = rpslData.concat('password:' + pwd + '\n');
             });
         }
 
         if (!_.isUndefined(obj.override)) {
-            rpslData = rpslData.concat("override:" + obj.override + "\n");
+            rpslData = rpslData.concat('override:' + obj.override + '\n');
         }
 
         return rpslData;
@@ -60,8 +59,8 @@ export class RpslService {
     public fromRpsl(rpslText: string) {
         const objs: IRpslObject[] = [];
 
-        _.each(rpslText.split("\n\n"), (objRpsl) => {
-            if (objRpsl !== "") {
+        _.each(rpslText.split('\n\n'), (objRpsl) => {
+            if (objRpsl !== '') {
                 const passwords: string[] = [];
                 const overrides: string[] = [];
                 const deleteReasons: string[] = [];
@@ -95,7 +94,6 @@ export class RpslService {
     }
 
     private _stripDuplicates(array: string[]) {
-
         const uniqued = _.uniq(_.clone(array));
         // don't copy into a new pointer, but leave existing pointer in tact
         while (array.length) {
@@ -109,7 +107,7 @@ export class RpslService {
     private _parseSingleObject(rpslText: string, passwords: string[], overrides: string[], deleteReasons: string[]) {
         const attrs: IAttributeModel[] = [];
 
-        let buffer = "";
+        let buffer = '';
         for (let idx = 0; idx < rpslText.length; idx++) {
             const current = rpslText.charAt(idx);
             const next = rpslText.charAt(idx + 1);
@@ -117,20 +115,20 @@ export class RpslService {
             buffer += current;
 
             // newline followed by alpha-numeric character is attribute separator
-            if (idx === rpslText.length - 1 || (current === "\n" && this._isLetter(next))) {
+            if (idx === rpslText.length - 1 || (current === '\n' && this._isLetter(next))) {
                 // end of attribute reached
                 const attr = this._parseSingleAttribute(_.clone(buffer));
                 if (!_.isUndefined(attr)) {
                     const trimmed = _.trim(attr.value);
-                    if (attr.name === "password") {
+                    if (attr.name === 'password') {
                         if (!_.isEmpty(trimmed)) {
                             passwords.push(trimmed);
                         }
-                    } else if (attr.name === "override") {
+                    } else if (attr.name === 'override') {
                         if (!_.isEmpty(trimmed)) {
                             overrides.push(trimmed);
                         }
-                    } else if (attr.name === "delete") {
+                    } else if (attr.name === 'delete') {
                         if (!_.isEmpty(trimmed)) {
                             deleteReasons.push(trimmed);
                         }
@@ -139,7 +137,7 @@ export class RpslService {
                     }
                 }
                 // reset buffer
-                buffer = "";
+                buffer = '';
             }
         }
 
@@ -150,23 +148,23 @@ export class RpslService {
         let attr: IAttributeModel;
 
         // extract the key
-        const keyWithRest = rawAttribute.split(":");
+        const keyWithRest = rawAttribute.split(':');
         if (keyWithRest.length > 0 && !_.isEmpty(_.trim(keyWithRest[0]))) {
             const key = _.trim(_.head(keyWithRest));
-            const rest = _.tail(keyWithRest).join(":"); // allow colons in value
+            const rest = _.tail(keyWithRest).join(':'); // allow colons in value
             const values: string[] = [];
             const comments: string[] = [];
 
             // extract the value and comment
             if (keyWithRest.length > 1) {
-                _.each(rest.split("\n"), (item) => {
+                _.each(rest.split('\n'), (item) => {
                     values.push(_.trimEnd(item));
                 });
             }
             attr = {
-                comment: this._concatenate(comments, " "),
+                comment: this._concatenate(comments, ' '),
                 name: key,
-                value: this._concatenate(values, ""),
+                value: this._concatenate(values, ''),
             };
         }
         return attr;

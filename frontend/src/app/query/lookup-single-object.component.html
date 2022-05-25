@@ -1,12 +1,10 @@
 <section id="resultsSection">
     <div *ngIf="!error" class="float-end resultlinks">
-        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.xml"
-           target="_blank">
+        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.xml" target="_blank">
             <i class="fal fa-file-code"></i>
-            XML
-        </a>&nbsp;
-        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.json"
-           target="_blank">
+            XML </a
+        >&nbsp;
+        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.json" target="_blank">
             <i class="fal fa-file-alt"></i>
             JSON
         </a>
@@ -19,4 +17,3 @@
 </div>
 <div *ngIf="!whoisResponse" class="resultpane no-result-msg">No results found.</div>
 <whois-version [version]="whoisVersion"></whois-version>
-

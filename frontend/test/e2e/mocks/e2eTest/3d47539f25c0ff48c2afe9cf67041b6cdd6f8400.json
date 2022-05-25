@@ -1,6 +1,6 @@
 {
-  "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-WEG1-RIPE&type=inet6num",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {}
+    "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-WEG1-RIPE&type=inet6num",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
 }

@@ -1,41 +1,41 @@
-@use "common-functions" as common;
+@use 'common-functions' as common;
 
 $padding: 24px;
 
 .query-field {
-  margin-bottom: 1rem;
-  &.with-results {
-    margin-bottom: 0;
-  }
-  mat-form-field {
-    width: 100% !important;
-  }
+    margin-bottom: 1rem;
+    &.with-results {
+        margin-bottom: 0;
+    }
+    mat-form-field {
+        width: 100% !important;
+    }
 
-  .mat-form-field-appearance-fill .mat-form-field-flex {
-    background-color: rgba(0, 0, 0, 0.1);
-    padding-left: $padding;
-  }
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+        background-color: rgba(0, 0, 0, 0.1);
+        padding-left: $padding;
+    }
 
-  .mat-form-field-wrapper {
-    padding: 0 !important;
-  }
+    .mat-form-field-wrapper {
+        padding: 0 !important;
+    }
 
-  .mat-form-field-underline {
-    display: none;
-  }
+    .mat-form-field-underline {
+        display: none;
+    }
 
-  button.mat-icon-button {
-    color: rgba(0,0,0,0.5);
-    vertical-align: text-bottom;
-  }
+    button.mat-icon-button {
+        color: rgba(0, 0, 0, 0.5);
+        vertical-align: text-bottom;
+    }
 }
 
 .dropdown-menus-bar {
-  margin-bottom: 1rem !important;
-  background-color: rgba(0, 0, 0, 0.04);
-  height: 60px;
-  padding: common.spacing(1);
-  padding-left: $padding;
+    margin-bottom: 1rem !important;
+    background-color: rgba(0, 0, 0, 0.04);
+    height: 60px;
+    padding: common.spacing(1);
+    padding-left: $padding;
 
     &.expanded {
         margin-bottom: 0 !important;
@@ -50,26 +50,26 @@ $padding: 24px;
         }
     }
 
-  button {
-    margin-right: common.spacing(1);
-    background-color: #FFF;
+    button {
+        margin-right: common.spacing(1);
+        background-color: #fff;
 
-    &[aria-expanded="true"] {
-      background-color: rgba(0, 0, 0, 0.075);
-    }
+        &[aria-expanded='true'] {
+            background-color: rgba(0, 0, 0, 0.075);
+        }
 
-    span.mat-button-wrapper {
-      > span {
-        margin-left: common.spacing(2);
-        vertical-align: unset;
-      }
+        span.mat-button-wrapper {
+            > span {
+                margin-left: common.spacing(2);
+                vertical-align: unset;
+            }
+        }
+        &.perma-link {
+            background-color: transparent;
+            margin-left: auto;
+            font-size: 20px;
+        }
     }
-    &.perma-link {
-        background-color: transparent;
-        margin-left: auto;
-        font-size: 20px;
-    }
-  }
 }
 
 .perm-xml-json-resultlinks {
@@ -101,15 +101,15 @@ $padding: 24px;
 }
 
 .mat-menu-panel {
-  max-width: unset !important;
+    max-width: unset !important;
 }
 
 .mat-tooltip {
-  font-size: 12px !important;
+    font-size: 12px !important;
 }
 
 .mat-menu-content:not(:empty) {
-  padding: common.spacing(1) !important;
+    padding: common.spacing(1) !important;
 }
 
 #informationSection .col-sm-6 {
@@ -126,13 +126,13 @@ $padding: 24px;
 }
 
 .query-padding {
-  padding: $padding
+    padding: $padding;
 }
 
 .query-padding-left {
-  padding-left: $padding
+    padding-left: $padding;
 }
 
 .query-padding-right {
-  padding-right: $padding
+    padding-right: $padding;
 }
