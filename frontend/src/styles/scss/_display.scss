@@ -1,37 +1,37 @@
 .success-fields {
-	@extend %width-100;
-	border: 1px #ccc dashed;
-	margin-bottom: 20px;
-	td {
-    	padding: 2px 18px;
-    	p {
-        	font-family: Menlo,Monaco,Consolas,"Courier New",monospace !important;
-        	margin: 0 !important;
-        	&.ng-binding {
-            	display: inline;
-        	}
-    	}
-    	label {
-        	font: {
-            	weight: normal;
-            	family: Menlo,Monaco,Consolas,"Courier New",monospace !important;
-        	}
-    	}
-	}
+    @extend %width-100;
+    border: 1px #ccc dashed;
+    margin-bottom: 20px;
+    td {
+        padding: 2px 18px;
+        p {
+            font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+            margin: 0 !important;
+            &.ng-binding {
+                display: inline;
+            }
+        }
+        label {
+            font: {
+                weight: normal;
+                family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+            }
+        }
+    }
 }
 
 @media (max-width: 768px) {
-	.success-fields {
-		td {
-    		float: left;
-		    width: 100%;
-		    label {
-    		    font: {
-        		    weight: bold;
-    		    }
-		    }
-		}
-	}
+    .success-fields {
+        td {
+            float: left;
+            width: 100%;
+            label {
+                font: {
+                    weight: bold;
+                }
+            }
+        }
+    }
 }
 
 pre.textdiff {
@@ -41,41 +41,38 @@ pre.textdiff {
     font: {
         size: 14px;
     }
-	line-height: 1.5em;
-	div {
-		line-height: 1.5em;
-		display: inline-block;
-		width: 100%;
-		> div {
-			padding: 5px 10px;
-			&.ins {
-				background-color: #E2F3E3;
-				color: #437446;
-				padding: 5px 2px;
-				ins {
-					text-decoration: none !important;
-				}
-			}
-			&.del {
-				background-color: #F3E2E2;
-				color: #AF3F3F;
-				padding: 5px 2px;
-				del {
-					text-decoration: none !important;
-				}
-			}
-		}
-		> span {
-			line-height: 2em;
-			padding: 0 29px;
-			display: block;
-		}
-		> span.equal {
-
-		}
-	}
-
-
+    line-height: 1.5em;
+    div {
+        line-height: 1.5em;
+        display: inline-block;
+        width: 100%;
+        > div {
+            padding: 5px 10px;
+            &.ins {
+                background-color: #e2f3e3;
+                color: #437446;
+                padding: 5px 2px;
+                ins {
+                    text-decoration: none !important;
+                }
+            }
+            &.del {
+                background-color: #f3e2e2;
+                color: #af3f3f;
+                padding: 5px 2px;
+                del {
+                    text-decoration: none !important;
+                }
+            }
+        }
+        > span {
+            line-height: 2em;
+            padding: 0 29px;
+            display: block;
+        }
+        > span.equal {
+        }
+    }
 }
 
 section.centered {

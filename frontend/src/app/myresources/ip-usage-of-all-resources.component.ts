@@ -1,14 +1,13 @@
 // Shown on Resources page - for all resources listed in tab
-import {Component, Input, OnChanges, SimpleChanges} from "@angular/core";
-import {IpUsageService} from "./ip-usage.service";
-import {ResourceStatusService} from "./resource-status.service";
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { IpUsageService } from './ip-usage.service';
+import { ResourceStatusService } from './resource-status.service';
 
 @Component({
-    selector: "ip-usage-of-all-resources",
-    templateUrl: "./ip-usage-of-all-resources.component.html",
+    selector: 'ip-usage-of-all-resources',
+    templateUrl: './ip-usage-of-all-resources.component.html',
 })
 export class IpUsageOfAllResourcesComponent implements OnChanges {
-
     @Input()
     public resources: any[];
     @Input()
@@ -24,13 +23,11 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
     public ipv6CalcUsed: string;
     public ipv6CalcFree: string;
 
-    constructor(private resourceStatusService: ResourceStatusService,
-                private ipUsageService: IpUsageService) {
-    }
+    constructor(private resourceStatusService: ResourceStatusService, private ipUsageService: IpUsageService) {}
 
     public ngOnChanges(changes: SimpleChanges) {
         this.setResourcesIpUsage();
-        if (this.type === "inet6num") {
+        if (this.type === 'inet6num') {
             this.calcValueForIPv6();
         }
     }

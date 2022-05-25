@@ -1,8 +1,7 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MessageStoreService {
-
     private messages = {};
 
     public add(key: string, value: any) {

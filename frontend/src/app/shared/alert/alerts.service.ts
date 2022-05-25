@@ -1,7 +1,7 @@
-import {EventEmitter, Injectable, Output} from "@angular/core";
-import * as _ from "lodash";
-import {IAttributeModel, IErrorMessageModel, IWhoisResponseModel} from "../whois-response-type.model";
-import {WhoisResourcesService} from "../whois-resources.service";
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import * as _ from 'lodash';
+import { WhoisResourcesService } from '../whois-resources.service';
+import { IAttributeModel, IErrorMessageModel, IWhoisResponseModel } from '../whois-response-type.model';
 
 export interface IAlertMessageModel extends IErrorMessageModel {
     level?: string;
@@ -22,7 +22,6 @@ export interface IAlerts {
 
 @Injectable()
 export class AlertsService {
-
     @Output()
     public alertsChanged = new EventEmitter();
 
@@ -30,7 +29,7 @@ export class AlertsService {
         errors: [],
         warnings: [],
         infos: [],
-        successes: []
+        successes: [],
     };
 
     constructor(public whoisResourcesService: WhoisResourcesService) {
@@ -43,8 +42,8 @@ export class AlertsService {
             errors: [],
             warnings: [],
             infos: [],
-            successes: []
-        }
+            successes: [],
+        };
         this.alertsChanged.emit(this.alerts);
     }
 
@@ -72,12 +71,12 @@ export class AlertsService {
     }
 
     private filterOutError101() {
-        this.alerts.errors = this.alerts.errors.filter(error => !error.text.toUpperCase().includes("ERROR:101"));
+        this.alerts.errors = this.alerts.errors.filter((error) => !error.text.toUpperCase().includes('ERROR:101'));
     }
 
     public addAlertMsgs(whoisResources: IWhoisResponseModel) {
         if (_.isUndefined(whoisResources)) {
-            console.error("AlertService.addAlertMsgs: undefined input");
+            console.error('AlertService.addAlertMsgs: undefined input');
         } else {
             this.alerts.errors = this.alerts.errors.concat(this.whoisResourcesService.getGlobalErrors(whoisResources));
             this.alerts.warnings = this.alerts.warnings.concat(this.whoisResourcesService.getGlobalWarnings(whoisResources));
@@ -88,46 +87,46 @@ export class AlertsService {
 
     public setGlobalError(errorMsg: string) {
         this.clearAlertMessages();
-        this.alerts.errors.push({plainText: errorMsg});
+        this.alerts.errors.push({ plainText: errorMsg });
         this.alertsChanged.emit(this.alerts);
     }
 
     public setGlobalWarning(warningMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
-        const warning = (linkurl) ? {plainText: warningMsg, linkurl: linkurl, linktext: linktext, permanent: permanent} : {plainText: warningMsg};
+        const warning = linkurl ? { plainText: warningMsg, linkurl: linkurl, linktext: linktext, permanent: permanent } : { plainText: warningMsg };
         this.alerts.warnings.push(warning);
         this.alertsChanged.emit(this.alerts);
     }
 
     public setGlobalInfo(infoMsg: string) {
-        this.alerts.infos.push({plainText: infoMsg});
+        this.alerts.infos.push({ plainText: infoMsg });
         this.alertsChanged.emit(this.alerts);
     }
 
     public setGlobalSuccess(successMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
         this.clearAlertMessages();
-        const success = (linkurl) ? {plainText: successMsg, linkurl: linkurl, linktext: linktext, permanent: permanent} : {plainText: successMsg};
+        const success = linkurl ? { plainText: successMsg, linkurl: linkurl, linktext: linktext, permanent: permanent } : { plainText: successMsg };
         this.alerts.successes.push(success);
         this.alertsChanged.emit(this.alerts);
     }
 
     public addGlobalError(errorMsg: string) {
-        this.alerts.errors.push({plainText: errorMsg});
+        this.alerts.errors.push({ plainText: errorMsg });
         this.alertsChanged.emit(this.alerts);
     }
 
     public addGlobalWarning(warningMsg: string) {
-        this.alerts.warnings.push({plainText: warningMsg});
+        this.alerts.warnings.push({ plainText: warningMsg });
         this.alertsChanged.emit(this.alerts);
     }
 
     public addGlobalInfo(infoMsg: string, linkurl?: string, linktext?: string) {
-        const info = (linkurl) ? {plainText: infoMsg, linkurl: linkurl, linktext: linktext} : {plainText: infoMsg};
+        const info = linkurl ? { plainText: infoMsg, linkurl: linkurl, linktext: linktext } : { plainText: infoMsg };
         this.alerts.infos.push(info);
         this.alertsChanged.emit(this.alerts);
     }
 
     public addGlobalSuccesses(successMsg: string) {
-        this.alerts.successes.push({plainText: successMsg});
+        this.alerts.successes.push({ plainText: successMsg });
         this.alertsChanged.emit(this.alerts);
     }
 

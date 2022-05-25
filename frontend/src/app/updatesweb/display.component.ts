@@ -1,20 +1,19 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {combineLatest, Subscription} from "rxjs";
-import * as _ from "lodash";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {MessageStoreService} from "./message-store.service";
-import {RestService} from "./rest.service";
-import {UserInfoService} from "../userinfo/user-info.service";
-import {WebUpdatesCommonsService} from "./web-updates-commons.service";
-import {AlertsService} from "../shared/alert/alerts.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash';
+import { combineLatest, Subscription } from 'rxjs';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { UserInfoService } from '../userinfo/user-info.service';
+import { MessageStoreService } from './message-store.service';
+import { RestService } from './rest.service';
+import { WebUpdatesCommonsService } from './web-updates-commons.service';
 
 @Component({
-    selector: "display",
-    templateUrl: "./display.component.html",
+    selector: 'display',
+    templateUrl: './display.component.html',
 })
 export class DisplayComponent implements OnInit, OnDestroy {
-
     public objectSource: string;
     public objectType: string;
     public objectName: string;
@@ -26,42 +25,48 @@ export class DisplayComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
-    constructor(public whoisResourcesService: WhoisResourcesService,
-                public messageStoreService: MessageStoreService,
-                private restService: RestService,
-                private userInfoService: UserInfoService,
-                private webUpdatesCommonsService: WebUpdatesCommonsService,
-                public alertsService: AlertsService,
-                private activatedRoute: ActivatedRoute,
-                private router: Router) {}
+    constructor(
+        public whoisResourcesService: WhoisResourcesService,
+        public messageStoreService: MessageStoreService,
+        private restService: RestService,
+        private userInfoService: UserInfoService,
+        private webUpdatesCommonsService: WebUpdatesCommonsService,
+        public alertsService: AlertsService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+    ) {}
 
     public ngOnInit() {
-        this.subscription = combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
-            .subscribe((params: any) => {
-                // extract parameters from the url
-                this.objectSource = params[0].source;
-                this.objectType = params[0].objectType;
-                // url-decode otherwise newly-created resource is MessageStoreService will not be found
-                this.objectName = decodeURIComponent(params[0].objectName);
-                this.method = params[1].method || undefined; // optional: added by create- and modify-controlle"
+        this.subscription = combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams]).subscribe((params: any) => {
+            // extract parameters from the url
+            this.objectSource = params[0].source;
+            this.objectType = params[0].objectType;
+            // url-decode otherwise newly-created resource is MessageStoreService will not be found
+            this.objectName = decodeURIComponent(params[0].objectName);
+            this.method = params[1].method || undefined; // optional: added by create- and modify-controlle"
 
-                this.init()
-            })
-        }
+            this.init();
+        });
+    }
 
     private init() {
-
         /*
          * Start of initialisation phase
          */
-        console.debug("DisplayComponent: Url params: source:" + this.objectSource + ". objectType:" + this.objectType +
-            ", objectName:" + this.objectName + ", method:" + this.method);
-
-        this.userInfoService.getUserOrgsAndRoles()
-            .subscribe(() => {
-                this.loggedIn = true;
-            },
+        console.debug(
+            'DisplayComponent: Url params: source:' +
+                this.objectSource +
+                '. objectType:' +
+                this.objectType +
+                ', objectName:' +
+                this.objectName +
+                ', method:' +
+                this.method,
         );
+
+        this.userInfoService.getUserOrgsAndRoles().subscribe(() => {
+            this.loggedIn = true;
+        });
 
         // fetch just created object from temporary store
         const cached = this.messageStoreService.get(this.objectName);
@@ -72,8 +77,8 @@ export class DisplayComponent implements OnInit, OnDestroy {
             this.alertsService.addGlobalSuccesses(`Your object has been successfully ${this.getOperationName()}`);
             this.alertsService.setErrors(whoisResources);
 
-            if (this.method === "Modify") {
-                const diff = this.whoisResourcesService.validateAttributes(this.messageStoreService.get("DIFF"));
+            if (this.method === 'Modify') {
+                const diff = this.whoisResourcesService.validateAttributes(this.messageStoreService.get('DIFF'));
                 if (!_.isUndefined(diff)) {
                     this.before = this.whoisResourcesService.toPlaintext(diff);
                     this.after = this.whoisResourcesService.toPlaintext(this.attributes);
@@ -81,13 +86,14 @@ export class DisplayComponent implements OnInit, OnDestroy {
             }
             this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
         } else {
-            this.restService.fetchObject(this.objectSource, this.objectType, this.objectName, null, null)
-                .subscribe((resp: any) => {
+            this.restService.fetchObject(this.objectSource, this.objectType, this.objectName, null, null).subscribe(
+                (resp: any) => {
                     this.attributes = this.whoisResourcesService.getAttributes(resp);
                     this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
                     this.alertsService.setErrors(resp);
-                }, (resp: any) => {
+                },
+                (resp: any) => {
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp.data);
                     this.alertsService.setErrors(resp.data);
                 },
@@ -96,7 +102,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-      this.alertsService.clearAlertMessages();
+        this.alertsService.clearAlertMessages();
     }
 
     /*
@@ -107,15 +113,15 @@ export class DisplayComponent implements OnInit, OnDestroy {
     }
 
     private isPending() {
-        return !_.isUndefined(this.method) && this.method === "Pending";
+        return !_.isUndefined(this.method) && this.method === 'Pending';
     }
 
     public getOperationName(): string {
-        return this.method === "Create" ? "created" : "modified";
+        return this.method === 'Create' ? 'created' : 'modified';
     }
 
     public navigateToSelect() {
-        return this.router.navigate(["webupdates/select"]);
+        return this.router.navigate(['webupdates/select']);
     }
 
     public navigateToModify() {

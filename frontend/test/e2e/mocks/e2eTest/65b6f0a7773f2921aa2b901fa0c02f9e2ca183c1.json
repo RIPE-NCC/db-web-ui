@@ -1,22 +1,22 @@
 {
-  "data": [
-    {
-      "key": "XS4ALL-MNT",
-      "type": "mntner",
-      "auth": [
-        "MD5-PW",
-        "PGPKEY-170757B6",
-        "PGPKEY-D0F4FFFB",
-        "PGPKEY-F13D6806",
-        "PGPKEY-BCA9458C",
-        "PGPKEY-39E77B48",
-        "PGPKEY-CA305E30",
-        "PGPKEY-70F0F10F",
-        "SSO"
-      ]
-    }
-  ],
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=XS4ALL-MNT"
+    "data": [
+        {
+            "key": "XS4ALL-MNT",
+            "type": "mntner",
+            "auth": [
+                "MD5-PW",
+                "PGPKEY-170757B6",
+                "PGPKEY-D0F4FFFB",
+                "PGPKEY-F13D6806",
+                "PGPKEY-BCA9458C",
+                "PGPKEY-39E77B48",
+                "PGPKEY-CA305E30",
+                "PGPKEY-70F0F10F",
+                "SSO"
+            ]
+        }
+    ],
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=XS4ALL-MNT"
 }

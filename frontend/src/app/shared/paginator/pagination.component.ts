@@ -1,11 +1,10 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
-    selector: "paginator",
-    templateUrl: "./paginator.component.html",
+    selector: 'paginator',
+    templateUrl: './paginator.component.html',
 })
 export class PaginationComponent implements OnInit, OnChanges {
-
     @Input()
     public numResults: number;
     @Input()
@@ -31,7 +30,7 @@ export class PaginationComponent implements OnInit, OnChanges {
     }
 
     public ngOnChanges(changes: SimpleChanges) {
-        if (changes["numResults"]) {
+        if (changes['numResults']) {
             this.refresh();
         }
     }
@@ -64,8 +63,7 @@ export class PaginationComponent implements OnInit, OnChanges {
         const numPages = Math.ceil(this.numResults / this.resultsPerPage);
         let firstPage = 1;
         if (numPages > this.maxNumPaginatorTabs) {
-            firstPage = Math.ceil(Math.min(numPages - this.maxNumPaginatorTabs,
-                Math.max(1, this.activePage - this.maxNumPaginatorTabs / 2)));
+            firstPage = Math.ceil(Math.min(numPages - this.maxNumPaginatorTabs, Math.max(1, this.activePage - this.maxNumPaginatorTabs / 2)));
         }
         this.rewindDisabled = this.activePage === 1;
         this.ffDisabled = this.activePage === numPages;

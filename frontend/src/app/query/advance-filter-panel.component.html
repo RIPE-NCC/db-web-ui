@@ -1,25 +1,22 @@
 <div class="padding">
     <label id="source-radio-group-label">Source</label>
-    <mat-radio-group aria-labelledby="source-radio-group-label"
-                     class="section"
-                     [(ngModel)]="queryParameters.source">
+    <mat-radio-group aria-labelledby="source-radio-group-label" class="section" [(ngModel)]="queryParameters.source">
         <mat-radio-button value="GRS" (click)="$event.stopPropagation()">
-            <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service"
-               target="_blank"
-               [title]="'query.optionAllDatabases.title' | label">
-                Global Resources Service</a>
+            <a
+                href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service"
+                target="_blank"
+                [title]="'query.optionAllDatabases.title' | label"
+            >
+                Global Resources Service</a
+            >
         </mat-radio-button>
         <mat-radio-button value="RIPE" (click)="$event.stopPropagation()">RIPE Database</mat-radio-button>
     </mat-radio-group>
     <section class="section">
-        <mat-checkbox [(ngModel)]="queryParameters.showFullObjectDetails"
-                      id="showFullObjectDetails"
-                      (click)="$event.stopPropagation()">
+        <mat-checkbox [(ngModel)]="queryParameters.showFullObjectDetails" id="showFullObjectDetails" (click)="$event.stopPropagation()">
             Show full object details
         </mat-checkbox>
-        <mat-checkbox [(ngModel)]="queryParameters.doNotRetrieveRelatedObjects"
-                      id="doNotRetrieveRelatedObjects"
-                      (click)="$event.stopPropagation()">
+        <mat-checkbox [(ngModel)]="queryParameters.doNotRetrieveRelatedObjects" id="doNotRetrieveRelatedObjects" (click)="$event.stopPropagation()">
             Do not retrieve related objects
         </mat-checkbox>
     </section>

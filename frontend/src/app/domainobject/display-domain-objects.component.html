@@ -1,24 +1,20 @@
 <section class="inner-container">
-    <table class="success-fields grey" *ngFor="let object of objects | slice:0:4">
+    <table class="success-fields grey" *ngFor="let object of objects | slice: 0:4">
         <tr *ngFor="let attribute of object.attributes.attribute">
             <td class="col-sm-3">
-                <label>{{attribute.name}}:</label>
+                <label>{{ attribute.name }}:</label>
             </td>
             <td class="col-sm-9">
-                <p>{{attribute.value}}</p>
+                <p>{{ attribute.value }}</p>
                 <div *ngIf="attribute.$$error" class="modify-feedback">
-                    <span>{{attribute.$$error}}</span>
+                    <span>{{ attribute.$$error }}</span>
                     <i class="fal fa-info-circle"></i>
                 </div>
             </td>
         </tr>
     </table>
     <p *ngIf="objects.length > 4">
-        <a target="_blank" href="query?searchtext=%20-M%20-rd%20-T%20domain%20{{prefix}}&bflag=true">
-            and {{objects.length - 4}} more...
-        </a>
+        <a target="_blank" href="query?searchtext=%20-M%20-rd%20-T%20domain%20{{ prefix }}&bflag=true"> and {{ objects.length - 4 }} more... </a>
     </p>
-    <button (click)="navigateToSelect()" class="blue-button float-end ga-createobj-modifyobj">
-        Back to Create Object
-    </button>
+    <button (click)="navigateToSelect()" class="blue-button float-end ga-createobj-modifyobj">Back to Create Object</button>
 </section>

@@ -1,59 +1,58 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 declare var loadMatomo: (matomoId: string) => any;
 declare var loadUsersnap: (buildTag: string) => any;
 
 @Injectable()
 export class PropertiesService {
-
-    public ACCESS_URL = "";
-    public BANNER = "Welcome to the localhost version of the RIPE Database.";
+    public ACCESS_URL = '';
+    public BANNER = 'Welcome to the localhost version of the RIPE Database.';
     // FIXME This tag is not used anymore... remove it after merging https://gitlab.ripe.net/swe-database-team/db-web-ui/-/commits/DB-3160_ripe_web_component_login_switcher
     // also clean getImplementationVersion in AngularConstantsController
-    public BUILD_TAG = "SNAPSHOT";
+    public BUILD_TAG = 'SNAPSHOT';
     // Resources - menu items
-    public MY_RESOURCES_URL = "myresources/overview";
+    public MY_RESOURCES_URL = 'myresources/overview';
     // RIPE database - menu items
-    public DATABASE_QUERY_URL = "query";
-    public DATABASE_FULL_TEXT_SEARCH_URL = "fulltextsearch";
-    public OBJECT_LOOKUP_URL = "lookup";
-    public DATABASE_SYNCUPDATES_URL = "syncupdates";
-    public DATABASE_CREATE_URL = "webupdates/select";
-    public LEGAL = "legal";
-    public ENV = "local";
-    public RIPE_APP_WEBCOMPONENTS_ENV = "pre";
+    public DATABASE_QUERY_URL = 'query';
+    public DATABASE_FULL_TEXT_SEARCH_URL = 'fulltextsearch';
+    public OBJECT_LOOKUP_URL = 'lookup';
+    public DATABASE_SYNCUPDATES_URL = 'syncupdates';
+    public DATABASE_CREATE_URL = 'webupdates/select';
+    public LEGAL = 'legal';
+    public ENV = 'local';
+    public RIPE_APP_WEBCOMPONENTS_ENV = 'pre';
     public BREAKPOINTS_MOBILE_VIEW = 1025;
-    public MATOMO_ID = "";
-    public IPV4_TRANSFER_LISTING_URL = "";
-    public LOGIN_URL = "";
-    public LOGOUT_URL = "";
-    public OPEN_ACQUISITION_URL = "";
-    public PORTAL_URL = "";
-    public PORTAL_URL_ACCOUNT = "";
-    public PORTAL_URL_REQUEST = "";
-    public LIVE_CHAT_KEY = "";
-    public QUERY_PAGE_LINK_TO_OTHER_DB = "";
-    public REQUEST_RESOURCES_URL = "";
-    public REQUEST_TRANSFER_URL = "";
-    public REQUEST_UPDATE_URL = "";
-    public REST_SEARCH_URL = "";
-    public RPKI_DASHBOARD_URL = "";
-    public SOURCE = "RIPE";
-    public DB_WEB_UI_BUILD_TIME = "00:00";
+    public MATOMO_ID = '';
+    public IPV4_TRANSFER_LISTING_URL = '';
+    public LOGIN_URL = '';
+    public LOGOUT_URL = '';
+    public OPEN_ACQUISITION_URL = '';
+    public PORTAL_URL = '';
+    public PORTAL_URL_ACCOUNT = '';
+    public PORTAL_URL_REQUEST = '';
+    public LIVE_CHAT_KEY = '';
+    public QUERY_PAGE_LINK_TO_OTHER_DB = '';
+    public REQUEST_RESOURCES_URL = '';
+    public REQUEST_TRANSFER_URL = '';
+    public REQUEST_UPDATE_URL = '';
+    public REST_SEARCH_URL = '';
+    public RPKI_DASHBOARD_URL = '';
+    public SOURCE = 'RIPE';
+    public DB_WEB_UI_BUILD_TIME = '00:00';
     // list of all ripe ncc mntners
     public RIPE_NCC_MNTNERS = [];
     // maintainers on top-level allocation and PI assignments
     public TOP_RIPE_NCC_MNTNERS = [];
 
-    constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient) {}
 
     public load(): Promise<void> {
         return this.httpClient
-            .get("app.constants.json")
+            .get('app.constants.json')
             .toPromise()
-                .then(
-            (response: any) => {
+            .then(
+                (response: any) => {
                     this.ENV = response.ENV;
                     this.SOURCE = response.SOURCE;
                     this.BUILD_TAG = response.BUILD_TAG;
@@ -74,19 +73,23 @@ export class PropertiesService {
                     this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                     this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
                     this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
-                    this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === "prod" ? "prod" : "pre";
+                    this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === 'prod' ? 'prod' : 'pre';
                     this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
                     this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
                     this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
 
                     this.injectProperties();
                 },
-                (error => console.error(error))
+                (error) => console.error(error),
             );
     }
 
     private injectProperties() {
-        if (typeof loadMatomo === 'function') { loadMatomo(this.MATOMO_ID) }
-        if (typeof loadUsersnap === 'function') { loadUsersnap(this.DB_WEB_UI_BUILD_TIME) }
+        if (typeof loadMatomo === 'function') {
+            loadMatomo(this.MATOMO_ID);
+        }
+        if (typeof loadUsersnap === 'function') {
+            loadUsersnap(this.DB_WEB_UI_BUILD_TIME);
+        }
     }
 }

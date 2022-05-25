@@ -1,16 +1,16 @@
 {
-  "requestUrl": "/api/ba-apps/resources/ORG-Sb3-RIPE/AS36867",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "tickets": {
-      "AS196613": [
-        {
-          "number": "NCC#2007012274",
-          "date": "2007-02-08",
-          "resource": "AS36867"
+    "requestUrl": "/api/ba-apps/resources/ORG-Sb3-RIPE/AS36867",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "tickets": {
+            "AS196613": [
+                {
+                    "number": "NCC#2007012274",
+                    "date": "2007-02-08",
+                    "resource": "AS36867"
+                }
+            ]
         }
-      ]
     }
-  }
 }

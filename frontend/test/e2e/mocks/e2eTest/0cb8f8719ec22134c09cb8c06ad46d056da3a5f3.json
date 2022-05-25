@@ -1,21 +1,21 @@
 {
-  "requestUrl": "/db-web-ui/api/references/RIPE/role/IA6414-RIPE?limit=5",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "primaryKey": "IA6414-RIPE",
-    "objectType": "role",
-    "incoming": [
-      {
-        "primaryKey": "IVANA-MNT",
-        "objectType": "mntner",
+    "requestUrl": "/db-web-ui/api/references/RIPE/role/IA6414-RIPE?limit=5",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "primaryKey": "IA6414-RIPE",
+        "objectType": "role",
         "incoming": [
-          {
-            "primaryKey": "IA6414-RIPE",
-            "objectType": "role"
-          }
+            {
+                "primaryKey": "IVANA-MNT",
+                "objectType": "mntner",
+                "incoming": [
+                    {
+                        "primaryKey": "IA6414-RIPE",
+                        "objectType": "role"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  }
+    }
 }

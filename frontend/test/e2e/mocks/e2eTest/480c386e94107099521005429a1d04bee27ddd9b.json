@@ -1,116 +1,116 @@
 {
-  "data": {
-    "objects": {
-      "object": [
-        {
-          "type": "inetnum",
-          "link": {
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/193.96.3.0 - 193.96.3.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "193.96.3.0 - 193.96.3.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "193.96.3.0 - 193.96.3.255"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "COMBOX"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "COM.BOX Computer Services"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "COM.BOX - WINET Computer Services GmbH & Co. KG, Berlin"
+                            },
+                            {
+                                "name": "country",
+                                "value": "DE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/SL88"
+                                },
+                                "name": "admin-c",
+                                "value": "SL88",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/SL88"
+                                },
+                                "name": "tech-c",
+                                "value": "SL88",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/WVDB4-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "WVDB4-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/UUNETDE-I"
+                                },
+                                "name": "mnt-by",
+                                "value": "UUNETDE-I",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "status",
+                                "value": "NOT-SET"
+                            },
+                            {
+                                "name": "created",
+                                "value": "1970-01-01T00:00:00Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2004-11-24T12:21:21Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "tags": {
+                        "tag": [
+                            {
+                                "id": "RIPE-USER-RESOURCE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
             "type": "locator",
-            "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/193.96.3.0 - 193.96.3.255"
-          },
-          "source": {
-            "id": "ripe"
-          },
-          "primary-key": {
-            "attribute": [
-              {
-                "name": "inetnum",
-                "value": "193.96.3.0 - 193.96.3.255"
-              }
-            ]
-          },
-          "attributes": {
-            "attribute": [
-              {
-                "name": "inetnum",
-                "value": "193.96.3.0 - 193.96.3.255"
-              },
-              {
-                "name": "netname",
-                "value": "COMBOX"
-              },
-              {
-                "name": "descr",
-                "value": "COM.BOX Computer Services"
-              },
-              {
-                "name": "descr",
-                "value": "COM.BOX - WINET Computer Services GmbH & Co. KG, Berlin"
-              },
-              {
-                "name": "country",
-                "value": "DE"
-              },
-              {
-                "link": {
-                  "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/person/SL88"
-                },
-                "name": "admin-c",
-                "value": "SL88",
-                "referenced-type": "person"
-              },
-              {
-                "link": {
-                  "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/person/SL88"
-                },
-                "name": "tech-c",
-                "value": "SL88",
-                "referenced-type": "person"
-              },
-              {
-                "link": {
-                  "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/person/WVDB4-RIPE"
-                },
-                "name": "tech-c",
-                "value": "WVDB4-RIPE",
-                "referenced-type": "person"
-              },
-              {
-                "link": {
-                  "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/UUNETDE-I"
-                },
-                "name": "mnt-by",
-                "value": "UUNETDE-I",
-                "referenced-type": "mntner"
-              },
-              {
-                "name": "status",
-                "value": "NOT-SET"
-              },
-              {
-                "name": "created",
-                "value": "1970-01-01T00:00:00Z"
-              },
-              {
-                "name": "last-modified",
-                "value": "2004-11-24T12:21:21Z"
-              },
-              {
-                "name": "source",
-                "value": "RIPE"
-              }
-            ]
-          },
-          "tags": {
-            "tag": [
-              {
-                "id": "RIPE-USER-RESOURCE"
-              }
-            ]
-          }
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
         }
-      ]
     },
-    "terms-and-conditions": {
-      "type": "locator",
-      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
-    }
-  },
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/whois/RIPE/inetnum/193.96.3.0%20-%20193.96.3.255?unfiltered=true"
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/RIPE/inetnum/193.96.3.0%20-%20193.96.3.255?unfiltered=true"
 }

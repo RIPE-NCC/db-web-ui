@@ -6,15 +6,11 @@
     <div class="modal-body modal-panel">
         <div>
             <p>My organisation&apos;s legal address has changed</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn"
-                    data-dismiss="modal"
-                    (click)="goToOrgaAddressEditor()">Select</button>
+            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToOrgaAddressEditor()">Select</button>
         </div>
         <div>
             <p>My organisation&apos;s postal address has changed</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn"
-                    data-dismiss="modal"
-                    (click)="goToAccountAddressEditor()">Select</button>
+            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToAccountAddressEditor()">Select</button>
         </div>
     </div>
 </div>
@@ -26,15 +22,11 @@
     <div class="modal-body modal-panel">
         <div>
             <p>My organisation&apos;s legal name has changed; no other legal entity is involved</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn"
-                    data-dismiss="modal"
-                    (click)="goToOrgNameEditor()">Select</button>
+            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToOrgNameEditor()">Select</button>
         </div>
         <div>
             <p>The business structure of my organisation has changed (for example due to a merger or acquisition)</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn"
-                    data-dismiss="modal"
-                    (click)="goToAccountOrgNameEditor()">Select</button>
+            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToAccountOrgNameEditor()">Select</button>
         </div>
     </div>
 </div>
@@ -48,9 +40,7 @@
             <p *ngIf="attr.name === 'phone'">My organisation&apos;s telephone number has changed</p>
             <p *ngIf="attr.name === 'fax-no'">My organisation&apos;s fax number has changed</p>
             <p *ngIf="attr.name === 'e-mail'">My organisation&apos;s email address has changed</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn"
-                    data-dismiss="modal"
-                    (click)="goToAccountContactInfoEditor()">Update</button>
+            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToAccountContactInfoEditor()">Update</button>
         </div>
     </div>
 </div>

@@ -1,11 +1,12 @@
 :root {
-  --ripe-app-font-family: "Public Sans";
+    --ripe-app-font-family: 'Public Sans';
 }
 
 @media only screen and (max-width: 900px) {
     #app-grid {
-        #main-wrapper, swe-menu app-nav-bar {
-            grid-column: 1/span 2;
+        #main-wrapper,
+        swe-menu app-nav-bar {
+            grid-column: 1 / span 2;
         }
     }
 }
@@ -19,7 +20,7 @@
         app-nav-bar {
             grid-column: left;
             grid-column-start: 1;
-            grid-column: span 2/span 2;
+            grid-column: span 2 / span 2;
         }
     }
 
@@ -39,7 +40,7 @@ swe-menu {
     display: contents; //app-nav-bar must be first children of grid-layout, use `contents` to ignore it, this doesn't work on IE11
     app-nav-bar {
         grid-column-start: 1;
-        grid-column: span 2/span 2;
+        grid-column: span 2 / span 2;
         grid-row: 1/-1;
         top: 70px;
     }
@@ -48,7 +49,7 @@ swe-menu {
 #main-wrapper {
     position: relative;
     grid-column-start: 1;
-    grid-column: span 2/span 2;
+    grid-column: span 2 / span 2;
     grid-row: 1/-1;
 }
 
@@ -62,9 +63,9 @@ swe-menu {
 #app-workspace {
     background-color: white;
 
-  &.with-padding {
-    padding: 24px;
-  }
+    &.with-padding {
+        padding: 24px;
+    }
 }
 
 #visual-portal-wrapper > div {

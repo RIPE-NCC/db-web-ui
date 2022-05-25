@@ -1,48 +1,49 @@
-import {TestBed} from "@angular/core/testing";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {Location} from "@angular/common";
-import * as _ from "lodash";
-import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
-import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
-import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
-import {JsUtilService} from "../../../src/app/core/js-utils.service";
-import {AttributeModule} from "../../../src/app/attribute/attribute.module";
-import {PrefixService} from "../../../src/app/domainobject/prefix.service";
-import {IAttributeModel} from "../../../src/app/shared/whois-response-type.model";
+import { Location } from '@angular/common';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import * as _ from 'lodash';
+import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
+import { AttributeModule } from '../../../src/app/attribute/attribute.module';
+import { JsUtilService } from '../../../src/app/core/js-utils.service';
+import { PrefixService } from '../../../src/app/domainobject/prefix.service';
+import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
+import { IAttributeModel } from '../../../src/app/shared/whois-response-type.model';
+import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
 
-describe("AttributeMetadataService", () => {
-
+describe('AttributeMetadataService', () => {
     let MockMntnerService = {
         isNccMntner: (mntnerKey: string) => {
-            return _.includes(["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-LEGACY-MNT"], mntnerKey.toUpperCase())
+            return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
         },
         isNccHmMntner: (mntnerKey: string) => {
-            return _.includes(["RIPE-NCC-HM-MNT"], mntnerKey.toUpperCase())
+            return _.includes(['RIPE-NCC-HM-MNT'], mntnerKey.toUpperCase());
         },
         isNccHmPiMntner: (mntnerKey: string) => {
-            return _.includes(["RIPE-NCC-HM-PI-MNT"], mntnerKey.toUpperCase())
+            return _.includes(['RIPE-NCC-HM-PI-MNT'], mntnerKey.toUpperCase());
         },
         isComaintained: (attributes: IAttributeModel[]) => {
             return _.some(attributes, (attr) => {
-                if (attr.name.toUpperCase() === "MNT-BY") {
+                if (attr.name.toUpperCase() === 'MNT-BY') {
                     return MockMntnerService.isNccMntner(attr.value);
                 } else {
                     return false;
                 }
-            })},
+            });
+        },
         isComaintainedWithNccHmMntner: (attributes: IAttributeModel[]) => {
             return _.some(attributes, (attr) => {
-                if (attr.name.toUpperCase() === "MNT-BY") {
+                if (attr.name.toUpperCase() === 'MNT-BY') {
                     return MockMntnerService.isNccHmMntner(attr.value) || MockMntnerService.isNccHmPiMntner(attr.value);
                 } else {
                     return false;
                 }
-            })}
+            });
+        },
     };
     let attributeMetadataService: AttributeMetadataService;
     let httpMock: HttpTestingController;
-    const VALID_PREFIX = "22.22.0.0/22";
-    const objectType = "prefix";
+    const VALID_PREFIX = '22.22.0.0/22';
+    const objectType = 'prefix';
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -52,9 +53,9 @@ describe("AttributeMetadataService", () => {
                 JsUtilService,
                 PrefixService,
                 WhoisMetaService,
-                { provide: MntnerService, useValue: MockMntnerService},
-                { provide: Location, useValue: {}},
-                { provide: "ModalService", useValue: {}}
+                { provide: MntnerService, useValue: MockMntnerService },
+                { provide: Location, useValue: {} },
+                { provide: 'ModalService', useValue: {} },
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -65,98 +66,96 @@ describe("AttributeMetadataService", () => {
         httpMock.verify();
     });
 
-    it("should be created", () => {
+    it('should be created', () => {
         expect(attributeMetadataService).toBeTruthy();
     });
 
-    it("should not crash", () => {
+    it('should not crash', () => {
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         expect(!!attributes).toBeTruthy();
         expect(attributes.length).toBe(9);
     });
 
-    it("should create metadata for NOT co-maintained inetnum object with netname NOT read only", () => {
-
-        const attributes = [{name: "mnt-by", value: "SOME-MNT"}];
-        const type = "inetnum";
+    it('should create metadata for NOT co-maintained inetnum object with netname NOT read only', () => {
+        const attributes = [{ name: 'mnt-by', value: 'SOME-MNT' }];
+        const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
         expect(isReadOnly).toBeFalse();
     });
 
-    it("should create metadata for co-maintained inetnum object with netname read only", () => {
-
-        const attributes = [{name: "mnt-by", value: "RIPE-NCC-HM-MNT"}];
-        const type = "inetnum";
+    it('should create metadata for co-maintained inetnum object with netname read only', () => {
+        const attributes = [{ name: 'mnt-by', value: 'RIPE-NCC-HM-MNT' }];
+        const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
         expect(isReadOnly).toBeTruthy();
     });
 
-    it("should create metadata for NOT co-maintained inet6num object with netname NOT read only", () => {
-
-        const attributes = [{name: "mnt-by", value: "SOME-MNT"}];
-        const type = "inet6num";
+    it('should create metadata for NOT co-maintained inet6num object with netname NOT read only', () => {
+        const attributes = [{ name: 'mnt-by', value: 'SOME-MNT' }];
+        const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
         expect(isReadOnly).toBeFalse();
     });
 
-    it("should create metadata for co-maintained inet6num object with netname read only", () => {
-
-        const attributes = [{name: "mnt-by", value: "RIPE-NCC-HM-MNT"}];
-        const type = "inet6num";
+    it('should create metadata for co-maintained inet6num object with netname read only', () => {
+        const attributes = [{ name: 'mnt-by', value: 'RIPE-NCC-HM-MNT' }];
+        const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
         expect(isReadOnly).toBeTruthy();
     });
 
-    it("should create metadata for co-maintained inetnum object with org read only", () => {
-
-        const attributes = [{name: "mnt-by", value: "RIPE-NCC-HM-MNT"}, {name: "org", value: "ORG-EIP1-RIPE"}];
-        const type = "inetnum";
+    it('should create metadata for co-maintained inetnum object with org read only', () => {
+        const attributes = [
+            { name: 'mnt-by', value: 'RIPE-NCC-HM-MNT' },
+            { name: 'org', value: 'ORG-EIP1-RIPE' },
+        ];
+        const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
         expect(isReadOnly).toBeTruthy();
     });
 
-    it("should create metadata for NOT co-maintained inetnum object with org NOT read only", () => {
-
-        const attributes = [{name: "org", value: "ORG-EIP1-RIPE"}];
-        const type = "inetnum";
+    it('should create metadata for NOT co-maintained inetnum object with org NOT read only', () => {
+        const attributes = [{ name: 'org', value: 'ORG-EIP1-RIPE' }];
+        const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
         expect(isReadOnly).toBeFalse();
     });
 
-    it("should create metadata for co-maintained inet6num object with org read only", () => {
-
-        const attributes = [{name: "mnt-by", value: "RIPE-NCC-HM-MNT"}, {name: "org", value: "ORG-EIP1-RIPE"}];
-        const type = "inet6num";
+    it('should create metadata for co-maintained inet6num object with org read only', () => {
+        const attributes = [
+            { name: 'mnt-by', value: 'RIPE-NCC-HM-MNT' },
+            { name: 'org', value: 'ORG-EIP1-RIPE' },
+        ];
+        const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
         expect(isReadOnly).toBeTruthy();
     });
 
-    it("should create metadata for NOT co-maintained inet6num object with org NOT read only", () => {
-
-        const attributes = [{name: "org", value: "ORG-EIP1-RIPE"}];
-        const type = "inet6num";
+    it('should create metadata for NOT co-maintained inet6num object with org NOT read only', () => {
+        const attributes = [{ name: 'org', value: 'ORG-EIP1-RIPE' }];
+        const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
         expect(isReadOnly).toBeFalse();
     });
 
-    it("should be able to calculate validity of an attribute", () => {
+    it('should be able to calculate validity of an attribute', () => {
         let isInvalid;
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         const attributePk = attributes[0];
         const attribute = attributes[4];
 
-        expect(attributePk.name).toBe("prefix");
-        expect(attribute.name).toBe("admin-c");
+        expect(attributePk.name).toBe('prefix');
+        expect(attribute.name).toBe('admin-c');
 
-        attributePk.value = "";
+        attributePk.value = '';
         isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attributePk);
         expect(isInvalid).toBeTruthy();
 
@@ -168,21 +167,21 @@ describe("AttributeMetadataService", () => {
         // isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attribute);
         // expect(isInvalid).toBeFalse();
 
-        attribute.value = "could be anything";
+        attribute.value = 'could be anything';
         isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attribute);
         expect(isInvalid).toBeFalse();
     });
 
-    xit("should be able to calculate hidden state of an attribute with no dependencies", () => {
+    xit('should be able to calculate hidden state of an attribute with no dependencies', () => {
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         const attribute = attributes[0];
 
-        expect(attribute.name).toBe("prefix");
+        expect(attribute.name).toBe('prefix');
         const isHidden = attributeMetadataService.isHidden(objectType, attributes, attribute);
         expect(isHidden).toBeFalse();
     });
 
-    xit("should be able to calculate hidden state of an attribute with dependencies", () => {
+    xit('should be able to calculate hidden state of an attribute with dependencies', () => {
         let isHidden;
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         let attrPrefix = attributes[0],
@@ -190,14 +189,14 @@ describe("AttributeMetadataService", () => {
             attrNs2 = attributes[2],
             attrToTest = attributes[4];
 
-        expect(attrPrefix.name).toBe("prefix");
-        expect(attrNs1.name).toBe("nserver");
-        expect(attrNs2.name).toBe("nserver");
-        expect(attrToTest.name).toBe("admin-c");
+        expect(attrPrefix.name).toBe('prefix');
+        expect(attrNs1.name).toBe('nserver');
+        expect(attrNs2.name).toBe('nserver');
+        expect(attrToTest.name).toBe('admin-c');
 
-        attrPrefix.value = "";
-        attrNs1.value = "ns1.nowhere.com"; // a valid host name
-        attrNs2.value = "ns2.nowhere.com"; // a valid host name
+        attrPrefix.value = '';
+        attrNs1.value = 'ns1.nowhere.com'; // a valid host name
+        attrNs2.value = 'ns2.nowhere.com'; // a valid host name
         isHidden = attributeMetadataService.isHidden(objectType, attributes, attrToTest);
         expect(isHidden).toBeTruthy();
 
@@ -205,5 +204,4 @@ describe("AttributeMetadataService", () => {
         isHidden = attributeMetadataService.isHidden(objectType, attributes, attrToTest);
         expect(isHidden).toBeFalse();
     });
-
 });

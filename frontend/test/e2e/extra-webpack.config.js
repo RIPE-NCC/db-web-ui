@@ -18,12 +18,11 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
-                    }
+                        presets: ['@babel/preset-env'],
+                    },
                 },
-
-            }
-        ]
+            },
+        ],
     },
     devServer: {
         setupMiddlewares: function (middlewares, devServer) {
@@ -39,7 +38,7 @@ module.exports = {
                 useApi: true,
                 mode: 'mock',
                 context: '/db-web-ui/api',
-                mockFilenameGenerator: prismFilename
+                mockFilenameGenerator: prismFilename,
             });
             prism.create({
                 name: 'e2eTestAppConstants',
@@ -50,10 +49,10 @@ module.exports = {
                 useApi: true,
                 mode: 'mock',
                 context: '/db-web-ui/app.constants.json',
-                mockFilenameGenerator: prismFilename
+                mockFilenameGenerator: prismFilename,
             });
-            middlewares.push(prism.middleware)
+            middlewares.push(prism.middleware);
             return middlewares;
         },
-    }
+    },
 };

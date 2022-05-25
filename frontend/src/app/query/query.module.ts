@@ -1,35 +1,34 @@
-import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {RouterModule} from "@angular/router";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatButtonModule} from "@angular/material/button";
-import {MatSliderModule} from "@angular/material/slider";
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatRadioModule} from "@angular/material/radio";
-
-import {SharedModule} from "../shared/shared.module";
-import {LookupService} from "./lookup.service";
-import {LookupComponent} from "./lookup.component";
-import {LookupSingleObjectComponent} from "./lookup-single-object.component";
-import {QueryComponent} from "./query.component";
-import {QueryParametersService} from "./query-parameters.service";
-import {TemplateComponent} from "./templatecomponent/template.component";
-import {QueryService} from "./query.service";
-import {WhoisObjectModule} from "../whois-object/whois-object.module";
-import {CertificateBannerComponent} from "../banner/certificate-banner.component";
-import {HierarchyFlagsPanelComponent} from "./hierarchy-flags-panel.component";
-import {TypesPanelComponent} from "./types-panel.component";
-import {HierarchyFlagsService} from "./hierarchy-flags.service";
-import {InverseLookupPanelComponent} from "./inverse-lookup-panel.component";
-import {AdvanceFilterPanelComponent} from "./advance-filter-panel.component";
-import {QueryFlagsService} from "./query-flags.service";
-import {QueryFlagsComponent} from "./query-flags.component";
-import {MatInputModule} from "@angular/material/input";
-import {MatIconModule} from "@angular/material/icon";
-import {ClipboardModule} from "@angular/cdk/clipboard";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
+import { CertificateBannerComponent } from '../banner/certificate-banner.component';
+import { SharedModule } from '../shared/shared.module';
+import { WhoisObjectModule } from '../whois-object/whois-object.module';
+import { AdvanceFilterPanelComponent } from './advance-filter-panel.component';
+import { HierarchyFlagsPanelComponent } from './hierarchy-flags-panel.component';
+import { HierarchyFlagsService } from './hierarchy-flags.service';
+import { InverseLookupPanelComponent } from './inverse-lookup-panel.component';
+import { LookupSingleObjectComponent } from './lookup-single-object.component';
+import { LookupComponent } from './lookup.component';
+import { LookupService } from './lookup.service';
+import { QueryFlagsComponent } from './query-flags.component';
+import { QueryFlagsService } from './query-flags.service';
+import { QueryParametersService } from './query-parameters.service';
+import { QueryComponent } from './query.component';
+import { QueryService } from './query.service';
+import { TemplateComponent } from './templatecomponent/template.component';
+import { TypesPanelComponent } from './types-panel.component';
 
 @NgModule({
     imports: [
@@ -47,7 +46,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         MatInputModule,
         MatIconModule,
         ClipboardModule,
-        MatTooltipModule
+        MatTooltipModule,
     ],
     declarations: [
         LookupComponent,
@@ -59,18 +58,9 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         HierarchyFlagsPanelComponent,
         InverseLookupPanelComponent,
         AdvanceFilterPanelComponent,
-        QueryFlagsComponent
+        QueryFlagsComponent,
     ],
-    providers: [
-        LookupService,
-        QueryParametersService,
-        QueryService,
-        HierarchyFlagsService,
-        QueryFlagsService
-    ],
-    exports: [
-        CertificateBannerComponent,
-    ]
+    providers: [LookupService, QueryParametersService, QueryService, HierarchyFlagsService, QueryFlagsService],
+    exports: [CertificateBannerComponent],
 })
-export class QueryModule {
-}
+export class QueryModule {}

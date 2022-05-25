@@ -1,13 +1,12 @@
-import {Component, Input, OnChanges} from "@angular/core";
-import {IMoreSpecificsApiResult, MoreSpecificsService} from "./more-specifics.service";
-import {Location} from "@angular/common";
+import { Location } from '@angular/common';
+import { Component, Input, OnChanges } from '@angular/core';
+import { IMoreSpecificsApiResult, MoreSpecificsService } from './more-specifics.service';
 
 @Component({
-    selector: "more-specifics",
-    templateUrl: "./more-specifics.component.html",
+    selector: 'more-specifics',
+    templateUrl: './more-specifics.component.html',
 })
 export class MoreSpecificsComponent implements OnChanges {
-
     @Input()
     public objectType: string;
     @Input()
@@ -26,8 +25,7 @@ export class MoreSpecificsComponent implements OnChanges {
     public loading: boolean = false;
     public showRefreshButton: boolean = false;
 
-    public constructor(private moreSpecificsService: MoreSpecificsService,
-                       private location: Location) {}
+    public constructor(private moreSpecificsService: MoreSpecificsService, private location: Location) {}
 
     ngOnChanges() {
         this.lastPage = -1;
@@ -63,24 +61,24 @@ export class MoreSpecificsComponent implements OnChanges {
         this.filterDebouncer = setTimeout(() => {
             this.lastPage = -1;
             this.getResourcesFromBackEnd(0, this.ipFilter);
-        },400);
+        }, 400);
     }
 
-    private getResourcesFromBackEnd(pageNr: number = 0, ipFilter: string = "") {
+    private getResourcesFromBackEnd(pageNr: number = 0, ipFilter: string = '') {
         if (pageNr <= this.lastPage) {
             // ignore requests for pages that we've done, or that we're are already fetching.
             return;
         }
-        if (this.location.path().indexOf("/myresources/detail") < 0) {
+        if (this.location.path().indexOf('/myresources/detail') < 0) {
             this.lastPage = -1;
             this.showScroller = false;
             return;
         }
         this.lastPage = pageNr;
-        if (this.objectType === "inetnum" || this.objectType === "inet6num") {
+        if (this.objectType === 'inetnum' || this.objectType === 'inet6num') {
             this.loading = true;
-            this.moreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter)
-                .subscribe((response: IMoreSpecificsApiResult) => {
+            this.moreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter).subscribe(
+                (response: IMoreSpecificsApiResult) => {
                     this.loading = false;
                     this.showRefreshButton = false;
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
@@ -92,11 +90,13 @@ export class MoreSpecificsComponent implements OnChanges {
                     }
                     this.calcScroller();
                     this.updateHeight();
-                }, () => {
+                },
+                () => {
                     this.calcScroller();
                     this.loading = false;
                     this.showRefreshButton = true;
-                });
+                },
+            );
         }
     }
 

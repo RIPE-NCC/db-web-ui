@@ -1,36 +1,28 @@
-
-<button id="btnSwitchToTextModify"
-        class="blue-button float-end ga-text-modifyobj-switch-mode"
-        style="border:0;"
-        (click)="switchToWebMode()">
+<button id="btnSwitchToTextModify" class="blue-button float-end ga-text-modifyobj-switch-mode" style="border: 0" (click)="switchToWebMode()">
     <span class="fal fa-bars"></span> Edit in single lines
 </button>
 
 <div>
-    <h1>Modify &quot;{{object.type}}&quot; object</h1>
+    <h1>Modify &quot;{{ object.type }}&quot; object</h1>
 
     <form id="textModifyForm">
-
         <div class="form-group">
             <label for="modifyRpsl">RPSL to modify a single object</label>
-            <textarea id="modifyRpsl"
-                      name="modifyRpsl"
-                      class="form-control"
-                      rows="20"
-                      [(ngModel)]="object.rpsl"
-                      style="font-family:monospace;"></textarea>
+            <textarea id="modifyRpsl" name="modifyRpsl" class="form-control" rows="20" [(ngModel)]="object.rpsl" style="font-family: monospace"></textarea>
 
             <section class="supporting-text">
-                <span>You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</span>
+                <span
+                    >You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple
+                    passwords.</span
+                >
             </section>
             <submitting-agreement></submitting-agreement>
 
-            <input type="submit" (click)="submit()" class="blue-button float-end ga-text-modifyobj-modify" value="Submit"/>
+            <input type="submit" (click)="submit()" class="blue-button float-end ga-text-modifyobj-modify" value="Submit" />
 
-            <button (click)="cancel()" class="blue-button float-end ga-text-modifyobj-cancel" style="border:0;"> Cancel </button>
+            <button (click)="cancel()" class="blue-button float-end ga-text-modifyobj-cancel" style="border: 0">Cancel</button>
 
-            <button (click)="deleteObject()" class="red-button float-start ga-text-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
-
+            <button (click)="deleteObject()" class="red-button float-start ga-text-deleteobj-create" style="border: 0; margin: 0">Delete this object</button>
         </div>
     </form>
 </div>

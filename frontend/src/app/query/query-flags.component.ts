@@ -1,12 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
-import {IQueryFlag, QueryFlagsService} from "./query-flags.service";
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { IQueryFlag, QueryFlagsService } from './query-flags.service';
 
 @Component({
-    selector: "query-flags",
-    templateUrl: "./query-flags.component.html",
+    selector: 'query-flags',
+    templateUrl: './query-flags.component.html',
 })
 export class QueryFlagsComponent implements OnChanges {
-
     // whole string entered in search field
     @Input()
     public inputTerm: string;
@@ -17,13 +16,12 @@ export class QueryFlagsComponent implements OnChanges {
     // just valid query flags
     public queryFlags: IQueryFlag[];
 
-    constructor(private queryFlagsService: QueryFlagsService) {
-    }
+    constructor(private queryFlagsService: QueryFlagsService) {}
 
     public ngOnChanges() {
         this.flags = this.getFlags();
         if (this.flags.length > 0) {
-            this.queryFlagsService.getFlags(this.flags).subscribe(queryFlags => {
+            this.queryFlagsService.getFlags(this.flags).subscribe((queryFlags) => {
                 this.queryFlags = queryFlags;
                 this.hasValidQueryFlags.emit(this.queryFlags.length > 0);
             });
@@ -34,7 +32,7 @@ export class QueryFlagsComponent implements OnChanges {
     }
 
     public getFlags() {
-        let allTerms = this.inputTerm.split(" ");
-        return allTerms.filter(term => term.startsWith("-"))
+        let allTerms = this.inputTerm.split(' ');
+        return allTerms.filter((term) => term.startsWith('-'));
     }
 }

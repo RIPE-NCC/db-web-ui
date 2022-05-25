@@ -1,12 +1,10 @@
-import {Component} from "@angular/core";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: "modal-domain-object-splash",
-    templateUrl: "./modal-domain-object-splash.component.html",
+    selector: 'modal-domain-object-splash',
+    templateUrl: './modal-domain-object-splash.component.html',
 })
 export class ModalDomainObjectSplashComponent {
-
     constructor(public activeModal: NgbActiveModal) {}
-
 }

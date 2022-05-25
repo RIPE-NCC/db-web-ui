@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
-import * as _ from "lodash";
-import {IAttributeModel} from "../shared/whois-response-type.model";
+import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
+import { IAttributeModel } from '../shared/whois-response-type.model';
 
 export interface ISubstitution {
     code: string;
@@ -11,11 +11,10 @@ declare function escape(s: string): string;
 
 @Injectable()
 export class CharsetToolsService {
-
     private substitutions: ISubstitution[] = [
-        {code: "\u2013", sub: "-"}, // em dash
-        {code: "\u2014", sub: "-"}, // en dash
-        {code: "\u00A0", sub: " "}, // nbsp
+        { code: '\u2013', sub: '-' }, // em dash
+        { code: '\u2014', sub: '-' }, // en dash
+        { code: '\u00A0', sub: ' ' }, // nbsp
     ];
 
     public isLatin1(value: string): boolean {
@@ -24,7 +23,7 @@ export class CharsetToolsService {
         }
         // escape encodes extended ISO-8859-1 characters (UTF code points U+0080-U+00ff) as %xx (two-digit hex)
         // whereas it encodes UTF codepoints U+0100 and above as %uxxxx (%u followed by four-digit hex.)
-        return !_.includes(escape(value), "%u");
+        return !_.includes(escape(value), '%u');
     }
 
     // compare string against array of substitutable values and replace if found
@@ -34,7 +33,7 @@ export class CharsetToolsService {
         // if we have this unicode char in the string we always want to replace it
         _.forEach(this.substitutions, (sub) => {
             // g to replace all not just the first
-            subbedValue = subbedValue.replace(new RegExp(sub.code, "g"), this.replaceUnicodeG(sub));
+            subbedValue = subbedValue.replace(new RegExp(sub.code, 'g'), this.replaceUnicodeG(sub));
         });
         return subbedValue;
     }
@@ -45,11 +44,11 @@ export class CharsetToolsService {
     }
 
     private replaceUnicodeG(sub: ISubstitution): string {
-       console.debug("Found match for substitution: " + sub.code + " > " + sub.sub);
-       return sub.sub;
+        console.debug('Found match for substitution: ' + sub.code + ' > ' + sub.sub);
+        return sub.sub;
     }
 
     private _replaceNonSubstitutables(value: string): string {
-        return value.replace(/[\u0100-\ue007]/g, "?");
+        return value.replace(/[\u0100-\ue007]/g, '?');
     }
 }

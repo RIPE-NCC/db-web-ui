@@ -1,8 +1,7 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class JsUtilService {
-
     /**
      * Checks the types of args against an array of expected JS types and throws a
      * TypeError if not. Uses the types returned by JsUtilService.typeOf(obj) rather
@@ -15,11 +14,7 @@ export class JsUtilService {
         args = [].slice.call(args);
         for (let i = 0; i < types.length; ++i) {
             if (this.typeOf(args[i]) !== types[i]) {
-                throw new TypeError([
-                    "checkTypes: param ", i,
-                    " must be of type ", types[i],
-                    " but was ", this.typeOf(args[i])]
-                    .join(""));
+                throw new TypeError(['checkTypes: param ', i, ' must be of type ', types[i], ' but was ', this.typeOf(args[i])].join(''));
             }
         }
     }
@@ -33,6 +28,9 @@ export class JsUtilService {
      * @returns {string} Description of the JS type
      */
     public typeOf(obj: any) {
-        return {}.toString.call(obj).match(/\s(\w+)/)[1].toLowerCase();
+        return {}.toString
+            .call(obj)
+            .match(/\s(\w+)/)[1]
+            .toLowerCase();
     }
 }

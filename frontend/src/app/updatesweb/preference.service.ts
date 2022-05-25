@@ -1,17 +1,16 @@
-import {Injectable} from "@angular/core";
-import {CookieService} from "ngx-cookie-service";
-import * as _ from "lodash";
+import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class PreferenceService {
-
     private expiredDate: Date;
 
     private UI_MODE_COOKIE = {
-        name: "pref-ui-mode",
-        web: "webupdates",
-        text: "textupdates",
-        defaultValue: "webupdates",
+        name: 'pref-ui-mode',
+        web: 'webupdates',
+        text: 'textupdates',
+        defaultValue: 'webupdates',
     };
 
     constructor(private cookies: CookieService) {
@@ -41,7 +40,7 @@ export class PreferenceService {
     }
 
     private setCookie(name: string, value: string, path: string) {
-        this.cookies.set(name, value, 1, "/", ".ripe.net", true);
+        this.cookies.set(name, value, 1, '/', '.ripe.net', true);
     }
 
     private getCookie(name: string, defaulValue: string): any {

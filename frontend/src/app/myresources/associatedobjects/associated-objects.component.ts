@@ -1,16 +1,12 @@
-import {Component, Input, OnChanges} from "@angular/core";
-import {
-    AssociatedObjectsService, AssociatedObjectType,
-    IAssociatedObjectApiResult
-} from "./associated-objects.service";
-import {PropertiesService} from "../../properties.service";
+import { Component, Input, OnChanges } from '@angular/core';
+import { PropertiesService } from '../../properties.service';
+import { AssociatedObjectsService, AssociatedObjectType, IAssociatedObjectApiResult } from './associated-objects.service';
 
 @Component({
-    selector: "associated-objects",
-    templateUrl: "./associated-objects.component.html",
+    selector: 'associated-objects',
+    templateUrl: './associated-objects.component.html',
 })
 export class AssociatedObjectsComponent implements OnChanges {
-
     @Input()
     public associatedType: string;
     @Input()
@@ -34,13 +30,11 @@ export class AssociatedObjectsComponent implements OnChanges {
     private MAGIC = 100; // number of items per page on server
     private filterDebouncer: any = null;
 
-    constructor(private associatedObjectService: AssociatedObjectsService,
-                private properties: PropertiesService) {
-    }
+    constructor(private associatedObjectService: AssociatedObjectsService, private properties: PropertiesService) {}
 
     public ngOnChanges() {
         this.isShowingAssociatedRouteObjects = this.associatedType === AssociatedObjectType.ASSOCIATED_ROUTE;
-        this.title = this.isShowingAssociatedRouteObjects ? "Associated Route Objects" : "Associated Domain Objects";
+        this.title = this.isShowingAssociatedRouteObjects ? 'Associated Route Objects' : 'Associated Domain Objects';
         this.canHaveAssociatedObjects = false;
         this.lastPage = -1;
         this.getAssociatedObjectFromBackEnd();
@@ -82,7 +76,7 @@ export class AssociatedObjectsComponent implements OnChanges {
         }, 400);
     }
 
-    private getAssociatedObjectFromBackEnd(pageNr = 0, associatedPrefixFilter = "") {
+    private getAssociatedObjectFromBackEnd(pageNr = 0, associatedPrefixFilter = '') {
         if (pageNr <= this.lastPage) {
             // ignore requests for pages that we've done, or that we're are already fetching.
             return;
@@ -91,11 +85,9 @@ export class AssociatedObjectsComponent implements OnChanges {
         this.lastPage = pageNr;
 
         // for aut-num there is no associated domains, so no need to call service
-        if ((this.objectType === "inetnum" || "inet6num" || "aut-num")
-            && !(this.associatedType === "domain" && this.objectType === "aut-num")) {
-            this.associatedObjectService.getAssociatedObjects(this.associatedType, this.objectName, this.objectType, pageNr, associatedPrefixFilter)
-                .subscribe((response: IAssociatedObjectApiResult) => {
-
+        if ((this.objectType === 'inetnum' || 'inet6num' || 'aut-num') && !(this.associatedType === 'domain' && this.objectType === 'aut-num')) {
+            this.associatedObjectService.getAssociatedObjects(this.associatedType, this.objectName, this.objectType, pageNr, associatedPrefixFilter).subscribe(
+                (response: IAssociatedObjectApiResult) => {
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
                     // response sizes and work out how they fit with this lot.
                     if (pageNr === 0) {
@@ -110,9 +102,11 @@ export class AssociatedObjectsComponent implements OnChanges {
                     }
                     this.calcScroller();
                     this.updateHeight();
-                }, () => {
+                },
+                () => {
                     this.calcScroller();
-                });
+                },
+            );
         }
     }
 

@@ -1,75 +1,80 @@
-@use "sass:math";
+@use 'sass:math';
 
 /* Bootstrap Progress bar */
 .progress-bar {
-  background-color: #453e7d !important;
+    background-color: #453e7d !important;
 }
 .progress {
-  height: 10px;
-  border-radius: 0;
+    height: 10px;
+    border-radius: 0;
 }
-  /* Bootstrap Dropdown */
+/* Bootstrap Dropdown */
 .btn-group.open .dropdown-toggle {
-  box-shadow: none !important;
+    box-shadow: none !important;
 }
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
-  background-image: none !important;
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    background-image: none !important;
 }
 .dropdown-toggle::after {
-  content: none;
+    content: none;
 }
-.dropdown-item:focus, .dropdown-item:hover {
-  background-color: transparent;
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: transparent;
 }
 
 .nav-tabs {
-  li.nav-item {
-    border: 0;
-    a {
-      border: none;
-      border-radius: 0;
+    li.nav-item {
+        border: 0;
+        a {
+            border: none;
+            border-radius: 0;
+        }
+        a,
+        a:hover {
+            background-color: $white;
+        }
     }
-    a, a:hover {
-      background-color: $white;
-    }
-  }
 }
-.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
-  border-color: $white;
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
+    border-color: $white;
 }
-.nav-link:focus, .nav-link:hover {
-  color: #9d9d9d;
+.nav-link:focus,
+.nav-link:hover {
+    color: #9d9d9d;
 }
 
 .tooltip {
-  padding: 0.4rem 0;
-  .arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid
-  }
-  &.bs-tooltip-top {
+    padding: 0.4rem 0;
     .arrow {
-      bottom: 0;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px 5px 0;
-      border-top-color: #000
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
     }
-  }
-  &.bs-tooltip-bottom {
-    .arrow {
-      top: 0;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 0 5px 5px;
-      border-bottom-color: #000
+    &.bs-tooltip-top {
+        .arrow {
+            bottom: 0;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px 5px 0;
+            border-top-color: #000;
+        }
     }
-  }
+    &.bs-tooltip-bottom {
+        .arrow {
+            top: 0;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 0 5px 5px;
+            border-bottom-color: #000;
+        }
+    }
 }
-$popover-arrow-outer-color: rgba(0,0,0,.25);
+$popover-arrow-outer-color: rgba(0, 0, 0, 0.25);
 $popover-arrow-height: 0.5rem;
 $popover-border-width: 1px;
 $popover-arrow-width: 1rem;
@@ -77,102 +82,102 @@ $popover-arrow-color: #fff;
 $popover-header-bg: #f7f7f7;
 
 ngb-popover-window.popover {
-
-  .arrow {
-    position: absolute;
-    display: block;
-    width: $popover-arrow-width;
-    height: $popover-arrow-height;
-    margin: 0 .3rem;
-    border-width: 0;
-    &::before,
-    &::after {
-      position: absolute;
-      display: block;
-      content: "";
-      border-color: transparent;
-      border-style: solid;
-    }
-  }
-  &.bs-popover-top {
-    margin-bottom: $popover-arrow-height;
-
     .arrow {
-      bottom: calc((#{$popover-arrow-height} + #{$popover-border-width}) * -1);
+        position: absolute;
+        display: block;
+        width: $popover-arrow-width;
+        height: $popover-arrow-height;
+        margin: 0 0.3rem;
+        border-width: 0;
+        &::before,
+        &::after {
+            position: absolute;
+            display: block;
+            content: '';
+            border-color: transparent;
+            border-style: solid;
+        }
+    }
+    &.bs-popover-top {
+        margin-bottom: $popover-arrow-height;
+
+        .arrow {
+            bottom: calc((#{$popover-arrow-height} + #{$popover-border-width}) * -1);
+        }
+
+        .arrow::before,
+        .arrow::after {
+            border-width: $popover-arrow-height math.div($popover-arrow-width, 2) 0;
+        }
+
+        .arrow::before {
+            bottom: 0;
+            border-top-color: $popover-arrow-outer-color;
+        }
+
+        .arrow::after {
+            bottom: $popover-border-width;
+            border-top-color: $popover-arrow-color;
+        }
     }
 
-    .arrow::before,
-    .arrow::after {
-      border-width: $popover-arrow-height math.div($popover-arrow-width, 2) 0;
-    }
+    &.bs-popover-bottom {
+        margin-top: $popover-arrow-height;
 
-    .arrow::before {
-      bottom: 0;
-      border-top-color: $popover-arrow-outer-color;
-    }
+        .arrow {
+            top: calc((#{$popover-arrow-height} + #{$popover-border-width}) * -1);
+        }
 
-    .arrow::after {
-      bottom: $popover-border-width;
-      border-top-color: $popover-arrow-color;
-    }
-  }
+        .arrow::before,
+        .arrow::after {
+            border-width: 0 math.div($popover-arrow-width, 2) $popover-arrow-height math.div($popover-arrow-width, 2);
+        }
 
-  &.bs-popover-bottom {
-    margin-top: $popover-arrow-height;
+        .arrow::before {
+            top: 0;
+            border-bottom-color: $popover-arrow-outer-color;
+        }
 
-    .arrow {
-      top: calc((#{$popover-arrow-height} + #{$popover-border-width}) * -1);
-    }
+        .arrow::after {
+            top: $popover-border-width;
+            border-bottom-color: $popover-arrow-color;
+        }
 
-    .arrow::before,
-    .arrow::after {
-      border-width: 0 math.div($popover-arrow-width, 2) $popover-arrow-height math.div($popover-arrow-width, 2);
+        // This will remove the popover-header's border just below the arrow
+        .popover-header::before {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            display: block;
+            width: $popover-arrow-width;
+            margin-left: math.div($popover-arrow-width, -2);
+            content: '';
+            border-bottom: $popover-border-width solid $popover-header-bg;
+        }
     }
-
-    .arrow::before {
-      top: 0;
-      border-bottom-color: $popover-arrow-outer-color;
-    }
-
-    .arrow::after {
-      top: $popover-border-width;
-      border-bottom-color: $popover-arrow-color;
-    }
-
-    // This will remove the popover-header's border just below the arrow
-    .popover-header::before {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      display: block;
-      width: $popover-arrow-width;
-      margin-left: math.div($popover-arrow-width, -2);
-      content: "";
-      border-bottom: $popover-border-width solid $popover-header-bg;
-    }
-  }
 }
 
-.ng-select.ng-select-disabled>.ng-select-container {
-  background-color: #eee;
+.ng-select.ng-select-disabled > .ng-select-container {
+    background-color: #eee;
 }
 
 // bootstrap modal
-.modal, .modal-backdrop.show {
-  z-index: 999999 !important; //needs to be bigger than <ripe-header>: 99999
+.modal,
+.modal-backdrop.show {
+    z-index: 999999 !important; //needs to be bigger than <ripe-header>: 99999
 }
 .modal-header {
-  .close {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-  .modal-title {
-    margin: 0 !important;
-  }
+    .close {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .modal-title {
+        margin: 0 !important;
+    }
 }
 
-.table-striped>tbody>tr:nth-child(odd),
-.table-striped>tbody>tr:nth-child(odd) {
-  background-color: rgba(0,0,0,0.05);
-  --bs-table-accent-bg: none;
+.table-striped > tbody > tr:nth-child(odd),
+.table-striped > tbody > tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+    --bs-table-accent-bg: none;
 }

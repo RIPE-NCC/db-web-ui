@@ -1,27 +1,26 @@
-import {Injectable} from "@angular/core";
-import * as _ from "lodash";
-import {WhoisMetaService} from "./whois-meta.service";
-import {IAttributeModel, IErrorMessageModel, IWhoisObjectModel, IWhoisResponseModel} from "./whois-response-type.model";
+import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
+import { WhoisMetaService } from './whois-meta.service';
+import { IAttributeModel, IErrorMessageModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
 
 @Injectable()
 export class WhoisResourcesService {
+    private readonly allowedEmptyAttrs = ['remarks', 'descr', 'certif', 'address'];
 
-    private readonly allowedEmptyAttrs = ["remarks", "descr", "certif", "address"];
-
-    constructor(private whoisMetaService: WhoisMetaService) {
-    }
+    constructor(private whoisMetaService: WhoisMetaService) {}
 
     public addAttributeAfter(attributes: IAttributeModel[], attr: IAttributeModel, after: any) {
         const metaClone = {};
         let hasMeta = false;
-        if (attr.$$meta && typeof attr.$$meta === "object") {
+        if (attr.$$meta && typeof attr.$$meta === 'object') {
             Object.keys(attr.$$meta).forEach((itemKey) => {
                 metaClone[itemKey] = attr.$$meta[itemKey];
                 hasMeta = true;
             });
         }
-        const foundAt = after.$$hashKey ? _.findIndex(attributes, {name: after.name, value: after.value, $$hashKey: after.$$hashKey})
-            : _.findIndex(attributes, {name: after.name, value: after.value});
+        const foundAt = after.$$hashKey
+            ? _.findIndex(attributes, { name: after.name, value: after.value, $$hashKey: after.$$hashKey })
+            : _.findIndex(attributes, { name: after.name, value: after.value });
 
         const attrCopy: IAttributeModel = { name: attr.name, value: attr.value };
         if (hasMeta) {
@@ -37,7 +36,7 @@ export class WhoisResourcesService {
         _.each(attributes, (next: IAttributeModel) => {
             result.push(next);
             if (found === false && next.name === after.name) {
-                result.push({name: attr.name, value: attr.value});
+                result.push({ name: attr.name, value: attr.value });
                 found = true;
             }
         });
@@ -73,9 +72,11 @@ export class WhoisResourcesService {
     }
 
     private addBelowLastOf(attrs: IAttributeModel[], attrTypeName: string, item: any) {
-        const last =  _.last(_.filter(attrs, (attr) => {
-            return attr.name === attrTypeName;
-        }));
+        const last = _.last(
+            _.filter(attrs, (attr) => {
+                return attr.name === attrTypeName;
+            }),
+        );
         const result: IAttributeModel[] = [];
         _.each(attrs, (next) => {
             result.push(next);
@@ -128,11 +129,9 @@ export class WhoisResourcesService {
     }
 
     public turnAttrsIntoWhoisObject(attrs: IAttributeModel[]) {
-        return{
+        return {
             objects: {
-                object: [
-                    { attributes: { attribute: attrs } },
-                ],
+                object: [{ attributes: { attribute: attrs } }],
             },
         };
     }
@@ -143,7 +142,7 @@ export class WhoisResourcesService {
             let packed;
             const first = attrs[0];
             if (!_.isUndefined(first)) {
-                packed = {type: first.name, attributes: {attribute: attrs}};
+                packed = { type: first.name, attributes: { attribute: attrs } };
             }
             return packed;
         });
@@ -171,66 +170,60 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: IErrorMessageModel) => {
-                errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
-                return errorMessage.severity === "Error" && !errorMessage.attribute;
-            });
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+            errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
+            return errorMessage.severity === 'Error' && !errorMessage.attribute;
+        });
     }
 
     public getGlobalWarnings(whoisResponse: IWhoisResponseModel) {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: IErrorMessageModel) => {
-                errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
-                return errorMessage.severity === "Warning" && !errorMessage.attribute;
-            });
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+            errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
+            return errorMessage.severity === 'Warning' && !errorMessage.attribute;
+        });
     }
 
     public getGlobalInfos(whoisResponse: IWhoisResponseModel) {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: IErrorMessageModel) => {
-                errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
-                return errorMessage.severity === "Info" && !errorMessage.attribute;
-            });
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+            errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
+            return errorMessage.severity === 'Info' && !errorMessage.attribute;
+        });
     }
 
     public getAllErrors(whoisResponse: IWhoisResponseModel) {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: IErrorMessageModel) => {
-                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
-                return errorMessage.severity === "Error";
-            });
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+            errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
+            return errorMessage.severity === 'Error';
+        });
     }
 
     public getAllWarnings(whoisResponse: IWhoisResponseModel) {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: IErrorMessageModel) => {
-                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  WhoisResourcesService.readableError(errorMessage);
-                return errorMessage.severity === "Warning";
-            });
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+            errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
+            return errorMessage.severity === 'Warning';
+        });
     }
 
     public getAllInfos(whoisResponse: IWhoisResponseModel) {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: IErrorMessageModel) => {
-                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  WhoisResourcesService.readableError(errorMessage);
-                return errorMessage.severity === "Info";
-            });
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+            errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
+            return errorMessage.severity === 'Info';
+        });
     }
 
     public clearErrors(attributes: IAttributeModel[]) {
@@ -243,30 +236,28 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage
-            .filter((errorMessage: IErrorMessageModel) => {
-                if (errorMessage.attribute) {
-                    errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
-                    return errorMessage.attribute.name === attributeName && errorMessage.attribute.value.trim() === attributeValue;
-                }
-                return false;
-            });
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+            if (errorMessage.attribute) {
+                errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
+                return errorMessage.attribute.name === attributeName && errorMessage.attribute.value.trim() === attributeValue;
+            }
+            return false;
+        });
     }
 
     public getAuthenticationCandidatesFromError(whoisResponse: IWhoisResponseModel) {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        const myMsgs =  _.filter(whoisResponse.errormessages.errormessage, (msg: IErrorMessageModel) => {
-            return msg.severity === "Error" &&
-                msg.text === `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`;
+        const myMsgs = _.filter(whoisResponse.errormessages.errormessage, (msg: IErrorMessageModel) => {
+            return msg.severity === 'Error' && msg.text === `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`;
         });
 
         // FIXME PUT TYPE
         const mntners: any[] = [];
         _.each(myMsgs, (msg) => {
             const candidates = msg.args[3].value;
-            _.each(candidates.split(","), (mntner) => {
+            _.each(candidates.split(','), (mntner) => {
                 if (!_.includes(mntners, mntner)) {
                     mntners.push(mntner);
                 }
@@ -277,19 +268,19 @@ export class WhoisResourcesService {
 
     public getRequiresAdminRightFromError(whoisResponse: IWhoisResponseModel) {
         return _.some(whoisResponse.errormessages.errormessage, (msg: IErrorMessageModel) => {
-            return msg.text === "Deleting this object requires administrative authorisation";
+            return msg.text === 'Deleting this object requires administrative authorisation';
         });
     }
 
     private static getRelatedAttribute(errorMessage: IErrorMessageModel) {
-        if (errorMessage.attribute && typeof errorMessage.attribute.name === "string") {
-            return errorMessage.attribute.name + ": ";
+        if (errorMessage.attribute && typeof errorMessage.attribute.name === 'string') {
+            return errorMessage.attribute.name + ': ';
         }
-        return "";
+        return '';
     }
 
     private getFirstMandatoryAttrAbove(objectType: string, attrTypeName: string) {
-        const metaAttrs =  this.whoisMetaService.getMandatoryAttributesOnObjectType(objectType);
+        const metaAttrs = this.whoisMetaService.getMandatoryAttributesOnObjectType(objectType);
         const idx = _.findIndex(metaAttrs, (item: IAttributeModel) => {
             return item.name === attrTypeName;
         });
@@ -300,12 +291,12 @@ export class WhoisResourcesService {
         if (_.isUndefined(whoisResponse.objects)) {
             return undefined;
         }
-        const keys = _.map(whoisResponse.objects.object[0]["primary-key"].attribute, (item) => {
+        const keys = _.map(whoisResponse.objects.object[0]['primary-key'].attribute, (item) => {
             return item.value;
         });
 
         /* just append without any separators */
-        return keys.join("");
+        return keys.join('');
     }
 
     public getSource(whoisResponse: IWhoisResponseModel) {
@@ -327,14 +318,14 @@ export class WhoisResourcesService {
         } else if (obj.attributes.attribute[0].name) {
             objectType = obj.attributes.attribute[0].name;
         } else {
-            console.error("No object type found for " + JSON.stringify(this));
+            console.error('No object type found for ' + JSON.stringify(this));
         }
         return objectType;
     }
 
     public isFiltered(whoisResponse: IWhoisResponseModel) {
-        const sourceAttribute = this.getSingleAttributeOnName(this.getAttributes(whoisResponse), "source");
-        return (sourceAttribute && sourceAttribute.comment === "Filtered");
+        const sourceAttribute = this.getSingleAttributeOnName(this.getAttributes(whoisResponse), 'source');
+        return sourceAttribute && sourceAttribute.comment === 'Filtered';
     }
 
     public getAttributes(whoisResponse: IWhoisResponseModel) {
@@ -420,7 +411,7 @@ export class WhoisResourcesService {
 
         return _.map(filtered, (item: IAttributeModel) => {
             if (_.isUndefined(item.value)) {
-                item.value = "";
+                item.value = '';
             }
             return item;
         });
@@ -432,19 +423,21 @@ export class WhoisResourcesService {
             metaClone[itemKey] = attr.$$meta[itemKey];
         });
         const foundAt = _.findIndex(attributes, { name: attr.name, value: attr.value });
-        const attrCopy = { name: attr.name, value: "", $$meta: metaClone };
+        const attrCopy = { name: attr.name, value: '', $$meta: metaClone };
         attributes.splice(foundAt + 1, 0, attrCopy);
         return attributes;
     }
 
     private isValidWhoisResources(whoisResources: IWhoisResponseModel) {
         if (_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
-            console.error("isValidWhoisResources: Null input:" + JSON.stringify(whoisResources));
+            console.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
             return false;
         }
-        if ((_.isUndefined(whoisResources.objects)       || _.isNull(whoisResources.objects))
-            && (_.isUndefined(whoisResources.errormessages) ||  _.isNull(whoisResources.errormessages))) {
-            console.error("isValidWhoisResources: Missing objects and errormessages:" + JSON.stringify(whoisResources));
+        if (
+            (_.isUndefined(whoisResources.objects) || _.isNull(whoisResources.objects)) &&
+            (_.isUndefined(whoisResources.errormessages) || _.isNull(whoisResources.errormessages))
+        ) {
+            console.error('isValidWhoisResources: Missing objects and errormessages:' + JSON.stringify(whoisResources));
             return false;
         }
 
@@ -454,8 +447,8 @@ export class WhoisResourcesService {
     public validate(attributes: IAttributeModel[]) {
         let errorFound = false;
         _.each(attributes, (attr: IAttributeModel) => {
-            if (attr.$$meta.$$mandatory === true && ! attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0) {
-                attr.$$error = "Mandatory attribute not set";
+            if (attr.$$meta.$$mandatory === true && !attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0) {
+                attr.$$error = 'Mandatory attribute not set';
                 errorFound = true;
             } else {
                 attr.$$error = undefined;
@@ -474,22 +467,26 @@ export class WhoisResourcesService {
 
     public validateWithoutSettingErrors(attributes: IAttributeModel[]) {
         return !attributes.some((attr: IAttributeModel) => {
-            return attr.$$invalid || attr.$$meta.$$mandatory === true && !attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0;
+            return (
+                attr.$$invalid || (attr.$$meta.$$mandatory === true && !attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0)
+            );
         });
     }
 
     public getAddableAttributes(attributes: IAttributeModel[], objectType: string, attrs: IAttributeModel[]) {
         return _.filter(this.whoisMetaService.getAllAttributesOnObjectType(objectType), (attr: IAttributeModel) => {
-            if (attr.name === "created") {
+            if (attr.name === 'created') {
                 return false;
-            } else if (attr.name === "last-modified") {
+            } else if (attr.name === 'last-modified') {
                 return false;
             } else if (attr.$$meta.$$multiple === true) {
                 return true;
             } else if (attr.$$meta.$$mandatory === false) {
-                if (!_.some(attrs, (a) => {
+                if (
+                    !_.some(attrs, (a) => {
                         return a.name === attr.name;
-                    })) {
+                    })
+                ) {
                     return true;
                 }
             }
@@ -502,9 +499,9 @@ export class WhoisResourcesService {
     }
 
     public toPlaintext(attributes: IAttributeModel[]) {
-        let result = "";
+        let result = '';
         _.each(attributes, (attr: IAttributeModel) => {
-            result += attr.name + ":" + WhoisResourcesService.repeat(" ", Math.max(0, (20 - attr.name.length))) + _.trim(attr.value) + "\n";
+            result += attr.name + ':' + WhoisResourcesService.repeat(' ', Math.max(0, 20 - attr.name.length)) + _.trim(attr.value) + '\n';
         });
         return result;
     }
@@ -514,8 +511,7 @@ export class WhoisResourcesService {
         if (!_.isUndefined(whoisResources) && this.isValidWhoisResources(whoisResources)) {
             const objectType = this.getObjectType(whoisResources);
             if (!_.isUndefined(objectType) && !_.isUndefined(this.getAttributes(whoisResources))) {
-                whoisResources.objects.object[0].attributes.attribute =
-                    this.wrapAndEnrichAttributes(objectType, this.getAttributes(whoisResources));
+                whoisResources.objects.object[0].attributes.attribute = this.wrapAndEnrichAttributes(objectType, this.getAttributes(whoisResources));
             }
             result = whoisResources;
         }
@@ -548,9 +544,7 @@ export class WhoisResourcesService {
             whoisResources = {};
             whoisResources.errormessages = {};
             whoisResources.errormessages.errormessage = [];
-            whoisResources.errormessages.errormessage.push(
-                {severity: "Error", text: "Unexpected error: please retry later"},
-            );
+            whoisResources.errormessages.errormessage.push({ severity: 'Error', text: 'Unexpected error: please retry later' });
         }
         error.data = this.wrap(whoisResources);
         return error;

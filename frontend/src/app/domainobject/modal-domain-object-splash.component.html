@@ -1,6 +1,6 @@
 <div class="modal-content no-rounded rdns-modal">
     <div class="modal-body">
-        <img src="assets/images/internet-world.svg" alt="" class="ico-internet-world"/>
+        <img src="assets/images/internet-world.svg" alt="" class="ico-internet-world" />
         <div class="indent">
             <h1>Creating DOMAIN Objects for Reverse DNS</h1>
             <p>Make sure you set up at least two name servers that are authoritative for the zone.</p>
@@ -12,7 +12,15 @@
                 <li>The timing parameters should be reasonable.</li>
             </ul>
             <p><a href="https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns" target="_blank">Documentation for Reverse DNS</a></p>
-            <button class="blue-button ga-domain-popup-btn" id="modal-splash-button" type="button" data-dismiss="modal" (click)="activeModal.close('continue-domain-creating')">Continue to domain object creation wizard</button>
+            <button
+                class="blue-button ga-domain-popup-btn"
+                id="modal-splash-button"
+                type="button"
+                data-dismiss="modal"
+                (click)="activeModal.close('continue-domain-creating')"
+            >
+                Continue to domain object creation wizard
+            </button>
         </div>
     </div>
 </div>

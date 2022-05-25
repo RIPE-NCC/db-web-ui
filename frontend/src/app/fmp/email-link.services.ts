@@ -1,11 +1,10 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class EmailLinkService {
-
-    private url = "api/whois-internal/api/fmp-pub/emaillink";
+    private url = 'api/whois-internal/api/fmp-pub/emaillink';
 
     constructor(private http: HttpClient) {}
 
@@ -14,6 +13,6 @@ export class EmailLinkService {
     }
 
     public update(hash: string): Observable<any> {
-        return this.http.put(`${this.url}/${hash}.json`, {hash});
+        return this.http.put(`${this.url}/${hash}.json`, { hash });
     }
 }

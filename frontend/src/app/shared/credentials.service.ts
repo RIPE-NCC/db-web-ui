@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import * as _ from "lodash";
+import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 
 export interface ICredentials {
     mntner: string;
@@ -8,7 +8,6 @@ export interface ICredentials {
 
 @Injectable()
 export class CredentialsService {
-
     private credentials: ICredentials;
 
     public setCredentials(mntner: string, successfulPassword: string) {
@@ -37,5 +36,4 @@ export class CredentialsService {
         }
         return passwords;
     }
-
 }

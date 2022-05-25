@@ -1,28 +1,32 @@
 {
-	"requestUrl": "/api/whois-internal/api/user/info",
-	"contentType": "application/javascript",
-	"statusCode": 200,
-	"data": {
-		"user": {
-			"username": "tdacruzper@ripe.net",
-			"uuid": "938c6a59-5302-4953-974e-686567eac074",
-			"active": true,
-			"displayName": "Fred Astaire",
-			"expiryDate": "2017-07-06T18:25:41.877"
-		},
-		"organisations": [{
-			"orgObjectId": "ORG-WEG1-RIPE",
-			"organisationName": "Wikom Deutsche Telekabel GmbH",
-			"roles": ["certification", "NON-MEMBER", "myResources"]
-		}, {
-			"orgObjectId": "ORG-WA56-RIPE",
-			"organisationName": "Swi Rop Gonggrijp",
-			"roles": ["certification", "NON-MEMBER", "myResources"]
-		}, {
-			"orgObjectId": "ORG-VA397-RIPE",
-			"organisationName": "Viollier AG",
-			"roles": ["certification", "NON-MEMBER", "myResources"]
-		}],
-		"members": []
-	}
+    "requestUrl": "/api/whois-internal/api/user/info",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "user": {
+            "username": "tdacruzper@ripe.net",
+            "uuid": "938c6a59-5302-4953-974e-686567eac074",
+            "active": true,
+            "displayName": "Fred Astaire",
+            "expiryDate": "2017-07-06T18:25:41.877"
+        },
+        "organisations": [
+            {
+                "orgObjectId": "ORG-WEG1-RIPE",
+                "organisationName": "Wikom Deutsche Telekabel GmbH",
+                "roles": ["certification", "NON-MEMBER", "myResources"]
+            },
+            {
+                "orgObjectId": "ORG-WA56-RIPE",
+                "organisationName": "Swi Rop Gonggrijp",
+                "roles": ["certification", "NON-MEMBER", "myResources"]
+            },
+            {
+                "orgObjectId": "ORG-VA397-RIPE",
+                "organisationName": "Viollier AG",
+                "roles": ["certification", "NON-MEMBER", "myResources"]
+            }
+        ],
+        "members": []
+    }
 }

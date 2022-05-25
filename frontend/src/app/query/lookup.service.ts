@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
-import {IWhoisResponseModel} from "../shared/whois-response-type.model";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 
 export interface ILookupState {
     source: string;
@@ -15,20 +15,19 @@ interface ILookupService {
 
 @Injectable()
 export class LookupService implements ILookupService {
-
     constructor(private http: HttpClient) {}
 
     public lookupWhoisObject(lookupState: ILookupState): Observable<any> {
         if (!lookupState.key || !lookupState.source || !lookupState.type) {
-            return throwError("Not a valid ILookupState");
+            return throwError('Not a valid ILookupState');
         }
         const url = `api/whois/${lookupState.source}/${lookupState.type}/${lookupState.key}`;
 
         const params = new HttpParams()
-            .set("abuse-contact", String(true))
-            .set("managed-attributes", String(true))
-            .set("resource-holder", String(true))
-            .set("unfiltered", String(true));
-        return this.http.get<IWhoisResponseModel>(url, {params});
+            .set('abuse-contact', String(true))
+            .set('managed-attributes', String(true))
+            .set('resource-holder', String(true))
+            .set('unfiltered', String(true));
+        return this.http.get<IWhoisResponseModel>(url, { params });
     }
 }

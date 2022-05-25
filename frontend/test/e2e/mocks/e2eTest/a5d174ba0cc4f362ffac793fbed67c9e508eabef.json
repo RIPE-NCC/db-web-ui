@@ -1,33 +1,33 @@
 {
-  "requestUrl": "/db-web-ui/api/whois-internal/api/resources/inetnum/185.51.48.0%20-%20185.51.55.255/associated-route-objects.json?filter=&page=0",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "associatedObjects": [
-      {
-        "type": "associated-route",
-        "associatedResource": "185.51.48.0 - 185.51.51.255",
-        "relatedResourceType": "inetnum",
-        "origin": "AS8100",
-        "prefix": "185.51.49.0/24"
-      },
-      {
-        "type": "associated-route",
-        "associatedResource": "185.51.48.0 - 185.51.51.255",
-        "relatedResourceType": "inetnum",
-        "origin": "AS41108",
-        "prefix": "185.51.50.0/24"
-      },
-      {
-        "type": "associated-route",
-        "associatedResource": "185.51.48.0 - 185.51.51.255",
-        "relatedResourceType": "inetnum",
-        "origin": "AS41108",
-        "prefix": "185.51.51.0"
-      }
-    ],
-    "totalNumberOfResources": 3,
-    "filteredSize": 3,
-    "pageSize": 3
-  }
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources/inetnum/185.51.48.0%20-%20185.51.55.255/associated-route-objects.json?filter=&page=0",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "associatedObjects": [
+            {
+                "type": "associated-route",
+                "associatedResource": "185.51.48.0 - 185.51.51.255",
+                "relatedResourceType": "inetnum",
+                "origin": "AS8100",
+                "prefix": "185.51.49.0/24"
+            },
+            {
+                "type": "associated-route",
+                "associatedResource": "185.51.48.0 - 185.51.51.255",
+                "relatedResourceType": "inetnum",
+                "origin": "AS41108",
+                "prefix": "185.51.50.0/24"
+            },
+            {
+                "type": "associated-route",
+                "associatedResource": "185.51.48.0 - 185.51.51.255",
+                "relatedResourceType": "inetnum",
+                "origin": "AS41108",
+                "prefix": "185.51.51.0"
+            }
+        ],
+        "totalNumberOfResources": 3,
+        "filteredSize": 3,
+        "pageSize": 3
+    }
 }

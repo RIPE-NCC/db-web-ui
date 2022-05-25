@@ -1,7 +1,7 @@
-import {Component} from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-    selector: "error-page",
+    selector: 'error-page',
     template: `<section class="fivehunder-error">
         <h1>500</h1>
         <h2>Internal Server Error</h2>
@@ -9,5 +9,4 @@ import {Component} from "@angular/core";
         <a class="btn blue-button" routerLink="/">Back to RIPE Database</a>
     </section>`,
 })
-export class ErrorPageComponent {
-}
+export class ErrorPageComponent {}

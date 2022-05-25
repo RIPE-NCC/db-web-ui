@@ -1,16 +1,16 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {forkJoin, of, throwError} from "rxjs";
-import {catchError, flatMap} from "rxjs/operators";
-import * as _ from "lodash";
-import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {RestService} from "../rest.service";
-import {MntnerService} from "../mntner.service";
-import {STATE} from "../web-updates-state.constants";
-import {IAuthParams, WebUpdatesCommonsService} from "../web-updates-commons.service";
-import {IMaintainers} from "../create-modify.component";
-import {IMntByModel} from "../../shared/whois-response-type.model";
-import {AlertsService} from "../../shared/alert/alerts.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash';
+import { forkJoin, of, throwError } from 'rxjs';
+import { catchError, flatMap } from 'rxjs/operators';
+import { AlertsService } from '../../shared/alert/alerts.service';
+import { WhoisResourcesService } from '../../shared/whois-resources.service';
+import { IMntByModel } from '../../shared/whois-response-type.model';
+import { IMaintainers } from '../create-modify.component';
+import { MntnerService } from '../mntner.service';
+import { RestService } from '../rest.service';
+import { IAuthParams, WebUpdatesCommonsService } from '../web-updates-commons.service';
+import { STATE } from '../web-updates-state.constants';
 
 interface IObjectFromParameters {
     attributes: any;
@@ -20,16 +20,15 @@ interface IObjectFromParameters {
 }
 
 @Component({
-    selector: "force-delete",
-    templateUrl: "./force-delete.component.html",
+    selector: 'force-delete',
+    templateUrl: './force-delete.component.html',
 })
 export class ForceDeleteComponent implements OnInit {
-
     public object: IObjectFromParameters = {
         attributes: [],
-        name: "",
-        source: "",
-        type: "",
+        name: '',
+        source: '',
+        type: '',
     };
     public maintainers: IMaintainers = {
         object: [],
@@ -38,24 +37,25 @@ export class ForceDeleteComponent implements OnInit {
     };
     public restCallInProgress: boolean = false;
 
-    constructor(private whoisResourcesService: WhoisResourcesService,
-                private webUpdatesCommonsService: WebUpdatesCommonsService,
-                private restService: RestService,
-                private mntnerService: MntnerService,
-                public alertsService: AlertsService,
-                private activatedRoute: ActivatedRoute) {}
+    constructor(
+        private whoisResourcesService: WhoisResourcesService,
+        private webUpdatesCommonsService: WebUpdatesCommonsService,
+        private restService: RestService,
+        private mntnerService: MntnerService,
+        public alertsService: AlertsService,
+        private activatedRoute: ActivatedRoute,
+    ) {}
 
     public ngOnInit() {
-
         this.alertsService.clearAlertMessages();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
         this.object.name = this.getNameFromUrl();
-        this.object.source = paramMap.get("source");
-        this.object.type = paramMap.get("objectType");
+        this.object.source = paramMap.get('source');
+        this.object.type = paramMap.get('objectType');
 
-        console.debug("ForceDeleteComponent: Url params: source:" + this.object.source + ". type:" + this.object.type + ", name: " + this.object.name);
+        console.debug('ForceDeleteComponent: Url params: source:' + this.object.source + '. type:' + this.object.type + ', name: ' + this.object.name);
 
         const hasError = this.validateParamsAndShowErrors();
         if (hasError === false) {
@@ -68,32 +68,31 @@ export class ForceDeleteComponent implements OnInit {
     }
 
     private getNameFromUrl(): string {
-        if (this.activatedRoute.snapshot.paramMap.has("objectName")) {
-            return decodeURIComponent(this.activatedRoute.snapshot.paramMap.get("objectName"));
+        if (this.activatedRoute.snapshot.paramMap.has('objectName')) {
+            return decodeURIComponent(this.activatedRoute.snapshot.paramMap.get('objectName'));
         }
     }
 
     private validateParamsAndShowErrors() {
         let hasError = false;
-        const forceDeletableObjectTypes = ["inetnum", "inet6num", "route", "route6", "domain"];
+        const forceDeletableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
         if (!_.includes(forceDeletableObjectTypes, this.object.type)) {
-
             const typesString = _.reduce(forceDeletableObjectTypes, (str, n) => {
-                return str + ", " + n;
+                return str + ', ' + n;
             });
 
-            this.alertsService.setGlobalError("Only " + typesString + " object types are force-deletable");
+            this.alertsService.setGlobalError('Only ' + typesString + ' object types are force-deletable');
             hasError = true;
         }
 
         if (_.isUndefined(this.object.source)) {
-            this.alertsService.setGlobalError("Source is missing");
+            this.alertsService.setGlobalError('Source is missing');
             hasError = true;
         }
 
         if (_.isUndefined(this.object.name)) {
-            this.alertsService.setGlobalError("Object key is missing");
+            this.alertsService.setGlobalError('Object key is missing');
             hasError = true;
         }
 
@@ -101,86 +100,88 @@ export class ForceDeleteComponent implements OnInit {
     }
 
     private fetchDataForForceDelete() {
-
         // wait until all three have completed
         this.restCallInProgress = true;
         const objectToModify = this.restService.fetchObject(this.object.source, this.object.type, this.object.name);
         const ssoMntners = this.restService.fetchMntnersForSSOAccount();
-        forkJoin([objectToModify, ssoMntners])
-            .subscribe(response => {
+        forkJoin([objectToModify, ssoMntners]).subscribe(
+            (response) => {
                 const objectToModifyResponse = response[0];
                 const ssoMntnersResponse = response[1];
                 this.restCallInProgress = false;
 
                 // store object to modify
-                console.debug("object to modify:" + JSON.stringify(objectToModifyResponse));
+                console.debug('object to modify:' + JSON.stringify(objectToModifyResponse));
                 this.wrapAndEnrichResources(this.object.type, objectToModifyResponse);
 
                 // store mntners for SSO account
                 this.maintainers.sso = ssoMntnersResponse;
-                console.debug("maintainers.sso:" + JSON.stringify(this.maintainers.sso));
+                console.debug('maintainers.sso:' + JSON.stringify(this.maintainers.sso));
 
-                this.useDryRunDeleteToDetectAuthCandidates()
-                    .subscribe((authCandidates: any) => {
+                this.useDryRunDeleteToDetectAuthCandidates().subscribe(
+                    (authCandidates: any) => {
                         const objectMntners = _.map(authCandidates, (item) => {
                             return {
                                 key: item,
-                                type: "mntner",
+                                type: 'mntner',
                             };
                         });
 
                         // fetch details of all selected maintainers concurrently
                         this.restCallInProgress = true;
-                        this.restService.detailsForMntners(objectMntners)
-                            .then((enrichedMntners: IMntByModel[]) => {
+                        this.restService.detailsForMntners(objectMntners).then(
+                            (enrichedMntners: IMntByModel[]) => {
                                 this.restCallInProgress = false;
 
                                 this.maintainers.object = enrichedMntners;
-                                console.debug("maintainers.object:" + JSON.stringify(this.maintainers.object));
-
-                            }, (error: any) => {
+                                console.debug('maintainers.object:' + JSON.stringify(this.maintainers.object));
+                            },
+                            (error: any) => {
                                 this.restCallInProgress = false;
-                                console.error("Error fetching mntner details" + JSON.stringify(error));
-                                this.alertsService.setGlobalError("Error fetching maintainer details");
-                            });
-
-                    }, (errorMsg: any) => {
+                                console.error('Error fetching mntner details' + JSON.stringify(error));
+                                this.alertsService.setGlobalError('Error fetching maintainer details');
+                            },
+                        );
+                    },
+                    (errorMsg: any) => {
                         this.alertsService.setGlobalError(errorMsg);
-                    });
-            }, (error) => {
+                    },
+                );
+            },
+            (error) => {
                 this.restCallInProgress = false;
                 if (error && error.data) {
-                    console.error("Error fetching object:" + JSON.stringify(error));
+                    console.error('Error fetching object:' + JSON.stringify(error));
                     const whoisResources = this.wrapAndEnrichResources(error.objectType, error.data);
                     this.alertsService.setErrors(whoisResources);
                 } else {
-                    console.error("Error fetching mntner information:" + JSON.stringify(error));
-                    this.alertsService.setGlobalError("Error fetching maintainers to force delete this object");
+                    console.error('Error fetching mntner information:' + JSON.stringify(error));
+                    this.alertsService.setGlobalError('Error fetching maintainers to force delete this object');
                 }
-            });
+            },
+        );
     }
 
     private useDryRunDeleteToDetectAuthCandidates() {
         this.restCallInProgress = true;
-        return this.restService.deleteObject(this.object.source, this.object.type, this.object.name, "dry-run", false, undefined, true)
-            .pipe(
-                flatMap(() => {
-                    this.restCallInProgress = false;
-                    console.debug("auth can be performed without interactive popup");
-                    return []
-                }),
-                catchError((error: any) => {
-                    this.restCallInProgress = false;
-                    // we expect an error: from the error we except auth candidates
-                    if (this.whoisResourcesService.getRequiresAdminRightFromError(error.data)) {
-                        return throwError("Deleting this object requires administrative authorisation")
-                    } else {
-                        // strip RIPE-NCC- mntners
-                        let authCandidates = this.whoisResourcesService.getAuthenticationCandidatesFromError(error.data);
-                        authCandidates = _.filter(authCandidates, (mntner: string) => !(_.startsWith(mntner, "RIPE-NCC-")));
-                        return of(_.map(authCandidates, (item: string) => _.trim(item)));
-                    }
-                })
+        return this.restService.deleteObject(this.object.source, this.object.type, this.object.name, 'dry-run', false, undefined, true).pipe(
+            flatMap(() => {
+                this.restCallInProgress = false;
+                console.debug('auth can be performed without interactive popup');
+                return [];
+            }),
+            catchError((error: any) => {
+                this.restCallInProgress = false;
+                // we expect an error: from the error we except auth candidates
+                if (this.whoisResourcesService.getRequiresAdminRightFromError(error.data)) {
+                    return throwError('Deleting this object requires administrative authorisation');
+                } else {
+                    // strip RIPE-NCC- mntners
+                    let authCandidates = this.whoisResourcesService.getAuthenticationCandidatesFromError(error.data);
+                    authCandidates = _.filter(authCandidates, (mntner: string) => !_.startsWith(mntner, 'RIPE-NCC-'));
+                    return of(_.map(authCandidates, (item: string) => _.trim(item)));
+                }
+            }),
         );
     }
 
@@ -199,10 +200,10 @@ export class ForceDeleteComponent implements OnInit {
     public forceDelete() {
         if (this.isFormValid()) {
             if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, [], this.maintainers.object)) {
-                console.debug("Need auth");
+                console.debug('Need auth');
                 this.performAuthentication();
             } else {
-                console.debug("No auth needed");
+                console.debug('No auth needed');
                 this.onSuccessfulAuthentication();
             }
         }
@@ -218,14 +219,14 @@ export class ForceDeleteComponent implements OnInit {
                 source: this.object.source,
                 type: this.object.type,
             },
-            operation: "ForceDelete",
+            operation: 'ForceDelete',
             successClbk: this.onSuccessfulAuthentication,
         };
         this.webUpdatesCommonsService.performAuthentication(authParams);
     }
 
     private onSuccessfulAuthentication() {
-        console.debug("Navigate to force delete screen");
+        console.debug('Navigate to force delete screen');
         this.webUpdatesCommonsService.navigateToDelete(this.object.source, this.object.type, this.object.name, STATE.FORCE_DELETE);
     }
 }

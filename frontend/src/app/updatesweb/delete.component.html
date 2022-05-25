@@ -1,15 +1,14 @@
 <div [hidden]="modalInProgress">
-
     <section *ngFor="let object of deletedObjects" class="inner-container">
         <table class="success-fields grey">
             <tr *ngFor="let attribute of object.attributes.attribute">
                 <td width="20%">
-                    <label>{{attribute.name}}:</label>
+                    <label>{{ attribute.name }}:</label>
                 </td>
                 <td>
-                    <p>{{attribute.value}}</p>
+                    <p>{{ attribute.value }}</p>
                     <div [hidden]="!attribute.$$error" class="modify-feedback">
-                        <span>{{attribute.$$error}}</span>
+                        <span>{{ attribute.$$error }}</span>
                         <i class="fal fa-info-circle"></i>
                     </div>
                 </td>
@@ -17,7 +16,7 @@
         </table>
     </section>
     <section>
-        <br/>
+        <br />
         <a href="" class="blue-button">Create a new object</a>
         <a href="query" class="blue-button">Search for an object</a>
     </section>

@@ -1,5 +1,5 @@
-import {EventEmitter, Injectable} from "@angular/core";
-import {IUserInfoOrganisation} from "./org-data-type.model";
+import { EventEmitter, Injectable } from '@angular/core';
+import { IUserInfoOrganisation } from './org-data-type.model';
 
 @Injectable()
 export class OrgDropDownSharedService {

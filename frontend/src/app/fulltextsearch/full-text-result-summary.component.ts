@@ -1,12 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
-import {IResultSummary} from "./types.model";
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { IResultSummary } from './types.model';
 
 @Component({
-    selector: "full-text-result-summary",
-    templateUrl: "./full-text-result-summary.component.html",
+    selector: 'full-text-result-summary',
+    templateUrl: './full-text-result-summary.component.html',
 })
 export class FullTextResultSummaryComponent implements OnChanges {
-
     @Input()
     public tabledata: IResultSummary[];
     @Output()
@@ -17,7 +16,7 @@ export class FullTextResultSummaryComponent implements OnChanges {
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes["tabledata"]) {
+        if (changes['tabledata']) {
             let total = 0;
             for (const row of this.tabledata) {
                 total += row.value;
@@ -26,7 +25,7 @@ export class FullTextResultSummaryComponent implements OnChanges {
         }
     }
 
-    public emitRowClicked(row: {type: IResultSummary}) {
+    public emitRowClicked(row: { type: IResultSummary }) {
         this.rowClicked.emit(row.type.name);
     }
 }

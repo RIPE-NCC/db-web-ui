@@ -8,27 +8,25 @@ const { SpecReporter } = require('jasmine-spec-reporter');
  * @type { import("protractor").Config }
  */
 exports.config = {
-  specs: [
-    './src/*e2e-spec.ts',
-  ],
-  capabilities: {
-    'browserName': 'chrome',
-    'chromeOptions': {'args': ['--disable-extensions', '--window-size=1920,1080', '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']},
-    'acceptInsecureCerts' : true
-  },
-  directConnect: true,
-  framework: 'jasmine',
-  allScriptsTimeout: 200000,
+    specs: ['./src/*e2e-spec.ts'],
+    capabilities: {
+        browserName: 'chrome',
+        chromeOptions: { args: ['--disable-extensions', '--window-size=1920,1080', '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] },
+        acceptInsecureCerts: true,
+    },
+    directConnect: true,
+    framework: 'jasmine',
+    allScriptsTimeout: 200000,
 
-  jasmineNodeOpts: {
-    showColors: true,
-    defaultTimeoutInterval: 30000,
-    print: function() {}
-  },
-  onPrepare() {
-    require('ts-node').register({
-      project: require('path').join(__dirname, './tsconfig.json')
-    });
-    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: 'raw' } }));
-  }
+    jasmineNodeOpts: {
+        showColors: true,
+        defaultTimeoutInterval: 30000,
+        print: function () {},
+    },
+    onPrepare() {
+        require('ts-node').register({
+            project: require('path').join(__dirname, './tsconfig.json'),
+        });
+        jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: 'raw' } }));
+    },
 };

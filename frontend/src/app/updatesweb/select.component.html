@@ -1,23 +1,18 @@
 <h1>Select object type you would like to create</h1>
 
 <section>
-<form id="selectForm" class="grey padding float-start">
-    <div>
-	    <label for="objectTypeSelector">Object type</label>
-        <select name="objectTypeSelector" id="objectTypeSelector"
-                [(ngModel)]="selected.objectType"
-                [required]="true"
-                class="form-control select-height">
-            <option [ngValue]="'role-mntnr'" label="role and maintainer pair">role and maintainer pair</option>
-            <option *ngFor="let objectType of objectTypes" label="{{objectType}}" [ngValue]="objectType">{{objectType}}</option>
-        </select>
-	</div>
-    <br/>
+    <form id="selectForm" class="grey padding float-start">
+        <div>
+            <label for="objectTypeSelector">Object type</label>
+            <select name="objectTypeSelector" id="objectTypeSelector" [(ngModel)]="selected.objectType" [required]="true" class="form-control select-height">
+                <option [ngValue]="'role-mntnr'" label="role and maintainer pair">role and maintainer pair</option>
+                <option *ngFor="let objectType of objectTypes" label="{{ objectType }}" [ngValue]="objectType">{{ objectType }}</option>
+            </select>
+        </div>
+        <br />
 
-    <button id="btnNavigateToCreate"
-            class="blue-button float-end ga-createobj-select"
-            (click)="navigateToCreate()">{{loggedIn ? "Create" : "Login to create"}}</button>
-
-</form>
+        <button id="btnNavigateToCreate" class="blue-button float-end ga-createobj-select" (click)="navigateToCreate()">
+            {{ loggedIn ? 'Create' : 'Login to create' }}
+        </button>
+    </form>
 </section>
-

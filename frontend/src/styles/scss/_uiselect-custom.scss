@@ -1,71 +1,72 @@
 // Maintainer selection
-.ng-dropdown-panel { //
+.ng-dropdown-panel {
+    //
     max-height: none !important;
     overflow-x: auto !important;
     .ng-dropdown-panel-items {
-		border-bottom: 1px solid #EAEAEA !important;
-		.ng-option {
-			padding: 10px 8px;
-			div.option {
-				span.auth {
-					float: right;
-					color: #fff;
-					margin-left: 5px;
-					min-width: 35px;
-				    padding: 0 4px;
-				    text-align: center;
-				    font-size: 10px;
-				}
-				span.auth.md5 {
-					background-color: #E4BF3C;
-					border: 1px solid #BFAA42;
-				}
-				span.auth.sso {
-					background-color: #7FE43C;
-					border: 1px solid #63BF42;
-				}
-				span.auth.pgp {
-					background-color: #E78CF8;
-					border: 1px solid #BC5CEC;
-				}
-				span.star {
-					color: #E2CC5A;
-					margin-left: 5px;
-				}
-			}
-		}
-	}
+        border-bottom: 1px solid #eaeaea !important;
+        .ng-option {
+            padding: 10px 8px;
+            div.option {
+                span.auth {
+                    float: right;
+                    color: #fff;
+                    margin-left: 5px;
+                    min-width: 35px;
+                    padding: 0 4px;
+                    text-align: center;
+                    font-size: 10px;
+                }
+                span.auth.md5 {
+                    background-color: #e4bf3c;
+                    border: 1px solid #bfaa42;
+                }
+                span.auth.sso {
+                    background-color: #7fe43c;
+                    border: 1px solid #63bf42;
+                }
+                span.auth.pgp {
+                    background-color: #e78cf8;
+                    border: 1px solid #bc5cec;
+                }
+                span.star {
+                    color: #e2cc5a;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
 }
 
 // Selected maintainer items
 #selectMaintainerDropdown {
-	// hide x - clear all, which is by default on ng-select component
-	.ng-clear-wrapper {
-		visibility: hidden;
-	}
-	.default {
-		background: #3BBFC0;
-		color: #fff;
-		border-radius: 3px;
-		background-image: none;
-		box-shadow: none;
-		text-shadow: none;
-		border: 1px solid #1E8D8D;
-		margin: 0 1px 3px !important;
-		padding-left: 5px;
-		.close {
-			color: #fff;
-			font-size: 19px;
-			opacity: 1;
-			text-shadow: none;
-			padding-right: 5px;
-			padding-left: 5px;
-			border-left: 1px solid #1E8D8D;
-			margin-left: 2px;
-			&:hover {
-				background: #3BBFC0;
-			}
-		}
+    // hide x - clear all, which is by default on ng-select component
+    .ng-clear-wrapper {
+        visibility: hidden;
+    }
+    .default {
+        background: #3bbfc0;
+        color: #fff;
+        border-radius: 3px;
+        background-image: none;
+        box-shadow: none;
+        text-shadow: none;
+        border: 1px solid #1e8d8d;
+        margin: 0 1px 3px !important;
+        padding-left: 5px;
+        .close {
+            color: #fff;
+            font-size: 19px;
+            opacity: 1;
+            text-shadow: none;
+            padding-right: 5px;
+            padding-left: 5px;
+            border-left: 1px solid #1e8d8d;
+            margin-left: 2px;
+            &:hover {
+                background: #3bbfc0;
+            }
+        }
         .fa-lock {
             color: #fff;
             opacity: 1;
@@ -74,138 +75,139 @@
             border-left: 1px solid #777;
             padding-left: 2px;
         }
-		.fa-star {
+        .fa-star {
             color: #fff;
             opacity: 1;
             text-shadow: none;
             padding-right: 2px;
         }
-		&.existing {
-    		background-color: #26A6A7;
-		}
-	}
-	.select-locked {
-		background-color: grey !important;
-		border: 1px solid #777 !important;
-		padding-right: 5px;
-	}
-	.btn-primary {
-		background: #2EB1B2;
-	}
+        &.existing {
+            background-color: #26a6a7;
+        }
+    }
+    .select-locked {
+        background-color: grey !important;
+        border: 1px solid #777 !important;
+        padding-right: 5px;
+    }
+    .btn-primary {
+        background: #2eb1b2;
+    }
 }
 
 // Selected AdminC
 #adminCDropdown {
-	// hide x - clear all, which is by default on ng-select component
-	.ng-clear-wrapper {
-		visibility: hidden;
-	}
-	outline: none;
-	.ng-value {
-		background: #3BBFC0;
-		color: #fff;
-		border-radius: 3px;
-		background-image: none;
-		box-shadow: none;
-		text-shadow: none;
-		border: 1px solid #1E8D8D;
-		margin: 0 1px 3px !important;
-		padding-left: 5px;
+    // hide x - clear all, which is by default on ng-select component
+    .ng-clear-wrapper {
+        visibility: hidden;
+    }
+    outline: none;
+    .ng-value {
+        background: #3bbfc0;
+        color: #fff;
+        border-radius: 3px;
+        background-image: none;
+        box-shadow: none;
+        text-shadow: none;
+        border: 1px solid #1e8d8d;
+        margin: 0 1px 3px !important;
+        padding-left: 5px;
 
-		.close {
-			color: #fff;
-			font-size: 19px;
-			opacity: 1;
-			text-shadow: none;
-			padding-right: 5px;
-			padding-left: 5px;
-			border-left: 1px solid #1E8D8D;
-			margin-left: 2px;
+        .close {
+            color: #fff;
+            font-size: 19px;
+            opacity: 1;
+            text-shadow: none;
+            padding-right: 5px;
+            padding-left: 5px;
+            border-left: 1px solid #1e8d8d;
+            margin-left: 2px;
 
-			&:hover {
-				background: #3BBFC0;
-			}
-		}
+            &:hover {
+                background: #3bbfc0;
+            }
+        }
 
-		.btn-primary {
-			background: #2EB1B2;
-		}
-	}
+        .btn-primary {
+            background: #2eb1b2;
+        }
+    }
 }
 
 // UI Select Dropdown
 div.ui-select-container {
-	@extend %float-l;
-	@extend %width-100;
-	outline: none;
-	> input {
-		@extend %width-100;
-	}
-	> div.ui-select-match {
-		outline: none;
-		box-shadow: none;
-		> input {
-			@extend %width-100;
-		}
-		> span.ui-select-toggle {
-			text-shadow: none;
-			background: #fff !important;
-			box-shadow: none;
-			transition: none;
-			i.caret {
-				right: 130px;
-			}
-		}
-		> ul.ui-select-choices {
-			border-radius: 0;
-		}
-	}
+    @extend %float-l;
+    @extend %width-100;
+    outline: none;
+    > input {
+        @extend %width-100;
+    }
+    > div.ui-select-match {
+        outline: none;
+        box-shadow: none;
+        > input {
+            @extend %width-100;
+        }
+        > span.ui-select-toggle {
+            text-shadow: none;
+            background: #fff !important;
+            box-shadow: none;
+            transition: none;
+            i.caret {
+                right: 130px;
+            }
+        }
+        > ul.ui-select-choices {
+            border-radius: 0;
+        }
+    }
 }
 
 // Dropdown list
 .ui-select-container {
     cursor: pointer;
-	> ul.ui-select-choices {
-		border-radius: 0;
-		> li.ui-select-choices-group {
-			margin: 0;
-			div.ui-select-choices-row {
-				span.ui-select-choices-row-inner:hover {
-					background-color: #F5FFFF;
-				}
-				&.active {
-					span.ui-select-choices-row-inner {
-						background-color: #F5FFFF;
-						color: #333;
-					}
-				}
-			}
-		}
-	}
+    > ul.ui-select-choices {
+        border-radius: 0;
+        > li.ui-select-choices-group {
+            margin: 0;
+            div.ui-select-choices-row {
+                span.ui-select-choices-row-inner:hover {
+                    background-color: #f5ffff;
+                }
+                &.active {
+                    span.ui-select-choices-row-inner {
+                        background-color: #f5ffff;
+                        color: #333;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Typeahead customisation
 ul.dropdown-menu {
-	@extend %width-100;
-	box-shadow: none !important;
-	border-radius: 0;
-	overflow: auto;
-	max-height: 300px;
-	> li {
-		@extend %width-100;
-		line-height: 2rem;
-		margin-bottom: 0 !important;
-		a {
-			border-bottom: 1px solid #EAEAEA !important;
-			background-color: #FFF;
-			color: #555;
-			padding: 10px 8px;
-		}
-		&.active {
-			a, a:hover {
-				color: #333;
-				background: #F5FFFF none !important;
-			}
-		}
-	}
+    @extend %width-100;
+    box-shadow: none !important;
+    border-radius: 0;
+    overflow: auto;
+    max-height: 300px;
+    > li {
+        @extend %width-100;
+        line-height: 2rem;
+        margin-bottom: 0 !important;
+        a {
+            border-bottom: 1px solid #eaeaea !important;
+            background-color: #fff;
+            color: #555;
+            padding: 10px 8px;
+        }
+        &.active {
+            a,
+            a:hover {
+                color: #333;
+                background: #f5ffff none !important;
+            }
+        }
+    }
 }

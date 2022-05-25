@@ -1,7 +1,7 @@
 <div class="checkbox" *ngIf="show.ripeManagedToggleControl">
     <label>
-        <input name="showRipeManagedAttrs" type="checkbox" [checked]="showRipeManagedAttrs"
-               (change)="showRipeManagedAttrs = !showRipeManagedAttrs"> {{ "lookup.ripeManagedValuesCheckbox.text" | label }}
+        <input name="showRipeManagedAttrs" type="checkbox" [checked]="showRipeManagedAttrs" (change)="showRipeManagedAttrs = !showRipeManagedAttrs" />
+        {{ 'lookup.ripeManagedValuesCheckbox.text' | label }}
     </label>
 </div>
 <div class="viewerbuttons">
@@ -9,10 +9,12 @@
         <span>Login to update </span>
         <i class="fal fa-database"></i>
     </a>
-    <a class="blue-button" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]" *ngIf="show.updateButton && linkable">{{ "lookup.updateObjectButton.text" | label }}</a>
-    <a class="blue-button" (click)="emitUpdateClicked()" *ngIf="show.updateButton && !linkable">{{ "lookup.updateObjectButton.text" | label }}</a>
-    <a class="grey-button ripe-stat-button" href="https://stat.ripe.net/{{ripeStatLink}}?sourceapp=ripedb" *ngIf="show.ripeStatButton" target="_newtab">
-        {{ "lookup.ripestatLink.text" | label }}
+    <a class="blue-button" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]" *ngIf="show.updateButton && linkable">{{
+        'lookup.updateObjectButton.text' | label
+    }}</a>
+    <a class="blue-button" (click)="emitUpdateClicked()" *ngIf="show.updateButton && !linkable">{{ 'lookup.updateObjectButton.text' | label }}</a>
+    <a class="grey-button ripe-stat-button" href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb" *ngIf="show.ripeStatButton" target="_newtab">
+        {{ 'lookup.ripestatLink.text' | label }}
         <i class="fal fa-external-link"></i>
     </a>
 </div>
@@ -24,5 +26,7 @@
         *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : ''}}</span><span
         *ngIf="attr.comment && attr.comment !== 'Filtered'">{{(!attr.value || attr.value === '')? '' :' '}}# {{attr.comment}}</span></li></ul></pre>
 <div class="float-end">
-    <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">{{ 'lookup.showAllObjectButton.text' | label }}</div>
+    <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">
+        {{ 'lookup.showAllObjectButton.text' | label }}
+    </div>
 </div>

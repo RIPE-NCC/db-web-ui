@@ -1,32 +1,24 @@
-<button id="btnSwitchToWebCreate"
-        class="blue-button float-end ga-text-createobj-switch-mode"
-        style="border:0;"
-        (click)="switchToWebMode()">
+<button id="btnSwitchToWebCreate" class="blue-button float-end ga-text-createobj-switch-mode" style="border: 0" (click)="switchToWebMode()">
     <span class="fal fa-bars"></span> Create in single lines
 </button>
 <div>
-    <h1>Create &quot;{{object.type}}&quot; object</h1>
+    <h1>Create &quot;{{ object.type }}&quot; object</h1>
 
     <form id="textCreateForm">
-
         <div class="form-group">
             <label for="createRpsl">RPSL to create single object</label>
-            <textarea id="createRpsl"
-                      name="createRpsl"
-                      class="form-control"
-                      rows="20"
-                      [(ngModel)]="object.rpsl"
-                      style="font-family:monospace;"></textarea>
+            <textarea id="createRpsl" name="createRpsl" class="form-control" rows="20" [(ngModel)]="object.rpsl" style="font-family: monospace"></textarea>
             <section class="supporting-text">
-                <span>You can optionally use the <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</span>
+                <span
+                    >You can optionally use the <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple
+                    passwords.</span
+                >
             </section>
             <submitting-agreement></submitting-agreement>
 
-            <input type="submit" (click)="submit()" [disabled]="restCallInProgress"
-                   class="blue-button float-end ga-text-createobj-create" value="Submit"/>
+            <input type="submit" (click)="submit()" [disabled]="restCallInProgress" class="blue-button float-end ga-text-createobj-create" value="Submit" />
 
-            <button (click)="cancel()" class="blue-button float-end ga-text-createobj-cancel" style="border:0;">Cancel</button>
-
+            <button (click)="cancel()" class="blue-button float-end ga-text-createobj-cancel" style="border: 0">Cancel</button>
         </div>
     </form>
 </div>

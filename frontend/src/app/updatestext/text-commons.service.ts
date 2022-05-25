@@ -1,40 +1,40 @@
-import {Injectable} from "@angular/core";
-import {Router} from "@angular/router";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {of, throwError} from "rxjs";
-import * as _ from "lodash";
-import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {WhoisMetaService} from "../shared/whois-meta.service";
-import {ObjectUtilService} from "../updatesweb/object-util.service";
-import {MntnerService} from "../updatesweb/mntner.service";
-import {AlertsService} from "../shared/alert/alerts.service";
-import {CredentialsService} from "../shared/credentials.service";
-import {ModalAuthenticationComponent} from "../updatesweb/modal-authentication.component";
-import {IAttributeModel, IMntByModel} from "../shared/whois-response-type.model";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import { of, throwError } from 'rxjs';
+import { AlertsService } from '../shared/alert/alerts.service';
+import { CredentialsService } from '../shared/credentials.service';
+import { WhoisMetaService } from '../shared/whois-meta.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { IAttributeModel, IMntByModel } from '../shared/whois-response-type.model';
+import { MntnerService } from '../updatesweb/mntner.service';
+import { ModalAuthenticationComponent } from '../updatesweb/modal-authentication.component';
+import { ObjectUtilService } from '../updatesweb/object-util.service';
 
 @Injectable()
 export class TextCommonsService {
-
-    constructor(private router: Router,
-                private whoisResourcesService: WhoisResourcesService,
-                private whoisMetaService: WhoisMetaService,
-                private credentialsService: CredentialsService,
-                private alertService: AlertsService,
-                private mntnerService: MntnerService,
-                private modalService: NgbModal) {
-    }
+    constructor(
+        private router: Router,
+        private whoisResourcesService: WhoisResourcesService,
+        private whoisMetaService: WhoisMetaService,
+        private credentialsService: CredentialsService,
+        private alertService: AlertsService,
+        private mntnerService: MntnerService,
+        private modalService: NgbModal,
+    ) {}
 
     public enrichWithDefaults(objectSource: string, objectType: string, attributes: IAttributeModel[]) {
         // This does only add value if attribute exist
-        this.whoisResourcesService.setSingleAttributeOnName(attributes, "source", objectSource);
-        this.whoisResourcesService.setSingleAttributeOnName(attributes, "nic-hdl", "AUTO-1");
-        this.whoisResourcesService.setSingleAttributeOnName(attributes, "organisation", "AUTO-1");
-        this.whoisResourcesService.setSingleAttributeOnName(attributes, "org-type", "OTHER"); // other org-types only settable with override
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, 'source', objectSource);
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, 'nic-hdl', 'AUTO-1');
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, 'organisation', 'AUTO-1');
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER'); // other org-types only settable with override
 
         // Remove unneeded optional attrs
-        this.whoisResourcesService.removeAttributeWithName(attributes, "created");
-        this.whoisResourcesService.removeAttributeWithName(attributes, "last-modified");
-        this.whoisResourcesService.removeAttributeWithName(attributes, "changed");
+        this.whoisResourcesService.removeAttributeWithName(attributes, 'created');
+        this.whoisResourcesService.removeAttributeWithName(attributes, 'last-modified');
+        this.whoisResourcesService.removeAttributeWithName(attributes, 'changed');
     }
 
     public validate(objectType: string, attributes: IAttributeModel[], errors?: any) {
@@ -43,11 +43,11 @@ export class TextCommonsService {
         });
         if (!_.isEmpty(unknownAttrs)) {
             _.each(unknownAttrs, (attr) => {
-                const msg = attr.name + ": Unknown attribute";
+                const msg = attr.name + ': Unknown attribute';
                 if (_.isUndefined(errors)) {
                     this.alertService.addGlobalError(msg);
                 } else {
-                    errors.push({plainText: msg});
+                    errors.push({ plainText: msg });
                 }
             });
             return;
@@ -56,14 +56,16 @@ export class TextCommonsService {
         let errorCount = 0;
         const mandatoryAtrs = this.whoisMetaService.getMetaAttributesOnObjectType(objectType, true);
         _.each(mandatoryAtrs, (meta) => {
-            if (_.some(attributes, (attr: IAttributeModel) => {
-                return attr.name === meta.name;
-            }) === false) {
-                const msg = meta.name + ": Missing mandatory attribute";
+            if (
+                _.some(attributes, (attr: IAttributeModel) => {
+                    return attr.name === meta.name;
+                }) === false
+            ) {
+                const msg = meta.name + ': Missing mandatory attribute';
                 if (_.isUndefined(errors)) {
                     this.alertService.addGlobalError(msg);
                 } else {
-                    errors.push({plainText: msg});
+                    errors.push({ plainText: msg });
                 }
                 errorCount++;
             }
@@ -74,11 +76,11 @@ export class TextCommonsService {
             _.each(enrichedAttributes, (item) => {
                 if (item.$$error) {
                     // Note: keep it lower-case to be consistent with server-side error reports
-                    const msg = item.name + ": " + item.$$error;
+                    const msg = item.name + ': ' + item.$$error;
                     if (_.isUndefined(errors)) {
                         this.alertService.addGlobalError(msg);
                     } else {
-                        errors.push({plainText: msg});
+                        errors.push({ plainText: msg });
                     }
                 }
             });
@@ -87,8 +89,16 @@ export class TextCommonsService {
         return errorCount === 0;
     }
 
-    public authenticate(method: string, objectSource: string, objectType: string, objectName: string,
-                        ssoMaintainers: any, attributes: any, passwords: string[], override: string) {
+    public authenticate(
+        method: string,
+        objectSource: string,
+        objectType: string,
+        objectName: string,
+        ssoMaintainers: any,
+        attributes: any,
+        passwords: string[],
+        override: string,
+    ) {
         let needsAuth = false;
 
         if (!_.isUndefined(override)) {
@@ -100,14 +110,22 @@ export class TextCommonsService {
             if (_.isEmpty(passwords) && _.isUndefined(override)) {
                 // show password popup if needed
                 const objectMntners = this._getObjectMntners(attributes);
-                const originalMntners = method === "Create" ? [] : objectMntners;
+                const originalMntners = method === 'Create' ? [] : objectMntners;
                 if (this.mntnerService.needsPasswordAuthentication(ssoMaintainers, originalMntners, objectMntners)) {
-                    return this.performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes));
+                    return this.performAuthentication(
+                        method,
+                        objectSource,
+                        objectType,
+                        objectName,
+                        ssoMaintainers,
+                        objectMntners,
+                        ObjectUtilService.isLirObject(attributes),
+                    );
                 }
             }
         }
         if (needsAuth === false) {
-            console.debug("No authentication needed");
+            console.debug('No authentication needed');
             return of(true).toPromise();
         }
     }
@@ -151,9 +169,15 @@ export class TextCommonsService {
         return passwords;
     }
 
-    private performAuthentication(method: string, objectSource: string, objectType: string, objectName: string,
-                                   ssoMntners: IMntByModel[], objectMntners: any[], isLirObject: boolean) {
-
+    private performAuthentication(
+        method: string,
+        objectSource: string,
+        objectType: string,
+        objectName: string,
+        ssoMntners: IMntByModel[],
+        objectMntners: any[],
+        isLirObject: boolean,
+    ) {
         const object = {
             name: objectName,
             source: objectSource,
@@ -173,22 +197,24 @@ export class TextCommonsService {
             mntnersWithoutPassword: mntnersWithoutPasswords,
             allowForcedDelete: !!allowForcedDelete,
             isLirObject: !!isLirObject,
-            source: object.source
+            source: object.source,
         };
-        return modalRef.result
-            .then(result => {
+        return modalRef.result.then(
+            (result) => {
                 this.alertService.clearAlertMessages();
                 const authenticatedMntner = result.$value.selectedItem;
                 if (this._isMine(authenticatedMntner)) {
                     // has been successfully associated in authentication modal
                     ssoMntners.push(authenticatedMntner);
                 }
-                console.debug("Authentication succeeded");
+                console.debug('Authentication succeeded');
                 return of(true).toPromise();
-            }, failResponse => {
-                console.debug("Authentication failed");
+            },
+            (failResponse) => {
+                console.debug('Authentication failed');
                 return throwError(false).toPromise();
-            });
+            },
+        );
     }
 
     private _isMine(mntner: IMntByModel) {
@@ -200,11 +226,11 @@ export class TextCommonsService {
     }
 
     private _getObjectMntners(attributes: any) {
-        return _.map(this.whoisResourcesService.getAllAttributesWithValueOnName(attributes, "mnt-by"), (objMntner: any) => {
+        return _.map(this.whoisResourcesService.getAllAttributesWithValueOnName(attributes, 'mnt-by'), (objMntner: any) => {
             // Notes:
             // - RPSL attribute values can contain leading and trailing spaces, so the must be trimmed
             // - Assume maintainers have md5-password, so prevent unmodifyable error
-            return {type: "mntner", key: _.trim(objMntner.value), auth: ["MD5-PW"]};
+            return { type: 'mntner', key: _.trim(objMntner.value), auth: ['MD5-PW'] };
         });
     }
 }
