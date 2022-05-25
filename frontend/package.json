@@ -13,7 +13,7 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "lint": "ng lint",
-        "pree2e-chrome": "webdriver-manager update --standalone false",
+        "pree2e-chrome": "webdriver-manager update --standalone false --versions.chrome 101.0.4951.41",
         "e2e-chrome": "ng e2e --no-webdriver-update --configuration=local",
         "pree2e-firefox": "webdriver-manager update --standalone false",
         "e2e-firefox": "ng e2e --no-webdriver-update --configuration=firefox",
