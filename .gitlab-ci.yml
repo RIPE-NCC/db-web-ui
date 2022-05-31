@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:931889ee
+image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:375bac83
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
@@ -45,6 +45,7 @@ backend:
     tags:
       - whois
     stage: test
+    allow_failure: true
     script:
       - cd backend && mvn test
     artifacts:
@@ -57,6 +58,7 @@ e2e:
     tags:
       - whois
     stage: test
+    allow_failure: true
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
@@ -73,7 +75,7 @@ e2e-firefox:
       - export DISPLAY=:20
       - Xvfb :20 -screen 0 1920x1080x16 &
       - cd frontend && npm run e2e-firefox
-    when: manual
+    allow_failure: true
 
 qa:
   stage: test
