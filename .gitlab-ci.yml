@@ -8,6 +8,7 @@ variables:
   ARTIFACT_NAME: "db-web-ui"
   ARTIFACT_DIR: "backend"
   GROUP_ID: "net.ripe.whois"
+  CYPRESS_CACHE_FOLDER: "./cache/Cypress"
 
 include:
     - project: 'swe/gitlab-ci'
@@ -30,6 +31,7 @@ cache:
     - frontend/node_modules/
     - frontend/package-lock.json
     - .m2/repository
+    - frontend/cache/Cypress/
 
 build:
   tags:
@@ -73,7 +75,36 @@ e2e-firefox:
       - export DISPLAY=:20
       - Xvfb :20 -screen 0 1920x1080x16 &
       - cd frontend && npm run e2e-firefox
-    when: manual
+
+e2e-cypress-chrome:
+    tags:
+        - whois
+    stage: test
+    script:
+        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
+        - export DISPLAY=:20
+        - Xvfb :20 -screen 0 1920x1080x16 &
+        - cd frontend && npm run cypress:chrome
+    artifacts:
+        when: on_failure
+        paths:
+            - frontend/test/cypress/videos/**/*.mp4
+        expire_in: 1 day
+
+e2e-cypress-firefox:
+    tags:
+        - whois
+    stage: test
+    script:
+        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
+        - export DISPLAY=:20
+        - Xvfb :20 -screen 0 1920x1080x16 &
+        - cd frontend && npm run cypress:firefox
+    artifacts:
+        when: on_failure
+        paths:
+            - frontend/test/cypress/videos/**/*.mp4
+        expire_in: 1 day
 
 qa:
   stage: test

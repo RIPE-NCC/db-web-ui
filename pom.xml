@@ -77,7 +77,7 @@
                 <executions>
                     <execution>
                         <!-- do not run by default -->
-                        <id>not-by-defau>lt</id>
+                        <id>not-by-default</id>
                         <phase>not-by-default</phase>
                         <goals>
                             <goal>aggregate</goal>
