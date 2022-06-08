@@ -550,6 +550,10 @@ describe('Query scenario', () => {
         queryPage.expectHierarchyFlagsMenuDropdownToContain('Hierarchy flags (2)');
     });
 
+    it('should not duplicate results on click on apply filter', () => {
+        queryPage.typeSearchTerm('223.0.0.0').clickOnSearchButton().expectNumberOfResults(1).clickOnApplyFilters().expectNumberOfResults(1);
+    });
+
     // TEMPLATE QUERY -t or --template
     it('should be able to search --template using the text box', () => {
         queryPage.typeSearchTerm('-t person').clickOnSearchButton().expectSearchTerm('-t person');
