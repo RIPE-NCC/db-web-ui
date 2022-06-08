@@ -141,7 +141,7 @@
                     "options": {
                         "main": "test/unit/test.ts",
                         "polyfills": "src/polyfills.ts",
-                        "tsConfig": "tsconfig.json",
+                        "tsConfig": "test/unit/tsconfig.spec.json",
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": ["src/styles.scss"],
                         "scripts": []
@@ -176,6 +176,12 @@
                             "protractorConfig": "test/e2e/protractor.remote.conf.js",
                             "devServerTarget": "frontend:serve-mock:remote"
                         }
+                    }
+                },
+                "cypress": {
+                    "builder": "@cypress/schematic:cypress",
+                    "options": {
+                        "devServerTarget": "frontend:serve-mock:local"
                     }
                 }
             }

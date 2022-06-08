@@ -111,6 +111,8 @@ To see which packages were updated, optionally against a branch name, use:
 
 See the [diff-package-lock homepage](https://github.com/adiktofsugar/diff-package-lock) for more information
 
+* `npm run cypress:open` and `npm run start-mock` to run it locally 
+
 ### Linting
 * `npm run lint`<br>
   Lint rules can be found under `frontend/.eslintrc.json`
