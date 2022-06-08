@@ -62,7 +62,7 @@
                     <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
                         <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
                     </mat-menu>
-                    <button mat-raised-button color="primary" [disableRipple]="true" id="applyFilters" (click)="submitSearchForm()">APPLY FILTERS</button>
+                    <button mat-raised-button color="primary" [disableRipple]="true" id="applyFilters">APPLY FILTERS</button>
                     <button mat-raised-button [disableRipple]="true" id="resetFilters" [disabled]="!isFilteringResults()" (click)="resetFilters()">
                         RESET FILTERS
                     </button>
