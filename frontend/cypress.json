@@ -1,0 +1,12 @@
+{
+    "fixturesFolder": "./test/cypress/fixtures",
+    "integrationFolder": "./test/cypress/integration",
+    "pluginsFile": "./test/cypress/plugins/index",
+    "supportFile": "./test/cypress/support/index.ts",
+    "screenshotOnRunFailure": false,
+    "video": true,
+    "videosFolder": "./test/cypress/videos",
+    "screenshotsFolder": "./test/cypress/screenshots",
+    "chromeWebSecurity": false,
+    "baseUrl": "https://localhost.ripe.net:9002/db-web-ui"
+}

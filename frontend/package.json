@@ -19,7 +19,10 @@
         "e2e-firefox": "ng e2e --no-webdriver-update --configuration=firefox",
         "e2e-remote": "ng e2e --configuration=remote",
         "prepare": "cd .. && husky install frontend/.husky",
-        "lint-staged": "lint-staged"
+        "lint-staged": "lint-staged",
+        "cypress:open": "cypress open",
+        "cypress:chrome": "ng run frontend:cypress --browser chrome",
+        "cypress:firefox": "ng run frontend:cypress --browser firefox"
     },
     "private": true,
     "devDependencies": {
@@ -44,6 +47,7 @@
         "@typescript-eslint/parser": "5.19.0",
         "babel-loader": "8.2.4",
         "connect-prism": "1.0.21",
+        "cypress": "9.6.1",
         "diff-package-lock": "^0.1.31",
         "eslint": "8.13.0",
         "eslint-config-prettier": "8.5.0",
@@ -79,6 +83,7 @@
         "@angular/platform-browser": "13.3.0",
         "@angular/platform-browser-dynamic": "13.3.0",
         "@angular/router": "13.3.0",
+        "@cypress/schematic": "1.7.0",
         "@ng-bootstrap/ng-bootstrap": "12.0.1",
         "@ng-select/ng-select": "8.1.1",
         "@ngx-loading-bar/core": "6.0.2",
