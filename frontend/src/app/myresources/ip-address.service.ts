@@ -11,11 +11,11 @@ export class IpAddressService {
     }
 
     public static isValidV4(v4: string): boolean {
-        return new Address4(v4).isValid();
+        return Address4.isValid(v4);
     }
 
     public static isValidV6(v6: string): boolean {
-        return new Address6(v6).isValid();
+        return Address6.isValid(v6);
     }
 
     public static isValidRange(range: string): boolean {
