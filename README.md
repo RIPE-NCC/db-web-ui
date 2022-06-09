@@ -275,3 +275,11 @@ being used. If the webdriver and Chrome version mismatch running the tests will 
     at parseHttpResponse (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/http.js:509:13)
     at doSend.then.response (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/http.js:441:30)
 ````
+
+User Interface Guidelines
+-------------------------
+
+The Technical Design circle has published a storybook of user interface elements that we should use as a style guide:
+http://ripe-app-storybook-dev.s3-website.eu-central-1.amazonaws.com/
+
+
