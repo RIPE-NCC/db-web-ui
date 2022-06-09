@@ -178,7 +178,6 @@ describe('MaintainersEditorComponent', () => {
         let fixture: ComponentFixture<MaintainersEditorComponent>;
         let modalMock: any;
         let webUpdatesCommonsServiceMock: any;
-        const BACKSPACE_KEYCODE = 8;
 
         beforeEach(() => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
