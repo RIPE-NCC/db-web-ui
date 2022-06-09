@@ -96,7 +96,7 @@
         "classlist": "2.0.0",
         "cookie-parser": "1.4.6",
         "crypto-js": "4.1.1",
-        "ip-address": "6.2.0",
+        "ip-address": "8.1.0",
         "lodash": "4.17.21",
         "moment": "2.29.2",
         "ng-diff-match-patch": "3.0.1",

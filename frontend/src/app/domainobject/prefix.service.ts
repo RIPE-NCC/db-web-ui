@@ -23,31 +23,27 @@ export class PrefixService {
     // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
     // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz ".1" is not covered by mask)
     public isValidIpv4Prefix(str: string): boolean {
-        const ip4 = new Address4(str);
-        if (ip4.isValid()) {
-            return this.isValidIp4Cidr(ip4);
+        if (Address4.isValid(str)) {
+            return this.isValidIp4Cidr(new Address4(str));
         }
         return false;
     }
 
     public isValidIpv6Prefix(str: string) {
-        const ip6 = new Address6(str);
-        if (ip6.isValid()) {
-            return this.isValidIp6Cidr(ip6);
+        if (Address6.isValid(str)) {
+            return this.isValidIp6Cidr(new Address6(str));
         }
         return false;
     }
 
     public getAddress(str: string) {
-        const ip4 = new Address4(str);
-        if (ip4.isValid()) {
-            return ip4;
-        } else {
-            const ip6 = new Address6(str);
-            if (ip6.isValid()) {
-                return ip6;
+        try {
+            if (Address4.isValid(str)) {
+                return new Address4(str);
+            } else if (Address6.isValid(str)) {
+                return new Address6(str);
             }
-        }
+        } catch (e) {}
         return null;
     }
 
@@ -63,8 +59,8 @@ export class PrefixService {
         const zones = [];
 
         if (prefix && this.isValidPrefix(prefix)) {
-            const ipv4 = new Address4(prefix);
-            if (ipv4.isValid()) {
+            if (Address4.isValid(prefix)) {
+                const ipv4 = new Address4(prefix);
                 // It used to find the array position that starts with 0. That's why -1.
                 const fixedOctet = Math.ceil(ipv4.subnetMask / 8) - 1;
 
@@ -76,9 +72,9 @@ export class PrefixService {
                     zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
                     zones.push({ name: 'reverse-zone', value: zoneName });
                 }
-            } else {
+            } else if (Address6.isValid(prefix)) {
                 const ipv6 = new Address6(prefix);
-                if (!ipv6.error) {
+                if (ipv6.isCorrect()) {
                     const startZone = ipv6.startAddress().reverseForm().split('.');
                     const endZone = ipv6.endAddress().reverseForm().split('.');
                     while (startZone[0] === '0' && endZone[0] === 'f') {
@@ -148,7 +144,7 @@ export class PrefixService {
         return this.http.get(`api/whois/domain-objects/${source}/status`, { observe: 'response' });
     }
 
-    private isValidIp4Cidr(address: any) {
+    private isValidIp4Cidr(address: Address4) {
         // check the subnet mask was provided
         if (!address.parsedSubnet) {
             return false;
@@ -161,24 +157,25 @@ export class PrefixService {
         }
 
         // check that subnet mask covers all address bits
-        const bits = address.getBitsBase2();
+        const bits = address.getBitsBase2(undefined, undefined);
         const last1 = bits.lastIndexOf('1');
 
         return last1 < address.subnetMask;
     }
 
-    private isValidIp6Cidr(address: any) {
+    private isValidIp6Cidr(address: Address6) {
         // check the subnet mask is in range
         if (!address.parsedSubnet) {
             return false;
         }
 
+        // @ts-ignore TODO ???
         if (address.parsedSubnet >= 127) {
             return false;
         }
 
         // check that subnet mask covers all address bits
-        const bits = address.getBitsBase2();
+        const bits = address.getBitsBase2(undefined, undefined);
         const last1 = bits.lastIndexOf('1');
 
         return last1 < address.subnetMask;
