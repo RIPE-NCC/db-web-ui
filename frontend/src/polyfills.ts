@@ -60,8 +60,6 @@ import {
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-import 'ip-address/lib/ipv4';
-import 'ip-address/lib/ipv6';
 import 'zone.js'; // Included with Angular CLI.
 
 // eslint-disable-next-line no-unused-vars
