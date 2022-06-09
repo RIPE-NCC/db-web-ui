@@ -317,7 +317,6 @@ export class MaintainersEditorComponent implements OnInit {
                 this.restCallInProgress = false;
                 try {
                     const whoisResources = error.data;
-                    // this.attributes = _wrapAndEnrichResources(this.objectType, error.data);
                     this.alertsService.setErrors(whoisResources);
                 } catch (e) {
                     console.error('Error fetching sso-mntners for SSO:', error);

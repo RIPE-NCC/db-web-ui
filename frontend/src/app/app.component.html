@@ -147,7 +147,7 @@
             <div>
                 <router-outlet></router-outlet>
                 <ngx-loading-bar></ngx-loading-bar>
-                <web-app-version></web-app-version>
+                <web-app-version *ngIf="!isQueryPage()"></web-app-version>
             </div>
             <div class="space-bottom-for-livechat"></div>
             <live-chat style="right: 20px; bottom: 20px" chatkey="{{ properties.LIVE_CHAT_KEY }}" accessurl="{{ properties.LOGIN_URL }}"></live-chat>

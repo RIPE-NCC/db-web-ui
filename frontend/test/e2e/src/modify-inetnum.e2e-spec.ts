@@ -8,13 +8,13 @@ describe('Modifying an inetnum', () => {
     it('should prompt for user to add default maintainer in webupdates', () => {
         page.navigateTo(browser.baseUrl + 'webupdates/modify/RIPE/inetnum/185.102.172.0%20-%20185.102.175.255');
         expect(page.modal.isPresent()).toEqual(true);
-        expect(page.modalBody.getText()).toContain('The default LIR Maintainer has not yet been set up for this object');
+        expect(page.modalBanner.getText()).toContain('The default LIR Maintainer has not yet been set up for this object');
     });
 
     it('should prompt for user to add default maintainer in text updates', () => {
         page.navigateTo(browser.baseUrl + 'textupdates/modify/RIPE/inetnum/185.102.172.0%20-%20185.102.175.255');
         expect(page.modal.isPresent()).toEqual(true);
-        expect(page.modalBody.getText()).toContain('The default LIR Maintainer has not yet been set up for this object');
+        expect(page.modalBanner.getText()).toContain('The default LIR Maintainer has not yet been set up for this object');
     });
 
     describe('which has NOT-SET status', () => {
