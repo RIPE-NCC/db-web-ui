@@ -33,6 +33,7 @@ import { ModalMd5PasswordComponent } from './modal-md5-password.component';
 import { OrganisationHelperService } from './organisation-helper.service';
 import { PreferenceService } from './preference.service';
 import { RestService } from './rest.service';
+import { RpkiValidatorService } from './rpki-validator.service';
 import { ScreenLogicInterceptorService } from './screen-logic-interceptor.service';
 import { SelectComponent } from './select.component';
 import { TypeaheadComponent } from './typeahead.component';
@@ -71,6 +72,7 @@ import { TypeaheadComponent } from './typeahead.component';
         EnumService,
         CryptService,
         OrganisationHelperService,
+        RpkiValidatorService,
         { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
     ],
 })

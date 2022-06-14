@@ -2,8 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
+import { ObjectTypesEnum } from '../query/object-types.enum';
 import { CredentialsService } from '../shared/credentials.service';
 import { RestService } from './rest.service';
+import { RpkiValidatorService } from './rpki-validator.service';
 
 interface IModalDelete {
     name: string;
@@ -27,11 +29,19 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     public canBeDeleted: boolean;
     public restCallInProgress = false;
     private isDismissed: boolean = true;
+    public showRoaMsg: boolean = false;
 
-    constructor(private router: Router, private activeModal: NgbActiveModal, public restService: RestService, public credentialsService: CredentialsService) {}
+    constructor(
+        private router: Router,
+        private activeModal: NgbActiveModal,
+        public restService: RestService,
+        public credentialsService: CredentialsService,
+        private rpkiValidatorService: RpkiValidatorService,
+    ) {}
 
     public ngOnInit() {
         this.getReferences(this.inputData.source, this.inputData.objectType, this.inputData.name);
+        this.checkRpkiRoa();
     }
 
     public ngOnDestroy() {
@@ -133,6 +143,15 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
                 this.activeModal.dismiss(error.data);
             },
         );
+    }
+
+    private checkRpkiRoa() {
+        if (this.inputData.objectType === ObjectTypesEnum.ROUTE || this.inputData.objectType === ObjectTypesEnum.ROUTE6) {
+            const index = this.inputData.name.indexOf('AS');
+            this.rpkiValidatorService.hasRoa(this.inputData.name.substring(index), this.inputData.name.substring(0, index)).subscribe((response) => {
+                this.showRoaMsg = response.validated_route.validity.state === 'valid';
+            });
+        }
     }
 
     public transitionToState(source: string, objectType: string, pkey: string, onCancelPath: string) {
