@@ -8,6 +8,7 @@ import { CredentialsService } from '../../../../src/app/shared/credentials.servi
 import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { ModalDeleteObjectComponent } from '../../../../src/app/updatesweb/modal-delete-object.component';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
+import { RpkiValidatorService } from '../../../../src/app/updatesweb/rpki-validator.service';
 
 const objectType = 'mntner';
 const name = 'TEST-MNT';
@@ -15,6 +16,7 @@ const source = 'RIPE';
 const ON_CANCEL: string = 'modify';
 
 let restServiceMock: any;
+let rpkiValidatorServiceMock: any;
 let httpMock: HttpTestingController;
 let componentFixture: ComponentFixture<ModalDeleteObjectComponent>;
 let modalDeleteObjectComponent: ModalDeleteObjectComponent;
@@ -33,6 +35,7 @@ describe('primitives of modalDeleteObject', () => {
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
+                RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
             ],
         });
@@ -136,6 +139,7 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
+                RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
             ],
         });
@@ -208,6 +212,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences', 'deleteObject']);
         restServiceMock.deleteObject.and.returnValue(of({}));
         restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT).toPromise());
+        rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
@@ -215,6 +220,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
+                { provide: RpkiValidatorService, useValue: rpkiValidatorServiceMock },
                 { provide: CredentialsService, useValue: credentialsServiceMock },
                 { provide: Router, useValue: routerMock },
             ],
@@ -297,6 +303,76 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
 
         expect(modalMock.close).toHaveBeenCalled();
     });
+
+    it('should show info message that roa exist for route object', async () => {
+        await componentFixture.whenStable();
+        modalDeleteObjectComponent.inputData = {
+            name: '192.194.0.0/16AS1759',
+            objectType: 'route',
+            onCancelPath: ON_CANCEL,
+            source: source,
+        };
+        rpkiValidatorServiceMock.hasRoa.and.returnValue(
+            of({
+                validated_route: {
+                    route: {
+                        origin_asn: 'AS1759',
+                        prefix: '192.194.0.0/16',
+                    },
+                    validity: {
+                        state: 'valid',
+                        description: 'At least one VRP Matches the Route Prefix',
+                        VRPs: {
+                            matched: [
+                                {
+                                    asn: 'AS1759',
+                                    prefix: '192.194.0.0/16',
+                                    max_length: '24',
+                                },
+                            ],
+                            unmatched_as: [],
+                            unmatched_length: [],
+                        },
+                    },
+                },
+                generatedTime: '2022-05-10T10:21:34Z',
+            }),
+        );
+        modalDeleteObjectComponent.ngOnInit();
+        expect(modalDeleteObjectComponent.showRoaMsg).toBeTruthy();
+    });
+
+    it("shouldn't show info message when roa doesn't exist for route object", async () => {
+        await componentFixture.whenStable();
+        modalDeleteObjectComponent.inputData = {
+            name: '194.38.21.0/24AS48693',
+            objectType: 'route',
+            onCancelPath: ON_CANCEL,
+            source: source,
+        };
+        rpkiValidatorServiceMock.hasRoa.and.returnValue(
+            of({
+                validated_route: {
+                    route: {
+                        origin_asn: 'AS48693',
+                        prefix: '194.38.21.0/24',
+                    },
+                    validity: {
+                        state: 'not-found',
+                        description: 'No VRP Covers the Route Prefix',
+                        VRPs: {
+                            matched: [],
+                            unmatched_as: [],
+                            unmatched_length: [],
+                        },
+                    },
+                },
+                generatedTime: '2022-05-10T10:23:19Z',
+            }),
+        );
+        modalDeleteObjectComponent.ngOnInit();
+        expect(modalDeleteObjectComponent.showRoaMsg).toBeFalsy();
+    });
 });
 
 describe('ModalDeleteObjectComponent loading references failures ', () => {
@@ -311,6 +387,7 @@ describe('ModalDeleteObjectComponent loading references failures ', () => {
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
+                RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
             ],
         });

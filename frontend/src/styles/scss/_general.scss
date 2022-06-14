@@ -209,6 +209,15 @@ ul.success-fields {
     }
 }
 
+.modal-footer-info {
+    display: flex;
+    i {
+        font-size: 20px;
+        padding-top: 5px;
+        padding-right: 5px;
+    }
+}
+
 .not-found {
     text-align: center;
     i.fal {
