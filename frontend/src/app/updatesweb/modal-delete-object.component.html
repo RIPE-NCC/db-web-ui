@@ -37,6 +37,10 @@
     </div>
 
     <div class="modal-footer">
+        <div *ngIf="showRoaMsg" class="modal-footer-info">
+            <i class="fal fa-info-circle"></i>
+            <div>There is an RPKI ROA for the same route. If you proceed to delete this route(6) object, you may want to delete the ROA as well.</div>
+        </div>
         <div *ngIf="canBeDeleted">
             <button id="btnConfirmDeleteObject" class="red-button ga-attr-popup-btn" data-dismiss="modal" (click)="delete()">Confirm delete</button>
         </div>
