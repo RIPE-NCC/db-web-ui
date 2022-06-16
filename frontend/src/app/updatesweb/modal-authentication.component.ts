@@ -68,11 +68,12 @@ export class ModalAuthenticationComponent implements OnInit {
     }
 
     public submit() {
-        if (this.selected.password.length === 0 && this.selected.item) {
+        const isTestDBMMaintainer =
+            !!this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM && this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM.includes(this.selected.item.key);
+        if (!isTestDBMMaintainer && this.selected.password.length === 0 && this.selected.item) {
             this.selected.message = "Password for mntner: '" + this.selected.item.key + "'" + ' too short';
             return;
         }
-
         if (!this.selected.item || !this.selected.item.key) {
             return;
         }
@@ -112,7 +113,12 @@ export class ModalAuthenticationComponent implements OnInit {
                                     this.selected.item.auth.push('SSO');
                                     this.credentialsService.removeCredentials(); // because it's now an sso mntner
                                     // report success back
-                                    this.activeModal.close({ $value: { selectedItem: this.selected.item, response: resp } });
+                                    this.activeModal.close({
+                                        $value: {
+                                            selectedItem: this.selected.item,
+                                            response: resp,
+                                        },
+                                    });
                                 },
                                 (error: any) => {
                                     if (

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PropertiesService } from '../properties.service';
-import { EnvironmentStatusService } from '../shared/environment-status.service';
 import { menuTestRcEnvObject } from './menu-test-rc-env.json';
 import { menuTrainingObject } from './menu-training-env.json';
 import { menuObject } from './menu.json';
@@ -35,7 +34,7 @@ export class MenuService {
     constructor(public properties: PropertiesService) {}
 
     createMenu(userRoles: string[]): IMenu {
-        this.menu = MenuService.getMenuByEnvironment();
+        this.menu = this.getMenuByEnvironment();
         const filteredItemsByRoles = this.menu.main
             .filter((item) => item.roles.some((role) => userRoles.includes(role)))
             .map((item) => {
@@ -54,10 +53,10 @@ export class MenuService {
         };
     }
 
-    private static getMenuByEnvironment(): IMenu {
-        if (EnvironmentStatusService.isTestRcEnv()) {
+    private getMenuByEnvironment(): IMenu {
+        if (this.properties.isTestRcEnv()) {
             return menuTestRcEnvObject;
-        } else if (EnvironmentStatusService.isTrainingEnv()) {
+        } else if (this.properties.isTrainingEnv()) {
             return menuTrainingObject;
         } else {
             return menuObject;

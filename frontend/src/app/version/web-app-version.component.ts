@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PropertiesService } from '../properties.service';
-import { EnvironmentStatusService } from '../shared/environment-status.service';
 
 @Component({
     selector: 'web-app-version',
@@ -15,6 +14,6 @@ export class WebAppVersionComponent implements OnInit {
     constructor(public properties: PropertiesService) {}
 
     ngOnInit() {
-        this.trainingEnv = EnvironmentStatusService.isTrainingEnv();
+        this.trainingEnv = this.properties.isTrainingEnv();
     }
 }
