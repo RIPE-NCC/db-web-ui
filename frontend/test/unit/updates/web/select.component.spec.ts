@@ -29,6 +29,21 @@ describe('SelectController', () => {
 
     const whoisMetaServiceMock = {
         objectTypesMap: {
+            'as-block': {
+                attributes: [
+                    { name: 'as-block', mandatory: true, multiple: false, primaryKey: true, refs: refs },
+                    { name: 'descr', mandatory: false, multiple: true, refs: refs },
+                    { name: 'remarks', mandatory: false, multiple: true, refs: refs },
+                    { name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION'] },
+                    { name: 'notify', mandatory: false, multiple: true, refs: refs },
+                    { name: 'mnt-by', mandatory: true, multiple: false, refs: ['MNTNER'] },
+                    { name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER'] },
+                    { name: 'created', mandatory: false, multiple: false, refs: refs },
+                    { name: 'last-modified', mandatory: false, multiple: false, refs: refs },
+                    { name: 'source', mandatory: true, multiple: false, refs: refs },
+                ],
+                name: 'as-block',
+            },
             inetnum: {
                 attributes: [
                     { name: 'inetnum', mandatory: true, multiple: false, primaryKey: true, refs: refs },
@@ -138,6 +153,37 @@ describe('SelectController', () => {
                 ],
                 // description: undefined,
                 name: 'aut-num',
+            },
+            poem: {
+                attributes: [
+                    { name: 'poem', mandatory: true, multiple: false, primaryKey: true, refs: refs },
+                    { name: 'descr', mandatory: false, multiple: true, refs: refs },
+                    { name: 'form', mandatory: true, multiple: false, refs: ['POETIC-FORM'] },
+                    { name: 'text', mandatory: true, multiple: true, refs: refs },
+                    { name: 'author', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE'] },
+                    { name: 'remarks', mandatory: false, multiple: true, refs: refs },
+                    { name: 'notify', mandatory: false, multiple: true, refs: refs },
+                    { name: 'mnt-by', mandatory: true, multiple: false, refs: ['MNTNER'] },
+                    { name: 'created', mandatory: false, multiple: false, refs: refs },
+                    { name: 'last-modified', mandatory: false, multiple: false, refs: refs },
+                    { name: 'source', mandatory: true, multiple: false, refs: refs },
+                ],
+                // description: undefined,
+                name: 'poem',
+            },
+            'poetic-form': {
+                attributes: [
+                    { name: 'poetic-form', mandatory: true, multiple: false, primaryKey: true, refs: refs },
+                    { name: 'descr', mandatory: false, multiple: true, refs: refs },
+                    { name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE'] },
+                    { name: 'remarks', mandatory: false, multiple: true, refs: refs },
+                    { name: 'notify', mandatory: false, multiple: true, refs: refs },
+                    { name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER'] },
+                    { name: 'created', mandatory: false, multiple: false, refs: refs },
+                    { name: 'last-modified', mandatory: false, multiple: false, refs: refs },
+                    { name: 'source', mandatory: true, multiple: false, refs: refs },
+                ],
+                name: 'poetic-form',
             },
         },
         getObjectTypes: () => {
@@ -258,5 +304,22 @@ describe('SelectController', () => {
 
         expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, 'mntner', 'self']);
         expect(component.selected.source).toBe(SOURCE);
+    });
+
+    it('should not return as-block, poem, poetic-form, aut-num', () => {
+        const filteredObjectTypes = component.filterObjectTypes(whoisMetaServiceMock.getObjectTypes());
+        expect(filteredObjectTypes.includes('as-block')).toBeFalsy();
+        expect(filteredObjectTypes.includes('poem')).toBeFalsy();
+        expect(filteredObjectTypes.includes('poetic-form')).toBeFalsy();
+        expect(filteredObjectTypes.includes('aut-num')).toBeFalsy();
+    });
+
+    it('should not return as-block, poem, poetic-form, but aut-num should be present for TEST environment', () => {
+        spyOn(component.properties, 'isTestEnv').and.returnValue(true);
+        const filteredObjectTypes = component.filterObjectTypes(whoisMetaServiceMock.getObjectTypes());
+        expect(filteredObjectTypes.includes('as-block')).toBeFalsy();
+        expect(filteredObjectTypes.includes('poem')).toBeFalsy();
+        expect(filteredObjectTypes.includes('poetic-form')).toBeFalsy();
+        expect(filteredObjectTypes.includes('aut-num')).toBeTruthy();
     });
 });

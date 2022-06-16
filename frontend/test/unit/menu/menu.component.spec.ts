@@ -9,7 +9,6 @@ import { MenuComponent } from '../../../src/app/menu/menu.component';
 import { MenuService } from '../../../src/app/menu/menu.service';
 import { IpUsageService } from '../../../src/app/myresources/ip-usage.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { EnvironmentStatusService } from '../../../src/app/shared/environment-status.service';
 
 describe('LeftHandMenuComponent', () => {
     let component: MenuComponent;
@@ -42,8 +41,8 @@ describe('LeftHandMenuComponent', () => {
     });
 
     it('should show all menu items for a user with all roles', () => {
-        spyOn(EnvironmentStatusService, 'isTrainingEnv').and.returnValue(false);
-        spyOn(EnvironmentStatusService, 'isTestRcEnv').and.returnValue(false);
+        spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
+        spyOn(component.properties, 'isTestRcEnv').and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -65,8 +64,8 @@ describe('LeftHandMenuComponent', () => {
     });
 
     it('should show just RIPE Database for Training environment', () => {
-        spyOn(EnvironmentStatusService, 'isTrainingEnv').and.returnValue(true);
-        spyOn(EnvironmentStatusService, 'isTestRcEnv').and.returnValue(false);
+        spyOn(component.properties, 'isTrainingEnv').and.returnValue(true);
+        spyOn(component.properties, 'isTestRcEnv').and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -89,8 +88,8 @@ describe('LeftHandMenuComponent', () => {
     });
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', () => {
-        spyOn(EnvironmentStatusService, 'isTrainingEnv').and.returnValue(false);
-        spyOn(EnvironmentStatusService, 'isTestRcEnv').and.returnValue(true);
+        spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
+        spyOn(component.properties, 'isTestRcEnv').and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -113,8 +112,8 @@ describe('LeftHandMenuComponent', () => {
     });
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', () => {
-        spyOn(EnvironmentStatusService, 'isTrainingEnv').and.returnValue(false);
-        spyOn(EnvironmentStatusService, 'isTestRcEnv').and.returnValue(true);
+        spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
+        spyOn(component.properties, 'isTestRcEnv').and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',

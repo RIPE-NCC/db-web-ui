@@ -13,7 +13,6 @@ import { AlertsService } from './alert/alerts.service';
 import { CredentialsService } from './credentials.service';
 import { AttributeInfoComponent } from './descriptionsyntax/attr-info.component';
 import { DescriptionSyntaxComponent } from './descriptionsyntax/description-syntax.component';
-import { EnvironmentStatusService } from './environment-status.service';
 import { FilteroutAttributeByHiddenPipe } from './filterout-attribute-by-hidden.pipe';
 import { FilteroutAttributeByNamePipe } from './filterout-attribute-by-name.pipe';
 import { FlagComponent } from './flag/flag.component';
@@ -56,15 +55,7 @@ import { WhoisResourcesService } from './whois-resources.service';
         WhoisLineDiffDirective,
         OrgDropDownComponent,
     ],
-    providers: [
-        CredentialsService,
-        WhoisMetaService,
-        WhoisResourcesService,
-        AlertsService,
-        // Temporary just until we need different menu on test, training and rc enviroments
-        EnvironmentStatusService,
-        OrgDropDownSharedService,
-    ],
+    providers: [CredentialsService, WhoisMetaService, WhoisResourcesService, AlertsService, OrgDropDownSharedService],
     exports: [
         AlertBannersComponent,
         PaginationComponent,

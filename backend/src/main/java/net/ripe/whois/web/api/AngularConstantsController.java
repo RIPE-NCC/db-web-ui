@@ -70,6 +70,8 @@ public class AngularConstantsController {
     // maintainers on top-level allocation and PI assignments
     @Value("${top.ripe.ncc.mntners}")
     private String[] topRipeNccMntners;
+    @Value("${mntners.allowed.to.create.autnum:}")
+    private String[] mntnersAllowedToCreateAutnum;
 
     private AppConstants appConstants;
 
@@ -153,6 +155,7 @@ public class AngularConstantsController {
         constants.setFrontendLiveChatKey(frontendLiveChatKey);
         constants.setRipeNccMntners(ripeNccMntners);
         constants.setTopRipeNccMntners(topRipeNccMntners);
+        constants.setMntnersAllowedToCreateAutnum(mntnersAllowedToCreateAutnum);
         return constants;
     }
 
@@ -203,6 +206,8 @@ public class AngularConstantsController {
         private String[] ripeNccMntners;
         @JsonProperty("TOP_RIPE_NCC_MNTNERS")
         private String[] topRipeNccMntners;
+        @JsonProperty("MNTNER_ALLOWED_TO_CREATE_AUTNUM")
+        private String[] mntnersAllowedToCreateAutnum;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -295,5 +300,10 @@ public class AngularConstantsController {
         public void setTopRipeNccMntners(String[] topRipeNccMntners) {
             this.topRipeNccMntners = topRipeNccMntners;
         }
+
+        public void setMntnersAllowedToCreateAutnum(String[] mntnersAllowedToCreateAutnum) {
+            this.mntnersAllowedToCreateAutnum = mntnersAllowedToCreateAutnum;
+        }
+
     }
 }

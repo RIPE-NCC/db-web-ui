@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { EnvironmentStatusService } from '../shared/environment-status.service';
+import { PropertiesService } from '../properties.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { IUserInfoOrganisation, IUserInfoResponseData } from './org-data-type.model';
 import { OrgDropDownSharedService } from './org-drop-down-shared.service';
@@ -15,14 +15,14 @@ export class OrgDropDownComponent implements OnInit {
     // Temporary until we need different application on Test, Training and RC environment
     public trainingEnv: boolean;
 
-    constructor(private userInfoService: UserInfoService, private orgDropDownSharedService: OrgDropDownSharedService) {
+    constructor(private userInfoService: UserInfoService, private orgDropDownSharedService: OrgDropDownSharedService, private properties: PropertiesService) {
         this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
             this.initOrgsAndMemebers(userInfo);
         });
     }
 
     public ngOnInit() {
-        this.trainingEnv = EnvironmentStatusService.isTrainingEnv();
+        this.trainingEnv = this.properties.isTrainingEnv();
         this.userInfoService.getUserOrgsAndRoles().subscribe(
             (userInfo: IUserInfoResponseData): void => {
                 if (!userInfo) {
