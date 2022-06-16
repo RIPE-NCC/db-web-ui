@@ -21,7 +21,7 @@ describe('The full text search', () => {
         await page.scrollIntoCenteredView(page.byId('fullTextSearchButton'));
         page.byId('fullTextSearchButton').click();
         expect(page.warningAlert.isPresent()).toBeTruthy();
-        expect(page.warningAlert.getText()).toEqual('No results were found for your search. Your search details may be too selective.');
+        expect(page.warningAlert.getText()).toContain('No results were found for your search. Your search details may be too selective.');
     });
 
     it('should be able to add a filter by clicking on summary', () => {
