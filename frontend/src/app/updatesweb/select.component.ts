@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { UserInfoService } from '../userinfo/user-info.service';
@@ -23,7 +22,7 @@ export class SelectComponent implements OnInit {
         private router: Router,
         public whoisMetaService: WhoisMetaService,
         public userInfoService: UserInfoService,
-        private properties: PropertiesService,
+        public properties: PropertiesService,
     ) {
         this.userInfoService.userLoggedIn$.subscribe(() => {
             this.loggedIn = true;
@@ -67,8 +66,10 @@ export class SelectComponent implements OnInit {
     }
 
     public filterObjectTypes(unfiltered: string[]): string[] {
-        return _.filter(unfiltered, (item: string) => {
-            return item !== 'as-block' && item !== 'poem' && item !== 'poetic-form' && item != 'aut-num';
-        });
+        // in case there is mnt which allowed to create autnum in properties file, autnum shouldn't be filtered out
+        if (!!this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM) {
+            return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form');
+        }
+        return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form' && item != 'aut-num');
     }
 }
