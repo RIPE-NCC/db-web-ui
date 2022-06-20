@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -70,8 +71,8 @@ public class AngularConstantsController {
     // maintainers on top-level allocation and PI assignments
     @Value("${top.ripe.ncc.mntners}")
     private String[] topRipeNccMntners;
-    @Value("${mntners.allowed.to.create.autnum:}")
-    private String[] mntnersAllowedToCreateAutnum;
+    @Value("#{${mntners.allowed.to.create.autnum:{:}}}")
+    private Map<String, String> mntnersAllowedToCreateAutnum;
 
     private AppConstants appConstants;
 
@@ -207,7 +208,7 @@ public class AngularConstantsController {
         @JsonProperty("TOP_RIPE_NCC_MNTNERS")
         private String[] topRipeNccMntners;
         @JsonProperty("MNTNER_ALLOWED_TO_CREATE_AUTNUM")
-        private String[] mntnersAllowedToCreateAutnum;
+        private Map<String, String> mntnersAllowedToCreateAutnum;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -301,7 +302,7 @@ public class AngularConstantsController {
             this.topRipeNccMntners = topRipeNccMntners;
         }
 
-        public void setMntnersAllowedToCreateAutnum(String[] mntnersAllowedToCreateAutnum) {
+        public void setMntnersAllowedToCreateAutnum(Map<String, String> mntnersAllowedToCreateAutnum) {
             this.mntnersAllowedToCreateAutnum = mntnersAllowedToCreateAutnum;
         }
 
