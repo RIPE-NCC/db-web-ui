@@ -2,8 +2,6 @@ image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:375bac83
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  WHITESOURCE_PRODUCT: "database-team"
-  WHITESOURCE_PROJECT: "db-web-ui"
   PROJECT_NAME: "db-web-ui"
   ARTIFACT_NAME: "db-web-ui"
   ARTIFACT_DIR: "backend"
@@ -11,8 +9,6 @@ variables:
   CYPRESS_CACHE_FOLDER: "./cache/Cypress"
 
 include:
-    - project: 'swe/gitlab-ci'
-      file: '/templates/whitesource-scanning.yml'
     - project: 'swe-database-team/gitlab-ci'
       file: '/templates/release-template.yml'
     - project: 'swe-database-team/gitlab-ci'
