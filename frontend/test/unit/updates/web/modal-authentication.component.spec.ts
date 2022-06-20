@@ -73,16 +73,15 @@ describe('ModalAuthenticationComponent', () => {
         expect(modalAuthenticationComponent.selected.message).toEqual("Password for mntner: 'b-mnt' too short");
     });
 
-    it('should allow empty password on TEST env just for TEST-DBM-MNT', () => {
-        spyOn(modalAuthenticationComponent.properties, 'isTestEnv').and.returnValue(true);
-        modalAuthenticationComponent.properties.ENV = 'test';
-        modalAuthenticationComponent.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM = ['TEST-DBM-MNT'];
+    it('should prefilled password on TEST env just for TEST-DBM-MNT', () => {
+        modalAuthenticationComponent.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM = { 'TEST-DBM-MNT': 'test' };
         modalAuthenticationComponent.selected.item = { type: 'mntner', key: 'TEST-DBM-MNT' };
-        modalAuthenticationComponent.selected.password = '';
+        modalAuthenticationComponent.onChangeMnt();
+        expect(modalAuthenticationComponent.selected.password).toBe('test');
         modalAuthenticationComponent.selected.associate = false;
         modalAuthenticationComponent.submit();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/TEST-DBM-MNT?password=&unfiltered=true' });
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/TEST-DBM-MNT?password=test&unfiltered=true' });
     });
 
     it('should detect invalid password', async () => {

@@ -315,7 +315,7 @@ describe('SelectController', () => {
     });
 
     it('should not return as-block, poem, poetic-form, but aut-num should be present for TEST environment', () => {
-        spyOn(component.properties, 'isTestEnv').and.returnValue(true);
+        component.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM = { 'TEST-DBM-MNT': 'test' };
         const filteredObjectTypes = component.filterObjectTypes(whoisMetaServiceMock.getObjectTypes());
         expect(filteredObjectTypes.includes('as-block')).toBeFalsy();
         expect(filteredObjectTypes.includes('poem')).toBeFalsy();

@@ -67,7 +67,7 @@ export class SelectComponent implements OnInit {
 
     public filterObjectTypes(unfiltered: string[]): string[] {
         // in case there is mnt which allowed to create autnum in properties file, autnum shouldn't be filtered out
-        if (!!this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM) {
+        if (Object.keys(this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM).length > 0) {
             return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form');
         }
         return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form' && item != 'aut-num');
