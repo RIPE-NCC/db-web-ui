@@ -91,7 +91,6 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("ripe.ncc.mntners","RIPE-NCC-HM-MNT, RIPE-NCC-END-MNT, RIPE-NCC-HM-PI-MNT, RIPE-GII-MNT, RIPE-DBM-MNT, RIPE-NCC-LOCKED-MNT, RIPE-ERX-MNT, RIPE-NCC-LEGACY-MNT, RIPE-NCC-MNT");
         System.setProperty("top.ripe.ncc.mntners","RIPE-NCC-HM-MNT, RIPE-NCC-END-MNT, RIPE-NCC-LEGACY-MNT");
         System.setProperty("rpki-validator.api.url","https://rpki-validator.ripe.net/api/v1/validity/");
-        System.setProperty("mntners.allowed.to.create.autnum","TEST-DBM-MNT");
     }
 
     @AfterAll

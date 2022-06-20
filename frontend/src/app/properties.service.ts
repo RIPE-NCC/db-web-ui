@@ -45,7 +45,7 @@ export class PropertiesService {
     // maintainers on top-level allocation and PI assignments
     public TOP_RIPE_NCC_MNTNERS = [];
     // maintainers allowed to create aut-num
-    public MNTNER_ALLOWED_TO_CREATE_AUTNUM = [];
+    public MNTNER_ALLOWED_TO_CREATE_AUTNUM = {};
 
     constructor(private httpClient: HttpClient) {}
 
@@ -79,7 +79,7 @@ export class PropertiesService {
                     this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
                     this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
                     this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
-                    this.MNTNER_ALLOWED_TO_CREATE_AUTNUM = response.MNTNER_ALLOWED_TO_CREATE_AUTNUM;
+                    this.MNTNER_ALLOWED_TO_CREATE_AUTNUM = response.MNTNER_ALLOWED_TO_CREATE_AUTNUM || {};
 
                     this.injectProperties();
                 },

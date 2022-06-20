@@ -30,7 +30,14 @@
                 <ul>
                     <li>
                         <label for="selectAuthMntner">Select a maintainer to authenticate the update operation.</label>
-                        <select id="selectAuthMntner" name="selectAuthMntner" [(ngModel)]="selected.item" required="true" class="form-control select-height">
+                        <select
+                            id="selectAuthMntner"
+                            name="selectAuthMntner"
+                            [(ngModel)]="selected.item"
+                            (ngModelChange)="onChangeMnt()"
+                            required="true"
+                            class="form-control select-height"
+                        >
                             <option *ngFor="let item of resolve.mntners" label="{{ item.key }}" [ngValue]="item">{{ item.key }}</option>
                         </select>
                     </li>

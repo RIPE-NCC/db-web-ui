@@ -51,7 +51,7 @@ export class ModalAuthenticationComponent implements OnInit {
             associate: true,
             item: this.resolve.mntners[0],
             message: undefined,
-            password: '',
+            password: this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM[this.resolve.mntners[0]?.key] || '',
         };
         this.allowForceDelete();
     }
@@ -63,14 +63,17 @@ export class ModalAuthenticationComponent implements OnInit {
         return this.resolve.allowForcedDelete && _.includes(this.allowedObjectTypes, this.resolve.objectType);
     }
 
+    // password prefilled for TEST maintainers - defined in properties
+    public onChangeMnt() {
+        this.selected.password = this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM[this.selected.item.key] || '';
+    }
+
     public cancel(reason?: string) {
         this.activeModal.dismiss(reason);
     }
 
     public submit() {
-        const isTestDBMMaintainer =
-            !!this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM && this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM.includes(this.selected.item.key);
-        if (!isTestDBMMaintainer && this.selected.password.length === 0 && this.selected.item) {
+        if (this.selected.password.length === 0 && this.selected.item) {
             this.selected.message = "Password for mntner: '" + this.selected.item.key + "'" + ' too short';
             return;
         }
