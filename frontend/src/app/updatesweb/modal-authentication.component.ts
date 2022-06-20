@@ -73,9 +73,7 @@ export class ModalAuthenticationComponent implements OnInit {
     }
 
     public submit() {
-        const isTestDBMMaintainer =
-            !!this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM && this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM.includes(this.selected.item.key);
-        if (!isTestDBMMaintainer && this.selected.password.length === 0 && this.selected.item) {
+        if (this.selected.password.length === 0 && this.selected.item) {
             this.selected.message = "Password for mntner: '" + this.selected.item.key + "'" + ' too short';
             return;
         }
