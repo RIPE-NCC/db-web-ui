@@ -8,6 +8,7 @@ variables:
   ARTIFACT_NAME: "db-web-ui"
   ARTIFACT_DIR: "backend"
   GROUP_ID: "net.ripe.whois"
+  CYPRESS_CACHE_FOLDER: "./cache/Cypress"
 
 include:
     - project: 'swe/gitlab-ci'
@@ -32,6 +33,7 @@ cache:
     - frontend/node_modules/
     - frontend/package-lock.json
     - .m2/repository
+    - frontend/cache/Cypress/
 
 build:
   tags:
@@ -47,6 +49,12 @@ backend:
     tags:
       - whois
     stage: test
+    rules:
+        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+            when: always
+        -   if: '$CI_COMMIT_REF_NAME == "master"'
+            when: always
+        -   when: manual
     allow_failure: true
     script:
       - cd backend && mvn test
@@ -60,6 +68,12 @@ e2e:
     tags:
       - whois
     stage: test
+    rules:
+        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+            when: always
+        -   if: '$CI_COMMIT_REF_NAME == "master"'
+            when: always
+        -   when: manual
     allow_failure: true
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
@@ -72,15 +86,72 @@ e2e-firefox:
     tags:
       - whois
     stage: test
+    rules:
+        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+            when: always
+        -   if: '$CI_COMMIT_REF_NAME == "master"'
+            when: always
+        -   when: manual
+            allow_failure: true
     script:
       - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
       - export DISPLAY=:20
       - Xvfb :20 -screen 0 1920x1080x16 &
       - cd frontend && npm run e2e-firefox
+
+e2e-cypress-chrome:
+    tags:
+        - whois
+    stage: test
+    rules:
+        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+            when: always
+        -   if: '$CI_COMMIT_REF_NAME == "master"'
+            when: always
+        -   when: manual
     allow_failure: true
+    script:
+        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
+        - export DISPLAY=:20
+        - Xvfb :20 -screen 0 1920x1080x16 &
+        - cd frontend && npm run cypress:chrome
+    artifacts:
+        when: on_failure
+        paths:
+            - frontend/test/cypress/videos/**/*.mp4
+        expire_in: 1 day
+
+e2e-cypress-firefox:
+    tags:
+        - whois
+    stage: test
+    rules:
+        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+            when: always
+        -   if: '$CI_COMMIT_REF_NAME == "master"'
+            when: always
+        -   when: manual
+            allow_failure: true
+    script:
+        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
+        - export DISPLAY=:20
+        - Xvfb :20 -screen 0 1920x1080x16 &
+        - cd frontend && npm run cypress:firefox
+    artifacts:
+        when: on_failure
+        paths:
+            - frontend/test/cypress/videos/**/*.mp4
+        expire_in: 1 day
 
 qa:
   stage: test
+  rules:
+      -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+          when: always
+      -   if: '$CI_COMMIT_REF_NAME == "master"'
+          when: always
+      -   when: manual
+          allow_failure: true
   script:
     - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN} -DskipTests
   allow_failure: true
