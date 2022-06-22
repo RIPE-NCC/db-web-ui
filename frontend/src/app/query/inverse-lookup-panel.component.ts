@@ -23,16 +23,7 @@ export class InverseLookupPanelComponent implements OnInit {
 
     public isDisabled(attribute: InverseAttrsEnum) {
         let attrVisibleForTypes: string[] = this.mapInverseLookupAttributesWithTypes.get(attribute);
-        let disabled = !this.availableTypes.some((type) => attrVisibleForTypes.includes(type));
-        if (disabled) {
-            this.uncheckDisabledCheckbox(attribute);
-        }
-        return disabled;
-    }
-
-    private uncheckDisabledCheckbox(attribute: InverseAttrsEnum) {
-        let enumKey = Object.keys(InverseAttrsEnum)[Object.values(InverseAttrsEnum).indexOf(attribute)];
-        this.queryParameters.inverse[enumKey] = false;
+        return !this.availableTypes.some((type) => attrVisibleForTypes.includes(type));
     }
 
     private static mapInverseLookupAttributesToTypes() {

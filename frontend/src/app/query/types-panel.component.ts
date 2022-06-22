@@ -16,15 +16,6 @@ export class TypesPanelComponent {
     readonly ObjectTypesEnum = ObjectTypesEnum;
 
     isDisabled(type: ObjectTypesEnum) {
-        let disabled = !this.availableTypes.includes(type);
-        if (disabled) {
-            this.uncheckDisabledCheckbox(type);
-        }
-        return disabled;
-    }
-
-    private uncheckDisabledCheckbox(attribute: ObjectTypesEnum) {
-        let enumKey = Object.keys(ObjectTypesEnum)[Object.values(ObjectTypesEnum).indexOf(attribute)];
-        this.queryParameters.types[enumKey] = false;
+        return !this.availableTypes.includes(type);
     }
 }

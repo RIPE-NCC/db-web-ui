@@ -308,11 +308,13 @@ describe('QueryComponent', () => {
         expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
     });
 
-    it('should enable all types, set all types from ObjectTypesEnum', () => {
+    fit('should enable all types, set all types from ObjectTypesEnum', () => {
         component.init();
+        component.qp.queryText = '1.1.1.1';
         component.availableTypes = [ObjectTypesEnum.INETNUM];
         fixture.detectChanges();
-        component.enableAllTypesCheckboxes();
+        component.filterCheckboxes();
+        console.log('##### evo', component.availableTypes);
         expect(component.availableTypes.length).toEqual(21);
     });
 
@@ -393,7 +395,7 @@ describe('QueryComponent', () => {
         component.qp.hierarchy = 'l';
         component.qp.inverse = { ADMIN_C: true, AUTHOR: true, MNT_BY: true, ORG: true, TECH_C: true, ZONE_C: true };
         component.qp.doNotRetrieveRelatedObjects = false; //by default is true
-        component.resetFilters();
+        component.uncheckAllCheckboxes();
         expect(component.qp.types).toEqual({});
         expect(component.qp.hierarchy).toBeUndefined();
         expect(component.qp.reverseDomain).toBeFalsy();
