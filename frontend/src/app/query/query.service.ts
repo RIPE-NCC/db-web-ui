@@ -218,6 +218,7 @@ export class QueryService {
             types.push(ObjectTypesEnum.MNTNER);
         }
         if (types.length === 0) {
+            // enable all types in Types dropdown
             types = Object.values(ObjectTypesEnum);
         }
         return types;
