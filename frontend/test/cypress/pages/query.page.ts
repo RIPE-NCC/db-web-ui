@@ -49,6 +49,11 @@ export class QueryPage {
         return this;
     }
 
+    expectSearchToHaveFocus() {
+        cy.get('input[name="qp.queryText"]').should('have.focus');
+        return this;
+    }
+
     clickOnShareButton() {
         cy.get('button[mattooltip="Share Panel"]').click({ force: true });
         return this;
