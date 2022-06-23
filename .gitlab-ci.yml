@@ -2,8 +2,6 @@ image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:375bac83
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  WHITESOURCE_PRODUCT: "database-team"
-  WHITESOURCE_PROJECT: "db-web-ui"
   PROJECT_NAME: "db-web-ui"
   ARTIFACT_NAME: "db-web-ui"
   ARTIFACT_DIR: "backend"
@@ -11,14 +9,10 @@ variables:
   CYPRESS_CACHE_FOLDER: "./cache/Cypress"
 
 include:
-    - project: 'swe/gitlab-ci'
-      file: '/templates/whitesource-scanning.yml'
     - project: 'swe-database-team/gitlab-ci'
       file: '/templates/release-template.yml'
     - project: 'swe-database-team/gitlab-ci'
       file: '/templates/deployment-template.yml'
-    - project: 'swe-database-team/gitlab-ci'
-      file: '/templates/deployment-salt-template.yml'
 
 stages:
   - build
@@ -55,7 +49,7 @@ backend:
         -   if: '$CI_COMMIT_REF_NAME == "master"'
             when: always
         -   when: manual
-    allow_failure: true
+            allow_failure: true
     script:
       - cd backend && mvn test
     artifacts:
@@ -74,7 +68,7 @@ e2e:
         -   if: '$CI_COMMIT_REF_NAME == "master"'
             when: always
         -   when: manual
-    allow_failure: true
+            allow_failure: true
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
@@ -109,7 +103,7 @@ e2e-cypress-chrome:
         -   if: '$CI_COMMIT_REF_NAME == "master"'
             when: always
         -   when: manual
-    allow_failure: true
+            allow_failure: true
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
@@ -177,9 +171,3 @@ browserstack:
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
-
-deploy_dev:
-    stage: deploy
-    only:
-        - /^never$/
-

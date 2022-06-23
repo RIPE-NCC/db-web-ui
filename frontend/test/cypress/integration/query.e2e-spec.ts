@@ -46,7 +46,7 @@ describe('Query scenario', () => {
         queryPage.expectApplyFiltersDisabled(false).expectResetDisabled(false).clickOnReset().expectApplyFiltersDisabled(false).expectResetDisabled(true);
     });
 
-    it('should uncheck checkbox if it become disabled after search', () => {
+    it('should uncheck checkbox when search term change', () => {
         const typeDropdown = queryPage
             .typeSearchTerm('223.0.0.0 all')
             .clickOnSearchButton()
@@ -54,13 +54,28 @@ describe('Query scenario', () => {
             .clickOnTypesFilterDropdown()
             .clickCheckbox('as-block')
             .clickCheckbox('domain');
-        queryPage.typeSearchTerm('223.0.0.0').clickOnApplyFilters();
+        queryPage.typeSearchTerm('223.0.0.0');
 
         typeDropdown
             .expectCheckboxToBeDisabled('as-block', true)
             .expectCheckboxToBeDisabled('domain', false)
             .expectCheckboxToBeChecked('as-block', false)
-            .expectCheckboxToBeChecked('domain', true);
+            .expectCheckboxToBeChecked('domain', false);
+    });
+
+    it('should disable checkbox when search term change according to object type of search term', () => {
+        const typeDropdown = queryPage
+            .typeSearchTerm('223.0.0.0 all')
+            .clickOnSearchButton()
+            .expectNoResults()
+            .clickOnTypesFilterDropdown()
+            .clickCheckbox('mntner');
+        queryPage.typeSearchTerm('223.0.0.0');
+
+        typeDropdown.expectCheckboxToBeDisabled('mntner', true).expectCheckboxToBeChecked('mntner', false);
+
+        queryPage.typeSearchTerm('ANNA-MNT');
+        typeDropdown.clickCheckbox('mntner').expectCheckboxToBeDisabled('mntner', false).expectCheckboxToBeChecked('mntner', true);
     });
 
     it('should have share button disable if there is no results', () => {

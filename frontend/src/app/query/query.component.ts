@@ -135,12 +135,15 @@ export class QueryComponent implements OnDestroy {
         }
     }
 
-    // remove all checked filters in dropdowns
-    public resetFilters() {
+    public uncheckAllCheckboxes() {
         this.qp.types = {};
         this.qp.inverse = {};
         this.resetHierarchyDropdown();
         this.resetAdvanceFilter();
+    }
+
+    public resetFilters() {
+        this.uncheckAllCheckboxes();
         this.submitSearchForm();
     }
 
@@ -287,9 +290,10 @@ export class QueryComponent implements OnDestroy {
         return resultArr.reverse().join('').trim().replace(/\n/g, '<br>');
     }
 
-    // enable all types in Types dropdown
-    public enableAllTypesCheckboxes() {
-        this.availableTypes = Object.values(ObjectTypesEnum);
+    public filterCheckboxes() {
+        // disable checkboxes according to type of query term
+        this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
+        this.uncheckAllCheckboxes();
     }
 
     public isDisabledHierarchyDropdown() {
