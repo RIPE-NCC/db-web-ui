@@ -10,6 +10,7 @@ import { WebAppVersionComponent } from '../version/web-app-version.component';
 import { WhoisVersionComponent } from '../version/whois-version.component';
 import { AlertBannersComponent } from './alert/alert-banners.component';
 import { AlertsService } from './alert/alerts.service';
+import { AutoFocusDirective } from './autofocus.directive';
 import { CredentialsService } from './credentials.service';
 import { AttributeInfoComponent } from './descriptionsyntax/attr-info.component';
 import { DescriptionSyntaxComponent } from './descriptionsyntax/description-syntax.component';
@@ -35,6 +36,7 @@ import { WhoisResourcesService } from './whois-resources.service';
     imports: [CommonModule, FormsModule, NgbModule, NgbNavModule, DiffMatchPatchModule, NgSelectModule],
     declarations: [
         AlertBannersComponent,
+        AutoFocusDirective,
         PaginationComponent,
         HelpMarkerComponent,
         LabelPipe,
@@ -58,6 +60,7 @@ import { WhoisResourcesService } from './whois-resources.service';
     providers: [CredentialsService, WhoisMetaService, WhoisResourcesService, AlertsService, OrgDropDownSharedService],
     exports: [
         AlertBannersComponent,
+        AutoFocusDirective,
         PaginationComponent,
         HelpMarkerComponent,
         LabelPipe,
