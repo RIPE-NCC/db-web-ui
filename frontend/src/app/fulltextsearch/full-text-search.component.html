@@ -5,7 +5,7 @@
 </section>
 <section>
     <form class="grey padding margin-bottom" style="overflow: auto" (submit)="searchClicked()">
-        <input id="fullTextSearchInput" name="ftquery" type="text" class="form-control" [(ngModel)]="ftquery" placeholder="Search term" />
+        <input autoFocusDirective id="fullTextSearchInput" name="ftquery" type="text" class="form-control" [(ngModel)]="ftquery" placeholder="Search term" />
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
             <i *ngIf="!advancedSearch" class="fal fa-plus-square"></i>
             <i *ngIf="advancedSearch" class="fal fa-minus-square"></i>

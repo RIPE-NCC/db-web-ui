@@ -7,6 +7,10 @@ describe('Query scenario', () => {
         queryPage.visit();
     });
 
+    it('should set focus on search field when visiting the page', () => {
+        queryPage.expectSearchToHaveFocus();
+    });
+
     it('should reset all dropdowns checkboxes to default on click Reset filters button', () => {
         queryPage.typeSearchTerm('223.0.0.0 all').clickOnSearchButton();
         queryPage.clickOnTypesFilterDropdown().clickCheckbox('as-block').clickCheckbox('as-set').clickCheckbox('aut-num');
