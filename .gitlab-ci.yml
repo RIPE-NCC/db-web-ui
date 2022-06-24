@@ -13,6 +13,8 @@ include:
       file: '/templates/release-template.yml'
     - project: 'swe-database-team/gitlab-ci'
       file: '/templates/deployment-template.yml'
+    - project: 'swe-database-team/gitlab-ci'
+      file: '/templates/deployment-salt-template.yml'
 
 stages:
   - build
@@ -171,3 +173,13 @@ browserstack:
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
+
+deploy_dev:
+  stage: deploy
+  only:
+    - /^never$/
+
+deploy_salt_prod:
+  stage: deploy
+  only:
+    - /^never$/
