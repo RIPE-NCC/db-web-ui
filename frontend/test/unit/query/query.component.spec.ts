@@ -308,13 +308,13 @@ describe('QueryComponent', () => {
         expect(component.isDisabledHierarchyDropdown()).toBeTruthy();
     });
 
-    fit('should enable all types, set all types from ObjectTypesEnum', () => {
+    it('should enable all types, set all types from ObjectTypesEnum', () => {
+        queryServiceSpy.getTypesAppropriateToQuery.and.returnValue(Object.values(ObjectTypesEnum));
         component.init();
         component.qp.queryText = '1.1.1.1';
         component.availableTypes = [ObjectTypesEnum.INETNUM];
         fixture.detectChanges();
         component.filterCheckboxes();
-        console.log('##### evo', component.availableTypes);
         expect(component.availableTypes.length).toEqual(21);
     });
 
