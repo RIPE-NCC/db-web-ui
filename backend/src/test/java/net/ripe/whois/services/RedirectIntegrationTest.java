@@ -18,6 +18,8 @@ import java.nio.charset.Charset;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
@@ -128,6 +130,44 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
             restTemplate.exchange(getServerUrl(), HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
         assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttps() + "/db-web-ui/query")));
+    }
+
+    @Test
+    public void search_specific_docs() {
+        final ResponseEntity<String> response =
+            restTemplate.exchange(
+                getServerUrl() + "/docs/04.RPSL-Object-Types/",
+                HttpMethod.GET,
+                null,
+                String.class
+            );
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertTrue(response.toString().contains("RPSL Object Types"));
+    }
+    @Test
+    public void search_docs_without_slash() {
+        final ResponseEntity<String> response =
+                restTemplate.exchange(
+                        getServerUrl() + "/docs",
+                        HttpMethod.GET,
+                        null,
+                        String.class
+                );
+        assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
+        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrl() + "/docs/")));
+    }
+
+    @Test
+    public void search_docs_correct_path() {
+        final ResponseEntity<String> response =
+            restTemplate.exchange(
+                getServerUrl() + "/docs/",
+                HttpMethod.GET,
+                null,
+                String.class
+            );
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertTrue(response.toString().contains("Introduction to the RIPE Database"));
     }
 
     private HttpHeaders getHttpHeaders() {

@@ -23,7 +23,7 @@ Build on Local Machine
 
 Start Full Development Server (Frontend + Backend) on Local Machine
 -------------------------------------------------------------------
-> Every small change to be visible in browser you have to run `mvn clean install` otherwise change wont be visible in browser 
+> Every small change to be visible in browser you have to run `mvn clean install` otherwise change wont be visible in browser
 
 * first build (see above)
 
@@ -32,6 +32,8 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 * cd into the `backend` sub folder
 
 * execute (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Dspring-boot.run.profiles=local -Dspring.profiles.active=local -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC"```     
+
+* if you have problem executing the previous command is probably because you need to give permissions to /var directory so create /var/logs/jetty directory and give permissions. You should add that path in your exlude file .git/info/exclude
 
 * or Right click on ```/backend/src/main/java/net/ripe/whois/Application.java run in intellij, make sure to add -Dspring.profiles.active=local```
 
@@ -55,10 +57,10 @@ Frontend
 
 * `npm run build-dev`<br>
   webpack build Just-in-Time (JIT), used for local development. This build will include source-map - TypeScript code in browser for debugging.
-   
+
 * `npm run build`<br>
   webpack build Ahead-of-Time (AOT), which compiles app at build time, used for deployments.
-  
+
 * `npm run start`<br>
   Use this along with ```mvn spring-boot:run```. It watches the TypeScript and HTML files for changes and redeploys them
   when they've changed. In detail: the watch task is triggered by changes in the file system. Access application on https://localhost.ripe.net:4200/db-web-ui/ (port changes after logging, so pay attention to return it to 4200)
@@ -68,25 +70,25 @@ Frontend
 * `npm run test`<br>
   Running Karma unit tests locally for Angular 6+ with coverage
   - [Angular Unit test coverage 🔗](frontend/reports/unittest-coverage/index.html) is available locally
-   
+
 * `npm run test-remote` _(used on bamboo)_<br>
   Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub` for Angular 6+ with coverage
-  
+
 * `npm run e2e-chrome`<br>
   Runs the Protractor tests on port 9002 in Chrome without coverage so they are quicker.
 
 * `npm run e2e-firefox`<br>
   Runs the Protractor tests on port 9002 in FireFox without coverage so they are quicker.
-  
+
 * `npm run e2e-remote` _(used on bamboo)_<br>
-  Runs the Protractor tests in selenium. 
+  Runs the Protractor tests in selenium.
   _End where e2e test runned on bamboo can be seen in screenshots http://193.0.2.222:4444/wd/hub/static/resource/hub.html_
-   
+
 * `npm run start-mock`<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks. <br />
   _To be able to run e2e-no-test locally (http://localhost:9002/db-web-ui) with logged in user you will have to check <br />
-  `hostname -s` and then resulted host name (for example laptop-123456.local) add<br /> 
+  `hostname -s` and then resulted host name (for example laptop-123456.local) add<br />
   `127.0.0.1       laptop-123456.local` in your host file<br />
   `sudo vi /etc/hosts`
 
@@ -111,7 +113,7 @@ To see which packages were updated, optionally against a branch name, use:
 
 See the [diff-package-lock homepage](https://github.com/adiktofsugar/diff-package-lock) for more information
 
-* `npm run cypress:open` and `npm run start-mock` to run it locally 
+* `npm run cypress:open` and `npm run start-mock` to run it locally
 
 ### Linting
 * `npm run lint`<br>
@@ -124,7 +126,7 @@ See the [diff-package-lock homepage](https://github.com/adiktofsugar/diff-packag
   - N.B. this task is designed to run on db-tools-1 only -- it won't work locally unless you change the line
    containing the reference to db-tools-1 in protractor-e2e-coverage.conf.js
   - [see the coverage results on SonarQube 🔗](http://db-tools-1.ripe.net:9000/dashboard/index/net.ripe.db:db-web-ui-ng)
- 
+
 Testing
 -------------------
 Login to the DEV or PREPDEV environments using the SSO username db-staff@ripe.net / password dbstaffsso.
@@ -156,7 +158,7 @@ IntelliJ Preferences
     * JavaScript
         * Prettier
             * Prettier package: ~/projects/db-web-ui/frontend/node_modules/prettier
-            * Check On 'Reformat Code' action 
+            * Check On 'Reformat Code' action
 
 Architecture
 ------------
@@ -188,7 +190,7 @@ Things every db-web-ui developer should know
 * Must read: https://blog.angularindepth.com/the-best-way-to-unsubscribe-rxjs-observable-in-the-angular-applications-d8f9aa42f6a0
 * Style guide: https://angular.io/guide/styleguide
 * Native Angular component used in this project: https://ng-bootstrap.github.io/#/getting-started
-* RxJS operators with clear explanations and executable examples: https://www.learnrxjs.io/ 
+* RxJS operators with clear explanations and executable examples: https://www.learnrxjs.io/
 * Use the Mozilla Developer Network (MDN) for JS specs — NOT W3Schools
 
 
@@ -210,7 +212,7 @@ Open a terminal and cd into the `frontend/app` directory, then type these comman
 
     curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
 
-### Ripe web components 
+### Ripe web components
 Join technical design bot channel on Mattermost to stay up to date with releases and change version in package.json file
 https://gitlab.ripe.net/technical-design/ripe-app-webcomponents
 
@@ -244,7 +246,7 @@ expect(mixed).toMatch(pattern);
 Sitespeed
 ----------
 
-Sitespeed.io is a set of Open Source tools that makes it easy to monitor and measure the performance of your web site. 
+Sitespeed.io is a set of Open Source tools that makes it easy to monitor and measure the performance of your web site.
 Use sitespeed Docker container to get an environment with Firefox, Chrome, XVFB and sitespeed.io up
 
 ` docker run --shm-size=1g --rm -v "$(pwd)":/sitespeed.io sitespeedio/sitespeed.io:7.7.3 https://prepdev.db.ripe.net/db-web-ui/ `
@@ -281,5 +283,3 @@ User Interface Guidelines
 
 The Technical Design circle has published a storybook of user interface elements that we should use as a style guide:
 http://ripe-app-storybook-dev.s3-website.eu-central-1.amazonaws.com/
-
-

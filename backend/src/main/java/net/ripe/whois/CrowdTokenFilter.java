@@ -32,6 +32,7 @@ public class CrowdTokenFilter implements Filter {
             ".*/api/.*", /* let rest-operation itself decide about authentication */
             ".*/db-web-ui/",
             // on refresh page to not redirect to login page
+            ".*/docs.*",
             ".*/db-web-ui/webupdates/select",
             ".*/db-web-ui/webupdates/display",
             ".*/db-web-ui/forceDelete",

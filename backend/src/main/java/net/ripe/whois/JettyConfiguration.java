@@ -18,7 +18,9 @@ import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.RequestLogWriter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
@@ -56,6 +58,8 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
     @Value("${jetty.accesslog.retention-period}")
     private int jettyAccessLogRetentionPeriod;
 
+    @Value("${spring.profiles.active:}")
+    private String activeProfile;
     @Override
     public void customize(final JettyServletWebServerFactory factory) {
         factory.addServerCustomizers(server -> {
@@ -66,7 +70,9 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
             DefaultSessionIdManager sessionIdManager = new DefaultSessionIdManager(server);
             sessionIdManager.setWorkerName(workerName);
             server.setSessionIdManager(sessionIdManager);
-            server.setHandler(new HandlerList(rewriteHandler(), server.getHandler()));
+
+
+            server.setHandler(new HandlerList(resourceHandler(),rewriteHandler(),server.getHandler() ));
             server.setRequestLog(createRequestLog());
             addRemoteAddressCustomizerToAllConnectors(server);
         });
@@ -81,6 +87,21 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         }
     }
 
+
+    private ContextHandler resourceHandler(){
+        ResourceHandler staticResourceHandler = new ResourceHandler();
+        if("test".equals(activeProfile) ){
+            staticResourceHandler.setResourceBase("src/test/resources/docs");
+        }else{
+            staticResourceHandler.setResourceBase("docs");
+        }
+        staticResourceHandler.setDirectoriesListed(true);
+
+        ContextHandler contextHandler= new ContextHandler("/docs/");
+        contextHandler.setHandler(staticResourceHandler);
+
+        return contextHandler;
+    }
     private RewriteHandler rewriteHandler() {
         final RewriteHandler rewriteHandler = new RewriteHandler();
         rewriteHandler.setRewriteRequestURI(true);
@@ -100,6 +121,11 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/change-auth$", "/db-web-ui/fmp/"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
+        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "/docs/"));
+
+        final RewriteRegexRule defaultDocRule = new RewriteRegexRule("^/docs/(.*)$", "/docs/$1");
+        defaultDocRule.setTerminating(true);
+        rewriteHandler.addRule(defaultDocRule);
 
         final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
         defaultRule.setTerminating(true);
@@ -109,6 +135,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
 
         return rewriteHandler;
     }
+
 
     private RedirectRegexRule withMovedPermanently(final RedirectRegexRule redirectRegexRule) {
         redirectRegexRule.setStatusCode(HttpStatus.MOVED_PERMANENTLY_301);
@@ -120,7 +147,7 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
             "password", jettyAccessLogFilename, jettyAccessLogFileDateFormat, jettyAccessLogRetentionPeriod), EXTENDED_RIPE_LOG_FORMAT);
     }
 
-    private class FilteredSlf4jRequestLogWriter extends RequestLogWriter {
+    private static class FilteredSlf4jRequestLogWriter extends RequestLogWriter {
 
         private final String keyToFilter;
         // Replace value passed to apikey with "FILTERED" but leave the last 3 characters if its API keys
