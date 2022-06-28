@@ -33,7 +33,7 @@ $padding: 24px;
 .dropdown-menus-bar {
     margin-bottom: 1rem !important;
     background-color: rgba(0, 0, 0, 0.04);
-    height: 60px;
+    min-height: 60px;
     padding: common.spacing(1);
     padding-left: $padding;
 
