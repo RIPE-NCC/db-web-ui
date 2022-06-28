@@ -1,4 +1,4 @@
-package net.ripe.whois;
+package net.ripe.whois.config;
 
 import net.ripe.whois.jetty.HttpTransportRule;
 import net.ripe.whois.jetty.RedirectToHttpsRule;
@@ -24,19 +24,16 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.time.ZoneOffset;
 import java.util.regex.Pattern;
 
-/**
- * Spring boot doesn't allow configuring http and https through only application.properties
- * https://github.com/spring-projects/spring-boot/issues/2167
- */
-@Component
-public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServletWebServerFactory> {
+@Configuration
+public class JettyConfiguration  {
 
     private static final String EXTENDED_RIPE_LOG_FORMAT = "%{client}a %{host}i - %u %{dd/MMM/yyyy:HH:mm:ss Z|" + ZoneOffset.systemDefault().getId() + "}t \"%r\" %s %O %D \"%{Referer}i\" \"%{User-Agent}i\"";
 
@@ -51,17 +48,24 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
 
     @Value("${jetty.accesslog.filename}")
     private String jettyAccessLogFilename;
-
     @Value("${jetty.accesslog.file-date-format}")
     private String jettyAccessLogFileDateFormat;
 
     @Value("${jetty.accesslog.retention-period}")
     private int jettyAccessLogRetentionPeriod;
 
-    @Value("${spring.profiles.active:}")
-    private String activeProfile;
-    @Override
-    public void customize(final JettyServletWebServerFactory factory) {
+    @Value("${docs.path:docs}")
+    private String docsPath;
+
+    @Bean
+    public ConfigurableServletWebServerFactory jettyCustomServlet() {
+        HandlerList handlerList = new HandlerList(resourceHandler());
+        return getConfigurableServletWebServerFactory(handlerList);
+    }
+
+
+    private ConfigurableServletWebServerFactory getConfigurableServletWebServerFactory(HandlerList handlerList) {
+        JettyServletWebServerFactory factory = new JettyServletWebServerFactory();
         factory.addServerCustomizers(server -> {
             ServerConnector httpConnector = new ServerConnector(server);
             httpConnector.setPort(httpPort);
@@ -71,11 +75,14 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
             sessionIdManager.setWorkerName(workerName);
             server.setSessionIdManager(sessionIdManager);
 
+            handlerList.addHandler(rewriteHandler());
+            handlerList.addHandler(server.getHandler());
 
-            server.setHandler(new HandlerList(resourceHandler(),rewriteHandler(),server.getHandler() ));
+            server.setHandler(handlerList);
             server.setRequestLog(createRequestLog());
             addRemoteAddressCustomizerToAllConnectors(server);
         });
+        return factory;
     }
 
     private void addRemoteAddressCustomizerToAllConnectors(final Server server) {
@@ -87,14 +94,10 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         }
     }
 
-
     private ContextHandler resourceHandler(){
         ResourceHandler staticResourceHandler = new ResourceHandler();
-        if("test".equals(activeProfile) ){
-            staticResourceHandler.setResourceBase("src/test/resources/docs");
-        }else{
-            staticResourceHandler.setResourceBase("docs");
-        }
+        staticResourceHandler.setResourceBase(docsPath);
+
         staticResourceHandler.setDirectoriesListed(true);
 
         ContextHandler contextHandler= new ContextHandler("/docs/");
@@ -102,11 +105,31 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
 
         return contextHandler;
     }
+
     private RewriteHandler rewriteHandler() {
         final RewriteHandler rewriteHandler = new RewriteHandler();
         rewriteHandler.setRewriteRequestURI(true);
         rewriteHandler.setRewritePathInfo(true);
 
+        redirectRules(rewriteHandler);
+        regexRules(rewriteHandler);
+
+        rewriteHandler.addRule(new ResponsePatternRule("*", "400", ""));
+
+        return rewriteHandler;
+    }
+
+    private void regexRules(RewriteHandler rewriteHandler) {
+        final RewriteRegexRule defaultDocRule = new RewriteRegexRule("^/docs/(.*)$", "/docs/$1");
+        defaultDocRule.setTerminating(true);
+        rewriteHandler.addRule(defaultDocRule);
+
+        final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
+        defaultRule.setTerminating(true);
+        rewriteHandler.addRule(defaultRule);
+    }
+
+    private void redirectRules(RewriteHandler rewriteHandler) {
         rewriteHandler.addRule(new HttpTransportRule(HttpScheme.HTTP, new RedirectToHttpsRule() ));
         rewriteHandler.addRule(new RedirectRegexRule("^/search/abuse-finder.html$", "https://www.ripe.net/support/abuse"));
         rewriteHandler.addRule(new RedirectRegexRule("^/search/geolocation-finder.html$", "https://stat.ripe.net/widget/geoloc"));
@@ -122,18 +145,6 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/change-auth$", "/db-web-ui/fmp/"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "/docs/"));
-
-        final RewriteRegexRule defaultDocRule = new RewriteRegexRule("^/docs/(.*)$", "/docs/$1");
-        defaultDocRule.setTerminating(true);
-        rewriteHandler.addRule(defaultDocRule);
-
-        final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
-        defaultRule.setTerminating(true);
-        rewriteHandler.addRule(defaultRule);
-
-        rewriteHandler.addRule(new ResponsePatternRule("*", "400", ""));
-
-        return rewriteHandler;
     }
 
 
@@ -144,8 +155,9 @@ public class JettyConfiguration implements WebServerFactoryCustomizer<JettyServl
 
     private RequestLog createRequestLog() {
         return new CustomRequestLog(new FilteredSlf4jRequestLogWriter(
-            "password", jettyAccessLogFilename, jettyAccessLogFileDateFormat, jettyAccessLogRetentionPeriod), EXTENDED_RIPE_LOG_FORMAT);
+                "password", jettyAccessLogFilename, jettyAccessLogFileDateFormat, jettyAccessLogRetentionPeriod), EXTENDED_RIPE_LOG_FORMAT);
     }
+
 
     private static class FilteredSlf4jRequestLogWriter extends RequestLogWriter {
 
