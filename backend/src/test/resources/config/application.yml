@@ -12,3 +12,8 @@ async:
     queueCapacity: 10000
 
 spring:
+
+docs:
+    path: src/test/resources/docs
+
+
