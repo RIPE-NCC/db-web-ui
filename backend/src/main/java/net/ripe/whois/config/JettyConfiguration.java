@@ -59,7 +59,7 @@ public class JettyConfiguration  {
 
     @Bean
     public ConfigurableServletWebServerFactory jettyCustomServlet() {
-        HandlerList handlerList = new HandlerList(resourceHandler());
+        HandlerList handlerList = new HandlerList(resourceOneDayCacheHandler());
         return getConfigurableServletWebServerFactory(handlerList);
     }
 
@@ -94,11 +94,12 @@ public class JettyConfiguration  {
         }
     }
 
-    private ContextHandler resourceHandler(){
+    private ContextHandler resourceOneDayCacheHandler(){
         ResourceHandler staticResourceHandler = new ResourceHandler();
         staticResourceHandler.setResourceBase(docsPath);
 
         staticResourceHandler.setDirectoriesListed(true);
+        staticResourceHandler.setCacheControl("public, max-age=86400");
 
         ContextHandler contextHandler= new ContextHandler("/docs/");
         contextHandler.setHandler(staticResourceHandler);
