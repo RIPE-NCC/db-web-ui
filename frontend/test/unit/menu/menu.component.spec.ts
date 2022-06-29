@@ -42,7 +42,8 @@ describe('LeftHandMenuComponent', () => {
 
     it('should show all menu items for a user with all roles', () => {
         spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
-        spyOn(component.properties, 'isTestRcEnv').and.returnValue(false);
+        spyOn(component.properties, 'isTestEnv').and.returnValue(false);
+        spyOn(component.properties, 'isRcEnv').and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -55,8 +56,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).toContain('Resources');
         expect(component.menu).toContain('My Resources');
         expect(component.menu).toContain('Sponsored Resources');
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
@@ -65,7 +66,8 @@ describe('LeftHandMenuComponent', () => {
 
     it('should show just RIPE Database for Training environment', () => {
         spyOn(component.properties, 'isTrainingEnv').and.returnValue(true);
-        spyOn(component.properties, 'isTestRcEnv').and.returnValue(false);
+        spyOn(component.properties, 'isTestEnv').and.returnValue(false);
+        spyOn(component.properties, 'isRcEnv').and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -80,8 +82,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).not.toContain('IPv4 Transfer Listing Service');
         expect(component.menu).not.toContain('RPKI Dashboard');
         // RIPE Database
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('Training Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
@@ -89,7 +91,8 @@ describe('LeftHandMenuComponent', () => {
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', () => {
         spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
-        spyOn(component.properties, 'isTestRcEnv').and.returnValue(true);
+        spyOn(component.properties, 'isTestEnv').and.returnValue(true);
+        spyOn(component.properties, 'isRcEnv').and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -104,8 +107,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).not.toContain('IPv4 Transfer Listing Service');
         expect(component.menu).not.toContain('RPKI Dashboard');
         // RIPE Database
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
@@ -113,7 +116,8 @@ describe('LeftHandMenuComponent', () => {
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', () => {
         spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
-        spyOn(component.properties, 'isTestRcEnv').and.returnValue(true);
+        spyOn(component.properties, 'isTestEnv').and.returnValue(true);
+        spyOn(component.properties, 'isRcEnv').and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -128,8 +132,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).not.toContain('IPv4 Transfer Listing Service');
         expect(component.menu).not.toContain('RPKI Dashboard');
         // RIPE Database
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
@@ -144,8 +148,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).toContain('Resources');
         expect(component.menu).toContain('My Resources');
         expect(component.menu).not.toContain('"id":"sponsored"'); // Sponsored Resources menu item
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
@@ -157,8 +161,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).toContain('Resources');
         expect(component.menu).toContain('My Resources');
         expect(component.menu).not.toContain('"id":"sponsored"'); // Sponsored Resources menu item
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
@@ -176,8 +180,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).toContain('Resources');
         expect(component.menu).toContain('My Resources');
         expect(component.menu).not.toContain('Sponsored Resources');
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
@@ -215,8 +219,8 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).toContain('Resources');
         expect(component.menu).toContain('My Resources');
         expect(component.menu).not.toContain('"id":"sponsored"'); // Sponsored Resources menu item
-        expect(component.menu).toContain('RIPE Database');
-        expect(component.menu).toContain('Query the RIPE Database');
+        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');

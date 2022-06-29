@@ -96,12 +96,16 @@ export class PropertiesService {
         }
     }
 
+    public isProdEnv(): boolean {
+        return this.ENV === 'prod';
+    }
+
     public isTrainingEnv(): boolean {
         return this.ENV === 'training';
     }
 
-    public isTestRcEnv(): boolean {
-        return this.ENV === 'test' || this.ENV === 'rc';
+    public isRcEnv(): boolean {
+        return this.ENV === 'rc';
     }
 
     public isTestEnv(): boolean {

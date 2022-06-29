@@ -38,8 +38,8 @@ describe('The left hand menu structure depend on logged in user role', () => {
         await fs.writeFile(file, data, { encoding: 'utf8' });
     };
 
-    /* RIPE Database structure of menu items
-        Query the RIPE Database
+    /* LOCAL Database structure of menu items
+        Query Database
         Full Text Search
         Syncupdates
         Create an Object
@@ -50,7 +50,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('RIPE Database');
+                expect(text).toBe('LOCAL Database');
             });
         await waitAndClick(page.ripeDatabaseMenuItem);
         await waitForCount(page.ripeDatabaseMenuItems, 4);
@@ -60,7 +60,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('Query the RIPE Database');
+                expect(text).toBe('Query Database');
             });
         page.ripeDatabaseMenuItems
             .get(1)
@@ -106,7 +106,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('RIPE Database');
+                expect(text).toBe('LOCAL Database');
             });
         /* Resources structure of menu items
             My Resources
@@ -206,13 +206,13 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('RIPE Database');
+                expect(text).toBe('LOCAL Database');
             });
         /* My Resource structure is empty */
         expect(page.firstTopMenuItems.count()).toEqual(0);
 
         /* RIPE Database structure of menu items
-            Query the RIPE Database
+            Query Database
             Full Text Search
             Syncupdates
             Create an Object
@@ -225,7 +225,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('Query the RIPE Database');
+                expect(text).toBe('Query Database');
             });
         page.secondTopMenuItems
             .get(1)
@@ -274,14 +274,14 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('RIPE Database');
+                expect(text).toBe('LOCAL Database');
             });
 
         /* Resources menu item is empty */
         expect(page.firstTopMenuItems.count()).toEqual(0);
 
         /* RIPE Database structure of menu items
-            Query the RIPE Database
+            Query Database
             Full Text Search
             Syncupdates
             Create an Object
@@ -294,7 +294,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('Query the RIPE Database');
+                expect(text).toBe('Query Database');
             });
         page.secondTopMenuItems
             .get(1)
@@ -336,11 +336,11 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('RIPE Database');
+                expect(text).toBe('LOCAL Database');
             });
 
         /* RIPE Database structure of menu items
-            Query the RIPE Database
+            Query Database
             Full Text Search
             Syncupdates
             Create an Object
@@ -353,7 +353,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .element(by.css_sr('::sr p.title'))
             .getText()
             .then((text) => {
-                expect(text).toBe('Query the RIPE Database');
+                expect(text).toBe('Query Database');
             });
         page.secondTopMenuItems
             .get(1)

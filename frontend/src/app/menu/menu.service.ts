@@ -45,7 +45,10 @@ export class MenuService {
                 }
             });
         // @ts-ignore
-        this.menu.main.forEach((menuItem) => (menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url));
+        this.menu.main.forEach((menuItem) => {
+            menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url;
+            menuItem.title = this.properties.isProdEnv() ? menuItem.title : menuItem.title.replace('RIPE', this.properties.ENV.toUpperCase());
+        });
         this.menu.footer.forEach((menuItem) => (menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url));
         return {
             main: filteredItemsByRoles,
@@ -54,7 +57,7 @@ export class MenuService {
     }
 
     private getMenuByEnvironment(): IMenu {
-        if (this.properties.isTestRcEnv()) {
+        if (this.properties.isTestEnv() || this.properties.isRcEnv()) {
             return menuTestRcEnvObject;
         } else if (this.properties.isTrainingEnv()) {
             return menuTrainingObject;
