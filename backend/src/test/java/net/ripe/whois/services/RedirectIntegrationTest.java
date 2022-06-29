@@ -15,9 +15,12 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -167,6 +170,10 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
                 String.class
             );
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+        assertNotNull(response.getHeaders().get("Cache-Control"));
+        assertFalse(Objects.requireNonNull(response.getHeaders().get("Cache-Control")).isEmpty());
+
         assertTrue(response.toString().contains("Introduction to the RIPE Database"));
     }
 
