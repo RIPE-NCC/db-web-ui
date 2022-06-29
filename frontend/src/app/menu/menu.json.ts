@@ -45,7 +45,7 @@ export const menuObject = {
             roles: ['unauthorised', 'admin', 'billing', 'certification', 'general', 'generalMeeting', 'guest', 'myResources', 'ticketing'],
         },
         {
-            title: 'Query the RIPE Database',
+            title: 'Query Database',
             id: 'query',
             parent: 'database',
             url: 'DATABASE_QUERY_URL',

@@ -37,6 +37,7 @@ export class QueryComponent implements OnDestroy {
     public numberSelectedAdvanceFilterItems = 0;
     public showPermaLinks = false;
     public searched = false;
+    public titleDatabaseQueryPage: string;
 
     public results: IWhoisObjectModel[];
     public showNoResultsMsg = false;
@@ -94,6 +95,7 @@ export class QueryComponent implements OnDestroy {
     }
 
     public init() {
+        this.setPageTitle();
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         this.qp.source = queryParamMap.has('source') ? queryParamMap.getAll('source').join(',') : this.properties.SOURCE;
         this.link = {
@@ -399,5 +401,14 @@ export class QueryComponent implements OnDestroy {
 
     private setActiveAnchor(id: string) {
         this.viewportScroller.scrollToAnchor(id);
+    }
+
+    private setPageTitle() {
+        if (this.properties.isProdEnv()) {
+            this.titleDatabaseQueryPage = 'RIPE Database Query';
+        } else if (this.properties.isTrainingEnv()) {
+            this.titleDatabaseQueryPage = 'Training Database Query';
+        }
+        this.titleDatabaseQueryPage = `${this.properties.ENV.toUpperCase()} Database Query`;
     }
 }
