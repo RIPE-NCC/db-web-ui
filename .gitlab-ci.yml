@@ -141,6 +141,9 @@ e2e-cypress-firefox:
 
 qa:
   stage: test
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the SonarQube analysis task
   rules:
       -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
           when: always
