@@ -122,6 +122,10 @@ public abstract class AbstractIntegrationTest {
         return String.format("https://localhost:%d", this.localServerPort);
     }
 
+    protected String getServerUrlHttpsWithOutPort() {
+        return "https://localhost";
+    }
+
     protected static String getJettyRequestLogFile() {
         return "/tmp/output.log";
     }
