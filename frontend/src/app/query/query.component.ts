@@ -408,7 +408,8 @@ export class QueryComponent implements OnDestroy {
             this.titleDatabaseQueryPage = 'RIPE Database Query';
         } else if (this.properties.isTrainingEnv()) {
             this.titleDatabaseQueryPage = 'Training Database Query';
+        } else {
+            this.titleDatabaseQueryPage = `${this.properties.ENV.toUpperCase()} Database Query`;
         }
-        this.titleDatabaseQueryPage = `${this.properties.ENV.toUpperCase()} Database Query`;
     }
 }
