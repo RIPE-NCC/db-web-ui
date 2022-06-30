@@ -1,5 +1,6 @@
 package net.ripe.whois.services;
 
+import com.google.common.collect.Lists;
 import net.ripe.whois.AbstractIntegrationTest;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpHeader;
@@ -176,6 +177,24 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
         assertTrue(response.toString().contains("Introduction to the RIPE Database"));
     }
+
+
+    @Test
+    public void redirect_http_to_https() {
+        final HttpHeaders map = new HttpHeaders();
+        map.put("X-Forwarded-Proto", Lists.newArrayList("HTTP"));
+        HttpEntity<?> entity = new HttpEntity<>(null, map);
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                getServerUrl() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=95.214.54.212",
+                HttpMethod.GET,
+                entity,
+                String.class);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttpsWithOutPort() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=95.214.54.212")));
+    }
+
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();

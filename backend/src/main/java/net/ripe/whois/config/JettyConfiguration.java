@@ -1,10 +1,8 @@
 package net.ripe.whois.config;
 
-import net.ripe.whois.jetty.HttpTransportRule;
 import net.ripe.whois.jetty.RedirectToHttpsRule;
 import net.ripe.whois.jetty.RedirectWithQueryParamRule;
 import net.ripe.whois.jetty.RemoteAddressCustomizer;
-import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.ResponsePatternRule;
@@ -121,6 +119,7 @@ public class JettyConfiguration  {
     }
 
     private void regexRules(RewriteHandler rewriteHandler) {
+
         final RewriteRegexRule defaultDocRule = new RewriteRegexRule("^/docs/(.*)$", "/docs/$1");
         defaultDocRule.setTerminating(true);
         rewriteHandler.addRule(defaultDocRule);
@@ -131,10 +130,16 @@ public class JettyConfiguration  {
     }
 
     private void redirectRules(RewriteHandler rewriteHandler) {
-        rewriteHandler.addRule(new HttpTransportRule(HttpScheme.HTTP, new RedirectToHttpsRule() ));
-        rewriteHandler.addRule(new RedirectRegexRule("^/search/abuse-finder.html$", "https://www.ripe.net/support/abuse"));
-        rewriteHandler.addRule(new RedirectRegexRule("^/search/geolocation-finder.html$", "https://stat.ripe.net/widget/geoloc"));
+        RedirectToHttpsRule redirectToHttpsRule = new RedirectToHttpsRule();
+        redirectToHttpsRule.setHandling(true);
+        redirectToHttpsRule.setTerminating(true);
+        rewriteHandler.addRule(redirectToHttpsRule);
 
+
+        rewriteHandler.addRule(new RedirectRegexRule("^/search/abuse-finder.html$", "https://www.ripe" +
+                ".net/support/abuse"));
+        rewriteHandler.addRule(new RedirectRegexRule("^/search/geolocation-finder.html$", "https://stat.ripe" +
+                ".net/widget/geoloc"));
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/$", "/db-web-ui/query")));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/webupdates", "/db-web-ui/"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/startup", "/db-web-ui/webupdates/select"));
