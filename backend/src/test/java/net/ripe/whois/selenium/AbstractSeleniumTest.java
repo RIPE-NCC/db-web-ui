@@ -1,7 +1,11 @@
 package net.ripe.whois.selenium;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.safari.SafariOptions;
 
 import javax.ws.rs.BadRequestException;
 
@@ -25,27 +29,28 @@ public abstract class AbstractSeleniumTest {
         version = System.getProperty("version");
     }
 
-    protected DesiredCapabilities desiredCapabilities(final LiveChatSeleniumTest.Browser browser, final String os, final String testName) {
-        final DesiredCapabilities caps;
+    protected MutableCapabilities mutableCapabilities(final LiveChatSeleniumTest.Browser browser, final String os, final String testName) {
+        final MutableCapabilities caps;
 
         switch (browser) {
             case CHROME:
-                caps = DesiredCapabilities.chrome();
+                caps = new ChromeOptions();
+
                 caps.setCapability("name", String.format("%s Chrome", os));
                 break;
 
             case FIREFOX:
-                caps = DesiredCapabilities.firefox();
+                caps = new FirefoxOptions();
                 caps.setCapability("name", String.format("%s Firefox",  os));
                 break;
 
             case SAFARI:
-                caps = DesiredCapabilities.safari();
+                caps = new SafariOptions();
                 caps.setCapability("name", String.format("%s Safari", os));
                 break;
 
             case EDGE:
-                caps = DesiredCapabilities.edge();
+                caps = new EdgeOptions();
                 caps.setCapability("name", String.format("%s Edge", os));
                 break;
 
