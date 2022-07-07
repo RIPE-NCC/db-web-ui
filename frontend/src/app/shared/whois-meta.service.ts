@@ -464,8 +464,6 @@ export class WhoisMetaService {
         },
     };
 
-    constructor() {}
-
     public getAttributeShortDescription(objectType: string, attrName: string) {
         let short = this._getDocumentationForAttribute(objectType, attrName, 'short');
         if (_.isUndefined(short)) {

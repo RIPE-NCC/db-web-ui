@@ -13,8 +13,6 @@ export class FullTextResultSummaryComponent implements OnChanges {
 
     public total: number;
 
-    constructor() {}
-
     ngOnChanges(changes: SimpleChanges) {
         if (changes['tabledata']) {
             let total = 0;

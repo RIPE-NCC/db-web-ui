@@ -16,6 +16,4 @@ export class DescriptionSyntaxComponent {
     public attrName: string;
     @Input()
     public showComponent: boolean;
-
-    constructor() {}
 }

@@ -13,6 +13,4 @@ export class BannerComponent {
     public title: string;
     @Input()
     public textMessage: string;
-
-    constructor() {}
 }
