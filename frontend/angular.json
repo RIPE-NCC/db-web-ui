@@ -27,7 +27,6 @@
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.app.json",
                         "aot": true,
-                        "deployUrl": "/db-web-ui/",
                         "baseHref": "/db-web-ui/",
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": ["src/styles.scss"]
@@ -52,7 +51,7 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "2mb",
+                                    "maximumWarning": "3mb",
                                     "maximumError": "15mb"
                                 },
                                 {
@@ -80,7 +79,7 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "2mb",
+                                    "maximumWarning": "3mb",
                                     "maximumError": "5mb"
                                 },
                                 {
@@ -90,9 +89,7 @@
                                 }
                             ]
                         }
-                    },
-                    "styles": ["src/styles.css", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
-                    "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"]
+                    }
                 },
                 "serve-mock": {
                     "builder": "@angular-builders/custom-webpack:dev-server",
