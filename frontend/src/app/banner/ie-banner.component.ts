@@ -7,6 +7,4 @@ import { Component } from '@angular/core';
         <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.
     </p>`,
 })
-export class IeBannerComponent {
-    constructor() {}
-}
+export class IeBannerComponent {}

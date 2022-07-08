@@ -19,8 +19,6 @@ export class HelpMarkerComponent implements OnInit {
     public titleLabel: string;
     public hrefLabel: string;
 
-    constructor() {}
-
     public ngOnInit() {
         this.titleLabel = Labels[this.labelKey];
         this.hrefLabel = this.link || undefined;
