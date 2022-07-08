@@ -98,8 +98,8 @@ describe('Modifying an organisation', () => {
                 .expectValueInField('address', 'New address without comment');
         });
 
-        it('should have disabled country field', () => {
-            webupdatesPage.expectTextInField('country', 'NL').expectDisabledField('country', true);
+        it('should have country field enabled', () => {
+            webupdatesPage.expectTextInField('country', 'NL').expectDisabledField('country', false);
         });
 
         it('should not have country attribute in modal-add-attribute', () => {

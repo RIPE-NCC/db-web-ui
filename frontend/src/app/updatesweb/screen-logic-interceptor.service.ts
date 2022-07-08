@@ -207,7 +207,7 @@ export class ScreenLogicInterceptorService {
                     addableAttributes: IAttributeModel[],
                 ) => {
                     this.removeAbuseMailBoxOrgAndAddressIfLIR(method, source, objectType, objectAttributes, addableAttributes);
-                    return this.removeCountryFromAttributes(addableAttributes);
+                    return addableAttributes;
                 },
                 beforeEdit: (
                     method: string,
@@ -220,7 +220,6 @@ export class ScreenLogicInterceptorService {
                 ) => {
                     this._checkLirAttributes(method, attributes);
                     this.disableRipeMntIfModifying(method, attributes);
-                    this.disableCountryAttribute(attributes);
                     return this._loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
                 },
             },
@@ -458,11 +457,6 @@ export class ScreenLogicInterceptorService {
         return addableAttributes;
     }
 
-    private removeCountryFromAttributes(addableAttributes: IAttributeModel[]) {
-        this.whoisResourcesService.removeAttributeWithName(addableAttributes, 'country');
-        return addableAttributes;
-    }
-
     private disablePrimaryKeyIfModifying(method: string, attributes: IAttributeModel[]) {
         if (method === 'Modify') {
             _.forEach(attributes, (attr) => {
@@ -489,14 +483,6 @@ export class ScreenLogicInterceptorService {
             disable('mnt-routes');
         }
 
-        return attributes;
-    }
-
-    private disableCountryAttribute(attributes: IAttributeModel[]) {
-        const countryAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'country');
-        if (countryAttr) {
-            attributes.find((attr) => attr.name === 'country').$$meta.$$disable = true;
-        }
         return attributes;
     }
 
