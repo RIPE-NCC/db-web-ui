@@ -9,5 +9,12 @@
   "extends": [
     "config:base"
   ],
-  "prConcurrentLimit": 10
+  "prConcurrentLimit": 10,
+  "minor": {
+      "packageRules": [
+        {
+           "excludePackageNames": [".*"]
+        }
+      ]
+  }
 }
