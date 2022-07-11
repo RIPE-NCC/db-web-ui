@@ -10,11 +10,5 @@
     "config:base"
   ],
   "prConcurrentLimit": 10,
-  "minor": {
-      "packageRules": [
-        {
-           "excludePackageNames": [".*"]
-        }
-      ]
-  }
+  "rangeStrategy": "bump"
 }
