@@ -279,7 +279,8 @@ export class MaintainersEditorComponent implements OnInit {
                 this.mntners.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
 
                 // starting point for further editing
-                this.mntners.object = this.extractEnrichMntnersFromObject(this.attributes);
+                const mntnersFromObject = this.extractEnrichMntnersFromObject(this.attributes);
+                this.mntners.object = this.removeDuplicatedMnts(mntnersFromObject);
 
                 // fetch details of all selected maintainers concurrently
                 this.restCallInProgress = true;
@@ -324,6 +325,17 @@ export class MaintainersEditorComponent implements OnInit {
                 }
             },
         );
+    }
+
+    private removeDuplicatedMnts(mntners: IMntByModel[]): IMntByModel[] {
+        const mntNames = new Set<string>();
+        return mntners.reduce((acc: IMntByModel[], curr: IMntByModel) => {
+            if (!mntNames.has(curr.key)) {
+                acc.push(curr);
+                mntNames.add(curr.key);
+            }
+            return acc;
+        }, []);
     }
 
     private extractEnrichMntnersFromObject(attributes: IAttributeModel[]): IMntByModel[] {
