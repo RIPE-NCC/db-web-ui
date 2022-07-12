@@ -214,6 +214,33 @@ describe('MaintainersEditorComponent', () => {
             httpMock.verify();
         });
 
+        it('should remove duplicated maintainers', async () => {
+            fixture.detectChanges();
+            // get SSO maintainers
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
+                { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
+                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true },
+            ]);
+            // fail to get maintainer details
+            httpMock
+                .expectOne({
+                    method: 'GET',
+                    url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT',
+                })
+                .flush(
+                    [
+                        {
+                            key: 'TEST-MNT',
+                            type: 'mntner',
+                            auth: ['MD5-PW'],
+                        },
+                    ],
+                    { status: 200, statusText: 'OK' },
+                );
+            await fixture.whenStable();
+            expect(component.mntners.object.length).toBe(1);
+        });
+
         it('should report error when fetching maintainer details fails', async () => {
             fixture.detectChanges();
             // get SSO maintainers
@@ -375,6 +402,15 @@ const ORG_MOCK = () => ({
                 },
                 name: 'mnt-ref',
                 value: 'IS-NET-MNT',
+                'referenced-type': 'mntner',
+            },
+            {
+                link: {
+                    type: 'locator',
+                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT',
+                },
+                name: 'mnt-by',
+                value: 'TEST-MNT',
                 'referenced-type': 'mntner',
             },
             {
