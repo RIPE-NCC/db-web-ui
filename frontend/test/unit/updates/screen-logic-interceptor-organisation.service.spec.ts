@@ -395,42 +395,42 @@ describe('ScreenLogicInterceptorService Organisation', () => {
         expect(mntRef.$$meta.$$disable).toBeFalsy();
     });
 
-    it('should NOT allow editing country attribute - create', () => {
+    it('should allow editing country attribute - create', () => {
         const organisationSubject = _wrap('organisation', organisationAttributes);
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const attributes = interceptor.beforeEdit('Create', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
         const countryAttribute = whoisResourcesService.getSingleAttributeOnName(attributes, 'country');
-        expect(countryAttribute.$$meta.$$disable).toBeTruthy();
+        expect(countryAttribute.$$meta.$$disable).toBeFalsy();
     });
 
-    it('should NOT allow editing country attribute - modify', () => {
+    it('should allow editing country attribute - modify', () => {
         const organisationSubject = _wrap('organisation', organisationAttributes);
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const attributes = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
         const countryAttribute = whoisResourcesService.getSingleAttributeOnName(attributes, 'country');
-        expect(countryAttribute.$$meta.$$disable).toBeTruthy();
+        expect(countryAttribute.$$meta.$$disable).toBeFalsy();
     });
 
-    it('should NOT allow adding country attribute - create', () => {
+    it('should allow adding country attribute - create', () => {
         const organisationSubject = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation'));
         const addableAttributes = _wrap('organisation', whoisResourcesService.getAddableAttributes(organisationSubject, 'organisation', organisationSubject));
         const filteredAddableAttributes = interceptor.beforeAddAttribute('Create', 'RIPE', 'organisation', organisationSubject, addableAttributes);
 
         const orgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, 'country');
-        expect(orgAttr).toBeUndefined();
+        expect(orgAttr).not.toBeUndefined();
     });
 
-    it('should NOT allow adding country attribute - modify', () => {
+    it('should allow adding country attribute - modify', () => {
         const organisationSubject = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation'));
         const addableAttributes = _wrap('organisation', whoisResourcesService.getAddableAttributes(organisationSubject, 'organisation', organisationSubject));
         const filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'organisation', organisationSubject, addableAttributes);
 
         const orgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, 'country');
-        expect(orgAttr).toBeUndefined();
+        expect(orgAttr).not.toBeUndefined();
     });
 
     const _wrap = (type: string, attrs: IAttributeModel[]) => {
