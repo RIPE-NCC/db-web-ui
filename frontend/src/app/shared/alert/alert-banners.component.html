@@ -5,10 +5,10 @@
         level="error"
         [linkurl]="error.linkurl"
         [linktext]="error.linktext"
-        text="{{ error.plainText }}"
+        text="{{ error.plainText | sanitizeHtml }}"
     ></app-banner>
     <ng-template #bannerErrorWithoutLink>
-        <app-banner id="notification-error-{{ i }}" level="alarm" [text]="error.plainText"></app-banner>
+        <app-banner id="notification-error-{{ i }}" level="alarm" [text]="error.plainText | sanitizeHtml"></app-banner>
     </ng-template>
 </div>
 <div *ngFor="let warning of alerts.warnings; index as i">
@@ -19,10 +19,10 @@
         [linkurl]="warning.linkurl"
         [linktext]="warning.linktext"
         [permanent]="warning.permanent"
-        text="{{ warning.plainText }}"
+        text="{{ warning.plainText | sanitizeHtml }}"
     ></app-banner>
     <ng-template #bannerWarningWithoutLink>
-        <app-banner id="notification-warning-{{ i }}" level="warning" text="{{ warning.plainText }}"></app-banner>
+        <app-banner id="notification-warning-{{ i }}" level="warning" text="{{ warning.plainText | sanitizeHtml }}"></app-banner>
     </ng-template>
 </div>
 <div *ngFor="let info of alerts.infos; index as i">
@@ -32,10 +32,10 @@
         level="info"
         [linkurl]="info.linkurl"
         [linktext]="info.linktext"
-        text="{{ info.plainText }}"
+        text="{{ info.plainText | sanitizeHtml }}"
     ></app-banner>
     <ng-template #bannerInfoWithoutLink>
-        <app-banner id="notification-info-{{ i }}" level="info" text="{{ info.plainText }}"></app-banner>
+        <app-banner id="notification-info-{{ i }}" level="info" text="{{ info.plainText | sanitizeHtml }}"></app-banner>
     </ng-template>
 </div>
 <div *ngFor="let success of alerts.successes; index as i">
@@ -45,9 +45,9 @@
         level="positive"
         [linkurl]="success.linkurl"
         [linktext]="success.linktext"
-        text="{{ success.plainText }}"
+        text="{{ success.plainText | sanitizeHtml }}"
     ></app-banner>
     <ng-template #bannerSuccessWithoutLink>
-        <app-banner id="notification-success-{{ i }}" level="positive" text="{{ success.plainText }}"></app-banner>
+        <app-banner id="notification-success-{{ i }}" level="positive" text="{{ success.plainText | sanitizeHtml }}"></app-banner>
     </ng-template>
 </div>

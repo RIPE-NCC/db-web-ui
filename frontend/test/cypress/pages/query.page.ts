@@ -4,6 +4,11 @@ export class QueryPage {
         return this;
     }
 
+    visitQueryPageXSS(url) {
+        cy.visit(`query${url}`);
+        return this;
+    }
+
     expectSearchFieldToBeEmpty() {
         cy.get('input[name="qp.queryText"]').should('be.empty');
         return this;
@@ -222,6 +227,11 @@ export class QueryPage {
     }
     expectTemplateSearchResultToExist(exist: boolean) {
         cy.get('#templateResultsSection pre').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectNoXSSAlert() {
+        cy.get('.app-banner.level-alarm .banner-text', { includeShadowDom: true }).find('img').should('not.exist');
         return this;
     }
 }
