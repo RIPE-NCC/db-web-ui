@@ -140,6 +140,20 @@ e2e-cypress-firefox:
         expire_in: 1 day
 
 qa:
+  tags:
+      - whois
+  stage: test
+  rules:
+      -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+          when: always
+      -   if: '$CI_COMMIT_REF_NAME == "master"'
+          when: always
+      -   when: manual
+          allow_failure: true
+  script:
+      - cd frontend && npm run test
+
+sonar:
   stage: test
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
