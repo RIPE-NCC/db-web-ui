@@ -665,4 +665,10 @@ describe('Query scenario', () => {
             .clickOnSearchButton()
             .expectErrorMessageToContain('ERROR:111: invalid option supplied. Use help query to see the valid options.');
     });
+
+    it('should sanitize XSS', () => {
+        queryPage
+            .visitQueryPageXSS('?bflag=true&dflag=false&rflag=true&searchtext=zz&source=GRS%3Cimg%20src%20onerror%3Dalert(document.domain)%3E')
+            .expectNoXSSAlert();
+    });
 });

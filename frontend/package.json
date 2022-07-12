@@ -43,6 +43,7 @@
         "@types/jasminewd2": "2.0.10",
         "@types/lodash": "4.14.182",
         "@types/node": "16.11.26",
+        "@types/sanitize-html": "^2.6.2",
         "@typescript-eslint/eslint-plugin": "5.19.0",
         "@typescript-eslint/parser": "5.19.0",
         "babel-loader": "8.2.4",
@@ -103,6 +104,7 @@
         "ngx-cookie-service": "13.1.2",
         "npm": "8.7.0",
         "rxjs": "7.5.5",
+        "sanitize-html": "^2.7.0",
         "tslib": "2.3.1",
         "whatwg-fetch": "3.6.2",
         "zone.js": "0.11.5"
