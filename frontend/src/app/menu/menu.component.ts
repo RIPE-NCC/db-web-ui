@@ -75,10 +75,10 @@ export class MenuComponent implements OnInit, OnDestroy {
             } else if (url.startsWith('http')) {
                 window.location.href = url;
             } else {
-                if (url.startsWith('http')) {
-                    window.location.href = url;
-                } else if (event.detail.selected.id === 'sponsored') {
+                if (event.detail.selected.id === 'sponsored') {
                     this.router.navigate([url], { queryParams: { sponsored: true } });
+                } else if (event.detail.selected.id === 'docs') {
+                    window.location.href = url;
                 } else {
                     this.router.navigate([url]);
                 }

@@ -31,6 +31,7 @@ public class CrowdTokenFilter implements Filter {
             ".*/actuator/health/readiness",
             ".*/api/.*", /* let rest-operation itself decide about authentication */
             ".*/db-web-ui/",
+            ".*/favicon.ico",
             // on refresh page to not redirect to login page
             ".*/docs.*",
             ".*/db-web-ui/webupdates/select",
