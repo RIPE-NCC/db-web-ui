@@ -195,7 +195,18 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
         assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttpsWithOutPort() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=95.214.54.212")));
     }
 
+    @Test
+    public void redirect_favicon_correct_path() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                getServerUrl() + "/favicon.ico",
+                HttpMethod.GET,
+                null,
+                String.class);
 
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(),
+                is(URI.create(getServerUrl()  + "/db-web-ui/favicon.ico")));
+    }
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeader.X_FORWARDED_PROTO.toString(), HttpScheme.HTTP.toString());

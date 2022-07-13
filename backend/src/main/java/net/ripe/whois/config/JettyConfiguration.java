@@ -150,6 +150,7 @@ public class JettyConfiguration  {
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/change-auth$", "/db-web-ui/fmp/"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
+        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/favicon.ico$", "/db-web-ui/favicon.ico"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "/docs/"));
     }
 
