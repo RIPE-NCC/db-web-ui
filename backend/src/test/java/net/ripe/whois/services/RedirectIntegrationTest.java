@@ -196,16 +196,17 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void redirect_favicon_correct_path() {
+    public void get_favicon_from_resources_path() {
         final ResponseEntity<String> response = restTemplate.exchange(
                 getServerUrl() + "/favicon.ico",
                 HttpMethod.GET,
                 null,
                 String.class);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
-        assertThat(response.getHeaders().getLocation(),
-                is(URI.create(getServerUrl()  + "/db-web-ui/favicon.ico")));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+        assertNotNull(response.getHeaders().get("Cache-Control"));
+        assertFalse(Objects.requireNonNull(response.getHeaders().get("Cache-Control")).isEmpty());
     }
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();

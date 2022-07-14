@@ -20,6 +20,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
+import org.eclipse.jetty.util.resource.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -74,7 +75,9 @@ public class JettyConfiguration  {
             server.setSessionIdManager(sessionIdManager);
 
             handlerList.addHandler(rewriteHandler());
+            handlerList.addHandler(resourceYearCacheIconHandler());
             handlerList.addHandler(server.getHandler());
+            handlerList.addHandler(badRequestRewriteHandler());
 
             server.setHandler(handlerList);
             server.setRequestLog(createRequestLog());
@@ -105,6 +108,12 @@ public class JettyConfiguration  {
         return contextHandler;
     }
 
+    private ResourceHandler resourceYearCacheIconHandler(){
+        ResourceHandler iconResourceHandler = new ResourceHandler();
+        iconResourceHandler.setBaseResource(Resource.newClassPathResource("/"));
+        iconResourceHandler.setCacheControl("public, max-age=31536000");
+        return iconResourceHandler;
+    }
     private RewriteHandler rewriteHandler() {
         final RewriteHandler rewriteHandler = new RewriteHandler();
         rewriteHandler.setRewriteRequestURI(true);
@@ -112,6 +121,15 @@ public class JettyConfiguration  {
 
         redirectRules(rewriteHandler);
         regexRules(rewriteHandler);
+
+
+        return rewriteHandler;
+    }
+    private RewriteHandler badRequestRewriteHandler() {
+        final RewriteHandler rewriteHandler = new RewriteHandler();
+        rewriteHandler.setRewriteRequestURI(true);
+        rewriteHandler.setRewritePathInfo(true);
+
 
         rewriteHandler.addRule(new ResponsePatternRule("*", "400", ""));
 
@@ -149,8 +167,7 @@ public class JettyConfiguration  {
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search/lookup.html", "/db-web-ui/lookup"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/change-auth$", "/db-web-ui/fmp/"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/favicon.ico$", "/db-web-ui/favicon.ico"));
+        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));;
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "/docs/"));
     }
 
