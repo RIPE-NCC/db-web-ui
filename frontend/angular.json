@@ -28,7 +28,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "aot": true,
                         "baseHref": "/db-web-ui/",
-                        "assets": ["src/favicon.ico", "src/assets"],
+                        "assets": ["src/assets"],
                         "styles": ["src/styles.scss"]
                     },
                     "configurations": {
@@ -139,7 +139,7 @@
                         "main": "test/unit/test.ts",
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "test/unit/tsconfig.spec.json",
-                        "assets": ["src/favicon.ico", "src/assets"],
+                        "assets": ["src/assets"],
                         "styles": ["src/styles.scss"],
                         "scripts": []
                     },
