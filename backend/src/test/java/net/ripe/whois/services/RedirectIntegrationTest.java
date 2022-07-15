@@ -208,6 +208,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
         assertNotNull(response.getHeaders().get("Cache-Control"));
         assertFalse(Objects.requireNonNull(response.getHeaders().get("Cache-Control")).isEmpty());
     }
+
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeader.X_FORWARDED_PROTO.toString(), HttpScheme.HTTP.toString());
