@@ -7,7 +7,7 @@ import { PropertiesService } from '../properties.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
-import { IMntByModel } from '../shared/whois-response-type.model';
+import { IAttributeModel, IMntByModel } from '../shared/whois-response-type.model';
 import { ModalAuthenticationComponent } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
@@ -268,6 +268,30 @@ export class MntnerService {
 
     public mntbySyntax(objectType: string): any {
         return this.whoisMetaService.getAttributeSyntax(objectType, 'mnt-by');
+    }
+
+    public removeDuplicatedMnts(mntners: IMntByModel[]): IMntByModel[] {
+        const mntNames = new Set<string>();
+        return mntners.reduce((acc: IMntByModel[], curr: IMntByModel) => {
+            if (!mntNames.has(curr.key)) {
+                acc.push(curr);
+                mntNames.add(curr.key);
+            }
+            return acc;
+        }, []);
+    }
+
+    public removeDuplicateMntsFromAttribute(attributes): IAttributeModel[] {
+        const acc = new Set<string>();
+        return attributes.filter((attr) => {
+            if (attr.name === 'mnt-by') {
+                if (acc.has(attr.value)) {
+                    return false;
+                }
+                acc.add(attr.value);
+            }
+            return true;
+        });
     }
 
     public stripNccMntners(mntners: IMntByModel[], allowEmptyResult: boolean) {
