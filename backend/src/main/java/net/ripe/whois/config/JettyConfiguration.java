@@ -75,7 +75,7 @@ public class JettyConfiguration  {
             server.setSessionIdManager(sessionIdManager);
 
             handlerList.addHandler(rewriteHandler());
-            handlerList.addHandler(resourceYearCacheIconHandler());
+            handlerList.addHandler(resourceStaticHandler());
             handlerList.addHandler(server.getHandler());
             handlerList.addHandler(badRequestRewriteHandler());
 
@@ -108,9 +108,11 @@ public class JettyConfiguration  {
         return contextHandler;
     }
 
-    private ResourceHandler resourceYearCacheIconHandler(){
+    private ResourceHandler resourceStaticHandler(){
         ResourceHandler iconResourceHandler = new ResourceHandler();
-        iconResourceHandler.setBaseResource(Resource.newClassPathResource("/"));
+
+        iconResourceHandler.setDirectoriesListed(true);
+        iconResourceHandler.setBaseResource(Resource.newClassPathResource("/static/"));
         iconResourceHandler.setCacheControl("public, max-age=31536000");
         return iconResourceHandler;
     }
