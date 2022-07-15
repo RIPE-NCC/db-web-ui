@@ -321,4 +321,62 @@ describe('MntnerService', () => {
         expect(mntnersWithPasswordModify.length).toBe(1);
         expect(mntnersWithPasswordModify[0].key).toBe('F-MNT');
     });
+
+    it('should remove duplicated mnt-by from list of IMntByModel', () => {
+        const objectMntners = [
+            { key: 'LUDIGSSOFT-MNT', mine: false, type: 'mntner' },
+            { key: 'LUDIGSSOFT-MNT', mine: false, type: 'mntner' },
+        ];
+        expect(objectMntners.length).toBe(2);
+        expect(mntnerService.removeDuplicatedMnts(objectMntners).length).toBe(1);
+    });
+
+    it('should remove duplicated mnt-by from list of IAttributeModel', () => {
+        const attributes = [
+            {
+                $$disable: false,
+                $$hidden: false,
+                $$id: 'attr-0',
+                $$invalid: false,
+                comment: undefined,
+                link: undefined,
+                name: 'route6',
+                value: '2a12:9940::/29',
+            },
+            { $$disable: false, $$hidden: false, $$id: 'attr-1', $$invalid: false, comment: undefined, link: undefined, name: 'origin', value: 'AS49910' },
+            {
+                $$disable: false,
+                $$hidden: false,
+                $$id: 'attr-2',
+                $$invalid: false,
+                comment: undefined,
+                link: { type: 'locator', href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/LUDIGSSOFT-MNT' },
+                name: 'mnt-by',
+                value: 'LUDIGSSOFT-MNT',
+            },
+            {
+                $$disable: false,
+                $$hidden: false,
+                $$id: 'attr-3',
+                $$invalid: false,
+                comment: undefined,
+                link: { type: 'locator', href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/LUDIGSSOFT-MNT' },
+                name: 'mnt-by',
+                value: 'LUDIGSSOFT-MNT',
+            },
+            {
+                $$disable: false,
+                $$hidden: false,
+                $$id: 'attr-4',
+                $$invalid: false,
+                comment: undefined,
+                link: undefined,
+                name: 'created',
+                value: '2022-03-10T22:41:19Z',
+            },
+            { $$disable: false, $$hidden: false, $$id: 'attr-5', $$invalid: false, comment: undefined, link: undefined, name: 'source', value: 'RIPE' },
+        ];
+        expect(attributes.length).toBe(6);
+        expect(mntnerService.removeDuplicateMntsFromAttribute(attributes).length).toBe(5);
+    });
 });

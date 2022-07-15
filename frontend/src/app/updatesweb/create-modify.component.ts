@@ -524,6 +524,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
         // Post-process attributes before submit using screen-logic-interceptor
         this.attributes = this.interceptAfterEdit(this.operation, this.attributes);
+        this.attributes = this.mntnerService.removeDuplicateMntsFromAttribute(this.attributes);
 
         if (!this.validateForm()) {
             this.errorReporterService.log(this.operation, this.objectType, this.alertsService.alerts.errors, this.attributes);
