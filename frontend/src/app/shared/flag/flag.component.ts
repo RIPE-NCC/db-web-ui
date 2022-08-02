@@ -17,30 +17,12 @@ export class FlagComponent implements OnInit {
     public tooltip?: string;
     @Input()
     public uppercase?: boolean;
-    public isOpen = false;
-    public timer: any;
 
     constructor() {}
 
     ngOnInit() {
         if (this.uppercase) {
             this.text = this.text.toUpperCase();
-        }
-    }
-
-    public in() {
-        this.isOpen = true;
-        if (this.timer) {
-            clearTimeout(this.timer);
-        }
-    }
-
-    public out() {
-        if (this.isOpen) {
-            this.timer = setTimeout(() => {
-                this.isOpen = false;
-                this.timer = null;
-            }, 66);
         }
     }
 }
