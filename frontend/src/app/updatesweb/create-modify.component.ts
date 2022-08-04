@@ -508,8 +508,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.PENDING_OPERATION,
                 );
             } else {
+                // in case of errors on attributes - not Global Error
                 this.validateForm();
                 const firstErr = this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, whoisResources);
+                this.alertsService.addGlobalError(
+                    `${this.operation === this.CREATE_OPERATION ? 'Creation' : 'Update'} of ${this.objectType} failed, please see below for more details`,
+                );
                 this.alertsService.setErrors(whoisResources);
                 this.errorReporterService.log(this.operation, this.objectType, this.alertsService.alerts.errors, this.attributes);
                 this.attributes = this.interceptBeforeEdit(this.operation, this.attributes);

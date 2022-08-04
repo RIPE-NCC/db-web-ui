@@ -31,11 +31,12 @@
             <li *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName: ['nic-hdl', 'mnt-by', 'source']">
                 <label>{{ attribute.name }}</label>
                 <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">
+                    <span *ngIf="attribute.$$error" class="text-error">{{ attribute.$$error }}</span>
                     <strong
                         >Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{ linkToRoleOrPerson }}</a></strong
                     >
                 </span>
-                <span *ngIf="attribute.$$error" class="text-error">{{ attribute.$$error }}</span>
+                <span *ngIf="attribute.$$error && attribute.name !== objectType" class="text-error">{{ attribute.$$error }}</span>
                 <input
                     type="text"
                     [attr.name]="attribute.name"
