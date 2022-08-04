@@ -192,8 +192,10 @@ describe('CreateMntnerPairComponent', () => {
                 });
             fixture.detectChanges();
             await fixture.whenStable();
-
-            expect(component.alertsService.alerts.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual(
+                'Creation of person and maintainer pair failed, please see below for more details',
+            );
+            expect(component.alertsService.alerts.errors[1].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
             expect(component.alertsService.alerts.warnings[0].plainText).toEqual('Not authenticated');
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'mntner').$$error).toEqual(
                 `"${MNTNER_NAME}" is not valid for this object type`,

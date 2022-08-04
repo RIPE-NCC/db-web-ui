@@ -138,6 +138,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
 
                     this.validateForm();
                     this.alertsService.addAlertMsgs(whoisResources);
+                    this.alertsService.addGlobalError(`Creation of role and maintainer pair failed, please see below for more details`);
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, whoisResources);
                     this.alertsService.populateFieldSpecificErrors('mntner', this.mntnerAttributes, whoisResources);
 
@@ -164,6 +165,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
                     const whoisResources = error.data;
 
                     this.validateForm();
+                    this.alertsService.addGlobalError(`Creation of person and maintainer pair failed, please see below for more details`);
                     this.alertsService.addAlertMsgs(whoisResources);
                     this.alertsService.populateFieldSpecificErrors('person', this.objectTypeAttributes, whoisResources);
                     this.alertsService.populateFieldSpecificErrors('mntner', this.mntnerAttributes, whoisResources);

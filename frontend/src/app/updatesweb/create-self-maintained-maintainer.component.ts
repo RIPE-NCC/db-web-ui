@@ -185,7 +185,7 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
             },
             (error: any) => {
                 this.submitInProgress = false;
-
+                this.alertsService.addGlobalError(`Creation of ${this.MNT_TYPE} failed, please see below for more details`);
                 this.alertsService.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
                 this.alertsService.setErrors(error.data);
                 this.errorReporterService.log('Create', this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);

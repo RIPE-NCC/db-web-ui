@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { CoreModule } from '../../../../src/app/core/core.module';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { SharedModule } from '../../../../src/app/shared/shared.module';
@@ -180,17 +180,16 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
         component.submit();
     });
 
-    // it("should display error if create the maintainer fails", () => {
-    //     spyOn(component.alertsComponent, "populateFieldSpecificErrors");
-    //     spyOn(component.alertsComponent, "setErrors");
-    //     fillForm();
-    //     restServiceMock.createObject.and.returnValue(throwError(ERROR_RESPONSE));
-    //
-    //     component.submit();
-    //
-    //     expect(component.alertsComponent.populateFieldSpecificErrors).toHaveBeenCalledWith("mntner", component.maintainerAttributes, ERROR_RESPONSE.data);
-    //     expect(component.alertsComponent.setErrors).toHaveBeenCalledWith(ERROR_RESPONSE.data);
-    // });
+    it('should display global error if create the maintainer fails', async () => {
+        fillForm();
+        restServiceMock.createObject.and.returnValue(throwError(() => ERROR_RESPONSE));
+
+        component.submit();
+
+        await fixture.whenStable();
+        expect(component.alertsService.alerts.errors).toHaveSize(1);
+        expect(component.alertsService.alerts.errors[0].plainText).toEqual('Creation of mntner failed, please see below for more details');
+    });
 
     function fillForm() {
         let wrapAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);

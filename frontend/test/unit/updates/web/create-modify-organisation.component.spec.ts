@@ -131,6 +131,26 @@ describe('CreateModifyComponent for organisation', () => {
         expect(component.organisationHelperService.updateAbuseC).toHaveBeenCalled();
     });
 
+    it('should display global error if update the organisation fails', async () => {
+        component.attributes = component.whoisResourcesService.addAttributeAfterType(
+            component.attributes,
+            { name: 'abuse-c', value: 'some abuse-c' },
+            { name: 'e-mail' },
+        );
+        component.attributes = component.whoisResourcesService.validateAttributes(
+            component.whoisMetaService.enrichAttributesWithMetaInfo(component.objectType, component.attributes),
+        );
+        await fixture.whenStable();
+        component.submit();
+        httpMock
+            .expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-UA300-RIPE' })
+            .flush(ERROR_RESPONSE, { status: 400, statusText: 'Bad request' });
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(component.alertsService.alerts.errors).toHaveSize(1);
+        expect(component.alertsService.alerts.errors[0].plainText).toEqual('Update of organisation failed, please see below for more details');
+    });
+
     const ROLE_OBJ = [
         {
             name: 'role',
@@ -208,8 +228,135 @@ describe('CreateModifyComponent for organisation', () => {
         },
     };
 
-    const MNTNERS_SSO_ACCOUNT_RESPONS = [
-        { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
-        { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO'], mine: true },
-    ];
+    const ERROR_RESPONSE = {
+        link: {
+            type: 'locator',
+            href: 'http://sussex.prepdev.ripe.net:1080/RIPE/organisation',
+        },
+        objects: {
+            object: [
+                {
+                    type: 'organisation',
+                    link: {
+                        type: 'locator',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/organisation/AUTO-1',
+                    },
+                    source: {
+                        id: 'ripe',
+                    },
+                    'primary-key': {
+                        attribute: [
+                            {
+                                name: 'organisation',
+                                value: 'AUTO-1',
+                            },
+                        ],
+                    },
+                    attributes: {
+                        attribute: [
+                            {
+                                name: 'organisation',
+                                value: 'AUTO-1',
+                            },
+                            {
+                                name: 'org-name',
+                                value: 'ORG-UA300-RIPE',
+                            },
+                            {
+                                name: 'org-type',
+                                value: 'OTHER',
+                            },
+                            {
+                                name: 'address',
+                                value: 'utrecht',
+                            },
+                            {
+                                name: 'e-mail',
+                                value: 'none',
+                            },
+                            {
+                                link: {
+                                    type: 'locator',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/role/BLOK1-RIPE',
+                                },
+                                name: 'abuse-c',
+                                value: 'BLOK1-RIPE',
+                                'referenced-type': 'role',
+                            },
+                            {
+                                link: {
+                                    type: 'locator',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/BL-MNT',
+                                },
+                                name: 'mnt-ref',
+                                value: 'BL-MNT',
+                                'referenced-type': 'mntner',
+                            },
+                            {
+                                link: {
+                                    type: 'locator',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/IVANAS-MNT',
+                                },
+                                name: 'mnt-by',
+                                value: 'IVANAS-MNT',
+                                'referenced-type': 'mntner',
+                            },
+                            {
+                                link: {
+                                    type: 'locator',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TPOLYCHNIA4-MNT',
+                                },
+                                name: 'mnt-by',
+                                value: 'TPOLYCHNIA4-MNT',
+                                'referenced-type': 'mntner',
+                            },
+                            {
+                                link: {
+                                    type: 'locator',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/SHW-MNT',
+                                },
+                                name: 'mnt-by',
+                                value: 'SHW-MNT',
+                                'referenced-type': 'mntner',
+                            },
+                            {
+                                link: {
+                                    type: 'locator',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/SHWIVA-MNT',
+                                },
+                                name: 'mnt-by',
+                                value: 'SHWIVA-MNT',
+                                'referenced-type': 'mntner',
+                            },
+                            {
+                                name: 'source',
+                                value: 'RIPE',
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+        errormessages: {
+            errormessage: [
+                {
+                    severity: 'Error',
+                    attribute: {
+                        name: 'e-mail',
+                        value: '         none',
+                    },
+                    text: 'Syntax error in %s',
+                    args: [
+                        {
+                            value: 'none',
+                        },
+                    ],
+                },
+            ],
+        },
+        'terms-and-conditions': {
+            type: 'locator',
+            href: 'http://www.ripe.net/db/support/db-terms-conditions.pdf',
+        },
+    };
 });
