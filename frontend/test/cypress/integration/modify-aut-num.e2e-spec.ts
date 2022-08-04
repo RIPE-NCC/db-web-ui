@@ -17,8 +17,8 @@ describe('Modifying an aut-num', () => {
                 .expectFieldToExist('sponsoring-org', true)
                 .clickAddAttributeOnField('sponsoring-org')
                 .expectModalToExist(true)
-                .existItemInList('descr', true)
-                .existItemInList('sponsoring-org', false);
+                .expectItemInList('descr', true)
+                .expectItemInList('sponsoring-org', false);
         });
     });
 });

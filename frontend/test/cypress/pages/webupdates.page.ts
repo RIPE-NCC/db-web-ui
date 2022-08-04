@@ -121,6 +121,16 @@ export class WebupdatesPage {
 }
 
 class ModalAuthentication {
+    expectSelectedAuthenticationMaintainer(maintainer: string) {
+        cy.get('#selectAuthMntner').should('contain.text', maintainer);
+        return this;
+    }
+
+    expectItemInList(itemValue: string, exist: boolean) {
+        cy.get(`#selectAuthMntner select option[label='${itemValue}']`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
     typePassword(password: string) {
         cy.get(".modal-content input[name='passwordAuth']").type(password);
         return this;
@@ -180,7 +190,7 @@ class ModalAddAttribute {
         return this;
     }
 
-    existItemInList(itemValue: string, exist: boolean) {
+    expectItemInList(itemValue: string, exist: boolean) {
         cy.get(`.modal-content select option[label='${itemValue}']`).should(exist ? 'exist' : 'not.exist');
         return this;
     }

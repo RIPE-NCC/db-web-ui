@@ -34,7 +34,7 @@ describe('Modifying an organisation', () => {
                 .expectFieldToExist('address', true)
                 .clickAddAttributeOnField('organisation')
                 .expectModalToExist(true)
-                .existItemInList('address', false);
+                .expectItemInList('address', false);
         });
 
         it('should open modal edit attribute on click on pen button org-name', () => {
@@ -103,7 +103,7 @@ describe('Modifying an organisation', () => {
         });
 
         it('should not have country attribute in modal-add-attribute', () => {
-            webupdatesPage.clickAddAttributeOnField('organisation').existItemInList('country', false);
+            webupdatesPage.clickAddAttributeOnField('organisation').expectItemInList('country', false);
         });
     });
 });
