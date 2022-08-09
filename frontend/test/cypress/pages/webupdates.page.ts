@@ -25,8 +25,42 @@ export class WebupdatesPage {
         return this;
     }
 
+    blurOnField(fieldName: string) {
+        cy.get(`#createForm [name^='${fieldName}']`).blur();
+        return this;
+    }
+
+    selectFromFieldAutocomplete(fieldName: string, option: string) {
+        cy.get(`#createForm div[data-test-id^='${fieldName}'] button:contains('${option}')`).click();
+        this.blurOnField(fieldName);
+        return this;
+    }
+
+    selectObjectType(type: string) {
+        cy.get('#objectTypeSelector').select(type);
+        return this;
+    }
+
+    clickOnCreateButton() {
+        cy.get('#btnNavigateToCreate').click();
+        return this;
+    }
+
+    selectDomainAndCreate() {
+        this.selectObjectType('domain').clickOnCreateButton();
+        return new ModalCreateDomain();
+    }
+
     submitModification() {
         cy.get('#btnSubmitModify').click();
+        return new WebupdatesDisplay();
+    }
+
+    submitCreate() {
+        cy.get("button:contains('Submit')").click({ force: true });
+        // processing modal should open and close automatically
+        const modalProcessing = new ModalProcessing();
+        modalProcessing.expectModalToExist(true).expectModalToExist(false);
         return new WebupdatesDisplay();
     }
 
@@ -116,6 +150,31 @@ export class WebupdatesPage {
     }
     expectDisabledMaintainer(disabled: boolean) {
         cy.get('#selectMaintainerDropdown').should(disabled ? 'have.class' : 'not.have.class', 'ng-select-disabled');
+        return this;
+    }
+
+    expectHeadingTitleToContain(text: string) {
+        cy.get('#createForm h1').should('contain.text', text);
+        return this;
+    }
+
+    expectErrorOnField(fieldName: string, text: string) {
+        cy.get(`#createForm div[data-test-id^='${fieldName}'] .text-error`).should('contain.text', text);
+        return this;
+    }
+
+    expectLinkOnField(fieldName: string, link: string) {
+        cy.get(`#createForm div[data-test-id^='${fieldName}'] a`).invoke('attr', 'href').should('contain', link);
+        return this;
+    }
+
+    expectInfoOnField(fieldName: string, text: string) {
+        cy.get(`#createForm div[data-test-id^='${fieldName}'] .text-info`).should('contain.text', text);
+        return this;
+    }
+
+    expectReverseZoneTableToHaveRows(rows: number) {
+        cy.get('#createForm table tbody tr').should('have.length', rows);
         return this;
     }
 }
@@ -224,6 +283,11 @@ export class WebupdatesDisplay {
         return this;
     }
 
+    expectErrorMessage(text: string) {
+        cy.get('app-banner').shadow().find('.app-banner.level-alarm').should('contain.text', text);
+        return this;
+    }
+
     expectChangesPanelToExist(exist: boolean) {
         cy.get('section.inner-container').should(exist ? 'exist' : 'not.exist');
         return this;
@@ -233,6 +297,31 @@ export class WebupdatesDisplay {
 export class WebupdatesDelete {
     expectSuccessMessage(text: string) {
         cy.get('app-banner').shadow().find('.app-banner.level-positive').should('contain.text', text);
+        return this;
+    }
+}
+
+class ModalCreateDomain {
+    expectModalToExist(exist: boolean) {
+        cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+    expectBodyToContain(text: string) {
+        cy.get('.modal-content').should('contain.text', text);
+        return this;
+    }
+
+    acceptModal() {
+        cy.get('#modal-splash-button').click();
+    }
+}
+
+class ModalProcessing {
+    expectModalToExist(exist: boolean) {
+        cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
+        if (exist) {
+            cy.get('.modal-content').should('contain.text', 'Processing your domain objects');
+        }
         return this;
     }
 }

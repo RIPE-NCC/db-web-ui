@@ -27,3 +27,7 @@
 Cypress.Commands.add('expectCurrentUrlToContain', (url: string) => {
     return cy.url().should('include', url);
 });
+
+Cypress.Commands.add('changeJsonResponseFile', (sourceFilePath: string, targetFilePath: string) => {
+    return cy.readFile(sourceFilePath, null).then((data) => cy.writeFile(targetFilePath, data, null));
+});

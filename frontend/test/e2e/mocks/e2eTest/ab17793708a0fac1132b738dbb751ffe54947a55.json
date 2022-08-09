@@ -1,0 +1,12 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=MNT-MIVITEC",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "MNT-MIVITEC",
+            "type": "mntner",
+            "auth": ["MD5-PW", "SSO"]
+        }
+    ]
+}

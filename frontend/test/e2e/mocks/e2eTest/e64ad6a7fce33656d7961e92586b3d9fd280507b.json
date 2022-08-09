@@ -1,0 +1,92 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/RIPE/mntner/MNT-MIVITEC?password=MNT-IVITEC&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-rc.db.ripe.net/ripe/mntner/MNT-MIVITEC"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "MNT-MIVITEC"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "MNT-MIVITEC"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$bL72pG2Q$NgdRVkUzym0GmEgagIUf6/"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "SSO eshryane@ripe.net"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/person/KT3550-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "KT3550-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@mivitec.net"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/MNT-MIVITEC"
+                                },
+                                "name": "mnt-by",
+                                "value": "MNT-MIVITEC",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2006-07-14T14:26:53Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2022-08-05T10:11:35Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.103",
+            "timestamp": "2022-04-25T12:32:18Z",
+            "commit-id": "5fc8ac5"
+        }
+    }
+}

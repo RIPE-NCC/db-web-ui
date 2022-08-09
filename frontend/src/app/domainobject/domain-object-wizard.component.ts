@@ -282,6 +282,8 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private createDomainsFailed(response: any) {
         this.restCallInProgress = false;
+        this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, response.error);
+        this.alertsService.addGlobalError(`Creation of domain objects failed, please see below for more details`);
         this.alertsService.addAlertMsgs(response.error);
         if (!_.isEmpty(this.alertsService.alerts.errors)) {
             this.errorReporterService.log('DomainWizard', 'domain', this.alertsService.alerts.errors);
