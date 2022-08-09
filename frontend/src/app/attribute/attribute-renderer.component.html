@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'has-error': attribute.value && attribute.$$invalid }">
+<div attr.data-test-id="{{ attribute.name + '$' + idx }}" [ngClass]="{ 'has-error': attribute.value && attribute.$$invalid }">
     <attribute-reverse-zones *ngIf="widgetReverseZone; else attributeComponent" [attribute]="attribute"></attribute-reverse-zones>
 </div>
 <description-syntax [showComponent]="isHelpShown" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>

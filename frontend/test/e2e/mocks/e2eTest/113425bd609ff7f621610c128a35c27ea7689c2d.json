@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/autocomplete?from=person&from=role&like=NOTEXISTING&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
+}
