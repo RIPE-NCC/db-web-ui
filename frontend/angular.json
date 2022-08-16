@@ -20,7 +20,7 @@
                         "customWebpackConfig": {
                             "path": "test/e2e/extra-webpack.config.js"
                         },
-                        "allowedCommonJsDependencies": ["lodash", "ip-address", "crypto-js"],
+                        "allowedCommonJsDependencies": ["lodash", "ip-address", "crypto-js", "sanitize-html"],
                         "outputPath": "dist",
                         "index": "src/index.html",
                         "main": "src/main.ts",
