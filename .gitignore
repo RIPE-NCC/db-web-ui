@@ -22,7 +22,8 @@ frontend/!test/lib/*.jar
 frontend/tscommand-*.tmp.txt
 # cypress videos
 frontend/test/cypress/videos
-
+# frontend coverage
+frontend/lcov.info
 reports
 
 # profiling files

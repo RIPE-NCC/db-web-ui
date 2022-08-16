@@ -15,7 +15,7 @@
     <properties>
         <sonar.sources>src/app</sonar.sources>
         <sonar.tests>test</sonar.tests>
-        <sonar.javascript.lcov.reportPaths>../reports/unittest-coverage/lcov.info</sonar.javascript.lcov.reportPaths>
+        <sonar.javascript.lcov.reportPaths>lcov.info</sonar.javascript.lcov.reportPaths>
         <sonar.language>ts</sonar.language>
     </properties>
 
