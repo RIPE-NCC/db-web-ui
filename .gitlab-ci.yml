@@ -19,6 +19,7 @@ include:
 stages:
   - build
   - test
+  - sonar
   - release
   - deploy
   - browserstack
@@ -55,10 +56,13 @@ backend:
     script:
       - cd backend && mvn test
     artifacts:
+      paths:
+          - backend/target/
       reports:
         junit:
           - backend/target/surefire-reports/TEST-*.xml
           - backend/target/failsafe-reports/TEST-*.xml
+      expire_in: 1 day
 
 e2e:
     tags:
@@ -139,7 +143,7 @@ e2e-cypress-firefox:
             - frontend/test/cypress/videos/**/*.mp4
         expire_in: 1 day
 
-qa:
+frontend:
   tags:
       - whois
   stage: test
@@ -152,9 +156,13 @@ qa:
           allow_failure: true
   script:
       - cd frontend && npm run test
+  artifacts:
+      paths:
+          - frontend/lcov.info
+      expire_in: 1 day
 
 sonar:
-  stage: test
+  stage: sonar
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the SonarQube analysis task
@@ -166,8 +174,11 @@ sonar:
       -   when: manual
           allow_failure: true
   script:
-    - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}
+    - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN} -DskipTests
   allow_failure: true
+  dependencies:
+      - backend
+      - frontend
 
 release:
     stage: release

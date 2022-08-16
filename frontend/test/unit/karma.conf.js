@@ -17,9 +17,14 @@ module.exports = function (config) {
             clearContext: false, // leave Jasmine Spec Runner output visible in browser
         },
         coverageIstanbulReporter: {
-            dir: require('path').join(__dirname, '../../../reports/unittest-coverage'),
-            reports: ['html', 'lcovonly', 'text-summary'],
+            dir: require('path').join(__dirname, '../..'),
+            reports: ['lcovonly', 'text-summary'],
             fixWebpackSourcePaths: true,
+            'report-config': {
+                lcovonly: {
+                    projectRoot: 'src/app',
+                },
+            },
         },
         reporters: ['spec', 'kjhtml', 'coverage-istanbul'],
         specReporter: {
