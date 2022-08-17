@@ -1,11 +1,28 @@
+import {
+    ModalAddAttribute,
+    ModalAuthentication,
+    ModalCreateDomain,
+    ModalDeleteObject,
+    ModalEditAttribute,
+    ModalProcessing,
+} from './components/modals.component';
+
 export class WebupdatesPage {
     visit(url: string) {
         cy.visit(`webupdates/${url}`);
         return this;
     }
 
-    authenticateWithDisabledAssociate(password: string) {
-        new ModalAuthentication().typePassword(password).disableAssociateCheckbox().submitModal();
+    visitDisplay(url: string) {
+        cy.visit(`webupdates/display/${url}`);
+        return new WebupdatesDisplayPage();
+    }
+
+    authenticateWithDisabledAssociate(password: string, expectFail: boolean = false) {
+        new ModalAuthentication().typePassword(password).disableAssociateCheckbox().submitModal(expectFail);
+        if (expectFail) {
+            return this;
+        }
         this.expectModalToExist(false);
         return this;
     }
@@ -30,8 +47,36 @@ export class WebupdatesPage {
         return this;
     }
 
+    clickOnField(fieldName: string) {
+        cy.get(`#createForm [name^='${fieldName}']`).click();
+        return this;
+    }
+
+    typeOnNgSelect(fieldName: string, text: string) {
+        cy.get(`#createForm [name^='${fieldName}'] input`).clear({ force: true }).type(text, { force: true });
+        return this;
+    }
+
+    selectFromNgSelect(fieldName: string, option: string) {
+        this.clickOnField(fieldName);
+        cy.get(`#createForm [name^='${fieldName}'] .ng-option:contains('${option}')`).click();
+        return this;
+    }
+
+    expectOptionFromNgSelect(fieldName: string, option: string) {
+        this.clickOnField(fieldName);
+        cy.get(`#createForm [name^='${fieldName}'] .ng-option:contains('${option}')`).should('exist');
+        return this;
+    }
+
+    expectOptionSizeFromNgSelect(fieldName: string, size: number) {
+        this.clickOnField(fieldName);
+        cy.get(`#createForm [name^='${fieldName}'] .ng-option`).should('have.length', size);
+        return this;
+    }
+
     selectFromFieldAutocomplete(fieldName: string, option: string) {
-        cy.get(`#createForm div[data-test-id^='${fieldName}'] button:contains('${option}')`).click();
+        cy.get(`#createForm [data-test-id^='${fieldName}'] button:contains('${option}')`).click();
         this.blurOnField(fieldName);
         return this;
     }
@@ -46,6 +91,28 @@ export class WebupdatesPage {
         return this;
     }
 
+    clickOnCreatePair() {
+        cy.get('a:contains("Create maintainer and person pair")').click();
+        return this;
+    }
+
+    clickOnSwitchToPersonRole() {
+        cy.get('#create-person-link a').click();
+        return this;
+    }
+
+    clickOnCreateInTextArea() {
+        cy.get('button:contains("Create in text area")').click({ force: true });
+        cy.get('textarea').should('exist');
+        return this;
+    }
+
+    clickOnCreateInSingleLines() {
+        cy.get('button:contains("Create in single lines")').click({ force: true });
+        cy.get('textarea').should('not.exist');
+        return this;
+    }
+
     selectDomainAndCreate() {
         this.selectObjectType('domain').clickOnCreateButton();
         return new ModalCreateDomain();
@@ -53,15 +120,30 @@ export class WebupdatesPage {
 
     submitModification() {
         cy.get('#btnSubmitModify').click();
-        return new WebupdatesDisplay();
+        return new WebupdatesDisplayPage();
+    }
+
+    modifyObject() {
+        cy.get('button:contains("Modify")').click();
+        return new ModalAuthentication();
+    }
+
+    submitForm() {
+        cy.get('input[type="submit"]').click();
+        return this;
     }
 
     submitCreate() {
         cy.get("button:contains('Submit')").click({ force: true });
         // processing modal should open and close automatically
         const modalProcessing = new ModalProcessing();
-        modalProcessing.expectModalToExist(true).expectModalToExist(false);
-        return new WebupdatesDisplay();
+        modalProcessing.waitForFinishProcessing();
+        return new WebupdatesDisplayPage();
+    }
+
+    expectDisabledSubmitCreate(disabled: boolean) {
+        cy.get('#btnSubmitCreate').should(disabled ? 'be.disabled' : 'not.be.disabled');
+        return this;
     }
 
     clickOnDeleteObjectButton() {
@@ -93,6 +175,11 @@ export class WebupdatesPage {
         return this;
     }
 
+    expectFieldToVisible(attrName: string, visible: boolean) {
+        cy.get(`#createForm [name^='${attrName}']`).should(visible ? 'be.visible' : 'not.be.visible');
+        return this;
+    }
+
     clickAddAttributeOnField(fieldName: string) {
         cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-plus`).click({ force: true });
         return new ModalAddAttribute();
@@ -116,6 +203,22 @@ export class WebupdatesPage {
     clickEditOnField(fieldName: string) {
         cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-pencil`).eq(0).click({ force: true });
         return new ModalEditAttribute();
+    }
+
+    clickHelpOnField(fieldName: string) {
+        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-question`).eq(0).click({ force: true });
+        return this;
+    }
+
+    expectHelpToContain(fieldName: string, text: string) {
+        cy.get(`#createForm label:contains('${fieldName}') ~ description-syntax`).should('contain.text', text);
+        return this;
+    }
+
+    expectHelpToExist(fieldName: string, exist: boolean) {
+        const collapseCss = exist ? '.collapse.show' : '.collapse:not(.show)';
+        cy.get(`#createForm label:contains('${fieldName}') ~ description-syntax ${collapseCss}`).should('exist');
+        return this;
     }
 
     expectNumberOfFields(fieldName: string, count: number) {
@@ -148,6 +251,7 @@ export class WebupdatesPage {
         cy.get('#selectMaintainerDropdown').should('contain.text', maintainer);
         return this;
     }
+
     expectDisabledMaintainer(disabled: boolean) {
         cy.get('#selectMaintainerDropdown').should(disabled ? 'have.class' : 'not.have.class', 'ng-select-disabled');
         return this;
@@ -159,17 +263,17 @@ export class WebupdatesPage {
     }
 
     expectErrorOnField(fieldName: string, text: string) {
-        cy.get(`#createForm div[data-test-id^='${fieldName}'] .text-error`).should('contain.text', text);
+        cy.get(`#createForm [data-test-id^='${fieldName}'] .text-error`).should('contain.text', text);
         return this;
     }
 
     expectLinkOnField(fieldName: string, link: string) {
-        cy.get(`#createForm div[data-test-id^='${fieldName}'] a`).invoke('attr', 'href').should('contain', link);
+        cy.get(`#createForm [data-test-id^='${fieldName}'] a`).invoke('attr', 'href').should('contain', link);
         return this;
     }
 
     expectInfoOnField(fieldName: string, text: string) {
-        cy.get(`#createForm div[data-test-id^='${fieldName}'] .text-info`).should('contain.text', text);
+        cy.get(`#createForm [data-test-id^='${fieldName}'] .text-info`).should('contain.text', text);
         return this;
     }
 
@@ -177,107 +281,24 @@ export class WebupdatesPage {
         cy.get('#createForm table tbody tr').should('have.length', rows);
         return this;
     }
-}
 
-class ModalAuthentication {
-    expectSelectedAuthenticationMaintainer(maintainer: string) {
-        cy.get('#selectAuthMntner').should('contain.text', maintainer);
+    expectAbuseCExist(exist: boolean) {
+        cy.get('#createRoleForAbuseCAttribute').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
-    expectItemInList(itemValue: string, exist: boolean) {
-        cy.get(`#selectAuthMntner select option[label='${itemValue}']`).should(exist ? 'exist' : 'not.exist');
-        return this;
-    }
-
-    typePassword(password: string) {
-        cy.get(".modal-content input[name='passwordAuth']").type(password);
-        return this;
-    }
-
-    disableAssociateCheckbox() {
-        cy.get(".modal-content input[name='associate']").uncheck();
-        return this;
-    }
-
-    submitModal() {
-        cy.get('.modal-content button[type=submit]').click();
-        return this;
-    }
-
-    expectFooterToContain(text: string) {
-        cy.get('.modal-content .modal-footer').should('contain.text', text);
-        return this;
-    }
-
-    clickOnForceDelete() {
-        cy.get('.modal-content .modal-footer a:contains("Force delete")').click();
-        return this;
-    }
-
-    expectBodyToContain(text: string) {
-        cy.get('.modal-content .modal-body').should('contain.text', text);
-        return this;
-    }
-
-    expectBannerToContain(text: string) {
-        cy.get('.modal-content .modal-banner').should('contain.text', text);
+    expectFormExist(exist: boolean) {
+        cy.get('#createForm').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 }
 
-class ModalDeleteObject {
-    expectToShowModal() {
-        cy.get('.modal-content').should('exist');
-        return this;
+class WebupdatesDisplayPage {
+    clickOnCreateSharedMaintainer() {
+        cy.get('button:contains("Create Shared Maintainer")').click({ force: true });
+        return new WebupdatesPage();
     }
 
-    clickOnConfirmDeleteObject() {
-        cy.get('.modal-content #btnConfirmDeleteObject').click();
-        return new WebupdatesDelete();
-    }
-}
-
-class ModalAddAttribute {
-    expectModalToExist(exist: boolean) {
-        cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
-        return this;
-    }
-
-    selectFromList(itemValue: string) {
-        cy.get('.modal-content select').select(itemValue);
-        return this;
-    }
-
-    expectItemInList(itemValue: string, exist: boolean) {
-        cy.get(`.modal-content select option[label='${itemValue}']`).should(exist ? 'exist' : 'not.exist');
-        return this;
-    }
-
-    submitModal() {
-        cy.get('.modal-content button[type=submit]').click();
-        return this;
-    }
-}
-
-class ModalEditAttribute {
-    expectHeaderToContain(text: string) {
-        cy.get('.modal-content .modal-header').should('contain.text', text);
-        return this;
-    }
-
-    expectPanelToContain(text: string) {
-        cy.get('.modal-content .modal-panel').should('contain.text', text);
-        return this;
-    }
-
-    close() {
-        cy.get('.modal-content .modal-header .close').click();
-        cy.get('.modal-content').should('not.exist');
-    }
-}
-
-export class WebupdatesDisplay {
     expectSuccessMessage(text: string) {
         cy.get('app-banner').shadow().find('.app-banner.level-positive').should('contain.text', text);
         return this;
@@ -292,36 +313,41 @@ export class WebupdatesDisplay {
         cy.get('section.inner-container').should(exist ? 'exist' : 'not.exist');
         return this;
     }
+
+    expectedFilteredFields(filtered: boolean) {
+        cy.get('section.inner-container').should(filtered ? 'contain.text' : 'not.contain.text', 'Filtered');
+        return this;
+    }
+
+    expectedNoImgTag() {
+        cy.get('section.inner-container img').should('not.exist');
+        return this;
+    }
+
+    expectedNoScriptTag() {
+        cy.get('section.inner-container script').should('not.exist');
+        return this;
+    }
+
+    expectUmlaut(text: string) {
+        cy.get('section.inner-container').should('contain.text', text);
+        return this;
+    }
+
+    expectedNumberOfAddedLines(addedLines: number) {
+        cy.get('section.inner-container .textdiff .ins').should('have.length', addedLines);
+        return this;
+    }
+
+    expectedNumberOfDeletedLines(deletedLines: number) {
+        cy.get('section.inner-container .textdiff .del').should('have.length', deletedLines);
+        return this;
+    }
 }
 
 export class WebupdatesDelete {
     expectSuccessMessage(text: string) {
         cy.get('app-banner').shadow().find('.app-banner.level-positive').should('contain.text', text);
-        return this;
-    }
-}
-
-class ModalCreateDomain {
-    expectModalToExist(exist: boolean) {
-        cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
-        return this;
-    }
-    expectBodyToContain(text: string) {
-        cy.get('.modal-content').should('contain.text', text);
-        return this;
-    }
-
-    acceptModal() {
-        cy.get('#modal-splash-button').click();
-    }
-}
-
-class ModalProcessing {
-    expectModalToExist(exist: boolean) {
-        cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
-        if (exist) {
-            cy.get('.modal-content').should('contain.text', 'Processing your domain objects');
-        }
         return this;
     }
 }

@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/rest/search?flags=drM&ignore404=true&query-string=91.109.48.0/21&type-filter=domain",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

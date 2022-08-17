@@ -3,7 +3,10 @@
         <h1>Create {{ objectType }} and maintainer pair</h1>
 
         <ul class="form-fields appeared-fields">
-            <li *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName: ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']">
+            <li
+                attr.data-test-id="{{ attribute.name }}"
+                *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName: ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']"
+            >
                 <label>{{ attribute.name }}</label>
                 <span *ngIf="attribute.$$error" class="text-error">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
@@ -28,7 +31,10 @@
                 </ul>
             </li>
 
-            <li *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName: ['nic-hdl', 'mnt-by', 'source']">
+            <li
+                attr.data-test-id="{{ attribute.name }}"
+                *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName: ['nic-hdl', 'mnt-by', 'source']"
+            >
                 <label>{{ attribute.name }}</label>
                 <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">
                     <span *ngIf="attribute.$$error" class="text-error">{{ attribute.$$error }}</span>

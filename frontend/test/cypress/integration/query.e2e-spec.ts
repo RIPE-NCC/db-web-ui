@@ -112,10 +112,10 @@ describe('Query scenario', () => {
         queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
         queryPage.clickOnSearchButton();
         // ripe stat link for should contain inetnum
-        queryPage.getSearchResult(0).expectRipeStatLinkToContain('https://stat.ripe.net/193.0.0.0 - 193.0.0.63?sourceapp=ripedb');
+        queryPage.getWhoisObjectViewer(0).expectRipeStatLinkHref('https://stat.ripe.net/193.0.0.0 - 193.0.0.63?sourceapp=ripedb');
 
         // link for route(6) should contain just route value without AS
-        queryPage.getSearchResult(3).expectRipeStatLinkToContain('https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb');
+        queryPage.getWhoisObjectViewer(3).expectRipeStatLinkHref('https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb');
     });
 
     it("shouldn't show banner with ERORR:101 but 'No results..' message in panel", () => {
@@ -164,8 +164,8 @@ describe('Query scenario', () => {
             .clickCheckboxDoNotRetrieve();
         queryPage
             .clickOnSearchButton()
-            .getSearchResult(0)
-            .expectRipeManageValuesCheckboxToContain('Highlight RIPE NCC managed values')
+            .getWhoisObjectViewer(0)
+            .expectHighlightCheckboxToContainText('Highlight RIPE NCC managed values')
             .clickRipeManageValuesCheckbox()
             .expectManageValuesToExist(false)
             .clickRipeManageValuesCheckbox()
@@ -182,9 +182,9 @@ describe('Query scenario', () => {
         queryPage
             .clickOnSearchButton()
             .expectNumberOfResults(3)
-            .getSearchResult(2)
-            .expectValueToContain('source', 'RIPE-NONAUTH')
-            .expectValueToContain('route', '211.43.192.0');
+            .getWhoisObjectViewer(2)
+            .expectAttributeToContainKeyAndValue(7, 'source', 'RIPE-NONAUTH')
+            .expectAttributeToContainKeyAndValue(0, 'route', '211.43.192.0');
     });
 
     it('should be able to show out of region route from ripe db without related objects', () => {
@@ -193,10 +193,10 @@ describe('Query scenario', () => {
         queryPage
             .clickOnSearchButton()
             .expectNumberOfResults(1)
-            .getSearchResult(0)
-            .expectValueToContain('source', 'RIPE-NONAUTH')
-            .expectValueToContain('route', '211.43.192.0')
-            .expectRipeStatLinkToContain('https://stat.ripe.net/211.43.192.0/19?sourceapp=ripedb');
+            .getWhoisObjectViewer(0)
+            .expectAttributeToContainKeyAndValue(7, 'source', 'RIPE-NONAUTH')
+            .expectAttributeToContainKeyAndValue(0, 'route', '211.43.192.0')
+            .expectRipeStatLinkHref('https://stat.ripe.net/211.43.192.0/19?sourceapp=ripedb');
     });
 
     it('should contain ripe-nonauth for source in link on attribute value', () => {
@@ -208,9 +208,9 @@ describe('Query scenario', () => {
             .clickCheckboxDoNotRetrieve();
         queryPage
             .clickOnSearchButton()
-            .getSearchResult(2)
-            .expectValueToContain('route', '211.43.192.0')
-            .expectValueWithLinkToContain('route', '?source=ripe-nonauth&key=211.43.192.0%2F19AS9777&type=route');
+            .getWhoisObjectViewer(2)
+            .expectAttributeToContainKeyAndValue(0, 'route', '211.43.192.0')
+            .expectAttributeToContainLink(0, '?source=ripe-nonauth&key=211.43.192.0%2F19AS9777&type=route');
     });
 
     it('should contain date in proper format', () => {
@@ -222,9 +222,9 @@ describe('Query scenario', () => {
             .clickCheckboxDoNotRetrieve();
         queryPage
             .clickOnSearchButton()
-            .getSearchResult(2)
-            .expectValueToContain('created', '1970-01-01T00:00:00Z')
-            .expectValueToContain('last-modified', '2018-07-23T13:00:20Z');
+            .getWhoisObjectViewer(2)
+            .expectAttributeToContainKeyAndValue(5, 'created', '1970-01-01T00:00:00Z')
+            .expectAttributeToContainKeyAndValue(6, 'last-modified', '2018-07-23T13:00:20Z');
     });
 
     it('should be able to show out of region route from ripe db without related objects', () => {
@@ -233,17 +233,17 @@ describe('Query scenario', () => {
         queryPage
             .clickOnSearchButton()
             .expectNumberOfResults(1)
-            .getSearchResult(0)
-            .expectValueWithLinkToContain('aut-num', '?source=ripe-nonauth&key=AS9777&type=aut-num')
-            .expectValueWithLinkToContain('admin-c', '?source=ripe-nonauth&key=JYH3-RIPE&type=person')
-            .expectValueWithLinkToContain('tech-c', '?source=ripe-nonauth&key=SDH19-RIPE&type=person')
-            .expectValueWithLinkToContain('mnt-by', '?source=ripe-nonauth&key=AS4663-RIPE-MNT&type=mntner');
+            .getWhoisObjectViewer(0)
+            .expectAttributeToContainLink(0, '?source=ripe-nonauth&key=AS9777&type=aut-num')
+            .expectAttributeToContainLink(9, '?source=ripe-nonauth&key=JYH3-RIPE&type=person')
+            .expectAttributeToContainLink(10, '?source=ripe-nonauth&key=SDH19-RIPE&type=person')
+            .expectAttributeToContainLink(18, '?source=ripe-nonauth&key=AS4663-RIPE-MNT&type=mntner');
 
         queryPage
             .expectSearchTerm('AS9777')
-            .getSearchResult(0)
-            .expectRipeStatLinkToContain('https://stat.ripe.net/AS9777?sourceapp=ripedb')
-            .expectValueToContain('source', 'RIPE-NONAUTH');
+            .getWhoisObjectViewer(0)
+            .expectRipeStatLinkHref('https://stat.ripe.net/AS9777?sourceapp=ripedb')
+            .expectAttributeToContainKeyAndValue(21, 'source', 'RIPE-NONAUTH');
 
         queryPage
             .clickOnShareButton()

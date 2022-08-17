@@ -29,6 +29,7 @@
     <section class="visible-field-form" *ngIf="maintainers.object.length">
         <ul class="form-fields appeared-fields">
             <li
+                attr.data-test-id="{{ attribute.name + '$' + idx }}"
                 class="attr-{{ idx }}"
                 *ngFor="
                     let attribute of attributes | filteroutAttributeByName: ['mnt-by', 'last-modified', 'created'] | slice: 0:nrAttributesToRender;

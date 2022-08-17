@@ -1,3 +1,5 @@
+import { WhoisObjectViewer } from './components/whois-object-viewer.component';
+
 export class QueryPage {
     visit() {
         cy.visit('query');
@@ -207,8 +209,8 @@ export class QueryPage {
         return this;
     }
 
-    getSearchResult(index: number) {
-        return new SearchResult(index);
+    getWhoisObjectViewer(index: number) {
+        return new WhoisObjectViewer(`.resultpane lookup:nth(${index})`);
     }
 
     expectVersionTagToExist(exist: boolean) {
@@ -232,47 +234,6 @@ export class QueryPage {
 
     expectNoXSSAlert() {
         cy.get('.app-banner.level-alarm .banner-text', { includeShadowDom: true }).find('img').should('not.exist');
-        return this;
-    }
-}
-
-class SearchResult {
-    private index: number;
-    private selector = () => cy.get(`.resultpane lookup:nth(${this.index})`);
-
-    constructor(index: number) {
-        this.index = index;
-    }
-
-    expectRipeStatLinkToContain(link: string) {
-        this.selector().find('a.ripe-stat-button').invoke('attr', 'href').should('contain', link);
-        return this;
-    }
-
-    expectRipeManageValuesCheckboxToContain(text: string) {
-        this.selector().find('whois-object-viewer .checkbox').should('contain.text', text);
-        return this;
-    }
-
-    clickRipeManageValuesCheckbox() {
-        this.selector().find('input').click({ force: true });
-        return this;
-    }
-
-    expectManageValuesToExist(exist: boolean) {
-        this.selector()
-            .find('whois-object-viewer .showripemanaged')
-            .should(exist ? 'exist' : 'not.exist');
-        return this;
-    }
-
-    expectValueToContain(type: string, value: string) {
-        this.selector().find(`whois-object-viewer li:contains('${type}')`).should('contain.text', value);
-        return this;
-    }
-
-    expectValueWithLinkToContain(type: string, link: string) {
-        this.selector().find(`whois-object-viewer li:contains('${type}') a`).invoke('attr', 'href').should('contain', link);
         return this;
     }
 }
@@ -314,15 +275,15 @@ class HierarchyFlagsFilter {
                 case 'No':
                     return 0;
                 case 'l':
-                    return 100;
+                    return 120;
                 case 'L':
-                    return 200;
+                    return 240;
                 case 'm':
-                    return 300;
+                    return 380;
                 case 'M':
-                    return 400;
-                case 'x':
                     return 500;
+                case 'x':
+                    return 600;
             }
         })();
         cy.get(`hierarchy-flags .mat-slider-track-wrapper`).click(index, 0, { force: true });
