@@ -1,6 +1,0 @@
-{
-    "requestUrl": "/api/whois/autocomplete?extended=true&field=origin&query=AS9777",
-    "contentType": "application/javascript",
-    "statusCode": 200,
-    "data": []
-}

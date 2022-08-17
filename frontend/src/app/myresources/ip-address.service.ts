@@ -103,7 +103,7 @@ export class IpAddressService {
                     Address4.fromInteger(Number(parseInt(range.endAddress().getBitsBase2(0, 32), 2)) + 1).startAddress().address + '/' + str,
                 );
 
-                range = new Address4(range.startAddress().address + ' - ' + end.endAddress().address);
+                range = range.startAddress().address + ' - ' + end.endAddress().address;
             }
         });
 

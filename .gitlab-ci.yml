@@ -64,41 +64,6 @@ backend:
           - backend/target/failsafe-reports/TEST-*.xml
       expire_in: 1 day
 
-e2e:
-    tags:
-      - whois
-    stage: test
-    rules:
-        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-            when: always
-        -   if: '$CI_COMMIT_REF_NAME == "master"'
-            when: always
-        -   when: manual
-            allow_failure: true
-    script:
-        - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
-        - export DISPLAY=:20
-        - Xvfb :20 -screen 0 1920x1080x16 &
-        # use pinned version of Chrome:
-        - cd frontend && npm run e2e-chrome
-
-e2e-firefox:
-    tags:
-      - whois
-    stage: test
-    rules:
-        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-            when: always
-        -   if: '$CI_COMMIT_REF_NAME == "master"'
-            when: always
-        -   when: manual
-            allow_failure: true
-    script:
-      - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
-      - export DISPLAY=:20
-      - Xvfb :20 -screen 0 1920x1080x16 &
-      - cd frontend && npm run e2e-firefox
-
 e2e-cypress-chrome:
     tags:
         - whois

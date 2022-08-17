@@ -1,0 +1,142 @@
+import { WebupdatesPage } from '../pages/webupdates.page';
+
+describe('The inetnum editor', () => {
+    const webupdatesPage = new WebupdatesPage();
+
+    beforeEach(() => {
+        webupdatesPage.visit('select').selectObjectType('inetnum').clickOnCreateButton();
+    });
+
+    it('should ask for authentication of parent inetnum', () => {
+        webupdatesPage
+            .expectDisabledSubmitCreate(true)
+            .typeOnField('inetnum', '213.159.160.0-213.159.190.255')
+            .blurOnField('inetnum')
+            .authenticateWithDisabledAssociate('ERICSSON-MNT')
+            .typeOnField('netname', 'bogus-netname1')
+            .selectFromNgSelect('country', 'Afghanistan [AF]')
+            .typeOnField('admin-c', 'aa1-ripe')
+            .typeOnField('tech-c', 'aa1-ripe')
+            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
+            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
+            .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
+            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .expectDisabledSubmitCreate(false);
+    });
+
+    it('should ask for authentication of parent inetnum and handle a bad password properly', () => {
+        webupdatesPage
+            .expectDisabledSubmitCreate(true)
+            .typeOnField('inetnum', '213.159.160.0-213.159.190.255')
+            .blurOnField('inetnum')
+            .authenticateWithDisabledAssociate('xxx', true)
+            .getModalAuthentication()
+            .expectBannerToContain('You have not supplied the correct password for mntner')
+            .closeModal();
+
+        webupdatesPage
+            .typeOnField('netname', 'bogus-netname1')
+            .selectFromNgSelect('country', 'Afghanistan [AF]')
+            .typeOnField('admin-c', 'aa1-ripe')
+            .typeOnField('tech-c', 'aa1-ripe')
+            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
+            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
+            .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
+            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .expectDisabledSubmitCreate(true);
+    });
+    it('should show an editor for inet6num', () => {
+        webupdatesPage
+            .visit('select')
+            .selectObjectType('inet6num')
+            .clickOnCreateButton()
+            .expectHeadingTitleToContain('Create "inet6num" object')
+            .expectDisabledSubmitCreate(true)
+            .typeOnField('inet6num', '2001:888:2000::/38')
+            .blurOnField('inet6num')
+            .authenticateWithDisabledAssociate('XS4ALL-MNT')
+            .expectOptionSizeFromNgSelect('status', 2)
+            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
+            .expectOptionFromNgSelect('status', 'ASSIGNED');
+    });
+    it('should sanitized img and script tag - XSS attack', () => {
+        webupdatesPage
+            .typeOnField(
+                'inetnum',
+                "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>",
+            )
+            .blurOnField('inetnum')
+            .typeOnField(
+                'netname',
+                "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>",
+            )
+            .blurOnField('netname')
+            .selectFromNgSelect('country', 'Afghanistan [AF]')
+            .typeOnField(
+                'admin-c',
+                "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>",
+            )
+            .typeOnField(
+                'tech-c',
+                "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>",
+            )
+            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .submitForm()
+            .expectErrorOnField('inetnum', 'Syntax error in img src=')
+            .expectErrorOnField('netname', 'Syntax error in img src=')
+            .expectErrorOnField('admin-c', 'Syntax error in img src=')
+            .expectErrorOnField('tech-c', 'Syntax error in img src=');
+    });
+    it('should open description just under field on click on question mark', () => {
+        webupdatesPage
+            .expectHelpToExist('inetnum', false)
+            .clickHelpOnField('inetnum')
+            .expectHelpToExist('inetnum', true)
+            .expectHelpToContain('inetnum', 'Specifies a range of IPv4 that the inetnum object presents.')
+            .expectHelpToExist('netname', false)
+            .clickHelpOnField('netname')
+            .expectHelpToExist('inetnum', true)
+            .expectHelpToExist('netname', true)
+            .clickHelpOnField('inetnum')
+            .expectHelpToExist('inetnum', false)
+            .expectHelpToExist('netname', true);
+    });
+    it('should enable submit button', () => {
+        webupdatesPage
+            .typeOnField('inetnum', '5.254.68.40/29')
+            .blurOnField('inetnum')
+            .authenticateWithDisabledAssociate('VOXILITY-MNT')
+            .typeOnField('netname', 'SOMETHING')
+            .selectFromNgSelect('country', 'Afghanistan [AF]')
+            .typeOnField('admin-c', 'WW2105-RIPE')
+            .typeOnField('tech-c', 'WW2105-RIPE')
+            .expectDisabledSubmitCreate(true)
+            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
+            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
+            .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
+            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .expectDisabledSubmitCreate(false);
+    });
+    it('should show field validation errors', () => {
+        webupdatesPage
+            .typeOnField('inetnum', '5.254.68.40/29')
+            .blurOnField('inetnum')
+            .authenticateWithDisabledAssociate('VOXILITY-MNT')
+            .typeOnField('netname', 'SOMETHING')
+            .selectFromNgSelect('country', 'Afghanistan [AF]')
+            .typeOnField('admin-c', 'WW2105-RIPE')
+            .typeOnField('tech-c', 'WW2105-RIPE')
+            .expectDisabledSubmitCreate(true)
+            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
+            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
+            .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
+            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .submitForm()
+            .expectErrorOnField('inetnum', 'Value 5.254.68.40/29 converted to 5.254.68.40 - 5.254.68.47')
+            .expectErrorOnField('netname', 'Syntax error in SOMETHING.');
+    });
+});
