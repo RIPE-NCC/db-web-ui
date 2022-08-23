@@ -2,6 +2,7 @@
 <div class="usprivacy">
     <ripe-header (ripe-header-menu-toggle)="open($event)" [open]="isOpenMenu">
         <svg
+            *ngIf="properties.isProdEnv()"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
