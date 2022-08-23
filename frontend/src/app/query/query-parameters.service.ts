@@ -143,6 +143,8 @@ export class QueryParametersService {
                         }
                     } else if (item === '--resource') {
                         queryParams.source = 'GRS';
+                    } else if (item === '--all-sources') {
+                        queryParams.source = 'RIPE,RIPE-NONAUTH,APNIC-GRS,ARIN-GRS,LACNIC-GRS,AFRINIC-GRS';
                     } else if (item === '--sources') {
                         sourcesPos = idx + 1;
                     } else if (item === '--no-referenced') {
@@ -193,6 +195,8 @@ export class QueryParametersService {
                             }
                         } else if (opts[i] === 's') {
                             sourcesPos = idx + 1;
+                        } else if (opts[i] === 'a') {
+                            queryParams.source = 'RIPE,RIPE-NONAUTH,APNIC-GRS,ARIN-GRS,LACNIC-GRS,AFRINIC-GRS';
                         } else if (!addedInvalidOptionWarning) {
                             addedInvalidOptionWarning = true;
                             errors.push(`ERROR:111: invalid option supplied. Use help query to see the valid options.`);

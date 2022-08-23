@@ -346,4 +346,18 @@ describe('QueryParameters', () => {
         expect(validationIssues.errors[0]).toEqual('Source specified without value');
         expect(validationIssues.warnings.length).toEqual(0);
     });
+
+    it('should parse -a and --all-sources flag', () => {
+        qp.queryText = '-a AS174';
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+
+        qp.queryText = '--all-sources AS174';
+
+        let validationIssuesAllSources = queryParametersService.validate(qp);
+        expect(validationIssuesAllSources.errors.length).toEqual(0);
+        expect(validationIssuesAllSources.warnings.length).toEqual(0);
+    });
 });
