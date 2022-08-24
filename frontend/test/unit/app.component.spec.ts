@@ -26,7 +26,6 @@ describe('AppComponent', () => {
                         LOGOUT_URL: 'https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query',
                         RIPE_APP_WEBCOMPONENTS_ENV: 'pre',
                         BREAKPOINTS_MOBILE_VIEW: 1025,
-                        isProdEnv: () => false,
                     },
                 },
                 { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: '/not-query' } },
