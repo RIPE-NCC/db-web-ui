@@ -125,13 +125,13 @@ describe('FindMaintainerService', () => {
         const maintainerKey = 'I-AM-MNT';
         const mockErrorResponse = { status: 404, statusText: 'Not Found' };
         const data = 'Invalid request parameters';
-        findMaintainerService.search(maintainerKey).subscribe(
-            (res: any) => {},
-            (error: any) => {
+        findMaintainerService.search(maintainerKey).subscribe({
+            next: (res: any) => {},
+            error: (error: any) => {
                 expect(error).toBe('The maintainer could not be found.');
                 done();
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(data, mockErrorResponse);
@@ -141,13 +141,13 @@ describe('FindMaintainerService', () => {
         const maintainerKey = 'I-AM-MNT';
         const mockErrorResponse = { status: 500, statusText: 'Internal Server Error' };
         const data = 'Invalid request parameters';
-        findMaintainerService.search(maintainerKey).subscribe(
-            (res: any) => {},
-            (error: any) => {
+        findMaintainerService.search(maintainerKey).subscribe({
+            next: (res: any) => {},
+            error: (error: any) => {
                 expect(error).toBe('Error fetching maintainer.');
                 done();
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(data, mockErrorResponse);
@@ -156,13 +156,13 @@ describe('FindMaintainerService', () => {
     it('should return error that MNT is synchronized with organisation in LIR Portal', (done) => {
         const maintainerKey = 'SHRYANE-MNT';
         const mockErrorResponse = { status: 403, error: 'SHRYANE-MNT is synchronized with organisation ORG-BAd1-RIPE in LIR Portal.', statusText: 'OK' };
-        findMaintainerService.search(maintainerKey).subscribe(
-            (res: any) => {},
-            (error: any) => {
+        findMaintainerService.search(maintainerKey).subscribe({
+            next: () => {},
+            error: (error: any) => {
                 expect(error.error).toBe('SHRYANE-MNT is synchronized with organisation ORG-BAd1-RIPE in LIR Portal.');
                 done();
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/SHRYANE-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(mockErrorResponse, mockErrorResponse);
@@ -190,13 +190,13 @@ describe('FindMaintainerService', () => {
         };
         const mockErrorResponse = { status: 400, statusText: 'Bad Request' };
         const data = 'Invalid request parameters';
-        findMaintainerService.search(maintainerKey).subscribe(
-            (res: any) => {},
-            (error: any) => {
+        findMaintainerService.search(maintainerKey).subscribe({
+            next: (res: any) => {},
+            error: (error: any) => {
                 expect(error).toBe('switchToManualResetProcess');
                 done();
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(response);
@@ -223,14 +223,14 @@ describe('FindMaintainerService', () => {
         const maintainerKey = 'I-AM-MNT';
         const mockErrorResponse = { status: 500, statusText: 'Internal Server Error' };
         const data = 'unable to send emaill';
-        findMaintainerService.sendMail(maintainerKey).subscribe(
-            (res: any) => {},
-            (error: any) => {
+        findMaintainerService.sendMail(maintainerKey).subscribe({
+            next: (res: any) => {},
+            error: (error: any) => {
                 expect(error.message).toBe(
                     'Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 500 Internal Server Error',
                 );
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json' });
         expect(req.request.method).toBe('POST');
         req.flush(data, mockErrorResponse);
@@ -240,12 +240,12 @@ describe('FindMaintainerService', () => {
         const maintainerKey = 'I-AM-MNT';
         const mockErrorResponse = { status: 404, statusText: 'Not Found' };
         const data = 'unable to send email';
-        findMaintainerService.sendMail(maintainerKey).subscribe(
-            (res: any) => {},
-            (error: any) => {
+        findMaintainerService.sendMail(maintainerKey).subscribe({
+            next: () => {},
+            error: (error: any) => {
                 expect(error.message).toBe('Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 404 Not Found');
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json' });
         expect(req.request.method).toBe('POST');
         req.flush(data, mockErrorResponse);
@@ -255,12 +255,12 @@ describe('FindMaintainerService', () => {
         const maintainerKey = 'I-AM-MNT';
         const mockErrorResponse = { status: 401, statusText: 'Unauthorized' };
         const data = 'unable to send email';
-        findMaintainerService.sendMail(maintainerKey).subscribe(
-            (res: any) => {},
-            (error: any) => {
+        findMaintainerService.sendMail(maintainerKey).subscribe({
+            next: (res: any) => {},
+            error: (error: any) => {
                 expect(error.message).toBe('Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 401 Unauthorized');
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json' });
         expect(req.request.method).toBe('POST');
         req.flush(data, mockErrorResponse);

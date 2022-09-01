@@ -47,9 +47,9 @@ export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
     }
 
     private checkLoggedIn() {
-        this.userInfoService.getUserOrgsAndRoles().subscribe(
-            (res) => res,
-            () => {
+        this.userInfoService.getUserOrgsAndRoles().subscribe({
+            next: (res) => res,
+            error: () => {
                 return this.router.navigate(['requireLogin'], {
                     queryParams: {
                         mntnerKey: this.fmpModel.mntnerKey,
@@ -57,6 +57,6 @@ export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
                     },
                 });
             },
-        );
+        });
     }
 }

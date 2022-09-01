@@ -86,18 +86,18 @@ export class DisplayComponent implements OnInit, OnDestroy {
             }
             this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
         } else {
-            this.restService.fetchObject(this.objectSource, this.objectType, this.objectName, null, null).subscribe(
-                (resp: any) => {
+            this.restService.fetchObject(this.objectSource, this.objectType, this.objectName, null, null).subscribe({
+                next: (resp: any) => {
                     this.attributes = this.whoisResourcesService.getAttributes(resp);
                     this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
                     this.alertsService.setErrors(resp);
                 },
-                (resp: any) => {
+                error: (resp: any) => {
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp.data);
                     this.alertsService.setErrors(resp.data);
                 },
-            );
+            });
         }
     }
 

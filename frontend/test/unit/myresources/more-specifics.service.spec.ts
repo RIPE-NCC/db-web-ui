@@ -27,29 +27,29 @@ describe('MoreSpecificsService', () => {
     });
 
     it('should reject invalid initialization', (done) => {
-        moreSpecificsService.getSpecifics('', '', undefined, '').subscribe(
-            (res: any) => {},
-            (error: any) => {
+        moreSpecificsService.getSpecifics('', '', undefined, '').subscribe({
+            next: () => {},
+            error: (error: any) => {
                 expect(error).toEqual('objectType is empty. more-specifics not available');
                 done();
             },
-        );
+        });
 
-        moreSpecificsService.getSpecifics('OBJECT_NAME', '', undefined, '').subscribe(
-            (res: any) => {},
-            (error: any) => {
+        moreSpecificsService.getSpecifics('OBJECT_NAME', '', undefined, '').subscribe({
+            next: (res: any) => {},
+            error: (error: any) => {
                 expect(error).toEqual('objectType is empty. more-specifics not available');
                 done();
             },
-        );
+        });
 
-        moreSpecificsService.getSpecifics('', 'OBJECT_TYPE', undefined, '').subscribe(
-            (res: any) => {},
-            (error: any) => {
+        moreSpecificsService.getSpecifics('', 'OBJECT_TYPE', undefined, '').subscribe({
+            next: () => {},
+            error: (error: any) => {
                 expect(error).toEqual('objectName is empty. more-specifics not available');
                 done();
             },
-        );
+        });
 
         moreSpecificsService.getSpecifics('OBJECT_NAME', 'OBJECT_TYPE', 0, '').subscribe((res: any) => {
             expect(res).toEqual({ resp: 'lol' });

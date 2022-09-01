@@ -153,17 +153,17 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
             });
             this.restService.detailsForMntners(enriched).then((enrichedMntners: any) => {
                 this.maintainers.objectOriginal = enrichedMntners;
-                this.restService.fetchMntnersForSSOAccount().subscribe(
-                    (results: any) => {
+                this.restService.fetchMntnersForSSOAccount().subscribe({
+                    next: (results: any) => {
                         this.maintainers.sso = results;
                         if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                             this.performAuthentication(this.maintainers);
                         }
                     },
-                    () => {
+                    error: () => {
                         this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
                     },
-                );
+                });
             });
         });
     };
@@ -288,6 +288,5 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         if (!_.isEmpty(this.alertsService.alerts.errors)) {
             this.errorReporterService.log('DomainWizard', 'domain', this.alertsService.alerts.errors);
         }
-        document.querySelector('#domainerrors').scrollIntoView();
     }
 }

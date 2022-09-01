@@ -29,8 +29,8 @@ export class FindMaintainerComponent implements OnInit {
     public selectMaintainer(maintainerKey: string) {
         this.alertsService.clearAlertMessages();
         console.info('Search for mntner ' + maintainerKey);
-        this.findMaintainerService.search(maintainerKey).subscribe(
-            (result: IFindMaintainer) => {
+        this.findMaintainerService.search(maintainerKey).subscribe({
+            next: (result: IFindMaintainer) => {
                 this.foundMaintainer = result;
                 if (this.foundMaintainer.expired === false) {
                     this.alertsService.addGlobalWarning(
@@ -38,7 +38,7 @@ export class FindMaintainerComponent implements OnInit {
                     );
                 }
             },
-            (error: string) => {
+            error: (error: string) => {
                 if (this.foundMaintainer) {
                     this.foundMaintainer.mntnerFound = false;
                 }
@@ -48,16 +48,16 @@ export class FindMaintainerComponent implements OnInit {
                     this.alertsService.addGlobalError(error);
                 }
             },
-        );
+        });
     }
 
     public validateEmail() {
         const mntKey = this.foundMaintainer.maintainerKey;
-        this.findMaintainerService.sendMail(mntKey).subscribe(
-            () => {
+        this.findMaintainerService.sendMail(mntKey).subscribe({
+            next: () => {
                 this.router.navigate(['fmp/mailSent', this.foundMaintainer.email], { queryParams: { maintainerKey: mntKey } });
             },
-            (error: any) => {
+            error: (error: any) => {
                 console.error('Error validating email:' + JSON.stringify(error));
                 if (error.status !== 401 && error.status !== 403) {
                     if (_.isUndefined(error.data)) {
@@ -68,7 +68,7 @@ export class FindMaintainerComponent implements OnInit {
                     this.switchToManualResetProcess(mntKey, false);
                 }
             },
-        );
+        });
     }
 
     public switchToManualResetProcess(maintainerKey: string, voluntaryChoice: boolean = true) {
@@ -81,11 +81,11 @@ export class FindMaintainerComponent implements OnInit {
     }
 
     private checkLoggedIn() {
-        this.userInfoService.getUserOrgsAndRoles().subscribe(
-            (res) => res,
-            () => {
+        this.userInfoService.getUserOrgsAndRoles().subscribe({
+            next: (res) => res,
+            error: () => {
                 return this.router.navigate(['fmp/requireLogin']);
             },
-        );
+        });
     }
 }

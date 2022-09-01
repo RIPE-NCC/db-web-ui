@@ -48,8 +48,8 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
 
     private init() {
         try {
-            this.lookupService.lookupWhoisObject({ source: this.source, type: this.objectType, key: this.objectName }).subscribe(
-                (response: any) => {
+            this.lookupService.lookupWhoisObject({ source: this.source, type: this.objectType, key: this.objectName }).subscribe({
+                next: (response: any) => {
                     this.alertsService.clearAlertMessages();
                     if (response && response.objects && response.objects.object && response.objects.object.length === 1) {
                         this.whoisResponse = response.objects.object[0];
@@ -63,7 +63,7 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
                         console.warn('Expected a single object from query. source:', this.source, 'type:', this.objectType, 'name:', this.objectName);
                     }
                 },
-                () => {
+                error: () => {
                     // reload page in case in query params source was NONAUTH and object doesn't exist in mirror database
                     if (this.source !== this.properties.SOURCE) {
                         this.goToLookup();
@@ -71,7 +71,7 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
                         this.alertsService.addGlobalError(`An error occurred looking for ${this.objectType} ${this.objectName}`);
                     }
                 },
-            );
+            });
         } catch (e) {
             this.alertsService.addGlobalError(`An error occurred looking for ${this.objectType} ${this.objectName}`);
         }

@@ -104,8 +104,8 @@ export class ForceDeleteComponent implements OnInit {
         this.restCallInProgress = true;
         const objectToModify = this.restService.fetchObject(this.object.source, this.object.type, this.object.name);
         const ssoMntners = this.restService.fetchMntnersForSSOAccount();
-        forkJoin([objectToModify, ssoMntners]).subscribe(
-            (response) => {
+        forkJoin([objectToModify, ssoMntners]).subscribe({
+            next: (response) => {
                 const objectToModifyResponse = response[0];
                 const ssoMntnersResponse = response[1];
                 this.restCallInProgress = false;
@@ -118,8 +118,8 @@ export class ForceDeleteComponent implements OnInit {
                 this.maintainers.sso = ssoMntnersResponse;
                 console.debug('maintainers.sso:' + JSON.stringify(this.maintainers.sso));
 
-                this.useDryRunDeleteToDetectAuthCandidates().subscribe(
-                    (authCandidates: any) => {
+                this.useDryRunDeleteToDetectAuthCandidates().subscribe({
+                    next: (authCandidates: any) => {
                         const objectMntners = _.map(authCandidates, (item) => {
                             return {
                                 key: item,
@@ -143,12 +143,12 @@ export class ForceDeleteComponent implements OnInit {
                             },
                         );
                     },
-                    (errorMsg: any) => {
+                    error: (errorMsg: any) => {
                         this.alertsService.setGlobalError(errorMsg);
                     },
-                );
+                });
             },
-            (error) => {
+            error: (error) => {
                 this.restCallInProgress = false;
                 if (error && error.data) {
                     console.error('Error fetching object:' + JSON.stringify(error));
@@ -159,7 +159,7 @@ export class ForceDeleteComponent implements OnInit {
                     this.alertsService.setGlobalError('Error fetching maintainers to force delete this object');
                 }
             },
-        );
+        });
     }
 
     private useDryRunDeleteToDetectAuthCandidates() {

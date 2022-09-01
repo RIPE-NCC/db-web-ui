@@ -251,14 +251,14 @@ export class TextCreateComponent implements OnInit {
                 this.override,
                 true,
             )
-            .subscribe(
-                (whoisResources: any) => {
+            .subscribe({
+                next: (whoisResources: any) => {
                     this.restCallInProgress = false;
                     const primaryKey = this.whoisResourcesService.getPrimaryKey(whoisResources);
                     this.messageStoreService.add(primaryKey, whoisResources);
                     this.textCommonsService.navigateToDisplayPage(this.object.source, objectType, primaryKey, 'Create');
                 },
-                (error: any) => {
+                error: (error: any) => {
                     this.restCallInProgress = false;
                     const whoisResources = error.data;
                     this.alertsService.setAllErrors(whoisResources);
@@ -267,6 +267,6 @@ export class TextCreateComponent implements OnInit {
                         this.errorReporterService.log('TextCreate', objectType, this.alertsService.alerts.errors, attributes);
                     }
                 },
-            );
+            });
     }
 }

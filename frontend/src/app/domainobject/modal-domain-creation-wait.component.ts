@@ -31,8 +31,8 @@ export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
     public saving() {
         this.loader = true;
         this.pollingData = interval(2000).subscribe(() => {
-            this.prefixService.getDomainCreationStatus(this.resolve.source).subscribe(
-                (response: any) => {
+            this.prefixService.getDomainCreationStatus(this.resolve.source).subscribe({
+                next: (response: any) => {
                     if (response.status === 200) {
                         this.loader = false;
                         this.activeModal.close(response);
@@ -43,10 +43,10 @@ export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
                     }
                     console.log(response); // see console you get output every 5 sec
                 },
-                (failResponse: any) => {
+                error: (failResponse: any) => {
                     this.activeModal.dismiss(failResponse);
                 },
-            );
+            });
         });
     }
 

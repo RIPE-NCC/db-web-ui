@@ -67,8 +67,8 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
         }
 
         // kick off ajax-call to fetch email address of logged-in user
-        this.userInfoService.getUserOrgsAndRoles().subscribe(
-            (result: any) => {
+        this.userInfoService.getUserOrgsAndRoles().subscribe({
+            next: (result: any) => {
                 this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes, 'upd-to', result.user.username);
                 this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(
                     this.maintainerAttributes,
@@ -76,10 +76,10 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
                     'SSO ' + result.user.username,
                 );
             },
-            () => {
+            error: () => {
                 this.alertsService.setGlobalError('Error fetching SSO information');
             },
-        );
+        });
     }
 
     public submit() {
@@ -175,22 +175,22 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
         const obj = this.whoisResourcesService.turnAttrsIntoWhoisObject(this.maintainerAttributes);
 
         this.submitInProgress = true;
-        this.restService.createObject(this.source, this.MNT_TYPE, obj, null).subscribe(
-            (resp: any) => {
+        this.restService.createObject(this.source, this.MNT_TYPE, obj, null).subscribe({
+            next: (resp: any) => {
                 this.submitInProgress = false;
 
                 const primaryKey = this.whoisResourcesService.getPrimaryKey(resp);
                 this.messageStoreService.add(primaryKey, resp);
                 this.router.navigateByUrl(`webupdates/display/${this.source}/${this.MNT_TYPE}/${primaryKey}?method=Create`);
             },
-            (error: any) => {
+            error: (error: any) => {
                 this.submitInProgress = false;
                 this.alertsService.addGlobalError(`Creation of ${this.MNT_TYPE} failed, please see below for more details`);
                 this.alertsService.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
                 this.alertsService.setErrors(error.data);
                 this.errorReporterService.log('Create', this.MNT_TYPE, this.alertsService.alerts.errors, this.maintainerAttributes);
             },
-        );
+        });
     }
 
     private populateMissingAttributes() {

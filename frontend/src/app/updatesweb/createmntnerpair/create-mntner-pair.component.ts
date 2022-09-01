@@ -75,15 +75,15 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         this.showMntAttrsHelp = this.mntnerAttributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
         // kick off ajax-call to fetch email address of logged-in user
-        this.userInfoService.getUserOrgsAndRoles().subscribe(
-            (result: IUserInfoResponseData) => {
+        this.userInfoService.getUserOrgsAndRoles().subscribe({
+            next: (result: IUserInfoResponseData) => {
                 this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'auth', 'SSO ' + result.user.username);
                 this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'upd-to', result.user.username);
             },
-            () => {
+            error: () => {
                 this.alertsService.setGlobalError('Error fetching SSO information');
             },
-        );
+        });
     }
 
     public submit() {
@@ -123,8 +123,8 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     private createRoleMntnerPair() {
         this.createService
             .createRoleMntner(this.source, this.whoisResourcesService.turnAttrsIntoWhoisObjects([this.objectTypeAttributes, this.mntnerAttributes]))
-            .subscribe(
-                (resp: any) => {
+            .subscribe({
+                next: (resp: any) => {
                     this.submitInProgress = false;
 
                     const objectTypeUid = this.addObjectOfTypeToCache(resp, this.objectType, 'nic-hdl');
@@ -132,7 +132,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
 
                     this.navigateToDisplayPage(this.source, objectTypeUid, mntnerName);
                 },
-                (error: any) => {
+                error: (error: any) => {
                     this.submitInProgress = false;
                     const whoisResources = error.data;
 
@@ -145,14 +145,14 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
                     this.errorReporterService.log('Create', this.objectType, this.alertsService.alerts.errors, this.objectTypeAttributes);
                     this.errorReporterService.log('Create', 'mntner', this.alertsService.alerts.errors, this.mntnerAttributes);
                 },
-            );
+            });
     }
 
     private createPersonMntnerPair() {
         this.createService
             .createPersonMntner(this.source, this.whoisResourcesService.turnAttrsIntoWhoisObjects([this.objectTypeAttributes, this.mntnerAttributes]))
-            .subscribe(
-                (resp: any) => {
+            .subscribe({
+                next: (resp: any) => {
                     this.submitInProgress = false;
 
                     const personUid = this.addObjectOfTypeToCache(resp, 'person', 'nic-hdl');
@@ -160,7 +160,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
 
                     this.navigateToDisplayPage(this.source, personUid, mntnerName);
                 },
-                (error: any) => {
+                error: (error: any) => {
                     this.submitInProgress = false;
                     const whoisResources = error.data;
 
@@ -173,7 +173,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
                     this.errorReporterService.log('Create', 'person', this.alertsService.alerts.errors, this.objectTypeAttributes);
                     this.errorReporterService.log('Create', 'mntner', this.alertsService.alerts.errors, this.mntnerAttributes);
                 },
-            );
+            });
     }
 
     public cancel() {

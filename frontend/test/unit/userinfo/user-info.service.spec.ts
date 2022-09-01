@@ -38,15 +38,15 @@ describe('UserInfoService', () => {
     });
 
     it('should not provide user-info on failure', () => {
-        userInfoService.getSelectedOrganisation().subscribe(
-            (result: IUserInfoOrganisation) => {
+        userInfoService.getSelectedOrganisation().subscribe({
+            next: (result: IUserInfoOrganisation) => {
                 // NOT to be called
                 expect(true).toBeFalse();
             },
-            (error) => {
+            error: (error) => {
                 expect(error.status).toBe(401);
             },
-        );
+        });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
         expect(req.request.method).toBe('GET');
         req.flush(null, { status: 401, statusText: '' });
