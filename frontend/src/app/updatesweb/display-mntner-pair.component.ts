@@ -43,17 +43,17 @@ export class DisplayMntnerPairComponent implements OnInit, OnDestroy {
             console.debug('Got person from cache:' + JSON.stringify(this.objectTypeAttributes));
             this.alertsService.addGlobalSuccesses('Your objects have been successfully created');
         } else {
-            this.restService.fetchObject(this.objectSource, this.objectType, this.objectTypeName, null, null).subscribe(
-                (resp: any) => {
+            this.restService.fetchObject(this.objectSource, this.objectType, this.objectTypeName, null, null).subscribe({
+                next: (resp: any) => {
                     this.objectTypeAttributes = this.whoisResourcesService.getAttributes(resp);
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, resp);
                     this.alertsService.addAlertMsgs(resp);
                 },
-                (error: any) => {
+                error: (error: any) => {
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, error.data);
                     this.alertsService.addAlertMsgs(error.data);
                 },
-            );
+            });
         }
 
         const cachedMntnerObject = this.messageStoreService.get(this.mntnerName);
@@ -62,17 +62,17 @@ export class DisplayMntnerPairComponent implements OnInit, OnDestroy {
             this.mntnerAttributes = this.whoisResourcesService.getAttributes(whoisResources);
             console.debug('Got mntner from cache:' + JSON.stringify(this.mntnerAttributes));
         } else {
-            this.restService.fetchObject(this.objectSource, 'mntner', this.mntnerName, null, null).subscribe(
-                (resp: any) => {
+            this.restService.fetchObject(this.objectSource, 'mntner', this.mntnerName, null, null).subscribe({
+                next: (resp: any) => {
                     this.mntnerAttributes = this.whoisResourcesService.getAttributes(resp);
                     this.alertsService.populateFieldSpecificErrors('mntner', this.mntnerAttributes, resp);
                     this.alertsService.addAlertMsgs(resp);
                 },
-                (error: any) => {
+                error: (error: any) => {
                     this.alertsService.populateFieldSpecificErrors('mntner', this.mntnerAttributes, error.data);
                     this.alertsService.addAlertMsgs(error.data);
                 },
-            );
+            });
         }
     }
 

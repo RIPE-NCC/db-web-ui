@@ -110,8 +110,8 @@ export class ResourceDetailsComponent implements OnDestroy {
         this.loadingResource = true;
         this.showRefreshButton = false;
 
-        this.resourcesDataService.fetchResource(this.objectName, this.objectType).subscribe(
-            (response: IResourceDetailsResponseModel) => {
+        this.resourcesDataService.fetchResource(this.objectName, this.objectType).subscribe({
+            next: (response: IResourceDetailsResponseModel) => {
                 this.loadingResource = false;
                 this.showRefreshButton = false;
                 this.whoisObject = response.object;
@@ -158,11 +158,11 @@ export class ResourceDetailsComponent implements OnDestroy {
                     this.addFlag(Labels['flag.rDNS.text'], Labels['flag.rDNS.title'], 'green');
                 }
             },
-            (error) => {
+            error: (error) => {
                 this.loadingResource = false;
                 this.showRefreshButton = true;
             },
-        );
+        });
     }
 
     public updateButtonClicked(modifiedWhoisObject: any): void {
@@ -177,14 +177,14 @@ export class ResourceDetailsComponent implements OnDestroy {
         );
         const object = { objects: { object: [{ attributes: { attribute: attributesWithoutDates } }] } };
         const pKey = modifiedWhoisObject['primary-key'].attribute[0].value;
-        this.restService.modifyObject(this.source, this.objectType, pKey, object, passwords).subscribe(
-            (response: IWhoisResponseModel) => {
+        this.restService.modifyObject(this.source, this.objectType, pKey, object, passwords).subscribe({
+            next: (response: IWhoisResponseModel) => {
                 this.onSubmitSuccess(response);
             },
-            (response: any) => {
+            error: (response: any) => {
                 this.onSubmitError(response);
             },
-        );
+        });
         setTimeout(() => {
             this.show.viewer = !this.show.viewer;
             this.show.editor = !this.show.editor;

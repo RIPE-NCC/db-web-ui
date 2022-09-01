@@ -209,15 +209,15 @@ export class QueryComponent implements OnDestroy {
             setTimeout(() => this.gotoAnchor(), 0);
         } else {
             this.showTemplatePanel = false;
-            this.queryService.searchWhoisObjects(cleanQp, this.offset).subscribe(
-                (response: IWhoisResponseModel) => {
+            this.queryService.searchWhoisObjects(cleanQp, this.offset).subscribe({
+                next: (response: IWhoisResponseModel) => {
                     this.handleWhoisSearch(response);
                     if (this.offset === 0) {
                         setTimeout(() => this.gotoAnchor(), 0);
                     }
                 },
-                (error: IWhoisResponseModel) => this.handleWhoisSearchError(error),
-            );
+                error: (error: IWhoisResponseModel) => this.handleWhoisSearchError(error),
+            });
         }
     }
 

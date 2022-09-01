@@ -77,8 +77,8 @@ export class MoreSpecificsComponent implements OnChanges {
         this.lastPage = pageNr;
         if (this.objectType === 'inetnum' || this.objectType === 'inet6num') {
             this.loading = true;
-            this.moreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter).subscribe(
-                (response: IMoreSpecificsApiResult) => {
+            this.moreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter).subscribe({
+                next: (response: IMoreSpecificsApiResult) => {
                     this.loading = false;
                     this.showRefreshButton = false;
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
@@ -91,12 +91,12 @@ export class MoreSpecificsComponent implements OnChanges {
                     this.calcScroller();
                     this.updateHeight();
                 },
-                () => {
+                error: () => {
                     this.calcScroller();
                     this.loading = false;
                     this.showRefreshButton = true;
                 },
-            );
+            });
         }
     }
 

@@ -33,8 +33,8 @@ export class ConfirmMaintainerComponent implements OnInit {
         }
 
         this.localHash = queryParams.hash;
-        this.emailLinkService.get(this.localHash).subscribe(
-            (link: any) => {
+        this.emailLinkService.get(this.localHash).subscribe({
+            next: (link: any) => {
                 console.info('Successfully fetched email-link:' + JSON.stringify(link));
                 this.key = link.mntner;
                 this.email = link.email;
@@ -54,7 +54,7 @@ export class ConfirmMaintainerComponent implements OnInit {
                 this.hashOk = true;
                 this.alertsService.addGlobalInfo('You are logged in with the RIPE NCC Access account ' + this.user);
             },
-            (error: any) => {
+            error: (error: any) => {
                 let msg = 'Error fetching email-link';
                 if (!_.isObject(error.data)) {
                     msg = msg.concat(': ' + error.data);
@@ -62,17 +62,17 @@ export class ConfirmMaintainerComponent implements OnInit {
                 console.error(msg);
                 this.alertsService.setGlobalError(msg);
             },
-        );
+        });
     }
 
     public associate() {
-        this.emailLinkService.update(this.localHash).subscribe(
-            (resp) => {
+        this.emailLinkService.update(this.localHash).subscribe({
+            next: (resp) => {
                 console.error('Successfully associated email-link:' + resp);
 
                 this.navigateToSsoAdded(this.key, this.user);
             },
-            (error: any) => {
+            error: (error: any) => {
                 console.error('Error associating email-link:' + JSON.stringify(error));
 
                 if (error.status === 400 && !_.isUndefined(error.data) && error.data.match(/already contains SSO/).length === 1) {
@@ -85,7 +85,7 @@ export class ConfirmMaintainerComponent implements OnInit {
                     );
                 }
             },
-        );
+        });
     }
 
     public cancelAssociate() {

@@ -256,19 +256,19 @@ export class MaintainersEditorComponent implements OnInit {
     }
 
     private initCreateMode() {
-        this.restService.fetchMntnersForSSOAccount().subscribe(
-            (results: IMntByModel[]) => {
+        this.restService.fetchMntnersForSSOAccount().subscribe({
+            next: (results: IMntByModel[]) => {
                 this.handleSsoResponse(results);
             },
-            () => {
+            error: () => {
                 this.handleSsoResponseError();
             },
-        );
+        });
     }
 
     private initModifyMode() {
-        this.restService.fetchMntnersForSSOAccount().subscribe(
-            (ssoResult: IMntByModel[]) => {
+        this.restService.fetchMntnersForSSOAccount().subscribe({
+            next: (ssoResult: IMntByModel[]) => {
                 this.restCallInProgress = false;
 
                 // store mntners for SSO account
@@ -314,7 +314,7 @@ export class MaintainersEditorComponent implements OnInit {
                 // * this is an organisation with an "org-type: LIR" attribute and attribute.name is
                 // address|fax|e-mail|phone
             },
-            (error: any) => {
+            error: (error: any) => {
                 this.restCallInProgress = false;
                 try {
                     const whoisResources = error.data;
@@ -324,7 +324,7 @@ export class MaintainersEditorComponent implements OnInit {
                     this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
                 }
             },
-        );
+        });
     }
 
     private extractEnrichMntnersFromObject(attributes: IAttributeModel[]): IMntByModel[] {

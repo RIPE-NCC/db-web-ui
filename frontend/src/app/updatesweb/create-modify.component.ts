@@ -549,11 +549,11 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             if (!this.name) {
                 this.restService
                     .createObject(this.source, this.objectType, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
-                    .subscribe(onSubmitSuccess, onSubmitError);
+                    .subscribe({ next: onSubmitSuccess, error: onSubmitError });
             } else {
                 this.restService
                     .modifyObject(this.source, this.objectType, this.name, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
-                    .subscribe(onSubmitSuccess, onSubmitError);
+                    .subscribe({ next: onSubmitSuccess, error: onSubmitError });
             }
         }
     }
@@ -606,8 +606,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
      */
     private fetchDataForCreate() {
         this.restCallInProgress = true;
-        this.restService.fetchMntnersForSSOAccount().subscribe(
-            (results: any) => {
+        this.restService.fetchMntnersForSSOAccount().subscribe({
+            next: (results: any) => {
                 let attributes;
                 this.restCallInProgress = false;
                 this.maintainers.sso = results;
@@ -632,12 +632,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
                 this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
             },
-            (error: any) => {
+            error: (error: any) => {
                 this.restCallInProgress = false;
                 console.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                 this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
             },
-        );
+        });
     }
 
     private loadAlerts(errorMessages: string[], warningMessages: string[], infoMessages: string[]) {
@@ -717,8 +717,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         }
         // wait until both have completed
         this.restCallInProgress = true;
-        this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe(
-            (objectToModifyResponse) => {
+        this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe({
+            next: (objectToModifyResponse) => {
                 this.restCallInProgress = false;
                 console.debug('[createModifyController] object to modify: ' + JSON.stringify(objectToModifyResponse));
 
@@ -748,7 +748,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 // * this is an inet(6)num and it has a "org" attribute which refers to an LIR
                 // * this is an organisation with an "org-type: LIR" attribute and attribute.name is address|fax|e-mail|phone
             },
-            (error: any) => {
+            error: (error: any) => {
                 this.restCallInProgress = false;
                 try {
                     const whoisResources = error.data;
@@ -759,7 +759,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
                 }
             },
-        );
+        });
     }
 
     private insertMissingMandatoryAttributes() {
@@ -808,8 +808,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     password = this.credentialsService.getCredentials().successfulPassword;
                 }
                 this.restCallInProgress = true;
-                this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe(
-                    (result: any) => {
+                this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe({
+                    next: (result: any) => {
                         this.restCallInProgress = false;
 
                         this.attributes = this.whoisResourcesService.getAttributes(result);
@@ -817,10 +817,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         // save object for later diff in display-screen
                         this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
                     },
-                    () => {
+                    error: () => {
                         this.restCallInProgress = false;
                     },
-                );
+                });
             }
         }
     }

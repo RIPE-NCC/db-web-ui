@@ -60,15 +60,15 @@ describe('AssociatedObjectsService', () => {
         });
 
         it('should fail calling API for associated domain objects of aut-num', () => {
-            associatedObjectsService.getAssociatedObjects('domain', 'AS44569', 'aut-num', 0, '').subscribe(
-                () => {
+            associatedObjectsService.getAssociatedObjects('domain', 'AS44569', 'aut-num', 0, '').subscribe({
+                next: () => {
                     // NOT to be called
                     expect(true).toBeFalse();
                 },
-                (error) => {
+                error: (error) => {
                     expect(error.status).toBe(400);
                 },
-            );
+            });
             const req = httpMock.expectOne({
                 method: 'GET',
                 url: 'api/whois-internal/api/resources/aut-num/AS44569/associated-domain-objects.json?filter=&page=0',

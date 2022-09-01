@@ -21,15 +21,15 @@ export class SyncupdatesComponent {
             return;
         }
         this.isUpdating = true;
-        this.syncupdatesService.update(this.rpslObject).subscribe(
-            (response: any) => {
+        this.syncupdatesService.update(this.rpslObject).subscribe({
+            next: (response: any) => {
                 this.updateResponse = response;
                 document.querySelector(`#anchorScroll`).scrollIntoView();
             },
-            (error: any) => {
+            error: (error: any) => {
                 this.errorMessages = error;
             },
-            () => (this.isUpdating = false),
-        );
+            complete: () => (this.isUpdating = false),
+        });
     }
 }

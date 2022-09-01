@@ -15,14 +15,14 @@ export class EmailConfirmationComponent implements OnInit {
 
     public ngOnInit() {
         this.token = this.activatedRoute.snapshot.queryParamMap.get('t');
-        this.emailConfirmationService.confirmEmail(this.token).subscribe(
-            () => {
+        this.emailConfirmationService.confirmEmail(this.token).subscribe({
+            next: () => {
                 this.loading = false;
                 this.validEmail = true;
             },
-            () => {
+            error: () => {
                 this.loading = false;
             },
-        );
+        });
     }
 }

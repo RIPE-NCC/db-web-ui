@@ -111,13 +111,13 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         }
         this.searchService
             .doSearch(this.ftquery.trim(), start, this.advancedSearch, this.advmode, this.selectedObjectTypes || [], this.selectedAttrs || [])
-            .subscribe(
-                (resp: ISearchResponseModel) => this.handleResponse(resp),
-                (err) => {
+            .subscribe({
+                next: (resp: ISearchResponseModel) => this.handleResponse(resp),
+                error: (err) => {
                     this.results = [];
                     console.error('performSearch error', err);
                 },
-            );
+            });
     }
 
     private handleResponse(resp: ISearchResponseModel) {

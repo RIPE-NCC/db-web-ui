@@ -83,15 +83,15 @@ export class ModalCreateRoleForAbuseCComponent {
         attributes = this.whoisResourcesService.wrapAndEnrichAttributes('role', this.whoisResourcesService.removeNullAttributes(attributes));
         const resp = this.restService
             .createObject(this.inputData.source, 'role', this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), this.inputData.passwords)
-            .subscribe(
-                (response: any) => {
+            .subscribe({
+                next: (response: any) => {
                     const whoisResources = response;
                     this.activeModal.close(this.whoisResourcesService.getAttributes(whoisResources));
                 },
-                (error: any) => {
+                error: (error: any) => {
                     return this.activeModal.dismiss(error);
                 },
-            );
+            });
     }
 
     public cancel() {

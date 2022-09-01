@@ -86,8 +86,8 @@ export class AssociatedObjectsComponent implements OnChanges {
 
         // for aut-num there is no associated domains, so no need to call service
         if ((this.objectType === 'inetnum' || 'inet6num' || 'aut-num') && !(this.associatedType === 'domain' && this.objectType === 'aut-num')) {
-            this.associatedObjectService.getAssociatedObjects(this.associatedType, this.objectName, this.objectType, pageNr, associatedPrefixFilter).subscribe(
-                (response: IAssociatedObjectApiResult) => {
+            this.associatedObjectService.getAssociatedObjects(this.associatedType, this.objectName, this.objectType, pageNr, associatedPrefixFilter).subscribe({
+                next: (response: IAssociatedObjectApiResult) => {
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
                     // response sizes and work out how they fit with this lot.
                     if (pageNr === 0) {
@@ -103,10 +103,10 @@ export class AssociatedObjectsComponent implements OnChanges {
                     this.calcScroller();
                     this.updateHeight();
                 },
-                () => {
+                error: () => {
                     this.calcScroller();
                 },
-            );
+            });
         }
     }
 

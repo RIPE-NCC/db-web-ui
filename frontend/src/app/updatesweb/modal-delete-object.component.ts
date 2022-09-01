@@ -62,15 +62,15 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
             password = this.credentialsService.getCredentials().successfulPassword;
         }
 
-        this.restService.deleteObject(this.inputData.source, this.inputData.objectType, this.inputData.name, this.reason, deleteWithRefs, password).subscribe(
-            (resp: any) => {
+        this.restService.deleteObject(this.inputData.source, this.inputData.objectType, this.inputData.name, this.reason, deleteWithRefs, password).subscribe({
+            next: (resp: any) => {
                 this.isDismissed = false;
                 this.activeModal.close(resp);
             },
-            (error: any) => {
+            error: (error: any) => {
                 this.activeModal.dismiss(error);
             },
-        );
+        });
     }
 
     public cancel() {

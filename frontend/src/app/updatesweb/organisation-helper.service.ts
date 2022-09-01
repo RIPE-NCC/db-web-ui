@@ -80,10 +80,10 @@ export class OrganisationHelperService {
                     this.whoisResourcesService.turnAttrsIntoWhoisObject(roleForAbuseC),
                     passwords,
                 )
-                .subscribe(
-                    () => {},
-                    () => {},
-                );
+                .subscribe({
+                    next: () => {},
+                    error: () => {},
+                });
         }
     }
 }

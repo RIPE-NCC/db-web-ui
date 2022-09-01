@@ -224,8 +224,8 @@ export class AttributeMetadataService {
         }
         const doCall = () => {
             // otherwise find the domains and put them in the cache
-            this.prefixService.findExistingDomainsForPrefix(attribute.value).subscribe(
-                (results: any) => {
+            this.prefixService.findExistingDomainsForPrefix(attribute.value).subscribe({
+                next: (results: any) => {
                     let domainsInTheWay = 0;
                     let hierarchyFlag: string;
                     _.forEach(results, (result: any) => {
@@ -241,14 +241,14 @@ export class AttributeMetadataService {
                     // let the evaluation engine know that we've got a new value
                     this.attributeSharedService.stateChanged(attribute);
                 },
-                () => {
+                error: () => {
                     const domainsInTheWay = 0;
                     this.existingDomains[attribute.value] = {
                         domainsInTheWay,
                         undefined,
                     };
                 },
-            );
+            });
         };
         if (this.existingDomainTo) {
             clearTimeout(this.existingDomainTo);
@@ -435,8 +435,8 @@ export class AttributeMetadataService {
             attribute.$$info = 'Checking name server...';
             attribute.$$error = '';
             // any reverse zone will do
-            this.prefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).subscribe(
-                (resp: any) => {
+            this.prefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).subscribe({
+                next: (resp: any) => {
                     if (!resp || !_.isNumber(resp.code)) {
                         this.cachedResponses[attribute.value] = { code: -1, message: 'No response during check' };
                         return;
@@ -450,7 +450,7 @@ export class AttributeMetadataService {
                     // put response in cache
                     this.attributeSharedService.stateChanged(attribute);
                 },
-                (err: any) => {
+                error: (err: any) => {
                     if (err.status === 404) {
                         this.cachedResponses[attribute.value] = { code: -1, message: 'FAILED' };
                         this.attributeSharedService.stateChanged(attribute);
@@ -465,7 +465,7 @@ export class AttributeMetadataService {
                         this.attributeSharedService.stateChanged(attribute);
                     }
                 },
-            );
+            });
         };
         if (this.timeout) {
             clearTimeout(this.timeout);

@@ -159,8 +159,8 @@ export class ResourcesComponent implements OnDestroy {
         this.loading = true;
         this.subscriptionFetchResources = this.resourcesDataService
             .fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
-            .subscribe(
-                (response: IResourceOverviewResponseModel) => {
+            .subscribe({
+                next: (response: IResourceOverviewResponseModel) => {
                     this.loading = false;
                     switch (this.lastTab) {
                         case 'inetnum':
@@ -176,7 +176,7 @@ export class ResourcesComponent implements OnDestroy {
                             console.error('Error. Cannot understand resources response');
                     }
                 },
-                (error: any) => {
+                error: (error: any) => {
                     // if it's not authentication error
                     if (error.status !== 401 && error.status !== 403) {
                         this.fail = true;
@@ -184,6 +184,6 @@ export class ResourcesComponent implements OnDestroy {
                         this.reason = 'There was problem reading resources please try again';
                     }
                 },
-            );
+            });
     }
 }

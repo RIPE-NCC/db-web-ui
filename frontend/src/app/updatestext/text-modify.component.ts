@@ -125,14 +125,14 @@ export class TextModifyComponent implements OnInit {
                             this.override,
                             true,
                         )
-                        .subscribe(
-                            (whoisResources: any) => {
+                        .subscribe({
+                            next: (whoisResources: any) => {
                                 this.restCallInProgress = false;
                                 const primaryKey = this.whoisResourcesService.getPrimaryKey(whoisResources);
                                 this.messageStoreService.add(primaryKey, whoisResources);
                                 this.navigateToDisplayPage(this.object.source, this.object.type, primaryKey, 'Modify');
                             },
-                            (errorWhoisResources: any) => {
+                            error: (errorWhoisResources: any) => {
                                 this.restCallInProgress = false;
 
                                 const whoisResources = errorWhoisResources.data;
@@ -142,7 +142,7 @@ export class TextModifyComponent implements OnInit {
                                     this.errorReporterService.log('TextModify', this.object.type, this.alertsServices.alerts.errors, attributes);
                                 }
                             },
-                        );
+                        });
                 },
                 () => {
                     console.error('Error authenticating');
@@ -177,8 +177,8 @@ export class TextModifyComponent implements OnInit {
         this.restCallInProgress = true;
         const mntners = this.restService.fetchMntnersForSSOAccount();
         const objectToModify = this.restService.fetchObject(this.object.source, this.object.type, this.object.name, this.passwords, true);
-        forkJoin([mntners, objectToModify]).subscribe(
-            (response) => {
+        forkJoin([mntners, objectToModify]).subscribe({
+            next: (response) => {
                 const mntnersResponse = response[0];
                 const objectToModifyResponse = response[1];
                 this.restCallInProgress = false;
@@ -198,7 +198,7 @@ export class TextModifyComponent implements OnInit {
                         },
                     );
             },
-            (error) => {
+            error: (error) => {
                 this.restCallInProgress = false;
                 if (error.data) {
                     this.alertsServices.setErrors(error.data);
@@ -206,7 +206,7 @@ export class TextModifyComponent implements OnInit {
                     this.alertsServices.setGlobalError('Error fetching maintainers associated with this SSO account');
                 }
             },
-        );
+        });
     }
 
     private handleFetchResponse(objectToModify: any) {
@@ -250,16 +250,16 @@ export class TextModifyComponent implements OnInit {
             }
 
             this.restCallInProgress = true;
-            this.restService.fetchObject(objectSource, objectType, objectName, password, true).subscribe(
-                (result: any) => {
+            this.restService.fetchObject(objectSource, objectType, objectName, password, true).subscribe({
+                next: (result: any) => {
                     this.restCallInProgress = false;
                     this.handleFetchResponse(result);
                 },
-                () => {
+                error: () => {
                     this.restCallInProgress = false;
                     // ignore
                 },
-            );
+            });
         }
     }
 }
