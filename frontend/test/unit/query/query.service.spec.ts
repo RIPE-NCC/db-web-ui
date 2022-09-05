@@ -232,14 +232,14 @@ describe('QueryService', () => {
     });
 
     it('should recognise organisation type and return organisation type', () => {
-        expect(queryService.getTypesAppropriateToQuery('ORG-BG244-TEST')).toEqual(['organisation', 'person', 'role']);
-        expect(queryService.getTypesAppropriateToQuery(' org-CCSH2-TEST ')).toEqual(['organisation', 'person', 'role']);
+        expect(queryService.getTypesAppropriateToQuery('ORG-BG244-TEST')).toEqual(['organisation']);
+        expect(queryService.getTypesAppropriateToQuery(' org-CCSH2-TEST ')).toEqual(['organisation']);
         expect(queryService.getTypesAppropriateToQuery('ORG-CCSH2-TEST something')).toEqual(Object.values(ObjectTypesEnum));
     });
 
     it('should recognise person/role type and return person and role types', () => {
-        expect(queryService.getTypesAppropriateToQuery('AK21593-TEST')).toEqual(['organisation', 'person', 'role']);
-        expect(queryService.getTypesAppropriateToQuery(' cro40296-test ')).toEqual(['organisation', 'person', 'role']);
+        expect(queryService.getTypesAppropriateToQuery('AK21593-TEST')).toEqual(['person', 'role']);
+        expect(queryService.getTypesAppropriateToQuery(' cro40296-test ')).toEqual(['person', 'role']);
         expect(queryService.getTypesAppropriateToQuery('CRO40296-TEST something')).toEqual(Object.values(ObjectTypesEnum));
     });
 
@@ -247,6 +247,38 @@ describe('QueryService', () => {
         expect(queryService.getTypesAppropriateToQuery('SHW-MNT')).toEqual(['mntner']);
         expect(queryService.getTypesAppropriateToQuery(' shw-mnt ')).toEqual(['mntner']);
         expect(queryService.getTypesAppropriateToQuery('shw-mnt something')).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it('should recognise aut-num and return aut-num type', () => {
+        expect(queryService.getTypesAppropriateToQuery('AS48693')).toEqual(['aut-num']);
+        expect(queryService.getTypesAppropriateToQuery(' AS48693 ')).toEqual(['aut-num']);
+        expect(queryService.getTypesAppropriateToQuery('194.38.21.0/24AS48693')).toEqual(['route']);
+        expect(queryService.getTypesAppropriateToQuery('AS-48693')).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it('should recognise key-cert and return key-cert type', () => {
+        expect(queryService.getTypesAppropriateToQuery('PGPKEY-5AB397A4')).toEqual(['key-cert']);
+        expect(queryService.getTypesAppropriateToQuery(' PGPKEY-5AB397A4 ')).toEqual(['key-cert']);
+        expect(queryService.getTypesAppropriateToQuery('PGPKEY5AB397A4')).toEqual(Object.values(ObjectTypesEnum));
+    });
+
+    it('should recognise email and return email type', () => {
+        expect(queryService.getTypeOfSearchedTerm('isvonja@ripe.net')).toEqual(['EMAIL']);
+        // enable all Object Types
+        expect(queryService.getTypesAppropriateToQuery('isvonja@ripe.net')).toEqual(Object.values(ObjectTypesEnum));
+        expect(queryService.getTypeOfSearchedTerm(' isvonja@ripe.net ')).toEqual(['EMAIL']);
+        // enable all Object Types
+        expect(queryService.getTypesAppropriateToQuery('isvonja@ripe')).toEqual(Object.values(ObjectTypesEnum));
+        expect(queryService.getTypeOfSearchedTerm('isvonja@ripe')).toEqual([]);
+    });
+
+    it('should recognise nserver and return nserver type', () => {
+        expect(queryService.getTypeOfSearchedTerm('ns1.test.nl')).toEqual(['NSERVER']);
+        // enable all Object Types
+        expect(queryService.getTypesAppropriateToQuery(' ns1.test.nl ')).toEqual(Object.values(ObjectTypesEnum));
+        expect(queryService.getTypeOfSearchedTerm(' ns1.test.nl ')).toEqual(['NSERVER']);
+        expect(queryService.getTypesAppropriateToQuery('ns1.test')).toEqual(Object.values(ObjectTypesEnum));
+        expect(queryService.getTypeOfSearchedTerm('ns1.test')).toEqual([]);
     });
 
     const mockResponse = {

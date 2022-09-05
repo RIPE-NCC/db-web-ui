@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ObjectTypesEnum } from './object-types.enum';
-import { IQueryParameters } from './query-parameters.service';
+import { IQueryParameters, QueryParametersService } from './query-parameters.service';
 
 @Component({
     selector: 'types-panel',
@@ -16,6 +16,19 @@ export class TypesPanelComponent {
     readonly ObjectTypesEnum = ObjectTypesEnum;
 
     isDisabled(type: ObjectTypesEnum) {
-        return !this.availableTypes.includes(type);
+        // enable all types if inverse lookup is first choice
+        if (QueryParametersService.inverseAsList(this.queryParameters).length > 0) {
+            return false;
+        }
+        let disabled = !this.availableTypes.includes(type);
+        if (disabled) {
+            this.uncheckDisabledCheckbox(type);
+        }
+        return disabled;
+    }
+
+    private uncheckDisabledCheckbox(attribute: ObjectTypesEnum) {
+        let enumKey = Object.keys(ObjectTypesEnum)[Object.values(ObjectTypesEnum).indexOf(attribute)];
+        this.queryParameters.types[enumKey] = false;
     }
 }

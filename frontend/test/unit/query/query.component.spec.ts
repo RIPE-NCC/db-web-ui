@@ -164,6 +164,7 @@ describe('QueryComponent', () => {
             'buildQueryStringForLink',
             'buildPermalink',
             'getTypesAppropriateToQuery',
+            'getTypeOfSearchedTerm',
         ]);
         TestBed.configureTestingModule({
             imports: [SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([]), MatMenuModule],

@@ -35,7 +35,17 @@ const hierarchyFlagMap = {
 
 @Injectable()
 export class QueryParametersService {
+    public inverseLookupIsFirstChoice: boolean;
+
     constructor(private metaService: WhoisMetaService) {}
+
+    public isInverseLookupFirstChoice(queryParams: IQueryParameters) {
+        if (QueryParametersService.inverseAsList(queryParams).length > 0 && QueryParametersService.typesAsList(queryParams).length === 0) {
+            this.inverseLookupIsFirstChoice = true;
+        } else if (QueryParametersService.inverseAsList(queryParams).length === 0) {
+            this.inverseLookupIsFirstChoice = false;
+        }
+    }
 
     public validate(queryParams: IQueryParameters): { errors: string[]; warnings: string[] } {
         if (!queryParams.queryText.trim()) {
