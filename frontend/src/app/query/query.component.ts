@@ -58,6 +58,8 @@ export class QueryComponent implements OnDestroy {
     public colorControl = new FormControl('primary');
     // Types in dropdown
     public availableTypes: string[] = [];
+    // Search recognizing email and nserver, and filter inverse lookup according to typeOfSearchedTerm
+    public typeOfSearchedTerm: string[] = [];
 
     constructor(
         public properties: PropertiesService,
@@ -295,6 +297,7 @@ export class QueryComponent implements OnDestroy {
     public filterCheckboxes() {
         // disable checkboxes according to type of query term
         this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
+        this.typeOfSearchedTerm = this.queryService.getTypeOfSearchedTerm(this.qp.queryText);
         this.uncheckAllCheckboxes();
     }
 
@@ -334,6 +337,7 @@ export class QueryComponent implements OnDestroy {
         this.showFilters = true;
         this.showPermaLinks = false; // by default don't open share button with perma, xml and json links
         this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
+        this.typeOfSearchedTerm = this.queryService.getTypeOfSearchedTerm(this.qp.queryText);
     }
 
     private handleWhoisSearchError(response: IWhoisResponseModel) {

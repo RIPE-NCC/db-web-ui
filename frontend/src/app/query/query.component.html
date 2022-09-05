@@ -53,7 +53,11 @@
                         <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
                     </button>
                     <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
-                        <inverse-lookup-panel [(queryParameters)]="qp" [availableTypes]="availableTypes"></inverse-lookup-panel>
+                        <inverse-lookup-panel
+                            [(queryParameters)]="qp"
+                            [availableTypes]="availableTypes"
+                            [typeOfSearchedTerm]="typeOfSearchedTerm"
+                        ></inverse-lookup-panel>
                     </mat-menu>
                     <button mat-button type="button" id="advanceFilterMenu" [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">
                         Advanced filter {{ printNumberSelected(this.numberSelectedAdvanceFilterItems) }}

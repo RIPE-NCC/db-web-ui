@@ -309,22 +309,18 @@ describe('Query scenario', () => {
             .expectAdvancedFilterMenuTitleToBe('Advanced filter')
             .clickOnAdvancedFilterDropdown()
             .clickCheckboxShowFullDetails();
-        queryPage
-            .expectAdvancedFilterMenuTitleToBe('Advanced filter (1)')
-            .expectTypesMenuTitleToBe('Types')
-            .clickOnTypesFilterDropdown()
-            .clickCheckbox('organisation');
+        queryPage.expectAdvancedFilterMenuTitleToBe('Advanced filter (1)').expectTypesMenuTitleToBe('Types').clickOnTypesFilterDropdown().clickCheckbox('role');
         queryPage
             .expectTypesMenuTitleToBe('Types (1)')
             .expectInverseLookupMenuTitleToBe('Inverse lookup')
             .clickOnInverseLookupFilterDropdown()
-            .clickCheckbox('abuse-c');
+            .clickCheckbox('admin-c');
         queryPage
             .expectInverseLookupMenuTitleToBe('Inverse lookup (1)')
             .clickOnSearchButton()
             .expectNumberOfResults(1)
             .expectWhoisObjectViewerComponentPresentInResults()
-            .expectResultToContainText(0, 'Metropolitan Networks UK Ltd')
+            .expectResultToContainText(0, 'METRO-ROLE')
             .expectQueryFlagsContainerVisible(false);
     });
 
@@ -416,7 +412,7 @@ describe('Query scenario', () => {
             .expectCheckboxToBeDisabled('zone-c', false);
     });
 
-    it('should have enabled just person/role, role and organisation checkbox in Types dropdown when type is person', () => {
+    it('should have enabled just person/role checkbox in Types dropdown when type is person', () => {
         queryPage
             .typeSearchTerm('AR24917-RIPE')
             .clickOnSearchButton()
@@ -434,7 +430,7 @@ describe('Query scenario', () => {
             .expectCheckboxToBeDisabled('irt', true)
             .expectCheckboxToBeDisabled('key-cert', true)
             .expectCheckboxToBeDisabled('mntner', true)
-            .expectCheckboxToBeDisabled('organisation', false)
+            .expectCheckboxToBeDisabled('organisation', true)
             .expectCheckboxToBeDisabled('peering-set', true)
             .expectCheckboxToBeDisabled('person', false)
             .expectCheckboxToBeDisabled('poem', true)
@@ -447,33 +443,33 @@ describe('Query scenario', () => {
         queryPage
             .clickOnInverseLookupFilterDropdown()
             .expectCheckboxToBeDisabled('abuse-c', false)
-            .expectCheckboxToBeDisabled('abuse-mailbox', false)
+            .expectCheckboxToBeDisabled('abuse-mailbox', true)
             .expectCheckboxToBeDisabled('admin-c', false)
             .expectCheckboxToBeDisabled('auth', true)
-            .expectCheckboxToBeDisabled('author', true)
+            .expectCheckboxToBeDisabled('author', false)
             .expectCheckboxToBeDisabled('fingerpr', true)
             .expectCheckboxToBeDisabled('form', true)
             .expectCheckboxToBeDisabled('irt-nfy', true)
             .expectCheckboxToBeDisabled('local-as', true)
             .expectCheckboxToBeDisabled('mbrs-by-ref', true)
             .expectCheckboxToBeDisabled('member-of', true)
-            .expectCheckboxToBeDisabled('mnt-by', false)
+            .expectCheckboxToBeDisabled('mnt-by', true)
             .expectCheckboxToBeDisabled('mnt-domains', true)
             .expectCheckboxToBeDisabled('mnt-irt', true)
             .expectCheckboxToBeDisabled('mnt-lower', true)
             .expectCheckboxToBeDisabled('mnt-nfy', true)
-            .expectCheckboxToBeDisabled('mnt-ref', false)
+            .expectCheckboxToBeDisabled('mnt-ref', true)
             .expectCheckboxToBeDisabled('mnt-routes', true)
-            .expectCheckboxToBeDisabled('notify', false)
+            .expectCheckboxToBeDisabled('notify', true)
             .expectCheckboxToBeDisabled('nserver', true)
-            .expectCheckboxToBeDisabled('org', false)
+            .expectCheckboxToBeDisabled('org', true)
             .expectCheckboxToBeDisabled('origin', true)
             .expectCheckboxToBeDisabled('person', false)
-            .expectCheckboxToBeDisabled('ping-hdl', true)
-            .expectCheckboxToBeDisabled('ref-nfy', false)
+            .expectCheckboxToBeDisabled('ping-hdl', false)
+            .expectCheckboxToBeDisabled('ref-nfy', true)
             .expectCheckboxToBeDisabled('tech-c', false)
             .expectCheckboxToBeDisabled('upd-to', true)
-            .expectCheckboxToBeDisabled('zone-c', true);
+            .expectCheckboxToBeDisabled('zone-c', false);
     });
 
     it('should have enabled just inetnum, route and domain checkbox in Types dropdown when type is inetnum', () => {
@@ -507,9 +503,9 @@ describe('Query scenario', () => {
         queryPage.clickOnTypesFilterDropdown(); // close
         queryPage
             .clickOnInverseLookupFilterDropdown()
-            .expectCheckboxToBeDisabled('abuse-c', false)
+            .expectCheckboxToBeDisabled('abuse-c', true)
             .expectCheckboxToBeDisabled('abuse-mailbox', true)
-            .expectCheckboxToBeDisabled('admin-c', false)
+            .expectCheckboxToBeDisabled('admin-c', true)
             .expectCheckboxToBeDisabled('auth', true)
             .expectCheckboxToBeDisabled('author', true)
             .expectCheckboxToBeDisabled('fingerpr', true)
@@ -517,24 +513,24 @@ describe('Query scenario', () => {
             .expectCheckboxToBeDisabled('irt-nfy', true)
             .expectCheckboxToBeDisabled('local-as', true)
             .expectCheckboxToBeDisabled('mbrs-by-ref', true)
-            .expectCheckboxToBeDisabled('member-of', false)
-            .expectCheckboxToBeDisabled('mnt-by', false)
-            .expectCheckboxToBeDisabled('mnt-domains', false)
-            .expectCheckboxToBeDisabled('mnt-irt', false)
-            .expectCheckboxToBeDisabled('mnt-lower', false)
+            .expectCheckboxToBeDisabled('member-of', true)
+            .expectCheckboxToBeDisabled('mnt-by', true)
+            .expectCheckboxToBeDisabled('mnt-domains', true)
+            .expectCheckboxToBeDisabled('mnt-irt', true)
+            .expectCheckboxToBeDisabled('mnt-lower', true)
             .expectCheckboxToBeDisabled('mnt-nfy', true)
             .expectCheckboxToBeDisabled('mnt-ref', true)
-            .expectCheckboxToBeDisabled('mnt-routes', false)
-            .expectCheckboxToBeDisabled('notify', false)
-            .expectCheckboxToBeDisabled('nserver', false)
-            .expectCheckboxToBeDisabled('org', false)
-            .expectCheckboxToBeDisabled('origin', false)
+            .expectCheckboxToBeDisabled('mnt-routes', true)
+            .expectCheckboxToBeDisabled('notify', true)
+            .expectCheckboxToBeDisabled('nserver', true)
+            .expectCheckboxToBeDisabled('org', true)
+            .expectCheckboxToBeDisabled('origin', true)
             .expectCheckboxToBeDisabled('person', true)
-            .expectCheckboxToBeDisabled('ping-hdl', false)
+            .expectCheckboxToBeDisabled('ping-hdl', true)
             .expectCheckboxToBeDisabled('ref-nfy', true)
-            .expectCheckboxToBeDisabled('tech-c', false)
+            .expectCheckboxToBeDisabled('tech-c', true)
             .expectCheckboxToBeDisabled('upd-to', true)
-            .expectCheckboxToBeDisabled('zone-c', false);
+            .expectCheckboxToBeDisabled('zone-c', true);
         queryPage.clickOnInverseLookupFilterDropdown(); // close
     });
 
@@ -571,6 +567,61 @@ describe('Query scenario', () => {
 
     it('should not duplicate results on click on apply filter', () => {
         queryPage.typeSearchTerm('223.0.0.0').clickOnSearchButton().expectNumberOfResults(1).clickOnApplyFilters().expectNumberOfResults(1);
+    });
+
+    // search DFR-MNT by inverse lookup mnt-by and to be able to choose just route objects from Types
+    it('should enable all Types in case Inverse lookup is first choice', () => {
+        queryPage
+            .typeSearchTerm('DFR-MNT')
+            .clickOnSearchButton()
+            .clickOnTypesFilterDropdown()
+            .expectCheckboxToBeDisabled('as-block', true)
+            .expectCheckboxToBeDisabled('as-set', true)
+            .expectCheckboxToBeDisabled('aut-num', true)
+            .expectCheckboxToBeDisabled('domain', true)
+            .expectCheckboxToBeDisabled('filter-set', true)
+            .expectCheckboxToBeDisabled('inet6num', true)
+            .expectCheckboxToBeDisabled('inetnum', true)
+            .expectCheckboxToBeDisabled('inet-rtr', true)
+            .expectCheckboxToBeDisabled('irt', true)
+            .expectCheckboxToBeDisabled('key-cert', true)
+            .expectCheckboxToBeDisabled('mntner', false)
+            .expectCheckboxToBeDisabled('organisation', true)
+            .expectCheckboxToBeDisabled('peering-set', true)
+            .expectCheckboxToBeDisabled('person', true)
+            .expectCheckboxToBeDisabled('poem', true)
+            .expectCheckboxToBeDisabled('poetic-form', true)
+            .expectCheckboxToBeDisabled('role', true)
+            .expectCheckboxToBeDisabled('route', true)
+            .expectCheckboxToBeDisabled('route6', true)
+            .expectCheckboxToBeDisabled('route-set', true)
+            .expectCheckboxToBeDisabled('rtr-set', true);
+        queryPage.clickOnTypesFilterDropdown();
+        queryPage.clickOnInverseLookupFilterDropdown().clickCheckbox('mnt-by');
+        queryPage.clickOnInverseLookupFilterDropdown();
+        queryPage
+            .clickOnTypesFilterDropdown()
+            .expectCheckboxToBeDisabled('as-block', false)
+            .expectCheckboxToBeDisabled('as-set', false)
+            .expectCheckboxToBeDisabled('aut-num', false)
+            .expectCheckboxToBeDisabled('domain', false)
+            .expectCheckboxToBeDisabled('filter-set', false)
+            .expectCheckboxToBeDisabled('inet6num', false)
+            .expectCheckboxToBeDisabled('inetnum', false)
+            .expectCheckboxToBeDisabled('inet-rtr', false)
+            .expectCheckboxToBeDisabled('irt', false)
+            .expectCheckboxToBeDisabled('key-cert', false)
+            .expectCheckboxToBeDisabled('mntner', false)
+            .expectCheckboxToBeDisabled('organisation', false)
+            .expectCheckboxToBeDisabled('peering-set', false)
+            .expectCheckboxToBeDisabled('person', false)
+            .expectCheckboxToBeDisabled('poem', false)
+            .expectCheckboxToBeDisabled('poetic-form', false)
+            .expectCheckboxToBeDisabled('role', false)
+            .expectCheckboxToBeDisabled('route', false)
+            .expectCheckboxToBeDisabled('route6', false)
+            .expectCheckboxToBeDisabled('route-set', false)
+            .expectCheckboxToBeDisabled('rtr-set', false);
     });
 
     // TEMPLATE QUERY -t or --template

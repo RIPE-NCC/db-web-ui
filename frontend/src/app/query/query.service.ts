@@ -9,6 +9,7 @@ import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
 import { ObjectTypesEnum } from './object-types.enum';
 import { IQueryParameters } from './query-parameters.service';
+import { TypeOfSearchTermEnum } from './type-of-search-term.enum';
 
 const EMPTY_MODEL: IWhoisResponseModel = {
     errormessages: { errormessage: [] },
@@ -191,6 +192,7 @@ export class QueryService {
     public getTypesAppropriateToQuery(searchText: string): string[] {
         let types: string[] = [];
         const searchTerm = searchText.trim();
+        const autNumRegexp = new RegExp('^AS\\d+');
         const route = searchTerm.split('AS');
         if (IpAddressService.isValidIpv4(searchTerm)) {
             types.push(ObjectTypesEnum.INETNUM);
@@ -200,7 +202,9 @@ export class QueryService {
             types.push(ObjectTypesEnum.INET6NUM);
             types.push(ObjectTypesEnum.DOMAIN);
             types.push(ObjectTypesEnum.ROUTE6);
-        } else if (searchTerm.endsWith('.in-addr.arpa') || searchTerm.endsWith('.ip6.arpa')) {
+        } else if (autNumRegexp.test(searchTerm.toUpperCase())) {
+            types.push(ObjectTypesEnum.AUT_NUM);
+        } else if (searchTerm.endsWith('.in-addr.arpa') || searchTerm.endsWith('.ip6.arpa') || searchTerm.endsWith('.e164.arpa')) {
             types.push(ObjectTypesEnum.DOMAIN);
         } else if (IpAddressService.isValidIpv4(route[0]) && /^\d+$/.test(route[1])) {
             types.push(ObjectTypesEnum.ROUTE);
@@ -208,20 +212,33 @@ export class QueryService {
             types.push(ObjectTypesEnum.ROUTE6);
         } else if (searchTerm.toUpperCase().startsWith('ORG-') && searchTerm.toUpperCase().endsWith(`-${this.propertiesService.SOURCE}`)) {
             types.push(ObjectTypesEnum.ORGANISATION);
-            types.push(ObjectTypesEnum.PERSON);
-            types.push(ObjectTypesEnum.ROLE);
         } else if (searchTerm.toUpperCase().endsWith(`-${this.propertiesService.SOURCE}`)) {
-            types.push(ObjectTypesEnum.ORGANISATION);
             types.push(ObjectTypesEnum.PERSON);
             types.push(ObjectTypesEnum.ROLE);
         } else if (searchTerm.toUpperCase().endsWith('-MNT')) {
             types.push(ObjectTypesEnum.MNTNER);
+        } else if (searchTerm.toUpperCase().startsWith('PGPKEY-')) {
+            types.push(ObjectTypesEnum.KEY_CERT);
         }
         if (types.length === 0) {
             // enable all types in Types dropdown
             types = Object.values(ObjectTypesEnum);
         }
         return types;
+    }
+
+    public getTypeOfSearchedTerm(searchText: string): string[] {
+        let typesOfSearchedTerm: string[] = [];
+        const searchTerm = searchText.trim();
+        const emailRegexp = new RegExp('.+\\@.+\\..+');
+        const nserverRegexp = new RegExp('^(([A-Za-z][\\w\\-]*)\\.){2,4}(\\w+)$');
+
+        if (emailRegexp.test(searchTerm)) {
+            typesOfSearchedTerm.push(TypeOfSearchTermEnum.EMAIL);
+        } else if (nserverRegexp.test(searchTerm)) {
+            typesOfSearchedTerm.push(TypeOfSearchTermEnum.NSERVER);
+        }
+        return typesOfSearchedTerm;
     }
 
     private convertMapOfBoolsToList(boolMap: { [key: string]: boolean }): string[] {
