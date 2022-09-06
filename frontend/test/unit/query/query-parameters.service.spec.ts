@@ -1,5 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs/internal/observable/of';
+import { IQueryFlag, QueryFlagsService } from '../../../src/app/query/query-flags.service';
 import { IQueryParameters, QueryParametersService } from '../../../src/app/query/query-parameters.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 
@@ -7,11 +9,18 @@ describe('QueryParameters', () => {
     let queryParametersService: QueryParametersService;
     let httpMock: HttpTestingController;
     let qp: IQueryParameters;
+    let queryFlagsServiceSpy: jasmine.SpyObj<QueryFlagsService>;
 
     beforeEach(() => {
+        queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlags']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [QueryParametersService, WhoisMetaService, { provide: '$log', useValue: { info: () => {} } }],
+            providers: [
+                QueryParametersService,
+                WhoisMetaService,
+                { provide: '$log', useValue: { info: () => {} } },
+                { provide: QueryFlagsService, useValue: queryFlagsServiceSpy },
+            ],
         });
         qp = {
             queryText: '',
@@ -25,6 +34,7 @@ describe('QueryParameters', () => {
         };
         httpMock = TestBed.inject(HttpTestingController);
         queryParametersService = TestBed.inject(QueryParametersService);
+        queryFlagsServiceSpy.getFlags.and.returnValue(of([]));
     });
 
     afterEach(() => {
@@ -40,7 +50,7 @@ describe('QueryParameters', () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(1);
-        expect(validationIssues.errors[0]).toContain('Invalid option: --no-such-flag');
+        expect(validationIssues.errors[0]).toContain('ERROR:111: invalid option --no-such-flag supplied.');
 
         expect(qp.queryText).toEqual('etchells-mnt');
         expect(qp.showFullObjectDetails).toEqual(false);
@@ -108,7 +118,7 @@ describe('QueryParameters', () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(2);
-        expect(validationIssues.errors[0]).toContain('ERROR:111: invalid option supplied. Use help query to see the valid options.');
+        expect(validationIssues.errors[0]).toContain('ERROR:111: invalid option -f supplied.');
         expect(validationIssues.errors[1]).toEqual('No search term provided');
 
         expect(validationIssues.warnings.length).toEqual(0);
@@ -188,8 +198,18 @@ describe('QueryParameters', () => {
         expect(qp.inverse).toEqual({ ABUSE_C: true });
     });
 
-    it('should handle type spcified with Tflag', () => {
+    it('should handle type specified with Tflag', () => {
         qp.queryText = '-Tmntner,organisation shryane-mnt';
+
+        queryFlagsServiceSpy.getFlags.and.returnValue(
+            of([
+                {
+                    description: 'Select the types of objects to lookup in the query.',
+                    longFlag: '--select-types',
+                    shortFlag: '-T',
+                },
+            ]),
+        );
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(0);
@@ -359,5 +379,42 @@ describe('QueryParameters', () => {
         let validationIssuesAllSources = queryParametersService.validate(qp);
         expect(validationIssuesAllSources.errors.length).toEqual(0);
         expect(validationIssuesAllSources.warnings.length).toEqual(0);
+    });
+
+    it('should recognise unsupported flag', () => {
+        const response_b: IQueryFlag[] = [
+            {
+                longFlag: '--abuse-contact',
+                shortFlag: '-b',
+                description:
+                    'Requests the "abuse-mailbox:" address related to the specified inetnum or inet6num object. Only specified object key and "abuse-mailbox:" attributes are shown.',
+            },
+        ];
+        const response_G: IQueryFlag[] = [
+            {
+                longFlag: '--no-grouping',
+                shortFlag: '-G',
+                description: 'Disables the grouping of objects by relevance.',
+            },
+        ];
+        qp.queryText = '-b --no-grouping AS174';
+        queryFlagsServiceSpy.getFlags.and.returnValues(of(response_b), of(response_G));
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(queryFlagsServiceSpy.getFlags).toHaveBeenCalledTimes(2);
+        expect(validationIssues.errors.length).toEqual(2);
+        expect(validationIssues.errors[0]).toEqual('ERROR:111: unsupported flag -b.');
+        expect(validationIssues.errors[1]).toEqual('ERROR:111: unsupported flag --no-grouping.');
+        expect(validationIssues.warnings.length).toEqual(0);
+    });
+
+    it('should recognise invalid flag', () => {
+        qp.queryText = '-za AS174';
+        queryFlagsServiceSpy.getFlags.and.returnValue(of([]));
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(1);
+        expect(validationIssues.errors[0]).toEqual('ERROR:111: invalid option -z supplied.');
+        expect(validationIssues.warnings.length).toEqual(0);
     });
 });

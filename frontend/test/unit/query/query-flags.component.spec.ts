@@ -12,7 +12,7 @@ describe('QueryFlagsComponent', () => {
     let queryFlagsServiceSpy: jasmine.SpyObj<QueryFlagsService>;
 
     beforeEach(() => {
-        queryFlagsServiceSpy = jasmine.createSpyObj('QueryService', ['getFlags']);
+        queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlags']);
         TestBed.configureTestingModule({
             imports: [SharedModule, CoreModule, HttpClientTestingModule],
             declarations: [QueryFlagsComponent],

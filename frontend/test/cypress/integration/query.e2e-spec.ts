@@ -714,7 +714,7 @@ describe('Query scenario', () => {
             .expectQueryFlagToContain(0, '-s')
             .expectQueryFlagToContain(1, '--sources')
             .clickOnSearchButton()
-            .expectErrorMessageToContain('ERROR:111: invalid option supplied. Use help query to see the valid options.');
+            .expectErrorMessageToContain('ERROR:111: invalid option -z supplied.');
     });
 
     it('should sanitize XSS', () => {

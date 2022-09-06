@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
+import { QueryFlagsService } from './query-flags.service';
 import { IQueryState } from './query.component';
 
 export interface ITemplateTerm {
@@ -37,7 +38,7 @@ const hierarchyFlagMap = {
 export class QueryParametersService {
     public inverseLookupIsFirstChoice: boolean;
 
-    constructor(private metaService: WhoisMetaService) {}
+    constructor(private metaService: WhoisMetaService, private queryFlagsService: QueryFlagsService) {}
 
     public isInverseLookupFirstChoice(queryParams: IQueryParameters) {
         if (QueryParametersService.inverseAsList(queryParams).length > 0 && QueryParametersService.typesAsList(queryParams).length === 0) {
@@ -133,13 +134,20 @@ export class QueryParametersService {
         let typeOptionPos = -1;
         let sourcesPos = -1;
         let addedInvalidOptionWarning = false; // Only shown once
+        let supportedFlag = false; // Only shown once
         let addedHierarchyWarning = false; // Only shown once
+        const isSupportedFlag = (flag: string) => {
+            this.queryFlagsService.getFlags([flag]).subscribe((queryFlags) => {
+                supportedFlag = queryFlags.length > 0;
+            });
+        };
         const terms: string[] = queryParams.queryText
             .split(/ +/)
             .map((item: string) => item.trim())
             .filter((item: string) => item.length)
             .map((item: string, idx: number): string => {
                 if (item.indexOf('--') === 0) {
+                    isSupportedFlag(item);
                     // parse long option
                     const short = HierarchyFlagsService.longHierarchyFlagToShort(item.substr(2));
                     if (short) {
@@ -151,10 +159,8 @@ export class QueryParametersService {
                                 errors.push(`ERROR:901: duplicate IP flags passed. More than one IP flag (-l, -L, -m, -M or -x) passed to the server.`);
                             }
                         }
-                    } else if (item === '--resource') {
+                    } else if (item === '--resource' || item === '--all-sources') {
                         queryParams.source = 'GRS';
-                    } else if (item === '--all-sources') {
-                        queryParams.source = 'RIPE,RIPE-NONAUTH,APNIC-GRS,ARIN-GRS,LACNIC-GRS,AFRINIC-GRS';
                     } else if (item === '--sources') {
                         sourcesPos = idx + 1;
                     } else if (item === '--no-referenced') {
@@ -170,13 +176,16 @@ export class QueryParametersService {
                             errors.push('Error parsing object type');
                         }
                         typeOptionPos = idx + 1;
-                    } else if (!addedInvalidOptionWarning) {
+                    } else if (supportedFlag) {
+                        errors.push(`ERROR:111: unsupported flag ${item}.`);
+                    } else if (!addedInvalidOptionWarning && !supportedFlag) {
                         addedInvalidOptionWarning = true;
-                        errors.push(`Invalid option: ${item}. ERROR:111: invalid option supplied. Use help query to see the valid options.`);
+                        errors.push(`ERROR:111: invalid option ${item} supplied.`);
                     }
                 } else if (item.indexOf('-') === 0 && item.length > 1) {
                     const opts = item.substring(1);
                     for (let i = 0; i < opts.length; i++) {
+                        isSupportedFlag(`-${opts[i]}`);
                         // parse short options
                         if (hierarchyFlagMap[opts[i]]) {
                             if (!queryParams.hierarchy) {
@@ -206,10 +215,12 @@ export class QueryParametersService {
                         } else if (opts[i] === 's') {
                             sourcesPos = idx + 1;
                         } else if (opts[i] === 'a') {
-                            queryParams.source = 'RIPE,RIPE-NONAUTH,APNIC-GRS,ARIN-GRS,LACNIC-GRS,AFRINIC-GRS';
-                        } else if (!addedInvalidOptionWarning) {
+                            queryParams.source = 'GRS';
+                        } else if (supportedFlag) {
+                            errors.push(`ERROR:111: unsupported flag -${opts[i]}.`);
+                        } else if (!addedInvalidOptionWarning && !supportedFlag) {
                             addedInvalidOptionWarning = true;
-                            errors.push(`ERROR:111: invalid option supplied. Use help query to see the valid options.`);
+                            errors.push(`ERROR:111: invalid option -${opts[i]} supplied.`);
                         }
                     }
                 } else {
