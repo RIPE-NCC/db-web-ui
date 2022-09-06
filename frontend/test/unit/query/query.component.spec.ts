@@ -11,6 +11,7 @@ import { CoreModule } from '../../../src/app/core/core.module';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { LookupComponent } from '../../../src/app/query/lookup.component';
 import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
+import { QueryFlagsService } from '../../../src/app/query/query-flags.service';
 import { QueryParametersService } from '../../../src/app/query/query-parameters.service';
 import { QueryComponent } from '../../../src/app/query/query.component';
 import { QueryService } from '../../../src/app/query/query.service';
@@ -173,6 +174,7 @@ describe('QueryComponent', () => {
                 { provide: QueryService, useValue: queryServiceSpy },
                 WhoisMetaService,
                 QueryParametersService,
+                QueryFlagsService,
                 PropertiesService,
                 CookieService,
                 {
