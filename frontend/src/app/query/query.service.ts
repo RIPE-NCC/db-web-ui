@@ -204,6 +204,8 @@ export class QueryService {
             types.push(ObjectTypesEnum.ROUTE6);
         } else if (autNumRegexp.test(searchTerm.toUpperCase())) {
             types.push(ObjectTypesEnum.AUT_NUM);
+            types.push(ObjectTypesEnum.AS_BLOCK);
+            types.push(ObjectTypesEnum.AS_SET);
         } else if (searchTerm.endsWith('.in-addr.arpa') || searchTerm.endsWith('.ip6.arpa') || searchTerm.endsWith('.e164.arpa')) {
             types.push(ObjectTypesEnum.DOMAIN);
         } else if (IpAddressService.isValidIpv4(route[0]) && /^\d+$/.test(route[1])) {

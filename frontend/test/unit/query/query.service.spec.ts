@@ -250,8 +250,8 @@ describe('QueryService', () => {
     });
 
     it('should recognise aut-num and return aut-num type', () => {
-        expect(queryService.getTypesAppropriateToQuery('AS48693')).toEqual(['aut-num']);
-        expect(queryService.getTypesAppropriateToQuery(' AS48693 ')).toEqual(['aut-num']);
+        expect(queryService.getTypesAppropriateToQuery('AS48693')).toEqual(['aut-num', 'as-block', 'as-set']);
+        expect(queryService.getTypesAppropriateToQuery(' AS48693 ')).toEqual(['aut-num', 'as-block', 'as-set']);
         expect(queryService.getTypesAppropriateToQuery('194.38.21.0/24AS48693')).toEqual(['route']);
         expect(queryService.getTypesAppropriateToQuery('AS-48693')).toEqual(Object.values(ObjectTypesEnum));
     });
