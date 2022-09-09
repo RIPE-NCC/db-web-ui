@@ -236,6 +236,11 @@ export class QueryPage {
         cy.get('.app-banner.level-alarm .banner-text', { includeShadowDom: true }).find('img').should('not.exist');
         return this;
     }
+
+    expectToHaveAutofillOnSearchTermField() {
+        cy.get('form input[name="qp.queryText"][autocomplete="on"]').should('exist');
+        return this;
+    }
 }
 
 class TypesFilter {

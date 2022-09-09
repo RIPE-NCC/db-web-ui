@@ -9,6 +9,10 @@ $padding: 24px;
     }
     mat-form-field {
         width: 100% !important;
+        input:-webkit-autofill,
+        input:-webkit-autofill:focus {
+            transition: background-color 600000s 0s, color 600000s 0s;
+        }
     }
 
     .mat-form-field-appearance-fill .mat-form-field-flex {

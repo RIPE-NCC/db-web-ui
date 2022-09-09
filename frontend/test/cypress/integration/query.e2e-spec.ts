@@ -722,4 +722,8 @@ describe('Query scenario', () => {
             .visitQueryPageXSS('?bflag=true&dflag=false&rflag=true&searchtext=zz&source=GRS%3Cimg%20src%20onerror%3Dalert(document.domain)%3E')
             .expectNoXSSAlert();
     });
+
+    it('should show autofill', () => {
+        queryPage.expectToHaveAutofillOnSearchTermField();
+    });
 });
