@@ -35,7 +35,7 @@ public class WhoisProxyController extends ApiController {
             final HttpServletRequest request,
             final HttpServletResponse response,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) throws Exception {
+            @RequestHeader final HttpHeaders headers) {
 
         removeUnnecessaryHeaders(headers);
 
