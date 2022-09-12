@@ -78,7 +78,7 @@ export class MenuComponent implements OnInit, OnDestroy {
                 if (event.detail.selected.id === 'sponsored') {
                     this.router.navigate([url], { queryParams: { sponsored: true } });
                 } else if (event.detail.selected.id === 'docs') {
-                    window.location.href = url;
+                    window.open(url, '_blank');
                 } else {
                     this.router.navigate([url]);
                 }
