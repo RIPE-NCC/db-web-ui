@@ -37,7 +37,7 @@ public class WhoisDomainObjectServiceTest extends AbstractIntegrationTest {
             new NameValuePair("nserver", "ns.xs4all.nl"),
             new NameValuePair("nserver", "ns1.xs4all.nl"));
 
-        final HttpEntity requestEntity = new HttpEntity<>(dto, requestHeaders);
+        final HttpEntity<?> requestEntity = new HttpEntity<>(dto, requestHeaders);
 
         final ResponseEntity<String> response = restTemplate.exchange(createDomainUri(), HttpMethod.POST, requestEntity, String.class);
 

@@ -70,7 +70,7 @@ public class CrowdTokenFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        boolean shouldFilter = true;
+        boolean shouldFilter;
         try {
             shouldFilter = isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request);
         } catch (RestClientException e) {
@@ -103,7 +103,6 @@ public class CrowdTokenFilter implements Filter {
         url.append(contextPath).append("/error");
         return url.toString();
     }
-
 
     private boolean isStaticResource(HttpServletRequest request) {
         return (request.getRequestURI().endsWith(".css") ||

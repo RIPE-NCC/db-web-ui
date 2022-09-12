@@ -2,18 +2,18 @@ package net.ripe.whois;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
-@Configuration
-public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
-    @Override
-    public void configure(WebSecurity web) {
-        //Security handled in CrowdTokenFilter
-        web.ignoring().antMatchers("/**");
+@Configuration
+public class ApplicationSecurity {
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // Security handled in CrowdTokenFilter
+        return (web) -> web.ignoring().antMatchers("/**");
     }
 
     @Bean
@@ -23,4 +23,5 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         firewall.setAllowUrlEncodedSlash(true);
         return firewall;
     }
+
 }
