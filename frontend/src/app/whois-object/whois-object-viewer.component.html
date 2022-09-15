@@ -13,7 +13,7 @@
         'lookup.updateObjectButton.text' | label
     }}</a>
     <a class="blue-button" (click)="emitUpdateClicked()" *ngIf="show.updateButton && !linkable">{{ 'lookup.updateObjectButton.text' | label }}</a>
-    <a class="grey-button ripe-stat-button" href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb" *ngIf="show.ripeStatButton" target="_newtab">
+    <a class="grey-button ripe-stat-button" href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb" *ngIf="show.ripeStatButton" target="_blank">
         {{ 'lookup.ripestatLink.text' | label }}
         <i class="fal fa-external-link"></i>
     </a>
