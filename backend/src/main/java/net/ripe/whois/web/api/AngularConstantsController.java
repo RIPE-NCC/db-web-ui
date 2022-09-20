@@ -74,6 +74,8 @@ public class AngularConstantsController {
     @Value("#{${mntners.allowed.to.create.autnum:{:}}}")
     private Map<String, String> mntnersAllowedToCreateAutnum;
 
+    @Value("${sso.session.ttl.ms}")
+    private int sessionTtl;
     private AppConstants appConstants;
 
     private final LeftMenuConfiguration leftMenuConfiguration;
@@ -157,6 +159,7 @@ public class AngularConstantsController {
         constants.setRipeNccMntners(ripeNccMntners);
         constants.setTopRipeNccMntners(topRipeNccMntners);
         constants.setMntnersAllowedToCreateAutnum(mntnersAllowedToCreateAutnum);
+        constants.setSessionTtl(sessionTtl);
         return constants;
     }
 
@@ -209,6 +212,9 @@ public class AngularConstantsController {
         private String[] topRipeNccMntners;
         @JsonProperty("MNTNER_ALLOWED_TO_CREATE_AUTNUM")
         private Map<String, String> mntnersAllowedToCreateAutnum;
+
+        @JsonProperty("SESSION_TTL")
+        private int sessionTtl;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -305,6 +311,8 @@ public class AngularConstantsController {
         public void setMntnersAllowedToCreateAutnum(Map<String, String> mntnersAllowedToCreateAutnum) {
             this.mntnersAllowedToCreateAutnum = mntnersAllowedToCreateAutnum;
         }
-
+        public void setSessionTtl(final int sessionTtl) {
+            this.sessionTtl = sessionTtl;
+        }
     }
 }

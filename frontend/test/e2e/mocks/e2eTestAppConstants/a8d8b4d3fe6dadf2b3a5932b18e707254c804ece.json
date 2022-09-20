@@ -35,6 +35,7 @@
             "RIPE-NCC-LEGACY-MNT",
             "RIPE-NCC-MNT"
         ],
-        "TOP_RIPE_NCC_MNTNERS": ["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-LEGACY-MNT"]
+        "TOP_RIPE_NCC_MNTNERS": ["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-LEGACY-MNT"],
+        "SESSION_TTL": 2000
     }
 }

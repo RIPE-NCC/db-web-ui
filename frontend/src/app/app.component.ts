@@ -3,6 +3,7 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WINDOW } from './core/window.service';
 import { PropertiesService } from './properties.service';
+import { SessionInfoService } from './sessioninfo/session-info.service';
 
 @Component({
     selector: 'app-db-web-ui',
@@ -13,8 +14,20 @@ export class AppComponent implements OnInit {
     public isDesktopView: boolean;
     public isOpenMenu: boolean;
     private innerWidth: number;
+    public sessionExpire: boolean = false;
+    public loginUrl: string;
 
-    constructor(public properties: PropertiesService, private router: Router, private location: Location, @Inject(WINDOW) public window: any) {
+    constructor(
+        public properties: PropertiesService,
+        private router: Router,
+        private location: Location,
+        @Inject(WINDOW) public window: any,
+        private sessionInfoService: SessionInfoService,
+    ) {
+        this.sessionInfoService.sessionExpire$.subscribe(() => {
+            this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(this.window.location.href)}`;
+            this.sessionExpire = true;
+        });
         this.skipHash();
     }
 

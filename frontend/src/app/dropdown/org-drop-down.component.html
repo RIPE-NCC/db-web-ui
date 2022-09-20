@@ -1,4 +1,4 @@
-<div class="registry-selector-container" *ngIf="organisations.length && !trainingEnv">
+<div class="registry-selector-container" *ngIf="organisations.length && !trainingEnv && !sessionExpire">
     <span>You are editing</span>
     <ng-select
         id="organisation-selector"

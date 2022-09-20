@@ -6,7 +6,6 @@
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
             y="0px"
             viewBox="0 0 4391.13 550.74"
@@ -126,7 +125,13 @@
         ></mobile-menu>
         <ng-template #desktopMenu>
             <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
-            <user-login class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+            <user-login *ngIf="sessionExpire" class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+            <user-login
+                *ngIf="!sessionExpire"
+                class="web-component"
+                [accessurl]="properties.LOGIN_URL"
+                [logoutredirecturl]="properties.LOGOUT_URL"
+            ></user-login>
         </ng-template>
     </ripe-header>
 </div>
@@ -137,6 +142,14 @@
         <section id="app-banners-container" class="usprivacy">
             <ngx-loading-bar></ngx-loading-bar>
             <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning" unsafehtml="{{ properties.BANNER }}" permanent="true"></app-banner>
+            <app-banner
+                *ngIf="sessionExpire"
+                id="notification-warning-session"
+                level="warning"
+                [linkurl]="loginUrl"
+                [linktext]="'link.loginUrl.text' | label"
+                [unsafehtml]="'msg.sessionTimeout.text' | label"
+            ></app-banner>
             <alert-banners></alert-banners>
             <app-cookie-consent></app-cookie-consent>
         </section>
