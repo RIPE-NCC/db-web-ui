@@ -30,6 +30,9 @@ import { MenuService } from './menu/menu.service';
 import { MyResourcesModule } from './myresources/my-resources.module';
 import { PropertiesService } from './properties.service';
 import { QueryModule } from './query/query.module';
+import { SessionInfoModule } from './sessioninfo/session-info.module';
+import { SessionInfoService } from './sessioninfo/session-info.service';
+import { SessionInterceptor } from './sessioninfo/session.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { SyncupdatesComponent } from './syncupdates/syncupdates.component';
 import { SyncupdatesService } from './syncupdates/syncupdates.service';
@@ -72,6 +75,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         MatDialogModule,
         MatListModule,
         MatLineModule,
+        SessionInfoModule,
     ],
     providers: [
         CookieService,
@@ -80,6 +84,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         EmailConfirmationService,
         PropertiesService,
         MenuService,
+        SessionInfoService,
         {
             provide: APP_INITIALIZER,
             useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(),
@@ -89,6 +94,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         { provide: HTTP_INTERCEPTORS, useClass: MetaDataCleanerInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: SessionInterceptor, multi: true },
     ],
     bootstrap: [AppComponent],
 })

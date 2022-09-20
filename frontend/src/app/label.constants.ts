@@ -44,4 +44,6 @@ export const Labels = {
         ' target=\'_blank\'>documentation<i class="fal fa-external-link"></i></a>.',
 
     'resource.createAssignment.text': 'Create assignment',
+    'msg.sessionTimeout.text': 'Your RIPE NCC Access session has expired. You need to login again.',
+    'link.loginUrl.text': 'LOGIN',
 };

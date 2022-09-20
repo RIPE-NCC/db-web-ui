@@ -3,10 +3,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
 import { AppComponent } from '../../src/app/app.component';
 import { BannerComponent } from '../../src/app/banner/banner.component';
 import { WINDOW } from '../../src/app/core/window.service';
 import { PropertiesService } from '../../src/app/properties.service';
+import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
 
 describe('AppComponent', () => {
     let component: AppComponent;
@@ -30,6 +32,7 @@ describe('AppComponent', () => {
                 },
                 { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: '/not-query' } },
                 { provide: WINDOW, useValue: { location: {} } },
+                { provide: SessionInfoService, useValue: { sessionExpire$: of() } },
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         });

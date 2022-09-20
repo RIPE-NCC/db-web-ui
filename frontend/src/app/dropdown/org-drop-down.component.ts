@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
+import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { IUserInfoOrganisation, IUserInfoResponseData } from './org-data-type.model';
 import { OrgDropDownSharedService } from './org-drop-down-shared.service';
@@ -14,10 +15,19 @@ export class OrgDropDownComponent implements OnInit {
     public organisations: IUserInfoOrganisation[] = [];
     // Temporary until we need different application on Test, Training and RC environment
     public trainingEnv: boolean;
+    public sessionExpire: boolean = false;
 
-    constructor(private userInfoService: UserInfoService, private orgDropDownSharedService: OrgDropDownSharedService, private properties: PropertiesService) {
+    constructor(
+        private userInfoService: UserInfoService,
+        private orgDropDownSharedService: OrgDropDownSharedService,
+        private properties: PropertiesService,
+        private sessionInfoService: SessionInfoService,
+    ) {
         this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
             this.initOrgsAndMemebers(userInfo);
+        });
+        this.sessionInfoService.sessionExpire$.subscribe(() => {
+            this.sessionExpire = true;
         });
     }
 

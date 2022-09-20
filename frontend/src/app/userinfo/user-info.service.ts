@@ -20,6 +20,10 @@ export class UserInfoService {
         return !_.isUndefined(this.userInfo);
     }
 
+    public removeUserInfo() {
+        this.userInfo = null;
+    }
+
     public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
         if (this.userInfo) {
             return of(this.userInfo);
@@ -40,6 +44,10 @@ export class UserInfoService {
                 }),
             );
         }
+    }
+
+    public pingUserInfo(): Observable<Object> {
+        return this.http.get('api/whois-internal/api/user/info');
     }
 
     public getSelectedOrganisation(): Observable<IUserInfoOrganisation> {

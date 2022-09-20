@@ -37,6 +37,14 @@ describe('UserInfoService', () => {
         req.flush(userInfo);
     });
 
+    it('should check session status', () => {
+        userInfoService.pingUserInfo().subscribe((respons: IUserInfoResponseData) => {
+            expect(respons).toBe(userInfo);
+        });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
+        expect(req.request.method).toBe('GET');
+    });
+
     it('should not provide user-info on failure', () => {
         userInfoService.getSelectedOrganisation().subscribe({
             next: (result: IUserInfoOrganisation) => {

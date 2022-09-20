@@ -31,7 +31,8 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 
 * cd into the `backend` sub folder
 
-* execute (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Dspring-boot.run.profiles=local -Dspring.profiles.active=local -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC"```     
+* execute (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Dspring-boot.run.profiles=local -Dspring.profiles.active=local -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC"```. On the other hand, you can add a new configuration in Intellij.
+![](doc/img/run_intellij_config.png)     
 
 * if you have problem executing the previous command is probably because you need to give permissions to /var directory so create /var/logs/jetty directory and give permissions. You should add that path in your exlude file .git/info/exclude
 
@@ -68,21 +69,11 @@ Frontend
 ### Test
 
 * `npm run test`<br>
-  Running Karma unit tests locally for Angular 6+ with coverage
+  Running Karma unit tests locally for Angular 6+ with coverage. If you want to run the test one by one using Intellij you need to install a plugin called "karma"
   - [Angular Unit test coverage 🔗](frontend/reports/unittest-coverage/index.html) is available locally
 
 * `npm run test-remote` _(used on bamboo)_<br>
   Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub` for Angular 6+ with coverage
-
-* `npm run e2e-chrome`<br>
-  Runs the Protractor tests on port 9002 in Chrome without coverage so they are quicker.
-
-* `npm run e2e-firefox`<br>
-  Runs the Protractor tests on port 9002 in FireFox without coverage so they are quicker.
-
-* `npm run e2e-remote` _(used on bamboo)_<br>
-  Runs the Protractor tests in selenium.
-  _End where e2e test runned on bamboo can be seen in screenshots http://193.0.2.222:4444/wd/hub/static/resource/hub.html_
 
 * `npm run start-mock`<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
@@ -91,6 +82,19 @@ Frontend
   `hostname -s` and then resulted host name (for example laptop-123456.local) add<br />
   `127.0.0.1       laptop-123456.local` in your host file<br />
   `sudo vi /etc/hosts`
+
+* run test using cypress
+  * `npm run start-mock`
+  * `npm run cypress:open`<br>
+    This will open cypress, there you could specify the browser and the e2e test that you want to run.
+
+### Record Mocks e2e tests
+
+  * `npm run start-mock`
+  * You should be able to open https://localhost.ripe.net:9002/db-web-ui/query and perform some requests.
+  * This mock will be automatically add into e2e/mocks/e2eTest folder <br>
+  ![](doc/img/mocked_request.png)
+
 
 ### Updating NPM and NPM packages
 

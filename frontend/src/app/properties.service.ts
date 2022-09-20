@@ -47,6 +47,7 @@ export class PropertiesService {
     public TOP_RIPE_NCC_MNTNERS = [];
     // maintainers allowed to create aut-num
     public MNTNER_ALLOWED_TO_CREATE_AUTNUM = {};
+    public SESSION_TTL = 30000;
 
     constructor(private httpClient: HttpClient) {}
 
@@ -81,6 +82,8 @@ export class PropertiesService {
                     this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
                     this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
                     this.MNTNER_ALLOWED_TO_CREATE_AUTNUM = response.MNTNER_ALLOWED_TO_CREATE_AUTNUM || {};
+                    this.SESSION_TTL = response.SESSION_TTL;
+                    // once we deploy the db-operational
 
                     this.injectProperties();
                 },

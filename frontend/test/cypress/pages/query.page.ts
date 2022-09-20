@@ -241,6 +241,14 @@ export class QueryPage {
         cy.get('form input[name="qp.queryText"][autocomplete="on"]').should('exist');
         return this;
     }
+
+    expectUserLoggedImage(exist: boolean) {
+        cy.get('user-login')
+            .shadow()
+            .find('image[id="user-img"]')
+            .should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
 }
 
 class TypesFilter {
