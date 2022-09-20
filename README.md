@@ -282,4 +282,4 @@ User Interface Guidelines
 -------------------------
 
 The Technical Design circle has published a storybook of user interface elements that we should use as a style guide:
-http://ripe-app-storybook-dev.s3-website.eu-central-1.amazonaws.com/
+https://d3hkspi7mxvzby.cloudfront.net
