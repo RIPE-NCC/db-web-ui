@@ -1,4 +1,5 @@
 import { ModalAuthentication } from './components/modals.component';
+import { OrganisationSelector } from './components/organisation-selector.component';
 import { WhoisObjectEditor } from './components/whois-object-editor.component';
 import { WhoisObjectViewer } from './components/whois-object-viewer.component';
 
@@ -67,6 +68,7 @@ export class ResourcesDetailPage {
         cy.get('button:contains("Back to my resources")').should(exist ? 'exist' : 'not.exist');
         return this;
     }
+
     expectSiteMapButtonToExist(exist: boolean) {
         cy.get('button .fa-sitemap').should(exist ? 'exist' : 'not.exist');
         return this;
@@ -114,14 +116,15 @@ export class ResourcesDetailPage {
 }
 
 export class ResourcesOverViewPage {
+    private organisationSelector: OrganisationSelector = new OrganisationSelector();
+
     clickOnOrganizationSelector() {
-        cy.get('#organisation-selector input').click({ force: true });
+        this.organisationSelector.clickOnOrganizationSelector();
         return this;
     }
 
     selectOrganization(text: string) {
-        this.clickOnOrganizationSelector();
-        cy.get(`#organisation-selector .ng-dropdown-panel .ng-option:contains("${text}")`).click({ force: true });
+        this.organisationSelector.selectOrganization(text);
         return this;
     }
 
