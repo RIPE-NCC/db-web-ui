@@ -726,4 +726,13 @@ describe('Query scenario', () => {
     it('should show autofill', () => {
         queryPage.expectToHaveAutofillOnSearchTermField();
     });
+
+    it('should show certificate banner for members and not members', () => {
+        queryPage
+            .visit()
+            .selectOrganization('SURFnet')
+            .expectCertificateBannerToContain('Does your CV show your RIPE Database expertise?')
+            .selectOrganization('Viollier AG')
+            .expectCertificateBannerToContain('Earn the RIPE Database Associate certification');
+    });
 });

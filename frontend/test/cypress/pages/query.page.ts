@@ -1,6 +1,9 @@
+import { OrganisationSelector } from './components/organisation-selector.component';
 import { WhoisObjectViewer } from './components/whois-object-viewer.component';
 
 export class QueryPage {
+    private organisationSelector: OrganisationSelector = new OrganisationSelector();
+
     visit() {
         cy.visit('query');
         return this;
@@ -68,6 +71,16 @@ export class QueryPage {
 
     clickOnCopyUrlButton() {
         cy.get('.perm-xml-json-resultlinks .controls button').click({ force: true });
+        return this;
+    }
+
+    selectOrganization(text: string) {
+        this.organisationSelector.selectOrganization(text);
+        return this;
+    }
+
+    expectCertificateBannerToContain(text: string) {
+        cy.get('certificate-banner').should('include.text', text);
         return this;
     }
 
