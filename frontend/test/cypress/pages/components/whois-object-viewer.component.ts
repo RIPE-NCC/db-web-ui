@@ -58,6 +58,20 @@ export class WhoisObjectViewer {
         return this;
     }
 
+    expectLoginToUpdateButton(exist: boolean) {
+        this.createViewer()
+            .find('a.tag-link')
+            .should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectUpdateObjectButton(exist: boolean) {
+        this.createViewer()
+            .find('a.blue-button')
+            .should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
     expectShowMoreButtonExist(exist: boolean) {
         this.createViewer()
             .find('.show-more')

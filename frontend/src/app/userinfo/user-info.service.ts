@@ -17,11 +17,11 @@ export class UserInfoService {
     }
 
     public isLogedIn(): boolean {
-        return !_.isUndefined(this.userInfo);
+        return !!this.userInfo;
     }
 
     public removeUserInfo() {
-        this.userInfo = null;
+        this.userInfo = undefined;
     }
 
     public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {

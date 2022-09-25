@@ -2,9 +2,16 @@ import { QueryPage } from '../pages/query.page';
 
 describe('Query scenario', () => {
     const queryPage = new QueryPage();
+    const userNotLoggedIn = './test/e2e/mocks/e2eTest/user-not-logged-in.json';
+    const userInfoFile = './test/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json';
+    const userWithAllRoles = './test/e2e/mocks/e2eTest/user-with-all-role.json';
 
     beforeEach(() => {
         queryPage.visit();
+    });
+
+    after(() => {
+        cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
     });
 
     it('should set focus on search field when visiting the page', () => {
@@ -116,6 +123,22 @@ describe('Query scenario', () => {
 
         // link for route(6) should contain just route value without AS
         queryPage.getWhoisObjectViewer(3).expectRipeStatLinkHref('https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb');
+    });
+
+    it('should show "Login to update" when user is not logged', () => {
+        cy.changeJsonResponseFile(userNotLoggedIn, userInfoFile);
+        queryPage.visit();
+        queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
+        queryPage.clickOnSearchButton();
+        queryPage.getWhoisObjectViewer(1).expectLoginToUpdateButton(true).expectUpdateObjectButton(false);
+    });
+
+    it('should show "Update object" when user is logged', () => {
+        cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
+        queryPage.visit();
+        queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
+        queryPage.clickOnSearchButton();
+        queryPage.getWhoisObjectViewer(1).expectLoginToUpdateButton(false).expectUpdateObjectButton(true);
     });
 
     it("shouldn't show banner with ERORR:101 but 'No results..' message in panel", () => {
