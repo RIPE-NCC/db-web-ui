@@ -25,4 +25,8 @@ describe('Feedback support dialog', () => {
             .expectItemOnPositionToContainText(2, 'Chat')
             .expectItemOnPositionToContainText(2, 'Launch Chat.');
     });
+
+    it('should open usersnap', () => {
+        feedbackSupportPage.clickOnItem('Report a bug').expectUsersnapToExist();
+    });
 });

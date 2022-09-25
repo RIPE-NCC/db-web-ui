@@ -28,4 +28,14 @@ export class FeedbackSupportPage {
         cy.get(`.feedback-support-panel mat-dialog-container mat-list-item:nth(${position})`).should('contain.text', text);
         return this;
     }
+
+    clickOnItem(item: string) {
+        cy.get(`.feedback-support-panel mat-dialog-container mat-list-item:contains("${item}")`).click();
+        return this;
+    }
+
+    expectUsersnapToExist() {
+        cy.get('iframe[name="us-entrypoint-widgetAppV2"]').should('exist');
+        return this;
+    }
 }
