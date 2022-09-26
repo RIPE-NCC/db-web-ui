@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=resource&flags=r&offset=0&limit=20&query-string=1.1.1.1",
+    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=resource&offset=0&limit=20&query-string=1.1.1.1",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

@@ -381,6 +381,20 @@ describe('QueryParameters', () => {
         expect(validationIssuesAllSources.warnings.length).toEqual(0);
     });
 
+    it('should parse -G and --no-grouping flag', () => {
+        qp.queryText = '-G AS174';
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+
+        qp.queryText = '--no-grouping AS174';
+
+        let validationIssuesAllSources = queryParametersService.validate(qp);
+        expect(validationIssuesAllSources.errors.length).toEqual(0);
+        expect(validationIssuesAllSources.warnings.length).toEqual(0);
+    });
+
     it('should recognise unsupported flag', () => {
         const response_b: IQueryFlag[] = [
             {
@@ -402,9 +416,8 @@ describe('QueryParameters', () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(queryFlagsServiceSpy.getFlags).toHaveBeenCalledTimes(2);
-        expect(validationIssues.errors.length).toEqual(2);
+        expect(validationIssues.errors.length).toEqual(1);
         expect(validationIssues.errors[0]).toEqual('ERROR:111: unsupported flag -b.');
-        expect(validationIssues.errors[1]).toEqual('ERROR:111: unsupported flag --no-grouping.');
         expect(validationIssues.warnings.length).toEqual(0);
     });
 

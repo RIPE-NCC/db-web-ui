@@ -184,6 +184,9 @@ export class QueryComponent implements OnDestroy {
         // Reset on-screen widgets
         this.alertsService.clearAlertMessages();
 
+        if (this.showsQueryFlagsContainer) {
+            cleanQp.doNotRetrieveRelatedObjects = false;
+        }
         const issues = this.queryParametersService.validate(cleanQp);
         for (const msg of issues.warnings) {
             const war: IErrorMessageModel = {

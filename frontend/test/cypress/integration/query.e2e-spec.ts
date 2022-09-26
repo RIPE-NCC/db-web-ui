@@ -717,6 +717,32 @@ describe('Query scenario', () => {
             .expectErrorMessageToContain('ERROR:111: invalid option -z supplied.');
     });
 
+    it('should recognise -G or --no-grouping flag', () => {
+        queryPage
+            .typeSearchTerm('-M 151.99.0.0 - 151.99.1.255')
+            .expectQueryFlagsContainerVisible(true)
+            .expectQueryFlagToContain(0, '-M')
+            .expectQueryFlagToContain(1, '--all-more')
+            .clickOnSearchButton()
+            .expectNumberOfResults(4)
+            .typeSearchTerm('-MG 151.99.0.0 - 151.99.1.255')
+            .expectQueryFlagsContainerVisible(true)
+            .expectQueryFlagToContain(0, '-M')
+            .expectQueryFlagToContain(1, '--all-more')
+            .expectQueryFlagToContain(2, '-G')
+            .expectQueryFlagToContain(3, '--no-grouping')
+            .clickOnSearchButton()
+            .expectNumberOfResults(3)
+            .typeSearchTerm('-M --no-grouping 151.99.0.0 - 151.99.1.255')
+            .expectQueryFlagsContainerVisible(true)
+            .expectQueryFlagToContain(0, '-M')
+            .expectQueryFlagToContain(1, '--all-more')
+            .expectQueryFlagToContain(2, '-G')
+            .expectQueryFlagToContain(3, '--no-grouping')
+            .clickOnSearchButton()
+            .expectNumberOfResults(3);
+    });
+
     it('should sanitize XSS', () => {
         queryPage
             .visitQueryPageXSS('?bflag=true&dflag=false&rflag=true&searchtext=zz&source=GRS%3Cimg%20src%20onerror%3Dalert(document.domain)%3E')
