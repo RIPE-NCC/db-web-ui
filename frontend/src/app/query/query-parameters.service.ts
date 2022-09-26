@@ -21,6 +21,7 @@ export interface IQueryParameters {
     showFullObjectDetails: boolean;
     // TODO Replace source with Set type asap IE allow it
     source: string;
+    noGrouping?: boolean;
 }
 
 const templateQueries = ['-t', '--template'];
@@ -176,6 +177,8 @@ export class QueryParametersService {
                             errors.push('Error parsing object type');
                         }
                         typeOptionPos = idx + 1;
+                    } else if (item === '--no-grouping') {
+                        queryParams.noGrouping = true;
                     } else if (supportedFlag) {
                         errors.push(`ERROR:111: unsupported flag ${item}.`);
                     } else if (!addedInvalidOptionWarning && !supportedFlag) {
@@ -216,6 +219,8 @@ export class QueryParametersService {
                             sourcesPos = idx + 1;
                         } else if (opts[i] === 'a') {
                             queryParams.source = 'GRS';
+                        } else if (opts[i] === 'G') {
+                            queryParams.noGrouping = true;
                         } else if (supportedFlag) {
                             errors.push(`ERROR:111: unsupported flag -${opts[i]}.`);
                         } else if (!addedInvalidOptionWarning && !supportedFlag) {

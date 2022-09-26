@@ -86,6 +86,9 @@ export class QueryService {
         if (qp.showFullObjectDetails) {
             flags += 'B';
         }
+        if (qp.noGrouping) {
+            flags += 'G';
+        }
 
         if (flags) {
             params = params.append('flags', flags);

@@ -1,0 +1,488 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=M&offset=0&limit=20&query-string=151.99.0.0%20-%20151.99.1.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {},
+            "flags": {
+                "flag": [
+                    {
+                        "value": "all-more"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "151.99.0.0 - 151.99.1.255"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-dev.db.ripe.net/ripe/inetnum/151.99.0.0 - 151.99.0.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "151.99.0.0 - 151.99.0.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "151.99.0.0 - 151.99.0.255"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "INTERBUSINESS"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "IT"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "INAS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "INAS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/INTERB-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "INTERB-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2020-11-18T07:36:31Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2020-11-18T07:36:31Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-IA34-RIPE",
+                        "name": "Tango India Sierra"
+                    },
+                    "abuse-contact": {
+                        "key": "ABT49-RIPE",
+                        "email": "abuse@business.telecomitalia.it",
+                        "suspect": false,
+                        "org-id": "ORG-IA34-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "role",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "nic-hdl",
+                                "value": "INAS1-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "role",
+                                "value": "Interbusiness Network Administration Staff"
+                            },
+                            {
+                                "name": "address",
+                                "value": "Telecom Italia S.p.A"
+                            },
+                            {
+                                "name": "address",
+                                "value": "Italy"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ESB35-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "ESB35-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ESB35-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "ESB35-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ASB144-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "ASB144-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/person/SSB86-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "SSB86-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/DSB58-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "DSB58-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ABT49-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "ABT49-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "nic-hdl",
+                                "value": "INAS1-RIPE"
+                            },
+                            {
+                                "name": "abuse-mailbox",
+                                "value": "abuse@business.telecomitalia.it"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/INTERB-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "INTERB-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-08-01T12:20:54Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2018-05-24T06:06:48Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-dev.db.ripe.net/ripe/inetnum/151.99.1.0 - 151.99.1.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "151.99.1.0 - 151.99.1.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "151.99.1.0 - 151.99.1.255"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "INTERBUSINESS"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "IT"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "INAS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "INAS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/INTERB-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "INTERB-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2020-11-18T07:36:31Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2020-11-18T07:36:31Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-IA34-RIPE",
+                        "name": "Tango India Sierra"
+                    },
+                    "abuse-contact": {
+                        "key": "ABT49-RIPE",
+                        "email": "abuse@business.telecomitalia.it",
+                        "suspect": false,
+                        "org-id": "ORG-IA34-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "role",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "nic-hdl",
+                                "value": "INAS1-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "role",
+                                "value": "Interbusiness Network Administration Staff"
+                            },
+                            {
+                                "name": "address",
+                                "value": "Telecom Italia S.p.A"
+                            },
+                            {
+                                "name": "address",
+                                "value": "Italy"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ESB35-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "ESB35-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ESB35-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "ESB35-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ASB144-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "ASB144-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/person/SSB86-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "SSB86-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/DSB58-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "DSB58-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ABT49-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "ABT49-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "nic-hdl",
+                                "value": "INAS1-RIPE"
+                            },
+                            {
+                                "name": "abuse-mailbox",
+                                "value": "abuse@business.telecomitalia.it"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/INTERB-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "INTERB-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-08-01T12:20:54Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2018-05-24T06:06:48Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "managed": false
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.104-SNAPSHOT",
+            "timestamp": "2022-09-12T12:56:24Z",
+            "commit-id": "0be4304"
+        }
+    }
+}
