@@ -286,4 +286,4 @@ User Interface Guidelines
 -------------------------
 
 The Technical Design circle has published a storybook of user interface elements that we should use as a style guide:
-https://d3hkspi7mxvzby.cloudfront.net
+https://storybook.ripe.net
