@@ -114,8 +114,9 @@ export class AlertsService {
         this.alertsChanged.emit(this.alerts);
     }
 
-    public addGlobalWarning(warningMsg: string) {
-        this.alerts.warnings.push({ plainText: warningMsg });
+    public addGlobalWarning(warningMsg: string, linkurl?: string, linktext?: string) {
+        const warning = linkurl ? { plainText: warningMsg, linkurl: linkurl, linktext: linktext } : { plainText: warningMsg };
+        this.alerts.warnings.push(warning);
         this.alertsChanged.emit(this.alerts);
     }
 

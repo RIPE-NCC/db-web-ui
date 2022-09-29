@@ -73,9 +73,11 @@ public class AngularConstantsController {
     private String[] topRipeNccMntners;
     @Value("#{${mntners.allowed.to.create.autnum:{:}}}")
     private Map<String, String> mntnersAllowedToCreateAutnum;
-
     @Value("${sso.session.ttl.ms}")
     private int sessionTtl;
+    @Value("${notification.polling.ms}")
+    private int releaseNotificationPolling;
+
     private AppConstants appConstants;
 
     private final LeftMenuConfiguration leftMenuConfiguration;
@@ -160,6 +162,7 @@ public class AngularConstantsController {
         constants.setTopRipeNccMntners(topRipeNccMntners);
         constants.setMntnersAllowedToCreateAutnum(mntnersAllowedToCreateAutnum);
         constants.setSessionTtl(sessionTtl);
+        constants.setReleaseNotificationPolling(releaseNotificationPolling);
         return constants;
     }
 
@@ -212,9 +215,10 @@ public class AngularConstantsController {
         private String[] topRipeNccMntners;
         @JsonProperty("MNTNER_ALLOWED_TO_CREATE_AUTNUM")
         private Map<String, String> mntnersAllowedToCreateAutnum;
-
         @JsonProperty("SESSION_TTL")
         private int sessionTtl;
+        @JsonProperty("RELEASE_NOTIFICATION_POLLING")
+        private int releaseNotificationPolling;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -313,6 +317,10 @@ public class AngularConstantsController {
         }
         public void setSessionTtl(final int sessionTtl) {
             this.sessionTtl = sessionTtl;
+        }
+
+        public void setReleaseNotificationPolling(int releaseNotificationPolling) {
+            this.releaseNotificationPolling = releaseNotificationPolling;
         }
     }
 }

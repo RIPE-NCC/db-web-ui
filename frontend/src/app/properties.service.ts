@@ -4,6 +4,36 @@ import { Injectable } from '@angular/core';
 declare var loadMatomo: (matomoId: string) => any;
 declare var loadUsersnap: (buildTag: string) => any;
 
+export interface IProperties {
+    ENV: string;
+    SOURCE: string;
+    BUILD_TAG: string;
+    LOGIN_URL: string;
+    ACCESS_URL: string;
+    LOGOUT_URL: string;
+    PORTAL_URL: string;
+    PORTAL_URL_ACCOUNT: string;
+    PORTAL_URL_REQUEST: string;
+    BANNER: string;
+    MATOMO_ID: string;
+    REQUEST_RESOURCES_URL: string;
+    REQUEST_UPDATE_URL: string;
+    OPEN_ACQUISITION_URL: string;
+    REQUEST_TRANSFER_URL: string;
+    IPV4_TRANSFER_LISTING_URL: string;
+    RPKI_DASHBOARD_URL: string;
+    REST_SEARCH_URL: string;
+    QUERY_PAGE_LINK_TO_OTHER_DB: string;
+    DB_WEB_UI_BUILD_TIME: string;
+    RIPE_APP_WEBCOMPONENTS_ENV: string;
+    LIVE_CHAT_KEY: string;
+    RIPE_NCC_MNTNERS: string[];
+    TOP_RIPE_NCC_MNTNERS: string[];
+    MNTNER_ALLOWED_TO_CREATE_AUTNUM: string;
+    SESSION_TTL: number;
+    RELEASE_NOTIFICATION_POLLING: number;
+}
+
 @Injectable()
 export class PropertiesService {
     public ACCESS_URL = '';
@@ -48,15 +78,16 @@ export class PropertiesService {
     // maintainers allowed to create aut-num
     public MNTNER_ALLOWED_TO_CREATE_AUTNUM = {};
     public SESSION_TTL = 30000;
+    public RELEASE_NOTIFICATION_POLLING = 30000;
 
     constructor(private httpClient: HttpClient) {}
 
     public load(): Promise<void> {
         return this.httpClient
-            .get('app.constants.json')
+            .get<IProperties>('app.constants.json')
             .toPromise()
             .then(
-                (response: any) => {
+                (response) => {
                     this.ENV = response.ENV;
                     this.SOURCE = response.SOURCE;
                     this.BUILD_TAG = response.BUILD_TAG;
@@ -83,6 +114,7 @@ export class PropertiesService {
                     this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
                     this.MNTNER_ALLOWED_TO_CREATE_AUTNUM = response.MNTNER_ALLOWED_TO_CREATE_AUTNUM || {};
                     this.SESSION_TTL = response.SESSION_TTL;
+                    this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
                     // once we deploy the db-operational
 
                     this.injectProperties();

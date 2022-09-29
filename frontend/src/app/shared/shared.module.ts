@@ -22,6 +22,7 @@ import { LabelPipe } from './label.pipe';
 import { LoadingIndicatorComponent } from './loadingindicator/loading-indicator.component';
 import { NameFormatterComponent } from './name-formatter.component';
 import { PaginationComponent } from './paginator/pagination.component';
+import { ReleaseNotificationService } from './release-notification.service';
 import { SanitizeHtmlPipe } from './sanitize-html.pipe';
 import { SanitizeImgHtmlPipe } from './sanitize-img-html.pipe';
 import { ScrollerDirective } from './scroller.directive';
@@ -57,7 +58,7 @@ import { WhoisResourcesService } from './whois-resources.service';
         WhoisLineDiffDirective,
         OrgDropDownComponent,
     ],
-    providers: [CredentialsService, WhoisMetaService, WhoisResourcesService, AlertsService, OrgDropDownSharedService],
+    providers: [CredentialsService, WhoisMetaService, WhoisResourcesService, AlertsService, OrgDropDownSharedService, ReleaseNotificationService],
     exports: [
         AlertBannersComponent,
         AutoFocusDirective,
