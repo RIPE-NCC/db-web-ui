@@ -9,14 +9,17 @@ import { BannerComponent } from '../../src/app/banner/banner.component';
 import { WINDOW } from '../../src/app/core/window.service';
 import { PropertiesService } from '../../src/app/properties.service';
 import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
+import { ReleaseNotificationService } from '../../src/app/shared/release-notification.service';
 
 describe('AppComponent', () => {
     let component: AppComponent;
     let fixture: ComponentFixture<AppComponent>;
     let routerMock: any;
+    let releaseNotificationService: ReleaseNotificationService;
 
     beforeEach(waitForAsync(() => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [AppComponent, BannerComponent],
@@ -30,9 +33,20 @@ describe('AppComponent', () => {
                         BREAKPOINTS_MOBILE_VIEW: 1025,
                     },
                 },
-                { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: '/not-query' } },
+                {
+                    provide: Router,
+                    useValue: {
+                        navigate: () => {},
+                        navigateByUrl: () => {},
+                        url: '/not-query',
+                    },
+                },
                 { provide: WINDOW, useValue: { location: {} } },
                 { provide: SessionInfoService, useValue: { sessionExpire$: of() } },
+                {
+                    provide: ReleaseNotificationService,
+                    useValue: releaseNotificationService,
+                },
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         });
@@ -41,6 +55,11 @@ describe('AppComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(AppComponent);
         component = fixture.componentInstance;
+    });
+
+    it('should start checking if new release is available', () => {
+        fixture.detectChanges();
+        expect(releaseNotificationService.startPolling).toHaveBeenCalled();
     });
 
     it('should set properties to app-switcher', () => {

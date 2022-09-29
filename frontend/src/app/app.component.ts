@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { WINDOW } from './core/window.service';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
+import { ReleaseNotificationService } from './shared/release-notification.service';
 
 @Component({
     selector: 'app-db-web-ui',
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
 
     constructor(
         public properties: PropertiesService,
+        private releaseNotificationService: ReleaseNotificationService,
         private router: Router,
         private location: Location,
         @Inject(WINDOW) public window: any,
@@ -34,6 +36,7 @@ export class AppComponent implements OnInit {
     public ngOnInit() {
         this.mobileOrDesktopView();
         this.isOpenMenu = this.isDesktopView;
+        this.releaseNotificationService.startPolling();
     }
 
     private skipHash() {
