@@ -36,7 +36,11 @@
             <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
                 <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice: 0:nrAssociatedObjectToShow; index as i" class="break-all-word">
                     <td class="w30">
-                        <a [routerLink]="['/lookup']" [queryParams]="{ source: source, key: associatedObject.origin, type: 'aut-num' }" target="_blank">
+                        <a
+                            [routerLink]="['/query']"
+                            [queryParams]="{ source: 'GRS', searchtext: associatedObject.origin, bflag: false, dflag: false, rflag: true }"
+                            target="_blank"
+                        >
                             <name-formatter [name]="associatedObject.origin"></name-formatter>
                         </a>
                     </td>
