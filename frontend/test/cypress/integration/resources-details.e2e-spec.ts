@@ -1,6 +1,6 @@
 import { ResourcesDetailPage, ResourcesPage } from '../pages/resources.page';
 
-describe('Resources detail', () => {
+describe.only('Resources detail', () => {
     const resourcesPage = new ResourcesPage();
     let resourcesDetailPage: ResourcesDetailPage;
 
@@ -83,13 +83,13 @@ describe('Resources detail', () => {
         it('should contain Associated Route Objects table', () => {
             resourcesDetailPage
                 .expectRowsOnTable('associated-route-objects', 3)
-                .expectRowOnTableToContainHref('associated-route-objects', 0, 0, 'lookup?source=RIPE&key=AS8100&type=aut-num')
+                .expectRowOnTableToContainHref('associated-route-objects', 0, 0, 'query?source=GRS&searchtext=AS8100&bflag=false&dflag=false&rflag=true')
                 .expectRowOnTableToContainText('associated-route-objects', 0, 0, 'AS8100')
                 .expectRowOnTableToContainText('associated-route-objects', 0, 1, '185.51.49.0/24')
-                .expectRowOnTableToContainHref('associated-route-objects', 1, 0, 'lookup?source=RIPE&key=AS41108&type=aut-num')
+                .expectRowOnTableToContainHref('associated-route-objects', 1, 0, 'query?source=GRS&searchtext=AS41108&bflag=false&dflag=false&rflag=true')
                 .expectRowOnTableToContainText('associated-route-objects', 1, 0, 'AS41108')
                 .expectRowOnTableToContainText('associated-route-objects', 1, 1, '185.51.50.0/24')
-                .expectRowOnTableToContainHref('associated-route-objects', 2, 0, 'lookup?source=RIPE&key=AS41108&type=aut-num')
+                .expectRowOnTableToContainHref('associated-route-objects', 2, 0, 'query?source=GRS&searchtext=AS41108&bflag=false&dflag=false&rflag=true')
                 .expectRowOnTableToContainText('associated-route-objects', 2, 0, 'AS41108')
                 .expectRowOnTableToContainText('associated-route-objects', 2, 1, '185.51.51.0');
         });
@@ -321,11 +321,11 @@ describe('Resources detail', () => {
                 .expectTableExist('associated-route-objects', true)
                 .expectRowsOnTable('associated-route-objects', 6)
                 .expectRowOnTableToContainText('associated-route-objects', 0, 0, 'AS204056')
-                .expectRowOnTableToContainHref('associated-route-objects', 0, 0, 'lookup?source=RIPE&key=AS204056&type=aut-num')
+                .expectRowOnTableToContainHref('associated-route-objects', 0, 0, 'query?source=GRS&searchtext=AS204056&bflag=false&dflag=false&rflag=true')
                 .expectRowOnTableToContainText('associated-route-objects', 0, 1, '131.115.0.0/16')
                 .expectRowOnTableToContainHref('associated-route-objects', 0, 2, 'webupdates/modify/RIPE/associated-route/131.115.0.0%2F16AS204056')
                 .expectRowOnTableToContainText('associated-route-objects', 2, 1, '192.43.165.0/24')
-                .expectRowOnTableToContainHref('associated-route-objects', 5, 0, 'lookup?source=RIPE&key=AS204056&type=aut-num')
+                .expectRowOnTableToContainHref('associated-route-objects', 5, 0, 'query?source=GRS&searchtext=AS204056&bflag=false&dflag=false&rflag=true')
                 .expectRowOnTableToContainText('associated-route-objects', 5, 0, 'AS204056')
                 .expectRowOnTableToContainText('associated-route-objects', 5, 1, '192.150.84.0/24');
         });
