@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { of } from 'rxjs';
+import { PropertiesService } from '../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IAttributeModel } from '../../../src/app/shared/whois-response-type.model';
@@ -31,6 +32,7 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
                 LinkService,
                 WhoisMetaService,
                 WhoisResourcesService,
+                PropertiesService,
                 {
                     provide: 'OrganisationHelperService',
                     useValue: { containsAbuseC: (attributes: any) => attributes, addAbuseC: (attributes: any) => attributes },

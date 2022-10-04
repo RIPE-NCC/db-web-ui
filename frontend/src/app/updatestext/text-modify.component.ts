@@ -29,6 +29,7 @@ export class TextModifyComponent implements OnInit {
     public name: string;
     public override: string;
     public passwords: string[] = [];
+    public deletable: boolean;
 
     constructor(
         @Inject(WINDOW) private window: any,
@@ -183,6 +184,7 @@ export class TextModifyComponent implements OnInit {
                 const objectToModifyResponse = response[1];
                 this.restCallInProgress = false;
                 const attributes = this.handleFetchResponse(objectToModifyResponse);
+                this.deletable = this.whoisResourcesService.canDeleteObject(this.object.type, attributes);
                 // store mntners for SSO account
                 this.mntners.sso = mntnersResponse;
 

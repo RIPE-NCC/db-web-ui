@@ -29,6 +29,7 @@ export interface IProperties {
     LIVE_CHAT_KEY: string;
     RIPE_NCC_MNTNERS: string[];
     TOP_RIPE_NCC_MNTNERS: string[];
+    RIPE_NCC_HM_MNT: string;
     MNTNER_ALLOWED_TO_CREATE_AUTNUM: string;
     SESSION_TTL: number;
     RELEASE_NOTIFICATION_POLLING: number;
@@ -75,6 +76,7 @@ export class PropertiesService {
     public RIPE_NCC_MNTNERS = [];
     // maintainers on top-level allocation and PI assignments
     public TOP_RIPE_NCC_MNTNERS = [];
+    public RIPE_NCC_HM_MNT = 'RIPE-NCC-HM-MNT';
     // maintainers allowed to create aut-num
     public MNTNER_ALLOWED_TO_CREATE_AUTNUM = {};
     public SESSION_TTL = 30000;
@@ -112,6 +114,7 @@ export class PropertiesService {
                     this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
                     this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
                     this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
+                    this.RIPE_NCC_HM_MNT = response.RIPE_NCC_HM_MNT;
                     this.MNTNER_ALLOWED_TO_CREATE_AUTNUM = response.MNTNER_ALLOWED_TO_CREATE_AUTNUM || {};
                     this.SESSION_TTL = response.SESSION_TTL;
                     this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
@@ -146,5 +149,17 @@ export class PropertiesService {
 
     public isTestEnv(): boolean {
         return this.ENV === 'test';
+    }
+
+    public isNccMntner(mntnerKey: string): boolean {
+        return this.TOP_RIPE_NCC_MNTNERS.includes(mntnerKey.toUpperCase());
+    }
+
+    public isAnyNccMntner(mntnerKey: string): boolean {
+        return this.RIPE_NCC_MNTNERS.includes(mntnerKey.toUpperCase());
+    }
+
+    public isNccHmMntner(mntnerKey: string): boolean {
+        return this.RIPE_NCC_HM_MNT === mntnerKey.toUpperCase();
     }
 }

@@ -6,25 +6,31 @@ import { AttributeMetadataService } from '../../../src/app/attribute/attribute-m
 import { AttributeModule } from '../../../src/app/attribute/attribute.module';
 import { JsUtilService } from '../../../src/app/core/js-utils.service';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
+import { PropertiesService } from '../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IAttributeModel } from '../../../src/app/shared/whois-response-type.model';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
 
 describe('AttributeMetadataService', () => {
-    let MockMntnerService = {
+    let MockPropertiesService = {
         isNccMntner: (mntnerKey: string) => {
             return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
         },
         isNccHmMntner: (mntnerKey: string) => {
             return _.includes(['RIPE-NCC-HM-MNT'], mntnerKey.toUpperCase());
         },
-        isNccHmPiMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-PI-MNT'], mntnerKey.toUpperCase());
+    };
+    let MockWhoisResourcesService = {
+        isNccMntner: (mntnerKey: string) => {
+            return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
+        },
+        isNccHmMntner: (mntnerKey: string) => {
+            return _.includes(['RIPE-NCC-HM-MNT'], mntnerKey.toUpperCase());
         },
         isComaintained: (attributes: IAttributeModel[]) => {
             return _.some(attributes, (attr) => {
                 if (attr.name.toUpperCase() === 'MNT-BY') {
-                    return MockMntnerService.isNccMntner(attr.value);
+                    return MockPropertiesService.isNccMntner(attr.value);
                 } else {
                     return false;
                 }
@@ -33,7 +39,7 @@ describe('AttributeMetadataService', () => {
         isComaintainedWithNccHmMntner: (attributes: IAttributeModel[]) => {
             return _.some(attributes, (attr) => {
                 if (attr.name.toUpperCase() === 'MNT-BY') {
-                    return MockMntnerService.isNccHmMntner(attr.value) || MockMntnerService.isNccHmPiMntner(attr.value);
+                    return MockPropertiesService.isNccHmMntner(attr.value);
                 } else {
                     return false;
                 }
@@ -53,8 +59,9 @@ describe('AttributeMetadataService', () => {
                 JsUtilService,
                 PrefixService,
                 WhoisMetaService,
-                { provide: MntnerService, useValue: MockMntnerService },
+                { provide: WhoisResourcesService, useValue: MockWhoisResourcesService },
                 { provide: Location, useValue: {} },
+                { provide: PropertiesService, useValue: MockPropertiesService },
                 { provide: 'ModalService', useValue: {} },
             ],
         });

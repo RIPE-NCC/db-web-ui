@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
+import { PropertiesService } from '../../../../src/app/properties.service';
 import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
@@ -8,7 +9,7 @@ import { DisplayMntnerPairComponent } from '../../../../src/app/updatesweb/displ
 import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
 
-describe('displayPairComponent', () => {
+describe('DisplayPairComponent', () => {
     const SOURCE = 'RIPE';
     const PERSON_NAME = 'dw-ripe';
     const MNTNER_NAME = 'aardvark-mnt';
@@ -37,6 +38,7 @@ describe('displayPairComponent', () => {
                 WhoisMetaService,
                 RestService,
                 AlertsService,
+                PropertiesService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
                 { provide: Router, useValue: routerMock },
                 {

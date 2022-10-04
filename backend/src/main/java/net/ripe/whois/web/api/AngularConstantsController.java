@@ -71,6 +71,8 @@ public class AngularConstantsController {
     // maintainers on top-level allocation and PI assignments
     @Value("${top.ripe.ncc.mntners}")
     private String[] topRipeNccMntners;
+    @Value("${ripe.ncc.hm.mnt}")
+    private String ripeNccHmMnt;
     @Value("#{${mntners.allowed.to.create.autnum:{:}}}")
     private Map<String, String> mntnersAllowedToCreateAutnum;
     @Value("${sso.session.ttl.ms}")
@@ -160,6 +162,7 @@ public class AngularConstantsController {
         constants.setFrontendLiveChatKey(frontendLiveChatKey);
         constants.setRipeNccMntners(ripeNccMntners);
         constants.setTopRipeNccMntners(topRipeNccMntners);
+        constants.setRipeNccHmMnt(ripeNccHmMnt);
         constants.setMntnersAllowedToCreateAutnum(mntnersAllowedToCreateAutnum);
         constants.setSessionTtl(sessionTtl);
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
@@ -213,6 +216,8 @@ public class AngularConstantsController {
         private String[] ripeNccMntners;
         @JsonProperty("TOP_RIPE_NCC_MNTNERS")
         private String[] topRipeNccMntners;
+        @JsonProperty("RIPE_NCC_HM_MNT")
+        private String ripeNccHmMnt;
         @JsonProperty("MNTNER_ALLOWED_TO_CREATE_AUTNUM")
         private Map<String, String> mntnersAllowedToCreateAutnum;
         @JsonProperty("SESSION_TTL")
@@ -310,6 +315,10 @@ public class AngularConstantsController {
 
         public void setTopRipeNccMntners(String[] topRipeNccMntners) {
             this.topRipeNccMntners = topRipeNccMntners;
+        }
+
+        public void setRipeNccHmMnt(String ripeNccHmMnt) {
+            this.ripeNccHmMnt = ripeNccHmMnt;
         }
 
         public void setMntnersAllowedToCreateAutnum(Map<String, String> mntnersAllowedToCreateAutnum) {

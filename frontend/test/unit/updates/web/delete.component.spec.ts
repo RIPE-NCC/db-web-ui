@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, throwError } from 'rxjs';
+import { PropertiesService } from '../../../../src/app/properties.service';
 import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
@@ -38,6 +39,7 @@ describe('DeleteController', () => {
                 WhoisResourcesService,
                 AlertsService,
                 WhoisMetaService,
+                PropertiesService,
                 { provide: NgbModal, useValue: modalMock },
                 { provide: Router, useValue: routerMock },
                 {

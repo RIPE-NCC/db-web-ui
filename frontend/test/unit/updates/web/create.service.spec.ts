@@ -2,6 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
+import { PropertiesService } from '../../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { CreateService } from '../../../../src/app/updatesweb/create.service';
@@ -17,8 +18,18 @@ describe('CreateService', () => {
                 CreateService,
                 WhoisResourcesService,
                 WhoisMetaService,
-                { provide: 'WhoisResources', useValue: { wrapError: (error: string) => error, wrapSuccess: (success: string) => success } },
-                { provide: Router, useValue: { navigateByUrl: () => {}, events: of() } },
+                PropertiesService,
+                {
+                    provide: 'WhoisResources',
+                    useValue: { wrapError: (error: string) => error, wrapSuccess: (success: string) => success },
+                },
+                {
+                    provide: Router,
+                    useValue: {
+                        navigateByUrl: () => {},
+                        events: of(),
+                    },
+                },
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -41,7 +52,7 @@ describe('CreateService', () => {
         req.flush(createRoleRespons);
     });
 
-    it('should create two object in same time person-maintainer pair objects', () => {
+    it('should create two object in same time role-maintainer pair objects', () => {
         const source = 'RIPE';
         const multipleWhoisObjects = 'MNT';
 

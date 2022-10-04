@@ -13,9 +13,6 @@ import { RestService } from './rest.service';
 
 @Injectable()
 export class MntnerService {
-    private readonly nccHmMntner: string;
-    private readonly nccHmPiMntner: string;
-
     constructor(
         private credentialsService: CredentialsService,
         private whoisResourcesService: WhoisResourcesService,
@@ -24,10 +21,7 @@ export class MntnerService {
         private restService: RestService,
         private prefixService: PrefixService,
         private propertiesService: PropertiesService,
-    ) {
-        this.nccHmMntner = 'RIPE-NCC-HM-MNT';
-        this.nccHmPiMntner = 'RIPE-NCC-HM-PI-MNT';
-    }
+    ) {}
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Promise<any> {
         const object = {
@@ -91,43 +85,15 @@ export class MntnerService {
     }
 
     public isRemovable(mntnerKey: string) {
-        return !this.propertiesService.TOP_RIPE_NCC_MNTNERS.includes(mntnerKey.toUpperCase());
+        return !this.isNccMntner(mntnerKey);
     }
 
     public isNccMntner(mntnerKey: string): boolean {
-        return this.propertiesService.TOP_RIPE_NCC_MNTNERS.includes(mntnerKey.toUpperCase());
+        return this.propertiesService.isNccMntner(mntnerKey);
     }
 
     public isAnyNccMntner(mntnerKey: string): boolean {
-        return this.propertiesService.RIPE_NCC_MNTNERS.includes(mntnerKey.toUpperCase());
-    }
-
-    public isComaintained(attributes: any) {
-        return attributes.some((attr: any) => {
-            if (attr.name.toUpperCase() === 'MNT-BY') {
-                return this.isNccMntner(attr.value);
-            } else {
-                return false;
-            }
-        });
-    }
-
-    public isComaintainedWithNccHmMntner(attributes: any) {
-        return attributes.some((attr: any) => {
-            if (attr.name.toUpperCase() === 'MNT-BY') {
-                return this.isNccHmMntner(attr.value) || this.isNccHmPiMntner(attr.value);
-            } else {
-                return false;
-            }
-        });
-    }
-
-    public isNccHmMntner(mntnerKey: string): boolean {
-        return this.nccHmMntner === mntnerKey.toUpperCase();
-    }
-
-    public isNccHmPiMntner(mntnerKey: string): boolean {
-        return this.nccHmMntner === mntnerKey.toUpperCase();
+        return this.propertiesService.isAnyNccMntner(mntnerKey);
     }
 
     public isMntnerOnlist(list: IMntByModel[], mntner: IMntByModel): boolean {

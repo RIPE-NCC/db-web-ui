@@ -6,6 +6,7 @@ import {
     ModalEditAttribute,
     ModalProcessing,
 } from './components/modals.component';
+import { TextupdatesPage } from './textupdates.page';
 
 export class WebupdatesPage {
     visit(url: string) {
@@ -154,6 +155,16 @@ export class WebupdatesPage {
     expectDeleteButtonToExist(exist: boolean) {
         cy.get('#deleteObject').should(exist ? 'exist' : 'not.exist');
         return this;
+    }
+
+    clickEditInTextArea() {
+        cy.get('#btnEditInTextArea').click({ force: true });
+        return this;
+    }
+
+    expectTextupdatePage(url: string) {
+        cy.expectCurrentUrlToContain(`textupdates/modify/RIPE/${url}`);
+        return new TextupdatesPage();
     }
 
     expectModifyButtonToExist(exist: boolean) {

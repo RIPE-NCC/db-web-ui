@@ -444,13 +444,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         );
     }
 
-    public isResourceWithNccMntner() {
-        if (this.objectType === 'inetnum' || this.objectType === 'inet6num') {
-            return this.maintainers.objectOriginal.some((mntner: any) => {
-                return this.mntnerService.isAnyNccMntner(mntner.key);
-            });
-        }
-        return false;
+    public isDeletable(): boolean {
+        return this.whoisResourcesService.canDeleteObject(this.objectType, this.attributes, this.maintainers.objectOriginal);
     }
 
     public deleteObject() {
@@ -577,10 +572,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public getAttributeShortDescription(attrName: string) {
         return this.whoisMetaService.getAttributeShortDescription(this.objectType, attrName);
-    }
-
-    public isLirObject() {
-        return ObjectUtilService.isLirObject(this.attributes);
     }
 
     public isFormValid() {
