@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { PropertiesService } from '../../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { OrganisationHelperService } from '../../../../src/app/updatesweb/organisation-helper.service';
@@ -15,7 +16,14 @@ describe('OrganisationHelperService', () => {
 
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [OrganisationHelperService, WhoisResourcesService, WhoisMetaService, RestService, { provide: Router, useValue: routerMock }],
+            providers: [
+                OrganisationHelperService,
+                WhoisResourcesService,
+                WhoisMetaService,
+                RestService,
+                PropertiesService,
+                { provide: Router, useValue: routerMock },
+            ],
         });
         organisationHelperService = TestBed.inject(OrganisationHelperService);
     });

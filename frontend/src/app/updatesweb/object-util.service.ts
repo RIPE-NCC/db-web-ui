@@ -3,7 +3,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 
 export class ObjectUtilService {
     public static isLirObject(attributes: any): boolean {
-        return this.isAllocation(attributes) || !!_.find(attributes, { name: 'org-type', value: 'LIR' });
+        return this.isAllocation(attributes) || attributes.filter((attr) => attr.name === 'org-type' && attr.value.trim() === 'LIR').length > 0;
     }
 
     public static isAllocation(attributes: IAttributeModel[]) {

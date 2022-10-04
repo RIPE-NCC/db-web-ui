@@ -37,5 +37,20 @@ describe('Modifying an inetnum', () => {
         it('which is an end user assignment should NOT show delete btn', () => {
             webupdatesPage.visit('modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255').expectDeleteButtonToExist(false);
         });
+
+        it('should switch to text editor', () => {
+            webupdatesPage
+                .visit('modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255')
+                .clickEditInTextArea()
+                .expectTextupdatePage('inetnum/91.208.34.0%20-%2091.208.34.255');
+        });
+
+        it('which is an end user assignment should NOT show delete btn in text editor', () => {
+            webupdatesPage
+                .visit('modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255')
+                .clickEditInTextArea()
+                .expectTextupdatePage('inetnum/91.208.34.0%20-%2091.208.34.255')
+                .expectDeleteButtonToExist(false);
+        });
     });
 });

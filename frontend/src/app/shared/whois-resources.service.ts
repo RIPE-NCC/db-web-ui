@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { PropertiesService } from '../properties.service';
+import { ObjectUtilService } from '../updatesweb/object-util.service';
 import { WhoisMetaService } from './whois-meta.service';
-import { IAttributeModel, IErrorMessageModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
+import { IAttributeModel, IErrorMessageModel, IMntByModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
 
 @Injectable()
 export class WhoisResourcesService {
     private readonly allowedEmptyAttrs = ['remarks', 'descr', 'certif', 'address'];
 
-    constructor(private whoisMetaService: WhoisMetaService) {}
+    constructor(private whoisMetaService: WhoisMetaService, private propertiesService: PropertiesService) {}
 
     public addAttributeAfter(attributes: IAttributeModel[], attr: IAttributeModel, after: any) {
         const metaClone = {};
@@ -544,10 +546,37 @@ export class WhoisResourcesService {
             whoisResources = {};
             whoisResources.errormessages = {};
             whoisResources.errormessages.errormessage = [];
-            whoisResources.errormessages.errormessage.push({ severity: 'Error', text: 'Unexpected error: please retry later' });
+            whoisResources.errormessages.errormessage.push({
+                severity: 'Error',
+                text: 'Unexpected error: please retry later',
+            });
         }
         error.data = this.wrap(whoisResources);
         return error;
+    }
+
+    public canDeleteObject(objectType: string, attributes: IAttributeModel[], maintainers?: Array<IMntByModel | IAttributeModel>): boolean {
+        return !this.isComaintained(attributes, maintainers) && !ObjectUtilService.isLirObject(attributes);
+    }
+
+    // Resource is with Ncc Mntner
+    public isComaintained(attributes: IAttributeModel[], maintainers?: Array<IMntByModel | IAttributeModel>) {
+        maintainers = !!maintainers ? maintainers : WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by');
+        return maintainers.some((att: IMntByModel | IAttributeModel) => {
+            let value: string;
+            if ('value' in att) {
+                value = att.value.trim();
+            } else if ('key' in att) {
+                value = att.key.trim();
+            } else {
+                throw new Error(`wrong type for [${att}]`);
+            }
+            return this.propertiesService.isAnyNccMntner(value);
+        });
+    }
+
+    public isComaintainedWithNccHmMntner(attributes: any) {
+        return WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by').some((mnt) => this.propertiesService.isNccHmMntner(mnt.value));
     }
 
     private static repeat(text: string, n: number) {

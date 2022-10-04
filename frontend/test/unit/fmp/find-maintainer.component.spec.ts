@@ -5,6 +5,7 @@ import { CoreModule } from '../../../src/app/core/core.module';
 import { WINDOW_PROVIDERS } from '../../../src/app/core/window.service';
 import { FindMaintainerComponent } from '../../../src/app/fmp/find-maintainer.component';
 import { FindMaintainerService } from '../../../src/app/fmp/find-maintainer.service';
+import { PropertiesService } from '../../../src/app/properties.service';
 import { SharedModule } from '../../../src/app/shared/shared.module';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
@@ -25,6 +26,7 @@ describe('FindMaintainerComponent', () => {
                 { provide: FindMaintainerService, useValue: findMaintainerService },
                 { provide: UserInfoService, useValue: userInfoService },
                 { provide: Router, useValue: { navigate: () => {} } },
+                PropertiesService,
             ],
         });
     });

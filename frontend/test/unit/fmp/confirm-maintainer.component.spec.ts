@@ -1,8 +1,10 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ConfirmMaintainerComponent } from '../../../src/app/fmp/confirm-maintainer.component';
 import { EmailLinkService } from '../../../src/app/fmp/email-link.services';
+import { PropertiesService } from '../../../src/app/properties.service';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
@@ -15,11 +17,13 @@ describe('ConfirmMaintainerComponent', () => {
     beforeEach(() => {
         mockEmailLinkService = jasmine.createSpyObj('EmailLinkService', ['get', 'update']);
         TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule],
             declarations: [ConfirmMaintainerComponent],
             providers: [
                 AlertsService,
                 WhoisMetaService,
                 WhoisResourcesService,
+                PropertiesService,
                 { provide: EmailLinkService, useValue: mockEmailLinkService },
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParams: {} } } },
                 { provide: Router, useValue: { navigate: () => {} } },

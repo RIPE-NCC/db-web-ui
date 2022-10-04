@@ -176,7 +176,7 @@
             />
             <button (click)="cancel()" class="blue-button float-end" style="border: 0">Cancel</button>
         </span>
-        <span *ngIf="operation === MODIFY_OPERATION && !isLirObject() && !isResourceWithNccMntner()">
+        <span *ngIf="operation === MODIFY_OPERATION && isDeletable()">
             <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button float-start" style="border: 0; margin: 0">
                 Delete this object
             </button>

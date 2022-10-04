@@ -23,7 +23,7 @@
 
                 <button (click)="cancel()" class="blue-button float-end ga-text-modifyobj-cancel" style="border: 0">Cancel</button>
 
-                <button (click)="deleteObject()" class="red-button float-start ga-text-deleteobj-create" style="border: 0; margin: 0">
+                <button *ngIf="deletable" (click)="deleteObject()" class="red-button float-start ga-text-deleteobj-create" style="border: 0; margin: 0">
                     Delete this object
                 </button>
 

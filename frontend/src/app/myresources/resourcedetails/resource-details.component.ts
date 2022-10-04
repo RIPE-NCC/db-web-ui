@@ -60,6 +60,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         private restService: RestService,
         private orgDropDownSharedService: OrgDropDownSharedService,
         private activatedRoute: ActivatedRoute,
+        private whoisResourcesService: WhoisResourcesService,
         private alertsService: AlertsService,
         private router: Router,
     ) {
@@ -205,7 +206,7 @@ export class ResourceDetailsComponent implements OnDestroy {
     }
 
     public isDeletableResource(): boolean {
-        return !this.mntnerService.isComaintained(this.whoisObject.attributes.attribute);
+        return !this.whoisResourcesService.isComaintained(this.whoisObject.attributes.attribute);
     }
 
     public deleteClicked(deletedWhoisObject: any) {

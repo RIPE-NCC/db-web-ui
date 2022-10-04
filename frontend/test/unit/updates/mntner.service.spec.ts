@@ -24,6 +24,20 @@ describe('MntnerService', () => {
     };
 
     beforeEach(() => {
+        const propertiesService: PropertiesService = new PropertiesService(null);
+        propertiesService.RIPE_NCC_MNTNERS = [
+            'RIPE-NCC-HM-MNT',
+            'RIPE-NCC-END-MNT',
+            'RIPE-NCC-HM-PI-MNT',
+            'RIPE-GII-MNT',
+            'RIPE-DBM-MNT',
+            'RIPE-NCC-LOCKED-MNT',
+            'RIPE-ERX-MNT',
+            'RIPE-NCC-LEGACY-MNT',
+            'RIPE-NCC-MNT',
+        ];
+        propertiesService.TOP_RIPE_NCC_MNTNERS = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'];
+
         TestBed.configureTestingModule({
             imports: [UpdatesWebModule],
             providers: [
@@ -34,26 +48,20 @@ describe('MntnerService', () => {
                 WhoisMetaService,
                 {
                     provide: PropertiesService,
-                    useValue: {
-                        RIPE_NCC_MNTNERS: [
-                            'RIPE-NCC-HM-MNT',
-                            'RIPE-NCC-END-MNT',
-                            'RIPE-NCC-HM-PI-MNT',
-                            'RIPE-GII-MNT',
-                            'RIPE-DBM-MNT',
-                            'RIPE-NCC-LOCKED-MNT',
-                            'RIPE-ERX-MNT',
-                            'RIPE-NCC-LEGACY-MNT',
-                            'RIPE-NCC-MNT',
-                        ],
-                        TOP_RIPE_NCC_MNTNERS: ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'],
-                    },
+                    useFactory: () => propertiesService,
                 },
                 { provide: CredentialsService, useValue: credentialServiceMock },
                 { provide: 'ModalService', useValue: {} },
                 { provide: 'PrefixService', useValue: {} },
                 // because of RestService
-                { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, events: of() } },
+                {
+                    provide: Router,
+                    useValue: {
+                        navigate: () => {},
+                        navigateByUrl: () => {},
+                        events: of(),
+                    },
+                },
             ],
         });
         mntnerService = TestBed.inject(MntnerService);
@@ -112,25 +120,6 @@ describe('MntnerService', () => {
         });
 
         expect(ripeOwned.length).toEqual(allNccMntners.length);
-    });
-
-    it('should detect if object is comaintained', () => {
-        const attributes = [{ name: 'mnt-by', value: 'RIPE-NCC-LEGACY-MNT' }];
-        expect(mntnerService.isComaintained(attributes)).toBeTruthy();
-    });
-
-    it('should detect if object is comaintained with multiple mnts', () => {
-        const attributes = [
-            { name: 'mnt-by', value: 'RIPE-NCC-LEGACY-MNT' },
-            { name: 'mnt-by', value: 'SOME-MNT' },
-        ];
-        expect(mntnerService.isComaintained(attributes)).toBeTruthy();
-    });
-
-    it('should detect if object is NOT comaintained', () => {
-        const attributes = [{ name: 'mnt-by', value: 'SOME-MNT' }];
-        expect(mntnerService.isComaintained(attributes)).toBeFalse();
-        expect(mntnerService.isComaintained([])).toBeFalse();
     });
 
     it('should detect non RIPE-NCC mntners', () => {
@@ -343,7 +332,16 @@ describe('MntnerService', () => {
                 name: 'route6',
                 value: '2a12:9940::/29',
             },
-            { $$disable: false, $$hidden: false, $$id: 'attr-1', $$invalid: false, comment: undefined, link: undefined, name: 'origin', value: 'AS49910' },
+            {
+                $$disable: false,
+                $$hidden: false,
+                $$id: 'attr-1',
+                $$invalid: false,
+                comment: undefined,
+                link: undefined,
+                name: 'origin',
+                value: 'AS49910',
+            },
             {
                 $$disable: false,
                 $$hidden: false,
@@ -374,7 +372,16 @@ describe('MntnerService', () => {
                 name: 'created',
                 value: '2022-03-10T22:41:19Z',
             },
-            { $$disable: false, $$hidden: false, $$id: 'attr-5', $$invalid: false, comment: undefined, link: undefined, name: 'source', value: 'RIPE' },
+            {
+                $$disable: false,
+                $$hidden: false,
+                $$id: 'attr-5',
+                $$invalid: false,
+                comment: undefined,
+                link: undefined,
+                name: 'source',
+                value: 'RIPE',
+            },
         ];
         expect(attributes.length).toBe(6);
         expect(mntnerService.removeDuplicateMntsFromAttribute(attributes).length).toBe(5);

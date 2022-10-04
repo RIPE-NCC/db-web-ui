@@ -4,6 +4,7 @@ import { of, throwError } from 'rxjs';
 import { CoreModule } from '../../../src/app/core/core.module';
 import { ForgotMaintainerPasswordComponent } from '../../../src/app/fmp/forgot-maintainer-password.component';
 import { ForgotMaintainerPasswordService } from '../../../src/app/fmp/forgot-maintainer-password.service';
+import { PropertiesService } from '../../../src/app/properties.service';
 import { SharedModule } from '../../../src/app/shared/shared.module';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
@@ -38,6 +39,7 @@ describe('ForgotMaintainerPasswordComponent', () => {
                         },
                     },
                 },
+                PropertiesService,
             ],
         });
     });

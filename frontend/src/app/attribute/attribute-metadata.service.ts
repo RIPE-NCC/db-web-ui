@@ -4,8 +4,8 @@ import * as _ from 'lodash';
 import { JsUtilService } from '../core/js-utils.service';
 import { PrefixService } from '../domainobject/prefix.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
-import { MntnerService } from '../updatesweb/mntner.service';
 import { AttributeSharedService } from './attribute-shared.service';
 
 @Injectable()
@@ -63,7 +63,7 @@ export class AttributeMetadataService {
         private jsUtils: JsUtilService,
         private prefixService: PrefixService,
         private whoisMetaService: WhoisMetaService,
-        private mntnerService: MntnerService,
+        private whoisResourcesService: WhoisResourcesService,
         private attributeSharedService: AttributeSharedService,
     ) {
         this.objectMetadata = this.makeObjectMetadata();
@@ -485,11 +485,11 @@ export class AttributeMetadataService {
     }
 
     private isComaintained = (objectType: string, attributes: any): boolean => {
-        return this.mntnerService.isComaintained(attributes);
+        return this.whoisResourcesService.isComaintained(attributes);
     };
 
     private isNetnameDisabled = (objectType: string, attributes: any): boolean => {
-        return this.mntnerService.isComaintainedWithNccHmMntner(attributes);
+        return this.whoisResourcesService.isComaintainedWithNccHmMntner(attributes);
     };
 
     // Notes on metadata structure:

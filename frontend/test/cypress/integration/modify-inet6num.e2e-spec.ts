@@ -47,5 +47,13 @@ describe('Modifying an inet6num', () => {
         it('should show delete btn', () => {
             webupdatesPage.expectMaintainerToContain('XS4ALL-MNT').expectDeleteButtonToExist(true);
         });
+
+        it('should switch to text editor', () => {
+            webupdatesPage.clickEditInTextArea().expectTextupdatePage('inet6num/2002:998:2000::%2F36');
+        });
+
+        it('should not show delete btn in text editor', () => {
+            webupdatesPage.clickEditInTextArea().expectTextupdatePage('inet6num/2002:998:2000::%2F36').expectDeleteButtonToExist(true);
+        });
     });
 });
