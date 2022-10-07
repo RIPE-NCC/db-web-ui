@@ -63,4 +63,24 @@ describe('ReleaseNotificationService', () => {
 
         discardPeriodicTasks();
     }));
+
+    it('should trigger banner only 1 time', fakeAsync(() => {
+        releaseNotificationService.startPolling();
+        tick(pollInterval);
+        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '1' });
+
+        expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith(
+            'There is a new release available. Click reload to start using it.',
+            document.location.href,
+            'RELOAD',
+        );
+
+        alertServiceSpy.addGlobalWarning.calls.reset();
+
+        tick(pollInterval);
+        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '2' });
+
+        expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
+        discardPeriodicTasks();
+    }));
 });
