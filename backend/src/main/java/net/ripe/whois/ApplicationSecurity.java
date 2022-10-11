@@ -2,7 +2,8 @@ package net.ripe.whois;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
@@ -11,9 +12,13 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 public class ApplicationSecurity {
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // Security handled in CrowdTokenFilter
-        return (web) -> web.ignoring().antMatchers("/**");
+        return http
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/**").permitAll()
+            .and().build();
     }
 
     @Bean
