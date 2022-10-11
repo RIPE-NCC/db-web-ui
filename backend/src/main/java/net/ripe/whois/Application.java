@@ -12,6 +12,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -40,7 +41,7 @@ import java.util.OptionalLong;
 import java.util.concurrent.Executor;
 import java.util.stream.StreamSupport;
 
-@SpringBootApplication(scanBasePackages = {"net.ripe.whois"})
+@SpringBootApplication(scanBasePackages = {"net.ripe.whois"}, exclude = {UserDetailsServiceAutoConfiguration.class})
 @EnableCaching
 @EnableAsync
 public class Application implements AsyncConfigurer {
