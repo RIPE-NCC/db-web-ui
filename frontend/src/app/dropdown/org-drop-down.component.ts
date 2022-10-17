@@ -26,8 +26,8 @@ export class OrgDropDownComponent implements OnInit {
         this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
             this.initOrgsAndMemebers(userInfo);
         });
-        this.sessionInfoService.sessionExpire$.subscribe(() => {
-            this.sessionExpire = true;
+        this.sessionInfoService.expiredSession$.subscribe((isSessionExpired: boolean) => {
+            this.sessionExpire = isSessionExpired;
         });
     }
 

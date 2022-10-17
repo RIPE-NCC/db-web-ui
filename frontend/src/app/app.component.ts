@@ -15,7 +15,8 @@ export class AppComponent implements OnInit {
     public isDesktopView: boolean;
     public isOpenMenu: boolean;
     private innerWidth: number;
-    public sessionExpire: boolean = false;
+    public showSessionExpireBanner: boolean = false;
+    public showUserLoginIcon: boolean = false;
     public loginUrl: string;
 
     constructor(
@@ -26,9 +27,12 @@ export class AppComponent implements OnInit {
         @Inject(WINDOW) public window: any,
         private sessionInfoService: SessionInfoService,
     ) {
-        this.sessionInfoService.sessionExpire$.subscribe(() => {
+        this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner) => {
             this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(this.window.location.href)}`;
-            this.sessionExpire = true;
+            this.showSessionExpireBanner = raiseSessionExpireBanner;
+        });
+        this.sessionInfoService.showUserLoggedIcon$.subscribe((showUserLoggedIcon) => {
+            this.showUserLoginIcon = showUserLoggedIcon;
         });
         this.skipHash();
     }

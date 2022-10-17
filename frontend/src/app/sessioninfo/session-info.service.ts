@@ -3,17 +3,60 @@ import { interval, Subject, takeUntil } from 'rxjs';
 import { PropertiesService } from '../properties.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 
+const localStorageSessionCheckStarted = 'sessionCheck';
+const localStorageSessionExpiredKey = 'sessionExpired';
+const hasCookie = 'hasCookie';
+
 @Injectable()
 export class SessionInfoService {
     public cancelInterval$ = new Subject<void>();
-    public sessionExpire$ = new EventEmitter<boolean>();
+    public expiredSession$ = new EventEmitter<boolean>();
+    public showUserLoggedIcon$ = new EventEmitter<boolean>();
     public checkingSession: boolean;
+    private readonly onSessionManager;
 
-    constructor(private properties: PropertiesService, private userInfoService: UserInfoService) {}
+    constructor(private properties: PropertiesService, private userInfoService: UserInfoService) {
+        SessionInfoService.propagateCurrentCookieStatus();
+        this.onSessionManager = (e) => {
+            if (e.key === localStorageSessionExpiredKey && e.newValue) {
+                //if we logged out from the current window, in other window we will rise
+                // the banner. However, we don't want to rise the banner in the current one
+                if (this.checkingSession) {
+                    this.raiseAlert();
+                }
+                localStorage.removeItem(localStorageSessionExpiredKey);
+            } else if (e.key === localStorageSessionCheckStarted && e.newValue) {
+                this.cancelAndRestartCounter();
+            }
+        };
+        window.addEventListener('storage', this.onSessionManager);
+    }
+
+    private static propagateCurrentCookieStatus() {
+        const userWasLoggedIn = localStorage.getItem(hasCookie) !== null;
+        const crowdRipeHintCookieExist = document.cookie.includes('crowd.ripe.hint');
+        // user was logged and the crowd.ripe.hint cookie doesn't exist, so user is logged out
+        if (userWasLoggedIn && !crowdRipeHintCookieExist) {
+            localStorage.removeItem(hasCookie);
+            localStorage.setItem(localStorageSessionExpiredKey, 'TTL expired');
+        }
+    }
 
     public refreshSession() {
-        this.checkingSession = true;
+        if (!this.checkingSession) {
+            // we set the item to let the other browsers/tabs that we have a new session
+            localStorage.setItem(hasCookie, 'true');
+            localStorage.setItem(localStorageSessionCheckStarted, 'session check started');
+        }
+        this.cancelAndRestartCounter();
+    }
+
+    private cancelAndRestartCounter() {
+        localStorage.removeItem(localStorageSessionCheckStarted);
         this.cancelInterval$.next();
+        this.checkingSession = true;
+        this.expiredSession$.emit(false);
+        this.showUserLoggedIcon$.emit(true);
         this.checkingUserSessionExpired();
     }
 
@@ -21,6 +64,10 @@ export class SessionInfoService {
         this.userInfoService.removeUserInfo();
         if (this.checkingSession) {
             this.raiseAlert();
+            // we set the item to let the other browsers/tabs that session has expired
+            // this will not trigger the listener within the same tab
+            localStorage.removeItem(hasCookie);
+            localStorage.setItem(localStorageSessionExpiredKey, 'TTL expired');
         }
     }
 
@@ -39,7 +86,8 @@ export class SessionInfoService {
     private raiseAlert() {
         console.warn('TTL expired');
         this.checkingSession = false;
-        this.sessionExpire$.emit(true);
+        this.expiredSession$.emit(true);
+        this.showUserLoggedIcon$.emit(false);
         this.cancelInterval$.next();
     }
 }

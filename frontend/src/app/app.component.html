@@ -125,9 +125,14 @@
         ></mobile-menu>
         <ng-template #desktopMenu>
             <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
-            <user-login *ngIf="sessionExpire" class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
             <user-login
-                *ngIf="!sessionExpire"
+                *ngIf="showUserLoginIcon"
+                class="web-component"
+                [accessurl]="properties.LOGIN_URL"
+                [logoutredirecturl]="properties.LOGOUT_URL"
+            ></user-login>
+            <user-login
+                *ngIf="!showUserLoginIcon"
                 class="web-component"
                 [accessurl]="properties.LOGIN_URL"
                 [logoutredirecturl]="properties.LOGOUT_URL"
@@ -143,7 +148,7 @@
             <ngx-loading-bar></ngx-loading-bar>
             <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning" unsafehtml="{{ properties.BANNER }}" permanent="true"></app-banner>
             <app-banner
-                *ngIf="sessionExpire"
+                *ngIf="showSessionExpireBanner"
                 id="notification-warning-session"
                 level="warning"
                 [linkurl]="loginUrl"

@@ -80,32 +80,32 @@ describe('UserInfoService', () => {
         expect(req.request.method).toBe('GET');
         req.flush(userInfo);
     });
-});
 
-const userInfo: IUserInfoResponseData = {
-    user: {
-        username: 'test@ripe.net',
-        displayName: 'Test User',
-        uuid: 'aaaa-bbbb-cccc-dddd',
-        active: true,
-    },
-    members: [
-        {
-            membershipId: '7347',
-            regId: 'zz.example',
-            orgObjectId: 'ORG-EIP1-RIPE',
-            organisationName: 'Internet Provider BV',
-            roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
-            lir: true,
+    const userInfo: IUserInfoResponseData = {
+        user: {
+            username: 'test@ripe.net',
+            displayName: 'Test User',
+            uuid: 'aaaa-bbbb-cccc-dddd',
+            active: true,
         },
-        {
-            membershipId: '3629',
-            regId: 'nl.surfnet',
-            orgObjectId: 'ORG-Sb3-RIPE',
-            organisationName: 'SURFnet bv',
-            roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
-            lir: true,
-        },
-    ],
-    organisations: [],
-};
+        members: [
+            {
+                membershipId: '7347',
+                regId: 'zz.example',
+                orgObjectId: 'ORG-EIP1-RIPE',
+                organisationName: 'Internet Provider BV',
+                roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
+                lir: true,
+            },
+            {
+                membershipId: '3629',
+                regId: 'nl.surfnet',
+                orgObjectId: 'ORG-Sb3-RIPE',
+                organisationName: 'SURFnet bv',
+                roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
+                lir: true,
+            },
+        ],
+        organisations: [],
+    };
+});
