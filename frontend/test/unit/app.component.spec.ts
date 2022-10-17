@@ -42,7 +42,7 @@ describe('AppComponent', () => {
                     },
                 },
                 { provide: WINDOW, useValue: { location: {} } },
-                { provide: SessionInfoService, useValue: { sessionExpire$: of() } },
+                { provide: SessionInfoService, useValue: { expiredSession$: of(), showUserLoggedIcon$: of() } },
                 {
                     provide: ReleaseNotificationService,
                     useValue: releaseNotificationService,
