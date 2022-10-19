@@ -65,6 +65,7 @@ describe('lookup', () => {
             lookupPage
                 .expectJsonLinkHref('/ripe/route/211.43.192.0/19AS9777.json')
                 .expectXmlLinkHref('/ripe/route/211.43.192.0/19AS9777.xml')
+                .expectPlainTextLinkHref('/ripe/route/211.43.192.0/19AS9777.txt')
                 .expectHeaderToExist(false)
                 .getWhoisObjectViewer()
                 .expectAttributesSize(9)

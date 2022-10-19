@@ -92,6 +92,9 @@
                 <span><i class="fal fa-link" title="Permanent link to the results for this query."></i> PERMA</span>
                 <a href="{{ link.xml }}" title="XML format of the results for this query." target="_blank"> <i class="fal fa-file-code"></i> XML </a>
                 <a href="{{ link.json }}" title="JSON format of the results for this query." target="_blank"> <i class="fal fa-file-alt"></i> JSON </a>
+                <a href="{{ link.plainText }}" title="Plain text format of the results for this query." target="_blank">
+                    <i class="fal fa-file-alt"></i> PLAIN TEXT
+                </a>
             </div>
             <div class="controls">
                 <input matInput disabled [value]="link.perma" />

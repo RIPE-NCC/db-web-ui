@@ -21,21 +21,23 @@ export class LookupPage {
     }
 
     expectRipeStatLinkHref(href: string) {
-        return this.expectLinkHref('a.ripe-stat-button', href);
+        return this.expectLinkHrefToContain('a.ripe-stat-button', href);
     }
 
     expectXmlLinkHref(href: string) {
-        return this.expectLinkHref('a:contains("XML")', href);
+        return this.expectLinkHrefToContain('a:contains("XML")', href);
+    }
+
+    expectPlainTextLinkHref(href: string) {
+        return this.expectLinkHrefToContain('a:contains("PLAIN TEXT")', href);
     }
 
     expectJsonLinkHref(href: string) {
-        return this.expectLinkHref('a:contains("JSON")', href);
+        return this.expectLinkHrefToContain('a:contains("JSON")', href);
     }
 
-    expectLinkHref(selector: string, href: string) {
-        cy.get(selector)
-            .should('have.attr', 'href')
-            .then((val) => expect(val).to.contain(href));
+    expectLinkHrefToContain(selector: string, href: string) {
+        cy.get(selector).invoke('attr', 'href').should('contain', href);
         return this;
     }
 

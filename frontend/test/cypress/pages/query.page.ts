@@ -90,12 +90,19 @@ export class QueryPage {
     }
 
     expectXmlLinkToContain(text: string) {
-        cy.get('.perm-xml-json-resultlinks a:contains("XML")').invoke('attr', 'href').should('contain', text);
-        return this;
+        return this.expectHrefToContain('.perm-xml-json-resultlinks a:contains("XML")', text);
     }
 
     expectJsonLinkToContain(text: string) {
-        cy.get('.perm-xml-json-resultlinks a:contains("JSON")').invoke('attr', 'href').should('contain', text);
+        return this.expectHrefToContain('.perm-xml-json-resultlinks a:contains("JSON")', text);
+    }
+
+    expectPlainTextLinkToContain(text: string) {
+        return this.expectHrefToContain('.perm-xml-json-resultlinks a:contains("PLAIN TEXT")', text);
+    }
+
+    expectHrefToContain(selector: string, href: string) {
+        cy.get(selector).invoke('attr', 'href').should('contain', href);
         return this;
     }
 
