@@ -105,6 +105,7 @@ describe('Query scenario', () => {
             .expectPermaLinkToContain('/db-web-ui/query?searchtext=AS9777&rflag=true&source=RIPE&bflag=false')
             .expectJsonLinkToContain('.json?query-string=AS9777&flags=no-referenced&flags=no-irt&source=RIPE')
             .expectXmlLinkToContain('.xml?query-string=AS9777&flags=no-referenced&flags=no-irt&source=RIPE')
+            .expectPlainTextLinkToContain('.txt?query-string=AS9777&flags=no-referenced&flags=no-irt&source=RIPE')
             .clickOnCopyUrlButton();
 
         // TODO missing check content of the clipboard, the following code required browser permissions
@@ -271,7 +272,8 @@ describe('Query scenario', () => {
         queryPage
             .clickOnShareButton()
             .expectXmlLinkToContain('.xml?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE')
-            .expectJsonLinkToContain('.json?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE');
+            .expectJsonLinkToContain('.json?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE')
+            .expectPlainTextLinkToContain('.txt?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE');
     });
 
     it('should show version of whois after searching', () => {

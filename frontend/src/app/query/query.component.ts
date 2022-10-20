@@ -52,6 +52,7 @@ export class QueryComponent implements OnDestroy {
         json: string;
         perma: string;
         xml: string;
+        plainText: string;
     };
     public showsQueryFlagsContainer: boolean;
     public showsDocsLink: boolean;
@@ -104,6 +105,7 @@ export class QueryComponent implements OnDestroy {
             json: '',
             perma: '',
             xml: '',
+            plainText: '',
         };
 
         this.qp.types = queryParamMap.get('types') ? this.convertListToMapOfBools(queryParamMap.get('types').split(';')) : {};
@@ -332,9 +334,10 @@ export class QueryComponent implements OnDestroy {
         if (jsonQueryString) {
             this.link.perma = window.location.origin + '/db-web-ui/query?' + this.queryService.buildPermalink(cleanQp);
             this.link.json = this.properties.REST_SEARCH_URL + 'search.json?' + jsonQueryString;
-            this.link.xml = this.properties.REST_SEARCH_URL + 'search.xml?' + jsonQueryString;
+            this.link.xml = `${this.properties.REST_SEARCH_URL}search.xml?${jsonQueryString}`;
+            this.link.plainText = `${this.properties.REST_SEARCH_URL}search.txt?${jsonQueryString}`;
         } else {
-            this.link.perma = this.link.json = this.link.xml = '';
+            this.link.perma = this.link.json = this.link.xml = this.link.plainText = '';
         }
         this.showScroller = response.objects.object.length >= this.queryService.PAGE_SIZE;
         this.showFilters = true;
