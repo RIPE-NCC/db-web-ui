@@ -771,7 +771,13 @@ describe('Query scenario', () => {
     it('should sanitize XSS', () => {
         queryPage
             .visitQueryPageXSS('?bflag=true&dflag=false&rflag=true&searchtext=zz&source=GRS%3Cimg%20src%20onerror%3Dalert(document.domain)%3E')
-            .expectNoXSSAlert();
+            .expectNoXSSBanner();
+    });
+
+    it('should sanitize XSS link in banner', () => {
+        queryPage
+            .visitQueryPageXSS('?bflag=false&dflag=false&rflag=true&searchtext=xss&source=RIPEXSS%27><a%20href%3Dhttp:%2F%2Fevil.com>test<%2Fa>')
+            .expectNoLinksXSSinBanner();
     });
 
     it('should show autofill', () => {
