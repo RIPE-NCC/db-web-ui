@@ -46,8 +46,9 @@ export class ConfirmMaintainerComponent implements OnInit {
                 }
                 if (link.currentUserAlreadyManagesMntner === true) {
                     this.alertsService.addGlobalWarning(
-                        `Your RIPE NCC Access account is already associated with this mntner. ` +
-                            `You can modify this mntner <a href="${this.makeModificationUrl(this.key)}">here</a>.`,
+                        'Your RIPE NCC Access account is already associated with this mntner.',
+                        this.makeModificationUrl(this.key),
+                        'MODIFY THIS MNTNER',
                     );
                     return;
                 }

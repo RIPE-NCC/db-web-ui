@@ -252,8 +252,13 @@ export class QueryPage {
         return this;
     }
 
-    expectNoXSSAlert() {
+    expectNoXSSBanner() {
         cy.get('.app-banner.level-alarm .banner-text', { includeShadowDom: true }).find('img').should('not.exist');
+        return this;
+    }
+
+    expectNoLinksXSSinBanner() {
+        cy.get('.app-banner.level-alarm .banner-text', { includeShadowDom: true }).find('a').should('not.exist');
         return this;
     }
 

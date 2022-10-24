@@ -1,6 +1,6 @@
 import { ResourcesDetailPage, ResourcesPage } from '../pages/resources.page';
 
-describe.only('Resources detail', () => {
+describe('Resources detail', () => {
     const resourcesPage = new ResourcesPage();
     let resourcesDetailPage: ResourcesDetailPage;
 

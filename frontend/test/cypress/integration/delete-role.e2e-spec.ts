@@ -7,7 +7,7 @@ describe('Delete a role object', () => {
         webupdatesPage.visit('modify/ripe/role/IA6414-RIPE');
     });
 
-    it.only('should be able to pick up reason of deleting object', () => {
+    it('should be able to pick up reason of deleting object', () => {
         webupdatesPage.clickOnDeleteObjectButton().expectToShowModal().typeReason('my own reason').clickOnConfirmDeleteObject();
         cy.expectCurrentUrlToContain('webupdates/delete/ripe/role/IA6414-RIPE?onCancel=webupdates%2Fmodify');
     });

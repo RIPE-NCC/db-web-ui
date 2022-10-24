@@ -1,0 +1,28 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&source=RIPEXSS%27%3E%3Ca%20href=http://evil.com%3Etest%3C/a%3E&flags=r&offset=0&limit=20&query-string=xss",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://sussex.prepdev.ripe.net:1080/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&source=RIPEXSS%27%3E%3C/p%3E%3C/p%3E%3Ca%20href=http://evil.com%3E%3Cfont%20size=100%20color=red%3EClick%20here%20to%20grab%201000$%20asap%20%E2%9C%A8%3C/font%3E%3C/a%3E%3Cbase%20target=%22&flags=r&offset=0&limit=20&query-string=xss"
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "text": "Invalid source '%s'",
+                    "args": [
+                        {
+                            "value": "RIPEXSS'></p></p><a href=http://evil.com><font size=100 color=red>Click here to grab 1000$ asap ✨</font></a><base target=\""
+                        }
+                    ]
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}
