@@ -22,7 +22,7 @@
     "private": true,
     "devDependencies": {
         "@angular-builders/custom-webpack": "13.1.0",
-        "@angular-devkit/build-angular": "13.3.0",
+        "@angular-devkit/build-angular": "13.3.9",
         "@angular-eslint/builder": "13.2.0",
         "@angular-eslint/eslint-plugin": "13.1.0",
         "@angular-eslint/eslint-plugin-template": "13.1.0",
@@ -37,14 +37,14 @@
         "@types/jasmine": "4.0.3",
         "@types/jasminewd2": "2.0.10",
         "@types/lodash": "4.14.182",
-        "@types/node": "16.11.26",
+        "@types/node": "16.11.49",
         "@types/sanitize-html": "^2.6.2",
         "@typescript-eslint/eslint-plugin": "5.19.0",
         "@typescript-eslint/parser": "5.19.0",
         "babel-loader": "8.2.4",
         "connect-prism": "1.0.21",
         "cypress": "10.4.0",
-        "diff-package-lock": "^0.1.31",
+        "diff-package-lock": "0.1.31",
         "eslint": "8.13.0",
         "eslint-config-prettier": "8.5.0",
         "husky": "8.0.1",
@@ -56,7 +56,7 @@
         "karma-jasmine": "4.0.1",
         "karma-jasmine-html-reporter": "1.7.0",
         "karma-selenium-launcher": "1.0.1",
-        "karma-spec-reporter": "^0.0.34",
+        "karma-spec-reporter": "0.0.34",
         "lint-staged": "12.4.1",
         "prettier": "2.6.2",
         "prettier-plugin-organize-imports": "2.3.4",
@@ -64,7 +64,7 @@
         "typescript": "4.6.3"
     },
     "engines": {
-        "node": "16.15.1"
+        "node": "16.17.0"
     },
     "dependencies": {
         "@angular/animations": "13.3.0",
@@ -93,15 +93,15 @@
         "crypto-js": "4.1.1",
         "ip-address": "8.1.0",
         "lodash": "4.17.21",
-        "moment": "2.29.2",
+        "moment": "2.29.4",
         "ng-diff-match-patch": "3.0.1",
-        "ngx-cookie-service": "13.1.2",
-        "npm": "8.7.0",
+        "ngx-cookie-service": "13.2.1",
+        "npm": "8.19.2",
         "rxjs": "7.5.5",
         "sanitize-html": "^2.7.0",
         "tslib": "2.3.1",
         "whatwg-fetch": "3.6.2",
-        "zone.js": "0.11.5"
+        "zone.js": "0.11.8"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
