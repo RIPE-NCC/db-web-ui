@@ -5,6 +5,7 @@ import { CoreModule } from '../../../src/app/core/core.module';
 import { WINDOW_PROVIDERS } from '../../../src/app/core/window.service';
 import { FindMaintainerComponent } from '../../../src/app/fmp/find-maintainer.component';
 import { FindMaintainerService } from '../../../src/app/fmp/find-maintainer.service';
+import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { SharedModule } from '../../../src/app/shared/shared.module';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
@@ -14,10 +15,12 @@ describe('FindMaintainerComponent', () => {
     let fixture: ComponentFixture<FindMaintainerComponent>;
     let findMaintainerService: any;
     let userInfoService: any;
+    let mockFmpErrorService: any;
 
     beforeEach(() => {
         findMaintainerService = jasmine.createSpyObj('FindMaintainerService', ['search', 'sendMail']);
         userInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
+        mockFmpErrorService = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
         TestBed.configureTestingModule({
             imports: [SharedModule, CoreModule],
             declarations: [FindMaintainerComponent],
@@ -27,6 +30,7 @@ describe('FindMaintainerComponent', () => {
                 { provide: UserInfoService, useValue: userInfoService },
                 { provide: Router, useValue: { navigate: () => {} } },
                 PropertiesService,
+                { provide: FmpErrorService, useValue: mockFmpErrorService },
             ],
         });
     });
@@ -218,6 +222,7 @@ describe('FindMaintainerComponent', () => {
             component.validateEmail();
             fixture.detectChanges();
 
+            expect(mockFmpErrorService.isYourAccountBlockedError).toHaveBeenCalled();
             expect(component.alertsService.alerts.errors.length).toBe(1);
             expect(component.alertsService.alerts.errors[0].plainText).toBe('Error sending email');
             expect(component.router.navigate).toHaveBeenCalledWith(['fmp/forgotMaintainerPassword'], {

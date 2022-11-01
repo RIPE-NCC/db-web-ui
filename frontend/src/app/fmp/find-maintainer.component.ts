@@ -5,6 +5,7 @@ import { WINDOW } from '../core/window.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { FindMaintainerService, IFindMaintainer } from './find-maintainer.service';
+import { FmpErrorService } from './fmp-error.service';
 
 @Component({
     selector: 'find-maintainer',
@@ -20,6 +21,7 @@ export class FindMaintainerComponent implements OnInit {
         private userInfoService: UserInfoService,
         public alertsService: AlertsService,
         public router: Router,
+        private fmpErrorService: FmpErrorService,
     ) {}
 
     public ngOnInit() {
@@ -59,6 +61,10 @@ export class FindMaintainerComponent implements OnInit {
             },
             error: (error: any) => {
                 console.error('Error validating email:' + JSON.stringify(error));
+                if (this.fmpErrorService.isYourAccountBlockedError(error)) {
+                    this.fmpErrorService.setGlobalAccountBlockedError();
+                    return;
+                }
                 if (error.status !== 401 && error.status !== 403) {
                     if (_.isUndefined(error.data)) {
                         this.alertsService.addGlobalError('Error sending email');
@@ -73,7 +79,12 @@ export class FindMaintainerComponent implements OnInit {
 
     public switchToManualResetProcess(maintainerKey: string, voluntaryChoice: boolean = true) {
         console.info('Switch to voluntary manual');
-        this.router.navigate(['fmp/forgotMaintainerPassword'], { queryParams: { mntnerKey: maintainerKey, voluntary: voluntaryChoice } });
+        this.router.navigate(['fmp/forgotMaintainerPassword'], {
+            queryParams: {
+                mntnerKey: maintainerKey,
+                voluntary: voluntaryChoice,
+            },
+        });
     }
 
     public cancel() {

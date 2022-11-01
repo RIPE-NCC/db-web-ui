@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { UserInfoService } from '../userinfo/user-info.service';
+import { FmpErrorService } from './fmp-error.service';
 import { ForgotMaintainerPasswordService, IForgotMaintainerPassword } from './forgot-maintainer-password.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
         private alertsService: AlertsService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
+        private fmpErrorService: FmpErrorService,
     ) {}
 
     public ngOnInit() {
@@ -39,10 +41,17 @@ export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
     public next(fmp: IForgotMaintainerPassword, formValid: boolean) {
         if (formValid) {
             console.info('Form is valid, sending data to server.');
-            this.forgotMaintainerPasswordService.generatePdfAndEmail(fmp).subscribe((pdfUrl: string) => {
-                this.generatedPDFUrl = pdfUrl;
-                this.alertsService.setGlobalSuccess('Success!');
-            });
+            this.forgotMaintainerPasswordService.generatePdfAndEmail(fmp).subscribe(
+                (pdfUrl: string) => {
+                    this.generatedPDFUrl = pdfUrl;
+                    this.alertsService.setGlobalSuccess('Success!');
+                },
+                (error) => {
+                    if (this.fmpErrorService.isYourAccountBlockedError(error)) {
+                        this.fmpErrorService.setGlobalAccountBlockedError();
+                    }
+                },
+            );
         }
     }
 

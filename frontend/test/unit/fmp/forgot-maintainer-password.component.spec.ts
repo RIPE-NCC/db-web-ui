@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { CoreModule } from '../../../src/app/core/core.module';
+import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
 import { ForgotMaintainerPasswordComponent } from '../../../src/app/fmp/forgot-maintainer-password.component';
 import { ForgotMaintainerPasswordService } from '../../../src/app/fmp/forgot-maintainer-password.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -39,6 +40,7 @@ describe('ForgotMaintainerPasswordComponent', () => {
                         },
                     },
                 },
+                FmpErrorService,
                 PropertiesService,
             ],
         });

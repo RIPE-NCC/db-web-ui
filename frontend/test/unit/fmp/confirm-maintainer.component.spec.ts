@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ConfirmMaintainerComponent } from '../../../src/app/fmp/confirm-maintainer.component';
 import { EmailLinkService } from '../../../src/app/fmp/email-link.services';
+import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
@@ -13,9 +14,11 @@ describe('ConfirmMaintainerComponent', () => {
     let component: ConfirmMaintainerComponent;
     let fixture: ComponentFixture<ConfirmMaintainerComponent>;
     let mockEmailLinkService: any;
+    let mockFmpErrorService: any;
 
     beforeEach(() => {
         mockEmailLinkService = jasmine.createSpyObj('EmailLinkService', ['get', 'update']);
+        mockFmpErrorService = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [ConfirmMaintainerComponent],
@@ -24,6 +27,7 @@ describe('ConfirmMaintainerComponent', () => {
                 WhoisMetaService,
                 WhoisResourcesService,
                 PropertiesService,
+                { provide: FmpErrorService, useValue: mockFmpErrorService },
                 { provide: EmailLinkService, useValue: mockEmailLinkService },
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParams: {} } } },
                 { provide: Router, useValue: { navigate: () => {} } },
@@ -85,6 +89,7 @@ describe('ConfirmMaintainerComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
+        expect(mockFmpErrorService.isYourAccountBlockedError).toHaveBeenCalled();
         expect(component.alertsService.alerts.errors[0].plainText).toContain('Error fetching email-link');
         expect(component.alertsService.alerts.warnings.length > 0).toBeFalsy();
         expect(component.alertsService.alerts.infos.length > 0).toBeFalsy();
@@ -226,7 +231,7 @@ describe('ConfirmMaintainerComponent', () => {
         expect(component.alertsService.alerts.errors[0].plainText).toBe(
             `<p>An error occurred while adding the RIPE NCC Access account to the <span class="mntner">MNTNER</span> object.</p>` +
                 `<p>No changes were made to the <span class="mntner">MNTNER</span> object maintainer.</p>` +
-                `<p>If this error continues, please contact us at <a href="mailto:ripe-dbm@ripe.net">ripe-dbm@ripe.net</a> for assistance.</p>`,
+                `<p>If this error continues, please contact us at ripe-dbm@ripe.net for assistance.</p>`,
         );
     });
 
