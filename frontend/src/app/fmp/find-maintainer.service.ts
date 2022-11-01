@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
 import { IWhoisObjectModel } from '../shared/whois-response-type.model';
+import { FmpErrorService } from './fmp-error.service';
 
 export interface IFindMaintainer {
     maintainerKey: string;
@@ -16,7 +17,7 @@ export interface IFindMaintainer {
 export class FindMaintainerService {
     private readonly API_BASE_URL: string = 'api/whois-internal/api/fmp-pub/mntner/';
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private fmpErrorService: FmpErrorService) {}
 
     public search(maintainerKey: string): Observable<IFindMaintainer> {
         return this.find(maintainerKey).pipe(
@@ -32,6 +33,10 @@ export class FindMaintainerService {
                 if (error.status === 404) {
                     return throwError('The maintainer could not be found.');
                 } else if (error.status === 403) {
+                    if (this.fmpErrorService.isYourAccountBlockedError(error)) {
+                        this.fmpErrorService.setGlobalAccountBlockedError();
+                        return;
+                    }
                     return throwError(error.error); // XYZ-MNT is synchronized with organisation ABC in LIR Portal
                 } else if (error === 'switchToManualResetProcess') {
                     return throwError('switchToManualResetProcess');

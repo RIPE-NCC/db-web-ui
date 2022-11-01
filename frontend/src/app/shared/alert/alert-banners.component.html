@@ -2,7 +2,7 @@
     <app-banner
         *ngIf="error.linkurl; else bannerErrorWithoutLink"
         id="notification-error-{{ i }}"
-        level="error"
+        level="alarm"
         [linkurl]="error.linkurl"
         [linktext]="error.linktext"
         unsafehtml="{{ error.plainText | sanitizeHtml }}"

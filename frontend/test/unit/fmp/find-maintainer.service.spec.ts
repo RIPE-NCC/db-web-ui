@@ -1,15 +1,30 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FindMaintainerService } from '../../../src/app/fmp/find-maintainer.service';
+import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
+import { PropertiesService } from '../../../src/app/properties.service';
+import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 
 describe('FindMaintainerService', () => {
     let findMaintainerService: FindMaintainerService;
     let httpMock: HttpTestingController;
+    let fmpErrorServiceSpy;
 
     beforeEach(() => {
+        fmpErrorServiceSpy = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
+        fmpErrorServiceSpy.isYourAccountBlockedError.and.returnValue(false);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [FindMaintainerService],
+            providers: [
+                FindMaintainerService,
+                { provide: FmpErrorService, useValue: fmpErrorServiceSpy },
+                AlertsService,
+                WhoisResourcesService,
+                WhoisMetaService,
+                PropertiesService,
+            ],
         });
         httpMock = TestBed.inject(HttpTestingController);
         findMaintainerService = TestBed.inject(FindMaintainerService);
@@ -159,6 +174,7 @@ describe('FindMaintainerService', () => {
         findMaintainerService.search(maintainerKey).subscribe({
             next: () => {},
             error: (error: any) => {
+                expect(fmpErrorServiceSpy.isYourAccountBlockedError).toHaveBeenCalled();
                 expect(error.error).toBe('SHRYANE-MNT is synchronized with organisation ORG-BAd1-RIPE in LIR Portal.');
                 done();
             },

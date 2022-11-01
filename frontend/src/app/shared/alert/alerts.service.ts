@@ -85,9 +85,10 @@ export class AlertsService {
         }
     }
 
-    public setGlobalError(errorMsg: string) {
+    public setGlobalError(errorMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
         this.clearAlertMessages();
-        this.alerts.errors.push({ plainText: errorMsg });
+        const error = linkurl ? { plainText: errorMsg, linkurl: linkurl, linktext: linktext, permanent: permanent } : { plainText: errorMsg };
+        this.alerts.errors.push(error);
         this.alertsChanged.emit(this.alerts);
     }
 

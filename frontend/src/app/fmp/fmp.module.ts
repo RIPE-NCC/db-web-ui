@@ -7,6 +7,7 @@ import { ConfirmMaintainerComponent } from './confirm-maintainer.component';
 import { EmailLinkService } from './email-link.services';
 import { FindMaintainerComponent } from './find-maintainer.component';
 import { FindMaintainerService } from './find-maintainer.service';
+import { FmpErrorService } from './fmp-error.service';
 import { ForgotMaintainerPasswordComponent } from './forgot-maintainer-password.component';
 import { ForgotMaintainerPasswordService } from './forgot-maintainer-password.service';
 import { MailSentComponent } from './mail-sent.component';
@@ -23,6 +24,6 @@ import { SsoAddedComponent } from './sso-added.component';
         RequireLoginComponent,
         SsoAddedComponent,
     ],
-    providers: [FindMaintainerService, EmailLinkService, ForgotMaintainerPasswordService, UserInfoService],
+    providers: [FindMaintainerService, EmailLinkService, ForgotMaintainerPasswordService, UserInfoService, FmpErrorService],
 })
 export class FmpModule {}

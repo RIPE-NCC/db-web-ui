@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { EmailLinkService } from './email-link.services';
+import { FmpErrorService } from './fmp-error.service';
 
 @Component({
     selector: 'confirm-maintainer',
@@ -21,6 +22,7 @@ export class ConfirmMaintainerComponent implements OnInit {
         public alertsService: AlertsService,
         public activatedRoute: ActivatedRoute,
         public router: Router,
+        public fmpErrorService: FmpErrorService,
     ) {}
 
     public ngOnInit() {
@@ -56,6 +58,10 @@ export class ConfirmMaintainerComponent implements OnInit {
                 this.alertsService.addGlobalInfo('You are logged in with the RIPE NCC Access account ' + this.user);
             },
             error: (error: any) => {
+                if (this.fmpErrorService.isYourAccountBlockedError(error)) {
+                    this.fmpErrorService.setGlobalAccountBlockedError();
+                    return;
+                }
                 let msg = 'Error fetching email-link';
                 if (!_.isObject(error.data)) {
                     msg = msg.concat(': ' + error.data);
@@ -75,14 +81,17 @@ export class ConfirmMaintainerComponent implements OnInit {
             },
             error: (error: any) => {
                 console.error('Error associating email-link:' + JSON.stringify(error));
-
+                if (this.fmpErrorService.isYourAccountBlockedError(error)) {
+                    this.fmpErrorService.setGlobalAccountBlockedError();
+                    return;
+                }
                 if (error.status === 400 && !_.isUndefined(error.data) && error.data.match(/already contains SSO/).length === 1) {
                     this.alertsService.setGlobalError(error.data);
                 } else {
                     this.alertsService.setGlobalError(
                         `<p>An error occurred while adding the RIPE NCC Access account to the <span class="mntner">MNTNER</span> object.</p>` +
                             `<p>No changes were made to the <span class="mntner">MNTNER</span> object ${this.key}.</p>` +
-                            `<p>If this error continues, please contact us at <a href="mailto:ripe-dbm@ripe.net">ripe-dbm@ripe.net</a> for assistance.</p>`,
+                            `<p>If this error continues, please contact us at ripe-dbm@ripe.net for assistance.</p>`,
                     );
                 }
             },
