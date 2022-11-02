@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address4 } from 'ip-address';
 import * as _ from 'lodash';
-import { PrefixService } from '../domainobject/prefix.service';
+import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
+import { IpAddressService } from '../myresources/ip-address.service';
 import { PropertiesService } from '../properties.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -19,7 +20,6 @@ export class MntnerService {
         private whoisMetaService: WhoisMetaService,
         private modalService: NgbModal,
         private restService: RestService,
-        private prefixService: PrefixService,
         private propertiesService: PropertiesService,
     ) {}
 
@@ -274,7 +274,8 @@ export class MntnerService {
     }
 
     public getMntsToAuthenticateUsingParent(prefix: any, mntHandler: any) {
-        const address = this.prefixService.getAddress(prefix);
+        prefix = IpAddressService.rangeToSlash(prefix);
+        const address = IpAddressService.getCidrAddress(prefix);
         const objectType = address instanceof Address4 ? 'inetnum' : 'inet6num';
         this.restService.fetchResource(objectType, prefix).then(
             (result: any) => {
@@ -293,7 +294,7 @@ export class MntnerService {
                     // (2) if NOT exact match, then check for mnt-lower
                     const primaryKey = this.whoisResourcesService.getPrimaryKey(wrappedResource);
 
-                    if (!(this.prefixService.isExactMatch(address, primaryKey) && this.prefixService.isSizeOfDomainBlock(address))) {
+                    if (!(PrefixServiceUtils.isExactMatch(address, primaryKey) && PrefixServiceUtils.isSizeOfDomainBlock(address))) {
                         const mntLowers = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, 'mnt-lower');
                         if (mntLowers.length > 0) {
                             return mntHandler(mntLowers);

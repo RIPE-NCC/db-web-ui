@@ -3,6 +3,7 @@ import { WebupdatesPage } from '../pages/webupdates.page';
 describe('The create domain screen', () => {
     const mock = './test/e2e/mocks/e2eTest/9230e0326523f17e39b0346d57254897ca195693.json';
     const successDomainCreated = './test/e2e/mocks/e2eTest/create-domain-success-200.json';
+    const successDomainCreateFromRange = './test/e2e/mocks/e2eTest/create-domain-from-range-success-200.json';
     const failDomainCreate = './test/e2e/mocks/e2eTest/create-domain-failed-400.json';
 
     const webupdatesPage = new WebupdatesPage();
@@ -147,5 +148,29 @@ describe('The create domain screen', () => {
     it("shouldn't show error messages when creating prefix < 24 and mnt-lower is associated", () => {
         // creating domain with prefix < 24 will result in more domain objects /24
         webupdatesPage.typeOnField('prefix', '91.109.48.0/21').blurOnField('prefix').expectInfoOnField('prefix', 'Prefix looks OK');
+    });
+
+    it('should create domain for prefix specified in range', () => {
+        webupdatesPage
+            .typeOnField('prefix', '91.109.48.0-91.109.48.255')
+            .blurOnField('prefix')
+            .authenticateWithDisabledAssociate('CONSIAGNET-MNT')
+            .typeOnField('nserver$1', 'dns01.estracom.it')
+            .blurOnField('nserver$1')
+            .typeOnField('nserver$2', 'dns02.estracom.it')
+            .blurOnField('nserver$2')
+            .expectReverseZoneTableToHaveRows(1);
+
+        webupdatesPage
+            .typeOnField('admin-c', 'LG1-RIPE')
+            .selectFromFieldAutocomplete('admin-c', 'LG1-RIPE')
+            .typeOnField('tech-c', 'LG1-RIPE')
+            .selectFromFieldAutocomplete('tech-c', 'LG1-RIPE')
+            .typeOnField('zone-c', 'LG1-RIPE')
+            .selectFromFieldAutocomplete('zone-c', 'LG1-RIPE');
+
+        cy.changeJsonResponseFile(successDomainCreateFromRange, mock);
+
+        webupdatesPage.submitCreate().expectSuccessMessage('object(s) have been successfully created');
     });
 });

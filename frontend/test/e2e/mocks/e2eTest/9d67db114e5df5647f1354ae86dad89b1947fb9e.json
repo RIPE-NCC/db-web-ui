@@ -1,0 +1,12 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=CONSIAGNET-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "CONSIAGNET-MNT",
+            "type": "mntner",
+            "auth": ["MD5-PW", "SSO"]
+        }
+    ]
+}

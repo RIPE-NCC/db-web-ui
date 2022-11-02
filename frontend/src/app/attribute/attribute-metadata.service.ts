@@ -3,6 +3,8 @@ import { Address4 } from 'ip-address';
 import * as _ from 'lodash';
 import { JsUtilService } from '../core/js-utils.service';
 import { PrefixService } from '../domainobject/prefix.service';
+import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
+import { IpAddressService } from '../myresources/ip-address.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -270,7 +272,7 @@ export class AttributeMetadataService {
         }
 
         this.cachedResponses = {}; // prefix changed, so empty the cache
-        if (this.prefixService.isValidPrefix(attribute.value)) {
+        if (PrefixServiceUtils.isValidPrefix(attribute.value)) {
             this.lastPrefix = attribute.value;
             this.attributeSharedService.prefixOk(attribute.value);
             attribute.$$info = 'Prefix looks OK';
@@ -279,7 +281,7 @@ export class AttributeMetadataService {
         }
 
         attribute.$$info = '';
-        const cidrAddress = this.prefixService.getAddress(attribute.value);
+        const cidrAddress = IpAddressService.getCidrAddress(attribute.value);
         if (cidrAddress instanceof Address4 && cidrAddress.subnetMask > 24) {
             attribute.$$error = "Please use the <a target='_blank' href='syncupdates'>Syncupdates page</a> to create a domain object smaller than /24";
         } else if (cidrAddress instanceof Address4 && cidrAddress.subnetMask < 16) {
@@ -396,7 +398,7 @@ export class AttributeMetadataService {
             return true;
         }
 
-        if (attribute.value && this.prefixService.getAddress(attribute.value)) {
+        if (attribute.value && IpAddressService.getCidrAddress(attribute.value)) {
             attribute.$$info = '';
             attribute.$$error = 'IP notation not allowed, use a fully qualified domain name';
             return true;
