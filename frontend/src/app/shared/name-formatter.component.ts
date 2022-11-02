@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { IpAddressService } from '../myresources/ip-address.service';
+import { ObjectTypesEnum } from '../query/object-types.enum';
 
 @Component({
     selector: 'name-formatter',
@@ -12,7 +13,7 @@ export class NameFormatterComponent implements OnInit, OnChanges {
     public type: string;
     public formatted: string;
 
-    constructor(private ipAddressService: IpAddressService) {}
+    constructor() {}
 
     public ngOnInit() {
         this.applyFormat();
@@ -24,6 +25,8 @@ export class NameFormatterComponent implements OnInit, OnChanges {
 
     private applyFormat() {
         this.formatted =
-            typeof this.type === 'string' && this.type.toUpperCase() === 'INETNUM' ? this.ipAddressService.formatAsPrefix(this.name) : this.name || '';
+            typeof this.type === 'string' && this.type.toUpperCase() === ObjectTypesEnum.INETNUM.toUpperCase()
+                ? IpAddressService.rangeToSlash(this.name)
+                : this.name || '';
     }
 }

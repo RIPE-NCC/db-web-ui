@@ -23,96 +23,71 @@ describe('PrefixService', () => {
         expect(prefixService).toBeTruthy();
     });
 
-    describe('IPv4', () => {
-        it('should be able to validate a bunch of good prefixes', () => {
-            expect(prefixService.isValidPrefix('22.22.0.0/16')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/17')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/18')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/19')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/20')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/21')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/22')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/23')).toBeTruthy();
-            expect(prefixService.isValidPrefix('22.22.0.0/24')).toBeTruthy();
+    describe('checkNameserverAsync', () => {
+        it('should throw an error if no ns', (done) => {
+            prefixService.checkNameserverAsync(undefined, 'zone').subscribe({
+                next: null,
+                error: (error) => {
+                    expect(error).toBe('checkNameserverAsync called without ns');
+                    done();
+                },
+            });
         });
 
-        it('should fail on out-of-range subnet mask', () => {
-            expect(prefixService.isValidPrefix('22.22.0.0/8')).toBeFalse();
-            expect(prefixService.isValidPrefix('22.22.0.0/25')).toBeFalse();
+        it('should throw an error if no zone', (done) => {
+            prefixService.checkNameserverAsync('ns', undefined).subscribe({
+                next: null,
+                error: (error) => {
+                    expect(error).toBe('checkNameserverAsync called without rDnsZone');
+                    done();
+                },
+            });
         });
 
-        it('should fail when address bits are masked', () => {
-            expect(prefixService.isValidPrefix('192.168.64.0/17')).toBeFalse();
-            expect(prefixService.isValidPrefix('192.168.255.0/18')).toBeFalse();
-            expect(prefixService.isValidPrefix('192.168.0.1/24')).toBeFalse();
-        });
-
-        it('should fail when address is not complete', () => {
-            expect(prefixService.isValidPrefix('192.168.0/17')).toBeFalse();
-        });
-
-        it('should fail when subnet mask is missing', () => {
-            expect(prefixService.isValidPrefix('192.168.0.0')).toBeFalse();
-            expect(prefixService.isValidPrefix('192.168.0.0/')).toBeFalse();
-            expect(prefixService.isValidPrefix('192.168.0.0/0')).toBeFalse();
-            expect(prefixService.isValidPrefix('192.168.0.0/00')).toBeFalse();
-        });
-
-        it('should generate some lovely reverse zone records', () => {
-            //expect(prefixService.getReverseDnsZones("22.0.0.0/9").length).toBe(128);
-            //expect(prefixService.getReverseDnsZones("22.0.0.0/10").length).toBe(64);
-            //expect(prefixService.getReverseDnsZones("22.0.0.0/11").length).toBe(32);
-            //expect(prefixService.getReverseDnsZones("22.0.0.0/12").length).toBe(16);
-            //expect(prefixService.getReverseDnsZones("22.0.0.0/13").length).toBe(8);
-            //expect(prefixService.getReverseDnsZones("22.0.0.0/14").length).toBe(4);
-            //expect(prefixService.getReverseDnsZones("22.0.0.0/15").length).toBe(2);
-            expect(prefixService.getReverseDnsZones('22.0.0.0/16').length).toBe(1);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/17').length).toBe(128);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/18').length).toBe(64);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/19').length).toBe(32);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/20').length).toBe(16);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/21').length).toBe(8);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/22').length).toBe(4);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/23').length).toBe(2);
-            expect(prefixService.getReverseDnsZones('22.22.0.0/24').length).toBe(1);
+        it('should call the proper url when ns and zone', (done) => {
+            prefixService.checkNameserverAsync('ns', 'zone').subscribe({
+                next: (response) => {
+                    expect(response).toBe('response');
+                    done();
+                },
+            });
+            const req = httpMock.expectOne({ method: 'GET', url: 'api/dns/status?ignore404=true&ns=ns&record=zone' });
+            req.flush('response');
         });
     });
 
-    describe('IPv6', () => {
-        it('should be able to validate a bunch of good prefixes', () => {
-            expect(prefixService.isValidPrefix('2001:db8::/48')).toBeTruthy();
-            expect(prefixService.isValidPrefix('2001:db8::/64')).toBeTruthy();
-            // expect(prefixService.isValidPrefix("2001:db8::1/19")).toBeTruthy();
-            // expect(prefixService.isValidPrefix("2001:db8::1/20")).toBeTruthy();
-            // expect(prefixService.isValidPrefix("2001:db8::1/21")).toBeTruthy();
-            // expect(prefixService.isValidPrefix("2001:db8::1/22")).toBeTruthy();
-            // expect(prefixService.isValidPrefix("2001:db8::1/23")).toBeTruthy();
-            // expect(prefixService.isValidPrefix("2001:db8::1/24")).toBeTruthy();
+    describe('findExistingDomainsForPrefix', () => {
+        it('should zip ', (done) => {
+            prefixService.findExistingDomainsForPrefix('prefix').subscribe({
+                next: (response: unknown) => {
+                    expect(response[0].body).toBe('drx');
+                    expect(response[1].body).toBe('drM');
+                    done();
+                },
+            });
+            const drxReq = httpMock.expectOne({
+                method: 'GET',
+                url: 'api/rest/search?flags=drx&ignore404=true&query-string=prefix&type-filter=domain',
+            });
+            const drMReq = httpMock.expectOne({
+                method: 'GET',
+                url: 'api/rest/search?flags=drM&ignore404=true&query-string=prefix&type-filter=domain',
+            });
+            drxReq.flush('drx');
+            drMReq.flush('drM');
         });
+    });
 
-        it('should fail on out-of-range subnet mask', () => {
-            expect(prefixService.isValidPrefix('2001:db8::/0')).toBeFalse();
-            //expect(prefixService.isValidPrefix("2001:db8::/128")).toBeFalse();
-        });
-
-        it('should fail when address bits are masked', () => {
-            expect(prefixService.isValidPrefix('2001:db8::1/48')).toBeFalse();
-            expect(prefixService.isValidPrefix('2001:db8::/28')).toBeFalse();
-        });
-
-        it('should fail when subnet mask is missing', () => {
-            expect(prefixService.isValidPrefix('2001:db8::')).toBeFalse();
-            expect(prefixService.isValidPrefix('2001:db8::/')).toBeFalse();
-            expect(prefixService.isValidPrefix('2001:db8::/0')).toBeFalse();
-            expect(prefixService.isValidPrefix('2001:db8::/00')).toBeFalse();
-        });
-
-        it('should generate some lovely reverse zone records', () => {
-            expect(prefixService.getReverseDnsZones('2001:db8::/48').length).toBe(1);
-            expect(prefixService.getReverseDnsZones('2001:db8::/47').length).toBe(2);
-            expect(prefixService.getReverseDnsZones('2001:db8::/46').length).toBe(4);
-            expect(prefixService.getReverseDnsZones('2001:db8::/45').length).toBe(8);
-            expect(prefixService.getReverseDnsZones('2001:db8::/44').length).toBe(1);
+    describe('getDomainCreationStatus', () => {
+        it('should call proper url', (done) => {
+            prefixService.getDomainCreationStatus('RIPE').subscribe({
+                next: (response) => {
+                    expect(response.body).toBe('response');
+                    done();
+                },
+            });
+            const req = httpMock.expectOne({ method: 'GET', url: 'api/whois/domain-objects/RIPE/status' });
+            req.flush('response');
         });
     });
 });

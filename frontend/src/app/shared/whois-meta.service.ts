@@ -1298,7 +1298,7 @@ export class WhoisMetaService {
         prefix: {
             description: 'Specifies an IPv4 or IPv6 prefix for which Reverse DNS is requested. One or multiple reverse domains will be created automatically.',
             short: 'Specifies an IPv4 or IPv6 prefix for which Reverse DNS is requested.',
-            syntax: 'Specify a prefix in Classless Inter-Domain Routing (CIDR) notation, e.g. 192.168.2.0/24 or 2001:db8::/32',
+            syntax: 'Specify a prefix in Classless Inter-Domain Routing (CIDR) notation (e.g. 192.168.2.0/24 or 2001:db8::/32) or in range (e.g. 192.168.2.0 - 192.168.2.255)',
         },
         'ref-nfy': {
             description:

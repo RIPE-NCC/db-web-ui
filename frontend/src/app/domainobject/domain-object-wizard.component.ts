@@ -19,7 +19,7 @@ import { RestService } from '../updatesweb/rest.service';
 import { IAuthParams, WebUpdatesCommonsService } from '../updatesweb/web-updates-commons.service';
 import { ModalDomainCreationWaitComponent } from './modal-domain-creation-wait.component';
 import { ModalDomainObjectSplashComponent } from './modal-domain-object-splash.component';
-import { PrefixService } from './prefix.service';
+import { PrefixServiceUtils } from './prefix.service.utils';
 
 interface IDomainObject {
     attributes: {
@@ -68,7 +68,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         private webUpdatesCommonsService: WebUpdatesCommonsService,
         private credentialsService: CredentialsService,
         private messageStoreService: MessageStoreService,
-        private prefixService: PrefixService,
         private errorReporterService: ErrorReporterService,
         private alertsService: AlertsService,
         private location: Location,
@@ -138,7 +137,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         const revZonesAttr = _.find(this.attributes, (attr: any) => {
             return attr.name === 'reverse-zone';
         });
-        revZonesAttr.value = this.prefixService.getReverseDnsZones(prefixValue);
+        revZonesAttr.value = PrefixServiceUtils.getReverseDnsZones(prefixValue);
 
         this.mntnerService.getMntsToAuthenticateUsingParent(prefixValue, (mntners: any) => {
             const mySsos = _.map(this.maintainers.sso, 'key');

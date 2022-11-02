@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
 import { Address4, Address6 } from 'ip-address';
-import { IResourceRangeModel } from './resource-type.model';
 
 const ipv4RangeRegex = new RegExp(/([\d.]+)\s?-\s?([\d.]+)/);
 
-@Injectable()
 export class IpAddressService {
+    // range or cidr
     public static isValidIpv4(searchTerm: string): boolean {
         return IpAddressService.isValidV4(searchTerm) || IpAddressService.isValidRange(searchTerm);
     }
@@ -37,7 +35,7 @@ export class IpAddressService {
         return ((ip >> 24) & 255) + '.' + ((ip >> 16) & 255) + '.' + ((ip >> 8) & 255) + '.' + (ip & 255);
     }
 
-    public range2CidrList(startIp: string, endIp: string): string[] {
+    public static range2CidrList(startIp: string, endIp: string): string[] {
         let start = IpAddressService.ipToLong(startIp);
         const end = IpAddressService.ipToLong(endIp);
         const cidrs = [];
@@ -64,10 +62,11 @@ export class IpAddressService {
         return cidrs;
     }
 
-    public formatAsPrefix(range: string): string {
+    // covert range to slash, e.g. 1.1.1.0-1.1.1.255 to 1.1.1.0/24
+    public static rangeToSlash(range: string): string {
         if (IpAddressService.isValidRange(range)) {
             const match = ipv4RangeRegex.exec(range);
-            const prefixes = this.range2CidrList(match[1], match[2]);
+            const prefixes = IpAddressService.range2CidrList(match[1], match[2]);
             if (prefixes.length === 1) {
                 return prefixes[0];
             }
@@ -75,17 +74,7 @@ export class IpAddressService {
         return range;
     }
 
-    public getIpv4Start(range: IResourceRangeModel): number {
-        const match = ipv4RangeRegex.exec(range.string);
-        return new Address4(match[1]).bigInteger().intValue();
-    }
-
-    public getIpv4End(range: IResourceRangeModel): number {
-        const match = ipv4RangeRegex.exec(range.string);
-        return new Address4(match[2]).bigInteger().intValue();
-    }
-
-    public fromSlashToRange(inetnum: string): string {
+    public static fromSlashToRange(inetnum: string): string {
         if (inetnum.indexOf(',') > -1) {
             return this.doSlashToRangeMagic(inetnum);
         } else {
@@ -93,7 +82,7 @@ export class IpAddressService {
         }
     }
 
-    private doSlashToRangeMagic(inetnum: string): string {
+    private static doSlashToRangeMagic(inetnum: string): string {
         let range: any;
         inetnum.split(',/').forEach((str: string) => {
             if (!range) {
@@ -108,5 +97,16 @@ export class IpAddressService {
         });
 
         return range.address;
+    }
+
+    public static getCidrAddress(str: string) {
+        try {
+            if (IpAddressService.isValidIpv4(str)) {
+                return new Address4(IpAddressService.rangeToSlash(str));
+            } else if (IpAddressService.isValidV6(str)) {
+                return new Address6(str);
+            }
+        } catch (e) {}
+        return null;
     }
 }

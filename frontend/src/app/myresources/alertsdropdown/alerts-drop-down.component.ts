@@ -22,12 +22,7 @@ export class AlertsDropDownComponent implements OnChanges {
         this.route.navigate(['myresources/detail', 'inetnum', resource, 'false']);
     }
 
-    constructor(
-        private userInfoService: UserInfoService,
-        private resourcesDataService: ResourcesDataService,
-        private ipAddressService: IpAddressService,
-        private route: Router,
-    ) {}
+    constructor(private userInfoService: UserInfoService, private resourcesDataService: ResourcesDataService, private route: Router) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         this.loadIpv4Analysis();
@@ -61,6 +56,6 @@ export class AlertsDropDownComponent implements OnChanges {
     }
 
     public getRange(inetnum: string): string {
-        return this.ipAddressService.fromSlashToRange(inetnum);
+        return IpAddressService.fromSlashToRange(inetnum);
     }
 }

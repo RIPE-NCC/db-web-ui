@@ -1,0 +1,101 @@
+{
+    "requestUrl": "/api/whois/domain-objects/RIPE/status",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://127.0.0.1:1080/domain-objects/RIPE"
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "domain",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/domain/48.109.91.in-addr.arpa"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "domain",
+                                "value": "48.109.91.in-addr.arpa"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "domain",
+                                "value": "48.109.91.in-addr.arpa"
+                            },
+                            {
+                                "name": "nserver",
+                                "value": "dns01.estracom.it"
+                            },
+                            {
+                                "name": "nserver",
+                                "value": "dns02.estracom.it"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TA4069-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TA4069-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TA4069-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TA4069-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TA4069-RIPE"
+                                },
+                                "name": "zone-c",
+                                "value": "TA4069-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/CONSIAGNET-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "CONSIAGNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2022-10-21T21:58:58Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2022-10-21T21:58:58Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

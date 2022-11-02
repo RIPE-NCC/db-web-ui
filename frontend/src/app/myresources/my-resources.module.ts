@@ -9,7 +9,6 @@ import { AssociatedObjectsComponent } from './associatedobjects/associated-objec
 import { AssociatedObjectsService } from './associatedobjects/associated-objects.service';
 import { HierarchySelectorComponent } from './hierarchyselector/hierarchy-selector.component';
 import { HierarchySelectorService } from './hierarchyselector/hierarchy-selector.service';
-import { IpAddressService } from './ip-address.service';
 import { IpUsageOfAllResourcesComponent } from './ip-usage-of-all-resources.component';
 import { IpUsageComponent } from './ip-usage.component';
 import { IpUsageService } from './ip-usage.service';
@@ -38,15 +37,7 @@ import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down
         AssociatedObjectsComponent,
         RefreshComponent,
     ],
-    providers: [
-        IpAddressService,
-        MoreSpecificsService,
-        IpUsageService,
-        ResourceStatusService,
-        ResourcesDataService,
-        HierarchySelectorService,
-        AssociatedObjectsService,
-    ],
+    providers: [MoreSpecificsService, IpUsageService, ResourceStatusService, ResourcesDataService, HierarchySelectorService, AssociatedObjectsService],
     exports: [],
 })
 export class MyResourcesModule {}
