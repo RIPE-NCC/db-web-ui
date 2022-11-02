@@ -2,7 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'refresh',
-    template: `<p class="resource-page-message">{{ reason }} <button (click)="refresh()" class="fal fa-redo"></button></p>`,
+    template: `<p class="resource-page-message">
+        {{ reason }}
+        <button mat-mini-fab color="primary" class="margin-left" (click)="refresh()">
+            <i class="fal fa-redo"></i>
+        </button>
+    </p>`,
 })
 export class RefreshComponent {
     @Input()

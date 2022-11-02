@@ -6,11 +6,11 @@
     <div class="modal-body modal-panel">
         <div>
             <p>My organisation&apos;s legal address has changed</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToOrgaAddressEditor()">Select</button>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToOrgaAddressEditor()">SELECT</button>
         </div>
         <div>
             <p>My organisation&apos;s postal address has changed</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToAccountAddressEditor()">Select</button>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToAccountAddressEditor()">SELECT</button>
         </div>
     </div>
 </div>
@@ -22,11 +22,11 @@
     <div class="modal-body modal-panel">
         <div>
             <p>My organisation&apos;s legal name has changed; no other legal entity is involved</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToOrgNameEditor()">Select</button>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToOrgNameEditor()">SELECT</button>
         </div>
         <div>
             <p>The business structure of my organisation has changed (for example due to a merger or acquisition)</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToAccountOrgNameEditor()">Select</button>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToAccountOrgNameEditor()">SELECT</button>
         </div>
     </div>
 </div>
@@ -40,7 +40,7 @@
             <p *ngIf="attr.name === 'phone'">My organisation&apos;s telephone number has changed</p>
             <p *ngIf="attr.name === 'fax-no'">My organisation&apos;s fax number has changed</p>
             <p *ngIf="attr.name === 'e-mail'">My organisation&apos;s email address has changed</p>
-            <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="goToAccountContactInfoEditor()">Update</button>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToAccountContactInfoEditor()">UPDATE</button>
         </div>
     </div>
 </div>

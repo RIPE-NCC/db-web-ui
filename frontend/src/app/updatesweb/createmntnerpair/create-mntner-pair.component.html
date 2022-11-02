@@ -65,14 +65,17 @@
         </ul>
         <submitting-agreement></submitting-agreement>
 
-        <input
-            type="submit"
-            (click)="submit()"
-            [disabled]="!isFormValid() || submitInProgress"
-            class="blue-button float-end ga-createobj-create"
-            value="Submit"
+        <button
+            mat-flat-button
+            color="primary"
             id="btnSubmitCreate"
-        />
-        <button (click)="cancel()" class="blue-button float-end ga-createobj-create" style="border: 0">Cancel</button>
+            type="submit"
+            class="float-end margin-left"
+            [disabled]="!isFormValid() || submitInProgress"
+            (click)="submit()"
+        >
+            SUBMIT
+        </button>
+        <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
     </section>
 </div>

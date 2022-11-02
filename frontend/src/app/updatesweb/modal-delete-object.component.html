@@ -42,10 +42,10 @@
             <div>There is an RPKI ROA for the same route. If you proceed to delete this route(6) object, you may want to delete the ROA as well.</div>
         </div>
         <div *ngIf="canBeDeleted">
-            <button id="btnConfirmDeleteObject" class="red-button ga-attr-popup-btn" data-dismiss="modal" (click)="delete()">Confirm delete</button>
+            <button id="btnConfirmDeleteObject" data-dismiss="modal" mat-flat-button color="warn" class="float-start" (click)="delete()">CONFIRM DELETE</button>
         </div>
         <div *ngIf="!canBeDeleted">
-            <button class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" (click)="cancel()">Return to object</button>
+            <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">RETURN TO OBJECT</button>
         </div>
     </div>
 </div>

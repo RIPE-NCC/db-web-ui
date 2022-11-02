@@ -20,12 +20,6 @@
 
     <section>
         <br />
-        <input
-            type="submit"
-            (click)="navigateToForceDelete()"
-            [disabled]="!isFormValid()"
-            class="blue-button float-end ga-createobj-create"
-            value="Force delete"
-        />
+        <button mat-flat-button color="warn" type="submit" class="float-end" (click)="navigateToForceDelete()" [disabled]="!isFormValid()">FORCE DELETE</button>
     </section>
 </div>

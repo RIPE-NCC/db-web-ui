@@ -23,8 +23,8 @@
 
     <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
 
-    <button (click)="navigateToSelect()" class="blue-button float-end ga-createobj-backcreate">Back to Create object</button>
+    <button mat-flat-button color="primary" class="float-end margin-left" (click)="navigateToSelect()">BACK TO CREATE OBJECT</button>
     <span [hidden]="!modifyButtonToBeShown()">
-        <button (click)="navigateToModify()" class="blue-button float-end ga-createobj-modifyobj">{{ loggedIn ? 'Modify' : 'Login to modify' }}</button>
+        <button mat-flat-button color="primary" class="float-end" (click)="navigateToModify()">{{ loggedIn ? 'MODIFY' : 'LOGIN TO MODIFY' }}</button>
     </span>
 </section>

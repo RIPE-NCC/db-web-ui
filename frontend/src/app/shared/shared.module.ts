@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DiffMatchPatchModule } from 'ng-diff-match-patch';
@@ -34,7 +35,7 @@ import { WhoisResourcesService } from './whois-resources.service';
 
 @NgModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [CommonModule, FormsModule, NgbModule, NgbNavModule, DiffMatchPatchModule, NgSelectModule],
+    imports: [CommonModule, FormsModule, NgbModule, NgbNavModule, DiffMatchPatchModule, NgSelectModule, MatButtonModule],
     declarations: [
         AlertBannersComponent,
         AutoFocusDirective,
@@ -78,6 +79,7 @@ import { WhoisResourcesService } from './whois-resources.service';
         SanitizeImgHtmlPipe,
         NgbModule,
         NgbNavModule,
+        MatButtonModule,
         TableScrollerDirective,
         WhoisVersionComponent,
         WebAppVersionComponent,

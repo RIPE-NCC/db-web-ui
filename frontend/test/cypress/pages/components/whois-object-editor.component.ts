@@ -20,7 +20,7 @@ export class WhoisObjectEditor {
     }
 
     clickOnSubmit() {
-        cy.get('button:contains("Submit")').click({ force: true });
+        cy.get('button:contains("SUBMIT")').click({ force: true });
     }
 
     expectFieldExist(fieldName: string, exist: boolean) {
@@ -39,12 +39,12 @@ export class WhoisObjectEditor {
     }
 
     expectDeleteObjectButtonExist(exist: boolean) {
-        cy.get('button:contains("Delete this object")').should(exist ? 'exist' : 'not.exist');
+        cy.get('button:contains("DELETE THIS OBJECT")').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
     clickDeleteObjectButton() {
-        cy.get('button:contains("Delete this object")').click();
+        cy.get('button:contains("DELETE THIS OBJECT")').click();
         return new ModalDeleteObject();
     }
 }

@@ -1,5 +1,5 @@
-<button id="btnSwitchToWebCreate" class="blue-button float-end ga-text-createobj-switch-mode" style="border: 0" (click)="switchToWebMode()">
-    <span class="fal fa-bars"></span> Create in single lines
+<button mat-flat-button color="primary" id="btnSwitchToWebCreate" class="float-end" (click)="switchToWebMode()">
+    <span class="fal fa-bars"></span> CREATE IN SINGLE LINES
 </button>
 <div>
     <h1>Create &quot;{{ object.type }}&quot; object</h1>
@@ -16,9 +16,10 @@
             </section>
             <submitting-agreement></submitting-agreement>
 
-            <input type="submit" (click)="submit()" [disabled]="restCallInProgress" class="blue-button float-end ga-text-createobj-create" value="Submit" />
-
-            <button (click)="cancel()" class="blue-button float-end ga-text-createobj-cancel" style="border: 0">Cancel</button>
+            <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()" [disabled]="restCallInProgress">
+                SUBMIT
+            </button>
+            <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
         </div>
     </form>
 </div>

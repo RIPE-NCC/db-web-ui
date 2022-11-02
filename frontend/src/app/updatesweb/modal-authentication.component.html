@@ -84,10 +84,10 @@
                 <a href="/../docs/10.Authorisation/13-Force-Delete-Functionality.html" target="_blank">Learn More.</a>
             </div>
             <div *ngIf="resolve.mntners.length === 0">
-                <button type="button" class="blue-button ga-auth-popup-btn" data-dismiss="modal" (click)="cancel()">Cancel</button>
+                <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
             </div>
             <div *ngIf="resolve.mntners.length > 0">
-                <button type="submit" class="blue-button ga-auth-popup-btn">Submit</button>
+                <button mat-flat-button color="primary" class="float-end" type="submit">SUBMIT</button>
             </div>
         </div>
     </form>

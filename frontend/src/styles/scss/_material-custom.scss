@@ -71,6 +71,7 @@ $mat-bondiblue: (
 $custom-theme-primary: mat.define-palette($mat-darkblue, 900);
 $custom-theme-accent: mat.define-palette($mat-bondiblue, 700);
 $custom-theme-warn: mat.define-palette(mat.$red-palette);
+//$custom-theme-warn: mat.define-palette(#ed1c24);
 
 $custom-typography: mat.define-typography-config(
     $font-family: 'Public Sans',

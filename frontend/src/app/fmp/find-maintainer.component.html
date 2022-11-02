@@ -5,12 +5,12 @@
         <label>Please enter your <span class="mntner">MNTNER</span> name:</label>
         <div class="input-group margin-bottom">
             <input type="text" class="searchField form-control" name="maintainerKey" [(ngModel)]="maintainerKey" autofocus required />
-            <span class="input-group-btn">
-                <button id="search-maintainer" class="btn blue-button ga-forgotpass-findmnt-search">Search</button>
+            <span class="input-group-btn margin-left">
+                <button mat-flat-button color="primary" id="search-maintainer">SEARCH</button>
             </span>
         </div>
         <div class="margin-top clearfix">
-            <button id="search-cancel" name="cancelButton" class="blue-button float-end" (click)="cancel()">Cancel</button>
+            <button mat-flat-button color="primary" id="search-cancel" class="float-end" (click)="cancel()">CANCEL</button>
         </div>
     </form>
 
@@ -40,7 +40,7 @@
                         >I have access to {{ foundMaintainer.email }}. Take me to the automated recovery process</label
                     >
                     <div class="col-sm-3">
-                        <input id="goThrough" type="button" name="hasAccessButton" value="GO" (click)="validateEmail()" class="blue-button" />
+                        <button mat-flat-button color="primary" type="button" id="goThrough" name="hasAccessButton" (click)="validateEmail()">GO</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -48,14 +48,16 @@
                         >I do not have access to {{ foundMaintainer.email }}. Take me to the manual recovery process</label
                     >
                     <div class="col-sm-3">
-                        <input
-                            id="manual"
+                        <button
+                            mat-flat-button
+                            color="primary"
                             type="button"
+                            id="manual"
                             name="hasAccessButton"
-                            value="GO"
                             (click)="switchToManualResetProcess(foundMaintainer.maintainerKey)"
-                            class="blue-button"
-                        />
+                        >
+                            GO
+                        </button>
                     </div>
                 </div>
             </div>

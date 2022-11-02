@@ -1,6 +1,6 @@
 <section class="margin-bottom">
-    <button id="btnSwitchToTextModify" class="blue-button float-end ga-text-modifyobj-switch-mode" style="border: 0" (click)="switchToWebMode()">
-        <span class="fal fa-bars"></span> Edit in single lines
+    <button mat-flat-button color="primary" id="btnSwitchToTextModify" class="float-end" (click)="switchToWebMode()">
+        <span class="fal fa-bars"></span> EDIT IN SINGLE LINES
     </button>
 
     <div>
@@ -19,13 +19,10 @@
                 </section>
                 <submitting-agreement></submitting-agreement>
 
-                <input type="submit" (click)="submit()" class="blue-button float-end ga-text-modifyobj-modify" value="Submit" />
+                <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()">SUBMIT</button>
+                <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
 
-                <button (click)="cancel()" class="blue-button float-end ga-text-modifyobj-cancel" style="border: 0">Cancel</button>
-
-                <button *ngIf="deletable" (click)="deleteObject()" class="red-button float-start ga-text-deleteobj-create" style="border: 0; margin: 0">
-                    Delete this object
-                </button>
+                <button *ngIf="deletable" mat-flat-button color="warn" class="float-start" (click)="deleteObject()">DELETE THIS OBJECT</button>
 
                 <!-- otherwise version text is glued on button -->
                 <div style="clear: left"></div>

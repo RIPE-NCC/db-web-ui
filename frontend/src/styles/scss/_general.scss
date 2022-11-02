@@ -41,12 +41,6 @@ a:focus {
     color: #2a6496;
 }
 
-a.tag-link,
-.tag-link {
-    color: #5c5d60;
-    padding: 0.2em 0.5em;
-}
-
 .checkbox-inline input[type='checkbox'],
 .checkbox input[type='checkbox'],
 .radio-inline input[type='radio'],
@@ -436,6 +430,14 @@ section .resultlinks {
 
 .margin-bottom {
     margin-bottom: 1em;
+}
+
+.margin-left {
+    margin-left: 0.5em !important;
+}
+
+.uppercase {
+    text-transform: uppercase;
 }
 
 ngx-loading-bar {

@@ -67,8 +67,8 @@
                     <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
                         <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
                     </mat-menu>
-                    <button mat-raised-button color="primary" [disableRipple]="true" id="applyFilters">APPLY FILTERS</button>
-                    <button mat-raised-button [disableRipple]="true" id="resetFilters" [disabled]="!isFilteringResults()" (click)="resetFilters()">
+                    <button mat-flat-button color="primary" [disableRipple]="true" id="applyFilters">APPLY FILTERS</button>
+                    <button mat-flat-button [disableRipple]="true" id="resetFilters" [disabled]="!isFilteringResults()" (click)="resetFilters()">
                         RESET FILTERS
                     </button>
                     <button
@@ -98,7 +98,7 @@
             </div>
             <div class="controls">
                 <input matInput disabled [value]="link.perma" />
-                <button mat-raised-button color="primary" (click)="(false)" [cdkCopyToClipboard]="link.perma">COPY URL</button>
+                <button mat-flat-button color="primary" (click)="(false)" [cdkCopyToClipboard]="link.perma">COPY URL</button>
             </div>
         </div>
         <div class="query-padding-left">
