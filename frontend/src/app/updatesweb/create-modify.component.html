@@ -1,20 +1,8 @@
-<button
-    id="btnCreateInTextArea"
-    class="blue-button float-end ga-modifyobj-switch-mode"
-    style="border: 0"
-    *ngIf="operation === CREATE_OPERATION"
-    (click)="switchToTextMode()"
->
-    <span class="fal fa-edit"></span> Create in text area
+<button mat-flat-button color="primary" id="btnCreateInTextArea" class="float-end" *ngIf="operation === CREATE_OPERATION" (click)="switchToTextMode()">
+    <span class="fal fa-edit"></span> CREATE IN TEXT AREA
 </button>
-<button
-    id="btnEditInTextArea"
-    style="border: 0"
-    class="blue-button float-end ga-createobj-switch-mode"
-    *ngIf="operation === MODIFY_OPERATION"
-    (click)="switchToTextMode()"
->
-    <span class="fal fa-edit"></span> Edit in text area
+<button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" *ngIf="operation === MODIFY_OPERATION" (click)="switchToTextMode()">
+    <span class="fal fa-edit"></span> EDIT IN TEXT AREA
 </button>
 
 <div id="createForm" *ngIf="attributes?.length > 0">
@@ -155,30 +143,36 @@
         <submitting-agreement></submitting-agreement>
         <p scroller (scrolled)="showMoreAttributes()"></p>
         <span *ngIf="operation === MODIFY_OPERATION">
-            <input
-                id="btnSubmitModify"
+            <button
+                mat-flat-button
+                color="primary"
+                class="float-end margin-left"
                 type="submit"
-                (click)="submit()"
+                id="btnSubmitModify"
                 [disabled]="!isFormValid() || restCallInProgress"
-                class="blue-button float-end"
-                value="Submit"
-            />
-            <button (click)="cancel()" class="blue-button float-end" style="border: 0">Cancel</button>
+                (click)="submit()"
+            >
+                SUBMIT
+            </button>
+            <button mat-flat-button color="primary" (click)="cancel()" class="float-end">CANCEL</button>
         </span>
         <span *ngIf="operation === CREATE_OPERATION">
-            <input
-                id="btnSubmitCreate"
+            <button
+                mat-flat-button
+                color="primary"
+                class="float-end margin-left"
                 type="submit"
-                (click)="submit()"
+                id="btnSubmitCreate"
                 [disabled]="!isFormValid() || restCallInProgress"
-                class="blue-button float-end"
-                value="Submit"
-            />
-            <button (click)="cancel()" class="blue-button float-end" style="border: 0">Cancel</button>
+                (click)="submit()"
+            >
+                SUBMIT
+            </button>
+            <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
         </span>
         <span *ngIf="operation === MODIFY_OPERATION && isDeletable()">
-            <button id="deleteObject" (click)="deleteObject()" [disabled]="restCallInProgress" class="red-button float-start" style="border: 0; margin: 0">
-                Delete this object
+            <button id="deleteObject" mat-flat-button color="warn" class="float-start" (click)="deleteObject()" [disabled]="restCallInProgress">
+                DELETE THIS OBJECT
             </button>
         </span>
     </section>

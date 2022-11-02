@@ -14,11 +14,11 @@
         </li>
     </ul>
     <submitting-agreement></submitting-agreement>
-    <button *ngIf="deletable" (click)="btnDeleteClicked()" class="red-button float-start ga-modifyobj-delete" style="border: 0; margin: 0">
-        Delete this object
-    </button>
+    <button *ngIf="deletable" mat-flat-button color="warn" class="float-start" (click)="btnDeleteClicked()">DELETE THIS OBJECT</button>
     <article class="float-end">
-        <button class="grey-button" (click)="btnCancelClicked()">Cancel</button>
-        <button class="blue-button" [disabled]="disableSubmit" (click)="btnSubmitClicked()">Submit</button>
+        <button mat-flat-button color="primary" type="submit" class="float-end margin-left" [disabled]="disableSubmit" (click)="btnSubmitClicked()">
+            SUBMIT
+        </button>
+        <button mat-stroked-button color="primary" class="float-end" (click)="btnCancelClicked()">CANCEL</button>
     </article>
 </section>

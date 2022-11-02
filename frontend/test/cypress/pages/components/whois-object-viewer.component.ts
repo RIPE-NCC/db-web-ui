@@ -54,20 +54,20 @@ export class WhoisObjectViewer {
     }
 
     expectRipeStatLinkHref(href: string) {
-        this.createViewer().find('a.ripe-stat-button').invoke('attr', 'href').should('contain', href);
+        this.createViewer().find('a:contains("RIPEstat")').invoke('attr', 'href').should('contain', href);
         return this;
     }
 
     expectLoginToUpdateButton(exist: boolean) {
         this.createViewer()
-            .find('a.tag-link')
+            .find('a:contains("LOGIN TO UPDATE")')
             .should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
     expectUpdateObjectButton(exist: boolean) {
         this.createViewer()
-            .find('a.blue-button')
+            .find('a:contains("Update object")')
             .should(exist ? 'exist' : 'not.exist');
         return this;
     }

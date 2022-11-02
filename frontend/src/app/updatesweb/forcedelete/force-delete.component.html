@@ -25,14 +25,17 @@
         </table>
 
         <span>
-            <input
+            <button
+                mat-flat-button
+                color="warn"
                 type="submit"
-                (click)="forceDelete()"
+                class="float-end margin-left"
                 [disabled]="!isFormValid() || restCallInProgress"
-                class="red-button float-end ga-forcedeleteobj-forcedelete"
-                value="Force delete this object"
-            />
-            <button (click)="cancel()" class="blue-button float-end ga-forcedeleteobj-cancel" style="border: 0">Cancel</button>
+                (click)="forceDelete()"
+            >
+                FORCE DELETE THIS OBJECT
+            </button>
+            <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
         </span>
     </section>
 </div>

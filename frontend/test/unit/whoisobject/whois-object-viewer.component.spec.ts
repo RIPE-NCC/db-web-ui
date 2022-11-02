@@ -89,7 +89,7 @@ describe('WhoisObjectViewerComponent', () => {
             component.show.loginLink = false;
             fixture.detectChanges();
             await fixture.whenStable();
-            const blueButtons = fixture.debugElement.queryAll(By.css('.blue-button'));
+            const blueButtons = fixture.debugElement.queryAll(By.css('a[mat-flat-button=""]'));
             expect(blueButtons[0].nativeElement.getAttribute('href')).toBe('/webupdates/modify/ripe/inetnum/62.77.172.236%20-%2062.77.172.239');
         });
 
@@ -100,7 +100,7 @@ describe('WhoisObjectViewerComponent', () => {
             component.show.loginLink = false;
             fixture.detectChanges();
             await fixture.whenStable();
-            const blueButtons = fixture.debugElement.queryAll(By.css('.blue-button'));
+            const blueButtons = fixture.debugElement.queryAll(By.css('a[mat-flat-button=""]'));
             expect(blueButtons[0].nativeElement.getAttribute('href')).toBeNull();
         });
     });

@@ -18,13 +18,16 @@
         />
     </div>
     <div class="modal-footer">
-        <input
+        <button
+            mat-flat-button
+            color="primary"
+            class="float-end margin-left"
             type="submit"
-            class="blue-button ga-createabusec-popup-btn"
             data-dismiss="modal"
-            (click)="create()"
             [disabled]="!isEmailValid()"
-            value="Submit"
-        />
+            (click)="create()"
+        >
+            SUBMIT
+        </button>
     </div>
 </div>

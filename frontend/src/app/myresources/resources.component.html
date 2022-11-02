@@ -11,9 +11,14 @@
     </div>
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-    <a class="blue-button btn-group float-end" *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'" (click)="navigateToCreateAssignments()">{{
-        'resource.createAssignment.text' | label
-    }}</a>
+    <a
+        mat-flat-button
+        color="primary"
+        class="float-end margin-left uppercase"
+        *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'"
+        (click)="navigateToCreateAssignments()"
+        >{{ 'resource.createAssignment.text' | label }}</a
+    >
     <transfer-drop-down *ngIf="isMemberOrg()" [sponsoredMenu]="isShowingSponsored"></transfer-drop-down>
     <alerts-drop-down *ngIf="showAlerts" [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
     <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
@@ -27,8 +32,7 @@
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
                 <p class="resource-page-message" *ngIf="loading === false && ipv4Resources.length === 0">
-                    {{ reason.toString() }}
-                    <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
+                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
                 </p>
             </ng-template>
         </li>
@@ -40,8 +44,7 @@
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
                 <p class="resource-page-message" *ngIf="loading === false && ipv6Resources.length === 0">
-                    {{ reason.toString() }}
-                    <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
+                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
                 </p>
             </ng-template>
         </li>
@@ -53,8 +56,7 @@
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
                 <p class="resource-page-message" *ngIf="loading === false && asnResources.length === 0">
-                    {{ reason.toString() }}
-                    <button *ngIf="fail" (click)="refreshPage()" class="fal fa-redo"></button>
+                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
                 </p>
             </ng-template>
         </li>

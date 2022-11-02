@@ -10,9 +10,8 @@
             </select>
         </div>
         <br />
-
-        <button id="btnNavigateToCreate" class="blue-button float-end ga-createobj-select" (click)="navigateToCreate()">
-            {{ loggedIn ? 'Create' : 'Login to create' }}
+        <button id="btnNavigateToCreate" mat-flat-button color="primary" class="float-end" (click)="navigateToCreate()">
+            {{ loggedIn ? 'CREATE' : 'LOGIN TO CREATE' }}
         </button>
     </form>
 </section>

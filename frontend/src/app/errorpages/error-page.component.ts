@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
         <h1>500</h1>
         <h2>Internal Server Error</h2>
         <p>Sorry, something went wrong</p>
-        <a class="btn blue-button" routerLink="/">Back to RIPE Database</a>
+        <a mat-flat-button color="primary" routerLink="/">BACK TO RIPE DATABASE</a>
     </section>`,
 })
 export class ErrorPageComponent {}

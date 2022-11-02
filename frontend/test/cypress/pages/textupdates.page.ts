@@ -5,7 +5,7 @@ export class TextupdatesPage {
     }
 
     expectDeleteButtonToExist(exist: boolean) {
-        cy.get('.red-button').should(exist ? 'exist' : 'not.exist');
+        cy.get('button:contains("DELETE THIS OBJECT")').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 }

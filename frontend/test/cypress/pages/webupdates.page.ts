@@ -103,13 +103,13 @@ export class WebupdatesPage {
     }
 
     clickOnCreateInTextArea() {
-        cy.get('button:contains("Create in text area")').click({ force: true });
+        cy.get('button:contains("CREATE IN TEXT AREA")').click({ force: true });
         cy.get('textarea').should('exist');
         return this;
     }
 
     clickOnCreateInSingleLines() {
-        cy.get('button:contains("Create in single lines")').click({ force: true });
+        cy.get('button:contains("CREATE IN SINGLE LINES")').click({ force: true });
         cy.get('textarea').should('not.exist');
         return this;
     }
@@ -125,17 +125,17 @@ export class WebupdatesPage {
     }
 
     modifyObject() {
-        cy.get('button:contains("Modify")').click();
+        cy.get('button:contains("MODIFY")').click();
         return new ModalAuthentication();
     }
 
     submitForm() {
-        cy.get('input[type="submit"]').click();
+        cy.get('button[type="submit"]').click();
         return this;
     }
 
     submitCreate() {
-        cy.get("button:contains('Submit')").click({ force: true });
+        cy.get("button:contains('SUBMIT')").click({ force: true });
         // processing modal should open and close automatically
         const modalProcessing = new ModalProcessing();
         modalProcessing.waitForFinishProcessing();
@@ -306,7 +306,7 @@ export class WebupdatesPage {
 
 class WebupdatesDisplayPage {
     clickOnCreateSharedMaintainer() {
-        cy.get('button:contains("Create Shared Maintainer")').click({ force: true });
+        cy.get('button:contains("CREATE SHARED MAINTAINER")').click({ force: true });
         return new WebupdatesPage();
     }
 
