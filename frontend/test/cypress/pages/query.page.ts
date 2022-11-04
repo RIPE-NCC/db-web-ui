@@ -233,13 +233,8 @@ export class QueryPage {
         return new WhoisObjectViewer(`.resultpane lookup:nth(${index})`);
     }
 
-    expectVersionTagToExist(exist: boolean) {
-        cy.get('whois-version').should(exist ? 'exist' : 'not.exist');
-        return this;
-    }
-
-    expectVersionTagToContain(text: string) {
-        cy.get('whois-version').should('contain.text', text);
+    expectVersionTagToContain(text: string, contain: boolean) {
+        cy.get('whois-version').should(contain ? 'contain.text' : 'not.contain.text', text);
         return this;
     }
 
