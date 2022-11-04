@@ -50,7 +50,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', () => {
         const queryPage = new QueryPage();
         queryPage.visit();
 
-        cy.get('app-banner').shadow().find('.app-banner.level-positive').should('not.exist');
+        cy.get('app-banner[level="positive"]').should('not.exist');
     });
 
     it('should allow force delete on modal-authentication window and navigate to forceDelete', () => {

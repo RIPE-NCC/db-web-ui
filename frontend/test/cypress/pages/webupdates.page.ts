@@ -311,12 +311,12 @@ class WebupdatesDisplayPage {
     }
 
     expectSuccessMessage(text: string) {
-        cy.get('app-banner').shadow().find('.app-banner.level-positive').should('contain.text', text);
+        cy.get('app-banner[level="positive"]').shadow().find('.app-banner.level-positive').should('contain.text', text);
         return this;
     }
 
     expectErrorMessage(text: string) {
-        cy.get('app-banner').shadow().find('.app-banner.level-alarm').should('contain.text', text);
+        cy.get('app-banner[level="alarm"]').shadow().find('.app-banner.level-alarm').should('contain.text', text);
         return this;
     }
 
@@ -358,7 +358,7 @@ class WebupdatesDisplayPage {
 
 export class WebupdatesDelete {
     expectSuccessMessage(text: string) {
-        cy.get('app-banner').shadow().find('.app-banner.level-positive').should('contain.text', text);
+        cy.get('app-banner[level="positive"]').shadow().find('.app-banner.level-positive').should('contain.text', text);
         return this;
     }
 }

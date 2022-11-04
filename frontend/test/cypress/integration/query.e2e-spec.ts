@@ -278,13 +278,13 @@ describe('Query scenario', () => {
 
     it('should show version of whois after searching', () => {
         queryPage
-            .expectVersionTagToExist(false)
+            .expectVersionTagToContain('RIPE Database Software Version 1.97-SNAPSHOT', false)
             .typeSearchTerm('211.43.192.0')
             .clickOnSearchButton()
             .clickOnAdvancedFilterDropdown()
             .clickCheckboxShowFullDetails()
             .clickCheckboxDoNotRetrieve();
-        queryPage.clickOnSearchButton().expectVersionTagToExist(true).expectVersionTagToContain('RIPE Database Software Version 1.97-SNAPSHOT');
+        queryPage.clickOnSearchButton().expectVersionTagToContain('RIPE Database Software Version 1.97-SNAPSHOT', true);
     });
 
     it('should have all its bits on the screen somewhere', () => {
@@ -786,7 +786,6 @@ describe('Query scenario', () => {
 
     it('should show certificate banner for members and not members', () => {
         queryPage
-            .visit()
             .selectOrganization('SURFnet')
             .expectCertificateBannerToContain('Does your CV show your RIPE Database expertise?')
             .selectOrganization('Viollier AG')
