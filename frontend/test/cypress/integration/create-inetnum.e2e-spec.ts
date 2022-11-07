@@ -139,4 +139,11 @@ describe('The inetnum editor', () => {
             .expectErrorOnField('inetnum', 'Value 5.254.68.40/29 converted to 5.254.68.40 - 5.254.68.47')
             .expectErrorOnField('netname', 'Syntax error in SOMETHING.');
     });
+    it('should show error message above field and in banner for existing resource', () => {
+        webupdatesPage
+            .typeOnField('inetnum', '5.154.68.40/29')
+            .blurOnField('inetnum')
+            .expectErrorOnField('inetnum', 'inetnum 5.154.68.40 - 5.154.68.47 already exists')
+            .expectErrorMessage('inetnum 5.154.68.40/29 already exists');
+    });
 });

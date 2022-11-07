@@ -302,6 +302,11 @@ export class WebupdatesPage {
         cy.get('#createForm').should(exist ? 'exist' : 'not.exist');
         return this;
     }
+
+    expectErrorMessage(text: string) {
+        cy.get('app-banner').shadow().find('.app-banner.level-alarm').should('contain.text', text);
+        return this;
+    }
 }
 
 class WebupdatesDisplayPage {

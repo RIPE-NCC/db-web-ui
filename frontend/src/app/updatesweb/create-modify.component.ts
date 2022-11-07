@@ -5,7 +5,9 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { WINDOW } from '../core/window.service';
+import { IpAddressService } from '../myresources/ip-address.service';
 import { ResourceStatusService } from '../myresources/resource-status.service';
+import { ObjectTypesEnum } from '../query/object-types.enum';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -153,6 +155,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         this.alertsService.clearAlertMessages();
     }
+
     /*
      * Functions / callbacks below...
      */
@@ -218,6 +221,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     /*
      * Methods called from the html-template
      */
+
     // Should show bell icon for abuse-c in case value is not specified and objectType is organisation
     public shouldShowBellIcon(attribute: any) {
         return attribute.name === 'abuse-c' && !attribute.value;
@@ -301,36 +305,48 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         }
         // Verify if primary-key not already in use
         if (this.operation === this.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
-            const value = attribute.name === 'inet6num' ? attribute.value.replace(/((?::0\b){2,}):?(?!\S*\b\1:0\b)(\S*)/, '::$2') : attribute.value;
-            this.restService
-                .autocomplete(attribute.name, value, true, [])
-                .toPromise()
-                .then(
-                    (data: any) => {
-                        if (
-                            _.some(data, (item: any) => {
-                                return (
-                                    CreateModifyComponent.uniformed(item.type) === CreateModifyComponent.uniformed(attribute.name) &&
-                                    CreateModifyComponent.uniformed(item.key) === CreateModifyComponent.uniformed(value)
-                                );
-                            })
-                        ) {
-                            attribute.$$error = attribute.name + ' ' + this.linkService.getModifyLink(this.source, this.objectType, value) + ' already exists';
-                        } else {
-                            attribute.$$error = '';
-                        }
-                    },
-                    (error: any) => {
-                        console.error('Autocomplete error ' + JSON.stringify(error));
-                    },
-                );
+            let value = attribute.value;
+            if (attribute.name === 'inetnum') {
+                if (IpAddressService.isValidV4(attribute.value)) {
+                    value = IpAddressService.fromSlashToRange(attribute.value);
+                } else if (attribute.value.match(/\d-\d/g)) {
+                    value = attribute.value.replace('-', ' - ');
+                }
+            } else if (attribute.name === 'inet6num') {
+                value = attribute.value.replace(/((?::0\b){2,}):?(?!\S*\b\1:0\b)(\S*)/, '::$2');
+            }
+            this.restService.autocomplete(attribute.name, value, true, []).subscribe({
+                next: (data: { type: string; key: string }[]) => {
+                    if (
+                        data.some((item) => {
+                            return (
+                                CreateModifyComponent.uniformed(item.type) === CreateModifyComponent.uniformed(attribute.name) &&
+                                CreateModifyComponent.uniformed(item.key) === CreateModifyComponent.uniformed(value)
+                            );
+                        })
+                    ) {
+                        this.alertsService.setGlobalError(`${this.objectType} ${attribute.value} already exists.`);
+                        attribute.$$error = `${attribute.name} ${this.linkService.getModifyLink(this.source, this.objectType, value)} already exists`;
+                    } else {
+                        attribute.$$error = '';
+                        this.fetchParentResourceCaseCreate(attribute);
+                    }
+                },
+                error: (error) => {
+                    console.error('Autocomplete error ' + JSON.stringify(error));
+                },
+            });
+        } else {
+            this.fetchParentResourceCaseCreate(attribute);
         }
+    }
 
+    private fetchParentResourceCaseCreate(attribute) {
         if (this.operation === this.CREATE_OPERATION && attribute.value) {
             if (
-                (this.objectType === 'aut-num' && attribute.name === 'aut-num') ||
-                (this.objectType === 'inetnum' && attribute.name === 'inetnum') ||
-                (this.objectType === 'inet6num' && attribute.name === 'inet6num')
+                (this.objectType === ObjectTypesEnum.AUT_NUM && attribute.name === ObjectTypesEnum.AUT_NUM) ||
+                (this.objectType === ObjectTypesEnum.INETNUM && attribute.name === ObjectTypesEnum.INETNUM) ||
+                (this.objectType === ObjectTypesEnum.INET6NUM && attribute.name === ObjectTypesEnum.INET6NUM)
             ) {
                 this.restService.fetchParentResource(this.objectType, attribute.value).then(
                     (result: any) => {

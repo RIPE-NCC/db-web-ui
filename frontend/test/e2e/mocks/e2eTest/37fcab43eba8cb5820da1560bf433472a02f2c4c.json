@@ -1,0 +1,11 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/autocomplete?extended=true&field=inetnum&query=5.154.68.40%20-%205.154.68.47",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "5.154.68.40 - 5.154.68.47",
+            "type": "inetnum"
+        }
+    ]
+}
