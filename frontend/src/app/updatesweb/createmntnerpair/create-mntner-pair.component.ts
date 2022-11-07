@@ -190,19 +190,16 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         }
         if (attr.$$meta.$$primaryKey === true) {
             attr.$$error = '';
-            this.restService
-                .autocomplete(attr.name, attr.value, true, [])
-                .toPromise()
-                .then((data: any) => {
-                    const found = _.find(data, (item: any) => {
-                        if (item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase()) {
-                            return item;
-                        }
-                    });
-                    if (!_.isUndefined(found)) {
-                        attr.$$error = attr.name + ' ' + this.linkService.getModifyLink(this.source, attr.name, found.key) + ' already exists';
+            this.restService.autocomplete(attr.name, attr.value, true, []).subscribe((data: any) => {
+                const found = _.find(data, (item: any) => {
+                    if (item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase()) {
+                        return item;
                     }
                 });
+                if (!_.isUndefined(found)) {
+                    attr.$$error = attr.name + ' ' + this.linkService.getModifyLink(this.source, attr.name, found.key) + ' already exists';
+                }
+            });
         }
     }
 

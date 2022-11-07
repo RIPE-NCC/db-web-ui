@@ -25,7 +25,7 @@ export class FullTextSearchPage {
     }
 
     expectWarningMessage(text: string) {
-        cy.get('app-banner').shadow().find('.app-banner.level-warning').should('contain.text', text);
+        cy.get('app-banner[level="warning"]').shadow().find('.app-banner.level-warning').should('contain.text', text);
         return this;
     }
 

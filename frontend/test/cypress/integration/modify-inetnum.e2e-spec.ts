@@ -14,22 +14,16 @@ describe('Modifying an inetnum', () => {
     });
 
     describe('which has NOT-SET status', () => {
-        beforeEach(() => {
-            webupdatesPage.visit('modify/RIPE/inetnum/193.96.3.0%20-%20193.96.3.255');
-        });
-
         it('should have status box enabled', () => {
+            webupdatesPage.visit('modify/RIPE/inetnum/193.96.3.0%20-%20193.96.3.255');
             webupdatesPage.getModalAuthentication().typePassword('UUNETDE-I').disableAssociateCheckbox().submitModal();
             webupdatesPage.expectModalToExist(false).expectFieldToExist('status', true).expectDisabledField('status', false);
         });
     });
 
     describe('which has ASSIGNED PA status', () => {
-        beforeEach(() => {
-            webupdatesPage.visit('modify/RIPE/inetnum/194.219.52.224%20-%20194.219.52.239');
-        });
-
         it('should have status box disabled', () => {
+            webupdatesPage.visit('modify/RIPE/inetnum/194.219.52.224%20-%20194.219.52.239');
             webupdatesPage.getModalAuthentication().typePassword('TPOLYCHNIA4-MNT').disableAssociateCheckbox().submitModal();
             webupdatesPage.expectModalToExist(false).expectFieldToExist('status', true).expectDisabledField('status', true);
         });
