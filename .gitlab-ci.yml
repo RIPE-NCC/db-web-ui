@@ -166,8 +166,3 @@ browserstack:
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
-
-deploy_salt_prod:
-  stage: deploy
-  only:
-    - /^never$/
