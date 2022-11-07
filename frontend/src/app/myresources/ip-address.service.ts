@@ -76,7 +76,7 @@ export class IpAddressService {
 
     public static fromSlashToRange(inetnum: string): string {
         if (inetnum.indexOf(',') > -1) {
-            return this.doSlashToRangeMagic(inetnum);
+            return IpAddressService.doSlashToRangeMagic(inetnum);
         } else {
             return new Address4(inetnum).startAddress().address + ' - ' + new Address4(inetnum).endAddress().address;
         }

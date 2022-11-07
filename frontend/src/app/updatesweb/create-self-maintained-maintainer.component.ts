@@ -107,20 +107,17 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     }
 
     public fieldVisited(attr: any) {
-        this.restService
-            .autocomplete(attr.name, attr.value, true, [])
-            .toPromise()
-            .then((data: any) => {
-                if (
-                    _.some(data, (item: any) => {
-                        return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
-                    })
-                ) {
-                    attr.$$error = attr.name + ' ' + this.linkService.getModifyLink(this.source, attr.name, attr.value) + ' already exists';
-                } else {
-                    attr.$$error = '';
-                }
-            });
+        this.restService.autocomplete(attr.name, attr.value, true, []).subscribe((data: any) => {
+            if (
+                _.some(data, (item: any) => {
+                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                })
+            ) {
+                attr.$$error = attr.name + ' ' + this.linkService.getModifyLink(this.source, attr.name, attr.value) + ' already exists';
+            } else {
+                attr.$$error = '';
+            }
+        });
     }
 
     public trackByFn(item: any) {

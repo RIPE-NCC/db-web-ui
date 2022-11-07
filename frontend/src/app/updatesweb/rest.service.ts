@@ -63,8 +63,6 @@ export class RestService {
         return forkJoin(promis).toPromise();
     }
 
-    // https://alligator.io/angular/real-time-search-angular-rxjs/
-    // query in all component calling this method should be converted in Observale<string>
     public autocomplete(attrName: string, query: string, extended: any, attrsToBeReturned: string[]) {
         return of(query).pipe(
             debounceTime(2000),
@@ -170,7 +168,7 @@ export class RestService {
                     return this.router.navigateByUrl(`webupdates/modify/${source}/${objectType}/${primaryKey}`);
                 }
             }),
-            catchError((error: any, caught: Observable<any>) => {
+            catchError((error: any) => {
                 console.error('fetchObject error:' + JSON.stringify(error));
                 return throwError(this.whoisResourcesService.wrapError(error));
             }),
