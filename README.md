@@ -4,13 +4,10 @@ README for db-web-ui
 
 Links
 -----
-* [Bamboo 🔗](https://bamboo.ripe.net/browse/DB-DBHWEB)
-* [BitBucket 🔗](https://bitbucket.ripe.net/projects/SWE/repos/db-web-ui/browse)
-* [Environments (Marvin) 🔗](https://marvin.ripe.net/display/db/DB+Environments)
-* [Sonar 🔗](http://db-tools-1:9000/dashboard/index/15937)
-* [Kibana 🔗](http://db-tools-1:8000/)
-* [Jenkins (deprecated) 🔗](http://db-tools-1:8088/view/db-web-ui/)
-
+* [GitLab](https://gitlab.ripe.net/swe-database-team/db-web-ui)
+* [Environments (Marvin)](https://marvin.ripe.net/display/db/DB+Environments)
+* [Sonar](https://sonarqube.ripe.net/dashboard?id=db-web-ui)
+    
 Pre-requisites
 -----------------
 * maven (v3.0+)
@@ -23,7 +20,6 @@ Build on Local Machine
 
 Start Full Development Server (Frontend + Backend) on Local Machine
 -------------------------------------------------------------------
-> Every small change to be visible in browser you have to run `mvn clean install` otherwise change wont be visible in browser
 
 * first build (see above)
 
@@ -70,7 +66,7 @@ Frontend
 
 * `npm run test`<br>
   Running Karma unit tests locally for Angular 6+ with coverage. If you want to run the test one by one using Intellij you need to install a plugin called "karma"
-  - [Angular Unit test coverage 🔗](frontend/reports/unittest-coverage/index.html) is available locally
+  - Angular Unit test coverage is available locally `reports/unittest-coverage/index.html`
 
 * `npm run test-remote` _(used on bamboo)_<br>
   Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub` for Angular 6+ with coverage
@@ -78,7 +74,7 @@ Frontend
 * `npm run start-mock`<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks. <br />
-  _To be able to run e2e-no-test locally (http://localhost:9002/db-web-ui) with logged in user you will have to check <br />
+  To be able to run e2e-no-test locally (http://localhost:9002/db-web-ui) with logged in user you will have to check <br />
   `hostname -s` and then resulted host name (for example laptop-123456.local) add<br />
   `127.0.0.1       laptop-123456.local` in your host file<br />
   `sudo vi /etc/hosts`
@@ -122,14 +118,6 @@ See the [diff-package-lock homepage](https://github.com/adiktofsugar/diff-packag
 ### Linting
 * `npm run lint`<br>
   Lint rules can be found under `frontend/.eslintrc.json`
-
-#### TODO
-  Runs the Protractor tests and shows coverage stats in two ways:
-  - a text summary in the console
-  - [a detailed html report 🔗](frontend/reports/e2e-coverage/lcov-report/index.html)
-  - N.B. this task is designed to run on db-tools-1 only -- it won't work locally unless you change the line
-   containing the reference to db-tools-1 in protractor-e2e-coverage.conf.js
-  - [see the coverage results on SonarQube 🔗](http://db-tools-1.ripe.net:9000/dashboard/index/net.ripe.db:db-web-ui-ng)
 
 Testing
 -------------------
@@ -200,22 +188,6 @@ Things every db-web-ui developer should know
 
 HOWTOs
 ------
-
-### Update the Ripe global web site template
-
-Download the [latest template from here 🔗](https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true)
-
-It's always a good idea to format the file in a consistent way so it's easier to see the changes with the previous
-version. The best tool for this is `js-beautify` -- you can install it with:
-
-    npm install -g js-beautify
-
-##### Example: download, format and diff the latest version of the template
-
-Open a terminal and cd into the `frontend/app` directory, then type these commands:
-
-    curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
-
 ### Ripe web components
 Join technical design bot channel on Mattermost to stay up to date with releases and change version in package.json file
 https://gitlab.ripe.net/technical-design/ripe-app-webcomponents
@@ -223,64 +195,13 @@ https://gitlab.ripe.net/technical-design/ripe-app-webcomponents
 ### Update angular
 Use https://update.angular.io
 
-Protractor
-----------
-
-Tip: If you want run just one test then write `fit` (for 'focus it') instead of `it`: i.e. `fit(*description*, *function*);`
-
-
-##### Notes on matchers
-
-``` javascript
-expect(fn).toThrow(e);
-expect(instance).toBe(instance);
-expect(mixed).toBeDefined();
-expect(mixed).toBeFalsy();
-expect(number).toBeGreaterThan(number);
-expect(number).toBeLessThan(number);
-expect(mixed).toBeNull();
-expect(mixed).toBeTruthy();
-expect(mixed).toBeUndefined();
-expect(array).toContain(member);
-expect(string).toContain(substring);
-expect(mixed).toEqual(mixed);
-expect(mixed).toMatch(pattern);
-```
-
-Sitespeed
-----------
-
-Sitespeed.io is a set of Open Source tools that makes it easy to monitor and measure the performance of your web site.
-Use sitespeed Docker container to get an environment with Firefox, Chrome, XVFB and sitespeed.io up
-
-` docker run --shm-size=1g --rm -v "$(pwd)":/sitespeed.io sitespeedio/sitespeed.io:7.7.3 https://prepdev.db.ripe.net/db-web-ui/ `
-
-Matomo (ex. Piwik)
+Matomo
 ------------------
 
 https://matomo.ripe.net/  
 
 Debug tool <br />
 https://apps.db.ripe.net/db-web-ui/?mtmPreviewMode=BuGxbMDR#/webupdates/select
-
-Running E2E tests in Gitlab
----------------------------
-
-E2E (Protractor) tests are run in-container in Gitlab for every commit.
-The whois-build image contains both a Chrome and Firefox browser that is used to run the E2E tests.
-
-The webdriver version for Chrome has been pinned in the [js package build config](frontend/package.json) so it corresponds with the Chrome version
-being used. If the webdriver and Chrome version mismatch running the tests will fail with a message similar to this:
-
-````
-[09:32:37] E/launcher - session not created: This version of ChromeDriver only supports Chrome version 83
-  (Driver info: chromedriver=83.0.4103.39 (ccbf011cb2d2b19b506d844400483861342c20cd-refs/branch-heads/4103@{#416}),platform=Linux 4.19.76-linuxkit x86_64)
-[09:32:37] E/launcher - SessionNotCreatedError: session not created: This version of ChromeDriver only supports Chrome version 83
-  (Driver info: chromedriver=83.0.4103.39 (ccbf011cb2d2b19b506d844400483861342c20cd-refs/branch-heads/4103@{#416}),platform=Linux 4.19.76-linuxkit x86_64)
-    at Object.checkLegacyResponse (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/error.js:546:15)
-    at parseHttpResponse (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/http.js:509:13)
-    at doSend.then.response (/db-web-ui/frontend/node_modules/selenium-webdriver/lib/http.js:441:30)
-````
 
 User Interface Guidelines
 -------------------------
