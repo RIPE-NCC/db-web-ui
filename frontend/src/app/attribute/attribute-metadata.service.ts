@@ -195,7 +195,7 @@ export class AttributeMetadataService {
     }
 
     public static splitAttrsCommentsFromValue(attributes: IAttributeModel[], edited?: boolean) {
-        attributes.map((attribute: IAttributeModel) => {
+        attributes.forEach((attribute: IAttributeModel) => {
             if (attribute.value) {
                 if (attribute.value.indexOf('#') > -1) {
                     attribute.comment = attribute.value.substring(attribute.value.indexOf('#') + 1, attribute.value.length).trim();
