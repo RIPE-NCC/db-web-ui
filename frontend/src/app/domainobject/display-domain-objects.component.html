@@ -14,7 +14,7 @@
         </tr>
     </table>
     <p *ngIf="objects.length > 4">
-        <a target="_blank" href="query?searchtext=%20-M%20-rd%20-T%20domain%20{{ prefix }}&bflag=true"> and {{ objects.length - 4 }} more... </a>
+        <a rel="noopener" target="_blank" href="query?searchtext=%20-M%20-rd%20-T%20domain%20{{ prefix }}&bflag=true"> and {{ objects.length - 4 }} more... </a>
     </p>
     <button mat-flat-button color="primary" class="float-end" (click)="navigateToSelect()">BACK TO CREATE OBJECT</button>
 </section>

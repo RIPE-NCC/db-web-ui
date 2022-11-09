@@ -9,9 +9,10 @@ export class CryptService {
     private prefix: string = '$1$';
     private separator: string = '$';
     private rounds: number = 1000;
+    private cryptoArray = new Uint32Array(1);
 
     public crypt(key: string) {
-        return this.cryptSalt(key, this._generateSalt(8));
+        return this.cryptSalt(key, this.generateSalt(8));
     }
 
     public cryptSalt(key: string, salt: string) {
@@ -108,10 +109,12 @@ export class CryptService {
         return result;
     }
 
-    private _generateSalt(length: number) {
+    private generateSalt(length: number) {
         let result = '';
         for (let index = 0; index < length; index++) {
-            const offset = Math.floor(Math.random() * this.b64t.length);
+            window.crypto.getRandomValues(this.cryptoArray);
+            const randomNumber = this.cryptoArray[0] / (0xffffffff + 1);
+            const offset = Math.floor(randomNumber * this.b64t.length);
             result = result.concat(this.b64t[offset]);
         }
         return result;

@@ -1,14 +1,14 @@
 <section id="resultsSection">
     <div *ngIf="!error" class="float-end resultlinks">
-        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.xml" target="_blank">
+        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.xml" rel="noopener" target="_blank">
             <i class="fal fa-file-code"></i>
             XML </a
         >&nbsp;
-        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.json" target="_blank">
+        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.json" rel="noopener" target="_blank">
             <i class="fal fa-file-alt"></i>
             JSON </a
         >&nbsp;
-        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.txt" target="_blank">
+        <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.txt" rel="noopener" target="_blank">
             <i class="fal fa-file-alt"></i>
             PLAIN TEXT
         </a>
