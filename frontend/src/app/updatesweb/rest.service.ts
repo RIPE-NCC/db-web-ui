@@ -162,7 +162,7 @@ export class RestService {
             map((result: any) => {
                 console.debug('fetchObject success:' + JSON.stringify(result));
                 const primaryKey = this.whoisResourcesService.getPrimaryKey(this.whoisResourcesService.wrapSuccess(result));
-                if (_.isEqual(objectName, primaryKey)) {
+                if (_.isEqual(objectName.toUpperCase(), primaryKey.toUpperCase())) {
                     return this.whoisResourcesService.wrapSuccess(result);
                 } else {
                     return this.router.navigateByUrl(`webupdates/modify/${source}/${objectType}/${primaryKey}`);
