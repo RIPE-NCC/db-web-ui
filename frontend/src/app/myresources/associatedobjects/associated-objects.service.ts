@@ -41,10 +41,10 @@ export class AssociatedObjectsService {
         filter: string,
     ): Observable<IAssociatedObjectApiResult> {
         if (!objectType) {
-            return throwError('objectType is empty. associated-route-objects not available');
+            return throwError(() => 'objectType is empty. associated-route-objects not available');
         }
         if (!objectName) {
-            return throwError('objectName is empty. associated-route-objects not available');
+            return throwError(() => 'objectName is empty. associated-route-objects not available');
         }
 
         filter = filter ? filter.replace(/\s/g, '') : '';
