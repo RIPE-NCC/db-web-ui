@@ -25,8 +25,8 @@ public class WhoisRestController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestController.class);
 
     @Autowired
-    public WhoisRestController(final WhoisRestService WhoisRestService) {
-        this.whoisRestService = WhoisRestService;
+    public WhoisRestController(final WhoisRestService whoisRestService) {
+        this.whoisRestService = whoisRestService;
     }
 
     @RequestMapping(value = "/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -35,7 +35,7 @@ public class WhoisRestController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) throws Exception {
 
-        LOGGER.info("rest-request: {}", request.toString());
+        LOGGER.info("rest-request: {}", request);
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
         return whoisRestService.bypass(request, body, headers);
