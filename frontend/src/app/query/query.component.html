@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="perm-xml-json-resultlinks" *ngIf="showFilters && showPermaLinks">
+        <div class="perm-xml-json-resultlinks" *ngIf="isFiltersDisplayed() && showPermaLinks">
             <div class="perm-xml-json">
                 <span><i class="fal fa-link" title="Permanent link to the results for this query."></i> PERMA</span>
                 <a href="{{ link.xml }}" title="XML format of the results for this query." target="_blank"> <i class="fal fa-file-code"></i> XML </a>
