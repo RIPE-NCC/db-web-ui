@@ -12,12 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +40,7 @@ public class WhoisInternalProxyController extends ApiController {
         this.whoisInternalService = whoisInternalService;
     }
 
-    @RequestMapping(value = "/api/resources/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/api/resources/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> findMyResources(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
@@ -49,7 +49,7 @@ public class WhoisInternalProxyController extends ApiController {
     }
 
 
-    @RequestMapping(value = "/api/fmp-pub/forgotmntnerpassword/{key}", method = RequestMethod.GET, produces = "application/pdf")
+    @GetMapping(path = "/api/fmp-pub/forgotmntnerpassword/{key}", produces = "application/pdf")
     @ResponseBody
     public ResponseEntity<byte[]> getForgotMaintainerPasswordPDF(final HttpServletRequest request,
                                                                  @PathVariable final String key,
@@ -74,7 +74,7 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
-    @RequestMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request,
                                                    @CookieValue(value = CROWD_TOKEN_KEY, required=false) final String crowdToken) {
 
@@ -89,7 +89,7 @@ public class WhoisInternalProxyController extends ApiController {
         }
     }
 
-    @RequestMapping(value = "/api/user/**")
+    @GetMapping(path = "/api/user/**")
     public ResponseEntity<String> whoisInternalUserProxy(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
@@ -97,7 +97,7 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
-    @RequestMapping(value = "/api/abuse-validation/validate-token")
+    @GetMapping(value = "/api/abuse-validation/validate-token")
     public ResponseEntity<String> whoisInternalValidateToken(
                 final HttpServletRequest request,
             @RequestParam("token") final String token,
