@@ -212,7 +212,7 @@ export class TextCommonsService {
             },
             (failResponse) => {
                 console.debug('Authentication failed');
-                return throwError(false).toPromise();
+                return throwError(() => false).toPromise();
             },
         );
     }

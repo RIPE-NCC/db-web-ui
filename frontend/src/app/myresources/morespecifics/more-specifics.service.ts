@@ -23,10 +23,10 @@ export class MoreSpecificsService {
 
     public getSpecifics(objectName: string, objectType: string, page: number, filter: string): Observable<IMoreSpecificsApiResult> {
         if (!objectType) {
-            return throwError('objectType is empty. more-specifics not available');
+            return throwError(() => 'objectType is empty. more-specifics not available');
         }
         if (!objectName) {
-            return throwError('objectName is empty. more-specifics not available');
+            return throwError(() => 'objectName is empty. more-specifics not available');
         }
         filter = filter ? filter.replace(/\s/g, '') : '';
         const params = new HttpParams().set('filter', filter).set('page', String(page));

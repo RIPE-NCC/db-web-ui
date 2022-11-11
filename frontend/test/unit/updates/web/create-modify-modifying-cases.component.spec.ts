@@ -507,7 +507,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
                     ],
                 },
             });
-            modalMock.open.and.returnValue({ componentInstance: {}, result: throwError('cancel').toPromise() });
+            modalMock.open.and.returnValue({ componentInstance: {}, result: throwError(() => 'cancel').toPromise() });
             await fixture.whenStable();
         });
 

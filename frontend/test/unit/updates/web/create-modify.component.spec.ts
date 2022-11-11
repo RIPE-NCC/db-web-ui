@@ -291,7 +291,7 @@ describe('CreateModifyComponent', () => {
         });
 
         it('should ask for password after upon submit.', () => {
-            modalMock.open.and.returnValue({ componentInstance: {}, result: throwError('cancel').toPromise() });
+            modalMock.open.and.returnValue({ componentInstance: {}, result: throwError(() => 'cancel').toPromise() });
 
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'as-block', 'MY-AS-BLOCK');
             // simulate manual addition of a new mntner with only md5

@@ -85,7 +85,7 @@ describe('ConfirmMaintainerComponent', () => {
             get: () => '',
             has: () => true,
         };
-        mockEmailLinkService.get.and.returnValue(throwError(404));
+        mockEmailLinkService.get.and.returnValue(throwError(() => 404));
         component.ngOnInit();
         fixture.detectChanges();
 
@@ -223,7 +223,7 @@ describe('ConfirmMaintainerComponent', () => {
             currentUserAlreadyManagesMntner: true,
         };
         mockEmailLinkService.get.and.returnValue(of(response));
-        mockEmailLinkService.update.and.returnValue(throwError(400));
+        mockEmailLinkService.update.and.returnValue(throwError(() => 400));
         component.ngOnInit();
         fixture.detectChanges();
         component.associate();
@@ -249,7 +249,7 @@ describe('ConfirmMaintainerComponent', () => {
             currentUserAlreadyManagesMntner: true,
         };
         mockEmailLinkService.get.and.returnValue(of(response));
-        mockEmailLinkService.update.and.returnValue(throwError({ status: 400, data: 'already contains SSO' }));
+        mockEmailLinkService.update.and.returnValue(throwError(() => ({ status: 400, data: 'already contains SSO' })));
         component.ngOnInit();
         fixture.detectChanges();
 
