@@ -676,7 +676,7 @@ describe('QueryComponent', () => {
         };
 
         beforeEach(() => {
-            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(errorResponse));
+            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(() => errorResponse));
         });
 
         it('should show error messages', () => {

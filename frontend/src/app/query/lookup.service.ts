@@ -19,7 +19,7 @@ export class LookupService implements ILookupService {
 
     public lookupWhoisObject(lookupState: ILookupState): Observable<any> {
         if (!lookupState.key || !lookupState.source || !lookupState.type) {
-            return throwError('Not a valid ILookupState');
+            return throwError(() => 'Not a valid ILookupState');
         }
         const url = `api/whois/${lookupState.source}/${lookupState.type}/${lookupState.key}`;
 

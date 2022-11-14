@@ -38,7 +38,7 @@ describe('LookupSingleObjectComponent', () => {
 
     describe('should shows an object', () => {
         it('but not when the params are empty', async () => {
-            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError("That just won't do."));
+            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError(() => "That just won't do."));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => component.activatedRoute.snapshot.queryParamMap[param],
                 has: (hash: string) => true,
@@ -81,7 +81,7 @@ describe('LookupSingleObjectComponent', () => {
         });
 
         it('with RIPE source even if specifed is NONAUTH, because object actualy exist in RIPE source', async () => {
-            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError(mockErrorNonauth));
+            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError(() => mockErrorNonauth));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => component.activatedRoute.snapshot.queryParamMap[param],
                 has: (hash: string) => true,

@@ -288,7 +288,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
     it('should dismiss modal after error deleting object', async () => {
         await componentFixture.whenStable();
 
-        restServiceMock.deleteObject.and.returnValue(throwError({ data: 'error' }));
+        restServiceMock.deleteObject.and.returnValue(throwError(() => ({ data: 'error' })));
         modalDeleteObjectComponent.delete();
 
         expect(modalMock.dismiss).toHaveBeenCalledWith({ data: 'error' });
@@ -380,7 +380,7 @@ describe('ModalDeleteObjectComponent loading references failures ', () => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
-        restServiceMock.getReferences.and.returnValue(throwError({ data: 'error' }).toPromise());
+        restServiceMock.getReferences.and.returnValue(throwError(() => ({ data: 'error' })).toPromise());
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],

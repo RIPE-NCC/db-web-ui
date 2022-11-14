@@ -127,7 +127,7 @@ describe('ForgotMaintainerPasswordComponent', () => {
         beforeEach(() => {
             spyOn(queryParamMock, 'has').and.returnValue(true);
             spyOn(queryParamMock, 'get').and.returnValue('mnt-key');
-            userInfoService.getUserOrgsAndRoles.and.returnValue(throwError({ data: 403 }));
+            userInfoService.getUserOrgsAndRoles.and.returnValue(throwError(() => ({ data: 403 })));
         });
 
         it('should not logged in user', async () => {

@@ -161,7 +161,7 @@ describe('FindMaintainerComponent', () => {
 
         it('should not set a maintainer on not found', () => {
             const maintainerKey = 'I-AM-NO-MNT';
-            findMaintainerService.search.and.returnValue(throwError('The maintainer could not be found.'));
+            findMaintainerService.search.and.returnValue(throwError(() => 'The maintainer could not be found.'));
             fixture.detectChanges();
             component.selectMaintainer(maintainerKey);
 
@@ -173,7 +173,7 @@ describe('FindMaintainerComponent', () => {
 
         it('should not set a maintainer Error fetching maintainer', () => {
             const maintainerKey = 'I-AM-NO-MNT';
-            findMaintainerService.search.and.returnValue(throwError('Error fetching maintainer.'));
+            findMaintainerService.search.and.returnValue(throwError(() => 'Error fetching maintainer.'));
             fixture.detectChanges();
             component.selectMaintainer(maintainerKey);
 
@@ -186,7 +186,7 @@ describe('FindMaintainerComponent', () => {
 
         it('should go to legacy when error validating email', () => {
             const maintainerKey = 'I-AM-NO-MNT';
-            findMaintainerService.search.and.returnValue(throwError('switchToManualResetProcess'));
+            findMaintainerService.search.and.returnValue(throwError(() => 'switchToManualResetProcess'));
             spyOn(component.router, 'navigate');
             component.selectMaintainer(maintainerKey);
             fixture.detectChanges();
@@ -216,7 +216,7 @@ describe('FindMaintainerComponent', () => {
         });
 
         it('should report error validating mail', () => {
-            findMaintainerService.sendMail.and.returnValue(throwError(500));
+            findMaintainerService.sendMail.and.returnValue(throwError(() => 500));
             spyOn(component.router, 'navigate');
             component.foundMaintainer = { email: 'a@b.c', maintainerKey: 'I-AM-MNT' };
             component.validateEmail();
@@ -231,7 +231,7 @@ describe('FindMaintainerComponent', () => {
         });
 
         it('should report error validating mail', () => {
-            findMaintainerService.sendMail.and.returnValue(throwError(404));
+            findMaintainerService.sendMail.and.returnValue(throwError(() => 404));
             spyOn(component.router, 'navigate');
             component.foundMaintainer = { email: 'a@b.c', maintainerKey: 'I-AM-MNT' };
             component.validateEmail();
@@ -245,7 +245,7 @@ describe('FindMaintainerComponent', () => {
         });
 
         it('should return unathorized for validate email', () => {
-            findMaintainerService.sendMail.and.returnValue(throwError({ status: 401, data: 'Unauthorized' }));
+            findMaintainerService.sendMail.and.returnValue(throwError(() => ({ status: 401, data: 'Unauthorized' })));
             component.foundMaintainer = { email: 'a@b.c', maintainerKey: 'I-AM-MNT' };
             component.validateEmail();
             fixture.detectChanges();
@@ -275,7 +275,7 @@ describe('FindMaintainerComponent', () => {
 
     describe('Testing Not logged in user', () => {
         beforeEach(async () => {
-            userInfoService.getUserOrgsAndRoles.and.returnValue(throwError(403));
+            userInfoService.getUserOrgsAndRoles.and.returnValue(throwError(() => 403));
             spyOn(component.router, 'navigate');
             component.ngOnInit();
             await fixture.whenStable();

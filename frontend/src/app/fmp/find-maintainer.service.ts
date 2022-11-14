@@ -26,12 +26,12 @@ export class FindMaintainerService {
                     flatMap((validationResult: { expired: boolean }) => {
                         return of(this.getFoundMaintainer(result.objects.object[0], validationResult.expired));
                     }),
-                    catchError((error: any) => throwError('switchToManualResetProcess')),
+                    catchError((error: any) => throwError(() => 'switchToManualResetProcess')),
                 );
             }),
             catchError((error: any, caught: Observable<any>) => {
                 if (error.status === 404) {
-                    return throwError('The maintainer could not be found.');
+                    return throwError(() => 'The maintainer could not be found.');
                 } else if (error.status === 403) {
                     if (this.fmpErrorService.isYourAccountBlockedError(error)) {
                         this.fmpErrorService.setGlobalAccountBlockedError();
@@ -39,9 +39,9 @@ export class FindMaintainerService {
                     }
                     return throwError(error.error); // XYZ-MNT is synchronized with organisation ABC in LIR Portal
                 } else if (error === 'switchToManualResetProcess') {
-                    return throwError('switchToManualResetProcess');
+                    return throwError(() => 'switchToManualResetProcess');
                 } else {
-                    return throwError('Error fetching maintainer.');
+                    return throwError(() => 'Error fetching maintainer.');
                 }
             }),
         );

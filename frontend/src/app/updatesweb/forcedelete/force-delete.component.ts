@@ -174,7 +174,7 @@ export class ForceDeleteComponent implements OnInit {
                 this.restCallInProgress = false;
                 // we expect an error: from the error we except auth candidates
                 if (this.whoisResourcesService.getRequiresAdminRightFromError(error.data)) {
-                    return throwError('Deleting this object requires administrative authorisation');
+                    return throwError(() => 'Deleting this object requires administrative authorisation');
                 } else {
                     // strip RIPE-NCC- mntners
                     let authCandidates = this.whoisResourcesService.getAuthenticationCandidatesFromError(error.data);
