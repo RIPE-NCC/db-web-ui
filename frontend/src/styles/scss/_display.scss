@@ -2,6 +2,11 @@
     @extend %width-100;
     border: 1px #ccc dashed;
     margin-bottom: 20px;
+    &.td-20 {
+        td {
+            width: 20%;
+        }
+    }
     td {
         padding: 2px 18px;
         p {

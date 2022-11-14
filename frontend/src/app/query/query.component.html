@@ -89,15 +89,15 @@
         </div>
         <div class="perm-xml-json-resultlinks" *ngIf="showFilters && showPermaLinks">
             <div class="perm-xml-json">
-                <span><i class="fal fa-link" title="Permanent link to the results for this query."></i> PERMA</span>
+                <span><em class="fal fa-link" title="Permanent link to the results for this query."></em> PERMA</span>
                 <a href="{{ link.xml }}" title="XML format of the results for this query." rel="noopener" target="_blank">
-                    <i class="fal fa-file-code"></i> XML
+                    <em class="fal fa-file-code"></em> XML
                 </a>
                 <a href="{{ link.json }}" title="JSON format of the results for this query." rel="noopener" target="_blank">
-                    <i class="fal fa-file-alt"></i> JSON
+                    <em class="fal fa-file-alt"></em> JSON
                 </a>
                 <a href="{{ link.plainText }}" title="Plain text format of the results for this query." rel="noopener" target="_blank">
-                    <i class="fal fa-file-alt"></i> PLAIN TEXT
+                    <em class="fal fa-file-alt"></em> PLAIN TEXT
                 </a>
             </div>
             <div class="controls">
@@ -152,7 +152,7 @@
                     <p>&nbsp;</p>
                     <a href="/docs/" target="_blank" class="link-color"
                         >Read documentation
-                        <i class="fal fa-external-link"></i>
+                        <em class="fal fa-external-link"></em>
                     </a>
                 </div>
             </div>
@@ -165,7 +165,7 @@
                     <p>&nbsp;</p>
                     <a href="https://github.com/RIPE-NCC/whois/wiki/WHOIS-REST-API" rel="noopener" target="_blank" class="link-color"
                         >Read more about RESTful API
-                        <i class="fal fa-external-link"></i>
+                        <em class="fal fa-external-link"></em>
                     </a>
                 </div>
             </div>
@@ -186,7 +186,7 @@
                     </ng-template>
                     <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank" class="link-color"
                         >Take me to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database
-                        <i class="fal fa-external-link"></i>
+                        <em class="fal fa-external-link"></em>
                     </a>
                 </div>
             </div>

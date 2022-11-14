@@ -25,7 +25,11 @@
         </ng-template>
     </div>
     <div *ngIf="isShowingAssociatedRouteObjects; else domainAssociatedObjects">
-        <table class="table table-bordered table-body-borderless resources table-striped" *ngIf="resultObject.associatedObjects.length > 0">
+        <table
+            class="table table-bordered table-body-borderless resources table-striped"
+            *ngIf="resultObject.associatedObjects.length > 0"
+            aria-label="associated route objects"
+        >
             <thead>
                 <tr>
                     <th class="w30">Origin</th>
@@ -60,11 +64,15 @@
     </div>
 </section>
 <ng-template #domainAssociatedObjects>
-    <table class="table table-bordered table-body-borderless resources table-striped" *ngIf="resultObject.associatedObjects.length > 0">
+    <table
+        class="table table-bordered table-body-borderless resources table-striped"
+        *ngIf="resultObject.associatedObjects.length > 0"
+        aria-label="domain associated objects"
+    >
         <thead>
             <tr>
-                <th class="w40">Domain</th>
-                <th class="w60"></th>
+                <th scope="col" class="w40">Domain</th>
+                <th scope="col" class="w60"></th>
             </tr>
         </thead>
         <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">

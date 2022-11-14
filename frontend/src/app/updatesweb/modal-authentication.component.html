@@ -2,7 +2,7 @@
     <form (submit)="submit()">
         <div class="modal-header">
             <h2 class="modal-title">Password authentication</h2>
-            <i class="fal fa-times close" aria-label="Close" (click)="cancel()"></i>
+            <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
         </div>
         <div *ngIf="selected.message?.length > 0" class="modal-banner alarm">
             <p>{{ selected.message }}</p>

@@ -7,7 +7,7 @@
 <div class="viewerbuttons">
     <a mat-flat-button color="primary" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]" *ngIf="show.loginLink">
         <span>LOGIN TO UPDATE </span>
-        <i class="fal fa-database"></i>
+        <em class="fal fa-database"></em>
     </a>
     <a
         mat-flat-button
@@ -29,7 +29,7 @@
         target="_blank"
     >
         {{ 'lookup.ripestatLink.text' | label }}
-        <i class="fal fa-external-link"></i>
+        <em class="fal fa-external-link"></em>
     </a>
 </div>
 <pre><ul [ngClass]="{showripemanaged: showRipeManagedAttrs}"><li

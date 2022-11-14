@@ -3,10 +3,10 @@
 </div>
 
 <div class="panel panel-default">
-    <table class="table table-hover reverse-zones" *ngIf="attribute.value && attribute.value.length">
+    <table class="table table-hover reverse-zones" *ngIf="attribute.value && attribute.value.length" aria-label="Reverse zones">
         <thead>
             <tr>
-                <th>Reverse zones</th>
+                <th scope="col">Reverse zones</th>
             </tr>
         </thead>
         <tbody class="reverse-zone-table">
