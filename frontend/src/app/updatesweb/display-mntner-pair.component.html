@@ -1,16 +1,16 @@
 <h1>{{ objectType }} with primary key &quot;{{ objectTypeName }}&quot;</h1>
 
 <section class="inner-container">
-    <table class="success-fields grey">
+    <table class="success-fields td-20 grey">
         <tr *ngFor="let attribute of objectTypeAttributes">
-            <td width="20%">
+            <td>
                 <label>{{ attribute.name }}:</label>
             </td>
             <td>
                 <p>{{ attribute.value }}</p>
                 <div *ngIf="attribute.$$error" class="modify-feedback">
                     <span>{{ attribute.$$error }}</span>
-                    <i class="fal fa-info-circle"></i>
+                    <em class="fal fa-info-circle"></em>
                 </div>
             </td>
         </tr>
@@ -18,16 +18,16 @@
 
     <h1>mntner with primary key &quot;{{ mntnerName }}&quot;</h1>
 
-    <table class="success-fields grey">
+    <table class="success-fields td-20 grey">
         <tr *ngFor="let attribute of mntnerAttributes">
-            <td width="20%">
+            <td>
                 <label>{{ attribute.name }}:</label>
             </td>
             <td>
                 <p>{{ attribute.value }}</p>
                 <div *ngIf="attribute.$$error" class="modify-feedback">
                     <span>{{ attribute.$$error }}</span>
-                    <i class="fal fa-info-circle"></i>
+                    <em class="fal fa-info-circle"></em>
                 </div>
             </td>
         </tr>

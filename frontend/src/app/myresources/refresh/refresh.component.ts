@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     template: `<p class="resource-page-message">
         {{ reason }}
         <button mat-mini-fab color="primary" class="margin-left" (click)="refresh()">
-            <i class="fal fa-redo"></i>
+            <em class="fal fa-redo"></em>
         </button>
     </p>`,
 })

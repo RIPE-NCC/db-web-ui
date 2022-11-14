@@ -1,9 +1,9 @@
 <h1>{{ objectType }} &quot;{{ objectName }}&quot;</h1>
 
 <section class="inner-container">
-    <table class="success-fields grey" *ngIf="!isDiff()">
+    <table class="success-fields td-20 grey" *ngIf="!isDiff()">
         <tr *ngFor="let attribute of attributes">
-            <td width="20%">
+            <td>
                 <label>{{ attribute.name }}:</label>
             </td>
             <td>
@@ -15,7 +15,7 @@
                 </p>
                 <div [hidden]="!attribute.$$error">
                     <span>{{ attribute.$$error }}</span>
-                    <i class="fal fa-info-circle"></i>
+                    <em class="fal fa-info-circle"></em>
                 </div>
             </td>
         </tr>

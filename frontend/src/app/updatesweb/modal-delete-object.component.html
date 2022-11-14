@@ -4,7 +4,7 @@
             <span *ngIf="canBeDeleted">Please provide the reason for delete</span>
             <span *ngIf="!canBeDeleted">This object cannot be deleted</span>
         </h2>
-        <i class="fal fa-times close" aria-label="Close" (click)="cancel()"></i>
+        <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
     </div>
 
     <div class="modal-body margin-left">
@@ -38,7 +38,7 @@
 
     <div class="modal-footer">
         <div *ngIf="showRoaMsg" class="modal-footer-info">
-            <i class="fal fa-info-circle"></i>
+            <em class="fal fa-info-circle"></em>
             <div>There is an RPKI ROA for the same route. If you proceed to delete this route(6) object, you may want to delete the ROA as well.</div>
         </div>
         <div *ngIf="canBeDeleted">

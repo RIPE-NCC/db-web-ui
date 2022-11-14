@@ -108,10 +108,10 @@ export class RestService {
             const attrsToReturn: string[] = this.whoisResourcesService.getViewableAttrsForObjectTypes(targetObjectTypes); // ["person", "role", "org-name", "abuse-mailbox"];
 
             let params = new HttpParams();
-            targetObjectTypes.map((attr) => (params = params.append('from', attr)));
+            targetObjectTypes.forEach((attr) => (params = params.append('from', attr)));
             params = params.set('like', query);
-            attrsToReturn.map((attr) => (params = params.append('select', attr)));
-            attrsToFilterOn.map((attr) => (params = params.append('where', attr)));
+            attrsToReturn.forEach((attr) => (params = params.append('select', attr)));
+            attrsToFilterOn.forEach((attr) => (params = params.append('where', attr)));
             return this.http
                 .get('api/whois/autocomplete', { params })
                 .pipe(

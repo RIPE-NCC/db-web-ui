@@ -26,12 +26,16 @@
             </ng-template>
         </div>
         <div>
-            <table class="table table-bordered table-body-borderless resources table-striped" *ngIf="moreSpecifics.resources.length > 0">
+            <table
+                class="table table-bordered table-body-borderless resources table-striped"
+                *ngIf="moreSpecifics.resources.length > 0"
+                aria-label="more specifics"
+            >
                 <thead>
                     <tr>
-                        <th class="w30">Internet number resource</th>
-                        <th class="w20">Status</th>
-                        <th class="w50">Netname</th>
+                        <th scope="col" class="w30">Internet number resource</th>
+                        <th scope="col" class="w20">Status</th>
+                        <th scope="col" class="w50">Netname</th>
                     </tr>
                 </thead>
                 <!-- height is: 37 + (36 * n visible rows)-->

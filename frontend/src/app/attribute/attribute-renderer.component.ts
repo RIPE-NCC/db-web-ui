@@ -152,7 +152,6 @@ export class AttributeRendererComponent implements OnInit {
 
     public removeAttribute(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {
         if (this.canBeRemoved(objectType, attributes, attribute)) {
-            // this.onRemove.emit({objectType, attribute});
             const foundIdx = _.findIndex(attributes, (attr: IAttributeModel) => {
                 return attr.name === attribute.name && attr.value === attribute.value;
             });

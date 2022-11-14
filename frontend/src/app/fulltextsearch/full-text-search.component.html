@@ -7,13 +7,13 @@
     <form class="grey padding margin-bottom" style="overflow: auto" (submit)="searchClicked()">
         <input autoFocusDirective id="fullTextSearchInput" name="ftquery" type="text" class="form-control" [(ngModel)]="ftquery" placeholder="Search term" />
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
-            <i *ngIf="!advancedSearch" class="fal fa-plus-square"></i>
-            <i *ngIf="advancedSearch" class="fal fa-minus-square"></i>
+            <em *ngIf="!advancedSearch" class="fal fa-plus-square"></em>
+            <em *ngIf="advancedSearch" class="fal fa-minus-square"></em>
             <a class="padding-left link-pointer">{{ (advancedSearch && 'Basic') || 'Advanced' }} Search</a>
         </div>
 
         <div *ngIf="advancedSearch">
-            <table class="table-radio">
+            <table class="table-radio" aria-label="advanced search">
                 <tbody>
                     <tr>
                         <td>

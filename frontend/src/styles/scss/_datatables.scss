@@ -87,14 +87,14 @@ section.head {
     h1 {
         @extend %float-l;
         a {
-            i {
+            em {
                 font: {
                     size: 50%;
                 }
                 color: $link;
             }
             &:hover {
-                i {
+                em {
                     color: $light-blue;
                 }
             }

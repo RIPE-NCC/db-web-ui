@@ -120,7 +120,7 @@ export class WhoisObjectEditorComponent implements OnInit {
     }
 
     private addCommentsToValueOfAtrributes(attributes: IAttributeModel[]) {
-        attributes.map((attr: IAttributeModel) => {
+        attributes.forEach((attr: IAttributeModel) => {
             if (attr.comment && attr.comment.trim().length > 0) {
                 if (attr.value.trim().length === 0) {
                     attr.value += '# ' + attr.comment;
