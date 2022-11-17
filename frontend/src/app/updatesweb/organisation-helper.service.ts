@@ -81,8 +81,12 @@ export class OrganisationHelperService {
                     passwords,
                 )
                 .subscribe({
-                    next: () => {},
-                    error: () => {},
+                    next: () => {
+                        // Object successfully modified
+                    },
+                    error: () => {
+                        // Error trying to modify object
+                    },
                 });
         }
     }

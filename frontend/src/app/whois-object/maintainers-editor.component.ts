@@ -284,8 +284,8 @@ export class MaintainersEditorComponent implements OnInit {
 
                 // fetch details of all selected maintainers concurrently
                 this.restCallInProgress = true;
-                this.restService.detailsForMntners(this.mntners.object).then(
-                    (result: any) => {
+                this.restService.detailsForMntners(this.mntners.object).subscribe({
+                    next: (result: any) => {
                         this.restCallInProgress = false;
 
                         this.mntners.objectOriginal = _.flatten(result) as IMntByModel[];
@@ -300,12 +300,12 @@ export class MaintainersEditorComponent implements OnInit {
                         }
                         this.updateMntnersClbk.emit(this.mntners);
                     },
-                    (error: any) => {
+                    error: (error: any) => {
                         this.restCallInProgress = false;
                         console.error('Error fetching sso-mntners details', error);
                         this.alertsService.setGlobalError('Error fetching maintainer details');
                     },
-                );
+                });
                 // now let's see if there are any read-only restrictions on these attributes. There is if any of
                 // these are true:
                 //

@@ -46,22 +46,25 @@ export class MntnerService {
                     return resolve();
                 }
                 // pop up an auth box
-                this.restService.detailsForMntners(parentMntners).then((enrichedMntners: IMntByModel[]) => {
-                    const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                    const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                    const modalRef = this.modalService.open(ModalAuthenticationComponent);
-                    modalRef.componentInstance.resolve = {
-                        method: operation,
-                        objectType: object.type,
-                        objectName: object.name,
-                        mntners: mntnersWithPasswords,
-                        mntnersWithoutPassword: mntnersWithoutPasswords,
-                        allowForcedDelete: false,
-                        isLirObject: false,
-                        source: object.source,
-                    };
-                    return modalRef.result.then(resolve, reject);
-                }, reject);
+                this.restService.detailsForMntners(parentMntners).subscribe({
+                    next: (enrichedMntners: IMntByModel[]) => {
+                        const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                        const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                        const modalRef = this.modalService.open(ModalAuthenticationComponent);
+                        modalRef.componentInstance.resolve = {
+                            method: operation,
+                            objectType: object.type,
+                            objectName: object.name,
+                            mntners: mntnersWithPasswords,
+                            mntnersWithoutPassword: mntnersWithoutPasswords,
+                            allowForcedDelete: false,
+                            isLirObject: false,
+                            source: object.source,
+                        };
+                        return modalRef.result.then(resolve, reject);
+                    },
+                    error: () => reject,
+                });
             } else {
                 resolve();
             }
@@ -277,8 +280,8 @@ export class MntnerService {
         prefix = IpAddressService.rangeToSlash(prefix);
         const address = IpAddressService.getCidrAddress(prefix);
         const objectType = address instanceof Address4 ? 'inetnum' : 'inet6num';
-        this.restService.fetchResource(objectType, prefix).then(
-            (result: any) => {
+        this.restService.fetchResource(objectType, prefix).subscribe({
+            next: (result: any) => {
                 if (result && result.objects && _.isArray(result.objects.object)) {
                     const wrappedResource = this.whoisResourcesService.validateWhoisResources(result);
 
@@ -306,11 +309,11 @@ export class MntnerService {
                     return mntHandler(mntBys);
                 }
             },
-            () => {
+            error: () => {
                 // TODO: error handling
                 return mntHandler([]);
             },
-        );
+        });
     }
 
     private static oneOfOriginalMntnersIsMine(originalObjectMntners: IMntByModel[]) {

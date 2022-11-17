@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { Observable, of, OperatorFunction } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -57,6 +57,7 @@ export class AttributeRendererComponent implements OnInit {
      * attributes : object[] -- The array of attributes which make up the object.
      * attribute  : object   -- The attribute which this controller is responsible for.
      */
+
     /*
      * Initial scope vars
      */
@@ -96,7 +97,13 @@ export class AttributeRendererComponent implements OnInit {
             if (md.hasOwnProperty(attributeName)) {
                 const metadata = this.attributeMetadataService.getMetadata(objectType, attributeName);
 
-                if (!this.isReadOnly(metadata, objectType, attributes) && this.canBeAdded(objectType, attributes, { name: attributeName, value: undefined })) {
+                if (
+                    !this.isReadOnly(metadata, objectType, attributes) &&
+                    this.canBeAdded(objectType, attributes, {
+                        name: attributeName,
+                        value: undefined,
+                    })
+                ) {
                     addableAttributes.push({ name: attributeName });
                 }
             }
@@ -278,21 +285,16 @@ export class AttributeRendererComponent implements OnInit {
         return [];
     }
 
-    private refsAutocomplete(attribute: IAttributeModel, userInput: any, refs: any): any {
+    private refsAutocomplete(attribute: IAttributeModel, userInput: any, refs: any) {
         const utf8Substituted = this.warnForNonSubstitutableUtf8(attribute, userInput);
         if (utf8Substituted && this.isServerLookupKey(refs)) {
-            return this.restService.autocompleteAdvanced(of(userInput), refs).then(
-                (resp: any) => {
-                    return this.addNiceAutocompleteName(this.filterBasedOnAttr(resp, attribute.name), attribute.name);
-                },
-                () => {
-                    // autocomplete error
-                    return [];
-                },
+            return this.restService.autocompleteAdvanced(of(userInput), refs).pipe(
+                map((resp) => this.addNiceAutocompleteName(this.filterBasedOnAttr(resp, attribute.name), attribute.name)),
+                catchError(() => of([])),
             );
         } else {
             // No suggestions since not a reference
-            return [];
+            return of([]);
         }
     }
 

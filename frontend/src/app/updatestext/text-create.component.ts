@@ -116,8 +116,8 @@ export class TextCreateComponent implements OnInit {
             });
             if (inetnumAttr && sourceAttr) {
                 this.restCallInProgress = true;
-                this.restService.fetchParentResource(inetnumAttr.name, inetnumAttr.value).then(
-                    (result: any) => {
+                this.restService.fetchParentResource(inetnumAttr.name, inetnumAttr.value).subscribe({
+                    next: (result: any) => {
                         let parent;
                         if (result && result.objects && _.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
@@ -138,11 +138,11 @@ export class TextCreateComponent implements OnInit {
                             }
                         }
                     },
-                    () => {
+                    error: () => {
                         // if we cannot find a parent, do not show the auth popup
                         this.doCreate(attributes, inetnumAttr.name);
                     },
-                );
+                });
             }
         } else {
             this.textCommonsService

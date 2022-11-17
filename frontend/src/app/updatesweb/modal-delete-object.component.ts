@@ -132,17 +132,17 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
 
     public getReferences(source: string, objectType: string, name: string) {
         this.restCallInProgress = true;
-        this.restService.getReferences(source, objectType, name, this.MAX_REFS_TO_SHOW.toString()).then(
-            (resp: any) => {
+        this.restService.getReferences(source, objectType, name, this.MAX_REFS_TO_SHOW.toString()).subscribe({
+            next: (resp: any) => {
                 this.restCallInProgress = false;
                 this.canBeDeleted = this.isDeletable(resp);
                 this.incomingReferences = resp.incoming;
             },
-            (error: any) => {
+            error: (error: any) => {
                 this.restCallInProgress = false;
                 this.activeModal.dismiss(error.data);
             },
-        );
+        });
     }
 
     private checkRpkiRoa() {

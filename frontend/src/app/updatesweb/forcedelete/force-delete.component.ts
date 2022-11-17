@@ -129,19 +129,19 @@ export class ForceDeleteComponent implements OnInit {
 
                         // fetch details of all selected maintainers concurrently
                         this.restCallInProgress = true;
-                        this.restService.detailsForMntners(objectMntners).then(
-                            (enrichedMntners: IMntByModel[]) => {
+                        this.restService.detailsForMntners(objectMntners).subscribe({
+                            next: (enrichedMntners: IMntByModel[]) => {
                                 this.restCallInProgress = false;
 
                                 this.maintainers.object = enrichedMntners;
                                 console.debug('maintainers.object:' + JSON.stringify(this.maintainers.object));
                             },
-                            (error: any) => {
+                            error: (error: any) => {
                                 this.restCallInProgress = false;
                                 console.error('Error fetching mntner details' + JSON.stringify(error));
                                 this.alertsService.setGlobalError('Error fetching maintainer details');
                             },
-                        );
+                        });
                     },
                     error: (errorMsg: any) => {
                         this.alertsService.setGlobalError(errorMsg);

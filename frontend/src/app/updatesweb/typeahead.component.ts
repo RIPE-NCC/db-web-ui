@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { CharsetToolsService } from './charset-tools.service';
 import { RestService } from './rest.service';
@@ -54,23 +54,18 @@ export class TypeaheadComponent {
         this.blurEmitter.emit(this.attribute);
     }
 
-    public referenceAutocomplete(userInput: string): any {
+    public referenceAutocomplete(userInput: string) {
         const attrName = this.attribute.name;
         const refs = this.attribute.$$meta.$$refs;
         const utf8Substituted = this.warnForNonSubstitutableUtf8(this.attribute, userInput);
         if (utf8Substituted && TypeaheadComponent.isServerLookupKey(refs)) {
-            return this.restService.autocompleteAdvanced(of(userInput), refs).then(
-                (resp: any): any => {
-                    return this.addNiceAutocompleteName(this.filterBasedOnAttr(resp, attrName), attrName);
-                },
-                (): any => {
-                    // autocomplete error
-                    return [];
-                },
+            return this.restService.autocompleteAdvanced(of(userInput), refs).pipe(
+                map((resp) => this.addNiceAutocompleteName(this.filterBasedOnAttr(resp, attrName), attrName)),
+                catchError(() => of([])),
             );
         } else {
             // No suggestions since nohandleSsoResponset a reference
-            return [];
+            return of([]);
         }
     }
 

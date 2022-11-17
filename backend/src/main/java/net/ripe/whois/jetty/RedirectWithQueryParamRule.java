@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.RedirectUtil;
-import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.util.annotation.Name;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,16 +19,16 @@ public class RedirectWithQueryParamRule extends RedirectRegexRule {
 
     @Override
     protected String apply(String target, HttpServletRequest request, HttpServletResponse response, Matcher matcher) throws IOException {
-        target = response.encodeRedirectURL(_location);
+        String newTarget = response.encodeRedirectURL(_location);
         final String location = StringUtils.isNotBlank(request.getQueryString()) ?
-            RedirectUtil.toRedirectURL(request, target) + "?" + request.getQueryString() :
-            RedirectUtil.toRedirectURL(request, target);
+            RedirectUtil.toRedirectURL(request, newTarget) + "?" + request.getQueryString() :
+            RedirectUtil.toRedirectURL(request, newTarget);
 
         response.setHeader("Location", location);
         response.setStatus(HttpStatus.MOVED_PERMANENTLY_301);
         response.getOutputStream().flush(); // no output / content
         response.getOutputStream().close();
-        return target;
+        return newTarget;
     }
 
 }
