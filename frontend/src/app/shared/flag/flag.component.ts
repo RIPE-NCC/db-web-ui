@@ -18,8 +18,6 @@ export class FlagComponent implements OnInit {
     @Input()
     public uppercase?: boolean;
 
-    constructor() {}
-
     ngOnInit() {
         if (this.uppercase) {
             this.text = this.text.toUpperCase();

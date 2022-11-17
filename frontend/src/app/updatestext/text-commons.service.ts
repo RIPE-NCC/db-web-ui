@@ -210,7 +210,7 @@ export class TextCommonsService {
                 console.debug('Authentication succeeded');
                 return of(true).toPromise();
             },
-            (failResponse) => {
+            () => {
                 console.debug('Authentication failed');
                 return throwError(() => false).toPromise();
             },

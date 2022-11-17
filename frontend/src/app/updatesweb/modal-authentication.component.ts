@@ -80,8 +80,8 @@ export class ModalAuthenticationComponent implements OnInit {
         if (!this.selected.item || !this.selected.item.key) {
             return;
         }
-        this.restService.authenticate(this.resolve.method, this.SOURCE, 'mntner', this.selected.item.key, this.selected.password).then(
-            (whoisResources: any) => {
+        this.restService.authenticate(this.resolve.method, this.SOURCE, 'mntner', this.selected.item.key, this.selected.password).subscribe({
+            next: (whoisResources: any) => {
                 if (this.whoisResourcesService.isFiltered(whoisResources)) {
                     this.selected.message = "You have not supplied the correct password for mntner: '" + this.selected.item.key + "'";
                     return;
@@ -110,8 +110,8 @@ export class ModalAuthenticationComponent implements OnInit {
                                 this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes),
                                 this.selected.password,
                             )
-                            .then(
-                                (resp: any) => {
+                            .subscribe({
+                                next: (resp: any) => {
                                     this.selected.item.mine = true;
                                     this.selected.item.auth.push('SSO');
                                     this.credentialsService.removeCredentials(); // because it's now an sso mntner
@@ -123,7 +123,7 @@ export class ModalAuthenticationComponent implements OnInit {
                                         },
                                     });
                                 },
-                                (error: any) => {
+                                error: (error: any) => {
                                     if (
                                         !_.isUndefined(error.error) &&
                                         !_.isUndefined(error.error.errormessages) &&
@@ -136,7 +136,7 @@ export class ModalAuthenticationComponent implements OnInit {
                                     // remove modal anyway
                                     this.activeModal.close({ $value: { selectedItem: this.selected.item } });
                                 },
-                            );
+                            });
                     } else {
                         console.debug('No need to associate');
                         // report success back
@@ -144,7 +144,7 @@ export class ModalAuthenticationComponent implements OnInit {
                     }
                 });
             },
-            (error: any) => {
+            error: (error: any) => {
                 console.info('Authentication error:' + error);
 
                 if (!_.isUndefined(error.data)) {
@@ -155,6 +155,6 @@ export class ModalAuthenticationComponent implements OnInit {
                     this.selected.message = "Error performing validation for mntner: '" + this.selected.item.key + "'";
                 }
             },
-        );
+        });
     }
 }

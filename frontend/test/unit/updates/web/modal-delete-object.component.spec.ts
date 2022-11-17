@@ -28,7 +28,7 @@ describe('primitives of modalDeleteObject', () => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
-        restServiceMock.getReferences.and.returnValue(of({ objectType: 'mntner', primaryKey: 'TEST-MNT' }).toPromise());
+        restServiceMock.getReferences.and.returnValue(of({ objectType: 'mntner', primaryKey: 'TEST-MNT' }));
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],
@@ -132,7 +132,7 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences', 'deleteObject']);
         restServiceMock.deleteObject.and.returnValue(of({}).toPromise());
-        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_UNDELETEABLE_OBJECTS).toPromise());
+        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_UNDELETEABLE_OBJECTS));
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],
@@ -211,7 +211,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences', 'deleteObject']);
         restServiceMock.deleteObject.and.returnValue(of({}));
-        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT).toPromise());
+        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT));
         rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials']);
         TestBed.configureTestingModule({
@@ -380,7 +380,7 @@ describe('ModalDeleteObjectComponent loading references failures ', () => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
-        restServiceMock.getReferences.and.returnValue(throwError(() => ({ data: 'error' })).toPromise());
+        restServiceMock.getReferences.and.returnValue(throwError(() => ({ data: 'error' })));
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],

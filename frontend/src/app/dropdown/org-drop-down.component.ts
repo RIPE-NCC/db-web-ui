@@ -42,7 +42,6 @@ export class OrgDropDownComponent implements OnInit {
             },
             error: (err: Error): void => {
                 console.warn('err', err);
-                return;
             },
         });
     }

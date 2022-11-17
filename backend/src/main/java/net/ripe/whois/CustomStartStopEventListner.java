@@ -30,6 +30,6 @@ public class CustomStartStopEventListner {
     @EventListener(ContextClosedEvent.class)
     public void onContextClosedEvent() throws InterruptedException {
         loadBalancerEnabler.down();
-        Thread.sleep(this.preShutdownPause * 1000);
+        Thread.sleep(this.preShutdownPause * 1000L);
     }
 }

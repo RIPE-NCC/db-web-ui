@@ -61,7 +61,7 @@ describe('RestService', () => {
         const objectType = 'MNT';
         const name = 'TEST-MNT';
 
-        restService.getReferences(source, objectType, name, '2').then((resp) => {
+        restService.getReferences(source, objectType, name, '2').subscribe((resp) => {
             expect(resp).toBe(3);
         });
 
@@ -71,7 +71,7 @@ describe('RestService', () => {
     });
 
     it('should encode password when authenticate mntner', () => {
-        restService.authenticate(null, 'RIPE', 'mntner', 'SVONJA-MNT', 'test 123+&456').then((resp) => {
+        restService.authenticate(null, 'RIPE', 'mntner', 'SVONJA-MNT', 'test 123+&456').subscribe((resp) => {
             expect(resp).toBe('TEST');
         });
         // test 123+456 should be encoded to test%20123%2B456

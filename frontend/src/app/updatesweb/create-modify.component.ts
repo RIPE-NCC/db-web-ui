@@ -348,18 +348,18 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 (this.objectType === ObjectTypesEnum.INETNUM && attribute.name === ObjectTypesEnum.INETNUM) ||
                 (this.objectType === ObjectTypesEnum.INET6NUM && attribute.name === ObjectTypesEnum.INET6NUM)
             ) {
-                this.restService.fetchParentResource(this.objectType, attribute.value).then(
-                    (result: any) => {
+                this.restService.fetchParentResource(this.objectType, attribute.value).subscribe({
+                    next: (result: any) => {
                         let parent;
                         if (result && result.objects && _.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
                         }
                         this.resourceParentFound(parent);
                     },
-                    () => {
+                    error: () => {
                         this.resourceParentFound(null);
                     },
-                );
+                });
             }
         }
     }

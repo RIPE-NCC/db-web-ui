@@ -150,7 +150,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                     type: 'mntner',
                 };
             });
-            this.restService.detailsForMntners(enriched).then((enrichedMntners: any) => {
+            this.restService.detailsForMntners(enriched).subscribe((enrichedMntners: any) => {
                 this.maintainers.objectOriginal = enrichedMntners;
                 this.restService.fetchMntnersForSSOAccount().subscribe({
                     next: (results: any) => {

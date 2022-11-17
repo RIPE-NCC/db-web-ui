@@ -18,7 +18,7 @@ export class RestService {
             return;
         }
         const params = new HttpParams().set('flags', 'lr').set('ignore404', String(true)).set('query-string', qs).set('type-filter', objectType);
-        return this.http.get('api/whois/search', { params }).toPromise();
+        return this.http.get('api/whois/search', { params });
     }
 
     public fetchResource(objectType: string, qs: string) {
@@ -27,40 +27,37 @@ export class RestService {
             return;
         }
         const params = new HttpParams().set('flags', 'r').set('ignore404', String(true)).set('query-string', qs).set('type-filter', objectType);
-        return this.http.get('api/whois/search', { params }).toPromise();
+        return this.http.get('api/whois/search', { params });
     }
 
     public getReferences(source: string, objectType: string, name: string, limit: string) {
         const params = new HttpParams().set('limit', limit);
         const encodedName = encodeURIComponent(name); // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
-        return this.http
-            .get(`api/references/${source.toUpperCase()}/${objectType}/${encodeURIComponent(encodedName)}`, { params })
-            .pipe(
-                tap(
-                    (result: any) => {
-                        console.debug('getReferences success:' + JSON.stringify(result));
-                    },
-                    (error: any) => {
-                        console.debug('getReferences error:' + JSON.stringify(error));
-                    },
-                ),
-            )
-            .toPromise();
+        return this.http.get(`api/references/${source.toUpperCase()}/${objectType}/${encodeURIComponent(encodedName)}`, { params }).pipe(
+            tap({
+                next: (result: any) => {
+                    console.debug('getReferences success:' + JSON.stringify(result));
+                },
+                error: (error: any) => {
+                    console.debug('getReferences error:' + JSON.stringify(error));
+                },
+            }),
+        );
     }
 
     public fetchMntnersForSSOAccount(): Observable<IMntByModel[]> {
         return this.http.get('api/user/mntners').pipe(
-            tap(
+            tap({
                 // Log the result or error
-                (result: IMntByModel[]) => console.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result)),
-                (error) => console.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error)),
-            ),
+                next: (result: IMntByModel[]) => console.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result)),
+                error: (error) => console.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error)),
+            }),
         );
     }
 
     public detailsForMntners(mntners: any) {
-        const promis: any[] = _.map(mntners, (item: any) => this._singleMntnerDetails(item));
-        return forkJoin(promis).toPromise();
+        const promise: any[] = mntners.map((item: any) => this._singleMntnerDetails(item));
+        return forkJoin(promise);
     }
 
     public autocomplete(attrName: string, query: string, extended: any, attrsToBeReturned: string[]) {
@@ -73,54 +70,47 @@ export class RestService {
 
     private queryAutocomplete(attrName: string, query: any, extended: any, attrsToBeReturned: string[] = []) {
         if (_.isUndefined(query) || query.length < 2) {
-            return new Promise((resolve) => []);
+            return of([]);
         } else {
             let params = new HttpParams();
             attrsToBeReturned.forEach((at) => (params = params.append('attribute', at)));
 
             params = params.set('extended', extended).set('field', attrName).set('query', query);
             return this.http.get('api/whois/autocomplete', { params }).pipe(
-                tap(
-                    (result: any) => console.debug('autocomplete success:' + JSON.stringify(result)),
-                    (error: any) => console.error('autocomplete error:' + JSON.stringify(error)),
-                ),
+                tap({
+                    next: (result: any) => console.debug('autocomplete success:' + JSON.stringify(result)),
+                    error: (error: any) => console.error('autocomplete error:' + JSON.stringify(error)),
+                }),
             );
         }
     }
 
-    // https://alligator.io/angular/real-time-search-angular-rxjs/
-    // query in all component calling this method should be converted in Observale<string>
     public autocompleteAdvanced(query: Observable<string>, targetObjectTypes: string[]) {
-        return query
-            .pipe(
-                debounceTime(600),
-                distinctUntilChanged(),
-                switchMap((term) => this.queryAutocompleteAdvanced(term, targetObjectTypes)),
-            )
-            .toPromise();
+        return query.pipe(
+            debounceTime(600),
+            distinctUntilChanged(),
+            switchMap((term) => this.queryAutocompleteAdvanced(term, targetObjectTypes)),
+        );
     }
 
-    private queryAutocompleteAdvanced(query: any, targetObjectTypes: string[]) {
+    private queryAutocompleteAdvanced(query: string, targetObjectTypes: string[]) {
         if (_.isUndefined(query) || query.length < 2) {
-            return new Promise((resolve) => []);
+            return of([]);
         } else {
             const attrsToFilterOn: string[] = this.whoisResourcesService.getFilterableAttrsForObjectTypes(targetObjectTypes);
-            const attrsToReturn: string[] = this.whoisResourcesService.getViewableAttrsForObjectTypes(targetObjectTypes); // ["person", "role", "org-name", "abuse-mailbox"];
+            const attrsToReturn: string[] = this.whoisResourcesService.getViewableAttrsForObjectTypes(targetObjectTypes);
 
             let params = new HttpParams();
             targetObjectTypes.forEach((attr) => (params = params.append('from', attr)));
             params = params.set('like', query);
             attrsToReturn.forEach((attr) => (params = params.append('select', attr)));
             attrsToFilterOn.forEach((attr) => (params = params.append('where', attr)));
-            return this.http
-                .get('api/whois/autocomplete', { params })
-                .pipe(
-                    tap(
-                        (result: any) => console.debug('autocompleteAdvanced success:' + JSON.stringify(result)),
-                        (error: any) => console.error('autocompleteAdvanced error:' + JSON.stringify(error)),
-                    ),
-                )
-                .toPromise();
+            return this.http.get('api/whois/autocomplete', { params }).pipe(
+                tap({
+                    next: (result: any) => console.debug('autocompleteAdvanced success:' + JSON.stringify(result)),
+                    error: (error: any) => console.error('autocompleteAdvanced error:' + JSON.stringify(error)),
+                }),
+            );
         }
     }
 
@@ -130,19 +120,16 @@ export class RestService {
         }
         const params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('password', passwords).set('unfiltered', 'true');
         const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
-        return this.http
-            .get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params })
-            .pipe(
-                map((result: any) => {
-                    console.debug('authenticate success:' + JSON.stringify(result));
-                    return this.whoisResourcesService.wrapSuccess(result);
-                }),
-                catchError((error: any, caught: Observable<any>) => {
-                    console.error('authenticate error:' + JSON.stringify(error));
-                    return throwError(this.whoisResourcesService.wrapError(error));
-                }),
-            )
-            .toPromise();
+        return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params }).pipe(
+            map((result: any) => {
+                console.debug('authenticate success:' + JSON.stringify(result));
+                return this.whoisResourcesService.wrapSuccess(result);
+            }),
+            catchError((error: any) => {
+                console.error('authenticate error:' + JSON.stringify(error));
+                return throwError(() => this.whoisResourcesService.wrapError(error));
+            }),
+        );
     }
 
     public fetchObject(source: string, objectType: string, objectName: string, passwords?: any, unformatted?: any) {
@@ -170,12 +157,12 @@ export class RestService {
             }),
             catchError((error: any) => {
                 console.error('fetchObject error:' + JSON.stringify(error));
-                return throwError(this.whoisResourcesService.wrapError(error));
+                return throwError(() => this.whoisResourcesService.wrapError(error));
             }),
         );
     }
 
-    public createObject(source: string, objectType: string, attributes: any, passwords: string[], overrides?: any, unformatted?: any) {
+    private setParams(passwords: string[], overrides?: any, unformatted?: any): HttpParams {
         let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
         if (overrides) {
             params = params.set('override', overrides);
@@ -190,6 +177,11 @@ export class RestService {
         if (unformatted) {
             params = params.set('unformatted', unformatted);
         }
+        return params;
+    }
+
+    public createObject(source: string, objectType: string, attributes: any, passwords: string[], overrides?: any, unformatted?: any) {
+        let params = this.setParams(passwords, overrides, unformatted);
         return this.http.post(`api/whois/${source}/${objectType}`, attributes, { params }).pipe(
             map((result: any) => {
                 console.debug('createObject success:' + JSON.stringify(result));
@@ -200,50 +192,34 @@ export class RestService {
                     throw new TypeError('Unknown error createObject');
                 } else {
                     console.error('createObject error:' + JSON.stringify(error));
-                    return throwError(this.whoisResourcesService.wrapError(error));
+                    return throwError(() => this.whoisResourcesService.wrapError(error));
                 }
             }),
         );
     }
 
     public modifyObject(source: string, objectType: string, objectName: any, attributes: any, passwords: any, overrides?: any, unformatted?: any) {
-        let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
-        if (overrides) {
-            params = params.set('override', overrides);
-        }
-        if (passwords) {
-            if (Array.isArray(passwords)) {
-                passwords.forEach((password) => (params = params.append('password', password)));
-            } else {
-                params = params.set('password', passwords);
-            }
-        }
-        if (unformatted) {
-            params = params.set('unformatted', unformatted);
-        }
+        let params = this.setParams(passwords, overrides, unformatted);
         const name = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.put(`api/whois/${source.toUpperCase()}/${objectType}/${name}`, attributes, { params }).pipe(
             map((result: any) => {
                 console.debug('modifyObject success:' + JSON.stringify(result));
                 return this.whoisResourcesService.wrapSuccess(result);
             }),
-            catchError((error: any, caught: Observable<any>) => {
+            catchError((error: any) => {
                 console.error('modifyObject error:' + JSON.stringify(error));
-                return throwError(this.whoisResourcesService.wrapError(error));
+                return throwError(() => this.whoisResourcesService.wrapError(error));
             }),
         );
     }
 
     public associateSSOMntner(source: string, objectType: string, objectName: string, whoisResources: any, passwords: string) {
-        return this.http
-            .put(`api/whois/${source}/${objectType}/${objectName}?password=${encodeURIComponent(passwords)}`, whoisResources)
-            .pipe(
-                tap(
-                    (result: any) => console.debug('associateSSOMntner success:' + JSON.stringify(result.data)),
-                    (error: any) => console.error('associateSSOMntner error:' + JSON.stringify(error)),
-                ),
-            )
-            .toPromise();
+        return this.http.put(`api/whois/${source}/${objectType}/${objectName}?password=${encodeURIComponent(passwords)}`, whoisResources).pipe(
+            tap({
+                next: (result: any) => console.debug('associateSSOMntner success:' + JSON.stringify(result.data)),
+                error: (error: any) => console.error('associateSSOMntner error:' + JSON.stringify(error)),
+            }),
+        );
     }
 
     public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, passwords: string, dryRun: boolean = false) {
@@ -261,9 +237,9 @@ export class RestService {
                 console.debug('deleteObject success:' + JSON.stringify(result));
                 return this.whoisResourcesService.wrapSuccess(result);
             }),
-            catchError((error: any, caught: Observable<any>) => {
+            catchError((error: any) => {
                 console.error('deleteObject error:' + JSON.stringify(error));
-                return throwError(this.whoisResourcesService.wrapError(error));
+                return throwError(() => this.whoisResourcesService.wrapError(error));
             }),
         );
     }
@@ -290,9 +266,9 @@ export class RestService {
                 console.debug('_singleMntnerDetails success:' + JSON.stringify(found));
                 return found;
             }),
-            catchError((error: any, caught: Observable<any>) => {
+            catchError((error: any) => {
                 console.error('_singleMntnerDetails error:' + JSON.stringify(error));
-                return throwError(error);
+                return throwError(() => error);
             }),
         );
     }

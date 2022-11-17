@@ -13,8 +13,6 @@ export class NameFormatterComponent implements OnInit, OnChanges {
     public type: string;
     public formatted: string;
 
-    constructor() {}
-
     public ngOnInit() {
         this.applyFormat();
     }
