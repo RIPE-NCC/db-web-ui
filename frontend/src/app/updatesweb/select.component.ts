@@ -34,8 +34,11 @@ export class SelectComponent implements OnInit {
      */
     public ngOnInit() {
         this.objectTypes = this.filterObjectTypes(this.whoisMetaService.getObjectTypes());
-        this.userInfoService.getUserOrgsAndRoles().subscribe(() => {
-            this.loggedIn = true;
+        this.userInfoService.getUserOrgsAndRoles().subscribe({
+            next: () => (this.loggedIn = true),
+            error: () => {
+                // do nothing
+            },
         });
         this.selected = {
             objectType: 'role-mntnr',
