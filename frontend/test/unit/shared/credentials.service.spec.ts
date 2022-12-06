@@ -14,15 +14,13 @@ describe('CredentialsService', () => {
 
     it('should initial state', () => {
         expect(credentialsService.hasCredentials()).toEqual(false);
-        expect(credentialsService.getCredentials()).toBeUndefined();
     });
 
     it('should read credentials', () => {
         credentialsService.setCredentials('TEST-MNT', 'secret');
         expect(credentialsService.hasCredentials()).toEqual(true);
-        expect(credentialsService.getCredentials()).toEqual({ mntner: 'TEST-MNT', successfulPassword: 'secret' });
+        expect(credentialsService.getCredentials()).toEqual([{ mntner: 'TEST-MNT', successfulPassword: 'secret' }]);
         credentialsService.removeCredentials();
         expect(credentialsService.hasCredentials()).toEqual(false);
-        expect(credentialsService.getCredentials()).toBeUndefined();
     });
 });

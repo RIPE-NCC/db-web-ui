@@ -16,10 +16,13 @@ describe('MntnerService', () => {
     let mntnerService: MntnerService;
     const credentialServiceMock = {
         getCredentials: () => {
-            return { mntner: 'B-MNT', successfulPassword: 'secret' };
+            return [{ mntner: 'B-MNT', successfulPassword: 'secret' }];
         },
         hasCredentials: () => {
             return true;
+        },
+        getPasswordsForRestCall: () => {
+            return ['secret'];
         },
     };
 

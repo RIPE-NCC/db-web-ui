@@ -235,7 +235,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         abuseAttr.$$success = undefined;
         const inputData = {
             maintainers: maintainers,
-            passwords: this.credentialsService.getPasswordsForRestCall(this.objectType),
+            passwords: this.credentialsService.getPasswordsForRestCall(),
             source: this.source,
         };
         const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });
@@ -299,20 +299,20 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (attribute.value && attribute.value.key) {
             attribute.value = attribute.value.key;
         }
-        if (attribute.name === 'person') {
+        if (attribute.name === ObjectTypesEnum.PERSON) {
             attribute.$$error = !attribute.value || this.personRe.exec(attribute.value) ? '' : 'Input contains unsupported characters.';
             attribute.$$invalid = !!attribute.$$error;
         }
         // Verify if primary-key not already in use
         if (this.operation === this.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
             let value = attribute.value;
-            if (attribute.name === 'inetnum') {
+            if (attribute.name === ObjectTypesEnum.INETNUM) {
                 if (IpAddressService.isValidV4(attribute.value)) {
                     value = IpAddressService.fromSlashToRange(attribute.value);
                 } else if (attribute.value.match(/\d-\d/g)) {
                     value = attribute.value.replace('-', ' - ');
                 }
-            } else if (attribute.name === 'inet6num') {
+            } else if (attribute.name === ObjectTypesEnum.INET6NUM) {
                 value = attribute.value.replace(/((?::0\b){2,}):?(?!\S*\b\1:0\b)(\S*)/, '::$2');
             }
             this.restService.autocomplete(attribute.name, value, true, []).subscribe({
@@ -551,7 +551,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 return;
             }
 
-            const passwords = this.credentialsService.getPasswordsForRestCall(this.objectType);
+            const passwords = this.credentialsService.getPasswordsForRestCall();
 
             this.restCallInProgress = true;
 
@@ -720,7 +720,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     private fetchDataForModify() {
         let password = null;
         if (this.credentialsService.hasCredentials()) {
-            password = this.credentialsService.getCredentials().successfulPassword;
+            password = this.credentialsService.getPasswordsForRestCall();
         }
         // wait until both have completed
         this.restCallInProgress = true;
@@ -812,7 +812,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             } else {
                 let password = null;
                 if (this.credentialsService.hasCredentials()) {
-                    password = this.credentialsService.getCredentials().successfulPassword;
+                    password = this.credentialsService.getPasswordsForRestCall();
                 }
                 this.restCallInProgress = true;
                 this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe({

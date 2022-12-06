@@ -40,7 +40,7 @@ export class MntnerService {
 
                 // check if we've already got a passwd
                 const alreadyAuthed = parentMntners.findIndex((parentMnt) => {
-                    return this.credentialsService.getCredentials() && this.credentialsService.getCredentials().mntner === parentMnt.key;
+                    return this.credentialsService.hasCredentials() && this.credentialsService.getCredentials().some((cred) => cred.mntner === parentMnt.key);
                 });
                 if (alreadyAuthed > -1) {
                     return resolve();
@@ -203,7 +203,10 @@ export class MntnerService {
             } else if (this.isAnyNccMntner(mntner.key)) {
                 // prevent authenticating against any RIPE-NCC mntner (not just TOP-RIPE-NCC mntner)
                 return false;
-            } else if (this.credentialsService.hasCredentials() && this.credentialsService.getCredentials().mntner === mntner.key) {
+            } else if (
+                this.credentialsService.hasCredentials() &&
+                this.credentialsService.getCredentials().some((credential) => credential.mntner === mntner.key)
+            ) {
                 return false;
             } else {
                 return this.hasMd5(mntner);
@@ -324,10 +327,8 @@ export class MntnerService {
 
     private oneOfOriginalMntnersHasCredential(originalObjectMntners: IMntByModel[]) {
         if (this.credentialsService.hasCredentials()) {
-            const trustedMtnerName = this.credentialsService.getCredentials().mntner;
-            return originalObjectMntners.some((mntner: IMntByModel) => {
-                return mntner.key.toUpperCase() === trustedMtnerName.toUpperCase();
-            });
+            const credentialsUpperCase = this.credentialsService.getCredentials().map((cred) => cred.mntner.toUpperCase());
+            return originalObjectMntners.some((mntner: IMntByModel) => credentialsUpperCase.includes(mntner.key.toUpperCase()));
         }
         return false;
     }

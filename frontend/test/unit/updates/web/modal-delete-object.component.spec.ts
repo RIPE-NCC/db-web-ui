@@ -213,7 +213,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         restServiceMock.deleteObject.and.returnValue(of({}));
         restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT));
         rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials']);
+        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],
@@ -277,7 +277,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         modalDeleteObjectComponent.reason = 'some reason';
 
         credentialsServiceMock.hasCredentials.and.returnValue(true);
-        credentialsServiceMock.getCredentials.and.returnValue({ mntner: 'TEST-MNT', successfulPassword: 'secret' });
+        credentialsServiceMock.getPasswordsForRestCall.and.returnValue('secret');
 
         modalDeleteObjectComponent.delete();
 

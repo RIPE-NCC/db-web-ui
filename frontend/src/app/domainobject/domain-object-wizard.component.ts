@@ -196,7 +196,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         }
 
         const flattenedAttributes = this.flattenStructure(this.attributes);
-        const passwords = this.credentialsService.getPasswordsForRestCall(this.objectType);
+        const passwords = this.credentialsService.getPasswordsForRestCall();
 
         this.restCallInProgress = true;
         this.alreadySubmited = true;

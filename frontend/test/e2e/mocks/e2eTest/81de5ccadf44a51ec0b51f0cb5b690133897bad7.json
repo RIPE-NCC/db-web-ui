@@ -1,6 +1,6 @@
 {
-    "requestUrl": "/api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::/38&type-filter=inet6num",
-    "contentType": "application/json",
+    "requestUrl": "/db-web-ui/api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::/38&type-filter=inet6num",
+    "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
         "service": {
