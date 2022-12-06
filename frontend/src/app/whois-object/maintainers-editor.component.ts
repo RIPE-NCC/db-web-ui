@@ -5,7 +5,6 @@ import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/oper
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { JsUtilService } from '../core/js-utils.service';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { CredentialsService } from '../shared/credentials.service';
 import { IAttributeModel, IMntByModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
 import { MessageStoreService } from '../updatesweb/message-store.service';
@@ -57,7 +56,6 @@ export class MaintainersEditorComponent implements OnInit {
 
     constructor(
         private attributeMetadataService: AttributeMetadataService,
-        private credentialsService: CredentialsService,
         private messageStore: MessageStoreService,
         public mntnerService: MntnerService,
         public restService: RestService,

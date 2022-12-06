@@ -34,7 +34,7 @@ describe('RestService', () => {
         const name = 'TEST-MNT';
         const reason = 'testing';
 
-        restService.deleteObject(source, objectType, name, reason, false, 'pass +word').subscribe((resp) => {
+        restService.deleteObject(source, objectType, name, reason, false, ['pass +word']).subscribe((resp) => {
             expect(resp).toBe('deleted');
         });
         const req = httpMock.expectOne({ method: 'DELETE', url: 'api/whois/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=pass%20%2Bword' });
@@ -48,7 +48,7 @@ describe('RestService', () => {
         const name = 'TEST-MNT';
         const reason = 'testing';
 
-        restService.deleteObject(source, objectType, name, reason, true, 'pass +word').subscribe((resp) => {
+        restService.deleteObject(source, objectType, name, reason, true, ['pass +word']).subscribe((resp) => {
             expect(resp).toBe('deleted');
         });
         const req = httpMock.expectOne({ method: 'DELETE', url: 'api/references/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=pass%20%2Bword' });

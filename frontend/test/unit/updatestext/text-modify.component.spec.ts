@@ -81,7 +81,7 @@ describe('TextModifyComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, result: of().toPromise() });
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials']);
+        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [TextModifyComponent],
@@ -438,6 +438,7 @@ describe('TextModifyComponent', () => {
 
         expect(modalMock.open).toHaveBeenCalled();
         credentialsServiceMock.getCredentials.and.returnValue({ mntner: 'TEST-MNT', successfulPassword: 'secret' });
+        credentialsServiceMock.getPasswordsForRestCall.and.returnValue(['secret']);
 
         textModifyComponent.submit();
         await componentFixture.whenStable();
@@ -495,6 +496,7 @@ describe('TextModifyComponent', () => {
 
         credentialsServiceMock.hasCredentials.and.returnValue(true);
         credentialsServiceMock.getCredentials.and.returnValue({ mntner: 'TEST-MNT', successfulPassword: 'secret' });
+        credentialsServiceMock.getPasswordsForRestCall.and.returnValue(['secret']);
         await componentFixture.whenStable();
 
         httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/TEST-MNT?password=secret&unfiltered=true&unformatted=true' }).flush({

@@ -1,4 +1,7 @@
 {
+    "requestUrl": "/db-web-ui/api/whois/search?flags=lr&ignore404=true&query-string=213.159.160.0-213.159.190.255&type-filter=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
     "data": {
         "service": {
             "name": "search"
@@ -159,8 +162,5 @@
             "type": "locator",
             "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
         }
-    },
-    "statusCode": 200,
-    "contentType": "application/json",
-    "requestUrl": "/api/whois/search?flags=lr&ignore404=true&query-string=213.159.160.0-213.159.190.255&type-filter=inetnum"
+    }
 }

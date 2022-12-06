@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 
 export interface ICredentials {
     mntner: string;
@@ -8,32 +7,31 @@ export interface ICredentials {
 
 @Injectable()
 export class CredentialsService {
-    private credentials: ICredentials;
+    private credentials: ICredentials[] = [];
 
     public setCredentials(mntner: string, successfulPassword: string) {
-        this.credentials = {
+        this.credentials.push({
             mntner,
             successfulPassword,
-        };
+        });
     }
 
     public removeCredentials() {
-        this.credentials = undefined;
+        this.credentials = [];
     }
 
     public hasCredentials() {
-        return !_.isUndefined(this.credentials);
+        return this.credentials.length > 0;
     }
 
     public getCredentials() {
         return this.credentials;
     }
 
-    public getPasswordsForRestCall(objectType: string): string[] {
-        const passwords = [];
+    public getPasswordsForRestCall(): string[] {
         if (this.hasCredentials()) {
-            passwords.push(this.credentials.successfulPassword);
+            return this.credentials.map((cred) => cred.successfulPassword);
         }
-        return passwords;
+        return [];
     }
 }

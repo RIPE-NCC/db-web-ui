@@ -136,7 +136,7 @@ export class AttributeRendererComponent implements OnInit {
         });
         const inputData = {
             maintainers: maintainers,
-            passwords: this.credentialsService.getPasswordsForRestCall(this.objectType),
+            passwords: this.credentialsService.getPasswordsForRestCall(),
             source: this.source,
         };
         const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });

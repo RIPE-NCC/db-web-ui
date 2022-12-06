@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { WINDOW } from '../core/window.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { ErrorReporterService } from '../updatesweb/error-reporter.service';
@@ -48,6 +49,7 @@ export class TextCreateComponent implements OnInit {
         public textCommonsService: TextCommonsService,
         public preferenceService: PreferenceService,
         public mntnerService: MntnerService,
+        public credentialsService: CredentialsService,
         public alertsService: AlertsService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
@@ -238,7 +240,7 @@ export class TextCreateComponent implements OnInit {
     }
 
     private doCreate(attributes: any, objectType: string) {
-        const combinedPaswords = _.union(this.passwords, this.textCommonsService.getPasswordsForRestCall(objectType));
+        const combinedPaswords = _.union(this.passwords, this.credentialsService.getPasswordsForRestCall());
         attributes = this.textCommonsService.stripEmptyAttributes(attributes);
         // rest-POST to server
         this.restCallInProgress = true;

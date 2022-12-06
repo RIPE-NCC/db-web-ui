@@ -13,20 +13,19 @@ export class RestService {
 
     public fetchParentResource(objectType: string, qs: string) {
         // e.g. https://rest.db.ripe.net/search?flags=lr&type-filter=inetnum&query-string=193.0.4.0%20-%20193.0.4.255
-        if (['inetnum', 'inet6num', 'aut-num'].indexOf(objectType) < 0) {
-            console.error('Only aut-num, inetnum and inet6num supported');
-            return;
-        }
-        const params = new HttpParams().set('flags', 'lr').set('ignore404', String(true)).set('query-string', qs).set('type-filter', objectType);
-        return this.http.get('api/whois/search', { params });
+        return this.searchWhois(objectType, qs, 'lr');
     }
 
     public fetchResource(objectType: string, qs: string) {
+        return this.searchWhois(objectType, qs, 'r');
+    }
+
+    private searchWhois(objectType: string, qs: string, flag: string) {
         if (['inetnum', 'inet6num', 'aut-num'].indexOf(objectType) < 0) {
             console.error('Only aut-num, inetnum and inet6num supported');
             return;
         }
-        const params = new HttpParams().set('flags', 'r').set('ignore404', String(true)).set('query-string', qs).set('type-filter', objectType);
+        const params = new HttpParams().set('flags', flag).set('ignore404', String(true)).set('query-string', qs).set('type-filter', objectType);
         return this.http.get('api/whois/search', { params });
     }
 
@@ -56,7 +55,7 @@ export class RestService {
     }
 
     public detailsForMntners(mntners: any) {
-        const promise: any[] = mntners.map((item: any) => this._singleMntnerDetails(item));
+        const promise: any[] = mntners.map((item: any) => this.singleMntnerDetails(item));
         return forkJoin(promise);
     }
 
@@ -222,7 +221,7 @@ export class RestService {
         );
     }
 
-    public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, passwords: string, dryRun: boolean = false) {
+    public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, passwords: string[], dryRun: boolean = false) {
         const service = withReferences ? 'references' : 'whois';
         let params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('dry-run', String(!!dryRun)).set('reason', reason);
         if (passwords) {
@@ -248,7 +247,7 @@ export class RestService {
         return this.http.post(`api/whois/domain-objects/${source.toUpperCase()}`, domainObject);
     }
 
-    private _singleMntnerDetails(mntner: IMntByModel) {
+    private singleMntnerDetails(mntner: IMntByModel) {
         const params = new HttpParams().set('attribute', 'auth').set('extended', 'true').set('field', 'mntner').set('query', mntner.key);
         return this.http.get('api/whois/autocomplete', { params }).pipe(
             map((result: any) => {
@@ -263,11 +262,11 @@ export class RestService {
                 } else {
                     found.mine = mntner.mine;
                 }
-                console.debug('_singleMntnerDetails success:' + JSON.stringify(found));
+                console.debug('singleMntnerDetails success:' + JSON.stringify(found));
                 return found;
             }),
             catchError((error: any) => {
-                console.error('_singleMntnerDetails error:' + JSON.stringify(error));
+                console.error('singleMntnerDetails error:' + JSON.stringify(error));
                 return throwError(() => error);
             }),
         );

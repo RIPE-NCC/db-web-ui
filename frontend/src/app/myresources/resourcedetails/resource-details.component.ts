@@ -168,17 +168,13 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     public updateButtonClicked(modifiedWhoisObject: any): void {
         this.resetMessages();
-        const passwords = [];
-        if (this.credentialsService.hasCredentials()) {
-            passwords.push(this.credentialsService.getCredentials().successfulPassword);
-        }
 
         const attributesWithoutDates = modifiedWhoisObject.attributes.attribute.filter(
             (attr: IAttributeModel) => attr.name !== 'last-modified' && attr.name !== 'created',
         );
         const object = { objects: { object: [{ attributes: { attribute: attributesWithoutDates } }] } };
         const pKey = modifiedWhoisObject['primary-key'].attribute[0].value;
-        this.restService.modifyObject(this.source, this.objectType, pKey, object, passwords).subscribe({
+        this.restService.modifyObject(this.source, this.objectType, pKey, object, this.credentialsService.getPasswordsForRestCall()).subscribe({
             next: (response: IWhoisResponseModel) => {
                 this.onSubmitSuccess(response);
             },

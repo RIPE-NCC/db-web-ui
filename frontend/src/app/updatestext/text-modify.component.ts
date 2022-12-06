@@ -101,7 +101,7 @@ export class TextModifyComponent implements OnInit {
 
         if (this.credentialsService.hasCredentials()) {
             // todo: prevent duplicate password
-            this.passwords.push(this.credentialsService.getCredentials().successfulPassword);
+            this.passwords.push(...this.credentialsService.getPasswordsForRestCall());
         }
 
         this.textCommonsService
@@ -111,7 +111,7 @@ export class TextModifyComponent implements OnInit {
                     console.info('Successfully authenticated');
 
                     // combine all passwords
-                    const combinedPasswords = _.union(this.passwords, this.textCommonsService.getPasswordsForRestCall(this.object.type));
+                    const combinedPasswords = _.union(this.passwords, this.credentialsService.getPasswordsForRestCall());
 
                     attributes = this.textCommonsService.stripEmptyAttributes(attributes);
 
@@ -173,7 +173,7 @@ export class TextModifyComponent implements OnInit {
         // see if we have a password from a previous session
         if (this.credentialsService.hasCredentials()) {
             console.debug('Found password in CredentialsService for fetch');
-            this.passwords.push(this.credentialsService.getCredentials().successfulPassword);
+            this.passwords.push(...this.credentialsService.getPasswordsForRestCall());
         }
         this.restCallInProgress = true;
         const mntners = this.restService.fetchMntnersForSSOAccount();
@@ -248,7 +248,7 @@ export class TextModifyComponent implements OnInit {
         if (objectType === 'mntner') {
             let password = null;
             if (this.credentialsService.hasCredentials()) {
-                password = this.credentialsService.getCredentials().successfulPassword;
+                password = this.credentialsService.getPasswordsForRestCall();
             }
 
             this.restCallInProgress = true;

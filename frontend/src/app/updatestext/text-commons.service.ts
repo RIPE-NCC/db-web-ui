@@ -159,16 +159,6 @@ export class TextCommonsService {
         });
     }
 
-    public getPasswordsForRestCall(objectType: string) {
-        const passwords = [];
-
-        if (this.credentialsService.hasCredentials()) {
-            passwords.push(this.credentialsService.getCredentials().successfulPassword);
-        }
-
-        return passwords;
-    }
-
     private performAuthentication(
         method: string,
         objectSource: string,
