@@ -3,7 +3,6 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
 export function debounce(delay: number = 100): MethodDecorator {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         let timeout: any = null;
-
         const original = descriptor.value;
 
         descriptor.value = function (...args: any[]) {
