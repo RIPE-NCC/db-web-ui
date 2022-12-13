@@ -763,7 +763,7 @@ export class WhoisMetaService {
         'as-set': {
             description: 'Defines the name of the set.',
             // short: undefined,
-            syntax: `An as-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"as-\", and the last character of a name must be a letter or a digit. An as-set name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must be an actual set name (i.e. start with \"as-\"). All the set name components of a hierarchical as-name have to be as-set names.`,
+            syntax: `An as-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"as-\", and the last character of a name must be a letter or a digit. An as-set name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must be an actual set name (i.e. start with \"as-\"). All the set name components of a hierarchical as-name have to be as-set names. Only hierarchical as-set objects can be created.`,
         },
         auth: {
             description: 'Defines the authentication scheme to be used.',
