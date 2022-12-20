@@ -27,7 +27,7 @@ describe('AttributeInfoComponent', () => {
         component.description = 'mnt-by';
         fixture.detectChanges();
         expect(component.text).toEqual(
-            `Specifies one or more maintainers used for authorisation on the object as \"mnt-by:\". Add maintainers by typing in the input field, remove them by clicking the \"x\". Maintainers marked with a star can be used with your RIPE NCC Access SSO account. RIPE NCC maintainers, if present, cannot be removed. <a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers\" target=\"_blank\">Learn more.</a>`,
+            `Specifies the identifier of a registered <strong>mntner</strong> object used for authorisation of operations performed with the object that contains this attribute.`,
         );
     });
 
@@ -36,7 +36,16 @@ describe('AttributeInfoComponent', () => {
         component.syntax = 'mnt-by';
         fixture.detectChanges();
         expect(component.text).toEqual(
-            `Made up of letters, digits, the underscore "_" and hyphen "-". The first character of a name must be a letter, and the last character a letter or digit. Note that <a href="https://tools.ietf.org/html/rfc2622#section-2" target="_blank">certain words are reserved by RPSL</a> and cannot be used.`,
+            'Made up of letters, digits, the underscore "_" and minus "-" characters; the first' +
+                ' character of a name must be a letter, and the last character of a name must be a letter or a digit.  The' +
+                ' following words are reserved by RPSL, and they can not be used as names:<br>' +
+                '&emsp;"any as-any rs-any peeras and or not atomic from to at action accept announce except refine' +
+                ' networks into inbound outbound."<br>' +
+                'Names starting with certain prefixes are reserved for certain object types. Names starting with' +
+                ' "as-" are reserved for as set names. Names starting with "rs-" are reserved for route set names. Names' +
+                ' starting with "rtrs-" are reserved for router set names. Names starting with "fltr-" are reserved for' +
+                ' filter set names. Names starting with "prng-" are reserved for peering set names. Names starting with' +
+                ' "irt-" are reserved for irt names.',
         );
     });
 
@@ -51,8 +60,6 @@ describe('AttributeInfoComponent', () => {
         component.objectType = 'autnum';
         component.syntax = 'remarks';
         fixture.detectChanges();
-        expect(component.text).toEqual(
-            `Any free-form text using <a href="https://en.wikipedia.org/wiki/ISO/IEC_8859-1#Codepage_layout" target="_blank">Latin-1 character encoding</a>.`,
-        );
+        expect(component.text).toEqual(`A sequence of ASCII characters.`);
     });
 });

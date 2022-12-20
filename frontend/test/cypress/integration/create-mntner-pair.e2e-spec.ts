@@ -37,7 +37,22 @@ describe('The CreateMntnerPairComponent', () => {
             .expectHelpToContain('mntner', 'Syntax')
             .expectHelpToContain(
                 'mntner',
-                'Made up of letters, digits, the underscore "_" and hyphen "-". The first character of a name must be a letter, and the last character a letter or digit. Note that certain words are reserved by RPSL and cannot be used.',
+                'Made up of letters, digits, the underscore "_" and minus "-" characters; the first' +
+                    ' character' +
+                    ' of a name must be a letter, and the last character of a name must be a letter or a digit.  The following' +
+                    ' words are reserved by RPSL, and they can not be used as names:',
+            )
+            .expectHelpToContain(
+                'mntner',
+                ' "any as-any rs-any peeras and or not atomic from to at action accept' + ' announce except refine networks into inbound outbound."',
+            )
+            .expectHelpToContain(
+                'mntner',
+                'Names starting with certain prefixes are reserved for certain object types. Names starting with "as-"' +
+                    ' are reserved for as set names. Names starting with "rs-" are reserved for route set names. Names starting' +
+                    ' with "rtrs-" are reserved for router set names. Names starting with "fltr-" are reserved for filter set' +
+                    ' names. Names starting with "prng-" are reserved for peering set names. Names starting with "irt-" are' +
+                    ' reserved for irt names.',
             );
     });
 
