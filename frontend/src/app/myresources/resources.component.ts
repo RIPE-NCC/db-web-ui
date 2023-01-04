@@ -4,6 +4,7 @@ import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
+import { ObjectTypesEnum } from '../query/object-types.enum';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { AlertsDropDownComponent } from './alertsdropdown/alerts-drop-down.component';
@@ -23,13 +24,14 @@ export class ResourcesComponent implements OnDestroy {
     public reason = 'No resources found';
     public fail: boolean;
     public isRedirectedFromIpAnalyser: boolean = false;
-    public lastTab: string = 'inetnum';
+    public lastTab: string;
 
     public isShowingSponsored: boolean = false;
     public activeSponsoredTab = 0;
     public showAlerts: boolean = true;
     private subscription: any;
     private subscriptionFetchResources: any;
+    private readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
 
     @ViewChild(AlertsDropDownComponent, { static: true })
     public alertsDropDownComponent: AlertsDropDownComponent;
@@ -72,9 +74,13 @@ export class ResourcesComponent implements OnDestroy {
 
         this.showTheIpAnalyserBanner(this.activatedRoute.snapshot.queryParamMap.get('ipanalyserRedirect') === 'true');
 
-        this.lastTab = this.activatedRoute.snapshot.queryParamMap.get('type') || 'inetnum';
+        this.lastTab = this.activatedRoute.snapshot.queryParamMap.get('type');
+        // default show inetnum if lastTab have value different then 'inetnum', 'inet6num', 'aut-num'
+        if (!this.listOfTabs.includes(this.lastTab)) {
+            this.lastTab = ObjectTypesEnum.INETNUM;
+        }
         this.refreshPage();
-        this.showAlerts = !this.isShowingSponsored && this.lastTab === 'inetnum';
+        this.showAlerts = !this.isShowingSponsored && this.lastTab === ObjectTypesEnum.INETNUM;
     }
 
     public tabClicked($event: NgbNavChangeEvent) {
@@ -163,17 +169,19 @@ export class ResourcesComponent implements OnDestroy {
                 next: (response: IResourceOverviewResponseModel) => {
                     this.loading = false;
                     switch (this.lastTab) {
-                        case 'inetnum':
+                        case ObjectTypesEnum.INETNUM:
                             this.ipv4Resources = response.resources;
                             break;
-                        case 'inet6num':
+                        case ObjectTypesEnum.INET6NUM:
                             this.ipv6Resources = response.resources;
                             break;
-                        case 'aut-num':
+                        case ObjectTypesEnum.AUT_NUM:
                             this.asnResources = response.resources;
                             break;
                         default:
-                            console.error('Error. Cannot understand resources response');
+                            this.fail = true;
+                            this.reason = 'There was problem reading resources please try again';
+                            console.error('Error. lastTab have wrong value');
                     }
                 },
                 error: (error: any) => {
