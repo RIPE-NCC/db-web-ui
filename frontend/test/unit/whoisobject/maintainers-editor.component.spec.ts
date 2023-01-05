@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../src/app/attribute/attribute-shared.service';
 import { CoreModule } from '../../../src/app/core/core.module';
@@ -64,7 +64,7 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should ask for password after add non-sso maintainer with password - create case.', async () => {
-            modalMock.open.and.returnValue({ componentInstance: {}, result: of().toPromise() });
+            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
             spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
             spyOn(component, 'onMntnerRemoved');
             fixture.detectChanges();

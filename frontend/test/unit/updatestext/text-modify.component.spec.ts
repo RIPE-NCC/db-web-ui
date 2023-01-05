@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
-import { of } from 'rxjs';
+import { EMPTY, map, of } from 'rxjs';
 import { WINDOW } from '../../../src/app/core/window.service';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -80,7 +80,7 @@ describe('TextModifyComponent', () => {
         preferencesServiceMock = jasmine.createSpyObj('PreferenceService', ['isTextMode', 'setTextMode', 'isWebMode', 'setWebMode']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of().toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
@@ -424,7 +424,8 @@ describe('TextModifyComponent', () => {
     it('should extract password from rpsl', async () => {
         modalMock.open.and.returnValue({
             componentInstance: {},
-            result: of({ $value: { selectedItem: { key: 'TEST-MNT', name: 'mntner', mine: true } } }).toPromise(),
+            closed: of({ $value: { selectedItem: { key: 'TEST-MNT', name: 'mntner', mine: true } } }),
+            dismissed: EMPTY,
         });
         createParams();
         componentFixture.detectChanges();
@@ -465,7 +466,16 @@ describe('TextModifyComponent', () => {
     it('should re-fetch maintainer after authentication', async () => {
         modalMock.open.and.returnValue({
             componentInstance: {},
-            result: of({ $value: { selectedItem: { key: 'TEST-MNT', name: 'mntner', mine: true } } }).toPromise(),
+            closed: of({}).pipe(
+                map(() => {
+                    // after the modal is closed we set the mock to return authenticated user
+                    credentialsServiceMock.hasCredentials.and.returnValue(true);
+                    credentialsServiceMock.getCredentials.and.returnValue([{ mntner: 'TEST-MNT', successfulPassword: 'secret' }]);
+                    credentialsServiceMock.getPasswordsForRestCall.and.returnValue(['secret']);
+                    return { $value: { selectedItem: { key: 'TEST-MNT', name: 'mntner', mine: true } } };
+                }),
+            ),
+            dismissed: EMPTY,
         });
 
         createParams('mntner', 'TEST-MNT');
@@ -494,9 +504,6 @@ describe('TextModifyComponent', () => {
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
 
-        credentialsServiceMock.hasCredentials.and.returnValue(true);
-        credentialsServiceMock.getCredentials.and.returnValue({ mntner: 'TEST-MNT', successfulPassword: 'secret' });
-        credentialsServiceMock.getPasswordsForRestCall.and.returnValue(['secret']);
         await componentFixture.whenStable();
 
         httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/TEST-MNT?password=secret&unfiltered=true&unformatted=true' }).flush({

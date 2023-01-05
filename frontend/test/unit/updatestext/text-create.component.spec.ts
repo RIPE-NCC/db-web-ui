@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { WINDOW } from '../../../src/app/core/window.service';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -44,7 +44,7 @@ describe('TextCreateComponent', () => {
         preferencesServiceMock = jasmine.createSpyObj('PreferenceService', ['isTextMode', 'setTextMode', 'isWebMode', 'setWebMode']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of().toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}), dismissed: EMPTY });
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [TextCreateComponent],

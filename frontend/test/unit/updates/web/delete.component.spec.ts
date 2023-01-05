@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, throwError } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
@@ -148,7 +148,7 @@ describe('DeleteController', () => {
 
     it('should display delete object modal', async () => {
         fixture.detectChanges();
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of(objectToDisplay).toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
         await fixture.whenStable();
 
         expect(modalMock.open).toHaveBeenCalled();
@@ -160,7 +160,7 @@ describe('DeleteController', () => {
             data: whoisObjectWithErrors,
         };
 
-        modalMock.open.and.returnValue({ componentInstance: {}, result: throwError(whoisResourcesService.wrapError(error)).toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(whoisResourcesService.wrapError(error)) });
         fixture.detectChanges();
 
         await fixture.whenStable();
@@ -182,7 +182,7 @@ describe('DeleteController', () => {
             data: 'just text',
         };
 
-        modalMock.open.and.returnValue({ componentInstance: {}, result: throwError(whoisResourcesService.wrapError(error)).toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(whoisResourcesService.wrapError(error)) });
         fixture.detectChanges();
         await fixture.whenStable();
 
@@ -199,7 +199,7 @@ describe('DeleteController', () => {
     });
 
     it('should populate the ui after delete with 1 object', async () => {
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of(objectToDisplay).toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
 
         fixture.detectChanges();
         await fixture.whenStable();
@@ -214,7 +214,7 @@ describe('DeleteController', () => {
     });
 
     it('should populate the ui from message-store - Multiple objects', async () => {
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of(multipleObjectsToDisplay).toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(multipleObjectsToDisplay), dismissed: EMPTY });
 
         fixture.detectChanges();
         await fixture.whenStable();
@@ -235,14 +235,14 @@ describe('DeleteController', () => {
         const error = {
             data: whoisObjectWithErrors,
         };
-        modalMock.open.and.returnValue({ componentInstance: {}, result: throwError(whoisResourcesService.wrapError(error)).toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(whoisResourcesService.wrapError(error)) });
         fixture.detectChanges();
         await fixture.whenStable();
         expect(component.skipClearError).toBeTrue();
     });
 
     it('should not skip clearing of error if delete object succeeds', async () => {
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of(objectToDisplay).toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
         fixture.detectChanges();
         await fixture.whenStable();
         expect(component.deletedObjects.length).toBe(1);

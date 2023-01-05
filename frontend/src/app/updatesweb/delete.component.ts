@@ -60,23 +60,21 @@ export class DeleteComponent implements OnInit, OnDestroy {
         };
         const modalRef = this.modalService.open(ModalDeleteObjectComponent);
         modalRef.componentInstance.inputData = inputData;
-        modalRef.result.then(
-            (whoisResources: any) => {
-                this.modalInProgress = false;
-                this.deletedObjects = whoisResources.objects.object;
-                console.debug('SUCCESS delete object' + JSON.stringify(whoisResources));
-                this.alertsService.setGlobalSuccess('The following object(s) have been successfully deleted');
-            },
-            (errorResp: any) => {
-                this.modalInProgress = false;
-                // on error, the modal is dismissed and app redirects to the create-modify component
-                // hence skip clearing the error message so as to be able to display it to user
-                this.skipClearError = true;
-                console.debug('ERROR deleting object' + JSON.stringify(errorResp));
-                if (errorResp.data) {
-                    this.alertsService.setErrors(errorResp.data);
-                }
-            },
-        );
+        modalRef.closed.subscribe((whoisResources: any) => {
+            this.modalInProgress = false;
+            this.deletedObjects = whoisResources.objects.object;
+            console.debug('SUCCESS delete object' + JSON.stringify(whoisResources));
+            this.alertsService.setGlobalSuccess('The following object(s) have been successfully deleted');
+        });
+        modalRef.dismissed.subscribe((errorResp: any) => {
+            this.modalInProgress = false;
+            // on error, the modal is dismissed and app redirects to the create-modify component
+            // hence skip clearing the error message so as to be able to display it to user
+            this.skipClearError = true;
+            console.debug('ERROR deleting object' + JSON.stringify(errorResp));
+            if (errorResp.data) {
+                this.alertsService.setErrors(errorResp.data);
+            }
+        });
     }
 }

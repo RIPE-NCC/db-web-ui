@@ -201,12 +201,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (parent && parent.attributes) {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
-            this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).then(
-                () => {
+            this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
+                next: () => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
                 },
-                (error: any) => {
+                error: (error: any) => {
                     this.restCallInProgress = false;
                     console.error('MntnerService.getAuthForObjectIfNeeded rejected authorisation: ', error);
                     if (!this.inetnumParentAuthError) {
@@ -214,7 +214,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         this.inetnumParentAuthError = true;
                     }
                 },
-            );
+            });
         }
     }
 
@@ -240,21 +240,19 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         };
         const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });
         modalRef.componentInstance.inputData = inputData;
-        modalRef.result.then(
-            (roleAttrs: any) => {
-                this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes('role', roleAttrs);
-                const nicHdl = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, 'nic-hdl').value;
-                this.attributes = this.whoisResourcesService.setSingleAttributeOnName(this.attributes, 'abuse-c', nicHdl);
-                abuseAttr.$$success = 'Role object for abuse-c successfully created';
-            },
-            (error: any) => {
-                if (error !== 'cancel') {
-                    // dismissing modal will hit this function with the string "cancel" in error arg
-                    // TODO: pass more specific errors from REST? [RM]
-                    abuseAttr.$$error = 'The role object for the abuse-c attribute was not created';
-                }
-            },
-        );
+        modalRef.closed.subscribe((roleAttrs: any) => {
+            this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes('role', roleAttrs);
+            const nicHdl = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, 'nic-hdl').value;
+            this.attributes = this.whoisResourcesService.setSingleAttributeOnName(this.attributes, 'abuse-c', nicHdl);
+            abuseAttr.$$success = 'Role object for abuse-c successfully created';
+        });
+        modalRef.dismissed.subscribe((error: any) => {
+            if (error !== 'cancel') {
+                // dismissing modal will hit this function with the string "cancel" in error arg
+                // TODO: pass more specific errors from REST? [RM]
+                abuseAttr.$$error = 'The role object for the abuse-c attribute was not created';
+            }
+        });
     }
 
     public updateMaintainers(maintainers: IMaintainers) {
@@ -266,7 +264,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         // add maintainers from maintainers object
         maintainers.object.forEach((mnt) => {
             if (!this.attributes.find((attr) => attr.name === 'mnt-by' && attr.value === mnt.key)) {
-                this.attributes = this.whoisResourcesService.addAttrsSorted(this.attributes, 'mnt-by', [{ name: 'mnt-by', value: mnt.key }]);
+                this.attributes = this.whoisResourcesService.addAttrsSorted(this.attributes, 'mnt-by', [
+                    {
+                        name: 'mnt-by',
+                        value: mnt.key,
+                    },
+                ]);
             }
         });
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
@@ -421,24 +424,20 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
         const modalRef = this.modalService.open(ModalAddAttributeComponent, { size: 'lg' });
         modalRef.componentInstance.items = addableAttributes;
-        modalRef.result.then(
-            (selectedItem: any) => {
-                this.addSelectedAttribute(selectedItem, attr);
-            },
-            (error) => console.log('openAddAttributeModal completed with:', error),
-        );
+        modalRef.closed.subscribe((selectedItem: any) => {
+            this.addSelectedAttribute(selectedItem, attr);
+        });
+        modalRef.dismissed.subscribe((error) => console.log('openAddAttributeModal completed with:', error));
     }
 
     public displayEditAttributeDialog(attr: IAttributeModel) {
         const modalRef = this.modalService.open(ModalEditAttributeComponent, { windowClass: 'modal-edit-attr' });
         modalRef.componentInstance.attr = attr;
         console.debug('openEditAttributeModal for items', attr);
-        modalRef.result.then(
-            () => {
-                console.debug('openEditAttributeModal completed', attr);
-            },
-            (error) => console.log('openEditAttributeModal completed with:', error),
-        );
+        modalRef.closed.subscribe(() => {
+            console.debug('openEditAttributeModal completed', attr);
+        });
+        modalRef.dismissed.subscribe((error) => console.log('openEditAttributeModal completed with:', error));
     }
 
     public addSelectedAttribute(selectedAttributeType: IAttributeModel, attr: IAttributeModel) {
@@ -449,15 +448,13 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public displayMd5DialogDialog(attr: IAttributeModel) {
         const modalRef = this.modalService.open(ModalMd5PasswordComponent, { size: 'lg' });
         console.debug('openMd5Modal');
-        modalRef.result.then(
-            (md5Value: any) => {
-                console.debug('openMd5Modal completed with:', md5Value);
-                attr.value = md5Value;
-            },
-            (reason: any) => {
-                console.debug('openMd5Modal cancelled because: ' + reason);
-            },
-        );
+        modalRef.closed.subscribe((md5Value: any) => {
+            console.debug('openMd5Modal completed with:', md5Value);
+            attr.value = md5Value;
+        });
+        modalRef.dismissed.subscribe((reason: any) => {
+            console.debug('openMd5Modal cancelled because: ' + reason);
+        });
     }
 
     public isDeletable(): boolean {

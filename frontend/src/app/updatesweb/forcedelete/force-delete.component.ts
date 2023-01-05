@@ -225,8 +225,8 @@ export class ForceDeleteComponent implements OnInit {
         this.webUpdatesCommonsService.performAuthentication(authParams);
     }
 
-    private onSuccessfulAuthentication() {
+    private onSuccessfulAuthentication = () => {
         console.debug('Navigate to force delete screen');
         this.webUpdatesCommonsService.navigateToDelete(this.object.source, this.object.type, this.object.name, STATE.FORCE_DELETE);
-    }
+    };
 }

@@ -214,19 +214,17 @@ export class ResourceDetailsComponent implements OnDestroy {
         };
         const modalRef = this.modalService.open(ModalDeleteObjectComponent);
         modalRef.componentInstance.inputData = inputData;
-        modalRef.result.then(
-            () => {
-                const parent = this.hierarchySelectorService.getParent(this.objectName);
-                const params = {
-                    alertMessage: `The ${this.objectType} for ${this.objectName} has been deleted`,
-                };
-                this.router.navigate(['myresources/detail', this.objectType, parent, this.sponsored], { queryParams: params });
-            },
-            () => {
-                // dismiss
-                this.router.navigate(['myresources/detail', this.objectType, this.objectName, this.sponsored]);
-            },
-        );
+        modalRef.closed.subscribe(() => {
+            const parent = this.hierarchySelectorService.getParent(this.objectName);
+            const params = {
+                alertMessage: `The ${this.objectType} for ${this.objectName} has been deleted`,
+            };
+            this.router.navigate(['myresources/detail', this.objectType, parent, this.sponsored], { queryParams: params });
+        });
+        modalRef.dismissed.subscribe(() => {
+            // dismiss
+            this.router.navigate(['myresources/detail', this.objectType, this.objectName, this.sponsored]);
+        });
     }
 
     private resetMessages() {

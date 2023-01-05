@@ -106,8 +106,8 @@ export class TextModifyComponent implements OnInit {
 
         this.textCommonsService
             .authenticate('Modify', this.object.source, this.object.type, this.object.name, this.mntners.sso, attributes, this.passwords, this.override)
-            .then(
-                () => {
+            .subscribe({
+                next: () => {
                     console.info('Successfully authenticated');
 
                     // combine all passwords
@@ -145,10 +145,10 @@ export class TextModifyComponent implements OnInit {
                             },
                         });
                 },
-                () => {
+                error: () => {
                     console.error('Error authenticating');
                 },
-            );
+            });
     }
 
     public switchToWebMode() {
@@ -190,15 +190,15 @@ export class TextModifyComponent implements OnInit {
 
                 this.textCommonsService
                     .authenticate('Modify', this.object.source, this.object.type, this.object.name, this.mntners.sso, attributes, this.passwords, this.override)
-                    .then(
-                        () => {
+                    .subscribe({
+                        next: () => {
                             console.debug('Successfully authenticated');
                             this.refreshObjectIfNeeded(this.object.source, this.object.type, this.object.name);
                         },
-                        () => {
+                        error: () => {
                             console.error('Error authenticating');
                         },
-                    );
+                    });
             },
             error: (error) => {
                 this.restCallInProgress = false;
