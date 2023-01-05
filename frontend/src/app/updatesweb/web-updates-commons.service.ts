@@ -59,31 +59,29 @@ export class WebUpdatesCommonsService {
             isLirObject: !!authParams.isLirObject,
             source: authParams.object.source,
         };
-        modalRef.result.then(
-            (result) => {
-                this.alertService.clearAlertMessages();
-                const selectedMntner = result.$value.selectedItem;
-                console.debug('selected mntner:' + selectedMntner);
-                const associationResp = result.$value.response;
-                console.debug('associationResp:' + associationResp);
-                if (this.mntnerService.isMine(selectedMntner)) {
-                    // has been successfully associated in authentication modal
-                    authParams.maintainers.sso.push(selectedMntner);
-                    // mark starred in selected
-                    authParams.maintainers.object = this.mntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
-                }
-                console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
-                console.debug('After auth: maintainers.object:', authParams.maintainers.object);
-                if (_.isFunction(authParams.successClbk)) {
-                    authParams.successClbk(associationResp);
-                }
-            },
-            (failResponse) => {
-                if (failResponse !== 'forceDelete' && _.isFunction(authParams.failureClbk)) {
-                    authParams.failureClbk();
-                }
-            },
-        );
+        modalRef.closed.subscribe((result) => {
+            this.alertService.clearAlertMessages();
+            const selectedMntner = result.$value.selectedItem;
+            console.debug('selected mntner:' + selectedMntner);
+            const associationResp = result.$value.response;
+            console.debug('associationResp:' + associationResp);
+            if (this.mntnerService.isMine(selectedMntner)) {
+                // has been successfully associated in authentication modal
+                authParams.maintainers.sso.push(selectedMntner);
+                // mark starred in selected
+                authParams.maintainers.object = this.mntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
+            }
+            console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
+            console.debug('After auth: maintainers.object:', authParams.maintainers.object);
+            if (_.isFunction(authParams.successClbk)) {
+                authParams.successClbk(associationResp);
+            }
+        });
+        modalRef.dismissed.subscribe((failResponse) => {
+            if (failResponse !== 'forceDelete' && _.isFunction(authParams.failureClbk)) {
+                authParams.failureClbk();
+            }
+        });
     }
 
     public addLinkToReferenceAttributes(attributes: IAttributeModel[], objectSource: string) {

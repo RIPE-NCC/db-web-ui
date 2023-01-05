@@ -84,6 +84,7 @@ e2e-cypress-chrome:
         when: on_failure
         paths:
             - frontend/test/cypress/videos/**/*.mp4
+            - frontend/test/cypress/screenshots/**/*.png
         expire_in: 1 day
 
 e2e-cypress-firefox:
@@ -106,6 +107,7 @@ e2e-cypress-firefox:
         when: on_failure
         paths:
             - frontend/test/cypress/videos/**/*.mp4
+            - frontend/test/cypress/screenshots/**/*.png
         expire_in: 1 day
 
 frontend:

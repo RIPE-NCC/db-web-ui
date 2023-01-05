@@ -2,7 +2,7 @@ import { defineConfig } from 'cypress';
 
 export default defineConfig({
     fixturesFolder: './test/cypress/fixtures',
-    screenshotOnRunFailure: false,
+    screenshotOnRunFailure: true,
     video: true,
     videosFolder: './test/cypress/videos',
     screenshotsFolder: './test/cypress/screenshots',

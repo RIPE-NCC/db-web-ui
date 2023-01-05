@@ -20,8 +20,9 @@ frontend/instrumented/
 frontend/.baseDir.ts
 frontend/!test/lib/*.jar
 frontend/tscommand-*.tmp.txt
-# cypress videos
+# cypress videos and screenshots
 frontend/test/cypress/videos
+frontend/test/cypress/screenshots
 # frontend coverage
 frontend/lcov.info
 reports

@@ -111,15 +111,11 @@ export class AttributeRendererComponent implements OnInit {
         const modalRef = this.modalService.open(ModalAddAttributeComponent, { size: 'lg' });
         modalRef.componentInstance.items = addableAttributes;
         console.debug('openAddAttributeModal for items', addableAttributes);
-        modalRef.result.then(
-            (selectedItem) => {
-                console.debug('openAddAttributeModal completed with:', selectedItem);
-                this.addAttr(attributes, attribute, selectedItem.name);
-            },
-            (failResponse) => {
-                console.debug('openAddAttributeModal completed with error:', failResponse);
-            },
-        );
+        modalRef.closed.subscribe((selectedItem) => {
+            console.debug('openAddAttributeModal completed with:', selectedItem);
+            this.addAttr(attributes, attribute, selectedItem.name);
+        });
+        modalRef.dismissed.subscribe((dismissedResponse) => console.debug('openAddAttributeModal dismissed:', dismissedResponse));
     }
 
     // Should show bell icon for abuse-c in case value is not specified and objectType is organisation
@@ -129,7 +125,7 @@ export class AttributeRendererComponent implements OnInit {
 
     // Same like in createModify
     public createRoleForAbuseCAttribute() {
-        const maintainers = _.filter(this.attributes, (attr: any) => {
+        const maintainers = this.attributes.filter((attr: any) => {
             if (attr.name === 'mnt-by') {
                 return { name: 'mnt-by', value: attr.key };
             }
@@ -140,21 +136,19 @@ export class AttributeRendererComponent implements OnInit {
             source: this.source,
         };
         const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });
+        this.attribute.$$error = '';
         modalRef.componentInstance.inputData = inputData;
-        modalRef.result.then(
-            (roleAttrs: any) => {
-                this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes('role', roleAttrs);
-                this.attribute.value = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, 'nic-hdl').value;
-                this.attribute.$$success = 'Role object for abuse-c successfully created';
-            },
-            (error: any) => {
-                if (error !== 'cancel') {
-                    // dismissing modal will hit this function with the string "cancel" in error arg
-                    // TODO: pass more specific errors from REST? [RM]
-                    this.attribute.$$error = 'The role object for the abuse-c attribute was not created';
-                }
-            },
-        );
+        modalRef.closed.subscribe((roleAttrs: any) => {
+            this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes('role', roleAttrs);
+            this.attribute.value = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, 'nic-hdl').value;
+            this.attribute.$$success = 'Role object for abuse-c successfully created';
+        });
+        modalRef.dismissed.subscribe((error: any) => {
+            if (error !== 'cancel') {
+                // dismissing modal will hit this function with the string "cancel" in error arg
+                this.attribute.$$error = 'The role object for the abuse-c attribute was not created';
+            }
+        });
     }
 
     public removeAttribute(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {

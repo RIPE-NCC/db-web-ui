@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -126,7 +127,7 @@ export class TextCommonsService {
         }
         if (needsAuth === false) {
             console.debug('No authentication needed');
-            return of(true).toPromise();
+            return of(true);
         }
     }
 
@@ -189,8 +190,8 @@ export class TextCommonsService {
             isLirObject: !!isLirObject,
             source: object.source,
         };
-        return modalRef.result.then(
-            (result) => {
+        return modalRef.closed.pipe(
+            map((result) => {
                 this.alertService.clearAlertMessages();
                 const authenticatedMntner = result.$value.selectedItem;
                 if (this._isMine(authenticatedMntner)) {
@@ -198,12 +199,12 @@ export class TextCommonsService {
                     ssoMntners.push(authenticatedMntner);
                 }
                 console.debug('Authentication succeeded');
-                return of(true).toPromise();
-            },
-            () => {
+                return true;
+            }),
+            catchError(() => {
                 console.debug('Authentication failed');
-                return throwError(() => false).toPromise();
-            },
+                return throwError(() => false);
+            }),
         );
     }
 

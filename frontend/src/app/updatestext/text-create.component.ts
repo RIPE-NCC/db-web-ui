@@ -23,6 +23,7 @@ export interface ITextObject {
     name?: string;
     objects?: any;
 }
+
 @Component({
     selector: 'text-create',
     templateUrl: './text-create.component.html',
@@ -127,16 +128,16 @@ export class TextCreateComponent implements OnInit {
                                 const parentObject = parent.attributes.attribute;
                                 this.mntnerService
                                     .getAuthForObjectIfNeeded(parentObject, this.mntners.sso, 'Modify', sourceAttr.value.trim(), inetnumAttr.name, this.name)
-                                    .then(
-                                        () => {
+                                    .subscribe({
+                                        next: () => {
                                             this.doCreate(attributes, inetnumAttr.name);
                                         },
-                                        (error: any) => {
+                                        error: (error: any) => {
                                             this.restCallInProgress = false;
                                             console.error('MntnerService.getAuthForObjectIfNeeded rejected authorisation: ', error);
                                             this.alertsService.addGlobalError('Failed to authenticate parent resource');
                                         },
-                                    );
+                                    });
                             }
                         }
                     },
@@ -149,16 +150,16 @@ export class TextCreateComponent implements OnInit {
         } else {
             this.textCommonsService
                 .authenticate('Create', this.object.source, this.object.type, undefined, this.mntners.sso, attributes, this.passwords, this.override)
-                .then(
-                    (authenticated: any) => {
+                .subscribe({
+                    next: (authenticated: any) => {
                         console.debug('Authenticated successfully:' + authenticated);
                         // combine all passwords
                         this.doCreate(attributes, this.object.type);
                     },
-                    (authenticated: any) => {
+                    error: (authenticated: any) => {
                         console.error('Authentication failure:' + authenticated);
                     },
-                );
+                });
         }
     }
 
@@ -188,7 +189,7 @@ export class TextCreateComponent implements OnInit {
 
     private enrichAttributes(attributes: any) {
         this.textCommonsService.enrichWithDefaults(this.object.source, this.object.type, attributes);
-        this.enrichAttributesWithSsoMntners(attributes).then((attrs: any) => {
+        this.enrichAttributesWithSsoMntners(attributes).subscribe((attrs: any) => {
             this.textCommonsService.capitaliseMandatory(attrs);
             const obj: IRpslObject = {
                 attributes: attrs,
@@ -203,22 +204,19 @@ export class TextCreateComponent implements OnInit {
 
     private enrichAttributesWithSsoMntners(attributes: any) {
         this.restCallInProgress = true;
-        return this.restService
-            .fetchMntnersForSSOAccount()
-            .pipe(
-                map((ssoMntners: any) => {
-                    this.restCallInProgress = false;
-                    this.mntners.sso = ssoMntners;
-                    return this.addSsoMntnersAsMntBy(attributes, ssoMntners);
-                }),
-                catchError((error: any, caught: Observable<any>) => {
-                    this.restCallInProgress = false;
-                    console.error('Error fetching mntners for SSO:' + JSON.stringify(error));
-                    this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
-                    return of(attributes);
-                }),
-            )
-            .toPromise();
+        return this.restService.fetchMntnersForSSOAccount().pipe(
+            map((ssoMntners: any) => {
+                this.restCallInProgress = false;
+                this.mntners.sso = ssoMntners;
+                return this.addSsoMntnersAsMntBy(attributes, ssoMntners);
+            }),
+            catchError((error: any, caught: Observable<any>) => {
+                this.restCallInProgress = false;
+                console.error('Error fetching mntners for SSO:' + JSON.stringify(error));
+                this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
+                return of(attributes);
+            }),
+        );
     }
 
     private addSsoMntnersAsMntBy(attributes: any, mntners: any) {

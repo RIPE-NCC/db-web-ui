@@ -6,7 +6,7 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
-import { of, throwError } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
 import { CoreModule } from '../../../../src/app/core/core.module';
@@ -291,7 +291,7 @@ describe('CreateModifyComponent', () => {
         });
 
         it('should ask for password after upon submit.', () => {
-            modalMock.open.and.returnValue({ componentInstance: {}, result: throwError(() => 'cancel').toPromise() });
+            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(() => 'cancel') });
 
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'as-block', 'MY-AS-BLOCK');
             // simulate manual addition of a new mntner with only md5

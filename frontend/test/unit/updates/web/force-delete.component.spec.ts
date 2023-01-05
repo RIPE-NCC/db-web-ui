@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
@@ -240,7 +240,7 @@ describe('ForceDeleteController should be able to handle escape objected with sl
         credentialsServiceMock.hasCredentials.and.returnValue(false);
         credentialsServiceMock.getCredentials.and.returnValue({ mntner: undefined, successfulPassword: undefined });
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of().toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule],

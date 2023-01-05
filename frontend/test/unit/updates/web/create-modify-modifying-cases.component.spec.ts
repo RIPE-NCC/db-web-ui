@@ -5,7 +5,7 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
-import { of, throwError } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
 import { CoreModule } from '../../../../src/app/core/core.module';
@@ -507,7 +507,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
                     ],
                 },
             });
-            modalMock.open.and.returnValue({ componentInstance: {}, result: throwError(() => 'cancel').toPromise() });
+            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(() => 'cancel') });
             await fixture.whenStable();
         });
 
@@ -584,7 +584,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
 
         it("should populate abuse-c with new role's nic-hdl", async () => {
             component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
-            modalMock.open.and.returnValue({ componentInstance: {}, result: of(ROLE_OBJ).toPromise() });
+            modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
             const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
             component.createRoleForAbuseCAttribute(attrAbuseC);
             await fixture.whenStable();
@@ -593,7 +593,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
 
         it('should populate component.roleForAbuseC', async () => {
             component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
-            modalMock.open.and.returnValue({ componentInstance: {}, result: of(ROLE_OBJ).toPromise() });
+            modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
             const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
             component.createRoleForAbuseCAttribute(attrAbuseC);
             await fixture.whenStable();

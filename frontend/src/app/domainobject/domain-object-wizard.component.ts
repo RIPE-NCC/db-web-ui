@@ -119,15 +119,9 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private openModalDomainSplash(): void {
         const modalRef = this.modalService.open(ModalDomainObjectSplashComponent);
-        modalRef.result.then(
-            (result) => {
-                modalRef.close();
-            },
-            (dismiss) => {
-                modalRef.close();
-                this.router.navigate(['webupdates/select']);
-            },
-        );
+        modalRef.dismissed.subscribe(() => {
+            this.router.navigate(['webupdates/select']);
+        });
     }
 
     /*
@@ -176,7 +170,12 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         // add maintainers from maintainers object
         maintainers.object.forEach((mnt) => {
             if (!this.attributes.find((attr) => attr.name === 'mnt-by' && attr.value === mnt.key)) {
-                this.attributes = this.whoisResourcesServices.addAttrsSorted(this.attributes, 'mnt-by', [{ name: 'mnt-by', value: mnt.key }]);
+                this.attributes = this.whoisResourcesServices.addAttrsSorted(this.attributes, 'mnt-by', [
+                    {
+                        name: 'mnt-by',
+                        value: mnt.key,
+                    },
+                ]);
             }
         });
     }
@@ -216,20 +215,16 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                 attributes: data.attributes,
                 source: this.source,
             };
-            modalRef.result.then(
-                (response) => {
-                    if (response.status === 200) {
-                        this.alreadySubmited = false;
-                        return this.showCreatedDomains(response);
-                    }
-                    modalRef.close();
-                },
-                (failResponse) => {
-                    modalRef.close();
+            modalRef.closed.subscribe((response) => {
+                if (response.status === 200) {
                     this.alreadySubmited = false;
-                    return this.createDomainsFailed(failResponse);
-                },
-            );
+                    return this.showCreatedDomains(response);
+                }
+            });
+            modalRef.dismissed.subscribe((failResponse) => {
+                this.alreadySubmited = false;
+                return this.createDomainsFailed(failResponse);
+            });
         });
     }
 

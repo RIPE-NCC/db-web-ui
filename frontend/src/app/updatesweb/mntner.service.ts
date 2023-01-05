@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address4 } from 'ip-address';
 import * as _ from 'lodash';
+import { mergeMap, Observable, of } from 'rxjs';
 import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
 import { IpAddressService } from '../myresources/ip-address.service';
 import { PropertiesService } from '../properties.service';
@@ -23,52 +24,49 @@ export class MntnerService {
         private propertiesService: PropertiesService,
     ) {}
 
-    public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Promise<any> {
+    public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
         const object = {
             name,
             source,
             type: objectType,
         };
 
-        return new Promise((resolve: any, reject: any) => {
-            if (!this.isSsoAuthorisedForMntByOrLower(whoisObject, ssoAccts)) {
-                const mntByAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, 'mnt-by');
-                const mntLowerAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, 'mnt-lower');
-                const parentMntners = mntByAttrs.concat(mntLowerAttrs).map((mntner: any) => {
-                    return { key: mntner.value };
-                });
+        if (!this.isSsoAuthorisedForMntByOrLower(whoisObject, ssoAccts)) {
+            const mntByAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, 'mnt-by');
+            const mntLowerAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, 'mnt-lower');
+            const parentMntners = mntByAttrs.concat(mntLowerAttrs).map((mntner: any) => {
+                return { key: mntner.value };
+            });
 
-                // check if we've already got a passwd
-                const alreadyAuthed = parentMntners.findIndex((parentMnt) => {
-                    return this.credentialsService.hasCredentials() && this.credentialsService.getCredentials().some((cred) => cred.mntner === parentMnt.key);
-                });
-                if (alreadyAuthed > -1) {
-                    return resolve();
-                }
-                // pop up an auth box
-                this.restService.detailsForMntners(parentMntners).subscribe({
-                    next: (enrichedMntners: IMntByModel[]) => {
-                        const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                        const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                        const modalRef = this.modalService.open(ModalAuthenticationComponent);
-                        modalRef.componentInstance.resolve = {
-                            method: operation,
-                            objectType: object.type,
-                            objectName: object.name,
-                            mntners: mntnersWithPasswords,
-                            mntnersWithoutPassword: mntnersWithoutPasswords,
-                            allowForcedDelete: false,
-                            isLirObject: false,
-                            source: object.source,
-                        };
-                        return modalRef.result.then(resolve, reject);
-                    },
-                    error: () => reject,
-                });
-            } else {
-                resolve();
+            // check if we've already got a passwd
+            const alreadyAuthed = parentMntners.findIndex((parentMnt) => {
+                return this.credentialsService.hasCredentials() && this.credentialsService.getCredentials().some((cred) => cred.mntner === parentMnt.key);
+            });
+            if (alreadyAuthed > -1) {
+                return of(true);
             }
-        });
+            // pop up an auth box
+            return this.restService.detailsForMntners(parentMntners).pipe(
+                mergeMap((enrichedMntners: IMntByModel[]) => {
+                    const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                    const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                    const modalRef = this.modalService.open(ModalAuthenticationComponent);
+                    modalRef.componentInstance.resolve = {
+                        method: operation,
+                        objectType: object.type,
+                        objectName: object.name,
+                        mntners: mntnersWithPasswords,
+                        mntnersWithoutPassword: mntnersWithoutPasswords,
+                        allowForcedDelete: false,
+                        isLirObject: false,
+                        source: object.source,
+                    };
+                    return modalRef.closed;
+                }),
+            );
+        } else {
+            return of(true);
+        }
     }
 
     public isSsoAuthorisedForMntByOrLower(object: any, maintainers: IMntByModel[]) {

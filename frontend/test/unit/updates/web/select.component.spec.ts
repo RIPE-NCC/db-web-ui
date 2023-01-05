@@ -201,7 +201,7 @@ describe('SelectController', () => {
         preferencesServiceMock = jasmine.createSpyObj('PreferenceService', ['isTextMode', 'setTextMode', 'isWebMode', 'setWebMode']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, result: of().toPromise() });
+        modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}) });
 
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule],
