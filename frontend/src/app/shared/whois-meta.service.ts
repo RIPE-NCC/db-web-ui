@@ -780,7 +780,7 @@ export class WhoisMetaService {
             // short: undefined,
             syntax:
                 `An <strong>as-set</strong> name is made up of letters, digits, the underscore "_" and minus "-" characters; it must start with \"as-\", and the last character of a name must be a letter or a digit.<br>` +
-                `An <strong>as-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons ":". At least one component of such a name must be an actual set name (i.e. start with \"as-\"). All the set name components of a hierarchical <strong>as-name</strong> have to be <strong>as-set</strong> names. The total length should not exceed 80 characters (octets). Only as-sets with a hierarchical name can be created.`,
+                `An <strong>as-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons ":". The first element of the name must be an AS number followed by a colon and ending with a name (example: AS3333:AS-TEST). At least one component of such a name must be an actual set name (i.e. start with \"as-\"). All the set name components of a hierarchical <strong>as-name</strong> have to be <strong>as-set</strong> names. The total length should not exceed 80 characters (octets). Only as-sets with a hierarchical name can be created.`,
         },
         auth: {
             description: 'Defines the authentication scheme to be used.',
