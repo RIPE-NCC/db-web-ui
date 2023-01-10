@@ -51,6 +51,7 @@ describe('Resources detail', () => {
         });
 
         it('should not display address usage', () => {
+            resourcesDetailPage.expectRowsOnTable('more-specifics', 2);
             resourcesDetailPage.expectIpUsageToExist(false);
         });
 

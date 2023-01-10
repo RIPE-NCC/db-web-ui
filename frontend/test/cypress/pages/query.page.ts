@@ -264,6 +264,7 @@ export class QueryPage {
 
     expectUserLoggedImage(exist: boolean) {
         cy.get('user-login')
+            .should('exist')
             .shadow()
             .find('image[id="user-img"]')
             .should(exist ? 'exist' : 'not.exist');
