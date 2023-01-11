@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { CoreModule } from '../../../src/app/core/core.module';
 import { WINDOW_PROVIDERS } from '../../../src/app/core/window.service';
@@ -31,6 +31,7 @@ describe('FindMaintainerComponent', () => {
                 { provide: Router, useValue: { navigate: () => {} } },
                 PropertiesService,
                 { provide: FmpErrorService, useValue: mockFmpErrorService },
+                { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (username: string) => 'ana' } } } },
             ],
         });
     });
@@ -43,6 +44,11 @@ describe('FindMaintainerComponent', () => {
     describe('Testing logged in user', () => {
         beforeEach(() => {
             userInfoService.getUserOrgsAndRoles.and.returnValue(of(200));
+        });
+
+        it('should prefill maintainer name', () => {
+            fixture.detectChanges();
+            expect(component.maintainerKey).toBe('ana');
         });
 
         it('should retrieve maintainer data', () => {

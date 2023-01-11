@@ -4,6 +4,11 @@ export class ForgotMaintainerPasswordPage {
         return this;
     }
 
+    visitFmpWithQueryParam(username: string) {
+        cy.visit(`fmp?mntnerKey=${username}`);
+        return this;
+    }
+
     visitChangeAuth(mntnerKey: string, voluntary: boolean) {
         cy.visit(`fmp/change-auth?mntnerKey=${mntnerKey}&voluntary=${voluntary}`);
         return this;
@@ -26,6 +31,11 @@ class FindMaintainerForm {
 
     expectSearchMaintainerInputFieldShown() {
         cy.get('[name=maintainerKey]').should('exist');
+        return this;
+    }
+
+    expectValueInMaintainerInputField(mntnerName: string) {
+        cy.get('[name=maintainerKey]').should('contain.value', mntnerName);
         return this;
     }
 

@@ -33,6 +33,7 @@ export class ModalAuthenticationComponent implements OnInit {
     public SOURCE: string;
     public selected: any;
     public allowedObjectTypes: string[] = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+    public fmpPath: string;
 
     constructor(
         private activeModal: NgbActiveModal,
@@ -53,6 +54,7 @@ export class ModalAuthenticationComponent implements OnInit {
             message: undefined,
             password: this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM[this.resolve.mntners[0]?.key] || '',
         };
+        this.setFmpPathQueryParam();
         this.allowForceDelete();
     }
 
@@ -66,6 +68,7 @@ export class ModalAuthenticationComponent implements OnInit {
     // password prefilled for TEST maintainers - defined in properties
     public onChangeMnt() {
         this.selected.password = this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM[this.selected.item.key] || '';
+        this.setFmpPathQueryParam();
     }
 
     public cancel(reason?: string) {
@@ -156,5 +159,9 @@ export class ModalAuthenticationComponent implements OnInit {
                 }
             },
         });
+    }
+
+    private setFmpPathQueryParam() {
+        this.fmpPath = `/db-web-ui/fmp?mntnerKey=${this.selected.item.key}`;
     }
 }

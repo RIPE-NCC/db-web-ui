@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { WINDOW } from '../core/window.service';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -21,10 +21,12 @@ export class FindMaintainerComponent implements OnInit {
         private userInfoService: UserInfoService,
         public alertsService: AlertsService,
         public router: Router,
+        public activatedRoute: ActivatedRoute,
         private fmpErrorService: FmpErrorService,
     ) {}
 
     public ngOnInit() {
+        this.maintainerKey = this.activatedRoute.snapshot.queryParamMap.get('mntnerKey');
         this.checkLoggedIn();
     }
 

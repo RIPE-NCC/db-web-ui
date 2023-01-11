@@ -7,6 +7,18 @@ describe('Forgot Maintainer Password - Find Maintainer', () => {
         forgotMaintainerPasswordPage.visit();
     });
 
+    it('should prefilled mntnerKey when specified in queryParams mntnerKey', () => {
+        forgotMaintainerPasswordPage
+            .visitFmpWithQueryParam('ana')
+            .getFindMaintainerForm()
+            .expectValueInMaintainerInputField('ana')
+            .expectFindMaintainerFormShown()
+            .expectSearchMaintainerInputFieldShown()
+            .expectSearchMaintainerButtonShown()
+            .expectCancelButtonShown()
+            .expectMaintainerContainerPresent(false);
+    });
+
     it('should load the page with the search form', () => {
         forgotMaintainerPasswordPage
             .getFindMaintainerForm()
