@@ -44,7 +44,7 @@
                     <li>
                         <div>
                             <label class="float-start">Provide the password for the selected maintainer</label>
-                            <a class="forgot-password float-end" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Forgotten MNTNER password?</a>
+                            <a class="forgot-password float-end" [href]="fmpPath" (click)="cancel()">Forgotten MNTNER password?</a>
                         </div>
                         <input type="password" class="form-control" [(ngModel)]="selected.password" required="true" name="passwordAuth" />
                     </li>
