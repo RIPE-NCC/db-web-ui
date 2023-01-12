@@ -23,11 +23,14 @@ export const Labels = {
     'msg.noAbuseContactFound.text': 'No abuse contact found',
     'msg.noResourceHolderFound.text': 'Not found',
     'msg.ripeTandCSubmitLink.text':
-        "By submitting this form you explicitly express your agreement with the <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>RIPE Database Terms and Conditions<em class=\"fal fa-external-link\"></em></a>",
+        'By submitting this form you explicitly express your agreement with the <a' +
+        " href='/docs/22.Terms-And-Conditions.html#introduction' target='_blank'>RIPE Database Terms and Conditions <em class=\"fal fa-external-link\"></em></a>",
     'msg.searchResultsFullTextTandCLink.text':
-        "This is the RIPE Database full text search service.<br>The RIPE Database is subject to <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions<em class=\"fal fa-external-link\"></em></a>.",
+        'This is the RIPE Database full text search service.<br>The RIPE Database is subject to <a' +
+        " href='/docs/22.Terms-And-Conditions.html#introduction' target='_blank'>Terms and Conditions <em class=\"fal fa-external-link\"></em></a>.",
     'msg.searchResults.text':
-        "This is the RIPE Database search service. The objects are in RPSL format. The RIPE Database is subject to <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions<em class=\"fal fa-external-link\"></em></a>.",
+        'This is the RIPE Database search service. The objects are in RPSL format. The RIPE Database is subject to' +
+        " <a href='/docs/22.Terms-And-Conditions.html#introduction' target='_blank'>Terms and Conditions <em class=\"fal fa-external-link\"></em></a>.",
     'msg.searchResultsTandCLink.text':
         'This is the RIPE Database search service. The objects are in RPSL format. The RIPE Database is subject to Terms and Conditions.',
     'msg.termsAndConditions.text': 'Terms and Conditions',
@@ -41,7 +44,7 @@ export const Labels = {
         'Do not return personal data and other related objects for each object in the query results. There are daily limits on personal data objects returned. You will be blocked if you exceed the limits.',
     'query.listOfAllQueryFlagsLabel.text':
         'For a full list of query flags please see the <a href="/docs/13.Types-of-Queries"' +
-        ' target=\'_blank\'>documentation<em class="fal fa-external-link"></em></a>.',
+        ' target=\'_blank\'>documentation <em class="fal fa-external-link"></em></a>.',
 
     'resource.createAssignment.text': 'Create assignment',
     'msg.sessionTimeout.text': 'Your RIPE NCC Access session has expired. You need to login again.',

@@ -288,7 +288,7 @@ const CREATE_RESPONSE = {
     },
     'terms-and-conditions': {
         type: 'locator',
-        href: 'http://www.ripe.net/db/support/db-terms-conditions.pdf',
+        href: '/docs/22.Terms-And-Conditions.html#introduction',
     },
 };
 
@@ -376,7 +376,7 @@ const ERROR_RESPONSE = {
         },
         'terms-and-conditions': {
             type: 'locator',
-            href: 'http://www.ripe.net/db/support/db-terms-conditions.pdf',
+            href: '/docs/22.Terms-And-Conditions.html#introduction',
         },
     },
 };
