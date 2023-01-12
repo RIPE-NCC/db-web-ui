@@ -45,7 +45,8 @@ export class AppComponent implements OnInit {
 
     private skipHash() {
         const hash = this.window.location.hash;
-        if (hash) {
+        // /legal#terms-and-conditions open legal-accordion web component on Terms and Conditions Panel
+        if (hash && !this.isLegalPage()) {
             this.router.navigateByUrl(hash.substring(1));
         }
     }
@@ -67,5 +68,9 @@ export class AppComponent implements OnInit {
 
     public isQueryPage(): boolean {
         return this.location.path().startsWith('/query');
+    }
+
+    public isLegalPage(): boolean {
+        return this.location.path().startsWith('/legal');
     }
 }
