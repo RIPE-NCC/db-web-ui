@@ -619,7 +619,7 @@ export class ScreenLogicInterceptorService {
             const mntnersToConfirmLinks = this.linkService.filterAndCreateTextWithLinksForMntners(source, mntnersToConfirm);
 
             const moreInfoUrl =
-                'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
+                '/docs/10.Authorisation/07-Protection-of-Route-Object-Space.html#creating-route-objects-referring-to-resources-you-don-t-manage';
             const moreInfoLink = `<a target="_blank" href="${moreInfoUrl}">Click here for more information</a>.`;
 
             const pendngMsg =

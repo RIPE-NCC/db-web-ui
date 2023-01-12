@@ -56,7 +56,7 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
                         this.whoisVersion = response.version;
                         this.alertsService.addGlobalInfo(
                             Labels['msg.searchResultsTandCLink.text'],
-                            'https://www.ripe.net/db/support/db-terms-conditions.html',
+                            '/docs/22.Terms-And-Conditions.html#introduction',
                             Labels['msg.termsAndConditions.text'],
                         );
                     } else {

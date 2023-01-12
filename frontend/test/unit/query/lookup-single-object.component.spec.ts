@@ -893,7 +893,7 @@ describe('LookupSingleObjectComponent', () => {
             },
             'terms-and-conditions': {
                 type: 'locator',
-                href: 'http://www.ripe.net/db/support/db-terms-conditions.pdf',
+                href: '/docs/22.Terms-And-Conditions.html#introduction',
             },
         },
         singleResult: {

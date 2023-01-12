@@ -1105,7 +1105,7 @@ export class WhoisMetaService {
             syntax: this._shared.irt.syntax,
         },
         'mnt-lower': {
-            description: `Specifies the identifier of a registered <strong>mntner</strong> object used for hierarchical authorisation. Protects creation of objects directly (one level) below in the hierarchy of an object type. The authentication method of this <strong>mntner</strong> object will then be used upon creation of any object directly below the object that contains the \"mnt-lower:\" attribute.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>`,
+            description: `Specifies the identifier of a registered <strong>mntner</strong> object used for hierarchical authorisation. Protects creation of objects directly (one level) below in the hierarchy of an object type. The authentication method of this <strong>mntner</strong> object will then be used upon creation of any object directly below the object that contains the \"mnt-lower:\" attribute.  <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
             short: 'Specifies the <strong>mntner</strong> object used for hierarchical authorisation.',
             syntax: this._shared.objectName.syntax,
         },
@@ -1502,7 +1502,7 @@ export class WhoisMetaService {
         inet6num: {
             description:
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route6</strong> objects. This entry is for the mnt-routes attribute of <strong>route6</strong> and <strong>inet6num</strong> classes.` +
-                ` After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>`,
+                ` After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
             short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of' + ' <strong>route6</strong> objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]',
         },
@@ -1510,7 +1510,7 @@ export class WhoisMetaService {
             description:
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route</strong> objects. After the reference to the maintainer, an optional list of` +
                 ` prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. Please refer to` +
-                ` <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>`,
+                ` <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
             short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of' + ' <strong>route</strong> objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]',
         },
@@ -1518,7 +1518,7 @@ export class WhoisMetaService {
             description:
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route</strong> objects. After the reference to the maintainer, an optional list of` +
                 ` prefix ranges inside of curly braces or the keyword "ANY" may follow. The default, when no additional set items are specified, is "ANY" or all more specifics. Please refer to` +
-                ` <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>`,
+                ` <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
             short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of' + ' <strong>route</strong> objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]',
         },
@@ -1526,7 +1526,7 @@ export class WhoisMetaService {
             description:
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route6</strong> objects. This entry is for the mnt-routes attribute of <strong>route6</strong> and <strong>inet6num</strong> classes.` +
                 ` After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are` +
-                ` specified, is \"ANY\" or all more specifics. Please refer to <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>`,
+                ` specified, is \"ANY\" or all more specifics. Please refer to <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
             short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of <strong>route6</strong> objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]',
         },
