@@ -24,13 +24,13 @@ export const Labels = {
     'msg.noResourceHolderFound.text': 'Not found',
     'msg.ripeTandCSubmitLink.text':
         'By submitting this form you explicitly express your agreement with the <a' +
-        " href='/docs/22.Terms-And-Conditions.html#introduction' target='_blank'>RIPE Database Terms and Conditions <em class=\"fal fa-external-link\"></em></a>",
+        " href='https://apps.db.ripe.net/db-web-ui/legal#terms-and-conditions' target='_blank'>RIPE Database Terms and Conditions <em class=\"fal fa-external-link\"></em></a>",
     'msg.searchResultsFullTextTandCLink.text':
         'This is the RIPE Database full text search service.<br>The RIPE Database is subject to <a' +
-        " href='/docs/22.Terms-And-Conditions.html#introduction' target='_blank'>Terms and Conditions <em class=\"fal fa-external-link\"></em></a>.",
+        " href='https://apps.db.ripe.net/db-web-ui/legal#terms-and-conditions' target='_blank'>Terms and Conditions <em class=\"fal fa-external-link\"></em></a>.",
     'msg.searchResults.text':
         'This is the RIPE Database search service. The objects are in RPSL format. The RIPE Database is subject to' +
-        " <a href='/docs/22.Terms-And-Conditions.html#introduction' target='_blank'>Terms and Conditions <em class=\"fal fa-external-link\"></em></a>.",
+        " <a href='https://apps.db.ripe.net/db-web-ui/legal#terms-and-conditions' target='_blank'>Terms and Conditions <em class=\"fal fa-external-link\"></em></a>.",
     'msg.searchResultsTandCLink.text':
         'This is the RIPE Database search service. The objects are in RPSL format. The RIPE Database is subject to Terms and Conditions.',
     'msg.termsAndConditions.text': 'Terms and Conditions',
