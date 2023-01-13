@@ -302,7 +302,7 @@ describe('QueryService', () => {
             },
             'terms-and-conditions': {
                 type: 'locator',
-                href: '/docs/22.Terms-And-Conditions.html#introduction',
+                href: 'https://apps.db.ripe.net/db-web-ui/legal#terms-and-conditions',
             },
         },
         wakefield: {
