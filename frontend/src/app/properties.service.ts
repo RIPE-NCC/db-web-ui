@@ -110,7 +110,8 @@ export class PropertiesService {
                     this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                     this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
                     this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
-                    this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === 'prod' ? 'prod' : 'pre';
+                    this.RIPE_APP_WEBCOMPONENTS_ENV =
+                        this.ENV === 'prod' || this.ENV === 'test' || this.ENV === 'rc' || this.ENV === 'training' ? 'prod' : 'pre';
                     this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
                     this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
                     this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;

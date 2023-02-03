@@ -35,7 +35,7 @@ export class FeedbackSupportPage {
     }
 
     expectUsersnapToExist() {
-        cy.get('iframe[name="us-entrypoint-widgetAppV2"]').should('exist');
+        cy.get('iframe[name="us-entrypoint-setup"]').should('exist');
         return this;
     }
 }
