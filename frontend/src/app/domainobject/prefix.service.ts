@@ -22,7 +22,7 @@ export class PrefixService {
     public findExistingDomainsForPrefix(prefixStr: string) {
         const createRequest = (flag: string) => {
             const params = new HttpParams().set('flags', flag).set('ignore404', String(true)).set('query-string', prefixStr).set('type-filter', 'domain');
-            return this.http.get('api/rest/search', { params, observe: 'response' }).pipe(catchError((err) => of({})));
+            return this.http.get('api/rest/search', { params, observe: 'response' }).pipe(catchError(() => of({})));
         };
         return zip(createRequest('drx'), createRequest('drM'));
     }

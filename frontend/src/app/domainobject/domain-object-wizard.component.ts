@@ -124,9 +124,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         });
     }
 
-    /*
-     * Local functions
-     */
     public onValidPrefix = (prefixValue: any) => {
         const revZonesAttr = _.find(this.attributes, (attr: any) => {
             return attr.name === 'reverse-zone';
@@ -209,7 +206,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
             type: this.objectType,
         };
 
-        this.restService.createDomainObject(data, this.source).subscribe((response: any) => {
+        this.restService.createDomainObject(data, this.source).subscribe(() => {
             const modalRef = this.modalService.open(ModalDomainCreationWaitComponent);
             modalRef.componentInstance.resolve = {
                 attributes: data.attributes,

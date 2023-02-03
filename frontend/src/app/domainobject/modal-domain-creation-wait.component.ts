@@ -13,7 +13,7 @@ export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
     public dismiss: any;
     public resolve: any;
     public done: number;
-    public todo: number;
+    public numberOfDomains: number;
     public pollingData: any;
     public loader: boolean;
 
@@ -21,8 +21,7 @@ export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         this.done = 100;
-        // there's probably a better way to get the number of domains we'll create
-        this.todo = _.filter(this.resolve.attributes, (attr: any) => {
+        this.numberOfDomains = _.filter(this.resolve.attributes, (attr: any) => {
             return attr.name === 'reverse-zone';
         }).length;
         this.saving();
