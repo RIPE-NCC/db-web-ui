@@ -44,8 +44,6 @@ export class AttributeMetadataService {
     /*
      * Metadata evaluation functions
      *
-     * https://jira.ripe.net/browse/DB-220
-     *
      * If there is an existing domain within the specified prefix, display an error.
      * Find any domain objects for a given prefix, using TWO queries:
      *
@@ -225,7 +223,7 @@ export class AttributeMetadataService {
             return !!existing.hierarchyFlag;
         }
         const doCall = () => {
-            // otherwise find the domains and put them in the cache
+            // otherwise, find the domains and put them in the cache
             this.prefixService.findExistingDomainsForPrefix(attribute.value).subscribe({
                 next: (results: any) => {
                     let domainsInTheWay = 0;
@@ -350,7 +348,7 @@ export class AttributeMetadataService {
         }
 
         let target;
-        // Evaluate the "invalid's and return the first true result
+        // Evaluate the invalid's and return the first true result
         if (this.jsUtils.typeOf(attrMetadata.invalid) === 'string') {
             target = _.filter(attributes, (o) => {
                 return o.name === attrMetadata.invalid;
@@ -403,7 +401,7 @@ export class AttributeMetadataService {
             attribute.$$error = 'IP notation not allowed, use a fully qualified domain name';
             return true;
         }
-        // check it looks sth like a hostname
+        // check it looks something like a hostname
         if (!this.hostnameRe.exec(attribute.value)) {
             attribute.$$info = '';
             attribute.$$error = '';
@@ -414,7 +412,7 @@ export class AttributeMetadataService {
             return attribute.name === attr.name && attribute.value === attr.value;
         });
         if (sameValList.length > 1) {
-            // should have found itself once, otherwise it's a dupe
+            // should have found itself once, otherwise it's a duplicate
             attribute.$$info = '';
             attribute.$$error = 'Duplicate value';
             return true;
@@ -479,7 +477,7 @@ export class AttributeMetadataService {
     };
 
     private isModifyMode(objectType: string, attributes: IAttributeModel[]): boolean {
-        // If "created" is filled, we"re modifying
+        // If "created" is filled, we're modifying
         const created = _.find(attributes, (item: IAttributeModel) => {
             return item.name.toUpperCase() === 'CREATED';
         });

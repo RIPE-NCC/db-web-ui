@@ -58,9 +58,6 @@ export class AttributeRendererComponent implements OnInit {
      * attribute  : object   -- The attribute which this controller is responsible for.
      */
 
-    /*
-     * Initial scope vars
-     */
     public ngOnInit() {
         this.isHelpShown = false;
         this.isMntHelpShown = false;
@@ -212,9 +209,6 @@ export class AttributeRendererComponent implements OnInit {
         return matches.length > cardinality.minOccurs;
     }
 
-    /*
-     * Local functions
-     */
     private addAttr(attributes: IAttributeModel[], attribute: IAttributeModel, attributeName: string) {
         let foundIdx = -1;
         if (attribute.$$id) {
