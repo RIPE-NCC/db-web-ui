@@ -959,19 +959,17 @@ export class WhoisMetaService {
         },
         geofeed: {
             description: 'A URL referencing a CSV file containing geolocation data for the resource.',
-            // short: undefined,
-            syntax: '',
+            syntax: 'Geofeed is a self-published format for IP geolocation data. A URL referencing a CSV file containing geolocation data for the resource. The URL must be valid and it must specify the HTTPS protocol.',
         },
         geoloc: {
-            description: 'The location coordinates for the resource.',
-            // short: undefined,
-            syntax: ``,
+            description: `The location coordinates for the resource.`,
+            syntax: 'Location coordinates of the resource, in decimal degrees notation. Format is latitude followed by longitude, separated by a space. Latitude ranges from [-90,+90] and longitude from [-180,+180]',
         },
         holes: {
             description:
                 'Lists the component address prefixes that are not reachable through the aggregate route (perhaps that part of the address space is unallocated).',
             short: 'Lists the component address prefixes that are not reachable through the aggregate route.',
-            syntax: '',
+            syntax: 'An address prefix is represented as an IPv4 address followed by the character slash "/" followed by an integer in the range from 0 to 32. The following are valid address prefixes: 128.9.128.5/32, 128.9.0.0/16, 0.0.0.0/0; and the following address prefixes are invalid: 0/0, 128.9/16 since 0 or 128.9 are not strings containing four integers.',
         },
         ifaddr: {
             description: 'Specifies an interface address within an Internet router.',
@@ -1406,7 +1404,7 @@ export class WhoisMetaService {
             description: 'Defines the name of the rtr-set.',
             short: `Defines the name of the rtr-set.`,
             syntax:
-                `A <strong>router-set</strong> name is made up of letters, digits, the underscore \"_\" and minus \"-\" characters. It must start with \"rtrs-\", and the last character of a name must be a letter or a digit. 
+                `A <strong>router-set</strong> name is made up of letters, digits, the underscore \"_\" and minus \"-\" characters. It must start with \"rtrs-\", and the last character of a name must be a letter or a digit.
                 A <strong>router-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must` +
                 `be an actual set name (i.e. start with \"rtrs-\").  All the set name components of a hierarchical <strong>router-set</strong> name have to be <strong>router-set</strong> names. The total length should not exceed 80 characters (octets).`,
         },
