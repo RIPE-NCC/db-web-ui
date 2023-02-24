@@ -220,7 +220,7 @@ export class TextCommonsService {
         return _.map(this.whoisResourcesService.getAllAttributesWithValueOnName(attributes, 'mnt-by'), (objMntner: any) => {
             // Notes:
             // - RPSL attribute values can contain leading and trailing spaces, so the must be trimmed
-            // - Assume maintainers have md5-password, so prevent unmodifyable error
+            // - Assume maintainers have md5-password, so prevent unmodifiable error
             return { type: 'mntner', key: _.trim(objMntner.value), auth: ['MD5-PW'] };
         });
     }

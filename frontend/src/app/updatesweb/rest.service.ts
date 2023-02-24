@@ -47,7 +47,6 @@ export class RestService {
     public fetchMntnersForSSOAccount(): Observable<IMntByModel[]> {
         return this.http.get('api/user/mntners').pipe(
             tap({
-                // Log the result or error
                 next: (result: IMntByModel[]) => console.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result)),
                 error: (error) => console.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error)),
             }),
@@ -255,7 +254,7 @@ export class RestService {
                     return item.key === mntner.key;
                 });
                 if (_.isUndefined(found)) {
-                    // TODO: the  autocomplete service just returns 10 matching records. The exact match might not be part of this set.
+                    // NOTE: the  autocomplete service just returns 10 matching records. The exact match might not be part of this set.
                     // So if this happens, perform best guess and just enrich the existing mntner with md5.
                     mntner.auth = ['MD5-PW'];
                     found = mntner;

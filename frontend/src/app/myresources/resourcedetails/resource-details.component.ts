@@ -159,7 +159,7 @@ export class ResourceDetailsComponent implements OnDestroy {
                     this.addFlag(Labels['flag.rDNS.text'], Labels['flag.rDNS.title'], 'green');
                 }
             },
-            error: (error) => {
+            error: () => {
                 this.loadingResource = false;
                 this.showRefreshButton = true;
             },
@@ -205,7 +205,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         return !this.whoisResourcesService.isComaintained(this.whoisObject.attributes.attribute);
     }
 
-    public deleteClicked(deletedWhoisObject: any) {
+    public deleteClicked() {
         const inputData = {
             name: this.objectName,
             objectType: this.objectType,
@@ -222,7 +222,6 @@ export class ResourceDetailsComponent implements OnDestroy {
             this.router.navigate(['myresources/detail', this.objectType, parent, this.sponsored], { queryParams: params });
         });
         modalRef.dismissed.subscribe(() => {
-            // dismiss
             this.router.navigate(['myresources/detail', this.objectType, this.objectName, this.sponsored]);
         });
     }

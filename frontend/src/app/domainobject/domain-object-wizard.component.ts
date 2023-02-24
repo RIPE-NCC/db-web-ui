@@ -1,12 +1,11 @@
 import { Location } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../attribute/attribute-shared.service';
 import { JsUtilService } from '../core/js-utils.service';
-import { WINDOW } from '../core/window.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -57,7 +56,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public subscriptionDomaiPrefix: any;
 
     constructor(
-        @Inject(WINDOW) private window: any,
         private jsUtils: JsUtilService,
         private modalService: NgbModal,
         private restService: RestService,
@@ -226,7 +224,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     }
 
     public cancel() {
-        if (this.window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+        if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
             this.router.navigate(['webupdates/select']);
         }
     }

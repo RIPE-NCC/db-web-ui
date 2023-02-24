@@ -19,11 +19,11 @@ export class PreferenceService {
     }
 
     public setTextMode() {
-        this.setCookie(this.UI_MODE_COOKIE.name, this.UI_MODE_COOKIE.text, undefined);
+        this.setCookie(this.UI_MODE_COOKIE.name, this.UI_MODE_COOKIE.text);
     }
 
     public setWebMode() {
-        this.setCookie(this.UI_MODE_COOKIE.name, this.UI_MODE_COOKIE.web, undefined);
+        this.setCookie(this.UI_MODE_COOKIE.name, this.UI_MODE_COOKIE.web);
     }
 
     public isTextMode() {
@@ -39,7 +39,7 @@ export class PreferenceService {
         return !_.isUndefined(value);
     }
 
-    private setCookie(name: string, value: string, path: string) {
+    private setCookie(name: string, value: string) {
         this.cookies.set(name, value, 1, '/', '.ripe.net', true);
     }
 

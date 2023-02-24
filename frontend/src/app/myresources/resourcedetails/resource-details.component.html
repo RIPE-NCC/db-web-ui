@@ -24,7 +24,7 @@
             *ngIf="isEditing"
             (cancelClicked)="hideObjectEditor()"
             (updateClicked)="updateButtonClicked($event)"
-            (deleteClicked)="deleteClicked($event)"
+            (deleteClicked)="deleteClicked()"
         ></whois-object-editor>
     </div>
     <refresh *ngIf="showRefreshButton" reason="There was problem reading resource please try again" (refreshClbk)="init()"></refresh>

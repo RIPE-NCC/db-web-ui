@@ -68,7 +68,6 @@ export class WhoisResourcesService {
 
             return result;
         } else {
-            // TODO smarter merge
             return attributes.concat(attrs);
         }
     }

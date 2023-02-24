@@ -9,11 +9,6 @@ export interface IForgotMaintainerPassword {
     voluntary: boolean;
 }
 
-export interface IForgotMaintainerState {
-    mntnerKey: string;
-    voluntary: boolean;
-}
-
 @Injectable()
 export class ForgotMaintainerPasswordService {
     private readonly API_BASE_URL: string = 'api/whois-internal/api/fmp-pub/forgotmntnerpassword';

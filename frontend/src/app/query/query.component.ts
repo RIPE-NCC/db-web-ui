@@ -284,7 +284,7 @@ export class QueryComponent implements OnDestroy {
         return this.numberSelectedTypes + this.numberSelectedHierarchyItems + this.numberSelectedInverseLookups + this.numberSelectedAdvanceFilterItems > 0;
     }
 
-    // Move this to a util queryService and test it properly, i.e. with all expected message variants
+    // Move this to util queryService and test it properly, i.e. with all expected message variants
     public formatError(msg: IErrorMessageModel) {
         const parts = msg.plainText.split(/%[a-z]/);
         const resultArr = [];

@@ -13,7 +13,7 @@ export interface IMainMenuItem {
     title: string; // title of the menu item
     subtitle?: string;
     id: string; // unique identifier for the menu item (if not specified, title value will be used)
-    icon?: string; // right now this is the markup of the SVG icon - planned to be replaced with only an icon name once we finalize the list of icons used
+    icon?: string; // the markup of the SVG icon
     url?: string; // optional URL for menu item
     parent?: string; // null || string -- id of parent menu item; used for nested menu items
     roles: string[];

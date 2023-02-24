@@ -1,9 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { WINDOW } from '../core/window.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -40,7 +39,6 @@ export class TextCreateComponent implements OnInit {
     public passwords: string[];
 
     constructor(
-        @Inject(WINDOW) private window: any,
         public whoisResourcesService: WhoisResourcesService,
         public whoisMetaService: WhoisMetaService,
         public restService: RestService,
@@ -164,7 +162,7 @@ export class TextCreateComponent implements OnInit {
     }
 
     public cancel() {
-        if (this.window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+        if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
             this.router.navigate(['webupdates/select']);
         }
     }

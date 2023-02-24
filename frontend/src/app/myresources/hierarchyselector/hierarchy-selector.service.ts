@@ -16,19 +16,17 @@ export class HierarchySelectorService {
             throw new TypeError('ResourcesDataService.fetchParentResource failed: not a resource');
         }
         if (this.cashHierarchy && this.cashHierarchy.includes(resource.resource)) {
-            // console.debug("cashHierarchy", this.cashHierarchy.splice(0, this.cashHierarchy.indexOf(resource.resource)));
             return of(this.cashHierarchy.splice(0, this.cashHierarchy.indexOf(resource.resource)));
         }
         const type = resource.type;
         const key = resource.resource;
         const params = new HttpParams().set('key', key).set('org', org).set('type', type);
-        let hierarchy: string[];
         return this.http.get<string[]>('api/whois/hierarchy/parents-of', { params }).pipe(
             timeout(10000),
-            tap(
-                (result: string[]) => (this.cashHierarchy = result),
-                (error: any) => console.error('hierarchy parents-of error:' + JSON.stringify(error)),
-            ),
+            tap({
+                next: (result: string[]) => (this.cashHierarchy = result),
+                error: (error: any) => console.error('hierarchy parents-of error:' + JSON.stringify(error)),
+            }),
         );
     }
 

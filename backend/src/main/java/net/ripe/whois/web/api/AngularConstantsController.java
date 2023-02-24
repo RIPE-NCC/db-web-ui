@@ -1,7 +1,6 @@
 package net.ripe.whois.web.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 import static javax.ws.rs.core.HttpHeaders.CACHE_CONTROL;
 
@@ -104,44 +97,10 @@ public class AngularConstantsController {
         return new ResponseEntity<>(appConstants, HttpStatus.OK);
     }
 
-    /**
-     * Returns the implementation version stored in [WAR]/META-INF/MANIFEST.MF
-     * <p>
-     * Note: only if the app is running off a WAR built by the CD server an actual
-     * version is returned, the WAR is considered a SNAPSHOT otherwise (intended).
-     * <p>
-     * The maven-war-plugin saves the version under 'Implementation-Version' in the
-     * MANIFEST.MF file. The CD server specifies the version as a parameter on the
-     * Maven command line: '-Dversion=${some-variable-from-cd-server}
-     */
-    private String getImplementationVersion() {
-        try {
-            // iterate over all MANIFEST.MF files to find our own (silly but safe)
-            Enumeration<URL> resources = getClass().getClassLoader().getResources(JarFile.MANIFEST_NAME);
-            while (resources.hasMoreElements()) {
-                try (InputStream inputStream = resources.nextElement().openStream()) {
-                    Manifest manifest = new Manifest(inputStream);
-                    Attributes attribs = manifest.getMainAttributes();
-                    String vendor = attribs.getValue("Implementation-Vendor");
-                    if (StringUtils.equals(vendor, "net.ripe.whois")) {
-                        String implVersion = attribs.getValue("Implementation-Version");
-                        if (implVersion != null)
-                            return implVersion;
-                    }
-                }
-            }
-        } catch (java.io.IOException e) {
-            // META-INF is available only in JAR, ignore otherwise
-            LOGGER.warn("Could not read MANIFEST.MF"); // considered not fatal
-        }
-        return "SNAPSHOT";
-    }
-
     private AppConstants generateConstants() {
         final AppConstants constants = new AppConstants();
         constants.setEnvironment(environment);
         constants.setSource(ripeSource);
-        constants.setBuildTag(getImplementationVersion());
         constants.setLoginUrl(crowdLoginUrl);
         constants.setAccessUrl(crowdAccessUrl);
         constants.setLogoutUrl(crowdLogoutUrl);
@@ -174,8 +133,6 @@ public class AngularConstantsController {
         private String environment;
         @JsonProperty("SOURCE")
         private String source;
-        @JsonProperty("BUILD_TAG")
-        private String buildTag;
         @JsonProperty("LOGIN_URL")
         private String loginUrl;
         @JsonProperty("ACCESS_URL")
@@ -231,10 +188,6 @@ public class AngularConstantsController {
 
         public void setSource(String source) {
             this.source = source;
-        }
-
-        public void setBuildTag(String buildTag) {
-            this.buildTag = buildTag;
         }
 
         public void setLoginUrl(String loginUrl) {

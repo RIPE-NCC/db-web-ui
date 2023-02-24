@@ -74,7 +74,6 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'source', this.source);
         this.showMntAttrsHelp = this.mntnerAttributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
-        // kick off ajax-call to fetch email address of logged-in user
         this.userInfoService.getUserOrgsAndRoles().subscribe({
             next: (result: IUserInfoResponseData) => {
                 this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'auth', 'SSO ' + result.user.username);

@@ -40,7 +40,7 @@ export class CharsetToolsService {
 
     public replaceUtf8(attribute: IAttributeModel): void {
         const subbed = this.replaceSubstitutables(attribute.value);
-        attribute.value = this._replaceNonSubstitutables(subbed);
+        attribute.value = this.replaceNonSubstitutables(subbed);
     }
 
     private replaceUnicodeG(sub: ISubstitution): string {
@@ -48,7 +48,7 @@ export class CharsetToolsService {
         return sub.sub;
     }
 
-    private _replaceNonSubstitutables(value: string): string {
+    private replaceNonSubstitutables(value: string): string {
         return value.replace(/[\u0100-\ue007]/g, '?');
     }
 }

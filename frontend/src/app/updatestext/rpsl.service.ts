@@ -17,7 +17,7 @@ export class RpslService {
         let spacing: number = 0;
 
         // If the first attribute of an object has no value, we are composing a new template.
-        // In this case we should using padding (max 15 spaces)
+        // In this case we should use padding (max 15 spaces)
         // otherwise we will inherit existing formatting
         const f = _.first(obj.attributes);
         if (!_.isUndefined(f)) {
@@ -66,24 +66,24 @@ export class RpslService {
                 const deleteReasons: string[] = [];
 
                 const obj: IRpslObject = {
-                    attributes: this._parseSingleObject(objRpsl, passwords, overrides, deleteReasons),
+                    attributes: this.parseSingleObject(objRpsl, passwords, overrides, deleteReasons),
                     deleteReason: undefined,
                     override: undefined,
                     passwords: [],
                 };
 
-                this._stripDuplicates(passwords);
+                this.stripDuplicates(passwords);
                 if (passwords.length > 0) {
                     obj.passwords = passwords;
                 }
 
-                this._stripDuplicates(overrides);
+                this.stripDuplicates(overrides);
                 if (overrides.length > 0) {
                     obj.override = overrides[0];
                 }
 
-                this._stripDuplicates(deleteReasons);
-                this._stripDuplicates(deleteReasons);
+                this.stripDuplicates(deleteReasons);
+                this.stripDuplicates(deleteReasons);
                 if (deleteReasons.length > 0) {
                     obj.deleteReason = deleteReasons[0];
                 }
@@ -93,7 +93,7 @@ export class RpslService {
         return objs;
     }
 
-    private _stripDuplicates(array: string[]) {
+    private stripDuplicates(array: string[]) {
         const uniqued = _.uniq(_.clone(array));
         // don't copy into a new pointer, but leave existing pointer in tact
         while (array.length) {
@@ -104,7 +104,7 @@ export class RpslService {
         });
     }
 
-    private _parseSingleObject(rpslText: string, passwords: string[], overrides: string[], deleteReasons: string[]) {
+    private parseSingleObject(rpslText: string, passwords: string[], overrides: string[], deleteReasons: string[]) {
         const attrs: IAttributeModel[] = [];
 
         let buffer = '';
@@ -115,9 +115,9 @@ export class RpslService {
             buffer += current;
 
             // newline followed by alpha-numeric character is attribute separator
-            if (idx === rpslText.length - 1 || (current === '\n' && this._isLetter(next))) {
+            if (idx === rpslText.length - 1 || (current === '\n' && this.isLetter(next))) {
                 // end of attribute reached
-                const attr = this._parseSingleAttribute(_.clone(buffer));
+                const attr = this.parseSingleAttribute(_.clone(buffer));
                 if (!_.isUndefined(attr)) {
                     const trimmed = _.trim(attr.value);
                     if (attr.name === 'password') {
@@ -144,7 +144,7 @@ export class RpslService {
         return attrs;
     }
 
-    private _parseSingleAttribute(rawAttribute: any) {
+    private parseSingleAttribute(rawAttribute: any) {
         let attr: IAttributeModel;
 
         // extract the key
@@ -162,15 +162,15 @@ export class RpslService {
                 });
             }
             attr = {
-                comment: this._concatenate(comments, ' '),
+                comment: this.concatenate(comments, ' '),
                 name: key,
-                value: this._concatenate(values, ''),
+                value: this.concatenate(values, ''),
             };
         }
         return attr;
     }
 
-    private _concatenate(array: string[], separator: string): string {
+    private concatenate(array: string[], separator: string): string {
         return _.reduce(array, (combined, item) => {
             if (!_.isUndefined(item)) {
                 return combined + separator + item;
@@ -178,7 +178,7 @@ export class RpslService {
         });
     }
 
-    private _isLetter(c: string): boolean {
+    private isLetter(c: string): boolean {
         if (_.isEmpty(c)) {
             return false;
         }

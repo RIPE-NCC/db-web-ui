@@ -29,9 +29,6 @@ export class SelectComponent implements OnInit {
         });
     }
 
-    /*
-     * UI initialisation
-     */
     public ngOnInit() {
         this.objectTypes = this.filterObjectTypes(this.whoisMetaService.getObjectTypes());
         this.userInfoService.getUserOrgsAndRoles().subscribe({
@@ -44,13 +41,6 @@ export class SelectComponent implements OnInit {
             objectType: 'role-mntnr',
             source: this.properties.SOURCE,
         };
-    }
-
-    /*
-     * Methods called from the html-template
-     */
-    public labelForSource(src: string): string {
-        return src === 'RIPE' ? 'RIPE    production database' : 'Test database (currently not available)';
     }
 
     public navigateToCreate() {

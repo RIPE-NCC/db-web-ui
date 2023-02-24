@@ -1,7 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { WINDOW } from '../core/window.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { FindMaintainerService, IFindMaintainer } from './find-maintainer.service';
@@ -16,7 +15,6 @@ export class FindMaintainerComponent implements OnInit {
     public maintainerKey: string;
 
     constructor(
-        @Inject(WINDOW) private window: any,
         private findMaintainerService: FindMaintainerService,
         private userInfoService: UserInfoService,
         public alertsService: AlertsService,
@@ -90,7 +88,7 @@ export class FindMaintainerComponent implements OnInit {
     }
 
     public cancel() {
-        this.window.history.back();
+        window.history.back();
     }
 
     private checkLoggedIn() {

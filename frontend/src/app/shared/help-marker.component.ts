@@ -9,13 +9,11 @@ import { Labels } from '../label.constants';
     </span>`,
 })
 export class HelpMarkerComponent implements OnInit {
-    // Inputs
     @Input()
     public labelKey: string;
     @Input()
     public link: string;
 
-    // Outputs
     public titleLabel: string;
     public hrefLabel: string;
 

@@ -7,7 +7,6 @@ declare var loadUsersnap: (buildTag: string) => any;
 export interface IProperties {
     ENV: string;
     SOURCE: string;
-    BUILD_TAG: string;
     LOGIN_URL: string;
     ACCESS_URL: string;
     LOGOUT_URL: string;
@@ -39,9 +38,6 @@ export interface IProperties {
 export class PropertiesService {
     public ACCESS_URL = '';
     public BANNER = 'Welcome to the localhost version of the RIPE Database.';
-    // FIXME This tag is not used anymore... remove it after merging https://gitlab.ripe.net/swe-database-team/db-web-ui/-/commits/DB-3160_ripe_web_component_login_switcher
-    // also clean getImplementationVersion in AngularConstantsController
-    public BUILD_TAG = 'SNAPSHOT';
     // Resources - menu items
     public MY_RESOURCES_URL = 'myresources/overview';
     // RIPE database - menu items
@@ -92,7 +88,6 @@ export class PropertiesService {
                 (response) => {
                     this.ENV = response.ENV;
                     this.SOURCE = response.SOURCE;
-                    this.BUILD_TAG = response.BUILD_TAG;
                     this.LOGIN_URL = response.LOGIN_URL;
                     this.ACCESS_URL = response.ACCESS_URL;
                     this.LOGOUT_URL = response.LOGOUT_URL;

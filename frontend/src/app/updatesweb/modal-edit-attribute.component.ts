@@ -1,6 +1,5 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { WINDOW } from '../core/window.service';
 import { PropertiesService } from '../properties.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 
@@ -17,33 +16,33 @@ export class ModalEditAttributeComponent {
     private readonly ORG_DETAILS_URL: string;
     private readonly ACCOUNT_DETAILS_URL: string;
 
-    constructor(private activeModal: NgbActiveModal, @Inject(WINDOW) private window: any, private properties: PropertiesService) {
+    constructor(private activeModal: NgbActiveModal, private properties: PropertiesService) {
         this.ORG_DETAILS_URL = properties.PORTAL_URL + '#/org-details-change';
         this.ACCOUNT_DETAILS_URL = properties.PORTAL_URL + '#/account-details';
     }
 
     public goToOrgNameEditor() {
-        this.window.open(this.ORG_DETAILS_URL.concat('/organisation-details'), '_blank');
+        window.open(this.ORG_DETAILS_URL.concat('/organisation-details'), '_blank');
         this.activeModal.close();
     }
 
     public goToAccountOrgNameEditor() {
-        this.window.open(this.ACCOUNT_DETAILS_URL.concat('#organisationDetails'), '_blank');
+        window.open(this.ACCOUNT_DETAILS_URL.concat('#organisationDetails'), '_blank');
         this.activeModal.close();
     }
 
     public goToOrgaAddressEditor() {
-        this.window.open(this.ORG_DETAILS_URL.concat('/organisation-details'), '_blank');
+        window.open(this.ORG_DETAILS_URL.concat('/organisation-details'), '_blank');
         this.activeModal.close();
     }
 
     public goToAccountAddressEditor() {
-        this.window.open(this.ACCOUNT_DETAILS_URL.concat('#postalAddress'), '_blank');
+        window.open(this.ACCOUNT_DETAILS_URL.concat('#postalAddress'), '_blank');
         this.activeModal.close();
     }
 
     public goToAccountContactInfoEditor() {
-        this.window.open(this.ACCOUNT_DETAILS_URL.concat('#contactInfo'), '_blank');
+        window.open(this.ACCOUNT_DETAILS_URL.concat('#contactInfo'), '_blank');
         this.activeModal.close();
     }
 

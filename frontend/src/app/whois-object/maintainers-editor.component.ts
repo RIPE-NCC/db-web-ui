@@ -124,10 +124,6 @@ export class MaintainersEditorComponent implements OnInit {
         return item.key;
     }
 
-    /**
-     * Callback from html to support typeahead selection
-     *
-     */
     public mntnerAutocomplete() {
         this.mntners.alternatives$ = concat(
             of([]), // default items
@@ -201,7 +197,7 @@ export class MaintainersEditorComponent implements OnInit {
         this.mntners.sso = results;
         if (this.mntners.sso.length > 0) {
             this.mntners.objectOriginal = [];
-            // populate ui-select box with sso-mntners
+            // populate ngselect box with sso-mntners
             this.mntners.object = _.cloneDeep(this.mntners.sso);
             // copy mntners to attributes (for later submit)
             const mntnerAttrs = this.mntners.sso.map((i: IMntByModel) => {

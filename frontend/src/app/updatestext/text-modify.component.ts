@@ -1,8 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { forkJoin } from 'rxjs';
-import { WINDOW } from '../core/window.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -32,7 +31,6 @@ export class TextModifyComponent implements OnInit {
     public deletable: boolean;
 
     constructor(
-        @Inject(WINDOW) private window: any,
         private whoisResourcesService: WhoisResourcesService,
         private restService: RestService,
         private errorReporterService: ErrorReporterService,
@@ -160,7 +158,7 @@ export class TextModifyComponent implements OnInit {
     }
 
     public cancel() {
-        if (this.window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+        if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
             this.navigateToDisplayPage(this.object.source, this.object.type, this.object.name, undefined);
         }
     }
@@ -259,7 +257,6 @@ export class TextModifyComponent implements OnInit {
                 },
                 error: () => {
                     this.restCallInProgress = false;
-                    // ignore
                 },
             });
         }

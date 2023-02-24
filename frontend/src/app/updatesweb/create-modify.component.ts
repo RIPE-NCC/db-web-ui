@@ -1,10 +1,9 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
-import { WINDOW } from '../core/window.service';
 import { IpAddressService } from '../myresources/ip-address.service';
 import { ResourceStatusService } from '../myresources/resource-status.service';
 import { ObjectTypesEnum } from '../query/object-types.enum';
@@ -76,7 +75,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public showAttrsHelp: [];
 
     constructor(
-        @Inject(WINDOW) private window: any,
         public whoisResourcesService: WhoisResourcesService,
         public attributeMetadataService: AttributeMetadataService,
         public whoisMetaService: WhoisMetaService,
@@ -195,8 +193,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         this.optionList.status = this.resourceStatusService.get(this.objectType, parentStatusValue);
 
         // Allow the user to authorize against mnt-by or mnt-lower of this parent object
-        // (https://www.pivotaltracker.com/story/show/118090295)
-
         // first check if the user needs some auth...
         if (parent && parent.attributes) {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
@@ -249,7 +245,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         modalRef.dismissed.subscribe((error: any) => {
             if (error !== 'cancel') {
                 // dismissing modal will hit this function with the string "cancel" in error arg
-                // TODO: pass more specific errors from REST? [RM]
                 abuseAttr.$$error = 'The role object for the abuse-c attribute was not created';
             }
         });
@@ -298,7 +293,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public fieldVisited(attribute: any) {
-        // FIXME dirty hack to allow model from ngbTypeahead to be set on attribute.value
+        // FIXME hack to allow model from ngbTypeahead to be set on attribute.value
         if (attribute.value && attribute.value.key) {
             attribute.value = attribute.value.key;
         }
@@ -493,7 +488,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.attributes = this.whoisResourcesService.getAttributes(whoisResources);
 
             // This interceptor allows us to convert error into success
-            // This could change in the future
             const intercepted = this.screenLogicInterceptorService.afterSubmitError(
                 this.operation,
                 this.source,
@@ -578,7 +572,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public cancel() {
-        if (this.window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+        if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
             this.router.navigate(['webupdates/select']);
         }
     }
@@ -593,8 +587,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 attr.$$invalid = false;
             }
         });
-        // enrcih is called from maintainer-editor-component so $$invalid get value true and is never changed,
-        // because of this validation was crushing
+        // enrich is called from maintainer-editor-component so $$invalid get value true and is never changed
         this.attributes.map((attr) => {
             attr.$$invalid = false;
         });
@@ -605,9 +598,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName];
     }
 
-    /*
-     * private methods
-     */
     private fetchDataForCreate() {
         this.restCallInProgress = true;
         this.restService.fetchMntnersForSSOAccount().subscribe({

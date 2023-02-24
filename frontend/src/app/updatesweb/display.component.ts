@@ -43,7 +43,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
             this.objectType = params[0].objectType;
             // url-decode otherwise newly-created resource is MessageStoreService will not be found
             this.objectName = decodeURIComponent(params[0].objectName);
-            this.method = params[1].method || undefined; // optional: added by create- and modify-controlle"
+            this.method = params[1].method || undefined; // optional: added by create- and modify-component
 
             this.init();
         });
@@ -105,9 +105,6 @@ export class DisplayComponent implements OnInit, OnDestroy {
         this.alertsService.clearAlertMessages();
     }
 
-    /*
-     * Methods called from the html-template
-     */
     public modifyButtonToBeShown() {
         return this.alertsService && !this.alertsService.hasErrors() && !this.isPending();
     }

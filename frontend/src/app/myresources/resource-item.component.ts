@@ -10,7 +10,7 @@ import { ResourceStatusService } from './resource-status.service';
 })
 export class ResourceItemComponent implements OnInit {
     @Input()
-    public item: any; // IResourceScreenItem;
+    public item: any;
     @Input()
     public sponsored: boolean;
     public ipanalyserRedirect: boolean;

@@ -7,13 +7,11 @@ import { IUsage } from './resource-type.model';
     templateUrl: './ip-usage.component.html',
 })
 export class IpUsageComponent implements OnChanges {
-    // Inputs
     @Input()
     public type: string;
     @Input()
     public usage: IUsage;
 
-    // Outputs
     public percentageFree: number;
     public percentageUsed: number;
     public ipv6CalcTotal: string;
