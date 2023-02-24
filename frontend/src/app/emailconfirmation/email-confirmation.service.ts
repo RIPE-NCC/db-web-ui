@@ -14,7 +14,7 @@ export class EmailConfirmationService {
             throw new TypeError('ResourcesDataService.fetchParentResource failed: not a resource');
         }
 
-        // temporary hack to work around Anglar not uri encoding equals signs:
+        // temporary hack to work around Angular not uri encoding equals signs:
         // https://github.com/angular/angular/issues/26979
         // https://github.com/angular/angular/issues/18884
         const params = new HttpParams({

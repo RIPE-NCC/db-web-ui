@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { forkJoin, of, throwError } from 'rxjs';
-import { catchError, flatMap } from 'rxjs/operators';
+import { catchError, mergeMap } from 'rxjs/operators';
 import { AlertsService } from '../../shared/alert/alerts.service';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
 import { IMntByModel } from '../../shared/whois-response-type.model';
@@ -165,7 +165,7 @@ export class ForceDeleteComponent implements OnInit {
     private useDryRunDeleteToDetectAuthCandidates() {
         this.restCallInProgress = true;
         return this.restService.deleteObject(this.object.source, this.object.type, this.object.name, 'dry-run', false, undefined, true).pipe(
-            flatMap(() => {
+            mergeMap(() => {
                 this.restCallInProgress = false;
                 console.debug('auth can be performed without interactive popup');
                 return [];
@@ -212,7 +212,6 @@ export class ForceDeleteComponent implements OnInit {
     private performAuthentication() {
         const authParams: IAuthParams = {
             failureClbk: this.cancel,
-            // isLirObject: false,
             maintainers: this.maintainers,
             object: {
                 name: this.object.name,

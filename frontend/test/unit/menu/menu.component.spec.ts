@@ -3,7 +3,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { WINDOW_PROVIDERS } from '../../../src/app/core/window.service';
 import { OrgDropDownSharedService } from '../../../src/app/dropdown/org-drop-down-shared.service';
 import { MenuComponent } from '../../../src/app/menu/menu.component';
 import { MenuService } from '../../../src/app/menu/menu.service';
@@ -19,14 +18,7 @@ describe('LeftHandMenuComponent', () => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule],
             declarations: [MenuComponent],
-            providers: [
-                MenuService,
-                IpUsageService,
-                PropertiesService,
-                WINDOW_PROVIDERS,
-                OrgDropDownSharedService,
-                { provide: Location, useValue: { path: () => '' } },
-            ],
+            providers: [MenuService, IpUsageService, PropertiesService, OrgDropDownSharedService, { provide: Location, useValue: { path: () => '' } }],
         });
     });
 

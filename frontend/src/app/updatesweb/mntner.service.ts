@@ -311,7 +311,6 @@ export class MntnerService {
                 }
             },
             error: () => {
-                // TODO: error handling
                 return mntHandler([]);
             },
         });

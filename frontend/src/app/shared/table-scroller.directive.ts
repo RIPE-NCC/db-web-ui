@@ -1,6 +1,5 @@
 import { DOCUMENT } from '@angular/common';
 import { Directive, ElementRef, EventEmitter, HostListener, Inject, Output } from '@angular/core';
-import { WINDOW } from '../core/window.service';
 
 export function debounce(delay: number = 25): MethodDecorator {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -25,7 +24,7 @@ export class TableScrollerDirective {
 
     private lastRemaining = 9999;
     private lengthThreshold = 200;
-    public constructor(private elRef: ElementRef, @Inject(DOCUMENT) private document: Document, @Inject(WINDOW) private window) {}
+    public constructor(private elRef: ElementRef, @Inject(DOCUMENT) private document: Document) {}
 
     @HostListener('scroll', ['$event'])
     @debounce()

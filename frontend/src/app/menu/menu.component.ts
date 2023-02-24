@@ -20,7 +20,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     @Input()
     public open: boolean;
     public menu: string;
-    public dbMenuIsActive: boolean;
     public activeItem: string = 'create'; // id from menu.json
     public activeUrl: string; // browser url - location path
     private readonly navigationEnd: Subscription;
@@ -66,7 +65,7 @@ export class MenuComponent implements OnInit, OnDestroy {
             if (event.detail.selected.id === 'feedback') {
                 const dialogRef = this.dialog.open(FeedbackSupportDialogComponent, { panelClass: 'feedback-support-panel' });
                 dialogRef.afterOpened().subscribe(() => {
-                    // this is needed to retrigger render on angular after is closed and activeItem will change
+                    // this is needed to re-trigger render on angular after is closed and activeItem will change
                     this.activeItem = 'feedback';
                 });
                 dialogRef.afterClosed().subscribe(() => {

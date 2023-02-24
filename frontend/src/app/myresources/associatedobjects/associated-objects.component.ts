@@ -78,7 +78,7 @@ export class AssociatedObjectsComponent implements OnChanges {
 
     private getAssociatedObjectFromBackEnd(pageNr = 0, associatedPrefixFilter = '') {
         if (pageNr <= this.lastPage) {
-            // ignore requests for pages that we've done, or that we're are already fetching.
+            // ignore requests for pages that we've done, or that we are already fetching.
             return;
         }
 

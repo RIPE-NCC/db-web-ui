@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AppComponent } from '../../src/app/app.component';
 import { BannerComponent } from '../../src/app/banner/banner.component';
-import { WINDOW } from '../../src/app/core/window.service';
 import { PropertiesService } from '../../src/app/properties.service';
 import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
 import { ReleaseNotificationService } from '../../src/app/shared/release-notification.service';
@@ -45,7 +44,6 @@ describe('AppComponent', () => {
                         url: '/not-query',
                     },
                 },
-                { provide: WINDOW, useValue: { location: {} } },
                 { provide: SessionInfoService, useValue: { expiredSession$: of(), showUserLoggedIcon$: of() } },
                 {
                     provide: ReleaseNotificationService,
@@ -67,7 +65,7 @@ describe('AppComponent', () => {
     });
 
     it('should set properties to app-switcher', () => {
-        component.window.innerWidth = 1025;
+        spyOn(component, 'getInnerWidth').and.returnValue(1025);
         fixture.detectChanges();
         const appSwitch = fixture.debugElement.query(By.css('app-switcher'));
         expect(appSwitch.properties.appenv).toBe('pre');
@@ -75,7 +73,7 @@ describe('AppComponent', () => {
     });
 
     it('should set properties to user-login', () => {
-        component.window.innerWidth = 1025;
+        spyOn(component, 'getInnerWidth').and.returnValue(1025);
         fixture.detectChanges();
         const appSwitch = fixture.debugElement.query(By.css('user-login'));
         expect(appSwitch.properties.accessurl).toBe('https://access.prepdev.ripe.net/');
@@ -85,21 +83,21 @@ describe('AppComponent', () => {
     });
 
     it("shouldn't open menu on init for mobile screen size", () => {
-        component.window.innerWidth = 1024;
+        spyOn(component, 'getInnerWidth').and.returnValue(1024);
         fixture.detectChanges();
         component.mobileOrDesktopView();
         expect(component.isOpenMenu).toBeFalsy();
     });
 
     it('should open menu on init for desktop screen size', () => {
-        component.window.innerWidth = 1025;
+        spyOn(component, 'getInnerWidth').and.returnValue(1025);
         fixture.detectChanges();
         component.mobileOrDesktopView();
         expect(component.isOpenMenu).toBeTruthy();
     });
 
     it('should show mobile-menu for mobile screen size', () => {
-        component.window.innerWidth = 1024;
+        spyOn(component, 'getInnerWidth').and.returnValue(1024);
         fixture.detectChanges();
         component.mobileOrDesktopView();
         expect(component.isDesktopView).toBeFalsy();
@@ -112,7 +110,7 @@ describe('AppComponent', () => {
     });
 
     it('should show app-switcher and user-login for desktop screen size', () => {
-        component.window.innerWidth = 1025;
+        spyOn(component, 'getInnerWidth').and.returnValue(1025);
         fixture.detectChanges();
         component.mobileOrDesktopView();
         expect(component.isDesktopView).toBeTruthy();

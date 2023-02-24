@@ -175,7 +175,7 @@ export class QueryService {
         }
         if (qp.doNotRetrieveRelatedObjects) {
             linkParts.push('flags=no-referenced');
-            linkParts.push('flags=no-irt'); // what's this doing here?
+            linkParts.push('flags=no-irt');
         }
         if (qp.showFullObjectDetails) {
             linkParts.push('flags=no-filtering');

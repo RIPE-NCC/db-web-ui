@@ -41,17 +41,17 @@ export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
     public next(fmp: IForgotMaintainerPassword, formValid: boolean) {
         if (formValid) {
             console.info('Form is valid, sending data to server.');
-            this.forgotMaintainerPasswordService.generatePdfAndEmail(fmp).subscribe(
-                (pdfUrl: string) => {
+            this.forgotMaintainerPasswordService.generatePdfAndEmail(fmp).subscribe({
+                next: (pdfUrl: string) => {
                     this.generatedPDFUrl = pdfUrl;
                     this.alertsService.setGlobalSuccess('Success!');
                 },
-                (error) => {
+                error: (error) => {
                     if (this.fmpErrorService.isYourAccountBlockedError(error)) {
                         this.fmpErrorService.setGlobalAccountBlockedError();
                     }
                 },
-            );
+            });
         }
     }
 

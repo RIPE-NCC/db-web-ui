@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppModule } from '../../../src/app/app.module';
 import { JsUtilService } from '../../../src/app/core/js-utils.service';
-import { WINDOW } from '../../../src/app/core/window.service';
 import { DomainObjectWizardComponent } from '../../../src/app/domainobject/domain-object-wizard.component';
 import { DomainObjectModule } from '../../../src/app/domainobject/domain-object.module';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -32,7 +31,6 @@ describe('DomainObjectWizardComponent', () => {
                     },
                 },
                 { provide: Router, useValue: { navigate: () => {} } },
-                { provide: WINDOW, useValue: {} },
                 PropertiesService,
             ],
         });

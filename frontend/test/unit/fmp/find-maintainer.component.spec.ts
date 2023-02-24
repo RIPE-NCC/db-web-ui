@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { CoreModule } from '../../../src/app/core/core.module';
-import { WINDOW_PROVIDERS } from '../../../src/app/core/window.service';
 import { FindMaintainerComponent } from '../../../src/app/fmp/find-maintainer.component';
 import { FindMaintainerService } from '../../../src/app/fmp/find-maintainer.service';
 import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
@@ -25,7 +24,6 @@ describe('FindMaintainerComponent', () => {
             imports: [SharedModule, CoreModule],
             declarations: [FindMaintainerComponent],
             providers: [
-                WINDOW_PROVIDERS,
                 { provide: FindMaintainerService, useValue: findMaintainerService },
                 { provide: UserInfoService, useValue: userInfoService },
                 { provide: Router, useValue: { navigate: () => {} } },

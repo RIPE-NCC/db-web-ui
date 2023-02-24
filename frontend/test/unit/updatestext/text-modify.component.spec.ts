@@ -6,7 +6,6 @@ import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/ro
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { EMPTY, map, of } from 'rxjs';
-import { WINDOW } from '../../../src/app/core/window.service';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { CredentialsService } from '../../../src/app/shared/credentials.service';
@@ -100,7 +99,6 @@ describe('TextModifyComponent', () => {
                 PropertiesService,
                 { provide: NgbModal, useValue: modalMock },
                 { provide: Location, useValue: { path: () => '' } },
-                { provide: WINDOW, useValue: {} },
                 { provide: Router, useValue: routerMock },
                 {
                     provide: ActivatedRoute,

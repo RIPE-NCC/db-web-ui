@@ -66,7 +66,7 @@ export class MoreSpecificsComponent implements OnChanges {
 
     private getResourcesFromBackEnd(pageNr: number = 0, ipFilter: string = '') {
         if (pageNr <= this.lastPage) {
-            // ignore requests for pages that we've done, or that we're are already fetching.
+            // ignore requests for pages that we've done, or that we are already fetching.
             return;
         }
         if (this.location.path().indexOf('/myresources/detail') < 0) {

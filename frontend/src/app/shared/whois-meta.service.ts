@@ -331,7 +331,6 @@ export class WhoisMetaService {
                 { name: 'last-modified', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'source', mandatory: true, multiple: false, refs: this.refs },
             ],
-            // description: undefined,
             name: 'poem',
         },
         'poetic-form': {
@@ -413,7 +412,6 @@ export class WhoisMetaService {
                 { name: 'last-modified', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'source', mandatory: true, multiple: false, refs: this.refs },
             ],
-            // description: undefined,
             name: 'route-set',
         },
         route6: {
@@ -490,7 +488,6 @@ export class WhoisMetaService {
         }
         return this.objectTypesMap[objectTypeLowerCase].attributes.filter((attr: any) => {
             return attr.mandatory === mandatoryOnly;
-            // return attr.$$meta.$$mandatory === mandatoryOnly;
         });
     }
 
@@ -737,7 +734,6 @@ export class WhoisMetaService {
         },
         address: {
             description: 'Full postal address of a contact.',
-            // short: undefined,
             syntax: this._shared.freeForm.syntax,
         },
         'admin-c': {
@@ -747,7 +743,6 @@ export class WhoisMetaService {
         },
         'aggr-bndry': {
             description: 'Defines a set of ASes, which form the aggregation boundary.',
-            // short: undefined,
             syntax: '[&lt;as-expression&gt;]',
         },
         'aggr-mtd': {
@@ -757,7 +752,6 @@ export class WhoisMetaService {
         },
         alias: {
             description: 'The canonical DNS name for the router.',
-            // short: undefined,
             syntax: this._shared.alias.syntax,
         },
         'assignment-size': {
@@ -767,17 +761,14 @@ export class WhoisMetaService {
         },
         'as-block': {
             description: 'Range of AS numbers.',
-            // short: undefined,
             syntax: '&lt;as-number&gt; - &lt;as-number&gt;',
         },
         'as-name': {
             description: 'A descriptive name associated with an AS.',
-            // short: undefined,
             syntax: this._shared.objectName.syntax,
         },
         'as-set': {
             description: 'Defines the name of the set.',
-            // short: undefined,
             syntax:
                 `An <strong>as-set</strong> name is made up of letters, digits, the underscore "_" and minus "-" characters; it must start with \"as-\", and the last character of a name must be a letter or a digit.<br>` +
                 `An <strong>as-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons ":". The first element of the name must be an AS number followed by a colon and ending with a name (example: AS3333:AS-TEST). At least one component of such a name must be an actual set name (i.e. start with \"as-\"). All the set name components of a hierarchical <strong>as-name</strong> have to be <strong>as-set</strong> names. The total length should not exceed 80 characters (octets). Only as-sets with a hierarchical name can be created.`,
@@ -819,22 +810,18 @@ export class WhoisMetaService {
         },
         author: {
             description: 'References a poem author.',
-            // short: undefined,
             syntax: this._shared.nicHandle.syntax,
         },
         'aut-num': {
             description: 'The autonomous system number.',
-            // short: undefined,
             syntax: this._shared.asNumber.syntax,
         },
         certif: {
             description: 'Contains the public key.',
-            // short: undefined,
             syntax: `The value of the public key should be supplied either using multiple \"certif:\" attributes, or in one \"certif:\" attribute. In the first case, this is easily done by exporting the key from your local key ring in ASCII armored format and prepending each line of the key with the string \"certif:\". In the second case, line continuation should be used to represent an ASCII armored format of the key. All the lines of the exported key must be included; also the begin and end markers and the empty line which separates the header from the key body.`,
         },
         changed: {
             description: `Specifies who submitted the update, and when the object was updated. This attribute is filtered from the default whois output. This attribute is deprecated and will be removed in a next release.`,
-            // short: undefined,
             syntax: `An e-mail address as defined in RFC 2822, followed by a date in the format YYYYMMDD.`,
         },
         components: {
@@ -854,12 +841,10 @@ export class WhoisMetaService {
         },
         default: {
             description: 'Specifies default routing policies.',
-            // short: undefined,
             syntax: 'to &lt;peering&gt; [action &lt;action&gt;] [networks &lt;filter&gt;]',
         },
         descr: {
             description: 'A short description related to the object.',
-            // short: undefined,
             syntax: this._shared.freeForm.syntax,
         },
         domain: {
@@ -871,7 +856,6 @@ export class WhoisMetaService {
         },
         'ds-rdata': {
             description: 'DS records for this domain.',
-            // short: undefined,
             syntax:
                 '&lt;Keytag&gt; &lt;Algorithm&gt; &lt;Digest type&gt; &lt;Digest&gt;' +
                 '<br>' +
@@ -901,7 +885,6 @@ export class WhoisMetaService {
         },
         export: {
             description: 'Specifies an export policy expression.',
-            // short: undefined,
             syntax:
                 '[protocol &lt;protocol-1&gt;] [into &lt;protocol-1&gt;]' +
                 '<br>' +
@@ -934,14 +917,12 @@ export class WhoisMetaService {
         },
         filter: {
             description: `Defines the set\'s policy filter.`,
-            // short: undefined,
             syntax:
                 'Logical expression which when applied to a set of routes returns a subset of these routes. Please' +
                 ' refer to RFC 2622 for more information.',
         },
         'filter-set': {
             description: 'Defines the name of the filter.',
-            // short: undefined,
             syntax:
                 `A <strong>filter-set</strong> name is made up of letters, digits, the underscore "_" and minus "-" characters; it must start with \"fltr-\", and the last character of a name must be a letter or a digit.` +
                 `<br>` +
@@ -949,12 +930,10 @@ export class WhoisMetaService {
         },
         fingerpr: {
             description: 'A fingerprint of a key certificate generated by the database.',
-            // short: undefined,
             syntax: this._shared.generated.syntax,
         },
         form: {
             description: 'Specifies the identifier of a registered poem type.',
-            // short: undefined,
             syntax: this._shared.poeticForm.syntax,
         },
         geofeed: {
@@ -962,7 +941,7 @@ export class WhoisMetaService {
             syntax: 'Geofeed is a self-published format for IP geolocation data. A URL referencing a CSV file containing geolocation data for the resource. The URL must be valid and it must specify the HTTPS protocol.',
         },
         geoloc: {
-            description: `The location coordinates for the resource.`,
+            description: 'The location coordinates for the resource.',
             syntax: 'Location coordinates of the resource, in decimal degrees notation. Format is latitude followed by longitude, separated by a space. Latitude ranges from [-90,+90] and longitude from [-180,+180]',
         },
         holes: {
@@ -973,12 +952,10 @@ export class WhoisMetaService {
         },
         ifaddr: {
             description: 'Specifies an interface address within an Internet router.',
-            // short: undefined,
             syntax: '&lt;ipv4-address&gt; masklen &lt;integer&gt; [action &lt;action&gt;]',
         },
         import: {
             description: 'Specifies import policy expression.',
-            // short: undefined,
             syntax:
                 '[protocol &lt;protocol-1&gt;] [into &lt;protocol-1&gt;]' +
                 '<br>' +
@@ -996,7 +973,6 @@ export class WhoisMetaService {
         },
         inet6num: {
             description: 'Specifies the range of IPv6 addresses in prefix notation.',
-            // short: undefined,
             syntax: '&lt;ipv6-address&gt;/&lt;prefix&gt;',
         },
         inetnum: {
@@ -1007,7 +983,6 @@ export class WhoisMetaService {
         },
         'inet-rtr': {
             description: 'Fully qualified DNS name of the inet-rtr without trailing dot.',
-            // short: undefined,
             syntax: `Domain name as specified in RFC 1034 (point 5.2.1.2) with or without trailing dot (\".\"). The total length should not exceed 254 characters (octets).`,
         },
         inject: {
@@ -1052,7 +1027,6 @@ export class WhoisMetaService {
         },
         'local-as': {
             description: 'Specifies the autonomous system that operates the router.',
-            // short: undefined,
             syntax: this._shared.asNumber.syntax,
         },
         'mbrs-by-ref': {
@@ -1062,7 +1036,6 @@ export class WhoisMetaService {
         },
         members: {
             description: 'Lists the members of the set.',
-            // short: undefined,
             syntax: '',
         }, // no syntax available
         'member-of': {
@@ -1118,15 +1091,12 @@ export class WhoisMetaService {
             short: 'Specifies a <strong>mntner</strong> that may add references to the <strong>organisation</strong> object from other objects.',
             syntax: this._shared.objectName.syntax,
         },
-        // "mnt-routes": null, // specified object specific table. Check _mntRoutesDoc
         'mp-default': {
             description: 'Specifies default multiprotocol routing policies.',
-            // short: undefined,
             syntax: 'to &lt;peering&gt; [action &lt;action&gt;] [networks &lt;filter&gt;]',
         },
         'mp-export': {
             description: 'Specifies a multiprotocol export policy expression.',
-            // short: undefined,
             syntax:
                 '[protocol &lt;protocol-1&gt;] [into &lt;protocol-1&gt;]' +
                 '<br>' +
@@ -1142,7 +1112,6 @@ export class WhoisMetaService {
         },
         'export-via': {
             description: 'Specifies an export policy expression targeted at a non-adjacent network.',
-            // short: undefined,
             syntax:
                 '[protocol &lt;protocol-1&gt;] [into &lt;protocol-2&gt;]' +
                 '<br>' +
@@ -1166,14 +1135,12 @@ export class WhoisMetaService {
         },
         'mp-filter': {
             description: "Defines the set's multiprotocol policy filter.",
-            // short: undefined,
             syntax:
                 'Logical expression which when applied to a set of multiprotocol routes returns a subset of these' +
                 ' routes. Please refer to RPSLng Internet Draft for more information.',
         },
         'mp-import': {
             description: 'Specifies multiprotocol import policy expression.',
-            // short: undefined,
             syntax:
                 '[protocol &lt;protocol-1&gt;] [into &lt;protocol-1&gt;]' +
                 '<br>' +
@@ -1196,7 +1163,6 @@ export class WhoisMetaService {
         },
         'import-via': {
             description: 'Specifies an import policy expression targeted at a non-adjacent network.',
-            // short: undefined,
             syntax:
                 '[protocol &lt;protocol-1&gt;] [into &lt;protocol-2&gt;]' +
                 '<br>' +
@@ -1222,18 +1188,14 @@ export class WhoisMetaService {
         },
         'mp-members': {
             description: 'Lists the multiprotocol members of the set.',
-            // short: undefined,
             syntax: '',
         }, // no syntax available
-        // "mp-peer": null,  // specified object specific table check _mpPeerDoc
         'mp-peering': {
             description: 'Defines a multiprotocol peering that can be used for importing or exporting routes.',
-            // short: undefined,
             syntax: '&lt;as-expression&gt; [&lt;mp-router-expression-1&gt;] [at &lt;mp-router-expression-2&gt;] | &lt;peering-set-name&gt;',
         },
         netname: {
             description: 'The name of the range of IP address space.',
-            // short: undefined,
             syntax: `Made up of letters, digits, the underscore \"_\" and minus \"-\" characters; the first character of a name must be a letter, and the last character of a name must be a letter or a digit.`,
         },
         'nic-hdl': {
@@ -1287,7 +1249,6 @@ export class WhoisMetaService {
         },
         peer: {
             description: 'Details of any (interior or exterior) router peerings.',
-            // short: undefined,
             syntax:
                 `&lt;protocol&gt; &lt;ipv4-address&gt; &lt;options&gt;` +
                 `</br>` +
@@ -1299,12 +1260,10 @@ export class WhoisMetaService {
         },
         peering: {
             description: 'Defines a peering that can be used for importing or exporting routes.',
-            // short: undefined,
             syntax: '&lt;peering&gt;',
         },
         'peering-set': {
             description: 'Specifies the name of the peering-set.',
-            // short: undefined,
             syntax:
                 'A <strong>peering-set</strong> name is made up of letters, digits, the underscore "_" and minus "-"' +
                 ' characters; it must start with "prng-", and the last character of a name must be a letter or a' +
@@ -1345,13 +1304,11 @@ export class WhoisMetaService {
         },
         poem: {
             description: 'Specifies the title of the poem.',
-            // short: undefined,
             syntax: `POEM-&lt;string&gt;<br>
                 &lt;string&gt; can include alphanumeric characters, and \"_\" and "-" characters.`,
         },
         'poetic-form': {
             description: 'Specifies the poem type.',
-            // short: undefined,
             syntax: this._shared.poeticForm.syntax,
         },
         prefix: {
@@ -1374,7 +1331,6 @@ export class WhoisMetaService {
         },
         role: {
             description: 'Specifies the full name of a role entity, e.g. RIPE DBM.',
-            // short: undefined,
             syntax: this._shared.organisationName.syntax,
         },
         route: {
@@ -1418,7 +1374,6 @@ export class WhoisMetaService {
             short: `Should be \"RIPE\" for the RIPE Database.`,
             syntax: `Made up of letters, digits, the underscore \"_\" and minus \"-\" characters; The first character of a registry name must be a letter, and the last character of a registry name must be a letter or a digit.`,
         },
-        // Status -> search _statusDoc
         'sponsoring-org': {
             description: 'Points to an existing <strong>organisation</strong> object representing the sponsoring organisation responsible for the resource.',
             short: 'Reference to an <strong>organisation</strong> object representing the sponsor.',
@@ -1455,7 +1410,6 @@ export class WhoisMetaService {
         },
         inet6num: {
             description: 'Specifies the status of the resource.',
-            // short: undefined,
             syntax:
                 'Status can have one of these values:' +
                 '<br>' +
@@ -1470,7 +1424,6 @@ export class WhoisMetaService {
         },
         inetnum: {
             description: 'Specifies the status of the resource.',
-            // short: undefined,
             syntax:
                 'Status can have one of these values:' +
                 '<br>' +
@@ -1533,12 +1486,10 @@ export class WhoisMetaService {
     private _mpPeerDoc = {
         'inet-rtr': {
             description: 'Details of any (interior or exterior) multiprotocol router peerings.',
-            // short: undefined,
             syntax: this._shared.inet.syntax,
         },
         'peering-set': {
             description: 'Defines a multiprotocol peering used for importing or exporting routes.',
-            // short: undefined,
             syntax: 'afi &lt;afi&gt; &lt;peering&gt;',
         },
     };

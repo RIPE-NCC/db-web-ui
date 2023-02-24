@@ -44,7 +44,6 @@ export class WebUpdatesCommonsService {
             authParams.maintainers.objectOriginal,
             authParams.maintainers.object,
         );
-        // see: https://www.pivotaltracker.com/n/projects/769061
         const allowForcedDelete = !_.find(authParams.maintainers.object, (o: any) => {
             return this.mntnerService.isAnyNccMntner(o.key);
         });
