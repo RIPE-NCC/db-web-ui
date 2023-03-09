@@ -47,7 +47,7 @@ export class AttributeMetadataService {
      * If there is an existing domain within the specified prefix, display an error.
      * Find any domain objects for a given prefix, using TWO queries:
      *
-     * (1) exact match: -d --exact -T domain -r 193.193.200.0 - 193.193.200.255
+     * (1) exact match: -d --exact -T domain -r 193.0.0.0 - 193.0.0.255
      *
      * (2) ALL more specific (excluding exact match) : -d --all-more -T domain -r ...
      *

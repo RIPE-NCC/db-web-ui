@@ -15,7 +15,7 @@ export class PrefixServiceUtils {
 
     // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
     // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
-    // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz ".1" is not covered by mask)
+    // * Ensure provided address bit are not masked (i.e. 193.0.0.1/24 is not valid cz ".1" is not covered by mask)
     public static isValidIpv4Prefix(str: string): boolean {
         if (IpAddressService.isValidIpv4(str)) {
             str = IpAddressService.rangeToSlash(str);

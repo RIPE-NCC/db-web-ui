@@ -41,20 +41,20 @@ public class WhoisWebDTO {
      *    "type": "prefix",
      *    "attributes": [{
      *       "name": "prefix",
-     *       "value": "22.22.0.0/22"
+     *       "value": "193.0.0.0/22"
      *    },
      *    {
      *       "name": "nserver",
-     *       "value": "ns.xs4all.nl"
+     *       "value": "ns.test.nl"
      *    },
      *    {
      *       "name": "nserver",
-     *       "value": "ns1.xs4all.nl"
+     *       "value": "ns1.test.nl"
      *    }
      * }
      * }</pre>
      * <p>
-     * getValues("nserver") returns ["ns.xs4all.nl", "ns1.xs4all.nl"]
+     * getValues("nserver") returns ["ns.test.nl", "ns1.test.nl"]
      *
      * @return all values of NameValuePairs with the given name.
      */
