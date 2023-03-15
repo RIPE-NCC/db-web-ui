@@ -47,5 +47,10 @@ public class RemoteAddressFilter implements Filter {
             final String address = request.getRemoteAddr();
             return (address.startsWith("[") && address.endsWith("]")) ? address.substring(1, address.length() - 1) : address;
         }
+
+        @Override
+        public String toString() {
+            return String.format("RemoteAddressRequestWrapper: %s %s from %s", getMethod(), getRequestURI(), getRemoteAddr());
+        }
     }
 }
