@@ -20,7 +20,6 @@ public class RemoteAddressFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteAddressFilter.class);
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-        LOGGER.info("RemoteAddressFilter uri: {}", request.getRemoteAddr());
         if (request instanceof HttpServletRequest) {
             chain.doFilter(new RemoteAddressRequestWrapper((HttpServletRequest) request), response);
         } else {

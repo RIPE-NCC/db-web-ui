@@ -20,13 +20,13 @@ public class AngularResourcesFilter implements Filter {
 
     @Override
     public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain){
-        LOGGER.info("AngularResourcesFilter uri: {}", req.getRemoteAddr());
+
 
         final HttpServletResponse response = (HttpServletResponse) res;
         final HttpServletRequest request = (HttpServletRequest) req;
 
         final String uri = request.getRequestURI().substring(request.getContextPath().length());
-
+        LOGGER.info("AngularResourcesFilter uri: {} addr:{}", uri, req.getRemoteAddr());
         try {
             if (isAngularPath(uri)) {
                 chain.doFilter(
