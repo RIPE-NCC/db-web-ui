@@ -1,46 +1,52 @@
 package net.ripe.whois;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Component
 public class AngularResourcesFilter implements Filter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AngularResourcesFilter.class);
     private static final String REDIRECT_PATH = "/index.html";
 
     @Override
-    public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain){
+        LOGGER.info("AngularResourcesFilter uri: {}", req.getRemoteAddr());
 
         final HttpServletResponse response = (HttpServletResponse) res;
         final HttpServletRequest request = (HttpServletRequest) req;
 
         final String uri = request.getRequestURI().substring(request.getContextPath().length());
 
-        if (isAngularPath(uri)) {
-            chain.doFilter(
-                new HttpServletRequestWrapper(request) {
-                    @Override
-                    public String getServletPath() {
-                        return request.getContextPath() + REDIRECT_PATH;
-                    }
+        try {
+            if (isAngularPath(uri)) {
+                chain.doFilter(
+                        new HttpServletRequestWrapper(request) {
+                            @Override
+                            public String getServletPath() {
+                                return request.getContextPath() + REDIRECT_PATH;
+                            }
 
-                    @Override
-                    public String getRequestURI() {
-                        return request.getContextPath() + REDIRECT_PATH;
-                    }
-                },
-                response);
-        } else {
-            chain.doFilter(req, res);
+                            @Override
+                            public String getRequestURI() {
+                                return request.getContextPath() + REDIRECT_PATH;
+                            }
+                        },
+                        response);
+            } else {
+                chain.doFilter(req, res);
+            }
+        } catch (final Exception ex){
+            LOGGER.error("AngularResourcesFilter uri: {} exception {}", req.getRemoteAddr(), ex.getMessage());
         }
     }
 
