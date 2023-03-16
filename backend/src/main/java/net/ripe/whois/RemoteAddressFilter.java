@@ -1,5 +1,7 @@
 package net.ripe.whois;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
@@ -15,8 +17,9 @@ import java.io.IOException;
 @Component
 public class RemoteAddressFilter implements Filter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteAddressFilter.class);
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             chain.doFilter(new RemoteAddressRequestWrapper((HttpServletRequest) request), response);
         } else {
@@ -46,6 +49,11 @@ public class RemoteAddressFilter implements Filter {
         private static String getRemoteAddress(final HttpServletRequest request) {
             final String address = request.getRemoteAddr();
             return (address.startsWith("[") && address.endsWith("]")) ? address.substring(1, address.length() - 1) : address;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("RemoteAddressRequestWrapper: %s %s from %s", getMethod(), getRequestURI(), getRemoteAddr());
         }
     }
 }
