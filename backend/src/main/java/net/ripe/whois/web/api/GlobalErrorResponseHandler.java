@@ -20,7 +20,7 @@ public class GlobalErrorResponseHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RestClientException.class)
     @ResponseBody
     public ResponseEntity<Object> handleControllerException(HttpServletRequest req, RestClientException rex) {
-        LOGGER.debug("Global error handler got RestClientException: {} ", rex.getMessage());
+        LOGGER.debug("Global error handler got RestClientException", rex);
         final String message = StringUtils.join(rex.getErrorMessages(), '\n');
         return new ResponseEntity<>(message, HttpStatus.valueOf(rex.getStatus()));
     }
@@ -28,14 +28,14 @@ public class GlobalErrorResponseHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseBody
     public ResponseEntity<Object> handleControllerException(HttpServletRequest req, IllegalArgumentException ex) {
-        LOGGER.debug("Global error handler got IllegalArgumentException: {} ", ex.getMessage());
+        LOGGER.debug("Global error handler got IllegalArgumentException", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleControllerException(HttpServletRequest req, Exception ex) {
-        LOGGER.error("Global error handler got general Exception: {} ", ex.getMessage());
+        LOGGER.error("Global error handler got Exception", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
