@@ -20,8 +20,6 @@ public class AngularResourcesFilter implements Filter {
 
     @Override
     public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain){
-
-
         final HttpServletResponse response = (HttpServletResponse) res;
         final HttpServletRequest request = (HttpServletRequest) req;
 
@@ -46,7 +44,7 @@ public class AngularResourcesFilter implements Filter {
                 chain.doFilter(req, res);
             }
         } catch (final Exception ex){
-            LOGGER.error("AngularResourcesFilter uri: {} exception {}", req.getRemoteAddr(), ex.getMessage());
+            LOGGER.error(ex.getClass().getName(), ex);
         }
     }
 
