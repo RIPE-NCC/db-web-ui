@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @ControllerAdvice
 @SuppressWarnings("UnusedDeclaration")
@@ -32,10 +33,18 @@ public class GlobalErrorResponseHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IOException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleControllerException(HttpServletRequest req, IOException ex) {
+        LOGGER.debug("Global error handler got IOException", ex);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleControllerException(HttpServletRequest req, Exception ex) {
         LOGGER.error("Global error handler got Exception", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }
