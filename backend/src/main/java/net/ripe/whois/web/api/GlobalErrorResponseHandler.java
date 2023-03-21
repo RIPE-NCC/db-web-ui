@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -38,6 +39,13 @@ public class GlobalErrorResponseHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleControllerException(HttpServletRequest req, IOException ex) {
         LOGGER.debug("Global error handler got IOException", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleControllerException(HttpServletRequest req, HttpClientErrorException ex) {
+        LOGGER.debug("Global error handler got HttpClientErrorException", ex);
+        return new ResponseEntity<>(ex.getMessage(), ex.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
