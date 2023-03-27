@@ -47,13 +47,13 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     public void search_lookup() {
         final ResponseEntity<String> response =
             restTemplate.exchange(
-                getServerUrl() + "/search/lookup.html?source=ripe&key=2001:600:3000::/48&type=inet6num",
+                getServerUrl() + "/search/lookup.html?source=ripe&key=2001:db8::/32&type=inet6num",
                 HttpMethod.GET,
                 null,
                 String.class
             );
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
-        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrl() + "/db-web-ui/lookup?source=ripe&key=2001:600:3000::/48&type=inet6num")));
+        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrl() + "/db-web-ui/lookup?source=ripe&key=2001:db8::/32&type=inet6num")));
     }
 
     @Test
@@ -186,13 +186,13 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
         HttpEntity<?> entity = new HttpEntity<>(null, map);
 
         final ResponseEntity<String> response = restTemplate.exchange(
-                getServerUrl() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=95.214.54.212",
+                getServerUrl() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=192.0.2.0",
                 HttpMethod.GET,
                 entity,
                 String.class);
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
-        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttpsWithOutPort() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=95.214.54.212")));
+        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttpsWithOutPort() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=192.0.2.0")));
     }
 
     @Test

@@ -28,7 +28,7 @@ public class RsngServiceTest {
     @Test
     public void findTicketsForAGivenMember() {
         long orgId = 12345L;
-        String json = "{\"tickets\":{\"94.126.32.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"94.126.32.0/21\"}]}}";
+        String json = "{\"tickets\":{\"192.0.2.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"192.0.2.0/21\"}]}}";
         mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/resource-services/member-resources/"+orgId)).andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
         assertEquals(json, rsngService.getResourceTickets(orgId));
     }

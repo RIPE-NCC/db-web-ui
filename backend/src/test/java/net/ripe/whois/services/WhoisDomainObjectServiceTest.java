@@ -33,9 +33,9 @@ public class WhoisDomainObjectServiceTest extends AbstractIntegrationTest {
         dto.passwords = Lists.newArrayList("test");
         dto.type = "prefix";
         dto.attributes = Lists.newArrayList(
-            new NameValuePair("prefix", "22.22.0.0/22"),
-            new NameValuePair("nserver", "ns.xs4all.nl"),
-            new NameValuePair("nserver", "ns1.xs4all.nl"));
+            new NameValuePair("prefix", "192.0.2.0/22"),
+            new NameValuePair("nserver", "ns.test.nl"),
+            new NameValuePair("nserver", "ns1.test.nl"));
 
         final HttpEntity<?> requestEntity = new HttpEntity<>(dto, requestHeaders);
 
