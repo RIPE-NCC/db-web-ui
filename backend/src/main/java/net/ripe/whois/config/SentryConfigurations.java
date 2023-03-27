@@ -1,6 +1,5 @@
 package net.ripe.whois.config;
 
-import com.google.common.collect.ImmutableSet;
 import io.sentry.Sentry;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -12,9 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Configuration
 @PropertySource(value = "classpath:git.properties", ignoreResourceNotFound = true)

@@ -26,7 +26,7 @@ public class CustomStartStopEventListner {
     }
 
     //This will disable load balancer health check and wait for 10 seconds before graceful shutdown commences
-    //This will make sure we do not loose any traffic in between spring shutdown and load balancer health check api call
+    //This will make sure we do not lose any traffic in between spring shutdown and load balancer health check api call
     @EventListener(ContextClosedEvent.class)
     public void onContextClosedEvent() throws InterruptedException {
         loadBalancerEnabler.down();

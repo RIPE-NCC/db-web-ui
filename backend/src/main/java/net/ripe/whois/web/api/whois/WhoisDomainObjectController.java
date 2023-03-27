@@ -63,9 +63,6 @@ public class WhoisDomainObjectController extends ApiController {
         }
     }
 
-    /**
-     * @return concise name of the host this app is running on, e.g. 'wagyu' or 'hereford'
-     */
     private String getHostname() {
         String hostname = "unknown-host";
         try {
