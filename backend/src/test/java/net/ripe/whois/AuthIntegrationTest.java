@@ -35,7 +35,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "      ],\n" +
             "      \"ipv4Allocations\":[\n" +
             "        {\n" +
-            "          \"resource\":\"94.126.32.0/21\",\n" +
+            "          \"resource\":\"192.0.0.0/21\",\n" +
             "          \"version\":4,\n" +
             "          \"registrationDate\":\"2008-09-15\",\n" +
             "          \"actor\":\"katie\",\n" +
@@ -71,10 +71,10 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"irTimestamp\":1497304800000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
             "          \"countryCode\":\"AF\",\n" +
-            "          \"organisationObjectId\":\"ORG-EIP1-RIPE\",\n" +
+            "          \"organisationObjectId\":\"ORG-TST3-RIPE\",\n" +
             "          \"assignmentType\":\"TEMPORARY\",\n" +
             "          \"membershipId\":7347,\n" +
-            "          \"caName\":\"ORG-EIP1-RIPE\",\n" +
+            "          \"caName\":\"ORG-TST3-RIPE\",\n" +
             "          \"inSyncWithRipeDb\":true,\n" +
             "          \"flags\":[\n" +
             "            \n" +
@@ -91,10 +91,10 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"irTimestamp\":1497304800000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
             "          \"countryCode\":\"AS\",\n" +
-            "          \"organisationObjectId\":\"ORG-EIP1-RIPE\",\n" +
+            "          \"organisationObjectId\":\"ORG-TST3-RIPE\",\n" +
             "          \"assignmentType\":\"TEMPORARY\",\n" +
             "          \"membershipId\":7347,\n" +
-            "          \"caName\":\"ORG-EIP1-RIPE\",\n" +
+            "          \"caName\":\"ORG-TST3-RIPE\",\n" +
             "          \"inSyncWithRipeDb\":true,\n" +
             "          \"flags\":[\n" +
             "            \n" +
@@ -111,10 +111,10 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"irTimestamp\":1497391200000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
             "          \"countryCode\":\"AX\",\n" +
-            "          \"organisationObjectId\":\"ORG-EIP1-RIPE\",\n" +
+            "          \"organisationObjectId\":\"ORG-TST3-RIPE\",\n" +
             "          \"assignmentType\":\"TEMPORARY\",\n" +
             "          \"membershipId\":7347,\n" +
-            "          \"caName\":\"ORG-EIP1-RIPE\",\n" +
+            "          \"caName\":\"ORG-TST3-RIPE\",\n" +
             "          \"inSyncWithRipeDb\":true,\n" +
             "          \"flags\":[\n" +
             "            \n" +
@@ -131,7 +131,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"irTimestamp\":1497391200000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
             "          \"countryCode\":\"AF\",\n" +
-            "          \"organisationObjectId\":\"ORG-EIP1-RIPE\",\n" +
+            "          \"organisationObjectId\":\"ORG-TST3-RIPE\",\n" +
             "          \"assignmentType\":\"TEMPORARY\",\n" +
             "          \"membershipId\":7347,\n" +
             "          \"inSyncWithRipeDb\":false,\n" +
@@ -212,10 +212,10 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=" + CROWD_COOKIE_VALUE);
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
-        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", HttpMethod.GET, requestEntity, String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(
-                "{\"tickets\":{\"94.126.32.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"94.126.32.0/21\"}]}}"));
+            "{\"tickets\":{\"192.0.0.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"192.0.0.0/21\"}]}}"));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
 
     }
@@ -228,10 +228,10 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
-        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", HttpMethod.GET, requestEntity, String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(
-                "{\"tickets\":{\"94.126.32.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"94.126.32.0/21\"}]}}"));
+                "{\"tickets\":{\"192.0.0.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"192.0.0.0/21\"}]}}"));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
 
     }

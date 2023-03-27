@@ -1,6 +1,5 @@
 package net.ripe.whois.services;
 
-import net.ripe.whois.AbstractIntegrationTest;
 import net.ripe.whois.CrowdTokenFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +25,10 @@ public class WhoisSyncupdatesServiceTest {
     private HttpHeaders httpHeaders;
 
     final String rpslObject =
-            "inetnum:         3.0.103.0 - 3.0.103.255\n" +
+            "inetnum:         192.0.2.0 - 192.0.2.255\n" +
             "netname:         test-netname\n" +
             "country:         NL\n" +
-            "org:             ORG-EIP1-RIPE\n" +
+            "org:             ORG-TST3-RIPE\n" +
             "admin-c:         inty1-ripe\n" +
             "tech-c:          inty1-ripe\n" +
             "descr:           testing\n" +
@@ -68,7 +67,7 @@ public class WhoisSyncupdatesServiceTest {
     @Test
     public void shouldReturnErrorAuthorisedMessage() {
         final String expectedResponse =
-                "***Error:   Authorisation for [inetnum] 3.0.103.0 - 3.0.103.255 failed\n" +
+                "***Error:   Authorisation for [inetnum] 192.0.2.0 - 192.0.2.255 failed\n" +
                 "            using \"mnt-by:\"\n" +
                 "            not authenticated by: RIPE-NCC-HM-MNT, TPOLYCHNIA-MNT";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
@@ -84,7 +83,7 @@ public class WhoisSyncupdatesServiceTest {
                 "The following object(s) were processed SUCCESSFULLY:\n" +
                 "\n" +
                 "---\n" +
-                "No operation: [inetnum] 3.0.103.0 - 3.0.103.255\n" +
+                "No operation: [inetnum] 192.0.2.0 - 192.0.2.255\n" +
                 "\n" +
                 "\n" +
                 "***Warning: Submitted object identical to database object";
@@ -98,16 +97,16 @@ public class WhoisSyncupdatesServiceTest {
     public void shouldForLoggedInMntReturnSuccessMessage() {
         httpHeaders.add("Cookie", "pref-ui-mode=textupdates; _ga=GA1.3.1221467399.1496843568; " +
                 "pref-syncupdates-mode=rich; uslk_e=MjFiZjlkMWYtYTE1Mi1hNmFiLWZmOGUtMDFkNTYyYWRiMzIz~~~~~~~2~; " +
-                "activeMembershipId=org%3AORG-SA1840-RIPE; cookies-accepted=accepted; " + CrowdTokenFilter.CROWD_TOKEN_KEY + "=u00dCkpOmYzHek0GegdqFA00; " +
+                "activeMembershipId=org%3AORG-TEST1234-RIPE; cookies-accepted=accepted; " + CrowdTokenFilter.CROWD_TOKEN_KEY + "=u00dCkpOmYzHek0GegdqFA00; " +
                 "crowd.ripe.hint=true; uslk_s=Idle%3B0~~0~0~0~~\n");
 
         final String rpslObjectIsvMnt =
-                "organisation:    ORG-SA1840-RIPE\n" +
+                "organisation:    ORG-TEST1234-RIPE\n" +
                 "org-name:        Shw\n" +
                 "org-type:        OTHER\n" +
                 "address:         Amsterdam\n" +
                 "e-mail:          ivana.svonja@ripe.net\n" +
-                "abuse-c:         ACRO93-RIPE\n" +
+                "abuse-c:         TEST93-RIPE\n" +
                 "mnt-ref:         ISV-MNT\n" +
                 "mnt-by:          isvonja-mnt\n" +
                 "mnt-by:          ISV-MNT\n" +
@@ -120,7 +119,7 @@ public class WhoisSyncupdatesServiceTest {
                 "The following object(s) were processed SUCCESSFULLY:\n" +
                 "\n" +
                 "---\n" +
-                "No operation: [organisation] ORG-SA1840-RIPE\n" +
+                "No operation: [organisation] ORG-TEST1234-RIPE\n" +
                 "\n" +
                 "\n" +
                 "***Warning: Submitted object identical to database object\n" +
