@@ -208,3 +208,15 @@ User Interface Guidelines
 
 The Technical Design circle has published a storybook of user interface elements that we should use as a style guide:
 https://storybook.ripe.net
+
+Deployment
+----------
+Generally, we only deploy changes to production from the master branch, from a tag on a specific commit.
+
+The team will review changes on a branch beforehand using a Merge Request, and changes are only merged once all issues are resolved.
+
+Every so often an exception can be made and we deploy from a tag on a branch in these cases:
+* Point releases when we select (cherry-pick) fixes (and nothing else) from master to a branch
+* Hotfix release to fix a critical production issue
+
+
