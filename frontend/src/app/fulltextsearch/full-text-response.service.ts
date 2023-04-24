@@ -8,6 +8,10 @@ export class FullTextResponseService {
     public parseResponse(data: ISearchResponseModel) {
         const results = [];
         const hlMap = {};
+        if (data.result.numFound == 0) {
+            return { details: [], summary: [] };
+        }
+
         if (data.lsts.length < 2 || data.lsts[1].lst.name !== 'highlighting') {
             console.error('Results have no highlighting information');
             return { details: [], summary: [] };
