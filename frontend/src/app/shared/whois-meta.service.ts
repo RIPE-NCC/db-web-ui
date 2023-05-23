@@ -1090,9 +1090,8 @@ export class WhoisMetaService {
             syntax: this._shared.email.syntax,
         },
         'mnt-ref': {
-            description:
-                'Specifies the <strong>mntner</strong> objects that are entitled to add references to the <strong>organisation</strong> object from other objects.',
-            short: 'Specifies a <strong>mntner</strong> that may add references to the <strong>organisation</strong> object from other objects.',
+            description: 'Specifies the <strong>mntner</strong> objects that are entitled to add references to this object' + ' from other objects.',
+            short: 'Specifies a <strong>mntner</strong> that may add references to this object from other objects.',
             syntax: this._shared.objectName.syntax,
         },
         'mp-default': {
