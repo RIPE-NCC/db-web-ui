@@ -672,7 +672,8 @@ describe('WhoisResourcesService', () => {
         expect(addableAttrs[5].name).toBe('remarks');
         expect(addableAttrs[6].name).toBe('notify');
         expect(addableAttrs[7].name).toBe('mnt-by');
-        expect(addableAttrs.length).toBe(8);
+        expect(addableAttrs[8].name).toBe('mnt-ref');
+        expect(addableAttrs.length).toBe(9);
     });
 
     it('should detact if an attribute can be removed', () => {
