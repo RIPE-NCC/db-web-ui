@@ -1,11 +1,11 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/RIPE/route6/2a09%3A4c2%3A%3A%2F32AS58057?dry-run=true&reason=dry-run",
+    "requestUrl": "/api/whois/RIPE/route6/2a09%3A4c2%3A%3A%2F32AS58057?dry-run=true&reason=dry-run",
     "contentType": "application/javascript",
     "statusCode": 401,
     "data": {
         "link": {
             "type": "locator",
-            "href": "http://wagyu.prepdev.ripe.net:1080/RIPE/route6/2a09:4c2::/32AS58057?dry-run=true&reason=dry-run"
+            "href": "http://prepdev.ripe.net:1080/RIPE/route6/2a09:4c2::/32AS58057?dry-run=true&reason=dry-run"
         },
         "errormessages": {
             "errormessage": [
@@ -23,7 +23,7 @@
                             "value": "mnt-by"
                         },
                         {
-                            "value": "SBMT"
+                            "value": "TEST49-MNT"
                         }
                     ]
                 },
@@ -41,7 +41,7 @@
                             "value": "mnt-lower"
                         },
                         {
-                            "value": "SBMT"
+                            "value": "TEST49-MNT"
                         }
                     ]
                 },
@@ -59,7 +59,7 @@
                             "value": "mnt-by"
                         },
                         {
-                            "value": "RIPE-NCC-HM-MNT, SBMT"
+                            "value": "RIPE-NCC-HM-MNT, TEST49-MNT"
                         }
                     ]
                 },

@@ -21,7 +21,7 @@ describe('FullTextSearchService', () => {
     });
 
     it('should be able to encode query text', (done) => {
-        const query = 'ops4-ripe';
+        const query = 'tsttechc-ripe';
         const start = 0;
         const advanced = false;
         const advancedMode = '';
@@ -32,13 +32,16 @@ describe('FullTextSearchService', () => {
             expect(respons).toBe('response');
             done();
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4%5C-ripe)&start=0&wt=json' });
+        const req = httpMock.expectOne({
+            method: 'GET',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(tsttechc%5C-ripe)&start=0&wt=json',
+        });
         expect(req.request.method).toBe('GET');
         req.flush('response');
     });
 
     it('should be able to encode various', (done) => {
-        const query = 'ops4-ripe';
+        const query = 'tsttechc-ripe';
         const start = 0;
         const advanced = true;
         const advancedMode = 'all';
@@ -51,14 +54,14 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(ops4%5C-ripe))%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(tsttechc%5C-ripe))%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');
     });
 
     it('should be able to encode advanced all options', (done) => {
-        const query = 'ops4-ripe etch-mnt';
+        const query = 'tsttechc-ripe etch-mnt';
         const start = 0;
         const advanced = true;
         const advancedMode = 'all';
@@ -70,14 +73,14 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4%5C-ripe%20AND%20etch%5C-mnt)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(tsttechc%5C-ripe%20AND%20etch%5C-mnt)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');
     });
 
     it('should be able to encode advanced any options', (done) => {
-        const query = 'ops4-ripe etch-mnt';
+        const query = 'tsttechc-ripe etch-mnt';
         const start = 0;
         const advanced = true;
         const advancedMode = 'any';
@@ -89,14 +92,14 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4%5C-ripe%20OR%20etch%5C-mnt)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(tsttechc%5C-ripe%20OR%20etch%5C-mnt)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');
     });
 
     it('should be able to encode advanced exact options', (done) => {
-        const query = 'ops4-ripe etch-mnt';
+        const query = 'tsttechc-ripe etch-mnt';
         const start = 0;
         const advanced = true;
         const advancedMode = 'exact';
@@ -108,7 +111,7 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(%22ops4%5C-ripe%20etch%5C-mnt%22)%20OR%20country:(%22ops4%5C-ripe%20etch%5C-mnt%22))%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(%22tsttechc%5C-ripe%20etch%5C-mnt%22)%20OR%20country:(%22tsttechc%5C-ripe%20etch%5C-mnt%22))%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');

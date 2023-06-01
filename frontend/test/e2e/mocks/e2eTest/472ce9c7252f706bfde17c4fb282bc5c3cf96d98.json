@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "key": "MNT-LGI",
+            "key": "TEST17-MNT",
             "type": "mntner",
             "auth": ["SSO", "SSO", "MD5-PW", "SSO"]
         }

@@ -31,19 +31,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/ES13374-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTPERSON-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "ES13374-RIPE",
+                                "value": "TSTPERSON-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "name": "upd-to",
-                                "value": "bad@ripe.net"
+                                "value": "teste2e@ripe.net"
                             },
                             {
                                 "name": "auth",
-                                "value": "SSO bad@ripe.net"
+                                "value": "SSO teste2e@ripe.net"
                             },
                             {
                                 "link": {

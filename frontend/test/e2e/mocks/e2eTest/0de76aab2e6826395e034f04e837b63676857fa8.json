@@ -99,10 +99,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/OPS4-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "OPS4-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "role"
                             },
                             {

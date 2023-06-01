@@ -48,11 +48,11 @@ const whoisObjectModelMock = {
             },
             {
                 name: 'netname',
-                value: 'SEVEn',
+                value: 'Test60',
             },
             {
                 name: 'descr',
-                value: 'SEVEn, Stredisko pro efektivni vyuzivani energie, o.p.s.',
+                value: 'Test60, some descr',
             },
             {
                 name: 'country',
@@ -61,19 +61,19 @@ const whoisObjectModelMock = {
             {
                 link: {
                     type: 'locator',
-                    href: 'http://rest-prepdev.db.ripe.net/ripe/person/MK6313-RIPE',
+                    href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE',
                 },
                 name: 'admin-c',
-                value: 'MK6313-RIPE',
+                value: 'TSTADMINC-RIPE',
                 'referenced-type': 'person',
             },
             {
                 link: {
                     type: 'locator',
-                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/DIAL666-RIPE',
+                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE',
                 },
                 name: 'tech-c',
-                value: 'DIAL666-RIPE',
+                value: 'TSTTECHC-RIPE',
                 'referenced-type': 'role',
             },
             {
@@ -83,10 +83,10 @@ const whoisObjectModelMock = {
             {
                 link: {
                     type: 'locator',
-                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/DIALTELECOM-MNT',
+                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST60-MNT',
                 },
                 name: 'mnt-by',
-                value: 'DIALTELECOM-MNT',
+                value: 'TEST60-MNT',
                 'referenced-type': 'mntner',
             },
             {
@@ -111,14 +111,14 @@ const whoisObjectModelMock = {
         ],
     },
     'resource-holder': {
-        key: 'ORG-IA8-RIPE',
-        name: 'Dial Telecom, a.s.',
+        key: 'ORG-TEST60-RIPE',
+        name: 'Test 60 org',
     },
     'abuse-contact': {
-        key: 'AR14411-RIPE',
-        email: 'abuse@dialtelecom.cz',
+        key: 'TEST61-RIPE',
+        email: 'abuse@test.net',
         suspect: false,
-        'org-id': 'ORG-IA8-RIPE',
+        'org-id': 'ORG-TEST60-RIPE',
     },
     managed: false,
 };

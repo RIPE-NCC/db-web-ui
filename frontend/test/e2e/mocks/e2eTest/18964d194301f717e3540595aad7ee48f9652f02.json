@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/rpki/roa?origin=AS9777&route=211.43.192.0/19",
+    "requestUrl": "/api/rpki/roa?origin=AS9777&route=211.43.192.0/19",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

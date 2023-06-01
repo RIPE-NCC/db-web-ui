@@ -220,7 +220,7 @@ const CREATE_RESPONSE = {
                 type: 'mntner',
                 link: {
                     type: 'locator',
-                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/jsdhgkjsd-mnt',
+                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/abcdeftst-mnt',
                 },
                 source: {
                     id: 'ripe',
@@ -237,7 +237,7 @@ const CREATE_RESPONSE = {
                     attribute: [
                         {
                             name: 'mntner',
-                            value: 'jsdhgkjsd-mnt',
+                            value: 'abcdeftst-mnt',
                         },
                         {
                             name: 'descr',
@@ -246,10 +246,10 @@ const CREATE_RESPONSE = {
                         {
                             link: {
                                 type: 'locator',
-                                href: 'http://rest-prepdev.db.ripe.net/ripe/person/DW-RIPE',
+                                href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE',
                             },
                             name: 'admin-c',
-                            value: 'DW-RIPE',
+                            value: 'TSTADMINC-RIPE',
                             'referenced-type': 'person',
                         },
                         {
@@ -263,10 +263,10 @@ const CREATE_RESPONSE = {
                         {
                             link: {
                                 type: 'locator',
-                                href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/jsdhgkjsd-mnt',
+                                href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/abcdeftst-mnt',
                             },
                             name: 'mnt-by',
-                            value: 'jsdhgkjsd-mnt',
+                            value: 'abcdeftst-mnt',
                             'referenced-type': 'mntner',
                         },
                         {
@@ -304,7 +304,7 @@ const ERROR_RESPONSE = {
                     type: 'mntner',
                     link: {
                         type: 'locator',
-                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/sdfsdf',
+                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/test72',
                     },
                     source: {
                         id: 'ripe',
@@ -313,7 +313,7 @@ const ERROR_RESPONSE = {
                         attribute: [
                             {
                                 name: 'mntner',
-                                value: 'sdfsdf',
+                                value: 'test72',
                             },
                         ],
                     },
@@ -321,15 +321,15 @@ const ERROR_RESPONSE = {
                         attribute: [
                             {
                                 name: 'mntner',
-                                value: 'sdfsdf',
+                                value: 'test72',
                             },
                             {
                                 name: 'descr',
-                                value: 'sdfsdf',
+                                value: 'test72',
                             },
                             {
                                 name: 'admin-c',
-                                value: 'sdfds-ripe',
+                                value: 'test72-ripe',
                             },
                             {
                                 name: 'upd-to',
@@ -342,10 +342,10 @@ const ERROR_RESPONSE = {
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/sdfsdf',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/test72',
                                 },
                                 name: 'mnt-by',
-                                value: 'sdfsdf',
+                                value: 'test72',
                                 'referenced-type': 'mntner',
                             },
                             {
@@ -363,12 +363,12 @@ const ERROR_RESPONSE = {
                     severity: 'Error',
                     attribute: {
                         name: 'admin-c',
-                        value: 'sdfds-ripe',
+                        value: 'test72-ripe',
                     },
                     text: 'Syntax error in %s',
                     args: [
                         {
-                            value: 'sdfds-ripe',
+                            value: 'test72-ripe',
                         },
                     ],
                 },

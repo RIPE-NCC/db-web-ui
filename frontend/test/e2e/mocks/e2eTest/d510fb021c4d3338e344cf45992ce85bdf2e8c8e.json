@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/references/RIPE/inetnum/3.0.103.0%2520-%25203.0.103.255?limit=5",
+    "requestUrl": "/api/references/RIPE/inetnum/3.0.103.0%2520-%25203.0.103.255?limit=5",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

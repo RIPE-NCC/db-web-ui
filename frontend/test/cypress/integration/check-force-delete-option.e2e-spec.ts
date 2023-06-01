@@ -4,16 +4,16 @@ describe('webupdates', () => {
     const webupdatesPage = new WebupdatesPage();
 
     it("should show 'force delete' for an inetnum if NOT allocated by RIPE", () => {
-        webupdatesPage.visit('display/ripe/inetnum/194.219.52.224%20-%20194.219.52.239').modifyObject().expectFooterToContain('Force delete this object?');
+        webupdatesPage.visit('display/ripe/inetnum/193.0.0.224%20-%20193.0.0.239').modifyObject().expectFooterToContain('Force delete this object?');
     });
 
     it("should NOT show 'force delete' for an inetnum if allocated by RIPE", () => {
-        webupdatesPage.visit('display/ripe/inetnum/91.208.34.0%20-%2091.208.34.255').modifyObject().expectFooterToContain('Force delete this object?', false);
+        webupdatesPage.visit('display/ripe/inetnum/192.0.2.0%20-%20192.0.2.255').modifyObject().expectFooterToContain('Force delete this object?', false);
     });
 
     it("should NOT show 'force delete' for an inetnum if allocated by RIPE and no extra mntners", () => {
         webupdatesPage
-            .visit('display/ripe/inetnum/185.102.172.0%20-%20185.102.175.255')
+            .visit('display/ripe/inetnum/193.0.0.0%20-%20193.0.3.255')
             .modifyObject()
             .expectFooterToContain('CANCEL')
             .expectFooterToContain('Force delete this object?', false)
@@ -24,7 +24,7 @@ describe('webupdates', () => {
 
     it("should NOT show 'force delete' for an inetnum if allocated by RIPE and no mntners have a passwd", () => {
         webupdatesPage
-            .visit('display/ripe/inetnum/186.102.172.0%20-%20186.102.175.255')
+            .visit('display/ripe/inetnum/193.0.4.0%20-%20193.0.7.255')
             .modifyObject()
             .expectFooterToContain('CANCEL')
             .expectFooterToContain('Force delete this object?', false)
@@ -34,15 +34,13 @@ describe('webupdates', () => {
     });
 
     it("should show 'force delete' for an inet6num if NOT allocated by RIPE", () => {
-        webupdatesPage
-            .visit('display/ripe/inet6num/2001%253A978%253Affff%253Afffe%253A%253A%252F64')
-            .modifyObject()
-            .expectFooterToContain('Force delete this object?');
+        webupdatesPage.visit('display/ripe/inet6num/2001%253A67c%253A2e8%253A%253A%252F64').modifyObject().expectFooterToContain('Force delete this object?');
     });
 
     it("should NOT show 'force delete' for an inet6num if allocated by RIPE and no mntners have a passwd", () => {
         webupdatesPage
-            .visit('display/ripe/inet6num/2001%253Aa08%253A%253A%252F32')
+            .visit('display/ripe/inet6num/2001%253A67c%253A2e8%253A%253A%252F32')
+            // .visit('display/ripe/inet6num/2001%253Aa08%253A%253A%252F32')
             .modifyObject()
             .expectFooterToContain('CANCEL')
             .expectFooterToContain('Force delete this object?', false)

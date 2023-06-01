@@ -10,7 +10,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', () => {
 
     it('should show out of region route object', () => {
         webupdatesPage
-            .authenticateWithDisabledAssociate('AS4663-RIPE-MNT')
+            .authenticateWithDisabledAssociate('TEST14-MNT')
             .expectDisabledField('route', true)
             .expectDisabledField('origin', true)
             .expectDisabledField('source', true)
@@ -21,7 +21,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', () => {
 
     it('should be possible for RC to submit change on out of region route object', () => {
         webupdatesPage
-            .authenticateWithDisabledAssociate('AS4663-RIPE-MNT')
+            .authenticateWithDisabledAssociate('TEST14-MNT')
             .typeOnField('descr', 'update')
             .submitModification()
             .expectSuccessMessage('Your object has been successfully modified')
@@ -31,7 +31,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', () => {
 
     it('should be possible for RC to delete out of region route object', () => {
         webupdatesPage
-            .authenticateWithDisabledAssociate('AS4663-RIPE-MNT')
+            .authenticateWithDisabledAssociate('TEST14-MNT')
             .clickOnDeleteObjectButton()
             .expectToShowModal()
             .clickOnConfirmDeleteObject()
@@ -41,7 +41,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', () => {
 
     it('should remove info message on navigating to query page', () => {
         webupdatesPage
-            .authenticateWithDisabledAssociate('AS4663-RIPE-MNT')
+            .authenticateWithDisabledAssociate('TEST14-MNT')
             .clickOnDeleteObjectButton()
             .expectToShowModal()
             .clickOnConfirmDeleteObject()

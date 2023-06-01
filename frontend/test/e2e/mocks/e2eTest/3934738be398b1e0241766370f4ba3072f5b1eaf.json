@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?flags=lr&ignore404=true&query-string=%3Cimg%20src=%27https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469%27/%3E&type-filter=inetnum",
+    "requestUrl": "/api/whois/search?flags=lr&ignore404=true&query-string=%3Cimg%20src=%27https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469%27/%3E&type-filter=inetnum",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

@@ -20,7 +20,7 @@ describe('ModalAuthenticationComponent', () => {
     let credentialsServiceMock: any;
 
     const mntners = [
-        { type: 'mntner', key: 'a-mnt', auth: ['MD5-PW'] },
+        { type: 'mntner', key: 'TEST29-MNT', auth: ['MD5-PW'] },
         { type: 'mntner', name: 'b-mnt', auth: ['MD5-PW'] },
     ];
 
@@ -222,7 +222,6 @@ describe('ModalAuthenticationComponent', () => {
     });
 
     it('should sent attributes without comments when authorise-associate current user to object', async () => {
-        // testing if comment was removed from value: "PGPKEY-170757B6 # Remco"
         modalAuthenticationComponent.selected.item = { type: 'mntner', key: 'b-mnt', auth: [] };
         modalAuthenticationComponent.selected.password = 'secret';
         modalAuthenticationComponent.selected.associate = true;

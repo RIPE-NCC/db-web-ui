@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?flags=r&ignore404=true&query-string=91.90.153.0/24&type-filter=inetnum",
+    "requestUrl": "/api/whois/search?flags=r&ignore404=true&query-string=91.90.153.0/24&type-filter=inetnum",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -58,7 +58,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "MIVITEC-MUC"
+                                "value": "NETNAME-TEST-165"
                             },
                             {
                                 "name": "country",
@@ -67,28 +67,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-rc.db.ripe.net/ripe/organisation/ORG-MG32-RIPE"
+                                    "href": "https://rest-rc.db.ripe.net/ripe/organisation/ORG-TEST39-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-MG32-RIPE",
+                                "value": "ORG-TEST39-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-rc.db.ripe.net/ripe/person/AM1501-RIPE"
+                                    "href": "https://rest-rc.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "AM1501-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-rc.db.ripe.net/ripe/person/AM1501-RIPE"
+                                    "href": "https://rest-rc.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "AM1501-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -107,28 +107,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/MNT-MIVITEC"
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "MNT-MIVITEC",
+                                "value": "TEST13-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/MNT-MIVITEC"
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
                                 },
                                 "name": "mnt-routes",
-                                "value": "MNT-MIVITEC",
+                                "value": "TEST13-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/MNT-MIVITEC"
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
                                 },
                                 "name": "mnt-domains",
-                                "value": "MNT-MIVITEC",
+                                "value": "TEST13-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

@@ -18,7 +18,7 @@ describe('Display an aut-num', () => {
     it('should contain + in front of each added row', () => {
         const webupdatesDisplayPage = webupdatesPage
             .visit('modify/RIPE-NONAUTH/aut-num/AS24835')
-            .authenticateWithEnabledAssociate('RAYA-MNT')
+            .authenticateWithEnabledAssociate('TEST06-MNT')
             .submitModification()
             .expectSuccessMessage('Your object has been successfully modified');
         cy.expectCurrentUrlToContain('webupdates/display/RIPE-NONAUTH/aut-num/AS24835?method=Modify');

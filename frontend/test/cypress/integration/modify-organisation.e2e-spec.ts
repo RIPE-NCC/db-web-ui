@@ -5,7 +5,7 @@ describe('Modifying an organisation', () => {
 
     describe('which is an LIR', () => {
         beforeEach(() => {
-            webupdatesPage.visit('modify/RIPE/organisation/ORG-AGNS1-RIPE');
+            webupdatesPage.visit('modify/RIPE/organisation/ORG-TEST5-RIPE');
         });
 
         it('should show the mnt-by field as read-only', () => {
@@ -17,7 +17,7 @@ describe('Modifying an organisation', () => {
         });
 
         it('should show comment behind value starting with hash (#)', () => {
-            webupdatesPage.expectValueInField('address', 'Wilhelmina van Pruisenweg 106 # office');
+            webupdatesPage.expectValueInField('address', 'Address test # office');
         });
 
         it('should contain pencil button next to org-name, address, phone, fax-no, email in case of LIR organisation', () => {
@@ -84,7 +84,7 @@ describe('Modifying an organisation', () => {
 
     describe('which is an OTHER type', () => {
         beforeEach(() => {
-            webupdatesPage.visit('modify/ripe/organisation/ORG-ADNL2-RIPE');
+            webupdatesPage.visit('modify/ripe/organisation/ORG-TEST3-RIPE');
         });
 
         it('should contain remove (trush) button next to abuse-c in case of LIR organisation', () => {
@@ -93,7 +93,7 @@ describe('Modifying an organisation', () => {
 
         it('should remove comment after address change and comment was removed', () => {
             webupdatesPage
-                .expectValueInField('address', '7465 Mission George Road San Diego, CA92120 # comment address')
+                .expectValueInField('address', 'test address 55 # comment address')
                 .typeOnField('address', 'New address without comment')
                 .expectValueInField('address', 'New address without comment');
         });

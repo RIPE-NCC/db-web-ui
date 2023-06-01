@@ -10,11 +10,11 @@ describe('The password authentication dialogue', () => {
     it('should show a single modal which asks for a password', () => {
         webupdatesPage
             .getModalAuthentication()
-            .expectSelectedAuthenticationMaintainer('NEWNET-MNT')
+            .expectSelectedAuthenticationMaintainer('TEST21-MNT')
             // RIPE NCC MAINTAINERS should be filtered out
             .expectItemInList('RIPE-NCC-MNT', false)
             .disableAssociateCheckbox()
-            .typePassword('NEWNET-MNT')
+            .typePassword('TEST21-MNT')
             .submitModal();
         webupdatesPage.expectModalToExist(false);
     });

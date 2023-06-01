@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&type-filter=AUT-NUM&flags=rB&offset=0&limit=20&query-string=AS9777",
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&type-filter=AUT-NUM&flags=rB&offset=0&limit=20&query-string=AS9777",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -61,15 +61,11 @@
                             },
                             {
                                 "name": "as-name",
-                                "value": "NPIX-AS"
+                                "value": "TSTORG1-AS"
                             },
                             {
                                 "name": "descr",
-                                "value": "NPIX Powered by IBR"
-                            },
-                            {
-                                "name": "descr",
-                                "value": "+82-2-3461-7670(Ext 135)"
+                                "value": "TSTORG1 Powered by TEST1"
                             },
                             {
                                 "name": "import",
@@ -81,11 +77,11 @@
                             },
                             {
                                 "name": "export",
-                                "value": "to AS9457 announce AS-NPIX"
+                                "value": "to AS9457 announce AS-TSTORG1"
                             },
                             {
                                 "name": "export",
-                                "value": "to AS4663 announce AS-NPIX"
+                                "value": "to AS4663 announce AS-TSTORG1"
                             },
                             {
                                 "name": "default",
@@ -94,28 +90,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/person/JYH3-RIPE"
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "JYH3-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/person/SDH19-RIPE"
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/person/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "SDH19-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "name": "remarks",
-                                "value": "Neutral Private Internet Exchange in Seoul ,KOREA"
+                                "value": "test test"
                             },
                             {
                                 "name": "remarks",
-                                "value": "Trouble Inquires: noc@npix.net or opr@npix.net"
+                                "value": "Trouble Inquires: noc@testemail.net or opr@testemail.net"
                             },
                             {
                                 "name": "status",
@@ -123,27 +119,27 @@
                             },
                             {
                                 "name": "notify",
-                                "value": "***@npix.net"
+                                "value": "***@testemail.net"
                             },
                             {
                                 "name": "notify",
-                                "value": "***@npix.net"
+                                "value": "***@testemail.net"
                             },
                             {
                                 "name": "notify",
-                                "value": "***@npix.net"
+                                "value": "***@testemail.net"
                             },
                             {
                                 "name": "notify",
-                                "value": "***@npix.net"
+                                "value": "***@testemail.net"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/AS4663-RIPE-MNT"
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST14-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "AS4663-RIPE-MNT",
+                                "value": "TEST14-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

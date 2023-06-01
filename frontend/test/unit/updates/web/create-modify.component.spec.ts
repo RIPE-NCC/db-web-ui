@@ -416,7 +416,7 @@ describe('CreateModifyComponent', () => {
                         {
                             severity: 'Error',
                             text: `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`,
-                            args: [{ value: 'aut-num' }, { value: 'AS1299' }, { value: 'mnt-by' }, { value: 'TELIANET-RR, RIPE-NCC-END-MNT' }],
+                            args: [{ value: 'aut-num' }, { value: 'AS1299' }, { value: 'mnt-by' }, { value: 'TESTNET-MNT, RIPE-NCC-END-MNT' }],
                         },
                         {
                             severity: 'Warning',
@@ -456,7 +456,7 @@ describe('CreateModifyComponent', () => {
                     '<a target="_blank" href="webupdates/display/RIPE/aut-num/AS1299">AS1299</a>. ' +
                     'Please ask them to confirm, by submitting the same object as outlined below using syncupdates or mail updates, ' +
                     'and authenticate it using the maintainer ' +
-                    '<a target="_blank" href="webupdates/display/RIPE/mntner/TELIANET-RR">TELIANET-RR</a>. ' +
+                    '<a target="_blank" href="webupdates/display/RIPE/mntner/TESTNET-MNT">TESTNET-MNT</a>. ' +
                     '<a target="_blank" href="/docs/10.Authorisation/07-Protection-of-Route-Object-Space.html#creating-route-objects-referring-to-resources-you-don-t-manage">' +
                     'Click here for more information</a>.',
             );
@@ -545,9 +545,8 @@ describe('CreateModifyComponent', () => {
 const USER_MAINTAINERS_MOCK = [{ mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' }];
 const USER_RIPE_NCC_MNT_MOCK = [{ mine: true, type: 'mntner', auth: ['SSO'], key: 'RIPE-NCC-MNT' }];
 const USER_WITH_MORE_ASSOCIATED_MNT_MOCK = [
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TE-MNT' },
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO', 'PGPKEY-261AA554', 'PGPKEY-F91A0E57'], key: 'MAINT-AFILIAS' },
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'BBC-MNT' },
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TST12-MNT' },
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TEST01-MNT' },
     { mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' },
 ];
 

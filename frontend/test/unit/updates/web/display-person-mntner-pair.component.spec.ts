@@ -11,8 +11,8 @@ import { RestService } from '../../../../src/app/updatesweb/rest.service';
 
 describe('DisplayPairComponent', () => {
     const SOURCE = 'RIPE';
-    const PERSON_NAME = 'dw-ripe';
-    const MNTNER_NAME = 'aardvark-mnt';
+    const PERSON_NAME = 'TSTADMINC-RIPE';
+    const MNTNER_NAME = 'TEST71-MNT';
 
     let httpMock: HttpTestingController;
     let component: DisplayMntnerPairComponent;
@@ -136,8 +136,8 @@ describe('DisplayPairComponent', () => {
         // no objects in message store
         fixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/dw-ripe?unfiltered=true' }).flush(personToDisplay);
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true' }).flush(mntnerToDisplay);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TSTADMINC-RIPE?unfiltered=true' }).flush(personToDisplay);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/TEST71-MNT?unfiltered=true' }).flush(mntnerToDisplay);
 
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'person').value).toBe(PERSON_NAME);
@@ -163,7 +163,7 @@ describe('DisplayPairComponent', () => {
         // no objects in message store
         fixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/dw-ripe?unfiltered=true' }).flush(
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TSTADMINC-RIPE?unfiltered=true' }).flush(
             {
                 errormessages: {
                     errormessage: [
@@ -182,7 +182,7 @@ describe('DisplayPairComponent', () => {
             { status: 403, statusText: 'error' },
         );
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true' }).flush(mntnerToDisplay);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/mntner/TEST71-MNT?unfiltered=true' }).flush(mntnerToDisplay);
 
         expect(component.alertsService.alerts.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
         expect(component.alertsService.alerts.warnings[0].plainText).toEqual('Not authenticated');

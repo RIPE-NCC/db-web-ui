@@ -32,7 +32,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -46,7 +46,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -64,7 +64,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -81,7 +81,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -99,7 +99,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -119,7 +119,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'something',
-                value: 'BLA-RIPE',
+                value: 'BLATST-RIPE',
             },
         ];
 
@@ -139,7 +139,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -154,7 +154,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -172,7 +172,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -195,7 +195,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',
@@ -210,7 +210,7 @@ describe('OrganisationHelperService', () => {
         const attributes = [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'e-mail',

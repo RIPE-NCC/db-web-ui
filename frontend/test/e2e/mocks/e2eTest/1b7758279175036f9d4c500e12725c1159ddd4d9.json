@@ -1,0 +1,120 @@
+{
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&type-filter=ROLE&inverse-attribute=ADMIN-C&flags=rB&offset=0&limit=20&query-string=TEST123-RIPE",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {
+                "inverse-attribute": [
+                    {
+                        "value": "ADMIN-C"
+                    }
+                ]
+            },
+            "type-filters": {
+                "type-filter": [
+                    {
+                        "id": "ROLE"
+                    }
+                ]
+            },
+            "flags": {
+                "flag": [
+                    {
+                        "value": "no-referenced"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "TEST123-RIPE"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "role",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/role/TEST1234-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "nic-hdl",
+                                "value": "TEST1234-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "role",
+                                "value": "TEST1234-ROLE"
+                            },
+                            {
+                                "name": "address",
+                                "value": "LA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TEST123-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TEST123-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "nic-hdl",
+                                "value": "TEST1234-RIPE"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2022-09-01T21:30:22Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2022-09-01T21:30:22Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST52-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST52-MNT",
+                                "referenced-type": "mntner"
+                            }
+                        ]
+                    },
+                    "managed": false
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.104-SNAPSHOT",
+            "timestamp": "2022-08-31T10:24:01Z",
+            "commit-id": "062c494"
+        }
+    }
+}

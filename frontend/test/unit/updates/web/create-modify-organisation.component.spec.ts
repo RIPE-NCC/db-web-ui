@@ -35,7 +35,7 @@ describe('CreateModifyComponent for organisation', () => {
     let modalMock: any;
     const OBJECT_TYPE = 'organisation';
     const SOURCE = 'RIPE';
-    const NAME = 'ORG-UA300-RIPE';
+    const NAME = 'ORG-TEST70-RIPE';
 
     beforeEach(async () => {
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
@@ -102,7 +102,7 @@ describe('CreateModifyComponent for organisation', () => {
         const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
-        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c').value).toBe('SR11027-RIPE');
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c').value).toBe('TEST01-RIPE');
     });
 
     it('should populate component.roleForAbuseC', async () => {
@@ -126,7 +126,7 @@ describe('CreateModifyComponent for organisation', () => {
         await fixture.whenStable();
         spyOn(component.organisationHelperService, 'updateAbuseC');
         component.submit();
-        httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-UA300-RIPE' }).flush(DEFAULT_RESPONSE);
+        httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-TEST70-RIPE' }).flush(DEFAULT_RESPONSE);
         fixture.detectChanges();
         expect(component.organisationHelperService.updateAbuseC).toHaveBeenCalled();
     });
@@ -143,7 +143,7 @@ describe('CreateModifyComponent for organisation', () => {
         await fixture.whenStable();
         component.submit();
         httpMock
-            .expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-UA300-RIPE' })
+            .expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-TEST70-RIPE' })
             .flush(ERROR_RESPONSE, { status: 400, statusText: 'Bad request' });
         fixture.detectChanges();
         await fixture.whenStable();
@@ -170,11 +170,11 @@ describe('CreateModifyComponent for organisation', () => {
         },
         {
             name: 'nic-hdl',
-            value: 'SR11027-RIPE',
+            value: 'TEST01-RIPE',
         },
         {
             name: 'mnt-by',
-            value: 'MNT-THINK',
+            value: 'TEST70-MNT',
         },
         {
             name: 'source',
@@ -186,12 +186,12 @@ describe('CreateModifyComponent for organisation', () => {
         objects: {
             object: [
                 {
-                    'primary-key': { attribute: [{ name: 'organisation', value: 'ORG-UA300-RIPE' }] },
+                    'primary-key': { attribute: [{ name: 'organisation', value: 'ORG-TEST70-RIPE' }] },
                     attributes: {
                         attribute: [
                             {
                                 name: 'organisation',
-                                value: 'ORG-UA300-RIPE',
+                                value: 'ORG-TEST70-RIPE',
                             },
                             {
                                 name: 'org-name',
@@ -260,7 +260,7 @@ describe('CreateModifyComponent for organisation', () => {
                             },
                             {
                                 name: 'org-name',
-                                value: 'ORG-UA300-RIPE',
+                                value: 'ORG-TEST70-RIPE',
                             },
                             {
                                 name: 'org-type',
@@ -286,10 +286,10 @@ describe('CreateModifyComponent for organisation', () => {
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/BL-MNT',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TST40-MNT',
                                 },
                                 name: 'mnt-ref',
-                                value: 'BL-MNT',
+                                value: 'TST40-MNT',
                                 'referenced-type': 'mntner',
                             },
                             {
@@ -304,10 +304,10 @@ describe('CreateModifyComponent for organisation', () => {
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TPOLYCHNIA4-MNT',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TST03-MNT',
                                 },
                                 name: 'mnt-by',
-                                value: 'TPOLYCHNIA4-MNT',
+                                value: 'TST03-MNT',
                                 'referenced-type': 'mntner',
                             },
                             {

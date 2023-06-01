@@ -67,11 +67,7 @@ describe('WhoisResourcesService', () => {
                                 },
                                 {
                                     name: 'descr',
-                                    value: 'UPC',
-                                },
-                                {
-                                    name: 'descr',
-                                    value: 'UPC Magyarorszag Kft.',
+                                    value: 'ORG-TEST26-RIPE',
                                 },
                                 {
                                     link: {
@@ -84,24 +80,24 @@ describe('WhoisResourcesService', () => {
                                 },
                                 {
                                     name: 'notify',
-                                    value: '***@broadband.hu',
+                                    value: '***@test.net',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/SZABINET-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST70-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'SZABINET-MNT',
+                                    value: 'TEST70-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
                                     name: 'changed',
-                                    value: '***@broadband.hu 20040702',
+                                    value: '***@test.net 20040702',
                                 },
                                 {
                                     name: 'changed',
-                                    value: '***@chello.at 20100125',
+                                    value: '***@test.net 20100125',
                                 },
                                 {
                                     name: 'created',
@@ -321,22 +317,17 @@ describe('WhoisResourcesService', () => {
                     {
                         severity: 'Error',
                         text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
-                        args: [{ value: 'inetnum' }, { value: '194.219.52.240 - 194.219.52.243' }, { value: 'mnt-by' }, { value: 'TPOLYCHNIA4-MNT' }],
+                        args: [{ value: 'inetnum' }, { value: '194.219.52.240 - 194.219.52.243' }, { value: 'mnt-by' }, { value: 'TST03-MNT' }],
                     },
                     {
                         severity: 'Error',
                         text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
-                        args: [{ value: 'inetnum' }, { value: '194.219.0.0 - 194.219.255.255' }, { value: 'mnt-lower' }, { value: 'FORTHNETGR-MNT' }],
+                        args: [{ value: 'inetnum' }, { value: '194.219.0.0 - 194.219.255.255' }, { value: 'mnt-lower' }, { value: 'TEST72-MNT' }],
                     },
                     {
                         severity: 'Error',
                         text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
-                        args: [
-                            { value: 'inetnum' },
-                            { value: '194.219.0.0 - 194.219.255.255' },
-                            { value: 'mnt-by' },
-                            { value: 'RIPE-NCC-HM-MNT, AARDVARK-MNT' },
-                        ],
+                        args: [{ value: 'inetnum' }, { value: '194.219.0.0 - 194.219.255.255' }, { value: 'mnt-by' }, { value: 'RIPE-NCC-HM-MNT, TEST71-MNT' }],
                     },
                     {
                         severity: 'Info',
@@ -348,10 +339,10 @@ describe('WhoisResourcesService', () => {
         expect(errorResponse).toBeDefined();
 
         expect(whoisResourcesService.getAuthenticationCandidatesFromError(errorResponse)).toEqual([
-            'TPOLYCHNIA4-MNT',
-            'FORTHNETGR-MNT',
+            'TST03-MNT',
+            'TEST72-MNT',
             'RIPE-NCC-HM-MNT',
-            ' AARDVARK-MNT',
+            ' TEST71-MNT',
         ]);
     });
 
@@ -367,7 +358,7 @@ describe('WhoisResourcesService', () => {
                         type: 'person',
                         link: {
                             type: 'locator',
-                            href: 'http://rest-dev.db.ripe.net/ripe/person/MG20276-RIPE',
+                            href: 'http://rest-dev.db.ripe.net/ripe/person/TSTPERSON70-RIPE',
                         },
                         source: {
                             id: 'ripe',
@@ -376,7 +367,7 @@ describe('WhoisResourcesService', () => {
                             attribute: [
                                 {
                                     name: 'nic-hdl',
-                                    value: 'MG20276-RIPE',
+                                    value: 'TSTPERSON70-RIPE',
                                 },
                                 {
                                     name: 'imaginary',
@@ -421,7 +412,7 @@ describe('WhoisResourcesService', () => {
             { name: 'source', value: 'c' },
         ]);
 
-        expect(whoisResourcesService.getPrimaryKey(successResponse)).toEqual('MG20276-RIPEXYZ');
+        expect(whoisResourcesService.getPrimaryKey(successResponse)).toEqual('TSTPERSON70-RIPEXYZ');
     });
 
     it('should read from attributes', () => {
@@ -801,7 +792,7 @@ describe('WhoisResourcesService', () => {
                         type: 'person',
                         link: {
                             type: 'locator',
-                            href: 'http://rest-dev.db.ripe.net/ripe/person/MG20276-RIPE',
+                            href: 'http://rest-dev.db.ripe.net/ripe/person/TSTPERSON70-RIPE',
                         },
                         source: {
                             id: 'ripe',
@@ -810,7 +801,7 @@ describe('WhoisResourcesService', () => {
                             attribute: [
                                 {
                                     name: 'nic-hdl',
-                                    value: 'MG20276-RIPE',
+                                    value: 'TSTPERSON70-RIPE',
                                 },
                             ],
                         },
@@ -822,7 +813,7 @@ describe('WhoisResourcesService', () => {
                                 },
                                 {
                                     name: 'nic-hdl',
-                                    value: 'MG20276-RIPE',
+                                    value: 'TSTPERSON70-RIPE',
                                 },
                                 {
                                     name: 'source',
@@ -837,20 +828,20 @@ describe('WhoisResourcesService', () => {
 
         const validatedAttributes = whoisResourcesService.validateAttributes(whoisResourcesService.getAttributes(resources));
         expect(whoisResourcesService.toPlaintext(validatedAttributes)).toEqual(
-            'person:              Test Person\n' + 'nic-hdl:             MG20276-RIPE\n' + 'source:              RIPE\n',
+            'person:              Test Person\n' + 'nic-hdl:             TSTPERSON70-RIPE\n' + 'source:              RIPE\n',
         );
     });
 
     it('should extract object from a response', () => {
         const personAttrs = [
             { name: 'person', value: 'Test Person' },
-            { name: 'nic-hdl', value: 'MG20276-RIPE' },
+            { name: 'nic-hdl', value: 'TSTPERSON70-RIPE' },
             { name: 'mnt-by', value: 'TEST-MNT' },
             { name: 'source', value: 'RIPE' },
         ];
         const mntnerAttrs = [
             { name: 'mntner', value: 'TEST-MNT' },
-            { name: 'admin-c', value: 'MG20276-RIPE' },
+            { name: 'admin-c', value: 'TSTPERSON70-RIPE' },
             { name: 'mnt-by', value: 'TEST-MNT' },
             { name: 'source', value: 'RIPE' },
         ];

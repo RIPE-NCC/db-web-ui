@@ -30,11 +30,11 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "ITEX-6NET"
+                                "value": "NETNAME-TEST-171"
                             },
                             {
                                 "name": "descr",
-                                "value": "ITEX Media GmbH"
+                                "value": "TEST-171"
                             },
                             {
                                 "name": "country",
@@ -43,19 +43,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "ITEX-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "ITEX-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -65,10 +65,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/COGENT-HM-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST1-HM-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "COGENT-HM-MNT",
+                                "value": "TEST1-HM-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

@@ -360,7 +360,7 @@ const ORG_MOCK = () => ({
     type: 'organisation',
     link: {
         type: 'locator',
-        href: 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE',
+        href: 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST70-RIPE',
     },
     source: {
         id: 'ripe',
@@ -369,7 +369,7 @@ const ORG_MOCK = () => ({
         attribute: [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
         ],
     },
@@ -377,7 +377,7 @@ const ORG_MOCK = () => ({
         attribute: [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'org-name',
@@ -439,9 +439,9 @@ const ORG_MOCK = () => ({
 });
 
 const USER_WITH_MORE_ASSOCIATED_MNT_MOCK = [
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TE-MNT' },
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO', 'PGPKEY-261AA554', 'PGPKEY-F91A0E57'], key: 'MAINT-AFILIAS' },
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'BBC-MNT' },
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TST12-MNT' },
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO', 'PGPKEY-TEST01', 'PGPKEY-TEST02'], key: 'TST10-MNT' },
+    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TEST01-MNT' },
     { mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' },
 ];
 

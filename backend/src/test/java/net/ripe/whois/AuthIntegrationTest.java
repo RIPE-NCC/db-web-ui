@@ -66,7 +66,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"registrationDate\":\"2017-06-13\",\n" +
             "          \"actor\":\"ba-rs\",\n" +
             "          \"ticketNumber\":\"NCC#2017068683\",\n" +
-            "          \"organisationName\":\"Internet Provider BV\",\n" +
+            "          \"organisationName\":\"Internet Provider Test\",\n" +
             "          \"irStatus\":\"ENDUSER-APPROVEDDOCS\",\n" +
             "          \"irTimestamp\":1497304800000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
@@ -86,7 +86,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"registrationDate\":\"2017-06-13\",\n" +
             "          \"actor\":\"ba-rs\",\n" +
             "          \"ticketNumber\":\"NCC#2017068687\",\n" +
-            "          \"organisationName\":\"Internet Provider BV\",\n" +
+            "          \"organisationName\":\"Internet Provider Test\",\n" +
             "          \"irStatus\":\"ENDUSER-APPROVEDDOCS\",\n" +
             "          \"irTimestamp\":1497304800000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
@@ -106,7 +106,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"registrationDate\":\"2017-06-14\",\n" +
             "          \"actor\":\"ba-rs\",\n" +
             "          \"ticketNumber\":\"NCC#2017068691\",\n" +
-            "          \"organisationName\":\"Internet Provider BV\",\n" +
+            "          \"organisationName\":\"Internet Provider Test\",\n" +
             "          \"irStatus\":\"ENDUSER-APPROVEDDOCS\",\n" +
             "          \"irTimestamp\":1497391200000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
@@ -126,7 +126,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "          \"registrationDate\":\"2017-06-14\",\n" +
             "          \"actor\":\"ba-rs\",\n" +
             "          \"ticketNumber\":\"NCC#2017068693\",\n" +
-            "          \"organisationName\":\"Internet Provider BV 2\",\n" +
+            "          \"organisationName\":\"Internet Provider Test 2\",\n" +
             "          \"irStatus\":\"ENDUSER-APPROVEDDOCS\",\n" +
             "          \"irTimestamp\":1497391200000,\n" +
             "          \"resourceStatus\":\"ASSIGNED\",\n" +
@@ -152,18 +152,18 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
                         "<whois-resources xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
                         "<objects>\n" +
                         "<object type=\"mntner\">\n" +
-                        "    <link xlink:type=\"locator\" xlink:href=\"http://localhost/test/mntner/BAD-MNT\"/>\n" +
+                        "    <link xlink:type=\"locator\" xlink:href=\"http://localhost/test/mntner/TST14-RIPE\"/>\n" +
                         "    <source id=\"ripe\"/>\n" +
                         "    <primary-key>\n" +
-                        "        <attribute name=\"mntner\" value=\"BAD-MNT\"/>\n" +
+                        "        <attribute name=\"mntner\" value=\"TST14-RIPE\"/>\n" +
                         "    </primary-key>\n" +
                         "    <attributes>\n" +
-                        "        <attribute name=\"mntner\" value=\"BAD-MNT\"/>\n" +
+                        "        <attribute name=\"mntner\" value=\"TST14-RIPE\"/>\n" +
                         "        <attribute name=\"descr\" value=\"RIPE NCC Database Department\"/>\n" +
                         "        <attribute name=\"auth\" value=\"MD5-PW\" comment=\"Filtered\"/>\n" +
                         "        <attribute name=\"auth\" value=\"SSO\" comment=\"Filtered\"/>\n" +
-                        "        <attribute name=\"mnt-by\" value=\"BAD-MNT\" referenced-type=\"mntner\">\n" +
-                        "            <link xlink:type=\"locator\" xlink:href=\"http://localhost/ripe/mntner/BAD-MNT\"/>\n" +
+                        "        <attribute name=\"mnt-by\" value=\"TST14-RIPE\" referenced-type=\"mntner\">\n" +
+                        "            <link xlink:type=\"locator\" xlink:href=\"http://localhost/ripe/mntner/TST14-RIPE\"/>\n" +
                         "        </attribute>\n" +
                         "        <attribute name=\"created\" value=\"2013-12-10T16:55:06Z\"/>\n" +
                         "        <attribute name=\"last-modified\" value=\"2016-09-07T14:58:03Z\"/>\n" +
@@ -184,7 +184,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
                         "\"mine\":true," +
                         "\"auth\":[\"MD5-PW\",\"SSO\"]," +
                         "\"type\":\"mntner\"," +
-                        "\"key\":\"BAD-MNT\"" +
+                        "\"key\":\"TST14-RIPE\"" +
                         "}]"));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }

@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=AS9777",
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=AS9777",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -204,7 +204,7 @@
                             },
                             {
                                 "name": "as-name",
-                                "value": "NPIX-AS"
+                                "value": "TSTORG1-AS"
                             },
                             {
                                 "name": "descr",
@@ -224,11 +224,11 @@
                             },
                             {
                                 "name": "export",
-                                "value": "to AS9457 announce AS-NPIX"
+                                "value": "to AS9457 announce AS-TSTORG1"
                             },
                             {
                                 "name": "export",
-                                "value": "to AS4663 announce AS-NPIX"
+                                "value": "to AS4663 announce AS-TSTORG1"
                             },
                             {
                                 "name": "default",
@@ -237,19 +237,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/JYH3-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "JYH3-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/SDH19-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "SDH19-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -267,10 +267,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/AS4663-RIPE-MNT"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST14-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "AS4663-RIPE-MNT",
+                                "value": "TEST14-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

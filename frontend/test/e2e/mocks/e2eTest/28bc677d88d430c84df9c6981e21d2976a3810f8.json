@@ -1,11 +1,11 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/RIPE/inetnum",
+    "requestUrl": "/api/whois/RIPE/inetnum",
     "contentType": "application/javascript",
     "statusCode": 400,
     "data": {
         "link": {
             "type": "locator",
-            "href": "http://wagyu.prepdev.ripe.net:1080/RIPE/inetnum"
+            "href": "http://prepdev.ripe.net:1080/RIPE/inetnum"
         },
         "objects": {
             "object": [

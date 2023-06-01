@@ -9,7 +9,7 @@ const ipv4Resources = [
         type: 'inetnum',
         resource: '93.190.232.0 - 93.190.239.255',
         status: 'ALLOCATED PA',
-        netname: 'DE-1API-20080523',
+        netname: 'NETNAME-TEST10',
         usage: {
             total: 2048,
             used: 1024,
@@ -21,7 +21,7 @@ const ipv4Resources = [
         resource: '193.138.180.0 - 193.138.183.255',
         status: 'ASSIGNED PI',
         sponsoredByOther: true,
-        netname: 'ONEAPI-NET-4',
+        netname: 'NETNAME-TEST11',
         usage: {
             total: 1024,
             used: 0,
@@ -32,7 +32,7 @@ const ipv4Resources = [
         type: 'inetnum',
         resource: '193.227.117.0 - 193.227.117.255',
         status: 'ASSIGNED PI',
-        netname: 'ONEAPI-NET-3',
+        netname: 'NETNAME-TEST12',
         usage: {
             total: 256,
             used: 0,
@@ -43,7 +43,7 @@ const ipv4Resources = [
         type: 'inetnum',
         resource: '194.0.182.0 - 194.0.182.255',
         status: 'ASSIGNED PI',
-        netname: 'ONEAPI-NET-2',
+        netname: 'NETNAME-TEST13',
         usage: {
             total: 256,
             used: 0,
@@ -54,7 +54,7 @@ const ipv4Resources = [
         type: 'inetnum',
         resource: '194.50.187.0 - 194.50.187.255',
         status: 'ASSIGNED PI',
-        netname: 'ONEAPI-NET-1',
+        netname: 'NETNAME-TEST14',
         usage: {
             total: 256,
             used: 0,
@@ -69,7 +69,7 @@ const ipv6Resources = [
         status: 'ASSIGNED PI',
         type: 'inet6num',
         sponsoredByOther: true,
-        netname: 'DE-1API-DNS2',
+        netname: 'NETNAME-TEST-167',
         usage: {
             total: 1,
             used: 0,
@@ -80,7 +80,7 @@ const ipv6Resources = [
         resource: '2001:67c:2338::/48',
         status: 'ASSIGNED PI',
         type: 'inet6num',
-        netname: 'DE-1API-DNS3',
+        netname: 'NETNAME-TEST-168',
         usage: {
             total: 10,
             used: 5,
@@ -91,7 +91,7 @@ const ipv6Resources = [
         resource: '2a02:18::/32',
         status: 'ALLOCATED-BY-RIR',
         type: 'inet6num',
-        netname: 'DE-1API-20080213',
+        netname: 'NETNAME-TEST-169',
         usage: {
             total: 65536,
             used: 1024,

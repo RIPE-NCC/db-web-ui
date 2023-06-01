@@ -3,7 +3,7 @@
         {
             "key": "RIPE-NCC-END-MNT",
             "type": "mntner",
-            "auth": ["MD5-PW", "SSO", "PGPKEY-0E3AEA10"]
+            "auth": ["MD5-PW", "SSO", "PGPKEY-TEST9"]
         }
     ],
     "statusCode": 200,

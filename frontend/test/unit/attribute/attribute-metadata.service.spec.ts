@@ -118,7 +118,7 @@ describe('AttributeMetadataService', () => {
     it('should create metadata for co-maintained inetnum object with org read only', () => {
         const attributes = [
             { name: 'mnt-by', value: 'RIPE-NCC-HM-MNT' },
-            { name: 'org', value: 'ORG-EIP1-RIPE' },
+            { name: 'org', value: 'ORG-TEST19-RIPE' },
         ];
         const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
@@ -127,7 +127,7 @@ describe('AttributeMetadataService', () => {
     });
 
     it('should create metadata for NOT co-maintained inetnum object with org NOT read only', () => {
-        const attributes = [{ name: 'org', value: 'ORG-EIP1-RIPE' }];
+        const attributes = [{ name: 'org', value: 'ORG-TEST19-RIPE' }];
         const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
@@ -137,7 +137,7 @@ describe('AttributeMetadataService', () => {
     it('should create metadata for co-maintained inet6num object with org read only', () => {
         const attributes = [
             { name: 'mnt-by', value: 'RIPE-NCC-HM-MNT' },
-            { name: 'org', value: 'ORG-EIP1-RIPE' },
+            { name: 'org', value: 'ORG-TEST19-RIPE' },
         ];
         const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
@@ -146,7 +146,7 @@ describe('AttributeMetadataService', () => {
     });
 
     it('should create metadata for NOT co-maintained inet6num object with org NOT read only', () => {
-        const attributes = [{ name: 'org', value: 'ORG-EIP1-RIPE' }];
+        const attributes = [{ name: 'org', value: 'ORG-TEST19-RIPE' }];
         const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);

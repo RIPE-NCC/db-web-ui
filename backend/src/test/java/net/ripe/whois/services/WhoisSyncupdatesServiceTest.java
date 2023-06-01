@@ -29,12 +29,12 @@ public class WhoisSyncupdatesServiceTest {
             "netname:         test-netname\n" +
             "country:         NL\n" +
             "org:             ORG-TST3-RIPE\n" +
-            "admin-c:         inty1-ripe\n" +
-            "tech-c:          inty1-ripe\n" +
+            "admin-c:         TSTTECHC-RIPE\n" +
+            "tech-c:          TSTTECHC-RIPE\n" +
             "descr:           testing\n" +
             "status:          ALLOCATED PA\n" +
             "mnt-by:          ripe-ncc-hm-mnt\n" +
-            "mnt-by:          TPOLYCHNIA-MNT\n" +
+            "mnt-by:          TST02-MNT\n" +
             "created:         2016-04-25T12:53:03Z\n" +
             "last-modified:   2017-09-20T07:51:01Z\n" +
             "source:          RIPE";
@@ -69,7 +69,7 @@ public class WhoisSyncupdatesServiceTest {
         final String expectedResponse =
                 "***Error:   Authorisation for [inetnum] 192.0.2.0 - 192.0.2.255 failed\n" +
                 "            using \"mnt-by:\"\n" +
-                "            not authenticated by: RIPE-NCC-HM-MNT, TPOLYCHNIA-MNT";
+                "            not authenticated by: RIPE-NCC-HM-MNT, TST02-MNT";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
         String respons = whoisSyncupdatesService.proxy(rpslObject, httpHeaders).toString();
@@ -89,7 +89,7 @@ public class WhoisSyncupdatesServiceTest {
                 "***Warning: Submitted object identical to database object";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-        String respons = whoisSyncupdatesService.proxy(rpslObject.concat("password:TPOLYCHNIA-MNT"), httpHeaders).toString();
+        String respons = whoisSyncupdatesService.proxy(rpslObject.concat("password:TST02-MNT"), httpHeaders).toString();
         assertTrue(respons.contains(expectedResponse));
     }
 
@@ -107,9 +107,9 @@ public class WhoisSyncupdatesServiceTest {
                 "address:         Amsterdam\n" +
                 "e-mail:          ivana.svonja@ripe.net\n" +
                 "abuse-c:         TEST93-RIPE\n" +
-                "mnt-ref:         ISV-MNT\n" +
+                "mnt-ref:         TEST35-MNT\n" +
                 "mnt-by:          isvonja-mnt\n" +
-                "mnt-by:          ISV-MNT\n" +
+                "mnt-by:          TEST35-MNT\n" +
                 "created:         2017-01-27T07:20:46Z\n" +
                 "last-modified:   2017-10-10T12:00:28Z\n" +
                 "source:          RIPE";

@@ -8,7 +8,7 @@
                 "type": "aut-num",
                 "resource": "AS204056",
                 "status": "ASSIGNED",
-                "orgName": "ORG-EIP1-RIPE",
+                "orgName": "ORG-TEST19-RIPE",
                 "iRR": true,
                 "rDNS": true,
                 "asname": "asnametest"
@@ -47,10 +47,10 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-EIP1-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST19-RIPE"
                         },
                         "name": "org",
-                        "value": "ORG-EIP1-RIPE",
+                        "value": "ORG-TEST19-RIPE",
                         "referenced-type": "organisation"
                     },
                     {
@@ -72,19 +72,19 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/MV10039-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                         },
                         "name": "admin-c",
-                        "value": "MV10039-RIPE",
+                        "value": "TSTADMINC-RIPE",
                         "referenced-type": "person"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/inty1-ripe"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                         },
                         "name": "tech-c",
-                        "value": "inty1-ripe",
+                        "value": "TSTTECHC-RIPE",
                         "referenced-type": "person"
                     },
                     {
@@ -287,19 +287,19 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RU1C-MNT"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST17-MNT"
                         },
                         "name": "mnt-by",
-                        "value": "RU1C-MNT",
+                        "value": "TEST17-MNT",
                         "referenced-type": "mntner"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RU1C-MNT"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST17-MNT"
                         },
                         "name": "mnt-routes",
-                        "value": "RU1C-MNT",
+                        "value": "TEST17-MNT",
                         "referenced-type": "mntner"
                     },
                     {

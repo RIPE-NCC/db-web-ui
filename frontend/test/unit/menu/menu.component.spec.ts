@@ -39,8 +39,8 @@ describe('LeftHandMenuComponent', () => {
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
-            orgObjectId: 'ORG-EIP1-RIPE',
-            organisationName: 'Internet Provider BV',
+            orgObjectId: 'ORG-TEST19-RIPE',
+            organisationName: 'Internet Provider Test',
             roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
         });
         expect(component.menu).toContain('My LIR');
@@ -63,8 +63,8 @@ describe('LeftHandMenuComponent', () => {
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
-            orgObjectId: 'ORG-EIP1-RIPE',
-            organisationName: 'Internet Provider BV',
+            orgObjectId: 'ORG-TEST19-RIPE',
+            organisationName: 'Internet Provider Test',
             roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
         });
         expect(component.menu).not.toContain('My Resources');
@@ -88,8 +88,8 @@ describe('LeftHandMenuComponent', () => {
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
-            orgObjectId: 'ORG-EIP1-RIPE',
-            organisationName: 'Internet Provider BV',
+            orgObjectId: 'ORG-TEST19-RIPE',
+            organisationName: 'Internet Provider Test',
             roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
         });
         expect(component.menu).toContain('My Resources');
@@ -113,8 +113,8 @@ describe('LeftHandMenuComponent', () => {
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
-            orgObjectId: 'ORG-EIP1-RIPE',
-            organisationName: 'Internet Provider BV',
+            orgObjectId: 'ORG-TEST19-RIPE',
+            organisationName: 'Internet Provider Test',
             roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
         });
         expect(component.menu).toContain('My Resources');
@@ -195,8 +195,8 @@ describe('LeftHandMenuComponent', () => {
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
-            orgObjectId: 'ORG-EIP1-RIPE',
-            organisationName: 'Internet Provider BV',
+            orgObjectId: 'ORG-TEST19-RIPE',
+            organisationName: 'Internet Provider Test',
             roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
         });
         expect(component.menu).toContain('"id":"sponsored"');

@@ -1,0 +1,86 @@
+{
+    "requestUrl": "/api/whois/RIPE/ROLE/TSTROLE-RIPE?password=TEST15-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://127.0.0.1:1080/RIPE/ROLE/TSTROLE-RIPE"
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "role",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTROLE-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "nic-hdl",
+                                "value": "TSTROLE-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "role",
+                                "value": "Abuse Department"
+                            },
+                            {
+                                "name": "address",
+                                "value": "Test address"
+                            },
+                            {
+                                "name": "e-mail",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "name": "nic-hdl",
+                                "value": "TSTROLE-RIPE"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "name": "abuse-mailbox",
+                                "value": "abuse1@test.net"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST15-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST15-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2013-06-11T12:28:25Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2020-10-19T10:13:24Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

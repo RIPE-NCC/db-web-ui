@@ -27,43 +27,43 @@ public class WhoisInternalServiceTest {
         "<whois-resources xmlns:xlink=\"http://www.w3.org/1999/xlink\">" +
         "<objects>" +
         "<object type=\"mntner\">" +
-        "<link xlink:type=\"locator\" xlink:href=\"https://rest-dev.db.ripe.net/ripe/mntner/GROL2-MNT\"/><source id=\"ripe\"/>" +
-        "<primary-key><attribute name=\"mntner\" value=\"GROL2-MNT\"/></primary-key>" +
+        "<link xlink:type=\"locator\" xlink:href=\"https://rest-dev.db.ripe.net/ripe/mntner/TST18-MNT\"/><source id=\"ripe\"/>" +
+        "<primary-key><attribute name=\"mntner\" value=\"TST18-MNT\"/></primary-key>" +
         "<attributes>" +
-        "<attribute name=\"mntner\" value=\"GROL2-MNT\"/>" +
+        "<attribute name=\"mntner\" value=\"TST18-MNT\"/>" +
         "<attribute name=\"descr\" value=\"My desc\"/>" +
-        "<attribute name=\"admin-c\" value=\"DW-RIPE\"/>" +
+        "<attribute name=\"admin-c\" value=\"TSTADMINC-RIPE\"/>" +
         "<attribute name=\"auth\" value=\"SSO\" comment=\"Filtered\"/>" +
-        "<attribute name=\"mnt-by\" value=\"GROLSSO-MNT\"/>" +
+        "<attribute name=\"mnt-by\" value=\"TSTSSO18-MNT\"/>" +
         "<attribute name=\"created\" value=\"2015-06-03T10:39:21Z\"/>" +
         "<attribute name=\"last-modified\" value=\"2015-06-03T10:39:21Z\"/>" +
         "<attribute name=\"source\" value=\"RIPE\" comment=\"Filtered\"/>" +
         "</attributes>" +
         "</object>" +
         "<object type=\"mntner\">" +
-        "<link xlink:type=\"locator\" xlink:href=\"https://rest-dev.db.ripe.net/ripe/mntner/GROLSSO-MNT\"/><source id=\"ripe\"/>" +
-        "<primary-key><attribute name=\"mntner\" value=\"GROLSSO-MNT\"/></primary-key>" +
+        "<link xlink:type=\"locator\" xlink:href=\"https://rest-dev.db.ripe.net/ripe/mntner/TSTSSO18-MNT\"/><source id=\"ripe\"/>" +
+        "<primary-key><attribute name=\"mntner\" value=\"TSTSSO18-MNT\"/></primary-key>" +
         "<attributes>" +
-        "<attribute name=\"mntner\" value=\"GROLSSO-MNT\"/>" +
+        "<attribute name=\"mntner\" value=\"TSTSSO18-MNT\"/>" +
         "<attribute name=\"descr\" value=\"My Descr again\"/>" +
-        "<attribute name=\"admin-c\" value=\"DW-RIPE\"/>" +
+        "<attribute name=\"admin-c\" value=\"TSTADMINC-RIPE\"/>" +
         "<attribute name=\"auth\" value=\"MD5-PW\" comment=\"Filtered\"/>" +
         "<attribute name=\"auth\" value=\"SSO\" comment=\"Filtered\"/>" +
-        "<attribute name=\"mnt-by\" value=\"GROLSSO-MNT\"/>" +
+        "<attribute name=\"mnt-by\" value=\"TSTSSO18-MNT\"/>" +
         "<attribute name=\"created\" value=\"2015-05-26T15:30:45Z\"/>" +
         "<attribute name=\"last-modified\" value=\"2015-05-28T14:50:01Z\"/>" +
         "<attribute name=\"source\" value=\"RIPE\" comment=\"Filtered\"/>" +
         "</attributes>" +
         "</object>" +
         "<object type=\"mntner\">" +
-        "<link xlink:type=\"locator\" xlink:href=\"https://rest-dev.db.ripe.net/ripe/mntner/GROLLO-MNT\"/><source id=\"ripe\"/>" +
-        "<primary-key><attribute name=\"mntner\" value=\"GROLLO-MNT\"/></primary-key>" +
+        "<link xlink:type=\"locator\" xlink:href=\"https://rest-dev.db.ripe.net/ripe/mntner/TST19-MNT\"/><source id=\"ripe\"/>" +
+        "<primary-key><attribute name=\"mntner\" value=\"TST19-MNT\"/></primary-key>" +
         "<attributes>" +
-        "<attribute name=\"mntner\" value=\"GROLLO-MNT\"/>" +
+        "<attribute name=\"mntner\" value=\"TST19-MNT\"/>" +
         "<attribute name=\"descr\" value=\"My desc\"/>" +
-        "<attribute name=\"admin-c\" value=\"DW-RIPE\"/>" +
+        "<attribute name=\"admin-c\" value=\"TSTADMINC-RIPE\"/>" +
         "<attribute name=\"auth\" value=\"SSO\" comment=\"Filtered\"/>" +
-        "<attribute name=\"mnt-by\" value=\"GROL2-MNT\"/>" +
+        "<attribute name=\"mnt-by\" value=\"TST18-MNT\"/>" +
         "<attribute name=\"created\" value=\"2015-06-10T12:07:57Z\"/>" +
         "<attribute name=\"last-modified\" value=\"2015-06-10T12:11:37Z\"/>" +
         "<attribute name=\"source\" value=\"RIPE\" comment=\"Filtered\"/>" +
@@ -72,7 +72,7 @@ public class WhoisInternalServiceTest {
         "</objects></whois-resources>";
     private static final String ERROR_XML_RESPONSE = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
         "<whois-resources xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
-        "    <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/pez/person/PP1-RIPE\"/>\n" +
+        "    <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/pez/person/TST19-RIPE\"/>\n" +
         "    <errormessages>\n" +
         "        <errormessage severity=\"Error\" text=\"Invalid x '%s'\">\n" +
         "            <args value=\"pez\"/>\n" +
@@ -82,7 +82,7 @@ public class WhoisInternalServiceTest {
         "</whois-resources>";
     private static final String MOCK_WHOIS_INTERNAL_URL = "http://localhost:8089";
     private static final UUID USER_UUID = UUID.randomUUID();
-    private static final String API_KEY = "DB-WHOIS-d5395e7fbf8d";
+    private static final String API_KEY = "DB-WHOIS-4a471957e3c7";
     public static final String URL = "/api/user/" + USER_UUID + "/maintainers";
     private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
 
@@ -119,15 +119,15 @@ public class WhoisInternalServiceTest {
 
         assertEquals(3, response.size());
         assertEquals("mntner", response.get(0).get("type"));
-        assertEquals("GROL2-MNT", response.get(0).get("key"));
+        assertEquals("TST18-MNT", response.get(0).get("key"));
         assertEquals("[SSO]", response.get(0).get("auth").toString());
 
         assertEquals("mntner", response.get(1).get("type"));
-        assertEquals("GROLSSO-MNT", response.get(1).get("key"));
+        assertEquals("TSTSSO18-MNT", response.get(1).get("key"));
         assertEquals("[MD5-PW, SSO]", response.get(1).get("auth").toString());
 
         assertEquals("mntner", response.get(2).get("type"));
-        assertEquals("GROLLO-MNT", response.get(2).get("key"));
+        assertEquals("TST19-MNT", response.get(2).get("key"));
         assertEquals("[SSO]", response.get(2).get("auth").toString());
 
         assertEquals(3, response.size());
@@ -155,7 +155,7 @@ public class WhoisInternalServiceTest {
 
         UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(CROWD_TOKEN, "127.0.0.1");
 
-        assertEquals("test@ripe.net", userInfoResponse.user.username);
+        assertEquals("TSTADMINC-RIPE", userInfoResponse.user.username);
     }
 
     @Test

@@ -49,19 +49,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/ES7554-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "ES7554-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/ES7554-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "ES7554-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -75,10 +75,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-28F6CD6C"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-TEST1234"
                                 },
                                 "name": "auth",
-                                "value": "PGPKEY-28F6CD6C",
+                                "value": "PGPKEY-TEST1234",
                                 "referenced-type": "key-cert"
                             },
                             {

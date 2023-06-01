@@ -1,0 +1,71 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-TEST23-RIPE&type=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "stats": {
+            "numInetnums": 4,
+            "numInet6nums": 1,
+            "numAutnums": 1,
+            "numSponsoredInetnums": 1,
+            "numSponsoredInet6nums": 1,
+            "numSponsoredAutnums": 1
+        },
+        "orgId": "ORG-TEST23-RIPE",
+        "resources": [
+            {
+                "type": "INETNUM",
+                "resource": "194.104.0.0 - 194.104.0.255",
+                "status": "ASSIGNED PI",
+                "netname": "NETNAME-TEST83",
+                "iRR": true,
+                "rDNS": true,
+                "usage": {
+                    "total": 256,
+                    "used": 0,
+                    "blockSize": 32
+                }
+            },
+            {
+                "type": "INETNUM",
+                "resource": "194.171.0.0 - 194.171.255.255",
+                "status": "ALLOCATED PA",
+                "netname": "NETNAME-TEST82",
+                "iRR": false,
+                "rDNS": true,
+                "usage": {
+                    "total": 1024,
+                    "used": 0,
+                    "blockSize": 32
+                }
+            },
+            {
+                "type": "INETNUM",
+                "resource": "195.169.0.0 - 195.169.255.255",
+                "status": "ALLOCATED PA",
+                "netname": "NETNAME-TEST84",
+                "iRR": true,
+                "rDNS": false,
+                "usage": {
+                    "total": 2048,
+                    "used": 2048,
+                    "blockSize": 32
+                }
+            },
+            {
+                "type": "INETNUM",
+                "resource": "192.87.0.0 - 192.87.255.255",
+                "status": "LEGACY",
+                "netname": "NETNAME-TEST85",
+                "sponsored": true,
+                "iRR": false,
+                "rDNS": false,
+                "usage": {
+                    "total": 2048,
+                    "used": 2048,
+                    "blockSize": 32
+                }
+            }
+        ]
+    }
+}

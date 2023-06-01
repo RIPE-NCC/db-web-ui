@@ -51,19 +51,19 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/inty1-ripe"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                         },
                         "name": "admin-c",
-                        "value": "inty1-ripe",
+                        "value": "TSTTECHC-RIPE",
                         "referenced-type": "person"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/inty1-ripe"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                         },
                         "name": "tech-c",
-                        "value": "inty1-ripe",
+                        "value": "TSTTECHC-RIPE",
                         "referenced-type": "person"
                     },
                     {
@@ -80,7 +80,7 @@
                             "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
                         },
                         "name": "mnt-by",
-                        "value": "TPOLYCHNIA4-MNT",
+                        "value": "TST03-MNT",
                         "referenced-type": "mntner"
                     },
                     {

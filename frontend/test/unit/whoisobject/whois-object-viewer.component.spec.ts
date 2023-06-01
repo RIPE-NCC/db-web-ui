@@ -134,7 +134,7 @@ describe('WhoisObjectViewerComponent', () => {
                 },
                 {
                     name: 'descr',
-                    value: 'l.registry.qa',
+                    value: 'Test descr',
                 },
                 {
                     name: 'origin',
@@ -143,19 +143,19 @@ describe('WhoisObjectViewerComponent', () => {
                 {
                     link: {
                         type: 'locator',
-                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/PV51549-MNT',
+                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TST09-MNT',
                     },
                     name: 'mnt-by',
-                    value: 'PV51549-MNT',
+                    value: 'TST09-MNT',
                     'referenced-type': 'mntner',
                 },
                 {
                     link: {
                         type: 'locator',
-                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/MAINT-AFILIAS',
+                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TST10-MNT',
                     },
                     name: 'mnt-by',
-                    value: 'MAINT-AFILIAS',
+                    value: 'TST10-MNT',
                     'referenced-type': 'mntner',
                 },
                 {
@@ -204,7 +204,7 @@ describe('WhoisObjectViewerComponent', () => {
                 },
                 {
                     name: 'descr',
-                    value: 'Servers Australia',
+                    value: 'test route ',
                 },
                 {
                     name: 'origin',
@@ -212,19 +212,19 @@ describe('WhoisObjectViewerComponent', () => {
                 },
                 {
                     name: 'notify',
-                    value: 'net-support@ap.equinix.com',
+                    value: 'net-support@test.com',
                 },
                 {
                     name: 'notify',
-                    value: 'ap-noc@ap.equinix.com',
+                    value: 'ap-noc@test.com',
                 },
                 {
                     link: {
                         type: 'locator',
-                        href: 'http://rest-prepdev.db.ripe.net/radb-grs/mntner/MAINT-AS17819',
+                        href: 'http://rest-prepdev.db.ripe.net/radb-grs/mntner/TST11-MNT',
                     },
                     name: 'mnt-by',
-                    value: 'MAINT-AS17819',
+                    value: 'TST11-MNT',
                     'referenced-type': 'mntner',
                 },
                 {
@@ -381,19 +381,19 @@ describe('WhoisObjectViewerComponent', () => {
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/person/OR1578-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/person/TSTPERSON09-RIPE',
                     },
                     name: 'admin-c',
-                    value: 'OR1578-RIPE',
+                    value: 'TSTPERSON09-RIPE',
                     'referenced-type': 'person',
                 },
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/person/OR1578-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/person/TSTPERSON09-RIPE',
                     },
                     name: 'tech-c',
-                    value: 'OR1578-RIPE',
+                    value: 'TSTPERSON09-RIPE',
                     'referenced-type': 'person',
                 },
                 {
@@ -402,15 +402,15 @@ describe('WhoisObjectViewerComponent', () => {
                 },
                 {
                     name: 'notify',
-                    value: '***@eircom.net',
+                    value: '***@test.net',
                 },
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TE-MNT',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TST12-MNT',
                     },
                     name: 'mnt-by',
-                    value: 'TE-MNT',
+                    value: 'TST12-MNT',
                     'referenced-type': 'mntner',
                 },
                 {
@@ -439,14 +439,14 @@ describe('WhoisObjectViewerComponent', () => {
             ],
         },
         'resource-holder': {
-            key: 'ORG-EA29-RIPE',
-            name: 'Echo Lima',
+            key: 'ORG-TST13-RIPE',
+            name: 'Test org',
         },
         'abuse-contact': {
-            key: 'ENA33-RIPE',
-            email: 'wmsupport@eir.ie',
+            key: 'TST13-RIPE',
+            email: 'wmsupport@test.net',
             suspect: false,
-            'org-id': 'ORG-EA29-RIPE',
+            'org-id': 'ORG-TST13-RIPE',
         },
         managed: false,
     };

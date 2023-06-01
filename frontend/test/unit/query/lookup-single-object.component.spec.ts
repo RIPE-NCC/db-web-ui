@@ -97,7 +97,7 @@ describe('LookupSingleObjectComponent', () => {
     });
 
     const mockResponse = {
-        yorkshire: {
+        Test50: {
             service: {
                 name: 'search',
             },
@@ -117,7 +117,7 @@ describe('LookupSingleObjectComponent', () => {
                 'query-strings': {
                     'query-string': [
                         {
-                            value: 'yorkshire',
+                            value: 'Test50',
                         },
                     ],
                 },
@@ -150,11 +150,11 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'netname',
-                                    value: 'YORKSHIRE',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
-                                    value: 'Yorkshire Post Newspapers',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
@@ -171,19 +171,19 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/IT417-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'IT417-RIPE',
+                                    value: 'TSTADMINC-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/EH92-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'EH92-RIPE',
+                                    value: 'TSTTECHC-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
@@ -193,10 +193,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/EASYNET-UK-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST50-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'EASYNET-UK-MNT',
+                                    value: 'TEST50-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
@@ -221,12 +221,12 @@ describe('LookupSingleObjectComponent', () => {
                             ],
                         },
                         'resource-holder': {
-                            key: 'ORG-EA49-RIPE',
-                            name: 'Easynet Global Services Limited',
+                            key: 'ORG-TEST50-RIPE',
+                            name: 'Test 50 org',
                         },
                         'abuse-contact': {
-                            key: 'AR17615-RIPE',
-                            email: 'abuse@easynet.com',
+                            key: 'TEST50-RIPE',
+                            email: 'abuse@test.com',
                         },
                         managed: false,
                     },
@@ -255,11 +255,11 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'netname',
-                                    value: 'YORKSHIRE',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
-                                    value: 'Yorkshire Cottage Bakeries',
+                                    value: 'Test50 Cottage Bakeries',
                                 },
                                 {
                                     name: 'descr',
@@ -276,19 +276,19 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/SB4917-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC1-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'SB4917-RIPE',
+                                    value: 'TSTADMINC1-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/EH92-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'EH92-RIPE',
+                                    value: 'TSTTECHC-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
@@ -298,10 +298,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/EASYNET-UK-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST50-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'EASYNET-UK-MNT',
+                                    value: 'TEST50-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
@@ -326,12 +326,12 @@ describe('LookupSingleObjectComponent', () => {
                             ],
                         },
                         'resource-holder': {
-                            key: 'ORG-EA49-RIPE',
-                            name: 'Easynet Global Services Limited',
+                            key: 'ORG-TEST50-RIPE',
+                            name: 'Test 50 org',
                         },
                         'abuse-contact': {
-                            key: 'AR17615-RIPE',
-                            email: 'abuse@easynet.com',
+                            key: 'TEST50-RIPE',
+                            email: 'abuse@test.com',
                         },
                         managed: false,
                     },
@@ -360,11 +360,11 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'netname',
-                                    value: 'YORKSHIRE',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
-                                    value: 'Yorkshire Cottage Bakeries',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
@@ -381,19 +381,19 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/SB4918-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC2-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'SB4918-RIPE',
+                                    value: 'TSTADMINC2-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/EH92-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'EH92-RIPE',
+                                    value: 'TSTTECHC-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
@@ -403,10 +403,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/EASYNET-UK-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST50-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'EASYNET-UK-MNT',
+                                    value: 'TEST50-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
@@ -431,12 +431,12 @@ describe('LookupSingleObjectComponent', () => {
                             ],
                         },
                         'resource-holder': {
-                            key: 'ORG-EA49-RIPE',
-                            name: 'Easynet Global Services Limited',
+                            key: 'ORG-TEST50-RIPE',
+                            name: 'Test 50 org',
                         },
                         'abuse-contact': {
-                            key: 'AR17615-RIPE',
-                            email: 'abuse@easynet.com',
+                            key: 'TEST50-RIPE',
+                            email: 'abuse@test.com',
                         },
                         managed: false,
                     },
@@ -465,11 +465,11 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'netname',
-                                    value: 'YORKSHIRE',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
-                                    value: 'Yorkshire and Humberland Regional Forum',
+                                    value: 'Test50 Forum',
                                 },
                                 {
                                     name: 'descr',
@@ -486,19 +486,19 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/PN643-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC3-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'PN643-RIPE',
+                                    value: 'TSTADMINC3-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/EH92-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'EH92-RIPE',
+                                    value: 'TSTTECHC-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
@@ -508,10 +508,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/EASYNET-UK-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST50-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'EASYNET-UK-MNT',
+                                    value: 'TEST50-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
@@ -536,12 +536,12 @@ describe('LookupSingleObjectComponent', () => {
                             ],
                         },
                         'resource-holder': {
-                            key: 'ORG-EA49-RIPE',
-                            name: 'Easynet Global Services Limited',
+                            key: 'ORG-TEST50-RIPE',
+                            name: 'Test 50 org',
                         },
                         'abuse-contact': {
-                            key: 'AR17615-RIPE',
-                            email: 'abuse@easynet.com',
+                            key: 'TEST50-RIPE',
+                            email: 'abuse@test.com',
                         },
                         managed: false,
                     },
@@ -570,11 +570,11 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'netname',
-                                    value: 'YORKSHIRE',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
-                                    value: 'Yorkshire Post Newspapers Ltd',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
@@ -591,19 +591,19 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/DM1766-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC4-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'DM1766-RIPE',
+                                    value: 'TSTADMINC4-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/EH92-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'EH92-RIPE',
+                                    value: 'TSTTECHC-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
@@ -613,10 +613,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/EASYNET-UK-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST50-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'EASYNET-UK-MNT',
+                                    value: 'TEST50-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
@@ -641,12 +641,12 @@ describe('LookupSingleObjectComponent', () => {
                             ],
                         },
                         'resource-holder': {
-                            key: 'ORG-EA49-RIPE',
-                            name: 'Easynet Global Services Limited',
+                            key: 'ORG-TEST50-RIPE',
+                            name: 'Test 50 org',
                         },
                         'abuse-contact': {
-                            key: 'AR17615-RIPE',
-                            email: 'abuse@easynet.com',
+                            key: 'TEST50-RIPE',
+                            email: 'abuse@test.com',
                         },
                         managed: false,
                     },
@@ -675,11 +675,11 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'netname',
-                                    value: 'YORKSHIRE',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
-                                    value: 'Yorkshire Post Newspapers',
+                                    value: 'Test50',
                                 },
                                 {
                                     name: 'descr',
@@ -705,10 +705,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/EH92-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'EH92-RIPE',
+                                    value: 'TSTTECHC-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
@@ -718,10 +718,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/EASYNET-UK-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST50-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'EASYNET-UK-MNT',
+                                    value: 'TEST50-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
@@ -746,12 +746,12 @@ describe('LookupSingleObjectComponent', () => {
                             ],
                         },
                         'resource-holder': {
-                            key: 'ORG-EA49-RIPE',
-                            name: 'Easynet Global Services Limited',
+                            key: 'ORG-TEST50-RIPE',
+                            name: 'Test 50 org',
                         },
                         'abuse-contact': {
-                            key: 'AR17615-RIPE',
-                            email: 'abuse@easynet.com',
+                            key: 'TEST50-RIPE',
+                            email: 'abuse@test.com',
                         },
                         managed: false,
                     },
@@ -759,7 +759,7 @@ describe('LookupSingleObjectComponent', () => {
                         type: 'role',
                         link: {
                             type: 'locator',
-                            href: 'http://rest-prepdev.db.ripe.net/ripe/role/SYDC-RIPE',
+                            href: 'http://rest-prepdev.db.ripe.net/ripe/role/TESTROLE5-RIPE',
                         },
                         source: {
                             id: 'ripe',
@@ -768,7 +768,7 @@ describe('LookupSingleObjectComponent', () => {
                             attribute: [
                                 {
                                     name: 'nic-hdl',
-                                    value: 'SYDC-RIPE',
+                                    value: 'TESTROLE5-RIPE',
                                 },
                             ],
                         },
@@ -776,7 +776,7 @@ describe('LookupSingleObjectComponent', () => {
                             attribute: [
                                 {
                                     name: 'role',
-                                    value: 'South Yorkshire Datacentre Operators',
+                                    value: 'Test50 Role',
                                 },
                                 {
                                     name: 'address',
@@ -800,78 +800,78 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'e-mail',
-                                    value: '***@yorkshiredatacentres.co.uk',
+                                    value: '***@test50.net',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-WDCL1-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST51-RIPE',
                                     },
                                     name: 'org',
-                                    value: 'ORG-WDCL1-RIPE',
+                                    value: 'ORG-TEST51-RIPE',
                                     'referenced-type': 'organisation',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/JE281-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC5-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'JE281-RIPE',
+                                    value: 'TSTADMINC5-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/SUMO',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC1-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'SUMO',
+                                    value: 'TSTTECHC1-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/JE281-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC5-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'JE281-RIPE',
+                                    value: 'TSTADMINC5-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/SUMO',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC1-RIPE',
                                     },
                                     name: 'tech-c',
-                                    value: 'SUMO',
+                                    value: 'TSTTECHC1-RIPE',
                                     'referenced-type': 'role',
                                 },
                                 {
                                     name: 'nic-hdl',
-                                    value: 'SYDC-RIPE',
+                                    value: 'TESTROLE5-RIPE',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/W2DATACENTRES-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST51-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'W2DATACENTRES-MNT',
+                                    value: 'TEST51-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/NETSUMO-MNT',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST52-MNT',
                                     },
                                     name: 'mnt-by',
-                                    value: 'NETSUMO-MNT',
+                                    value: 'TEST52-MNT',
                                     'referenced-type': 'mntner',
                                 },
                                 {
                                     name: 'notify',
-                                    value: '***@netsumo.com',
+                                    value: '***@test.net',
                                 },
                                 {
                                     name: 'created',
@@ -956,10 +956,10 @@ describe('LookupSingleObjectComponent', () => {
                                 {
                                     link: {
                                         type: 'locator',
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/PE3012-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC6-RIPE',
                                     },
                                     name: 'admin-c',
-                                    value: 'PE3012-RIPE',
+                                    value: 'TSTADMINC6-RIPE',
                                     'referenced-type': 'person',
                                 },
                                 {
@@ -1014,7 +1014,7 @@ describe('LookupSingleObjectComponent', () => {
     const mockErrorNonauth = {
         link: {
             type: 'locator',
-            href: 'http://wagyu.prepdev.ripe.net:1080/ripe-nonauth/role/YELP1-RIPE?abuse-contact=true&managed-attributes=true&resource-holder=true&unfiltered=true',
+            href: 'http://prepdev.ripe.net:1080/ripe-nonauth/role/YELP1-RIPE?abuse-contact=true&managed-attributes=true&resource-holder=true&unfiltered=true',
         },
         errormessages: {
             errormessage: [

@@ -60,13 +60,13 @@
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.pre",
+                                            "name": "hl.test.pre",
                                             "value": "<b>"
                                         }
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.post",
+                                            "name": "hl.test.post",
                                             "value": "</b>"
                                         }
                                     },

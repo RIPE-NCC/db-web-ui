@@ -34,46 +34,46 @@
                             },
                             {
                                 "name": "nserver",
-                                "value": "dns01.estracom.it"
+                                "value": "dns01.test.it"
                             },
                             {
                                 "name": "nserver",
-                                "value": "dns02.estracom.it"
+                                "value": "dns02.test.it"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TA4069-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "TA4069-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TA4069-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "TA4069-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TA4069-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "zone-c",
-                                "value": "TA4069-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/CONSIAGNET-MNT"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST04-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "CONSIAGNET-MNT",
+                                "value": "TEST04-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

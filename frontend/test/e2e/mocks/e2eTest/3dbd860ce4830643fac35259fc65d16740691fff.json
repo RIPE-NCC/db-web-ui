@@ -5,7 +5,7 @@
     "data": {
         "link": {
             "type": "locator",
-            "href": "http://wagyu.prepdev.ripe.net:1080/search?flags=drM&ignore404=true&query-string=193.193.200.0%2F24&type-filter=domain"
+            "href": "http://prepdev.ripe.net:1080/search?flags=drM&ignore404=true&query-string=193.193.200.0%2F24&type-filter=domain"
         },
         "errormessages": {
             "errormessage": [

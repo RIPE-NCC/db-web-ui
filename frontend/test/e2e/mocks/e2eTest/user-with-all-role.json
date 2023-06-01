@@ -12,34 +12,34 @@
         },
         "organisations": [
             {
-                "orgObjectId": "ORG-WEG1-RIPE",
-                "organisationName": "Wikom Deutsche Telekabel GmbH",
+                "orgObjectId": "ORG-TEST43-RIPE",
+                "organisationName": "WiTest organisation",
                 "roles": ["certification", "NON-MEMBER"]
             },
             {
-                "orgObjectId": "ORG-WA56-RIPE",
-                "organisationName": "Swi Rop Gonggrijp",
+                "orgObjectId": "ORG-TEST36-RIPE",
+                "organisationName": "SwTest organisation",
                 "roles": ["certification", "NON-MEMBER"]
             },
             {
-                "orgObjectId": "ORG-VA397-RIPE",
-                "organisationName": "Viollier AG",
+                "orgObjectId": "ORG-TEST33-RIPE",
+                "organisationName": "ViTest organisation",
                 "roles": ["certification", "NON-MEMBER"]
             }
         ],
         "members": [
             {
                 "membershipId": 49552,
-                "regId": "nl.abelohost3",
-                "orgObjectId": "ORG-AB191-RIPE",
-                "organisationName": "Westernunion",
+                "regId": "nl.atest",
+                "orgObjectId": "ORG-ATEST-RIPE",
+                "organisationName": "WTest Organisation name",
                 "roles": ["admin", "general", "generalMeeting", "resources", "myResources", "certification", "ticketing", "billing", "LIR"]
             },
             {
                 "membershipId": 3629,
-                "regId": "nl.surfnet",
-                "orgObjectId": "ORG-Sb3-RIPE",
-                "organisationName": "SURFnet bv",
+                "regId": "nl.supertestorg",
+                "orgObjectId": "ORG-TEST23-RIPE",
+                "organisationName": "SUPERTESTORG bv",
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         ]

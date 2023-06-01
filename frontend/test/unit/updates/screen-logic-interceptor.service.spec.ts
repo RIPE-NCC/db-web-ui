@@ -113,7 +113,7 @@ describe('ScreenLogicInterceptorService', () => {
         },
         {
             name: 'org',
-            value: 'ORG-Fr4-RIPE',
+            value: 'ORG-TST05-RIPE',
         },
         {
             name: 'mnt-by',

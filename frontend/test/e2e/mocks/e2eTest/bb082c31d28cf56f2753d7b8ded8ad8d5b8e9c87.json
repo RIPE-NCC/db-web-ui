@@ -8,7 +8,7 @@
                 "resource": "185.51.52.0 - 185.51.52.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Access-Range",
+                "netname": "NETNAME-TEST-165",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -19,7 +19,7 @@
                 "resource": "185.51.53.0 - 185.51.53.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Access-Range",
+                "netname": "NETNAME-TEST-165",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -30,7 +30,7 @@
                 "resource": "185.51.54.0 - 185.51.55.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NL-HOSTIO-20150817",
+                "netname": "NETNAME-TEST-166",
                 "usage": {
                     "total": 512,
                     "used": 512,

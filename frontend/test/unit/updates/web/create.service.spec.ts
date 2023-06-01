@@ -72,7 +72,7 @@ const createRoleRespons = {
                 type: 'mntner',
                 link: {
                     type: 'locator',
-                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/IVANA-MNT',
+                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TST004-MNT',
                 },
                 source: {
                     id: 'ripe',
@@ -81,7 +81,7 @@ const createRoleRespons = {
                     attribute: [
                         {
                             name: 'mntner',
-                            value: 'IVANA-MNT',
+                            value: 'TST004-MNT',
                         },
                     ],
                 },
@@ -89,23 +89,23 @@ const createRoleRespons = {
                     attribute: [
                         {
                             name: 'mntner',
-                            value: 'IVANA-MNT',
+                            value: 'TST004-MNT',
                         },
                         {
                             name: 'admin-c',
-                            value: 'IA5444-RIPE',
+                            value: 'TSTADMINC-RIPE',
                         },
                         {
                             name: 'upd-to',
-                            value: 'bad@ripe.net',
+                            value: 'teste2e@ripe.net',
                         },
                         {
                             name: 'auth',
-                            value: 'SSO bad@ripe.net',
+                            value: 'SSO teste2e@ripe.net',
                         },
                         {
                             name: 'mnt-by',
-                            value: 'IVANA-MNT',
+                            value: 'TST004-MNT',
                         },
                         {
                             name: 'created',
@@ -126,7 +126,7 @@ const createRoleRespons = {
                 type: 'role',
                 link: {
                     type: 'locator',
-                    href: 'https://rest-prepdev.db.ripe.net/ripe/role/IA5444-RIPE',
+                    href: 'https://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE',
                 },
                 source: {
                     id: 'ripe',
@@ -135,7 +135,7 @@ const createRoleRespons = {
                     attribute: [
                         {
                             name: 'nic-hdl',
-                            value: 'IA5444-RIPE',
+                            value: 'TSTADMINC-RIPE',
                         },
                     ],
                 },
@@ -155,11 +155,11 @@ const createRoleRespons = {
                         },
                         {
                             name: 'nic-hdl',
-                            value: 'IA5444-RIPE',
+                            value: 'TSTADMINC-RIPE',
                         },
                         {
                             name: 'mnt-by',
-                            value: 'IVANA-MNT',
+                            value: 'TST004-MNT',
                         },
                         {
                             name: 'created',
@@ -211,11 +211,11 @@ const createPersonRespons = {
                         },
                         {
                             name: 'upd-to',
-                            value: 'bad@ripe.net',
+                            value: 'teste2e@ripe.net',
                         },
                         {
                             name: 'auth',
-                            value: 'SSO bad@ripe.net',
+                            value: 'SSO teste2e@ripe.net',
                         },
                         {
                             name: 'mnt-by',
@@ -265,7 +265,7 @@ const createPersonRespons = {
                         },
                         {
                             name: 'phone',
-                            value: '+31611111111111',
+                            value: '+31*******',
                         },
                         {
                             name: 'nic-hdl',
