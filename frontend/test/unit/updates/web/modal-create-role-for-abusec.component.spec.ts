@@ -16,7 +16,7 @@ import { RestService } from '../../../../src/app/updatesweb/rest.service';
 describe('ModalCreateRoleForAbuseCComponent', () => {
     const source = 'RIPE';
     const maintainers = [
-        { type: 'mntner', key: 'a-mnt', auth: ['MD5-PW'] },
+        { type: 'mntner', key: 'TEST29-MNT', auth: ['MD5-PW'] },
         { type: 'mntner', key: 'RIPE-NCC-HM-MNT' },
     ];
 

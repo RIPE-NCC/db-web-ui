@@ -18,7 +18,7 @@ describe('The CreateMntnerPairComponent', () => {
     it('should show syntax error over person field', () => {
         webupdatesPage
             .clickOnSwitchToPersonRole()
-            .typeOnField('mntner', 'UNA-TEST-MNT')
+            .typeOnField('mntner', 'TEST16-MNT')
             .typeOnField('person', 'Üna Švoña')
             .typeOnField('address', 'Utrecht')
             .typeOnField('phone', '+3161234567')

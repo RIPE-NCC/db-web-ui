@@ -183,13 +183,13 @@ const responseEmpty: any = {
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.pre',
+                                        name: 'hl.test.pre',
                                         value: '<b>',
                                     },
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.post',
+                                        name: 'hl.test.post',
                                         value: '</b>',
                                     },
                                 },
@@ -281,7 +281,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'PT-HOMEHOST-20160923',
+                                value: 'NETNAME-TST-20160923',
                             },
                         },
                         {
@@ -293,7 +293,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'org',
-                                value: 'ORG-WA56-RIPE',
+                                value: 'ORG-TEST36-RIPE',
                             },
                         },
                         {
@@ -323,7 +323,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'tdacruzper-mnt',
+                                value: 'TEST27-MNT',
                             },
                         },
                         {
@@ -377,13 +377,13 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'SNET-AT-RU',
+                                value: 'NETNAME-TEST05',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'SURFnet LAN at RU',
+                                value: 'SUPERTESTORG LAN at RU',
                             },
                         },
                         {
@@ -395,13 +395,13 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'SNS1-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'SNS1-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
@@ -419,13 +419,13 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'SN-LIR-MNT',
+                                value: 'TST01-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-irt',
-                                value: 'irt-SURFcert',
+                                value: 'TSTIRT-MNT',
                             },
                         },
                         {
@@ -473,7 +473,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'PE3013-RIPE',
+                                value: 'TSTADMINC1-RIPE',
                             },
                         },
                         {
@@ -533,7 +533,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'lookup-key',
-                                value: 'PE3013-RIPE',
+                                value: 'TSTADMINC1-RIPE',
                             },
                         },
                         {
@@ -557,7 +557,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'nic-hdl',
-                                value: 'PE3013-RIPE',
+                                value: 'TSTADMINC1-RIPE',
                             },
                         },
                         {
@@ -599,19 +599,19 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'lookup-key',
-                                value: 'PP14500-RIPE',
+                                value: 'TST2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'person',
-                                value: 'Penelope Pitstop',
+                                value: 'Penelope Tester',
                             },
                         },
                         {
                             str: {
                                 name: 'address',
-                                value: 'Whacky Races 5',
+                                value: 'Test address',
                             },
                         },
                         {
@@ -623,7 +623,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'nic-hdl',
-                                value: 'PP14500-RIPE',
+                                value: 'TST2-RIPE',
                             },
                         },
                         {
@@ -641,13 +641,13 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'BCGE-MNT',
+                                value: 'TST3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'MNT-LGI',
+                                value: 'TEST17-MNT',
                             },
                         },
                         {
@@ -665,7 +665,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'NATO-MNT1',
+                                value: 'TST4-MNT',
                             },
                         },
                         {
@@ -701,13 +701,13 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'lookup-key',
-                                value: 'JTB67-RIPE',
+                                value: 'TST5-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'person',
-                                value: 'John The Baptist',
+                                value: 'John Tester',
                             },
                         },
                         {
@@ -725,7 +725,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'nic-hdl',
-                                value: 'JTB67-RIPE',
+                                value: 'TST5-RIPE',
                             },
                         },
                         {
@@ -743,13 +743,13 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'BCGE-MNT',
+                                value: 'TST3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'MNT-LGI',
+                                value: 'TEST17-MNT',
                             },
                         },
                         {
@@ -767,7 +767,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'NATO-MNT1',
+                                value: 'TST4-MNT',
                             },
                         },
                         {
@@ -803,7 +803,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'lookup-key',
-                                value: 'PP14499-RIPE',
+                                value: 'TST6-RIPE',
                             },
                         },
                         {
@@ -827,7 +827,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'nic-hdl',
-                                value: 'PP14499-RIPE',
+                                value: 'TST6-RIPE',
                             },
                         },
                         {
@@ -845,13 +845,13 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'BCGE-MNT',
+                                value: 'TST3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'MNT-LGI',
+                                value: 'TEST17-MNT',
                             },
                         },
                         {
@@ -869,7 +869,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'NATO-MNT1',
+                                value: 'TST4-MNT',
                             },
                         },
                         {
@@ -940,13 +940,13 @@ const responseEtchMnt: any = {
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.pre',
+                                        name: 'hl.test.pre',
                                         value: '<b>',
                                     },
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.post',
+                                        name: 'hl.test.post',
                                         value: '</b>',
                                     },
                                 },

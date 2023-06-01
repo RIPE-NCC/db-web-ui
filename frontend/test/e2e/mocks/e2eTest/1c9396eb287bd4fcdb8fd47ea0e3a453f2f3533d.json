@@ -1,0 +1,121 @@
+{
+    "requestUrl": "/api/whois/RIPE/inetnum?password=TEST02-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 400,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://prepdev.ripe.net:1080/RIPE/inetnum"
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/5.254.68.40 - 5.254.68.47"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "5.254.68.40 - 5.254.68.47"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "5.254.68.40 - 5.254.68.47"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "SOMETHING."
+                            },
+                            {
+                                "name": "country",
+                                "value": "AF"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/SVONJA-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "SVONJA-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "attribute": {
+                        "name": "netname",
+                        "value": "        SOMETHING."
+                    },
+                    "text": "Syntax error in %s",
+                    "args": [
+                        {
+                            "value": "SOMETHING."
+                        }
+                    ]
+                },
+                {
+                    "severity": "Info",
+                    "attribute": {
+                        "name": "inetnum",
+                        "value": "5.254.68.40 - 5.254.68.47"
+                    },
+                    "text": "Value %s converted to %s",
+                    "args": [
+                        {
+                            "value": "5.254.68.40/29"
+                        },
+                        {
+                            "value": "5.254.68.40 - 5.254.68.47"
+                        }
+                    ]
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

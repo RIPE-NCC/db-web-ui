@@ -27,15 +27,15 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "COMBOX"
+                                "value": "TESTNETNAME31"
                             },
                             {
                                 "name": "descr",
-                                "value": "COM.BOX Computer Services"
+                                "value": "Test netname"
                             },
                             {
                                 "name": "descr",
-                                "value": "COM.BOX - WINET Computer Services GmbH & Co. KG, Berlin"
+                                "value": "Test netname full description"
                             },
                             {
                                 "name": "country",
@@ -44,37 +44,37 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/SL88"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "SL88",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/SL88"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "SL88",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/WVDB4-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "WVDB4-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/UUNETDE-I"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST09-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "UUNETDE-I",
+                                "value": "TEST09-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

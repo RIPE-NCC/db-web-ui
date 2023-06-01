@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources/ipanalyser/ipv4.json?org-id=ORG-TEST19-RIPE",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

@@ -342,11 +342,11 @@ describe('LookupComponent', () => {
                             },
                             {
                                 name: 'netname',
-                                value: 'VODA-ZIGGO',
+                                value: 'NETNAME-TEST40',
                             },
                             {
                                 name: 'descr',
-                                value: 'CPE Customers NL',
+                                value: 'Customers NL',
                             },
                             {
                                 name: 'country',
@@ -355,19 +355,19 @@ describe('LookupComponent', () => {
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE',
                                 },
                                 name: 'admin-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                                 'referenced-type': 'role',
                             },
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE',
                                 },
                                 name: 'tech-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                                 'referenced-type': 'role',
                             },
                             {
@@ -376,7 +376,7 @@ describe('LookupComponent', () => {
                             },
                             {
                                 name: 'remarks',
-                                value: 'Contact abuse@ziggo.nl concerning criminal',
+                                value: 'Contact abuse@test.net concerning criminal',
                             },
                             {
                                 name: 'remarks',
@@ -384,15 +384,15 @@ describe('LookupComponent', () => {
                             },
                             {
                                 name: 'notify',
-                                value: '***@chello.at',
+                                value: '***@test.net',
                             },
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/ZIGGO-SERVICES-MNT',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST40-MNT',
                                 },
                                 name: 'mnt-by',
-                                value: 'ZIGGO-SERVICES-MNT',
+                                value: 'TEST40-MNT',
                                 'referenced-type': 'mntner',
                             },
                             {
@@ -417,14 +417,14 @@ describe('LookupComponent', () => {
                         ],
                     },
                     'resource-holder': {
-                        key: 'ORG-CB6-RIPE',
-                        name: 'Ziggo Services B.V.',
+                        key: 'ORG-TEST40-RIPE',
+                        name: 'Test Service',
                     },
                     'abuse-contact': {
                         key: 'UNA7-RIPE',
-                        email: 'abuse@ziggo.nl',
+                        email: 'abuse@test.net',
                         suspect: true,
-                        'org-id': 'ORG-CB6-RIPE',
+                        'org-id': 'ORG-TEST40-RIPE',
                     },
                     managed: false,
                 },
@@ -464,11 +464,11 @@ describe('LookupComponent', () => {
                             },
                             {
                                 name: 'netname',
-                                value: 'VODA-ZIGGO',
+                                value: 'NETNAME-TEST40',
                             },
                             {
                                 name: 'descr',
-                                value: 'CPE Customers NL',
+                                value: 'Customers NL',
                             },
                             {
                                 name: 'country',
@@ -477,19 +477,19 @@ describe('LookupComponent', () => {
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE',
                                 },
                                 name: 'admin-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                                 'referenced-type': 'role',
                             },
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE',
                                 },
                                 name: 'tech-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                                 'referenced-type': 'role',
                             },
                             {
@@ -498,7 +498,7 @@ describe('LookupComponent', () => {
                             },
                             {
                                 name: 'remarks',
-                                value: 'Contact abuse@ziggo.nl concerning criminal',
+                                value: 'Contact abuse@test.net concerning criminal',
                             },
                             {
                                 name: 'remarks',
@@ -506,15 +506,15 @@ describe('LookupComponent', () => {
                             },
                             {
                                 name: 'notify',
-                                value: '***@chello.at',
+                                value: '***@test.net',
                             },
                             {
                                 link: {
                                     type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/ZIGGO-SERVICES-MNT',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST40-MNT',
                                 },
                                 name: 'mnt-by',
-                                value: 'ZIGGO-SERVICES-MNT',
+                                value: 'TEST40-MNT',
                                 'referenced-type': 'mntner',
                             },
                             {
@@ -539,14 +539,14 @@ describe('LookupComponent', () => {
                         ],
                     },
                     'resource-holder': {
-                        key: 'ORG-CB6-RIPE',
-                        name: 'Ziggo Services B.V.',
+                        key: 'ORG-TEST40-RIPE',
+                        name: 'Test Service',
                     },
                     'abuse-contact': {
                         key: 'UNA7-RIPE',
-                        email: 'abuse@ziggo.nl',
+                        email: 'abuse@test.net',
                         suspect: true,
-                        'org-id': 'ORG-CB6-RIPE',
+                        'org-id': 'ORG-TEST40-RIPE',
                     },
                     managed: false,
                 },

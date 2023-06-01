@@ -1,11 +1,11 @@
 {
-    "requestUrl": "/api/whois/RIPE/mntner/ERICSSON-MNT",
+    "requestUrl": "/api/whois/RIPE/mntner/TEST03-MNT",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
         "link": {
             "type": "locator",
-            "href": "http://127.0.0.1:1080/RIPE/mntner/ERICSSON-MNT"
+            "href": "http://127.0.0.1:1080/RIPE/mntner/TEST03-MNT"
         },
         "objects": {
             "object": [
@@ -13,7 +13,7 @@
                     "type": "mntner",
                     "link": {
                         "type": "locator",
-                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
                     },
                     "source": {
                         "id": "ripe"
@@ -22,7 +22,7 @@
                         "attribute": [
                             {
                                 "name": "mntner",
-                                "value": "ERICSSON-MNT"
+                                "value": "TEST03-MNT"
                             }
                         ]
                     },
@@ -30,11 +30,11 @@
                         "attribute": [
                             {
                                 "name": "mntner",
-                                "value": "ERICSSON-MNT"
+                                "value": "TEST03-MNT"
                             },
                             {
                                 "name": "auth",
-                                "value": "MD5-PW $1$mKp9u2Od$PhAfg9I6Z8V.xtWmALO4x."
+                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
                             },
                             {
                                 "name": "auth",
@@ -42,45 +42,45 @@
                             },
                             {
                                 "name": "descr",
-                                "value": "Maintainer for all Ericsson objects"
+                                "value": "Maintainer for all TEST objects"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "ELIR1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "ELIR1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "name": "upd-to",
-                                "value": "***@ericsson.com"
+                                "value": "***@test.com"
                             },
                             {
                                 "name": "mnt-nfy",
-                                "value": "***@ericsson.com"
+                                "value": "***@test.com"
                             },
                             {
                                 "name": "notify",
-                                "value": "***@ericsson.com"
+                                "value": "***@test.com"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "ERICSSON-MNT",
+                                "value": "TEST03-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

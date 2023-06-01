@@ -37,11 +37,11 @@ public class WhoisInternalProxyTest {
 
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("/db-web-ui/api/whois-internal/api/resources/ipanalyser/ipv4.json",
-            "org-id=ORG-CSL9",
+            "org-id=ORG-TST17",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/ipanalyser/ipv4.json?org-id=ORG-CSL9", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/ipanalyser/ipv4.json?org-id=ORG-TST17", uri.toString());
     }
 
     @Test
@@ -49,11 +49,11 @@ public class WhoisInternalProxyTest {
 
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal../fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal../fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -61,11 +61,11 @@ public class WhoisInternalProxyTest {
 
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal....//fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal..../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal..../fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -73,11 +73,11 @@ public class WhoisInternalProxyTest {
 
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal......///fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal....../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal....../fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -85,11 +85,11 @@ public class WhoisInternalProxyTest {
 
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/../fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/../fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -97,44 +97,44 @@ public class WhoisInternalProxyTest {
 
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal./fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal./fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal./fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
     public void shouldThrowErrorOnSpecialCharacters() {
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
     public void shouldRemoveNormaliseUrlWithHtml() {
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/<script>alert('Hi');</script>",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/%3Cscript%3Ealert('Hi');%3C/script%3E?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/%3Cscript%3Ealert('Hi');%3C/script%3E?value=test@ripe.net", uri.toString());
     }
 
     @Test
     public void shouldRemoveNormaliseUrlWithSQL() {
         WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/db-web-ui");
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/select from 1 on 1",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois-internal",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/select%20from%201%20on%201?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/select%20from%201%20on%201?value=test@ripe.net", uri.toString());
     }
 
     @Test

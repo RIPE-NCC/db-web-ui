@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/metadata/help",
+    "requestUrl": "/api/metadata/help",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": [

@@ -25,7 +25,7 @@
                     },
                     {
                         "name": "netname",
-                        "value": "RU-1C-20160322"
+                        "value": "NETNAME-TEST-02"
                     },
                     {
                         "name": "descr",
@@ -39,37 +39,37 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-EIP1-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST19-RIPE"
                         },
                         "name": "org",
-                        "value": "ORG-EIP1-RIPE",
+                        "value": "ORG-TEST19-RIPE",
                         "referenced-type": "organisation"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-LA538-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST27-RIPE"
                         },
                         "name": "sponsoring-org",
-                        "value": "ORG-LA538-RIPE",
+                        "value": "ORG-TEST27-RIPE",
                         "referenced-type": "organisation"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/MV10039-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                         },
                         "name": "admin-c",
-                        "value": "MV10039-RIPE",
+                        "value": "TSTADMINC-RIPE",
                         "referenced-type": "person"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/inty1-ripe"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                         },
                         "name": "tech-c",
-                        "value": "inty1-ripe",
+                        "value": "TSTTECHC-RIPE",
                         "referenced-type": "person"
                     },
                     {
@@ -79,10 +79,10 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TPOL888-MNT"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST01-MNT"
                         },
                         "name": "mnt-by",
-                        "value": "TPOL888-MNT",
+                        "value": "TST01-MNT",
                         "referenced-type": "mntner"
                     },
                     {
@@ -110,7 +110,7 @@
                 "resource": "192.87.0.0 - 192.87.255.255",
                 "status": "ALLOCATED PA",
                 "type": "inetnum",
-                "netname": "NL-SURFNET-950612",
+                "netname": "NETNAME-TEST82",
                 "usage": {
                     "total": 65536,
                     "used": 33096,

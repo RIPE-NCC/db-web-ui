@@ -50,25 +50,25 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "If your program/website is unable to process the descr part in this object, remember that this part can be any free-form text using Latin-1 char encoding."
+                                    "value": "-----------------------"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "If you see an alert from the website which is not owned by you, please contact the website owner asap."
+                                    "value": "remarks"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "Anyone can get an AS with a very cheap price and attack your website."
+                                    "value": "remarks"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "If you are unsure of this, please contact me. My email can be found in this object."
+                                    "value": "remarks"
                                 }
                             },
                             {
@@ -80,31 +80,31 @@
                             {
                                 "str": {
                                     "name": "org",
-                                    "value": "ORG-JITS1-RIPE"
+                                    "value": "ORG-TEST33-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "sponsoring-org",
-                                    "value": "ORG-MNL32-RIPE"
+                                    "value": "ORG-TEST34-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "HZ1517-RIPE"
+                                    "value": "TSTADMINC-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "HZ1517-RIPE"
+                                    "value": "TSTADMINC-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "https://swineson.me"
+                                    "value": "remarks"
                                 }
                             },
                             {
@@ -122,7 +122,7 @@
                             {
                                 "str": {
                                     "name": "mnt-by",
-                                    "value": "JAMESITS-MNT"
+                                    "value": "TEST20-MNT"
                                 }
                             },
                             {
@@ -170,25 +170,25 @@
                             {
                                 "str": {
                                     "name": "as-name",
-                                    "value": "ofis-IX"
+                                    "value": "AS-TEST-NAME"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "descr",
-                                    "value": "ofis Internet Exchange"
+                                    "value": "Org name"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "org",
-                                    "value": "ORG-OA957-RIPE"
+                                    "value": "ORG-TEST30-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "sponsoring-org",
-                                    "value": "ORG-MGTL1-RIPE"
+                                    "value": "ORG-TEST31-RIPE"
                                 }
                             },
                             {
@@ -200,13 +200,13 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "============[Peering requests: info@ofis.link ]============"
+                                    "value": "============[ ]============"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "=====================[http://ofis.link]===================="
+                                    "value": "=====================[]===================="
                                 }
                             },
                             {
@@ -224,7 +224,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "=============[Abuse reports: abuse@ofis.link ]============="
+                                    "value": "=============[]============="
                                 }
                             },
                             {
@@ -236,7 +236,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# TurkTelekom"
+                                    "value": "******"
                                 }
                             },
                             {
@@ -248,13 +248,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS9121 announce AS-Ofis-Link"
+                                    "value": "to AS9121 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Hurricane"
+                                    "value": "# *************"
                                 }
                             },
                             {
@@ -266,13 +266,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS6939 announce AS-Ofis-Link"
+                                    "value": "to AS6939 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Superonline"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -284,13 +284,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS34984 announce AS-Ofis-Link"
+                                    "value": "to AS34984 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Seabone"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -302,13 +302,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS6762 announce AS-Ofis-Link"
+                                    "value": "to AS6762 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# TTI"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -320,13 +320,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS6663 announce AS-Ofis-Link"
+                                    "value": "to AS6663 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Choopa"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -338,13 +338,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS20473 announce AS-Ofis-Link"
+                                    "value": "to AS20473 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Ciklet"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -356,13 +356,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS48292 announce AS-Ofis-Link"
+                                    "value": "to AS48292 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Jamesits"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -374,13 +374,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS205610 announce AS-Ofis-Link"
+                                    "value": "to AS205610 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# EvIX"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -392,13 +392,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS137933 announce AS-Ofis-Link"
+                                    "value": "to AS137933 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# QRator"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -410,13 +410,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS197068 announce AS-Ofis-Link"
+                                    "value": "to AS197068 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# NetAssist"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -428,13 +428,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS29632 announce AS-Ofis-Link"
+                                    "value": "to AS29632 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# OmerGolgeli"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -446,13 +446,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS202365 announce AS-Ofis-Link"
+                                    "value": "to AS202365 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Marek-Krolikowski"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -464,13 +464,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS205593 announce AS-Ofis-Link"
+                                    "value": "to AS205593 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# IPv6.edu.pl"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -482,13 +482,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS205036 announce AS-Ofis-Link"
+                                    "value": "to AS205036 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# RO-RaduDraghici"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -500,13 +500,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS44024 announce AS-Ofis-Link"
+                                    "value": "to AS44024 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# TEEMO-AS-AP"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -518,13 +518,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS23738 announce AS-Ofis-Link"
+                                    "value": "to AS23738 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# HARRYCROSS-AS-AP"
+                                    "value": "# ***************"
                                 }
                             },
                             {
@@ -536,13 +536,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS137474 announce AS-Ofis-Link"
+                                    "value": "to AS137474 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# WILSON"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -554,13 +554,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS202313 announce AS-Ofis-Link"
+                                    "value": "to AS202313 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# ArielAntigua"
+                                    "value": "# *************"
                                 }
                             },
                             {
@@ -572,13 +572,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS207036 announce AS-Ofis-Link"
+                                    "value": "to AS207036 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# 10VPN-HOSTING"
+                                    "value": "# *************"
                                 }
                             },
                             {
@@ -590,13 +590,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS396503 announce AS-Ofis-Link"
+                                    "value": "to AS396503 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Ruben-Garbade"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -608,13 +608,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS204438 announce AS-Ofis-Link"
+                                    "value": "to AS204438 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# SCOTTN-AS"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -626,13 +626,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS204778 announce AS-Ofis-Link"
+                                    "value": "to AS204778 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# SkyWth Inc"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -644,13 +644,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS136985 announce AS-Ofis-Link"
+                                    "value": "to AS136985 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# BjoLab"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -662,13 +662,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS202039 announce AS-Ofis-Link"
+                                    "value": "to AS202039 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# internetsahibi"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -680,13 +680,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS42216 announce AS-Ofis-Link"
+                                    "value": "to AS42216 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# first-root"
+                                    "value": "# ************"
                                 }
                             },
                             {
@@ -698,13 +698,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS41108 announce AS-Ofis-Link"
+                                    "value": "to AS41108 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# KleyRex"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -716,13 +716,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS31142 announce AS-Ofis-Link"
+                                    "value": "to AS31142 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# Locix"
+                                    "value": "# ***********"
                                 }
                             },
                             {
@@ -734,13 +734,13 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS202409 announce AS-Ofis-Link"
+                                    "value": "to AS202409 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# mitues"
+                                    "value": "# **********"
                                 }
                             },
                             {
@@ -752,19 +752,19 @@
                             {
                                 "str": {
                                     "name": "export",
-                                    "value": "to AS205381 announce AS-Ofis-Link"
+                                    "value": "to AS205381 announce AS-TEST"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "ofis-ripe"
+                                    "value": "TSTADMINC-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "ofis-ripe"
+                                    "value": "TSTADMINC-RIPE"
                                 }
                             },
                             {
@@ -782,7 +782,7 @@
                             {
                                 "str": {
                                     "name": "mnt-by",
-                                    "value": "ofis-link"
+                                    "value": "TST-MNT"
                                 }
                             },
                             {
@@ -853,13 +853,13 @@
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.pre",
+                                            "name": "hl.test.pre",
                                             "value": "<b>"
                                         }
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.post",
+                                            "name": "hl.test.post",
                                             "value": "</b>"
                                         }
                                     },

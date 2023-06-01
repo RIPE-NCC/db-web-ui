@@ -61,7 +61,7 @@ describe('WhoisMetaService', () => {
 
     it('should enrich attributes with meta attributes for a given type', () => {
         const attrs = [
-            { name: 'status', value: 'mandatory1value', link: { type: 'locator', href: 'http://abc.com/here' } },
+            { name: 'status', value: 'mandatory1value', link: { type: 'locator', href: 'http://test.com/here' } },
             { name: 'mnt-lower', value: 'optional1value', comment: 'My comment', 'referenced-type': 'dummy' },
         ];
         expect(whoisMetaService.enrichAttributesWithMetaInfo('inet6num', attrs)).toEqual([
@@ -69,7 +69,7 @@ describe('WhoisMetaService', () => {
                 name: 'status',
                 value: 'mandatory1value',
                 comment: undefined,
-                link: { type: 'locator', href: 'http://abc.com/here' },
+                link: { type: 'locator', href: 'http://test.com/here' },
                 'referenced-type': undefined,
                 $$meta: { $$idx: undefined, $$mandatory: true, $$multiple: false, $$primaryKey: undefined, $$refs: [], $$isEnum: true },
             },

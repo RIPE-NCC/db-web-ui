@@ -34,15 +34,15 @@
                             },
                             {
                                 "name": "nserver",
-                                "value": "dns1.mivitec.net"
+                                "value": "dns1.test.net"
                             },
                             {
                                 "name": "nserver",
-                                "value": "dns2.mivitec.de"
+                                "value": "dns2.test.de"
                             },
                             {
                                 "name": "admin-c",
-                                "value": "LG1-RIPE"
+                                "value": "TSTADMINC4-RIPE"
                             },
                             {
                                 "name": "tech-c",
@@ -50,7 +50,7 @@
                             },
                             {
                                 "name": "zone-c",
-                                "value": "LG1-RIPE"
+                                "value": "TSTADMINC4-RIPE"
                             },
                             {
                                 "link": {

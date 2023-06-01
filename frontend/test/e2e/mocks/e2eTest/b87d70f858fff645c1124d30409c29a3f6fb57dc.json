@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-TEST19-RIPE&type=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

@@ -181,7 +181,7 @@ describe('MntnerService', () => {
 
     it('should need authentication for SSO mntner with different case', () => {
         const ssoMntners = [{ type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] }];
-        const objectMntners = [{ type: 'mntner', key: 'a-mnt' }];
+        const objectMntners = [{ type: 'mntner', key: 'A-MNT' }];
         expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
         expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
@@ -316,8 +316,8 @@ describe('MntnerService', () => {
 
     it('should remove duplicated mnt-by from list of IMntByModel', () => {
         const objectMntners = [
-            { key: 'LUDIGSSOFT-MNT', mine: false, type: 'mntner' },
-            { key: 'LUDIGSSOFT-MNT', mine: false, type: 'mntner' },
+            { key: 'TST04-MNT', mine: false, type: 'mntner' },
+            { key: 'TST04-MNT', mine: false, type: 'mntner' },
         ];
         expect(objectMntners.length).toBe(2);
         expect(mntnerService.removeDuplicatedMnts(objectMntners).length).toBe(1);
@@ -351,9 +351,9 @@ describe('MntnerService', () => {
                 $$id: 'attr-2',
                 $$invalid: false,
                 comment: undefined,
-                link: { type: 'locator', href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/LUDIGSSOFT-MNT' },
+                link: { type: 'locator', href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TST04-MNT' },
                 name: 'mnt-by',
-                value: 'LUDIGSSOFT-MNT',
+                value: 'TST04-MNT',
             },
             {
                 $$disable: false,
@@ -361,9 +361,9 @@ describe('MntnerService', () => {
                 $$id: 'attr-3',
                 $$invalid: false,
                 comment: undefined,
-                link: { type: 'locator', href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/LUDIGSSOFT-MNT' },
+                link: { type: 'locator', href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TST04-MNT' },
                 name: 'mnt-by',
-                value: 'LUDIGSSOFT-MNT',
+                value: 'TST04-MNT',
             },
             {
                 $$disable: false,

@@ -6,7 +6,7 @@
                     "type": "mntner",
                     "link": {
                         "type": "locator",
-                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
                     },
                     "source": {
                         "id": "ripe"
@@ -15,7 +15,7 @@
                         "attribute": [
                             {
                                 "name": "mntner",
-                                "value": "ERICSSON-MNT"
+                                "value": "TEST03-MNT"
                             }
                         ]
                     },
@@ -23,7 +23,7 @@
                         "attribute": [
                             {
                                 "name": "mntner",
-                                "value": "ERICSSON-MNT"
+                                "value": "TEST03-MNT"
                             },
                             {
                                 "name": "auth",
@@ -42,45 +42,45 @@
                             },
                             {
                                 "name": "descr",
-                                "value": "Maintainer for all Ericsson objects"
+                                "value": "Maintainer for all TEST objects"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "ELIR1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "ELIR1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "name": "upd-to",
-                                "value": "***@ericsson.com"
+                                "value": "***@test.com"
                             },
                             {
                                 "name": "mnt-nfy",
-                                "value": "***@ericsson.com"
+                                "value": "***@test.com"
                             },
                             {
                                 "name": "notify",
-                                "value": "***@ericsson.com"
+                                "value": "***@test.com"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "ERICSSON-MNT",
+                                "value": "TEST03-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
@@ -108,5 +108,5 @@
     },
     "statusCode": 200,
     "contentType": "application/json",
-    "requestUrl": "/api/whois/RIPE/mntner/ERICSSON-MNT?password=xxx&unfiltered=true"
+    "requestUrl": "/api/whois/RIPE/mntner/TEST03-MNT?password=xxx&unfiltered=true"
 }

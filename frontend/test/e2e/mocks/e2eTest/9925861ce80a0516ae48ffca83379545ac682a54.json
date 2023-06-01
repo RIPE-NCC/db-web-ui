@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/api/whois/autocomplete?extended=true&field=mntner&query=TEST16-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

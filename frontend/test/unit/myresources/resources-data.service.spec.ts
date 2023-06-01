@@ -5,7 +5,7 @@ import { MyResourcesModule } from '../../../src/app/myresources/my-resources.mod
 import { IResourceTickets } from '../../../src/app/myresources/resource-type.model';
 import { ResourcesDataService } from '../../../src/app/myresources/resources-data.service';
 
-const TEST_ORG_ID = 'ORG-IOB1-RIPE';
+const TEST_ORG_ID = 'ORG-ITEST-RIPE';
 
 const TEST_RESOURCE = '185.149.24.0%20-%20185.149.27.255';
 
@@ -24,7 +24,7 @@ const responseResourceOverviewResponseModel = {
             type: 'inetnum',
             resource: '185.62.164.0 - 185.62.167.255',
             status: 'ALLOCATED PA',
-            netname: 'IE-AFILIAS-LTD-20140702',
+            netname: 'NETNAME-TEST30',
             usage: {
                 total: 1024,
                 used: 512,
@@ -74,7 +74,7 @@ describe('ResourcesDataService', () => {
         resourcesDataService.fetchResources(TEST_ORG_ID, 'inetnum', false).subscribe((resp) => {
             expect(resp).toBe(responseResourceOverviewResponseModel);
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/resources?org-id=ORG-IOB1-RIPE&type=inetnum' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/resources?org-id=ORG-ITEST-RIPE&type=inetnum' });
         expect(req.request.method).toBe('GET');
         req.flush(responseResourceOverviewResponseModel);
     });

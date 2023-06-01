@@ -105,7 +105,7 @@ describe('ResourceDetailsComponent', () => {
             httpMock
                 .expectOne({
                     method: 'GET',
-                    url: 'api/ba-apps/resources/ORG-BA34-RIPE/212.58.224.0 - 212.58.255.255',
+                    url: 'api/ba-apps/resources/ORG-TEST01-RIPE/212.58.224.0 - 212.58.255.255',
                 })
                 .flush(MOCK_BA_RESPONSE);
         });
@@ -143,7 +143,7 @@ describe('ResourceDetailsComponent', () => {
             httpMock
                 .expectOne({
                     method: 'GET',
-                    url: 'api/ba-apps/resources/ORG-BA34-RIPE/AS2818',
+                    url: 'api/ba-apps/resources/ORG-TEST01-RIPE/AS2818',
                 })
                 .flush('{"tickets":{"AS2818":[]}}');
         });
@@ -168,7 +168,7 @@ const INETNUM_MOCK = {
             type: 'inetnum',
             iRR: true,
             rDNS: true,
-            netname: 'UK-BBC-991005',
+            netname: 'NETNAME-TEST20',
             usage: {
                 total: 8192,
                 used: 2592,
@@ -205,15 +205,15 @@ const INETNUM_MOCK = {
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-BA34-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST01-RIPE',
                     },
                     name: 'org',
-                    value: 'ORG-BA34-RIPE',
+                    value: 'ORG-TEST01-RIPE',
                     'referenced-type': 'organisation',
                 },
                 {
                     name: 'netname',
-                    value: 'UK-BBC-991005',
+                    value: 'NETNAME-TEST20',
                 },
                 {
                     name: 'country',
@@ -222,19 +222,19 @@ const INETNUM_MOCK = {
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/BBC-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/TEST01-RIPE',
                     },
                     name: 'admin-c',
-                    value: 'BBC-RIPE',
+                    value: 'TEST01-RIPE',
                     'referenced-type': 'role',
                 },
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/BBC-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/TEST01-RIPE',
                     },
                     name: 'tech-c',
-                    value: 'BBC-RIPE',
+                    value: 'TEST01-RIPE',
                     'referenced-type': 'role',
                 },
                 {
@@ -253,19 +253,19 @@ const INETNUM_MOCK = {
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/BBC-MNT',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TEST01-MNT',
                     },
                     name: 'mnt-by',
-                    value: 'BBC-MNT',
+                    value: 'TEST01-MNT',
                     'referenced-type': 'mntner',
                 },
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/BBC-MNT',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TEST01-MNT',
                     },
                     name: 'mnt-routes',
-                    value: 'BBC-MNT',
+                    value: 'TEST01-MNT',
                     'referenced-type': 'mntner',
                 },
                 {
@@ -302,10 +302,10 @@ const MOCK_AUTNUM = {
             resource: 'AS2818',
             status: 'ASSIGNED',
             type: 'aut-num',
-            orgName: 'ORG-BA34-RIPE',
+            orgName: 'ORG-TEST01-RIPE',
             iRR: true,
             rDNS: false,
-            asname: 'BBC',
+            asname: 'TEST01',
         },
     ],
     totalNumberOfResources: 0,
@@ -337,19 +337,19 @@ const MOCK_AUTNUM = {
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-BA34-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST01-RIPE',
                     },
                     name: 'org',
-                    value: 'ORG-BA34-RIPE',
+                    value: 'ORG-TEST01-RIPE',
                     'referenced-type': 'organisation',
                 },
                 {
                     name: 'as-name',
-                    value: 'BBC',
+                    value: 'TEST01',
                 },
                 {
                     name: 'descr',
-                    value: 'BBC Internet Services, UK',
+                    value: 'TEST01 Internet Services',
                 },
                 {
                     name: 'import',
@@ -361,11 +361,11 @@ const MOCK_AUTNUM = {
                 },
                 {
                     name: 'export',
-                    value: 'to AS42 announce AS-BBC',
+                    value: 'to AS42 announce AS-TEST01',
                 },
                 {
                     name: 'export',
-                    value: 'to AS286 announce AS-BBC',
+                    value: 'to AS286 announce AS-TEST01',
                 },
                 {
                     name: 'default',
@@ -374,19 +374,19 @@ const MOCK_AUTNUM = {
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/BBC-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/TEST01-RIPE',
                     },
                     name: 'admin-c',
-                    value: 'BBC-RIPE',
+                    value: 'TEST01-RIPE',
                     'referenced-type': 'role',
                 },
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/BBC-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/TEST01-RIPE',
                     },
                     name: 'tech-c',
-                    value: 'BBC-RIPE',
+                    value: 'TEST01-RIPE',
                     'referenced-type': 'role',
                 },
                 {
@@ -405,10 +405,10 @@ const MOCK_AUTNUM = {
                 {
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/BBC-MNT',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TEST01-MNT',
                     },
                     name: 'mnt-by',
-                    value: 'BBC-MNT',
+                    value: 'TEST01-MNT',
                     'referenced-type': 'mntner',
                 },
                 {

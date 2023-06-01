@@ -54,7 +54,7 @@ public class BaAppsControllerTest {
         memberFyi.orgObjectId = null;
         UserInfoResponse.Member member = new UserInfoResponse.Member();
         member.membershipId = 123L;
-        member.orgObjectId = "ORG-RIEN1-RIPE";
+        member.orgObjectId = "ORG-TEST28-RIPE";
         userInfoResponse.members = new ArrayList<>() {{
             add(memberFyi);
             add(member);
@@ -69,7 +69,7 @@ public class BaAppsControllerTest {
     @Test
     public void get_tickets() throws Exception {
         mock();
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-RIEN1-RIPE", "AS3333");
+        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-TEST28-RIPE", "AS3333");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(RESOURCE_TICKET_RESPONSE));
     }
@@ -84,7 +84,7 @@ public class BaAppsControllerTest {
 
     @Test
     public void get_tickets_invalid_resource() {
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-RIEN1-RIPE", "INVALID");
+        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-TEST28-RIPE", "INVALID");
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));

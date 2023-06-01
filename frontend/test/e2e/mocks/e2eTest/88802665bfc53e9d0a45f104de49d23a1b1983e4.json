@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/RIPE/route6/2a09%3A4c2%3A%3A%2F32AS58057?unfiltered=true",
+    "requestUrl": "/api/whois/RIPE/route6/2a09%3A4c2%3A%3A%2F32AS58057?unfiltered=true",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -43,10 +43,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/SBMT"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST49-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "SBMT",
+                                "value": "TEST49-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

@@ -58,15 +58,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "UPC"
-                            },
-                            {
-                                "name": "descr",
-                                "value": "UPC Telekabel"
-                            },
-                            {
-                                "name": "descr",
-                                "value": "DHCP Range"
+                                "value": "ORG-TEST26-RIPE"
                             },
                             {
                                 "name": "country",
@@ -75,24 +67,24 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "LGI-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "LGI-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "name": "remarks",
-                                "value": "Contact abuse@chello.at concerning criminal"
+                                "value": "Contact abuse@test.net concerning criminal"
                             },
                             {
                                 "name": "remarks",
@@ -105,10 +97,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "ERICSSON-MNT",
+                                "value": "TEST03-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

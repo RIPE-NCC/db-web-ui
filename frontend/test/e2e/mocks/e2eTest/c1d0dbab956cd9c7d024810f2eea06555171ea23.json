@@ -1,6 +1,0 @@
-{
-    "requestUrl": "/api/whois/hierarchy/parents-of?key=192.87.0.0%20-%20192.87.0.255&org=ORG-Sb3-RIPE&type=inetnum",
-    "contentType": "application/javascript",
-    "statusCode": 200,
-    "data": ["192.87.0.0 - 192.87.255.255"]
-}

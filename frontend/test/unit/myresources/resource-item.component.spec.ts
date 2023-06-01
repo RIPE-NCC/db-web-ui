@@ -34,7 +34,7 @@ describe('ResourceItemComponent', () => {
             status: 'ASSIGNED PI',
             iRR: true,
             rDNS: true,
-            netname: 'BBC-DMS-RDG-NET',
+            netname: 'TEST01-DMS-RDG-NET',
             usage: {
                 total: 512,
                 used: 0,

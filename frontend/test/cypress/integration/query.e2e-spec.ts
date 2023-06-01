@@ -160,10 +160,10 @@ describe('Query scenario', () => {
             .clickCheckboxDoNotRetrieve();
         queryPage
             .clickOnSearchButton()
-            .expectSearchHeaderToContain('Responsible organisation: WITBE NET S.A.')
-            .expectSearchHeaderToContain('Abuse contact info: lir@witbe.net')
-            .expectSearchHeaderLinkToContain('lookup?source=ripe&key=ORG-WA9-RIPE&type=organisation', 0)
-            .expectSearchHeaderLinkToContain('lookup?source=ripe&key=AR15400-RIPE&type=role', 1);
+            .expectSearchHeaderToContain('Responsible organisation: ORGTEST30')
+            .expectSearchHeaderToContain('Abuse contact info: lir@orgtest30.net')
+            .expectSearchHeaderLinkToContain('lookup?source=ripe&key=ORG-TEST30-RIPE&type=organisation', 0)
+            .expectSearchHeaderLinkToContain('lookup?source=ripe&key=TEST000-RIPE&type=role', 1);
     });
 
     it('should show object banner with suspected abuse contact info', () => {
@@ -259,15 +259,15 @@ describe('Query scenario', () => {
             .expectNumberOfResults(1)
             .getWhoisObjectViewer(0)
             .expectAttributeToContainLink(0, '?source=ripe-nonauth&key=AS9777&type=aut-num')
-            .expectAttributeToContainLink(9, '?source=ripe-nonauth&key=JYH3-RIPE&type=person')
-            .expectAttributeToContainLink(10, '?source=ripe-nonauth&key=SDH19-RIPE&type=person')
-            .expectAttributeToContainLink(18, '?source=ripe-nonauth&key=AS4663-RIPE-MNT&type=mntner');
+            .expectAttributeToContainLink(8, '?source=ripe-nonauth&key=TSTADMINC-RIPE&type=person')
+            .expectAttributeToContainLink(9, '?source=ripe-nonauth&key=TSTTECHC-RIPE&type=person')
+            .expectAttributeToContainLink(17, '?source=ripe-nonauth&key=TEST14-MNT&type=mntner');
 
         queryPage
             .expectSearchTerm('AS9777')
             .getWhoisObjectViewer(0)
             .expectRipeStatLinkHref('https://stat.ripe.net/AS9777?sourceapp=ripedb')
-            .expectAttributeToContainKeyAndValue(21, 'source', 'RIPE-NONAUTH');
+            .expectAttributeToContainKeyAndValue(20, 'source', 'RIPE-NONAUTH');
 
         queryPage
             .clickOnShareButton()
@@ -329,7 +329,7 @@ describe('Query scenario', () => {
 
     it('should search by inverse lookup abuse-c', () => {
         queryPage
-            .typeSearchTerm('AR24917-RIPE')
+            .typeSearchTerm('TEST123-RIPE')
             .clickOnSearchButton()
             .expectAdvancedFilterMenuTitleToBe('Advanced filter')
             .clickOnAdvancedFilterDropdown()
@@ -345,13 +345,13 @@ describe('Query scenario', () => {
             .clickOnSearchButton()
             .expectNumberOfResults(1)
             .expectWhoisObjectViewerComponentPresentInResults()
-            .expectResultToContainText(0, 'METRO-ROLE')
+            .expectResultToContainText(0, 'TEST1234-ROLE')
             .expectQueryFlagsContainerVisible(false);
     });
 
     it('should not count default values as selected items in advanced filter dropdown', () => {
         queryPage
-            .typeSearchTerm('AR24917-RIPE')
+            .typeSearchTerm('TEST123-RIPE')
             .clickOnSearchButton()
             .expectAdvancedFilterMenuTitleToBe('Advanced filter')
             .clickOnAdvancedFilterDropdown()
@@ -363,7 +363,7 @@ describe('Query scenario', () => {
 
     it('should have disabled hierarchy tab - when search term is recognised like type from ObjectTypesEnum and is not inetnum, inet6num, domain, route, route6', () => {
         queryPage
-            .typeSearchTerm('AR24917-RIPE')
+            .typeSearchTerm('TEST123-RIPE')
             .clickOnSearchButton()
             .expectHierarchyFlagsMenuTitleToBe('Hierarchy flags')
             .expectHierarchyFlagsMenuToBeDisabled(true);
@@ -439,7 +439,7 @@ describe('Query scenario', () => {
 
     it('should have enabled just person/role checkbox in Types dropdown when type is person', () => {
         queryPage
-            .typeSearchTerm('AR24917-RIPE')
+            .typeSearchTerm('TEST123-RIPE')
             .clickOnSearchButton()
             .expectHierarchyFlagsMenuTitleToBe('Hierarchy flags')
             .expectHierarchyFlagsMenuToBeDisabled(true)
@@ -594,10 +594,10 @@ describe('Query scenario', () => {
         queryPage.typeSearchTerm('223.0.0.0').clickOnSearchButton().expectNumberOfResults(1).clickOnApplyFilters().expectNumberOfResults(1);
     });
 
-    // search DFR-MNT by inverse lookup mnt-by and to be able to choose just route objects from Types
+    // search TEST51-MNT by inverse lookup mnt-by and to be able to choose just route objects from Types
     it('should enable all Types in case Inverse lookup is first choice', () => {
         queryPage
-            .typeSearchTerm('DFR-MNT')
+            .typeSearchTerm('TEST51-MNT')
             .clickOnSearchButton()
             .clickOnTypesFilterDropdown()
             .expectCheckboxToBeDisabled('as-block', true)
@@ -786,9 +786,9 @@ describe('Query scenario', () => {
 
     it('should show certificate banner for members and not members', () => {
         queryPage
-            .selectOrganization('SURFnet')
+            .selectOrganization('SUPERTESTORG')
             .expectCertificateBannerToContain('Does your CV show your RIPE Database expertise?')
-            .selectOrganization('Viollier AG')
+            .selectOrganization('ViTest organisation')
             .expectCertificateBannerToContain('Earn the RIPE Database Associate certification');
     });
 });

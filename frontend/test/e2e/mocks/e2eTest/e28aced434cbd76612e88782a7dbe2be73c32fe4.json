@@ -5,7 +5,7 @@
                 "resource": "192.87.0.0 - 192.87.0.255",
                 "status": "LEGACY",
                 "type": "inetnum",
-                "netname": "SNET-HOMELAN",
+                "netname": "NETNAME-TEST86",
                 "usage": {
                     "total": 608,
                     "used": 608,
@@ -16,7 +16,7 @@
                 "resource": "192.87.1.0 - 192.87.1.255",
                 "status": "LEGACY",
                 "type": "inetnum",
-                "netname": "NFRA",
+                "netname": "NETNAME-TEST-152",
                 "usage": {
                     "total": 608,
                     "used": 608,

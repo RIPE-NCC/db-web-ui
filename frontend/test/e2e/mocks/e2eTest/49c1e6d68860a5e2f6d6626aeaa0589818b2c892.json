@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=MG&offset=0&limit=20&query-string=151.99.0.0%20-%20151.99.1.255",
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=MG&offset=0&limit=20&query-string=151.99.0.0%20-%20151.99.1.255",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -55,7 +55,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "INTERBUSINESS"
+                                "value": "ORG-TEST24-RIPE"
                             },
                             {
                                 "name": "remarks",
@@ -80,19 +80,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "INAS1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "INAS1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
@@ -102,10 +102,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/INTERB-MNT"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/TEST12-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "INTERB-MNT",
+                                "value": "TEST12-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
@@ -123,14 +123,14 @@
                         ]
                     },
                     "resource-holder": {
-                        "key": "ORG-IA34-RIPE",
-                        "name": "Tango India Sierra"
+                        "key": "ORG-TEST25-RIPE",
+                        "name": "Test Org 25"
                     },
                     "abuse-contact": {
-                        "key": "ABT49-RIPE",
-                        "email": "abuse@business.telecomitalia.it",
+                        "key": "TSTTECHC3-RIPE",
+                        "email": "abuse@business.test.nl",
                         "suspect": false,
-                        "org-id": "ORG-IA34-RIPE"
+                        "org-id": "ORG-TEST25-RIPE"
                     },
                     "managed": false
                 },
@@ -159,7 +159,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "INTERBUSINESS"
+                                "value": "ORG-TEST24-RIPE"
                             },
                             {
                                 "name": "remarks",
@@ -184,19 +184,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "INAS1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "INAS1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
@@ -206,10 +206,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/INTERB-MNT"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/TEST12-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "INTERB-MNT",
+                                "value": "TEST12-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
@@ -227,14 +227,14 @@
                         ]
                     },
                     "resource-holder": {
-                        "key": "ORG-IA34-RIPE",
-                        "name": "Tango India Sierra"
+                        "key": "ORG-TEST25-RIPE",
+                        "name": "Test Org 25"
                     },
                     "abuse-contact": {
-                        "key": "ABT49-RIPE",
-                        "email": "abuse@business.telecomitalia.it",
+                        "key": "TSTTECHC3-RIPE",
+                        "email": "abuse@business.test.nl",
                         "suspect": false,
-                        "org-id": "ORG-IA34-RIPE"
+                        "org-id": "ORG-TEST25-RIPE"
                     },
                     "managed": false
                 },
@@ -242,7 +242,7 @@
                     "type": "role",
                     "link": {
                         "type": "locator",
-                        "href": "https://rest-dev.db.ripe.net/ripe/role/INAS1-RIPE"
+                        "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                     },
                     "source": {
                         "id": "ripe"
@@ -251,7 +251,7 @@
                         "attribute": [
                             {
                                 "name": "nic-hdl",
-                                "value": "INAS1-RIPE"
+                                "value": "TSTADMINC-RIPE"
                             }
                         ]
                     },
@@ -259,11 +259,11 @@
                         "attribute": [
                             {
                                 "name": "role",
-                                "value": "Interbusiness Network Administration Staff"
+                                "value": "ORG-TEST24-RIPE"
                             },
                             {
                                 "name": "address",
-                                "value": "Telecom Italia S.p.A"
+                                "value": "Test Org 24"
                             },
                             {
                                 "name": "address",
@@ -272,72 +272,72 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ESB35-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC1-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "ESB35-RIPE",
+                                "value": "TSTADMINC1-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ESB35-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC1-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "ESB35-RIPE",
+                                "value": "TSTADMINC1-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ASB144-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "ASB144-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/person/SSB86-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/person/TSTTECHC1-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "SSB86-RIPE",
+                                "value": "TSTTECHC1-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/DSB58-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTTECHC2-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "DSB58-RIPE",
+                                "value": "TSTTECHC2-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/role/ABT49-RIPE"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/role/TSTTECHC3-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "ABT49-RIPE",
+                                "value": "TSTTECHC3-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "name": "nic-hdl",
-                                "value": "INAS1-RIPE"
+                                "value": "TSTADMINC-RIPE"
                             },
                             {
                                 "name": "abuse-mailbox",
-                                "value": "abuse@business.telecomitalia.it"
+                                "value": "abuse@business.test.nl"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/INTERB-MNT"
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/TEST12-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "INTERB-MNT",
+                                "value": "TEST12-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

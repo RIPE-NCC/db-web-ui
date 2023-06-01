@@ -5,7 +5,7 @@
     "data": {
         "link": {
             "type": "locator",
-            "href": "http://wagyu.prepdev.ripe.net:1080/RIPE/key-cert/PGPKEY-TESTKEYCERT"
+            "href": "http://prepdev.ripe.net:1080/RIPE/key-cert/PGPKEY-TESTKEYCERT"
         },
         "objects": {
             "object": [
@@ -38,7 +38,7 @@
                             },
                             {
                                 "name": "owner",
-                                "value": "SYSTEM Internet Provider <hostmaster@system.pl>"
+                                "value": "SYSTEM Internet Provider <hostmaster@test.pl>"
                             },
                             {
                                 "name": "fingerpr",

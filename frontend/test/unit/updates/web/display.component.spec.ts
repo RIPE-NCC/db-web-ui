@@ -90,7 +90,7 @@ describe('DisplayComponent', () => {
         if (withFlush) {
             request.flush({
                 user: {
-                    username: 'test@ripe.net',
+                    username: 'TSTADMINC-RIPE',
                     displayName: 'Test User',
                     expiryDate: [2015, 9, 9, 14, 9, 27, 863],
                     uuid: 'aaaa-bbbb-cccc-dddd',
@@ -302,7 +302,7 @@ describe('DisplayComponent with object containing slash', () => {
         if (withFlush) {
             request.flush({
                 user: {
-                    username: 'test@ripe.net',
+                    username: 'TSTADMINC-RIPE',
                     displayName: 'Test User',
                     uuid: 'aaaa-bbbb-cccc-dddd',
                     active: true,
@@ -378,7 +378,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
     const OBJECT_TYPE = 'aut-num';
     const OBJECT_NAME = 'AS9777';
     const MNTNER = 'TEST-MNT';
-    const ADMINC = 'JYH3-RIPE';
+    const ADMINC = 'TSTADMINC-RIPE';
 
     beforeEach(() => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
@@ -434,7 +434,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
                                     value: ADMINC,
                                     'referenced-type': 'person',
                                     link: {
-                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/JYH3-RIPE',
+                                        href: 'http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE',
                                         type: 'locator',
                                     },
                                 },
@@ -456,7 +456,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
         if (withFlush) {
             request.flush({
                 user: {
-                    username: 'test@ripe.net',
+                    username: 'TSTADMINC-RIPE',
                     displayName: 'Test User',
                     uuid: 'aaaa-bbbb-cccc-dddd',
                     active: true,
@@ -479,7 +479,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
         expect(attrMnt.link.href).toEqual('webupdates/display/RIPE/mntner/TEST-MNT');
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'admin-c').value).toBe(ADMINC);
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'admin-c').link.href).toBe(
-            'webupdates/display/RIPE/person/JYH3-RIPE',
+            'webupdates/display/RIPE/person/TSTADMINC-RIPE',
         );
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'source').value).toEqual(SOURCE);
     });

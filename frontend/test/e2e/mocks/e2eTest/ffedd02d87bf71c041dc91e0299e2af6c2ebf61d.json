@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?flags=r&ignore404=true&query-string=91.109.48.0/24&type-filter=inetnum",
+    "requestUrl": "/api/whois/search?flags=r&ignore404=true&query-string=91.109.48.0/24&type-filter=inetnum",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -58,7 +58,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "IT-CSGNET-20120618"
+                                "value": "NETNAME-TEST-171"
                             },
                             {
                                 "name": "country",
@@ -67,28 +67,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-CA25-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST-171-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-CA25-RIPE",
+                                "value": "ORG-TEST-171-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/AG2162-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "AG2162-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TA4069-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "TA4069-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
@@ -107,19 +107,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/CONSIAGNET-MNT"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST04-MNT"
                                 },
                                 "name": "mnt-lower",
-                                "value": "CONSIAGNET-MNT",
+                                "value": "TEST04-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/CONSIAGNET-MNT"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST04-MNT"
                                 },
                                 "name": "mnt-routes",
-                                "value": "CONSIAGNET-MNT",
+                                "value": "TEST04-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

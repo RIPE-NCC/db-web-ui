@@ -42,11 +42,11 @@ describe('Resources', () => {
             .expectResourcesTabSize(2)
             .clickOnSponsoredResources()
             .expectResourcesTabActiveToBe('Sponsored Resources')
-            .selectOrganization('Viollier AG')
+            .selectOrganization('ViTest organisation')
             .expectResourcesTabActiveToBe('My Resources')
             .expectResourcesTabSize(1)
             .expectResourcesSize(1)
-            .selectOrganization('SURFnet')
+            .selectOrganization('SUPERTESTORG')
             .expectResourcesTabSize(2);
     });
 
@@ -63,9 +63,9 @@ describe('Resources', () => {
 
     it('should hide ... button for selected not LIR organisation', () => {
         resourcesPage
-            .selectOrganization('Swi Rop Gonggrijp')
+            .selectOrganization('SwTest organisation')
             .expectTransferOptionToExist(false)
-            .selectOrganization('SURFnet')
+            .selectOrganization('SUPERTESTORG')
             .expectTransferOptionToExist(true)
             .clickOnTransferButton()
             .expectTransferOptionToContain(0, 'Transfer resources')

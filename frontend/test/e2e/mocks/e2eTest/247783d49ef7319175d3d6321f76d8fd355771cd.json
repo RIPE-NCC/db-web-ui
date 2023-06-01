@@ -1,10 +1,10 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=RIPE-NCC-MNT",
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=RIPE-NCC-MNT",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
         "key": "RIPE-NCC-MNT",
         "type": "mntner",
-        "auth": ["MD5-PW", "PGPKEY-9C4F8AC1"]
+        "auth": ["MD5-PW", "PGPKEY-TEST0004"]
     }
 }

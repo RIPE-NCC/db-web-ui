@@ -11,31 +11,31 @@
             "mine": true,
             "auth": ["MD5-PW", "SSO"],
             "type": "mntner",
-            "key": "AS5486-MNT"
+            "key": "TST001-MNT"
         },
         {
             "mine": true,
             "auth": ["MD5-PW", "SSO", "SSO", "SSO", "SSO"],
             "type": "mntner",
-            "key": "AARDALSNETT-MNT"
+            "key": "TST002-MNT"
         },
         {
             "mine": true,
             "auth": ["MD5-PW", "SSO"],
             "type": "mntner",
-            "key": "EU-IBM-NIC-MNT"
+            "key": "TST003-MNT"
         },
         {
             "mine": true,
             "auth": ["MD5-PW", "SSO"],
             "type": "mntner",
-            "key": "IPACCT-MNT"
+            "key": "TEST53-MNT"
         },
         {
             "mine": true,
             "auth": ["SSO"],
             "type": "mntner",
-            "key": "IVANA-MNT"
+            "key": "TST004-MNT"
         }
     ],
     "statusCode": 200,

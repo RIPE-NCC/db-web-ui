@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=resource&offset=0&limit=20&query-string=1.1.1.1",
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=resource&offset=0&limit=20&query-string=1.1.1.1",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -137,11 +137,11 @@
                             },
                             {
                                 "name": "remarks",
-                                "value": "All Cloudflare abuse reporting can be done via"
+                                "value": "All abuse reporting can be done via"
                             },
                             {
                                 "name": "remarks",
-                                "value": "resolver-abuse@cloudflare.com"
+                                "value": "resolver-abuse@testorg06.com"
                             },
                             {
                                 "name": "remarks",
@@ -311,39 +311,15 @@
                             },
                             {
                                 "name": "descr",
-                                "value": "BGP-NET-1-0-0-0-8"
+                                "value": "TEST06"
                             },
                             {
                                 "name": "origin",
                                 "value": "AS64050"
                             },
                             {
-                                "name": "remarks",
-                                "value": "This route object was created because"
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "some BGPNET peers filter based on these objects"
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "and this route may be rejected"
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "if this object is not created."
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "Please contact irr@bgp.net if you have any"
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "questions regarding this object."
-                            },
-                            {
                                 "name": "notify",
-                                "value": "irr@bgp.net"
+                                "value": "e2eTSTADMINC-RIPE"
                             },
                             {
                                 "link": {
@@ -373,14 +349,6 @@
                             {
                                 "name": "remarks",
                                 "value": "* data has been removed from this object."
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "* To view the original object, please query the RADB Database at:"
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "* http://www.radb.net/"
                             },
                             {
                                 "name": "remarks",

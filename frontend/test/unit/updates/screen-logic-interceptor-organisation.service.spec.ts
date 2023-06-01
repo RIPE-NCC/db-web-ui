@@ -442,11 +442,11 @@ describe('ScreenLogicInterceptorService Organisation', () => {
     const organisationAttributes = [
         {
             name: 'organisation',
-            value: 'ORG-WA56-RIPE',
+            value: 'ORG-TEST36-RIPE',
         },
         {
             name: 'org-name',
-            value: 'Swi Rop Gonggrijp',
+            value: 'SwTest organisation',
         },
         {
             name: 'org-type',
@@ -454,7 +454,7 @@ describe('ScreenLogicInterceptorService Organisation', () => {
         },
         {
             name: 'org',
-            value: 'ORG-RIEN1-RIPE',
+            value: 'ORG-TEST28-RIPE',
         },
         {
             name: 'address',
@@ -466,7 +466,7 @@ describe('ScreenLogicInterceptorService Organisation', () => {
         },
         {
             name: 'e-mail',
-            value: 'bla@blu.net',
+            value: 'bla@test.net',
         },
         {
             name: 'phone',
@@ -478,27 +478,27 @@ describe('ScreenLogicInterceptorService Organisation', () => {
         },
         {
             name: 'admin-c',
-            value: 'WH869-RIPE',
+            value: 'TSTADMINC-RIPE',
         },
         {
             name: 'tech-c',
-            value: 'WH869-RIPE',
+            value: 'TSTADMINC-RIPE',
         },
         {
             name: 'mnt-ref',
-            value: 'WHAT-A-MESH-MNT',
+            value: 'TEST42-MNT',
         },
         {
             name: 'mnt-by',
-            value: 'WHAT-A-MESH-MNT',
+            value: 'TEST42-MNT',
         },
         {
             name: 'mnt-by',
-            value: 'WHAT-A-MESH2-MNT',
+            value: 'TST06-MNT',
         },
         {
             name: 'abuse-mailbox',
-            value: 'bla@ble.com',
+            value: 'bla@test.com',
         },
         {
             name: 'source',

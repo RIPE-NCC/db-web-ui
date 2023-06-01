@@ -249,7 +249,7 @@ describe('SelectController', () => {
         componentFixture.detectChanges();
         httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush({
             user: {
-                username: 'test@ripe.net',
+                username: 'TSTADMINC-RIPE',
                 displayName: 'Test User',
                 uuid: 'aaaa-bbbb-cccc-dddd',
                 active: true,
@@ -268,7 +268,7 @@ describe('SelectController', () => {
         componentFixture.detectChanges();
         httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush({
             user: {
-                username: 'test@ripe.net',
+                username: 'TSTADMINC-RIPE',
                 displayName: 'Test User',
                 uuid: 'aaaa-bbbb-cccc-dddd',
                 active: true,
@@ -286,7 +286,7 @@ describe('SelectController', () => {
         componentFixture.detectChanges();
         httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush({
             user: {
-                username: 'test@ripe.net',
+                username: 'TSTADMINC-RIPE',
                 displayName: 'Test User',
                 uuid: 'aaaa-bbbb-cccc-dddd',
                 active: true,

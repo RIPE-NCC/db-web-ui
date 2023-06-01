@@ -34,7 +34,7 @@
                             },
                             {
                                 "name": "descr",
-                                "value": "NPIX"
+                                "value": "TSTORG1"
                             },
                             {
                                 "name": "origin",
@@ -42,15 +42,15 @@
                             },
                             {
                                 "name": "notify",
-                                "value": "***@npix.net"
+                                "value": "***@testemail.net"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/AS4663-RIPE-MNT"
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST14-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "AS4663-RIPE-MNT",
+                                "value": "TEST14-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

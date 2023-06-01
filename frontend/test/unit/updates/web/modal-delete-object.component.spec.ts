@@ -168,7 +168,7 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
 
         expect(modalDeleteObjectComponent.incomingReferences.length).toEqual(1);
         expect(modalDeleteObjectComponent.incomingReferences[0].objectType).toEqual('person');
-        expect(modalDeleteObjectComponent.incomingReferences[0].primaryKey).toEqual('ME-RIPE');
+        expect(modalDeleteObjectComponent.incomingReferences[0].primaryKey).toEqual('METST-RIPE');
     });
 
     it('should decide that object cannot be deleted ', async () => {
@@ -252,7 +252,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         expect(modalDeleteObjectComponent.incomingReferences[0].objectType).toEqual('mntner');
         expect(modalDeleteObjectComponent.incomingReferences[0].primaryKey).toEqual('TEST-MNT');
         expect(modalDeleteObjectComponent.incomingReferences[1].objectType).toEqual('person');
-        expect(modalDeleteObjectComponent.incomingReferences[1].primaryKey).toEqual('ME-RIPE');
+        expect(modalDeleteObjectComponent.incomingReferences[1].primaryKey).toEqual('METST-RIPE');
     });
 
     it('should decide that object can be deleted ', async () => {
@@ -419,7 +419,7 @@ const REFS_FOR_UNDELETEABLE_OBJECTS = {
     objectType: 'mntner',
     incoming: [
         {
-            primaryKey: 'ME-RIPE',
+            primaryKey: 'METST-RIPE',
             objectType: 'person',
             incoming: [
                 {
@@ -448,7 +448,7 @@ const REFS_FOR_TEST_MNT = {
             objectType: 'mntner',
         },
         {
-            primaryKey: 'ME-RIPE',
+            primaryKey: 'METST-RIPE',
             objectType: 'person',
             incoming: [
                 {
@@ -465,7 +465,7 @@ const REFS_FOR_TEST_MNT = {
 };
 
 const REFS_FOR_TEST_PERSON = {
-    primaryKey: 'ME-RIPE',
+    primaryKey: 'METST-RIPE',
     objectType: 'person',
     incoming: [
         {
@@ -473,7 +473,7 @@ const REFS_FOR_TEST_PERSON = {
             objectType: 'mntner',
             incoming: [
                 {
-                    primaryKey: 'ME-RIPE',
+                    primaryKey: 'METST-RIPE',
                     objectType: 'person',
                 },
             ],

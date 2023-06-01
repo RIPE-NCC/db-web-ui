@@ -16,15 +16,15 @@ describe('Resources detail', () => {
                 .expectShowMoreButtonExist(false)
                 .expectAttributesSize(14)
                 .expectAttributeToContainKeyAndValue(0, 'inetnum', '192.87.0.0 - 192.87.255.255')
-                .expectAttributeToContainKeyAndValue(1, 'netname', 'RU-1C-20160322')
+                .expectAttributeToContainKeyAndValue(1, 'netname', 'NETNAME-TEST-02')
                 .expectAttributeToContainKeyAndValue(2, 'descr', 'first line of description # comment')
                 .expectAttributeToContainKeyAndValue(3, 'country', 'FI')
-                .expectAttributeToContainKeyAndValue(4, 'org', 'ORG-EIP1-RIPE')
-                .expectAttributeToContainKeyAndValue(5, 'sponsoring-org', 'ORG-LA538-RIPE')
-                .expectAttributeToContainKeyAndValue(6, 'admin-c', 'MV10039-RIPE')
-                .expectAttributeToContainKeyAndValue(7, 'tech-c', 'inty1-ripe')
+                .expectAttributeToContainKeyAndValue(4, 'org', 'ORG-TEST19-RIPE')
+                .expectAttributeToContainKeyAndValue(5, 'sponsoring-org', 'ORG-TEST27-RIPE')
+                .expectAttributeToContainKeyAndValue(6, 'admin-c', 'TSTADMINC-RIPE')
+                .expectAttributeToContainKeyAndValue(7, 'tech-c', 'TSTTECHC-RIPE')
                 .expectAttributeToContainKeyAndValue(8, 'status', 'ASSIGNED PI')
-                .expectAttributeToContainKeyAndValue(9, 'mnt-by', 'TPOL888-MNT')
+                .expectAttributeToContainKeyAndValue(9, 'mnt-by', 'TST01-MNT')
                 .expectAttributeToContainKeyAndValue(10, 'remarks', '# should show remarks starting with hash')
                 .expectAttributeToContainKeyAndValue(11, 'created', '2016-03-22T13:48:02Z')
                 .expectAttributeToContainKeyAndValue(12, 'last-modified', '2016-04-26T14:28:28Z')
@@ -37,11 +37,11 @@ describe('Resources detail', () => {
                 .expectRowOnTableToContainHref('more-specifics', 0, 0, 'myresources/detail/inetnum/192.87.0.0%20-%20192.87.0.255/false')
                 .expectRowOnTableToContainText('more-specifics', 0, 0, '192.87.0.0/24')
                 .expectRowOnTableToContainText('more-specifics', 0, 1, 'LEGACY')
-                .expectRowOnTableToContainText('more-specifics', 0, 2, 'SNET-HOMELAN')
+                .expectRowOnTableToContainText('more-specifics', 0, 2, 'NETNAME-TEST86')
                 .expectRowOnTableToContainHref('more-specifics', 1, 0, 'myresources/detail/inetnum/192.87.1.0%20-%20192.87.1.255/false')
                 .expectRowOnTableToContainText('more-specifics', 1, 0, '192.87.1.0/24')
                 .expectRowOnTableToContainText('more-specifics', 1, 1, 'LEGACY')
-                .expectRowOnTableToContainText('more-specifics', 1, 2, 'NFRA')
+                .expectRowOnTableToContainText('more-specifics', 1, 2, 'NETNAME-TEST-152')
                 .expectBackToMyResourcesButtonToExist(true)
                 .expectSiteMapButtonToExist(true)
                 .clickLinkOnTable('more-specifics', '192.87.0.0/24')
@@ -151,10 +151,10 @@ describe('Resources detail', () => {
                 .expectRowsOnTable('more-specifics', 2)
                 .expectRowOnTableToContainText('more-specifics', 0, 0, '2001:7f8::/48')
                 .expectRowOnTableToContainText('more-specifics', 0, 1, 'ASSIGNED PI')
-                .expectRowOnTableToContainText('more-specifics', 0, 2, 'DE-CIX-IXP-20010913')
+                .expectRowOnTableToContainText('more-specifics', 0, 2, 'NETNAME-TEST-01')
                 .expectRowOnTableToContainText('more-specifics', 1, 0, '2001:7f8:1::/48')
                 .expectRowOnTableToContainText('more-specifics', 1, 1, 'ASSIGNED PI')
-                .expectRowOnTableToContainText('more-specifics', 1, 2, 'AMS-IX-20010913')
+                .expectRowOnTableToContainText('more-specifics', 1, 2, 'NETNAME-TEST-172')
                 .expectTablePaginationToContainText('more-specifics', 'Total more specifics')
                 .filterTable('more-specifics', 'nooo')
                 .expectTablePaginationToContainText('more-specifics', 'Showing 0 out of 2');
@@ -174,13 +174,13 @@ describe('Resources detail', () => {
                 .expectAttributesSize(25)
                 .expectAttributeToContainKeyAndValue(0, 'aut-num', 'AS204056')
                 .expectAttributeToContainKeyAndValue(1, 'as-name', 'asnametest')
-                .expectAttributeToContainKeyAndValue(2, 'org', 'ORG-EIP1-RIPE')
+                .expectAttributeToContainKeyAndValue(2, 'org', 'ORG-TEST19-RIPE')
                 .expectAttributeToContainKeyAndValue(3, 'import', 'from AS3254 accept ANY')
                 .expectAttributeToContainKeyAndValue(4, 'export', 'to AS3254 announce AS204056')
                 .expectAttributeToContainKeyAndValue(5, 'import', 'from as3333 accept ANY')
                 .expectAttributeToContainKeyAndValue(6, 'export', 'to as3333 announce AS204056')
-                .expectAttributeToContainKeyAndValue(7, 'admin-c', 'MV10039-RIPE')
-                .expectAttributeToContainKeyAndValue(8, 'tech-c', 'inty1-ripe')
+                .expectAttributeToContainKeyAndValue(7, 'admin-c', 'TSTADMINC-RIPE')
+                .expectAttributeToContainKeyAndValue(8, 'tech-c', 'TSTTECHC-RIPE')
                 .expectAttributeToContainKeyAndValue(
                     9,
                     'remarks',
@@ -265,13 +265,13 @@ describe('Resources detail', () => {
                 .expectAttributesSize(62)
                 .expectAttributeToContainKeyAndValue(0, 'aut-num', 'AS204056')
                 .expectAttributeToContainKeyAndValue(1, 'as-name', 'asnametest')
-                .expectAttributeToContainKeyAndValue(2, 'org', 'ORG-EIP1-RIPE')
+                .expectAttributeToContainKeyAndValue(2, 'org', 'ORG-TEST19-RIPE')
                 .expectAttributeToContainKeyAndValue(3, 'import', 'from AS3254 accept ANY')
                 .expectAttributeToContainKeyAndValue(4, 'export', 'to AS3254 announce AS204056')
                 .expectAttributeToContainKeyAndValue(5, 'import', 'from as3333 accept ANY')
                 .expectAttributeToContainKeyAndValue(6, 'export', 'to as3333 announce AS204056')
-                .expectAttributeToContainKeyAndValue(7, 'admin-c', 'MV10039-RIPE')
-                .expectAttributeToContainKeyAndValue(8, 'tech-c', 'inty1-ripe')
+                .expectAttributeToContainKeyAndValue(7, 'admin-c', 'TSTADMINC-RIPE')
+                .expectAttributeToContainKeyAndValue(8, 'tech-c', 'TSTTECHC-RIPE')
                 .expectAttributeToContainKeyAndValue(
                     9,
                     'remarks',
@@ -299,8 +299,8 @@ describe('Resources detail', () => {
                 )
                 .expectAttributeToContainKeyAndValue(55, 'status', 'ASSIGNED')
                 .expectAttributeToContainKeyAndValue(56, 'mnt-by', 'RIPE-NCC-END-MNT')
-                .expectAttributeToContainKeyAndValue(57, 'mnt-by', 'RU1C-MNT')
-                .expectAttributeToContainKeyAndValue(58, 'mnt-routes', 'RU1C-MNT')
+                .expectAttributeToContainKeyAndValue(57, 'mnt-by', 'TEST17-MNT')
+                .expectAttributeToContainKeyAndValue(58, 'mnt-routes', 'TEST17-MNT')
                 .expectAttributeToContainKeyAndValue(59, 'created', '2016-03-22T13:43:48Z')
                 .expectAttributeToContainKeyAndValue(60, 'last-modified', '2017-03-23T12:08:46Z')
                 .expectAttributeToContainKeyAndValue(61, 'source', 'RIPE');
@@ -343,22 +343,22 @@ describe('Resources detail', () => {
                 .getWhoisObjectViewer()
                 .expectAttributesSize(11)
                 .expectAttributeToContainKeyAndValue(0, 'aut-num', 'AS36867')
-                .expectAttributeToContainKeyAndValue(1, 'as-name', 'Kokonet-BGP')
-                .expectAttributeToContainKeyAndValue(2, 'descr', 'Kokonet Ltd Seychelles ISP')
-                .expectAttributeToContainKeyAndValue(3, 'org', 'ORG-Sb3-RIPE')
-                .expectAttributeToContainKeyAndValue(4, 'admin-c', 'SNS1-RIPE')
-                .expectAttributeToContainKeyAndValue(5, 'tech-c', 'JK9622-RIPE')
+                .expectAttributeToContainKeyAndValue(1, 'as-name', 'ASNAME-TEST')
+                .expectAttributeToContainKeyAndValue(2, 'descr', 'TESTORG3')
+                .expectAttributeToContainKeyAndValue(3, 'org', 'ORG-TEST23-RIPE')
+                .expectAttributeToContainKeyAndValue(4, 'admin-c', 'TSTADMINC-RIPE')
+                .expectAttributeToContainKeyAndValue(5, 'tech-c', 'TSTTECHC-RIPE')
                 .expectAttributeToContainKeyAndValue(6, 'status', 'OTHER')
                 .expectAttributeToContainKeyAndValue(10, 'source', 'RIPE-NONAUTH')
                 .expectAttributeToContainLink(0, '?source=ripe-nonauth&key=AS36867&type=aut-num')
-                .expectAttributeToContainLink(3, '?source=ripe-nonauth&key=ORG-Sb3-RIPE&type=organisation')
-                .expectAttributeToContainLink(4, '?source=ripe-nonauth&key=SNS1-RIPE&type=role')
-                .expectAttributeToContainLink(5, '?source=ripe-nonauth&key=JK9622-RIPE&type=person')
-                .expectAttributeToContainLink(7, '?source=ripe-nonauth&key=KOKONET-MNT&type=mntner');
+                .expectAttributeToContainLink(3, '?source=ripe-nonauth&key=ORG-TEST23-RIPE&type=organisation')
+                .expectAttributeToContainLink(4, '?source=ripe-nonauth&key=TSTADMINC-RIPE&type=role')
+                .expectAttributeToContainLink(5, '?source=ripe-nonauth&key=TSTTECHC-RIPE&type=person')
+                .expectAttributeToContainLink(7, '?source=ripe-nonauth&key=TEST05-MNT&type=mntner');
         });
 
         it('should edit and update out of region aut-num', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('KOKONET-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TEST05-MNT').submitModal();
             const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
             whoisObjectEditor
                 .expectFieldExist('abuse-c', false)
@@ -375,7 +375,7 @@ describe('Resources detail', () => {
         });
 
         it('should contain 2 flags', () => {
-            resourcesDetailPage.expectFlagsSize(2).expectFlagToContainText(0, 'OTHER').expectFlagToContainText(1, 'Kokonet-BGP');
+            resourcesDetailPage.expectFlagsSize(2).expectFlagToContainText(0, 'OTHER').expectFlagToContainText(1, 'ASNAME-TEST');
         });
     });
 });

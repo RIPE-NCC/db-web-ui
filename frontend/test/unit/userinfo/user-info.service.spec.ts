@@ -74,7 +74,7 @@ describe('UserInfoService', () => {
     it('should preselect correct lir based on cookie activeMembershipId value', () => {
         cookies.set('activeMembershipId', '3629', 1, '/', '.ripe.net', true);
         userInfoService.getSelectedOrganisation().subscribe((result: IUserInfoOrganisation) => {
-            expect(result.organisationName).toBe('Internet Provider BV');
+            expect(result.organisationName).toBe('Internet Provider Test');
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
         expect(req.request.method).toBe('GET');
@@ -83,7 +83,7 @@ describe('UserInfoService', () => {
 
     const userInfo: IUserInfoResponseData = {
         user: {
-            username: 'test@ripe.net',
+            username: 'TSTADMINC-RIPE',
             displayName: 'Test User',
             uuid: 'aaaa-bbbb-cccc-dddd',
             active: true,
@@ -92,16 +92,16 @@ describe('UserInfoService', () => {
             {
                 membershipId: '7347',
                 regId: 'zz.example',
-                orgObjectId: 'ORG-EIP1-RIPE',
-                organisationName: 'Internet Provider BV',
+                orgObjectId: 'ORG-TEST19-RIPE',
+                organisationName: 'Internet Provider Test',
                 roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
                 lir: true,
             },
             {
                 membershipId: '3629',
-                regId: 'nl.surfnet',
-                orgObjectId: 'ORG-Sb3-RIPE',
-                organisationName: 'SURFnet bv',
+                regId: 'nl.supertestorg',
+                orgObjectId: 'ORG-TEST23-RIPE',
+                organisationName: 'SUPERTESTORG bv',
                 roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
                 lir: true,
             },

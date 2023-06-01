@@ -5,7 +5,7 @@
     "data": {
         "link": {
             "type": "locator",
-            "href": "http://wagyu.prepdev.ripe.net:1080/RIPE-NONAUTH/route/211.43.192.0%2F19AS9777?dry-run=true&reason=dry-run"
+            "href": "http://prepdev.ripe.net:1080/RIPE-NONAUTH/route/211.43.192.0%2F19AS9777?dry-run=true&reason=dry-run"
         },
         "errormessages": {
             "errormessage": [
@@ -23,7 +23,7 @@
                             "value": "mnt-by"
                         },
                         {
-                            "value": "AS4663-RIPE-MNT"
+                            "value": "TEST14-MNT"
                         }
                     ]
                 },

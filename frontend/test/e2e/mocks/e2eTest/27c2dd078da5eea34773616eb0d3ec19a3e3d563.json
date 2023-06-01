@@ -61,15 +61,15 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "XS4ALL"
+                                "value": "ORG-TEST22"
                             },
                             {
                                 "name": "descr",
-                                "value": "XS4ALL Internet BV"
+                                "value": "ORG-TEST22"
                             },
                             {
                                 "name": "descr",
-                                "value": "Colocation services"
+                                "value": "Test organisation name"
                             },
                             {
                                 "name": "country",
@@ -78,19 +78,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "XS42-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "XS42-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
@@ -103,7 +103,7 @@
                             },
                             {
                                 "name": "remarks",
-                                "value": "Please send email to 'abuse@xs4all.nl' for complaints"
+                                "value": "Please send email to 'abuse@orgtest22.nl' for complaints"
                             },
                             {
                                 "name": "remarks",
@@ -112,10 +112,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST11-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "XS4ALL-MNT",
+                                "value": "TEST11-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

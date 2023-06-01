@@ -1,0 +1,22 @@
+{
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST11-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "TEST11-MNT",
+            "type": "mntner",
+            "auth": [
+                "MD5-PW",
+                "PGPKEY-TESTKEYCERT01",
+                "PGPKEY-TESTKEYCERT02",
+                "PGPKEY-TESTKEYCERT03",
+                "PGPKEY-TESTKEYCERT04",
+                "PGPKEY-TESTKEYCERT05",
+                "PGPKEY-TESTKEYCERT06",
+                "PGPKEY-TESTKEYCERT07",
+                "SSO"
+            ]
+        }
+    ]
+}

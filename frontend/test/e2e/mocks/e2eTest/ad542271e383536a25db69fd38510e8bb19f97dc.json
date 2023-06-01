@@ -1,0 +1,12 @@
+{
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST15-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "TEST15-MNT",
+            "type": "mntner",
+            "auth": ["MD5-PW", "PGPKEY-TEST1234", "PGPKEY-TEST1235"]
+        }
+    ]
+}

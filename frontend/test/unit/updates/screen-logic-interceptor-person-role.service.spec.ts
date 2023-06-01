@@ -62,7 +62,7 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
 
     it('should NOT set default nic-ndl before-edit person on Modify operation', () => {
         let personSubject = _wrap('person', personAttributes);
-        whoisResourcesService.setSingleAttributeOnName(personSubject, 'nic-hdl', 'SOME_NIC');
+        whoisResourcesService.setSingleAttributeOnName(personSubject, 'nic-hdl', 'SOME_TST_NIC');
 
         let errors: string[] = [];
         let warnings: string[] = [];
@@ -72,7 +72,7 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
         const nicHdle = WhoisResourcesService.getAllAttributesOnName(after, 'nic-hdl');
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
-        expect(nicHdle[0].value).toEqual('SOME_NIC');
+        expect(nicHdle[0].value).toEqual('SOME_TST_NIC');
     });
 
     it('should set default nic-ndl before-edit role on Create operation', () => {
@@ -91,7 +91,7 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
 
     it('should NOT set default nic-ndl before-edit role on Modify operation', () => {
         const roleSubject = _wrap('person', roleAttributes);
-        whoisResourcesService.setSingleAttributeOnName(roleSubject, 'nic-hdl', 'SOME_NIC');
+        whoisResourcesService.setSingleAttributeOnName(roleSubject, 'nic-hdl', 'SOME_TST_NIC');
 
         let errors: string[] = [];
         let warnings: string[] = [];
@@ -101,7 +101,7 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
         const nicHdle = WhoisResourcesService.getAllAttributesOnName(after, 'nic-hdl');
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
-        expect(nicHdle[0].value).toEqual('SOME_NIC');
+        expect(nicHdle[0].value).toEqual('SOME_TST_NIC');
     });
 
     const _wrap = (type: string, attrs: IAttributeModel[]) => {
@@ -127,11 +127,11 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
         },
         {
             name: 'mnt-by',
-            value: 'aardvark-mnt',
+            value: 'TEST71-MNT',
         },
         {
             name: 'nic-hdl',
-            value: 'DW-RIPE',
+            value: 'TSTADMINC-RIPE',
         },
         {
             name: 'source',
@@ -158,11 +158,11 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
         },
         {
             name: 'mnt-by',
-            value: 'aardvark-mnt',
+            value: 'TEST71-MNT',
         },
         {
             name: 'nic-hdl',
-            value: 'DW-RIPE',
+            value: 'TSTADMINC-RIPE',
         },
         {
             name: 'source',

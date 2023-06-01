@@ -1,0 +1,16 @@
+{
+    "requestUrl": "/api/ba-apps/resources/ORG-TEST19-RIPE/AS204056",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "tickets": {
+            "AS204056": [
+                {
+                    "number": "NCC#201001020355",
+                    "date": "2017-06-19",
+                    "resource": "94.126.32.0/21"
+                }
+            ]
+        }
+    }
+}

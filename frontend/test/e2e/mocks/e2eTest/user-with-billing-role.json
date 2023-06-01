@@ -14,15 +14,15 @@
             {
                 "membershipId": 1527,
                 "regId": "nl.io",
-                "orgObjectId": "ORG-IOB1-RIPE",
+                "orgObjectId": "ORG-ITEST-RIPE",
                 "organisationName": "Non integrated internet services 3",
                 "roles": ["billing", "LIR"]
             },
             {
                 "membershipId": 7347,
                 "regId": "zz.example",
-                "orgObjectId": "ORG-EIP1-RIPE",
-                "organisationName": "Internet Provider BV1",
+                "orgObjectId": "ORG-TEST19-RIPE",
+                "organisationName": "Internet Provider Test",
                 "roles": ["billing", "LIR"]
             }
         ]

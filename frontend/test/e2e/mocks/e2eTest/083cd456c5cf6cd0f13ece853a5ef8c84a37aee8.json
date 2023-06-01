@@ -11,7 +11,7 @@
         {
             "key": "AKSON-SYSTEMS-MNT",
             "type": "mntner",
-            "auth": ["MD5-PW", "PGPKEY-7FD0A168"]
+            "auth": ["MD5-PW", "PGPKEY-TEST14"]
         },
         {
             "key": "ASN-SYSTEMS-MNT",
@@ -41,12 +41,12 @@
         {
             "key": "CRYSTAL-SYSTEM-MNT",
             "type": "mntner",
-            "auth": ["MD5-PW", "PGPKEY-7FD0A168"]
+            "auth": ["MD5-PW", "PGPKEY-TEST14"]
         },
         {
             "key": "ENIGMA-SYSTEM-MNT",
             "type": "mntner",
-            "auth": ["MD5-PW", "PGPKEY-7FD0A168"]
+            "auth": ["MD5-PW", "PGPKEY-TEST14"]
         },
         {
             "key": "ESSENTIAL-SYSTEMS-MNT",
