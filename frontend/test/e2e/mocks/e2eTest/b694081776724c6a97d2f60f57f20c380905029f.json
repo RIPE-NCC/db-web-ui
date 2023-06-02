@@ -50,7 +50,7 @@
                             {
                                 "str": {
                                     "name": "org",
-                                    "value": "ORG-RIEN1-RIPE"
+                                    "value": "ORG-TEST28-RIPE"
                                 }
                             },
                             {
@@ -74,19 +74,19 @@
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "JDR-RIPE"
+                                    "value": "TSTADMINC-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "BRD-RIPE"
+                                    "value": "TSTADMINC2-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "OPS4-RIPE"
+                                    "value": "TSTTECHC-RIPE"
                                 }
                             },
                             {
@@ -146,7 +146,7 @@
                             {
                                 "str": {
                                     "name": "netname",
-                                    "value": "EU-ZZ-193"
+                                    "value": "TEST-NETNAME"
                                 }
                             },
                             {
@@ -272,7 +272,7 @@
                             {
                                 "str": {
                                     "name": "org",
-                                    "value": "ORG-RIEN1-RIPE"
+                                    "value": "ORG-TEST28-RIPE"
                                 }
                             },
                             {
@@ -284,13 +284,13 @@
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "BRD-RIPE"
+                                    "value": "TSTADMINC2-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "OPS4-RIPE"
+                                    "value": "TSTTECHC-RIPE"
                                 }
                             },
                             {
@@ -368,37 +368,37 @@
                             {
                                 "str": {
                                     "name": "as-name",
-                                    "value": "DATAWAYS"
+                                    "value": "ORG-TEST29-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "descr",
-                                    "value": "75, Kanari Str., 54453, Thessaloniki, Greece"
+                                    "value": "Addresss"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "descr",
-                                    "value": "Tel: +30.2310953953"
+                                    "value": "Tel: +3*********"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "descr",
-                                    "value": "Fax: +30.2310953963"
+                                    "value": "Fax: +3********"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "descr",
-                                    "value": "Web: http://www.dataways.gr"
+                                    "value": "Web: http://www.org-test29-ripe.gr"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "org",
-                                    "value": "ORG-DHA1-RIPE"
+                                    "value": "ORG-TEST35-RIPE"
                                 }
                             },
                             {
@@ -416,7 +416,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "------------ AS15544 / DATAWAYS HELLAS S.A ------------"
+                                    "value": "------------ AS15544 / ORG-TEST29-RIPE HELLAS S.A ------------"
                                 }
                             },
                             {
@@ -434,7 +434,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "24x7 NOC Phone: +30.2310953966"
+                                    "value": "24x7 NOC"
                                 }
                             },
                             {
@@ -452,7 +452,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "General Info about DATAWAYS"
+                                    "value": "General Info about ORG-TEST29-RIPE"
                                 }
                             },
                             {
@@ -470,7 +470,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "DATAWAYS is a multiprotocol internet service provider"
+                                    "value": "ORG-TEST29-RIPE"
                                 }
                             },
                             {
@@ -584,7 +584,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "customers' AS numbers is AS-DATAWAYS. Please use this"
+                                    "value": "customers' AS numbers is AS-ORG-TEST29-RIPE. Please use this"
                                 }
                             },
                             {
@@ -602,7 +602,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "Our PeeringDB record is at http://as15544.peeringdb.com"
+                                    "value": "Our PeeringDB record"
                                 }
                             },
                             {
@@ -812,7 +812,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "morning. Contact noc@dataways.gr for an irregular update."
+                                    "value": "morning. Contact noc@test.net for an irregular update."
                                 }
                             },
                             {
@@ -842,7 +842,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "DATAWAYS prefers to connect with other autonomous systems"
+                                    "value": "ORG-TEST29-RIPE prefers to connect with other autonomous systems"
                                 }
                             },
                             {
@@ -1238,7 +1238,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "e-mailing noc@dataways.gr."
+                                    "value": "e-mailing noc@test.net."
                                 }
                             },
                             {
@@ -1256,7 +1256,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# END OF PUBLIC BGP PEERING POLICY FOR DATAWAYS"
+                                    "value": "# END OF PUBLIC BGP PEERING POLICY FOR ORG-TEST29-RIPE"
                                 }
                             },
                             {
@@ -1316,7 +1316,7 @@
                             {
                                 "str": {
                                     "name": "mp-export",
-                                    "value": "afi any to AS12713 to AS6866 announce AS-DATAWAYS AND <^AS15544+AS-DATAWAYS*$>;"
+                                    "value": "afi any to AS12713 to AS6866 announce AS-ORG-TEST29-RIPE AND <^AS15544+AS-ORG-TEST29-RIPE*$>;"
                                 }
                             },
                             {
@@ -1358,7 +1358,7 @@
                             {
                                 "str": {
                                     "name": "remarks",
-                                    "value": "# CYTANET Cyprus peering in GR-IX"
+                                    "value": "# Cyprus peering in GR-IX"
                                 }
                             },
                             {
@@ -1520,13 +1520,13 @@
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "TCP977-RIPE"
+                                    "value": "TSTADMINC2-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "DWNM1-RIPE"
+                                    "value": "TSTTECHC2-RIPE"
                                 }
                             },
                             {
@@ -1544,13 +1544,13 @@
                             {
                                 "str": {
                                     "name": "mnt-by",
-                                    "value": "DWMR1-RIPE-MNT"
+                                    "value": "TEST18-MNT"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "notify",
-                                    "value": "***@dataways.gr"
+                                    "value": "***@test.net"
                                 }
                             },
                             {
@@ -1670,19 +1670,19 @@
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "FW526-RIPE"
+                                    "value": "TSTTECHC3-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "FW526-RIPE"
+                                    "value": "TSTTECHC3-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "mnt-by",
-                                    "value": "RESILANS-MNT"
+                                    "value": "TEST21-MNT"
                                 }
                             },
                             {
@@ -1742,7 +1742,7 @@
                             {
                                 "str": {
                                     "name": "descr",
-                                    "value": "# RIPE-NCC PREFIX ADVERTISMENT FROM DATAWAYS"
+                                    "value": "# RIPE-NCC PREFIX ADVERTISMENT FROM ORG-TEST29-RIPE"
                                 }
                             },
                             {
@@ -1766,25 +1766,25 @@
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "LTS977-RIPE"
+                                    "value": "TSTADMINC-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "DP235-RIPE"
+                                    "value": "TSTTECHC-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "TCP977-RIPE"
+                                    "value": "TSTADMINC2-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "mnt-by",
-                                    "value": "DATAWAYS-GR-MNT"
+                                    "value": "TEST-GR-MNT"
                                 }
                             },
                             {
@@ -1855,13 +1855,13 @@
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.pre",
+                                            "name": "hl.test.pre",
                                             "value": "<b>"
                                         }
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.post",
+                                            "name": "hl.test.post",
                                             "value": "</b>"
                                         }
                                     },
@@ -2369,7 +2369,7 @@
                                             "name": "descr",
                                             "str": {
                                                 "name": null,
-                                                "value": "# <b>RIPE<\\/b>-NCC PREFIX ADVERTISMENT FROM DATAWAYS"
+                                                "value": "# <b>RIPE<\\/b>-NCC PREFIX ADVERTISMENT FROM ORG-TEST29-RIPE"
                                             }
                                         }
                                     },

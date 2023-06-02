@@ -38,7 +38,7 @@ describe('Forgot Maintainer Password - Find Maintainer', () => {
             .expectMaintainerContainerPresent(true)
             .expectMaintainerContainerContainText('Please check that this is the correct object before proceeding.')
             .expectMaintainerContainerContainText('SHRYANE-MNT')
-            .expectMaintainerContainerContainText('ES7554-RIPE')
+            .expectMaintainerContainerContainText('TSTADMINC-RIPE')
             .expectMaintainerContainerContainText('eshryane@ripe.net')
             .expectMaintainerContainerContainText('2013-12-10T16:55:06Z')
             .expectMaintainerContainerContainText('2016-10-11T14:51:12Z')

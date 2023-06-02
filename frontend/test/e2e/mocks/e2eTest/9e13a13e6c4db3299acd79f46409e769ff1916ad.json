@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?flags=lr&ignore404=true&query-string=213.159.160.0-213.159.190.255&type-filter=inetnum",
+    "requestUrl": "/api/whois/search?flags=lr&ignore404=true&query-string=213.159.160.0-213.159.190.255&type-filter=inetnum",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -61,7 +61,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "SE-ERICSSON-20010504"
+                                "value": "TESTNETNAME"
                             },
                             {
                                 "name": "country",
@@ -70,46 +70,46 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-EA44-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST20-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-EA44-RIPE",
+                                "value": "ORG-TEST20-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/LO371-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "LO371-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TL3286-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "TL3286-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/LO371-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "LO371-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/PH3044-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC01-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "PH3044-RIPE",
+                                "value": "TSTTECHC01-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -128,10 +128,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
                                 },
                                 "name": "mnt-lower",
-                                "value": "ERICSSON-MNT",
+                                "value": "TEST03-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

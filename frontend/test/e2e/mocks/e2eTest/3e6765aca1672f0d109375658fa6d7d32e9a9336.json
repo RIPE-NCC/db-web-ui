@@ -58,7 +58,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "UA-LUCKYNET-960618"
+                                "value": "TEST-ORG-123"
                             },
                             {
                                 "name": "country",
@@ -67,28 +67,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-LNL2-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST08-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-LNL2-RIPE",
+                                "value": "ORG-TEST08-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LNN1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TEST2-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "LNN1-RIPE",
+                                "value": "TEST2-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LNN1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TEST2-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "LNN1-RIPE",
+                                "value": "TEST2-RIPE",
                                 "referenced-type": "role"
                             },
                             {
@@ -107,19 +107,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS3254-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST20-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "AS3254-MNT",
+                                "value": "TEST20-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS3254-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST20-MNT"
                                 },
                                 "name": "mnt-routes",
-                                "value": "AS3254-MNT",
+                                "value": "TEST20-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

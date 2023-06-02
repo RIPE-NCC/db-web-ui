@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=B&offset=0&limit=20&query-string=193.201.0.0",
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=B&offset=0&limit=20&query-string=193.201.0.0",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -53,11 +53,11 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "WITBE"
+                                "value": "ORGTEST30"
                             },
                             {
                                 "name": "descr",
-                                "value": "Witbe International Measurement Network"
+                                "value": "ORGTEST30 International Measurement Network"
                             },
                             {
                                 "name": "country",
@@ -66,29 +66,29 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest.db.ripe.net/ripe/organisation/ORG-WA9-RIPE"
+                                    "href": "http://rest.db.ripe.net/ripe/organisation/ORG-TEST30-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-WA9-RIPE",
+                                "value": "ORG-TEST30-RIPE",
                                 "referenced-type": "organisation",
                                 "managed": true
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest.db.ripe.net/ripe/person/PR12-RIPE"
+                                    "href": "http://rest.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "PR12-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest.db.ripe.net/ripe/person/PR12-RIPE"
+                                    "href": "http://rest.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "PR12-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -109,28 +109,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest.db.ripe.net/ripe/mntner/WITBE-MNT"
+                                    "href": "http://rest.db.ripe.net/ripe/mntner/ORGTEST30-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "WITBE-MNT",
+                                "value": "ORGTEST30-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest.db.ripe.net/ripe/mntner/WITBE-MNT"
+                                    "href": "http://rest.db.ripe.net/ripe/mntner/ORGTEST30-MNT"
                                 },
                                 "name": "mnt-routes",
-                                "value": "WITBE-MNT",
+                                "value": "ORGTEST30-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest.db.ripe.net/ripe/mntner/WITBE-MNT"
+                                    "href": "http://rest.db.ripe.net/ripe/mntner/ORGTEST30-MNT"
                                 },
                                 "name": "mnt-domains",
-                                "value": "WITBE-MNT",
+                                "value": "ORGTEST30-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
@@ -156,12 +156,12 @@
                         ]
                     },
                     "resource-holder": {
-                        "key": "ORG-WA9-RIPE",
-                        "name": "WITBE NET S.A."
+                        "key": "ORG-TEST30-RIPE",
+                        "name": "ORGTEST30"
                     },
                     "abuse-contact": {
-                        "key": "AR15400-RIPE",
-                        "email": "lir@witbe.net"
+                        "key": "TEST000-RIPE",
+                        "email": "lir@orgtest30.net"
                     },
                     "managed": true
                 }

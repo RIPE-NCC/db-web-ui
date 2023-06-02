@@ -12,7 +12,7 @@ describe('The inetnum editor', () => {
             .expectDisabledSubmitCreate(true)
             .typeOnField('inetnum', '213.159.160.0-213.159.190.255')
             .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('ERICSSON-MNT')
+            .authenticateWithDisabledAssociate('TEST03-MNT')
             .typeOnField('netname', 'bogus-netname1')
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'aa1-ripe')
@@ -47,6 +47,7 @@ describe('The inetnum editor', () => {
             .selectFromNgSelect('status', 'ASSIGNED PA')
             .expectDisabledSubmitCreate(true);
     });
+
     it('should show an editor for inet6num', () => {
         webupdatesPage
             .visit('select')
@@ -56,11 +57,12 @@ describe('The inetnum editor', () => {
             .expectDisabledSubmitCreate(true)
             .typeOnField('inet6num', '2001:888:2000::/38')
             .blurOnField('inet6num')
-            .authenticateWithDisabledAssociate('XS4ALL-MNT')
+            .authenticateWithDisabledAssociate('TEST11-MNT')
             .expectOptionSizeFromNgSelect('status', 2)
             .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
             .expectOptionFromNgSelect('status', 'ASSIGNED');
     });
+
     it('should sanitized img and script tag - XSS attack', () => {
         webupdatesPage
             .typeOnField(
@@ -89,6 +91,7 @@ describe('The inetnum editor', () => {
             .expectErrorOnField('admin-c', 'Syntax error in img src=')
             .expectErrorOnField('tech-c', 'Syntax error in img src=');
     });
+
     it('should open description just under field on click on question mark', () => {
         webupdatesPage
             .expectHelpToExist('inetnum', false)
@@ -103,15 +106,16 @@ describe('The inetnum editor', () => {
             .expectHelpToExist('inetnum', false)
             .expectHelpToExist('netname', true);
     });
+
     it('should enable submit button', () => {
         webupdatesPage
             .typeOnField('inetnum', '5.254.68.40/29')
             .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('VOXILITY-MNT')
+            .authenticateWithDisabledAssociate('TEST02-MNT')
             .typeOnField('netname', 'SOMETHING')
             .selectFromNgSelect('country', 'Afghanistan [AF]')
-            .typeOnField('admin-c', 'WW2105-RIPE')
-            .typeOnField('tech-c', 'WW2105-RIPE')
+            .typeOnField('admin-c', 'TSTADMINC-RIPE')
+            .typeOnField('tech-c', 'TSTADMINC-RIPE')
             .expectDisabledSubmitCreate(true)
             .expectOptionSizeFromNgSelect('status', 3)
             .expectOptionFromNgSelect('status', 'ASSIGNED PA')
@@ -120,15 +124,16 @@ describe('The inetnum editor', () => {
             .selectFromNgSelect('status', 'ASSIGNED PA')
             .expectDisabledSubmitCreate(false);
     });
+
     it('should show field validation errors', () => {
         webupdatesPage
             .typeOnField('inetnum', '5.254.68.40/29')
             .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('VOXILITY-MNT')
+            .authenticateWithDisabledAssociate('TEST02-MNT')
             .typeOnField('netname', 'SOMETHING')
             .selectFromNgSelect('country', 'Afghanistan [AF]')
-            .typeOnField('admin-c', 'WW2105-RIPE')
-            .typeOnField('tech-c', 'WW2105-RIPE')
+            .typeOnField('admin-c', 'TSTADMINC-RIPE')
+            .typeOnField('tech-c', 'TSTADMINC-RIPE')
             .expectDisabledSubmitCreate(true)
             .expectOptionSizeFromNgSelect('status', 3)
             .expectOptionFromNgSelect('status', 'ASSIGNED PA')
@@ -139,6 +144,7 @@ describe('The inetnum editor', () => {
             .expectErrorOnField('inetnum', 'Value 5.254.68.40/29 converted to 5.254.68.40 - 5.254.68.47')
             .expectErrorOnField('netname', 'Syntax error in SOMETHING.');
     });
+
     it('should show error message above field and in banner for existing resource', () => {
         webupdatesPage
             .typeOnField('inetnum', '5.154.68.40/29')

@@ -374,13 +374,13 @@ describe('TextCreateComponent', () => {
             objects: {
                 object: [
                     {
-                        'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TX01-RIPE' }] },
+                        'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TST07-RIPE' }] },
                         attributes: {
                             attribute: [
                                 { name: 'person', value: 'Tester X' },
                                 { name: 'address', value: 'Singel, Amsterdam' },
                                 { name: 'phone', value: '+316' },
-                                { name: 'nic-hdl', value: 'TX01-RIPE' },
+                                { name: 'nic-hdl', value: 'TST07-RIPE' },
                                 { name: 'mnt-by', value: 'TEST-MNT' },
                                 { name: 'source', value: 'RIPE' },
                             ],
@@ -390,7 +390,7 @@ describe('TextCreateComponent', () => {
             },
         });
 
-        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TX01-RIPE?method=Create`);
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TST07-RIPE?method=Create`);
         expect(modalMock.open).not.toHaveBeenCalled();
     });
 
@@ -409,13 +409,13 @@ describe('TextCreateComponent', () => {
             objects: {
                 object: [
                     {
-                        'primary-key': { attribute: [{ name: 'person', value: 'TX01-RIPE' }] },
+                        'primary-key': { attribute: [{ name: 'person', value: 'TST07-RIPE' }] },
                         attributes: {
                             attribute: [
                                 { name: 'person', value: 'Tester X' },
                                 { name: 'address', value: 'Singel, Amsterdam' },
                                 { name: 'phone', value: '+316' },
-                                { name: 'nic-hdl', value: 'TX01-RIPE' },
+                                { name: 'nic-hdl', value: 'TST07-RIPE' },
                                 { name: 'mnt-by', value: 'TEST-MNT' },
                                 { name: 'source', value: 'RIPE' },
                             ],
@@ -425,7 +425,7 @@ describe('TextCreateComponent', () => {
             },
         });
 
-        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TX01-RIPE?method=Create`);
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TST07-RIPE?method=Create`);
         expect(modalMock.open).not.toHaveBeenCalled();
     });
 
@@ -449,13 +449,13 @@ describe('TextCreateComponent', () => {
                 objects: {
                     object: [
                         {
-                            'primary-key': { attribute: [{ name: 'person', value: 'TX01-RIPE' }] },
+                            'primary-key': { attribute: [{ name: 'person', value: 'TST07-RIPE' }] },
                             attributes: {
                                 attribute: [
                                     { name: 'person', value: 'Tester X' },
                                     { name: 'address', value: 'Singel, Amsterdam' },
                                     { name: 'phone', value: '+316' },
-                                    { name: 'nic-hdl', value: 'TX01-RIPE' },
+                                    { name: 'nic-hdl', value: 'TST07-RIPE' },
                                     { name: 'mnt-by', value: 'TEST-MNT' },
                                     { name: 'source', value: 'RIPE' },
                                 ],
@@ -464,7 +464,7 @@ describe('TextCreateComponent', () => {
                     ],
                 },
             });
-        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TX01-RIPE?method=Create`);
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TST07-RIPE?method=Create`);
         expect(modalMock.open).not.toHaveBeenCalled();
     });
 
@@ -487,13 +487,13 @@ describe('TextCreateComponent', () => {
                 objects: {
                     object: [
                         {
-                            'primary-key': { attribute: [{ name: 'person', value: 'TX01-RIPE' }] },
+                            'primary-key': { attribute: [{ name: 'person', value: 'TST07-RIPE' }] },
                             attributes: {
                                 attribute: [
                                     { name: 'person', value: 'Tester X' },
                                     { name: 'address', value: 'Singel, Amsterdam' },
                                     { name: 'phone', value: '+316' },
-                                    { name: 'nic-hdl', value: 'TX01-RIPE' },
+                                    { name: 'nic-hdl', value: 'TST07-RIPE' },
                                     { name: 'mnt-by', value: 'TEST-MNT' },
                                     { name: 'source', value: 'RIPE' },
                                 ],

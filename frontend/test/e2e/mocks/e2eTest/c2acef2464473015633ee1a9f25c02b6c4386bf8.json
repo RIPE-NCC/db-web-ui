@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/RIPE/route/211.43.192.0/19AS9777?abuse-contact=true&managed-attributes=true&resource-holder=true&unfiltered=true",
+    "requestUrl": "/api/whois/RIPE/route/211.43.192.0/19AS9777?abuse-contact=true&managed-attributes=true&resource-holder=true&unfiltered=true",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {}

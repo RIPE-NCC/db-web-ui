@@ -23,7 +23,7 @@ import { RestService } from '../../../src/app/updatesweb/rest.service';
 
 describe('TextModifyComponent', () => {
     const SOURCE = 'RIPE';
-    const OBJECT_NAME = 'TP-RIPE';
+    const OBJECT_NAME = 'TST08-RIPE';
     const OBJECT_TYPE = 'person';
     let httpMock: HttpTestingController;
     let componentFixture: ComponentFixture<TextModifyComponent>;
@@ -39,27 +39,28 @@ describe('TextModifyComponent', () => {
         'person:test person\n' +
         'address:Amsterdam\n' +
         'phone:+316\n' +
-        'nic-hdl:TP-RIPE\n' +
+        'nic-hdl:TST08-RIPE\n' +
         'mnt-by:TEST-MNT\n' +
         'last-modified: 2012-02-27T10:11:12Z\n' +
         'source:RIPE\n';
 
-    const testPersonRpslScreen = 'person:test person\n' + 'address:Amsterdam\n' + 'phone:+316\n' + 'nic-hdl:TP-RIPE\n' + 'mnt-by:TEST-MNT\n' + 'source:RIPE\n';
+    const testPersonRpslScreen =
+        'person:test person\n' + 'address:Amsterdam\n' + 'phone:+316\n' + 'nic-hdl:TST08-RIPE\n' + 'mnt-by:TEST-MNT\n' + 'source:RIPE\n';
 
     const testPersonRpslMissingPhone =
-        'person:test person\n' + 'address:Amsterdam\n' + 'phone:\n' + 'nic-hdl:TP-RIPE\n' + 'mnt-by:TEST-MNT\n' + 'source:RIPE\n';
+        'person:test person\n' + 'address:Amsterdam\n' + 'phone:\n' + 'nic-hdl:TST08-RIPE\n' + 'mnt-by:TEST-MNT\n' + 'source:RIPE\n';
 
     const testPersonObject = {
         objects: {
             object: [
                 {
-                    'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TP-RIPE' }] },
+                    'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TST08-RIPE' }] },
                     attributes: {
                         attribute: [
                             { name: 'person', value: 'test person' },
                             { name: 'address', value: 'Amsterdam' },
                             { name: 'phone', value: '+316' },
-                            { name: 'nic-hdl', value: 'TP-RIPE' },
+                            { name: 'nic-hdl', value: 'TST08-RIPE' },
                             { name: 'mnt-by', value: 'TEST-MNT' },
                             { name: 'source', value: 'RIPE' },
                         ],
@@ -141,7 +142,7 @@ describe('TextModifyComponent', () => {
         createParams();
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
             {
                 key: 'TEST-MNT',
@@ -169,11 +170,11 @@ describe('TextModifyComponent', () => {
 
     it('should redirect to webupdates when web-preference is set', async () => {
         preferencesServiceMock.isWebMode.and.returnValue(true);
-        createParams('person', 'TP-RIPE', false);
+        createParams('person', 'TST08-RIPE', false);
         componentFixture.detectChanges();
 
         // TODO :D how this was working? it should redirect not call http
-        // httpMock.expectOne({method: "GET", url: "api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true"}).flush(testPersonObject);
+        // httpMock.expectOne({method: "GET", url: "api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true"}).flush(testPersonObject);
         // httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([{
         //     key: "TEST-MNT",
         //     type: "mntner",
@@ -181,15 +182,15 @@ describe('TextModifyComponent', () => {
         //     mine: true
         // }]);
         // await componentFixture.whenStable();
-        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/modify/RIPE/person/TP-RIPE?noRedirect`);
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/modify/RIPE/person/TST08-RIPE?noRedirect`);
     });
 
     it('should not redirect to webupdates no-redirect is set', async () => {
         preferencesServiceMock.isWebMode.and.returnValue(true);
-        createParams('person', 'TP-RIPE', true);
+        createParams('person', 'TST08-RIPE', true);
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
             {
                 key: 'TEST-MNT',
@@ -207,7 +208,7 @@ describe('TextModifyComponent', () => {
         createParams();
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
             {
                 key: 'TEST-MNT',
@@ -225,7 +226,7 @@ describe('TextModifyComponent', () => {
         createParams();
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
             {
                 key: 'TEST-MNT',
@@ -247,7 +248,7 @@ describe('TextModifyComponent', () => {
     it('should navigate to display after successful submit', async () => {
         createParams();
         componentFixture.detectChanges();
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
             {
                 key: 'TEST-MNT',
@@ -263,9 +264,9 @@ describe('TextModifyComponent', () => {
         textModifyComponent.submit();
         await componentFixture.whenStable();
 
-        httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/person/TP-RIPE?unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/person/TST08-RIPE?unformatted=true' }).flush(testPersonObject);
         await componentFixture.whenStable();
-        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TP-RIPE?method=Modify`);
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TST08-RIPE?method=Modify`);
     });
 
     it('should navigate to delete after pressing delete button', async () => {
@@ -322,7 +323,7 @@ describe('TextModifyComponent', () => {
                 mine: true,
             },
         ]);
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(
             {
                 errormessages: {
                     errormessage: [
@@ -347,7 +348,7 @@ describe('TextModifyComponent', () => {
         createParams();
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([], { statusText: '503', status: 503 });
 
         await componentFixture.whenStable();
@@ -361,7 +362,7 @@ describe('TextModifyComponent', () => {
         createParams();
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
             {
                 key: 'TEST-MNT',
@@ -376,18 +377,18 @@ describe('TextModifyComponent', () => {
         textModifyComponent.submit();
         await componentFixture.whenStable();
 
-        httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/person/TP-RIPE?unformatted=true' }).flush(
+        httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/person/TST08-RIPE?unformatted=true' }).flush(
             {
                 objects: {
                     object: [
                         {
-                            'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TP-RIPE' }] },
+                            'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TST08-RIPE' }] },
                             attributes: {
                                 attribute: [
                                     { name: 'person', value: 'test person' },
                                     { name: 'address', value: 'Amsterdam' },
                                     { name: 'phone', value: '+316' },
-                                    { name: 'nic-hdl', value: 'TP-RIPE' },
+                                    { name: 'nic-hdl', value: 'TST08-RIPE' },
                                     { name: 'mnt-by', value: 'TEST-MNT' },
                                     { name: 'source', value: 'RIPE' },
                                 ],
@@ -428,7 +429,7 @@ describe('TextModifyComponent', () => {
         createParams();
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([]);
 
         await componentFixture.whenStable();
@@ -442,18 +443,18 @@ describe('TextModifyComponent', () => {
         textModifyComponent.submit();
         await componentFixture.whenStable();
 
-        const req1 = httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/person/TP-RIPE?password=secret2&password=secret&unformatted=true' });
+        const req1 = httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/person/TST08-RIPE?password=secret2&password=secret&unformatted=true' });
         req1.flush(testPersonObject);
         await componentFixture.whenStable();
 
-        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TP-RIPE?method=Modify`);
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TST08-RIPE?method=Modify`);
     });
 
     it('should present password popup when trying to modify object with no sso mnt-by ', async () => {
         createParams();
         componentFixture.detectChanges();
 
-        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true' }).flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
         await componentFixture.whenStable();
 
@@ -488,7 +489,7 @@ describe('TextModifyComponent', () => {
                             attribute: [
                                 { name: 'mntner', value: 'TEST-MNT' },
                                 { name: 'descr', value: '.' },
-                                { name: 'admin-c', value: 'TP-RIPE' },
+                                { name: 'admin-c', value: 'TST08-RIPE' },
                                 { name: 'upd-to', value: 'email@email.com' },
                                 { name: 'auth', value: 'MD5-PW first fetch' },
                                 { name: 'mnt-by', value: 'TEST-MNT' },
@@ -513,7 +514,7 @@ describe('TextModifyComponent', () => {
                             attribute: [
                                 { name: 'mntner', value: 'TEST-MNT' },
                                 { name: 'descr', value: '.' },
-                                { name: 'admin-c', value: 'TP-RIPE' },
+                                { name: 'admin-c', value: 'TST08-RIPE' },
                                 { name: 'upd-to', value: 'email@email.com' },
                                 { name: 'auth', value: 'MD5-PW authenticated refetch' },
                                 { name: 'mnt-by', value: 'TEST-MNT' },
@@ -531,7 +532,7 @@ describe('TextModifyComponent', () => {
         expect(textModifyComponent.object.rpsl).toEqual(
             'mntner:TEST-MNT\n' +
                 'descr:.\n' +
-                'admin-c:TP-RIPE\n' +
+                'admin-c:TST08-RIPE\n' +
                 'upd-to:email@email.com\n' +
                 'auth:MD5-PW authenticated refetch\n' +
                 'mnt-by:TEST-MNT\n' +

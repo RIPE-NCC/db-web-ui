@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=tdacruzper2-mnt",
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=tdacruzper2-mnt",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {}

@@ -187,7 +187,7 @@ describe('ForceDeleteController', () => {
     });
 
     it('should have errors on wrong type', () => {
-        createParams(SOURCE, 'mntner', 'TPOLYCHNIA-MNT');
+        createParams(SOURCE, 'mntner', 'TST02-MNT');
         componentFixture.detectChanges();
 
         expect(forceDeleteComponent.alertsService.alerts.errors[0].plainText).toBe(

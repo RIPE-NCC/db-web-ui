@@ -31,13 +31,13 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '212.17.110.0/23')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('ERICSSON-MNT')
-            .typeOnField('nserver$1', 'ns1.xs4all.nl')
+            .authenticateWithDisabledAssociate('TEST03-MNT')
+            .typeOnField('nserver$1', 'ns1.orgtest22.nl')
             .blurOnField('nserver$1')
-            .typeOnField('nserver$2', 'nsXXX.xs4all.nl')
+            .typeOnField('nserver$2', 'nsXXX.orgtest22.nl')
             .blurOnField('nserver$2')
-            .expectErrorOnField('nserver$2', 'Could not resolve nsXXX.xs4all.nl')
-            .typeOnField('nserver$2', 'ns2.xs4all.nl')
+            .expectErrorOnField('nserver$2', 'Could not resolve nsXXX.orgtest22.nl')
+            .typeOnField('nserver$2', 'ns2.orgtest22.nl')
             .blurOnField('nserver$2');
 
         webupdatesPage
@@ -54,14 +54,14 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '2001:db8::/48')
             .blurOnField('prefix')
-            .typeOnField('nserver$1', 'ns1.xs4all.nl')
+            .typeOnField('nserver$1', 'ns1.orgtest22.nl')
             .blurOnField('nserver$1')
-            .typeOnField('nserver$2', 'nsXXX.xs4all.nl')
+            .typeOnField('nserver$2', 'nsXXX.orgtest22.nl')
             .blurOnField('nserver$2')
             .expectFieldToExist('admin-c', false)
             .expectFieldToExist('tech-c', false)
             .expectFieldToExist('zone-c', false)
-            .typeOnField('nserver$2', 'ns2.xs4all.nl')
+            .typeOnField('nserver$2', 'ns2.orgtest22.nl')
             .blurOnField('nserver$2');
 
         webupdatesPage
@@ -83,20 +83,20 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '212.17.110.0/23')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('ERICSSON-MNT')
-            .typeOnField('nserver$1', 'rns1.upc.biz')
+            .authenticateWithDisabledAssociate('TEST03-MNT')
+            .typeOnField('nserver$1', 'rns1.test.biz')
             .blurOnField('nserver$1')
-            .typeOnField('nserver$2', 'rns2.upc.biz')
+            .typeOnField('nserver$2', 'rns2.test.biz')
             .blurOnField('nserver$2')
             .expectReverseZoneTableToHaveRows(2);
 
         webupdatesPage
-            .typeOnField('admin-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('admin-c', 'LG1-RIPE')
-            .typeOnField('tech-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('tech-c', 'LG1-RIPE')
-            .typeOnField('zone-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('zone-c', 'LG1-RIPE')
+            .typeOnField('admin-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('admin-c', 'TSTADMINC4-RIPE')
+            .typeOnField('tech-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('tech-c', 'TSTADMINC4-RIPE')
+            .typeOnField('zone-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('zone-c', 'TSTADMINC4-RIPE')
             .submitCreate()
             .expectSuccessMessage('object(s) have been successfully created');
     });
@@ -105,19 +105,19 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '91.90.153.0/24')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('MNT-MIVITEC')
-            .typeOnField('nserver$1', 'dns1.mivitec.net')
+            .authenticateWithDisabledAssociate('TEST13-MNT')
+            .typeOnField('nserver$1', 'dns1.test.net')
             .blurOnField('nserver$1')
-            .typeOnField('nserver$2', 'dns2.mivitec.de')
+            .typeOnField('nserver$2', 'dns2.test.de')
             .blurOnField('nserver$2')
             .expectReverseZoneTableToHaveRows(1);
 
         webupdatesPage
-            .typeOnField('admin-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('admin-c', 'LG1-RIPE')
+            .typeOnField('admin-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('admin-c', 'TSTADMINC4-RIPE')
             .typeOnField('tech-c', 'NOTEXISTING')
-            .typeOnField('zone-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('zone-c', 'LG1-RIPE');
+            .typeOnField('zone-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('zone-c', 'TSTADMINC4-RIPE');
 
         cy.changeJsonResponseFile(failDomainCreate, mock);
 
@@ -154,20 +154,20 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '91.109.48.0-91.109.48.255')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('CONSIAGNET-MNT')
-            .typeOnField('nserver$1', 'dns01.estracom.it')
+            .authenticateWithDisabledAssociate('TEST04-MNT')
+            .typeOnField('nserver$1', 'dns01.test.it')
             .blurOnField('nserver$1')
-            .typeOnField('nserver$2', 'dns02.estracom.it')
+            .typeOnField('nserver$2', 'dns02.test.it')
             .blurOnField('nserver$2')
             .expectReverseZoneTableToHaveRows(1);
 
         webupdatesPage
-            .typeOnField('admin-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('admin-c', 'LG1-RIPE')
-            .typeOnField('tech-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('tech-c', 'LG1-RIPE')
-            .typeOnField('zone-c', 'LG1-RIPE')
-            .selectFromFieldAutocomplete('zone-c', 'LG1-RIPE');
+            .typeOnField('admin-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('admin-c', 'TSTADMINC4-RIPE')
+            .typeOnField('tech-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('tech-c', 'TSTADMINC4-RIPE')
+            .typeOnField('zone-c', 'TSTADMINC4-RIPE')
+            .selectFromFieldAutocomplete('zone-c', 'TSTADMINC4-RIPE');
 
         cy.changeJsonResponseFile(successDomainCreateFromRange, mock);
 

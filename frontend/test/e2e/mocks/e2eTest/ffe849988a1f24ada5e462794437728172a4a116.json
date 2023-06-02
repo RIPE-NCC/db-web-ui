@@ -1,12 +1,12 @@
 {
     "data": [
         {
-            "key": "ERICSSON-MNT",
+            "key": "TEST03-MNT",
             "type": "mntner",
             "auth": ["MD5-PW", "SSO", "SSO"]
         }
     ],
     "statusCode": 200,
     "contentType": "application/json",
-    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=ERICSSON-MNT"
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST03-MNT"
 }

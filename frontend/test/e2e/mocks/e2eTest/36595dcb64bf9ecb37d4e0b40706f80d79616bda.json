@@ -38,7 +38,7 @@
                             {
                                 "str": {
                                     "name": "netname",
-                                    "value": "EU-ZZ-193"
+                                    "value": "TEST-NETNAME"
                                 }
                             },
                             {
@@ -158,7 +158,7 @@
                             {
                                 "str": {
                                     "name": "org",
-                                    "value": "ORG-RIEN1-RIPE"
+                                    "value": "ORG-TEST28-RIPE"
                                 }
                             },
                             {
@@ -182,19 +182,19 @@
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "JDR-RIPE"
+                                    "value": "TSTADMINC-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "admin-c",
-                                    "value": "BRD-RIPE"
+                                    "value": "TSTADMINC2-RIPE"
                                 }
                             },
                             {
                                 "str": {
                                     "name": "tech-c",
-                                    "value": "OPS4-RIPE"
+                                    "value": "TSTTECHC-RIPE"
                                 }
                             },
                             {
@@ -505,13 +505,13 @@
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.pre",
+                                            "name": "hl.test.pre",
                                             "value": "<b>"
                                         }
                                     },
                                     {
                                         "str": {
-                                            "name": "hl.simple.post",
+                                            "name": "hl.test.post",
                                             "value": "</b>"
                                         }
                                     },

@@ -26,10 +26,10 @@ describe('CreateMntnerPairComponent', () => {
     const SOURCE = 'RIPE';
     const PERSON_NAME = 'Titus Tester';
     const PERSON_UID = 'tt-ripe';
-    const MNTNER_NAME = 'aardvark-mnt';
+    const MNTNER_NAME = 'TEST71-MNT';
     const SSO_EMAIL = 'tester@ripe.net';
     const ROLE_NAME = 'ROLE-TEST';
-    const ROLE_EMAIL = 'test@ripe.net';
+    const ROLE_EMAIL = 'TSTADMINC-RIPE';
 
     describe('in pair with person object', () => {
         beforeEach(() => {
@@ -157,7 +157,7 @@ describe('CreateMntnerPairComponent', () => {
             const mntnerAttrs = component.whoisResourcesService.getAttributes(cachedMntner);
             expect(component.whoisResourcesService.getSingleAttributeOnName(mntnerAttrs, 'mntner').value).toEqual(MNTNER_NAME);
 
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('webupdates/display/RIPE/person/tt-ripe/mntner/aardvark-mnt');
+            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('webupdates/display/RIPE/person/tt-ripe/mntner/TEST71-MNT');
         });
 
         it('should handle submit failure', async () => {
@@ -320,16 +320,16 @@ describe('CreateMntnerPairComponent', () => {
                 .flush(component.whoisResourcesService.validateWhoisResources(ROLE_MNTNER_PAIR_DUMMY));
             await fixture.whenStable();
 
-            const cachedPerson = component.messageStoreService.get('RA9858-RIPE');
+            const cachedPerson = component.messageStoreService.get('TSTADMINC-RIPE');
             const roleAttrs = component.whoisResourcesService.getAttributes(cachedPerson);
             expect(component.whoisResourcesService.getSingleAttributeOnName(roleAttrs, 'role').value).toEqual(ROLE_NAME);
-            expect(component.whoisResourcesService.getSingleAttributeOnName(roleAttrs, 'nic-hdl').value).toEqual('RA9858-RIPE');
+            expect(component.whoisResourcesService.getSingleAttributeOnName(roleAttrs, 'nic-hdl').value).toEqual('TSTADMINC-RIPE');
 
             const cachedMntner = component.messageStoreService.get(MNTNER_NAME);
             const mntnerAttrs = component.whoisResourcesService.getAttributes(cachedMntner);
             expect(component.whoisResourcesService.getSingleAttributeOnName(mntnerAttrs, 'mntner').value).toEqual(MNTNER_NAME);
 
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('webupdates/display/RIPE/role/RA9858-RIPE/mntner/aardvark-mnt');
+            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('webupdates/display/RIPE/role/TSTADMINC-RIPE/mntner/TEST71-MNT');
         });
 
         it('should handle submit failure', async () => {
@@ -466,18 +466,18 @@ describe('CreateMntnerPairComponent', () => {
                     type: 'role',
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/RA9858-RIPE',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE',
                     },
                     source: { id: 'ripe' },
                     'primary-key': {
-                        attribute: [{ name: 'nic-hdl', value: 'RA9858-RIPE' }],
+                        attribute: [{ name: 'nic-hdl', value: 'TSTADMINC-RIPE' }],
                     },
                     attributes: {
                         attribute: [
                             { name: 'role', value: ROLE_NAME },
                             { name: 'address', value: 'Amsterdam' },
                             { name: 'e-mail', value: ROLE_EMAIL },
-                            { name: 'nic-hdl', value: 'RA9858-RIPE' },
+                            { name: 'nic-hdl', value: 'TSTADMINC-RIPE' },
                             { name: 'mnt-by', value: MNTNER_NAME },
                             { name: 'source', value: SOURCE },
                         ],
@@ -487,7 +487,7 @@ describe('CreateMntnerPairComponent', () => {
                     type: 'mntner',
                     link: {
                         type: 'locator',
-                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/aardvark-mnt',
+                        href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TEST71-MNT',
                     },
                     source: { id: 'ripe' },
                     'primary-key': {
@@ -496,9 +496,9 @@ describe('CreateMntnerPairComponent', () => {
                     attributes: {
                         attribute: [
                             { name: 'mntner', value: MNTNER_NAME },
-                            { name: 'admin-c', value: 'RA9858-RIPE' },
-                            { name: 'upd-to', value: 'bad@ripe.net' },
-                            { name: 'auth', value: 'SSO bad@ripe.net' },
+                            { name: 'admin-c', value: 'TSTADMINC-RIPE' },
+                            { name: 'upd-to', value: 'teste2e@ripe.net' },
+                            { name: 'auth', value: 'SSO teste2e@ripe.net' },
                             { name: 'mnt-by', value: MNTNER_NAME },
                             { name: 'source', value: SOURCE },
                         ],

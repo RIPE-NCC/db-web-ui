@@ -63,12 +63,12 @@ describe('FindMaintainerComponent', () => {
                             },
                             {
                                 name: 'upd-to',
-                                value: 'test@ripe.net',
+                                value: 'TSTADMINC-RIPE',
                             },
                         ],
                     },
                 },
-                email: 'test@ripe.net',
+                email: 'TSTADMINC-RIPE',
                 mntnerFound: true,
             };
             findMaintainerService.search.and.returnValue(of(response));
@@ -77,7 +77,7 @@ describe('FindMaintainerComponent', () => {
             component.selectMaintainer(maintainerKey);
             expect(component.foundMaintainer.mntnerFound).toBeTruthy();
             expect(component.foundMaintainer.selectedMaintainer.name).toBe('world');
-            expect(component.foundMaintainer.email).toBe('test@ripe.net');
+            expect(component.foundMaintainer.email).toBe('TSTADMINC-RIPE');
 
             expect(component.alertsService.alerts.errors.length).toBe(0);
             expect(component.alertsService.alerts.warnings.length).toBe(0);

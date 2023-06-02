@@ -27,7 +27,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "NL-A2B-CONNECT-20150601"
+                                "value": "TSTORG07"
                             },
                             {
                                 "name": "country",
@@ -36,28 +36,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-ACB5-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TST07-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-ACB5-RIPE",
+                                "value": "ORG-TST07-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/AS51088-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTROLE-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "AS51088-RIPE",
+                                "value": "TSTROLE-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/AS51088-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTROLE-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "AS51088-RIPE",
+                                "value": "TSTROLE-RIPE",
                                 "referenced-type": "role"
                             },
                             {
@@ -85,19 +85,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/A2B-INTERNET-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST07-MNT"
                                 },
                                 "name": "mnt-lower",
-                                "value": "A2B-INTERNET-MNT",
+                                "value": "TEST07-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MODMC-MNT {185.102.172.0/22}"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST08-MNT {185.102.172.0/22}"
                                 },
                                 "name": "mnt-routes",
-                                "value": "MODMC-MNT {185.102.172.0/22}",
+                                "value": "TEST08-MNT {185.102.172.0/22}",
                                 "referenced-type": "mntner"
                             },
                             {
@@ -107,10 +107,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MODMC-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST08-MNT"
                                 },
                                 "name": "mnt-domains",
-                                "value": "MODMC-MNT",
+                                "value": "TEST08-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

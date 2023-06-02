@@ -39,7 +39,7 @@ describe('lookup', () => {
     });
     describe('The lookup page for organisation', () => {
         beforeEach(() => {
-            lookupPage.visit('RIPE', 'organisation', 'ORG-RIEN1-RIPE');
+            lookupPage.visit('RIPE', 'organisation', 'ORG-TEST28-RIPE');
         });
 
         it('should show not filtered object', () => {
@@ -70,9 +70,9 @@ describe('lookup', () => {
                 .getWhoisObjectViewer()
                 .expectAttributesSize(9)
                 .expectRipeStatLinkHref('https://stat.ripe.net/211.43.192.0/19?sourceapp=ripedb')
-                .expectAttributeToContainLink(3, '?source=ripe-nonauth&key=AS4663-RIPE-MNT&type=mntner')
+                .expectAttributeToContainLink(3, '?source=ripe-nonauth&key=TEST14-MNT&type=mntner')
                 .expectAttributeToContainKeyAndValue(6, 'descr', '# comment')
-                .expectAttributeToContainKeyAndValue(7, 'notify', '***@npix.net');
+                .expectAttributeToContainKeyAndValue(7, 'notify', '***@testemail.net');
         });
 
         it('should show version of whois after searching', () => {

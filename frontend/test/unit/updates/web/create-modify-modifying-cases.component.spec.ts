@@ -32,7 +32,7 @@ const ORG_MOCK = {
     type: 'organisation',
     link: {
         type: 'locator',
-        href: 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE',
+        href: 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST70-RIPE',
     },
     source: {
         id: 'ripe',
@@ -41,7 +41,7 @@ const ORG_MOCK = {
         attribute: [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
         ],
     },
@@ -49,7 +49,7 @@ const ORG_MOCK = {
         attribute: [
             {
                 name: 'organisation',
-                value: 'ORG-UA300-RIPE',
+                value: 'ORG-TEST70-RIPE',
             },
             {
                 name: 'org-name',
@@ -73,7 +73,7 @@ const ORG_MOCK = {
                     href: 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT',
                 },
                 name: 'mnt-ref',
-                value: 'IS-NET-MNT',
+                value: 'TEST-MNT',
                 'referenced-type': 'mntner',
             },
             {
@@ -120,15 +120,15 @@ const ROLE_OBJ = [
     },
     {
         name: 'nic-hdl',
-        value: 'SR11027-RIPE',
+        value: 'TEST01-RIPE',
     },
     {
         link: {
             type: 'locator',
-            href: 'http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK',
+            href: 'http://rest-dev.db.ripe.net/ripe/mntner/TEST70-MNT',
         },
         name: 'mnt-by',
-        value: 'MNT-THINK',
+        value: 'TEST70-MNT',
         'referenced-type': 'mntner',
     },
     {
@@ -556,7 +556,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
     describe('for organisation', () => {
         const OBJECT_TYPE = 'organisation';
         const SOURCE = 'RIPE';
-        const NAME = 'ORG-UA300-RIPE';
+        const NAME = 'ORG-TEST70-RIPE';
 
         beforeEach(async () => {
             paramMapMock.source = SOURCE;
@@ -588,7 +588,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
             const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
             component.createRoleForAbuseCAttribute(attrAbuseC);
             await fixture.whenStable();
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c').value).toBe('SR11027-RIPE');
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c').value).toBe('TEST01-RIPE');
         });
 
         it('should populate component.roleForAbuseC', async () => {
@@ -608,7 +608,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
     describe('for LIR organisation', () => {
         const OBJECT_TYPE = 'organisation';
         const SOURCE = 'RIPE';
-        const NAME = 'ORG-UA300-RIPE';
+        const NAME = 'ORG-TEST70-RIPE';
 
         beforeEach(async () => {
             paramMapMock.source = SOURCE;

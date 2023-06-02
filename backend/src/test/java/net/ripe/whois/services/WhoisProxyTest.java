@@ -16,11 +16,11 @@ public class WhoisProxyTest {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("/db-web-ui/api/whois/api/user/info",
-            "apiKey=DB-WHOIS-d5395e7fbf8d",
+            "apiKey=DB-WHOIS-4a471957e3c7",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/user/info?apiKey=DB-WHOIS-d5395e7fbf8d", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/user/info?apiKey=DB-WHOIS-4a471957e3c7", uri.toString());
     }
 
     @Test
@@ -64,11 +64,11 @@ public class WhoisProxyTest {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("/db-web-ui/api/whois/api/resources/ipanalyser/ipv4.json",
-            "org-id=ORG-CSL9",
+            "org-id=ORG-TST17",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/ipanalyser/ipv4.json?org-id=ORG-CSL9", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/ipanalyser/ipv4.json?org-id=ORG-TST17", uri.toString());
     }
 
     @Test
@@ -76,11 +76,11 @@ public class WhoisProxyTest {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois../fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois../fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -88,11 +88,11 @@ public class WhoisProxyTest {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois....//fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois....//fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois....//fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -100,11 +100,11 @@ public class WhoisProxyTest {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois......///fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois......///fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois......///fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -112,11 +112,11 @@ public class WhoisProxyTest {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/../fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/../fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -124,22 +124,22 @@ public class WhoisProxyTest {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois./fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois./fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois./fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
     public void shouldRedirectWithSpecialCharacters() {
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         URI uri = whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois··/fmp-int/auditlog",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois··/fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "//api/resources//api/whois··/fmp-int/auditlog?value=test@ripe.net", uri.toString());
     }
 
     @Test
@@ -148,7 +148,7 @@ public class WhoisProxyTest {
         assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api" +
                 "/resources//api/whois··/fmp-int/auditlog/<script" +
                 ">alert('Hi');</script>",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET));
     }
@@ -157,7 +157,7 @@ public class WhoisProxyTest {
     public void shouldRemoveNormaliseUrlWithSQL() {
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
         assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois··/fmp-int/auditlog/select from 1 on 1",
-            "value=tpolychnia@ripe.net",
+            "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET));
     }

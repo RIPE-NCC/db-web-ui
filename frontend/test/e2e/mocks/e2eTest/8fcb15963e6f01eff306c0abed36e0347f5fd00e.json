@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois-internal/api/resources/inetnum/3.0.103.0%20-%203.0.127.255/more-specifics.json?filter=&page=0",
+    "requestUrl": "/api/whois-internal/api/resources/inetnum/3.0.103.0%20-%203.0.127.255/more-specifics.json?filter=&page=0",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {}

@@ -12,9 +12,9 @@ describe('Modifying an maintainer', () => {
             .expectModalToExist(true)
             .authenticateWithEnabledAssociate('SHRYANE-MNT')
             .expectNumberOfFields('auth', 4)
-            .expectValueInField('auth', 'MD5-PW $1$rIzfDZQA$hkH9XUzie2P4E7g18jwlT1', 0)
+            .expectValueInField('auth', 'MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/', 0)
             .expectValueInField('auth', 'SSO isvonja@ripe.net', 1)
-            .expectValueInField('auth', 'SSO bad@ripe.net', 2);
+            .expectValueInField('auth', 'SSO teste2e@ripe.net', 2);
     });
 
     it('should unfiltered auth after associate maintainer', () => {
@@ -25,7 +25,7 @@ describe('Modifying an maintainer', () => {
             .expectValueInField('auth', 'SSO # Filtered', 1)
             .authenticateWithEnabledAssociate('SHRYANE-MNT')
             .expectNumberOfFields('auth', 4)
-            .expectValueInField('auth', 'MD5-PW $1$rIzfDZQA$hkH9XUzie2P4E7g18jwlT1', 0)
+            .expectValueInField('auth', 'MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/', 0)
             .expectValueInField('auth', 'SSO isvonja@ripe.net', 1);
     });
 
@@ -37,7 +37,7 @@ describe('Modifying an maintainer', () => {
             .expectValueInField('auth', 'SSO # Filtered', 1)
             .authenticateWithDisabledAssociate('SHRYANE-MNT')
             .expectNumberOfFields('auth', 3)
-            .expectValueInField('auth', 'MD5-PW $1$rIzfDZQA$hkH9XUzie2P4E7g18jwlT1', 0)
-            .expectValueInField('auth', 'SSO bad@ripe.net', 1);
+            .expectValueInField('auth', 'MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/', 0)
+            .expectValueInField('auth', 'SSO teste2e@ripe.net', 1);
     });
 });

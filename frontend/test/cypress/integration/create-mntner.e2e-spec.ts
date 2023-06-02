@@ -29,8 +29,8 @@ describe('The CreateSelfMntnerComponent', () => {
     });
 
     it('should navigate to create self maintainer page on click on button Create Shared Maintainer', () => {
-        webupdatesPage.visitDisplay('RIPE/person/ES13374-RIPE/mntner/ESMA-MNT').clickOnCreateSharedMaintainer();
-        cy.expectCurrentUrlToContain('webupdates/create/RIPE/mntner/self?admin=ES13374-RIPE');
-        webupdatesPage.expectFieldToVisible('mntner', true).expectTextInField('adminCDropdown', 'ES13374-RIPE');
+        webupdatesPage.visitDisplay('RIPE/person/TSTPERSON-RIPE/mntner/ESMA-MNT').clickOnCreateSharedMaintainer();
+        cy.expectCurrentUrlToContain('webupdates/create/RIPE/mntner/self?admin=TSTPERSON-RIPE');
+        webupdatesPage.expectFieldToVisible('mntner', true).expectTextInField('adminCDropdown', 'TSTPERSON-RIPE');
     });
 });

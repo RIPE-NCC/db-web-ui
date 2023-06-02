@@ -28,7 +28,7 @@
                     },
                     {
                         "name": "netname",
-                        "value": "NL-SURFNET-950612"
+                        "value": "NETNAME-TEST82"
                     },
                     {
                         "name": "country",
@@ -37,10 +37,10 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST23-RIPE"
                         },
                         "name": "org",
-                        "value": "ORG-Sb3-RIPE",
+                        "value": "ORG-TEST23-RIPE",
                         "referenced-type": "organisation"
                     },
                     {
@@ -50,19 +50,19 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                         },
                         "name": "admin-c",
-                        "value": "SNS1-RIPE",
+                        "value": "TSTADMINC-RIPE",
                         "referenced-type": "role"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                         },
                         "name": "tech-c",
-                        "value": "SNS1-RIPE",
+                        "value": "TSTADMINC-RIPE",
                         "referenced-type": "role"
                     },
                     {
@@ -90,28 +90,28 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SN-LIR-MNT"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TSTMNT01-MNT"
                         },
                         "name": "mnt-lower",
-                        "value": "SN-LIR-MNT",
+                        "value": "TSTMNT01-MNT",
                         "referenced-type": "mntner"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS1103-MNT"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TSTROUTES-MNT"
                         },
                         "name": "mnt-routes",
-                        "value": "AS1103-MNT",
+                        "value": "TSTROUTES-MNT",
                         "referenced-type": "mntner"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/irt/irt-SURFcert"
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/irt/TSTMNTIRT-MNT"
                         },
                         "name": "mnt-irt",
-                        "value": "irt-SURFcert",
+                        "value": "TSTMNTIRT-MNT",
                         "referenced-type": "irt"
                     },
                     {
@@ -141,7 +141,7 @@
                 "resource": "194.171.0.0 - 194.171.255.255",
                 "status": "ALLOCATED PA",
                 "type": "inetnum",
-                "netname": "NL-SURFNET-950612",
+                "netname": "NETNAME-TEST82",
                 "usage": {
                     "total": 65536,
                     "used": 52112,

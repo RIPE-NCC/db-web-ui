@@ -27,11 +27,11 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "FORTHNET-NOC-KLI"
+                                "value": "NETNAME-TEST-03"
                             },
                             {
                                 "name": "descr",
-                                "value": "FORTHnet NOC"
+                                "value": "Test data"
                             },
                             {
                                 "name": "descr",
@@ -44,19 +44,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/FTO1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "FTO1-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/SK1697-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC1-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "SK1697-RIPE",
+                                "value": "TSTADMINC1-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -66,10 +66,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TPOLYCHNIA4-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST03-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "TPOLYCHNIA4-MNT",
+                                "value": "TST03-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

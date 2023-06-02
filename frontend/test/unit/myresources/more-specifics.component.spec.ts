@@ -44,13 +44,13 @@ describe('MoreSpecificsComponent', () => {
         expect(component.moreSpecifics.resources.length).toEqual(8);
         expect(component.moreSpecifics.resources[0].resource).toEqual('62.20.0.0 - 62.20.0.31');
         expect(component.moreSpecifics.resources[0].status).toEqual('ASSIGNED PA');
-        expect(component.moreSpecifics.resources[0].netname).toEqual('SE-SKISTAR');
+        expect(component.moreSpecifics.resources[0].netname).toEqual('NETNAME-TEST1');
         expect(component.moreSpecifics.resources[1].resource).toEqual('62.20.0.32 - 62.20.0.47');
         expect(component.moreSpecifics.resources[1].status).toEqual('ASSIGNED PA');
-        expect(component.moreSpecifics.resources[1].netname).toEqual('SE-RATTVIK');
+        expect(component.moreSpecifics.resources[1].netname).toEqual('NETNAME-TEST2');
         expect(component.moreSpecifics.resources[7].resource).toEqual('62.20.0.112 - 62.20.0.119');
         expect(component.moreSpecifics.resources[7].status).toEqual('ASSIGNED PA');
-        expect(component.moreSpecifics.resources[7].netname).toEqual('SE-GRSANERING');
+        expect(component.moreSpecifics.resources[7].netname).toEqual('NETNAME-TEST3');
         // should loading next page on scroll
         component.almostOnScreen();
         const req2 = httpMock.expectOne({
@@ -76,7 +76,7 @@ describe('MoreSpecificsComponent', () => {
         expect(component.moreSpecifics.resources.length).toEqual(1);
         expect(component.moreSpecifics.resources[0].resource).toEqual('2001:2000:1002::/48');
         expect(component.moreSpecifics.resources[0].status).toEqual('ASSIGNED');
-        expect(component.moreSpecifics.resources[0].netname).toEqual('DK-TELIANET');
+        expect(component.moreSpecifics.resources[0].netname).toEqual('NETNAME-TEST4');
     });
 });
 
@@ -88,7 +88,7 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
             status: 'ASSIGNED PA',
             iRR: false,
             rDNS: false,
-            netname: 'SE-SKISTAR',
+            netname: 'NETNAME-TEST1',
             usage: {
                 total: 32,
                 used: 32,
@@ -101,7 +101,7 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
             status: 'ASSIGNED PA',
             iRR: false,
             rDNS: false,
-            netname: 'SE-RATTVIK',
+            netname: 'NETNAME-TEST2',
             usage: {
                 total: 16,
                 used: 16,
@@ -127,7 +127,7 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
             status: 'ASSIGNED PA',
             iRR: false,
             rDNS: false,
-            netname: 'SE-AXFOOD',
+            netname: 'NETNAME-TEST5',
             usage: {
                 total: 8,
                 used: 8,
@@ -140,7 +140,7 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
             status: 'ASSIGNED PA',
             iRR: false,
             rDNS: false,
-            netname: 'SE-TIPPTOPP',
+            netname: 'NETNAME-TEST6',
             usage: {
                 total: 8,
                 used: 8,
@@ -153,7 +153,7 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
             status: 'ASSIGNED PA',
             iRR: false,
             rDNS: false,
-            netname: 'TEMA-FONSTER',
+            netname: 'NETNAME-TEST7',
             usage: {
                 total: 16,
                 used: 16,
@@ -166,7 +166,7 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
             status: 'ASSIGNED PA',
             iRR: false,
             rDNS: false,
-            netname: 'US-MODMISSIONCRITICAL',
+            netname: 'NETNAME-TEST8',
             usage: {
                 total: 16,
                 used: 16,
@@ -179,7 +179,7 @@ const MORE_SPECIFIC_INETNUM_MOCK = {
             status: 'ASSIGNED PA',
             iRR: false,
             rDNS: false,
-            netname: 'SE-GRSANERING',
+            netname: 'NETNAME-TEST3',
             usage: {
                 total: 8,
                 used: 8,
@@ -199,7 +199,7 @@ const MORE_SPECIFIC_INET6NUM_MOCK = {
             status: 'ASSIGNED',
             iRR: false,
             rDNS: false,
-            netname: 'DK-TELIANET',
+            netname: 'NETNAME-TEST4',
             usage: {
                 total: 1,
                 used: 1,

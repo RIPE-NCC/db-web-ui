@@ -30,7 +30,7 @@
                             },
                             {
                                 "name": "as-name",
-                                "value": "CMR-AS"
+                                "value": "TEST-AS"
                             },
                             {
                                 "name": "descr",
@@ -58,21 +58,17 @@
                                     "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-CMR5-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-CMR5-RIPE",
+                                "value": "ORG-TEST31-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-ISSA8-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST32-RIPE"
                                 },
                                 "name": "sponsoring-org",
-                                "value": "ORG-ISSA8-RIPE",
+                                "value": "ORG-TEST32-RIPE",
                                 "referenced-type": "organisation"
-                            },
-                            {
-                                "name": "remarks",
-                                "value": "----- Cynthia Maja Revstrom -----"
                             },
                             {
                                 "name": "remarks",
@@ -89,19 +85,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/CMR-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "CMR-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/CMR-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "CMR-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -124,10 +120,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/CYNTHIA-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST19-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "CYNTHIA-MNT",
+                                "value": "TEST19-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

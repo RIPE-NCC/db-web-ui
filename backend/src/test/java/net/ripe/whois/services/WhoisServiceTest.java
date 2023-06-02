@@ -84,7 +84,7 @@ public class WhoisServiceTest {
         "    </primary-key>\n" +
         "    <attributes>\n" +
         "        <attribute name=\"inetnum\" value=\"193.0.0.0 - 195.255.255.255\"/>\n" +
-        "        <attribute name=\"netname\" value=\"EU-ZZ-193\"/>\n" +
+        "        <attribute name=\"netname\" value=\"TEST-NETNAME\"/>\n" +
         "        <attribute name=\"descr\" value=\"To determine the registration information for a more\"/>\n" +
         "        <attribute name=\"descr\" value=\"specific range, please try a more specific query.\"/>\n" +
         "        <attribute name=\"descr\" value=\"If you see this object as a result of a single IP query,\"/>\n" +
@@ -114,28 +114,28 @@ public class WhoisServiceTest {
         "    </primary-key>\n" +
         "    <attributes>\n" +
         "        <attribute name=\"inetnum\" value=\"194.109.0.0 - 194.109.255.255\"/>\n" +
-        "        <attribute name=\"org\" value=\"ORG-XIB1-RIPE\" referenced-type=\"organisation\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/organisation/ORG-XIB1-RIPE\"/>\n" +
+        "        <attribute name=\"org\" value=\"ORG-TST15-RIPE\" referenced-type=\"organisation\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/organisation/ORG-TST15-RIPE\"/>\n" +
         "        </attribute>\n" +
-        "        <attribute name=\"netname\" value=\"NL-XS4ALL-960513\"/>\n" +
+        "        <attribute name=\"netname\" value=\"NL-TST15-960513\"/>\n" +
         "        <attribute name=\"country\" value=\"NL\"/>\n" +
-        "        <attribute name=\"admin-c\" value=\"XS42-RIPE\" referenced-type=\"role\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/XS42-RIPE\"/>\n" +
+        "        <attribute name=\"admin-c\" value=\"TSTADMINC-RIPE\" referenced-type=\"role\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/TSTADMINC-RIPE\"/>\n" +
         "        </attribute>\n" +
-        "        <attribute name=\"tech-c\" value=\"XS42-RIPE\" referenced-type=\"role\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/XS42-RIPE\"/>\n" +
+        "        <attribute name=\"tech-c\" value=\"TSTADMINC-RIPE\" referenced-type=\"role\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/TSTADMINC-RIPE\"/>\n" +
         "        </attribute>\n" +
         "        <attribute name=\"status\" value=\"ALLOCATED PA\"/>\n" +
-        "        <attribute name=\"remarks\" value=\"Please send email to abuse@xs4all.nl for complaints\"/>\n" +
+        "        <attribute name=\"remarks\" value=\"Please send email to abuse@test.net for complaints\"/>\n" +
         "        <attribute name=\"remarks\" value=\"regarding portscans, DoS attacks and spam.\"/>\n" +
         "        <attribute name=\"mnt-by\" value=\"RIPE-NCC-HM-MNT\" referenced-type=\"mntner\">\n" +
         "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT\"/>\n" +
         "        </attribute>\n" +
-        "        <attribute name=\"mnt-by\" value=\"XS4ALL-MNT\" referenced-type=\"mntner\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/mntner/XS4ALL-MNT\"/>\n" +
+        "        <attribute name=\"mnt-by\" value=\"TST15-MNT\" referenced-type=\"mntner\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/mntner/TST15-MNT\"/>\n" +
         "        </attribute>\n" +
-        "        <attribute name=\"mnt-routes\" value=\"XS4ALL-MNT\" referenced-type=\"mntner\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/mntner/XS4ALL-MNT\"/>\n" +
+        "        <attribute name=\"mnt-routes\" value=\"TST15-MNT\" referenced-type=\"mntner\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/mntner/TST15-MNT\"/>\n" +
         "        </attribute>\n" +
         "        <attribute name=\"created\" value=\"2002-01-09T08:06:01Z\"/>\n" +
         "        <attribute name=\"last-modified\" value=\"2016-11-01T12:20:11Z\"/>\n" +
@@ -153,21 +153,21 @@ public class WhoisServiceTest {
         "    </primary-key>\n" +
         "    <attributes>\n" +
         "        <attribute name=\"inetnum\" value=\"194.109.6.0 - 194.109.6.255\"/>\n" +
-        "        <attribute name=\"netname\" value=\"XS4ALL\"/>\n" +
-        "        <attribute name=\"descr\" value=\"XS4ALL Internet BV\"/>\n" +
-        "        <attribute name=\"descr\" value=\"Backbone network\"/>\n" +
+        "        <attribute name=\"netname\" value=\"TST15\"/>\n" +
+        "        <attribute name=\"descr\" value=\"TST15 Internet\"/>\n" +
+        "        <attribute name=\"descr\" value=\"network\"/>\n" +
         "        <attribute name=\"country\" value=\"NL\"/>\n" +
-        "        <attribute name=\"admin-c\" value=\"XS42-RIPE\" referenced-type=\"role\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/XS42-RIPE\"/>\n" +
+        "        <attribute name=\"admin-c\" value=\"TSTADMINC-RIPE\" referenced-type=\"role\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/TSTADMINC-RIPE\"/>\n" +
         "        </attribute>\n" +
-        "        <attribute name=\"tech-c\" value=\"XS42-RIPE\" referenced-type=\"role\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/XS42-RIPE\"/>\n" +
+        "        <attribute name=\"tech-c\" value=\"TSTADMINC-RIPE\" referenced-type=\"role\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/role/TSTADMINC-RIPE\"/>\n" +
         "        </attribute>\n" +
         "        <attribute name=\"status\" value=\"ASSIGNED PA\"/>\n" +
-        "        <attribute name=\"remarks\" value=\"Please send email to &quot;abuse@xs4all.nl&quot; for complaints\"/>\n" +
+        "        <attribute name=\"remarks\" value=\"Please send email to &quot;abuse@test.net&quot; for complaints\"/>\n" +
         "        <attribute name=\"remarks\" value=\"regarding portscans, DoS attacks and spam.\"/>\n" +
-        "        <attribute name=\"mnt-by\" value=\"XS4ALL-MNT\" referenced-type=\"mntner\">\n" +
-        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/mntner/XS4ALL-MNT\"/>\n" +
+        "        <attribute name=\"mnt-by\" value=\"TST15-MNT\" referenced-type=\"mntner\">\n" +
+        "            <link xlink:type=\"locator\" xlink:href=\"http://rest.db.ripe.net/ripe/mntner/TST15-MNT\"/>\n" +
         "        </attribute>\n" +
         "        <attribute name=\"created\" value=\"1970-01-01T00:00:00Z\"/>\n" +
         "        <attribute name=\"last-modified\" value=\"2003-12-31T15:46:37Z\"/>\n" +
@@ -213,7 +213,7 @@ public class WhoisServiceTest {
         mockServer.expect(requestTo(MOCK_WHOIS_URL + "/search.xml?query-string=194.109.6.0/24&type-filter=inetnum&flags=rL"))
             .andRespond(withSuccess(LESS_SPECIFIC_XML, MediaType.APPLICATION_XML));
 
-        final List<String> inetnums = whoisService.getPathToRoot("inetnum", "194.109.6.0/24", "ORG-XIB1-RIPE");
+        final List<String> inetnums = whoisService.getPathToRoot("inetnum", "194.109.6.0/24", "ORG-TST15-RIPE");
         mockServer.verify();
 
         assertEquals(1, inetnums.size());
@@ -225,7 +225,7 @@ public class WhoisServiceTest {
         mockServer.expect(requestTo(MOCK_WHOIS_URL + "/search.xml?query-string=blabla&type-filter=inetnum&flags=rL"))
             .andRespond(withSuccess(ERROR_XML, MediaType.APPLICATION_XML));
 
-        final List<String> inetnums = whoisService.getPathToRoot("inetnum", "blabla", "ORG-XIB1-RIPE");
+        final List<String> inetnums = whoisService.getPathToRoot("inetnum", "blabla", "ORG-TST15-RIPE");
         mockServer.verify();
 
         assertEquals(0, inetnums.size());

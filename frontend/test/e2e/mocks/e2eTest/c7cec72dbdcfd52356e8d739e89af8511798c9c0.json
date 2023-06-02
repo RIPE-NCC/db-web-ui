@@ -1,0 +1,123 @@
+{
+    "requestUrl": "/api/whois/RIPE/mntner/TEST15-MNT?password=TEST15-MNT&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST15-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST15-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST15-MNT"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "AS8560 Maintainer"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-TEST1234"
+                                },
+                                "name": "auth",
+                                "value": "PGPKEY-TEST1234",
+                                "referenced-type": "key-cert"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-TEST1235"
+                                },
+                                "name": "auth",
+                                "value": "PGPKEY-TEST1235",
+                                "referenced-type": "key-cert"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST15-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST15-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2008-07-01T17:23:40Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2020-10-06T15:40:55Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.98",
+            "timestamp": "2020-10-05T13:10:55Z",
+            "commit-id": "a3e96d4"
+        }
+    }
+}

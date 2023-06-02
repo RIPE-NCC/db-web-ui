@@ -145,13 +145,13 @@ const fts_193001: any = {
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.pre',
+                                        name: 'hl.test.pre',
                                         value: '<b>',
                                     },
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.post',
+                                        name: 'hl.test.post',
                                         value: '</b>',
                                     },
                                 },
@@ -244,7 +244,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'EU-ZZ-193',
+                                value: 'TEST-NETNAME',
                             },
                         },
                         {
@@ -364,7 +364,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'org',
-                                value: 'ORG-RIEN1-RIPE',
+                                value: 'ORG-TEST28-RIPE',
                             },
                         },
                         {
@@ -388,19 +388,19 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'JDR-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'BRD-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'OPS4-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
@@ -688,37 +688,37 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'as-name',
-                                value: 'DATAWAYS',
+                                value: 'ORG-TEST29-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: '75, Kanari Str., 54453, Thessaloniki, Greece',
+                                value: 'test address',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Tel: +30.2310953953',
+                                value: 'Tel: +3*************',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Fax: +30.2310953963',
+                                value: 'Fax: +3*************',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Web: http://www.dataways.gr',
+                                value: 'Web: http://www.org-test29-ripe.gr',
                             },
                         },
                         {
                             str: {
                                 name: 'org',
-                                value: 'ORG-DHA1-RIPE',
+                                value: 'ORG-TEST35-RIPE',
                             },
                         },
                         {
@@ -736,7 +736,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '------------ AS15544 / DATAWAYS HELLAS S.A ------------',
+                                value: '------------ AS15544 / ORG-TEST29-RIPE HELLAS S.A ------------',
                             },
                         },
                         {
@@ -754,7 +754,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '24x7 NOC Phone: +30.2310953966',
+                                value: '24x7 NOC Phone: +3*************',
                             },
                         },
                         {
@@ -772,7 +772,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'General Info about DATAWAYS',
+                                value: 'General Info about ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -790,7 +790,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'DATAWAYS is a multiprotocol internet service provider',
+                                value: 'ORG-TEST29-RIPE is a multiprotocol internet service provider',
                             },
                         },
                         {
@@ -904,7 +904,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: "customers' AS numbers is AS-DATAWAYS. Please use this",
+                                value: "customers' AS numbers is AS-ORG-TEST29-RIPE. Please use this",
                             },
                         },
                         {
@@ -922,7 +922,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'Our PeeringDB record is at http://as15544.peeringdb.com',
+                                value: 'Our PeeringDB record ',
                             },
                         },
                         {
@@ -1132,7 +1132,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'morning. Contact noc@dataways.gr for an irregular update.',
+                                value: 'morning. Contact noc@test.net for an irregular update.',
                             },
                         },
                         {
@@ -1162,7 +1162,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'DATAWAYS prefers to connect with other autonomous systems',
+                                value: 'ORG-TEST29-RIPE prefers to connect with other autonomous systems',
                             },
                         },
                         {
@@ -1558,7 +1558,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'e-mailing noc@dataways.gr.',
+                                value: 'e-mailing noc@test.net.',
                             },
                         },
                         {
@@ -1576,7 +1576,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '# END OF PUBLIC BGP PEERING POLICY FOR DATAWAYS',
+                                value: '# END OF PUBLIC BGP PEERING POLICY FOR ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -1636,7 +1636,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'mp-export',
-                                value: 'afi any to AS12713 to AS6866 announce AS-DATAWAYS AND <^AS15544+AS-DATAWAYS*$>;',
+                                value: 'afi any to AS12713 to AS6866 announce AS-ORG-TEST29-RIPE AND <^AS15544+AS-ORG-TEST29-RIPE*$>;',
                             },
                         },
                         {
@@ -1678,7 +1678,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '# CYTANET Cyprus peering in GR-IX',
+                                value: '# Cyprus peering in GR-IX',
                             },
                         },
                         {
@@ -1690,7 +1690,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'mp-import',
-                                value: 'afi any from AS6866 accept AS-CYTANET AND <^AS6866+AS-CYTANET*$>;',
+                                value: 'afi any from AS6866 accept AS-TESTNET AND <^AS6866+AS-TESTNET*$>;',
                             },
                         },
                         {
@@ -1719,12 +1719,6 @@ const fts_193000_1: any = {
                         },
                         {
                             str: {
-                                name: 'mp-import',
-                                value: 'afi any from AS25152 accept RS-KROOT-GRNET AND <^AS25152*$>;',
-                            },
-                        },
-                        {
-                            str: {
                                 name: 'mp-export',
                                 value: 'afi any to AS25152 announce AS15544 AND <^AS15544*$>;',
                             },
@@ -1733,12 +1727,6 @@ const fts_193000_1: any = {
                             str: {
                                 name: 'remarks',
                                 value: '',
-                            },
-                        },
-                        {
-                            str: {
-                                name: 'remarks',
-                                value: '# VERISIGN J-ROOT/COM/NET Local Mirror in GR-IX',
                             },
                         },
                         {
@@ -1822,13 +1810,13 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'TCP977-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'DWNM1-RIPE',
+                                value: 'TSTTECHC2-RIPE',
                             },
                         },
                         {
@@ -1846,13 +1834,13 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'DWMR1-RIPE-MNT',
+                                value: 'TEST18-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@dataways.gr',
+                                value: '***@test.net',
                             },
                         },
                         {
@@ -1972,19 +1960,19 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'FW526-RIPE',
+                                value: 'TSTTECHC3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'FW526-RIPE',
+                                value: 'TSTTECHC3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'RESILANS-MNT',
+                                value: 'TEST21-MNT',
                             },
                         },
                         {
@@ -2044,7 +2032,7 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'descr',
-                                value: '# RIPE-NCC PREFIX ADVERTISMENT FROM DATAWAYS',
+                                value: '# RIPE-NCC PREFIX ADVERTISMENT FROM ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -2068,25 +2056,25 @@ const fts_193000_1: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'LTS977-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'DP235-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'TCP977-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'DATAWAYS-GR-MNT',
+                                value: 'TEST-GR-MNT',
                             },
                         },
                         {
@@ -2157,13 +2145,13 @@ const fts_193000_1: any = {
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.pre',
+                                        name: 'hl.test.pre',
                                         value: '<b>',
                                     },
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.post',
+                                        name: 'hl.test.post',
                                         value: '</b>',
                                     },
                                 },
@@ -2460,7 +2448,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'EU-ZZ-193',
+                                value: 'TEST-NETNAME',
                             },
                         },
                         {
@@ -2580,7 +2568,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'org',
-                                value: 'ORG-RIEN1-RIPE',
+                                value: 'ORG-TEST28-RIPE',
                             },
                         },
                         {
@@ -2604,19 +2592,19 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'JDR-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'BRD-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'OPS4-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
@@ -2904,37 +2892,25 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'as-name',
-                                value: 'DATAWAYS',
+                                value: 'ORG-TEST29-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: '75, Kanari Str., 54453, Thessaloniki, Greece',
+                                value: 'Tel: +3*************',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Tel: +30.2310953953',
-                            },
-                        },
-                        {
-                            str: {
-                                name: 'descr',
-                                value: 'Fax: +30.2310953963',
-                            },
-                        },
-                        {
-                            str: {
-                                name: 'descr',
-                                value: 'Web: http://www.dataways.gr',
+                                value: 'Fax: +3*************',
                             },
                         },
                         {
                             str: {
                                 name: 'org',
-                                value: 'ORG-DHA1-RIPE',
+                                value: 'ORG-TEST35-RIPE',
                             },
                         },
                         {
@@ -2952,7 +2928,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '------------ AS15544 / DATAWAYS HELLAS S.A ------------',
+                                value: '------------ AS15544 / ORG-TEST29-RIPE HELLAS S.A ------------',
                             },
                         },
                         {
@@ -2970,7 +2946,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '24x7 NOC Phone: +30.2310953966',
+                                value: '24x7 NOC Phone: +3*************',
                             },
                         },
                         {
@@ -2988,7 +2964,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'General Info about DATAWAYS',
+                                value: 'General Info about ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -3006,7 +2982,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'DATAWAYS is a multiprotocol internet service provider',
+                                value: 'ORG-TEST29-RIPE is a multiprotocol internet service provider',
                             },
                         },
                         {
@@ -3120,7 +3096,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: "customers' AS numbers is AS-DATAWAYS. Please use this",
+                                value: "customers' AS numbers is AS-ORG-TEST29-RIPE. Please use this",
                             },
                         },
                         {
@@ -3138,7 +3114,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'Our PeeringDB record is at http://as15544.peeringdb.com',
+                                value: 'Our PeeringDB record',
                             },
                         },
                         {
@@ -3348,7 +3324,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'morning. Contact noc@dataways.gr for an irregular update.',
+                                value: 'morning. Contact noc@test.net for an irregular update.',
                             },
                         },
                         {
@@ -3378,7 +3354,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'DATAWAYS prefers to connect with other autonomous systems',
+                                value: 'ORG-TEST29-RIPE prefers to connect with other autonomous systems',
                             },
                         },
                         {
@@ -3774,7 +3750,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'e-mailing noc@dataways.gr.',
+                                value: 'e-mailing noc@test.net.',
                             },
                         },
                         {
@@ -3792,7 +3768,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '# END OF PUBLIC BGP PEERING POLICY FOR DATAWAYS',
+                                value: '# END OF PUBLIC BGP PEERING POLICY FOR ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -3852,7 +3828,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'mp-export',
-                                value: 'afi any to AS12713 to AS6866 announce AS-DATAWAYS AND <^AS15544+AS-DATAWAYS*$>;',
+                                value: 'afi any to AS12713 to AS6866 announce AS-ORG-TEST29-RIPE AND <^AS15544+AS-ORG-TEST29-RIPE*$>;',
                             },
                         },
                         {
@@ -3894,19 +3870,13 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '# CYTANET Cyprus peering in GR-IX',
-                            },
-                        },
-                        {
-                            str: {
-                                name: 'remarks',
                                 value: '',
                             },
                         },
                         {
                             str: {
                                 name: 'mp-import',
-                                value: 'afi any from AS6866 accept AS-CYTANET AND <^AS6866+AS-CYTANET*$>;',
+                                value: 'afi any from AS6866 accept AS-TESTNET AND <^AS6866+AS-TESTNET*$>;',
                             },
                         },
                         {
@@ -4038,13 +4008,13 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'TCP977-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'DWNM1-RIPE',
+                                value: 'TSTTECHC2-RIPE',
                             },
                         },
                         {
@@ -4062,13 +4032,13 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'DWMR1-RIPE-MNT',
+                                value: 'TEST18-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@dataways.gr',
+                                value: '***@test.net',
                             },
                         },
                         {
@@ -4188,19 +4158,19 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'FW526-RIPE',
+                                value: 'TSTTECHC3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'FW526-RIPE',
+                                value: 'TSTTECHC3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'RESILANS-MNT',
+                                value: 'TEST21-MNT',
                             },
                         },
                         {
@@ -4260,7 +4230,7 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'descr',
-                                value: '# RIPE-NCC PREFIX ADVERTISMENT FROM DATAWAYS',
+                                value: '# RIPE-NCC PREFIX ADVERTISMENT FROM ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -4284,25 +4254,25 @@ const fts_193000_2: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'LTS977-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'DP235-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'TCP977-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'DATAWAYS-GR-MNT',
+                                value: 'ORG-TEST29-RIPE-GR-MNT',
                             },
                         },
                         {
@@ -4373,13 +4343,13 @@ const fts_193000_2: any = {
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.pre',
+                                        name: 'hl.test.pre',
                                         value: '<b>',
                                     },
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.post',
+                                        name: 'hl.test.post',
                                         value: '</b>',
                                     },
                                 },
@@ -4677,13 +4647,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'NEWKOKOSSRL',
+                                value: 'TSTNETNAME',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: "NEW KOKO'S S.R.L.",
+                                value: 'Mock NETNAME org',
                             },
                         },
                         {
@@ -4695,13 +4665,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'FF5281-RIPE',
+                                value: 'TSTADMINC1-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'FF5282-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
@@ -4713,13 +4683,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'INTERB-MNT',
+                                value: 'TST1-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@telecomitalia.it',
+                                value: '***@test.net',
                             },
                         },
                         {
@@ -4767,13 +4737,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'NEWKOKOSSRL',
+                                value: 'TSTNETNAME',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'NEW KOKO S S R L',
+                                value: 'test NETNAME company',
                             },
                         },
                         {
@@ -4785,13 +4755,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'FF5429-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'FF5429-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
@@ -4803,19 +4773,19 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'INTERB-MNT',
+                                value: 'TST1-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'INTERB-MNT',
+                                value: 'TST1-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@telecomitalia.it',
+                                value: '***@test.net',
                             },
                         },
                         {
@@ -4863,13 +4833,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'KOKO-LONDON',
+                                value: 'TST NETNAME 1',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: '200009 - Koko London',
+                                value: '200009 - TST NETNAME 1',
                             },
                         },
                         {
@@ -4893,25 +4863,25 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'AP9682-RIPE',
+                                value: 'TSTADMINC3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'EH92-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'rev-srv:        ns0.easynet.co.uk',
+                                value: 'rev-srv:        ns0.test.co.uk',
                             },
                         },
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'rev-srv:        ns1.easynet.co.uk',
+                                value: 'rev-srv:        ns1.test.co.uk',
                             },
                         },
                         {
@@ -4923,13 +4893,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@easynet.net',
+                                value: '***@test.net',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'EASYNET-UK-MNT',
+                                value: 'TEST50-MNT',
                             },
                         },
                         {
@@ -4983,7 +4953,7 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'KOKO-GesmbH',
+                                value: 'TST NETNAME 3',
                             },
                         },
                         {
@@ -4995,13 +4965,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'descr',
-                                value: 'KOKO Ges.m.b.H.',
+                                value: 'test NETNAME 3',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Rudolf Barkmann',
+                                value: 'Test Tester',
                             },
                         },
                         {
@@ -5019,13 +4989,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
@@ -5037,13 +5007,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@libertyglobal.com',
+                                value: '***@tst5.com',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'MNT-LGI',
+                                value: 'TEST17-MNT',
                             },
                         },
                         {
@@ -5091,25 +5061,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'KOKO-HWY-AT',
+                                value: 'NETNAME 6',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Kokol & Goldbrunner OEG',
-                            },
-                        },
-                        {
-                            str: {
-                                name: 'descr',
-                                value: 'Kendlbachstrasse 8',
-                            },
-                        },
-                        {
-                            str: {
-                                name: 'descr',
-                                value: '8605 Sankt Martin',
+                                value: 'Tst 6',
                             },
                         },
                         {
@@ -5121,13 +5079,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'HMH25-RIPE',
+                                value: 'TSTADMINC4-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'HMH25-RIPE',
+                                value: 'TSTADMINC4-RIPE',
                             },
                         },
                         {
@@ -5139,13 +5097,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'AS8447-MNT',
+                                value: 'TST4-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-lower',
-                                value: 'AS8447-MNT',
+                                value: 'TST4-MNT',
                             },
                         },
                         {
@@ -5193,19 +5151,19 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'KOKO-HWY-AT',
+                                value: 'TST5-NETNAME',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Martin Kokol',
+                                value: 'Firstname Lastname',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Thalstrasse 3',
+                                value: 'Address',
                             },
                         },
                         {
@@ -5223,13 +5181,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'HMH25-RIPE',
+                                value: 'TSTADMINC4-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'HMH25-RIPE',
+                                value: 'TSTADMINC4-RIPE',
                             },
                         },
                         {
@@ -5241,13 +5199,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'AS8447-MNT',
+                                value: 'TST4-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-lower',
-                                value: 'AS8447-MNT',
+                                value: 'TST4-MNT',
                             },
                         },
                         {
@@ -5295,7 +5253,7 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'KOKO-GesmbH',
+                                value: 'TST NETNAME 3',
                             },
                         },
                         {
@@ -5307,13 +5265,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'descr',
-                                value: 'KOKO Ges.m.b.H.',
+                                value: 'TST NETNAME 3a',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Rudolf Barkmann',
+                                value: 'Ime Prezime',
                             },
                         },
                         {
@@ -5331,13 +5289,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'LGI-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
@@ -5349,13 +5307,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@libertyglobal.com',
+                                value: '***@tst5.com',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'AT-INODE-DOM',
+                                value: 'TST6-MNT',
                             },
                         },
                         {
@@ -5403,19 +5361,19 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'KOKO',
+                                value: 'TST NETNAME 7',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Koko',
+                                value: 'NETNAME 7',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Oud Beijerland',
+                                value: 'Name Lastname',
                             },
                         },
                         {
@@ -5427,13 +5385,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'rwk3-RIPE',
+                                value: 'TSTADMINC7-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'rwk3-RIPE',
+                                value: 'TSTADMINC7-RIPE',
                             },
                         },
                         {
@@ -5445,13 +5403,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@kpn.net',
+                                value: '***@tst.net',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'AS286-MNT',
+                                value: 'TST7-MNT',
                             },
                         },
                         {
@@ -5499,13 +5457,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'QSC-CUSTOMER-6023340-889060',
+                                value: 'TST 8',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'KOKO & DTK Entertainment GmbH',
+                                value: 'netname 8',
                             },
                         },
                         {
@@ -5517,13 +5475,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'QSC1-RIPE',
+                                value: 'TSTADMINC8-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'QSC1-RIPE',
+                                value: 'TSTADMINC8-RIPE',
                             },
                         },
                         {
@@ -5535,13 +5493,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'QSC-NOC',
+                                value: 'TST8-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-lower',
-                                value: 'QSC-NOC',
+                                value: 'TST8-MNT',
                             },
                         },
                         {
@@ -5589,13 +5547,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'QSC-CUSTOMER-6023340-889060',
+                                value: 'TST 9',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'KOKO & DTK Entertainment GmbH',
+                                value: 'TST NETNAME 9',
                             },
                         },
                         {
@@ -5607,13 +5565,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'QSC1-RIPE',
+                                value: 'TSTADMINC8-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'QSC1-RIPE',
+                                value: 'TSTADMINC8-RIPE',
                             },
                         },
                         {
@@ -5625,13 +5583,13 @@ const fts_koko: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'QSC-NOC',
+                                value: 'TST8-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-lower',
-                                value: 'QSC-NOC',
+                                value: 'TST8-MNT',
                             },
                         },
                         {
@@ -5679,7 +5637,7 @@ const fts_koko: any = {
                                 {
                                     str: {
                                         name: 'q',
-                                        value: '(koko)',
+                                        value: '(NETNAME)',
                                     },
                                 },
                                 {
@@ -5702,13 +5660,13 @@ const fts_koko: any = {
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.pre',
+                                        name: 'hl.test.pre',
                                         value: '<b>',
                                     },
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.post',
+                                        name: 'hl.test.post',
                                         value: '</b>',
                                     },
                                 },
@@ -5751,7 +5709,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: "NEW <b>KOKO</b>'S S.R.L.",
+                                            value: 'Mock <b>NETNAME</b> org',
                                         },
                                     },
                                 },
@@ -5770,7 +5728,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: 'NEW <b>KOKO</b> S S R L',
+                                            value: 'test <b>NETNAME</b> company',
                                         },
                                     },
                                 },
@@ -5789,7 +5747,7 @@ const fts_koko: any = {
                                         name: 'netname',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b>-LONDON',
+                                            value: 'TST<b>NETNAME</b>1',
                                         },
                                     },
                                 },
@@ -5798,7 +5756,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: '200009 - <b>Koko</b> London',
+                                            value: '200009 - TST <b>NETNAME</b> 1',
                                         },
                                     },
                                 },
@@ -5817,7 +5775,7 @@ const fts_koko: any = {
                                         name: 'netname',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b>-GesmbH',
+                                            value: 'TST <b>NETNAME</b> 3',
                                         },
                                     },
                                 },
@@ -5826,7 +5784,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b> Ges.m.b.H.',
+                                            value: 'test <b>NETNAME</b> 3',
                                         },
                                     },
                                 },
@@ -5845,7 +5803,7 @@ const fts_koko: any = {
                                         name: 'netname',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b>-HWY-AT',
+                                            value: 'TST5-<b>NETNAME</b>',
                                         },
                                     },
                                 },
@@ -5864,7 +5822,7 @@ const fts_koko: any = {
                                         name: 'netname',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b>-HWY-AT',
+                                            value: 'TST5-<b>NETNAME</b>',
                                         },
                                     },
                                 },
@@ -5883,7 +5841,7 @@ const fts_koko: any = {
                                         name: 'netname',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b>-GesmbH',
+                                            value: 'TST <b>NETNAME</b> 3',
                                         },
                                     },
                                 },
@@ -5892,7 +5850,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b> Ges.m.b.H.',
+                                            value: 'TST <b>NETNAME</b> 3a',
                                         },
                                     },
                                 },
@@ -5911,7 +5869,7 @@ const fts_koko: any = {
                                         name: 'netname',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b>',
+                                            value: 'TST <b>NETNAME</b> 7',
                                         },
                                     },
                                 },
@@ -5920,7 +5878,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: '<b>Koko</b>',
+                                            value: '<b>NETNAME</b> 7',
                                         },
                                     },
                                 },
@@ -5939,7 +5897,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b> & DTK Entertainment GmbH',
+                                            value: '<b>netname</b> 8',
                                         },
                                     },
                                 },
@@ -5958,7 +5916,7 @@ const fts_koko: any = {
                                         name: 'descr',
                                         str: {
                                             name: null,
-                                            value: '<b>KOKO</b> & DTK Entertainment GmbH',
+                                            value: 'TST <b>NETNAME</b> 9',
                                         },
                                     },
                                 },
@@ -6057,7 +6015,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'netname',
-                                value: 'EU-ZZ-193',
+                                value: 'TEST-NETNAME',
                             },
                         },
                         {
@@ -6177,7 +6135,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'org',
-                                value: 'ORG-RIEN1-RIPE',
+                                value: 'ORG-TEST28-RIPE',
                             },
                         },
                         {
@@ -6201,19 +6159,19 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'JDR-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'BRD-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'OPS4-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
@@ -6501,37 +6459,37 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'as-name',
-                                value: 'DATAWAYS',
+                                value: 'ORG-TEST29-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: '75, Kanari Str., 54453, Thessaloniki, Greece',
+                                value: 'address',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Tel: +30.2310953953',
+                                value: 'Tel: +3*************',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Fax: +30.2310953963',
+                                value: 'Fax: +3*************',
                             },
                         },
                         {
                             str: {
                                 name: 'descr',
-                                value: 'Web: http://www.dataways.gr',
+                                value: 'Web: http://www.org-test29-ripe.gr',
                             },
                         },
                         {
                             str: {
                                 name: 'org',
-                                value: 'ORG-DHA1-RIPE',
+                                value: 'ORG-TEST35-RIPE',
                             },
                         },
                         {
@@ -6549,7 +6507,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '------------ AS15544 / DATAWAYS HELLAS S.A ------------',
+                                value: '------------ AS15544 / ORG-TEST29-RIPE  ------------',
                             },
                         },
                         {
@@ -6567,7 +6525,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '24x7 NOC Phone: +30.2310953966',
+                                value: '24x7 NOC Phone: +3*************',
                             },
                         },
                         {
@@ -6585,7 +6543,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'General Info about DATAWAYS',
+                                value: 'General Info about ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -6603,7 +6561,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'DATAWAYS is a multiprotocol internet service provider',
+                                value: 'ORG-TEST29-RIPE is a multiprotocol internet service provider',
                             },
                         },
                         {
@@ -6717,7 +6675,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: "customers' AS numbers is AS-DATAWAYS. Please use this",
+                                value: "customers' AS numbers is AS-ORG-TEST29-RIPE. Please use this",
                             },
                         },
                         {
@@ -6735,7 +6693,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'Our PeeringDB record is at http://as15544.peeringdb.com',
+                                value: 'Our PeeringDB record',
                             },
                         },
                         {
@@ -6945,7 +6903,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'morning. Contact noc@dataways.gr for an irregular update.',
+                                value: 'morning. Contact noc@test.net for an irregular update.',
                             },
                         },
                         {
@@ -6975,7 +6933,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'DATAWAYS prefers to connect with other autonomous systems',
+                                value: 'ORG-TEST29-RIPE prefers to connect with other autonomous systems',
                             },
                         },
                         {
@@ -7371,7 +7329,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: 'e-mailing noc@dataways.gr.',
+                                value: 'e-mailing noc@test.net.',
                             },
                         },
                         {
@@ -7389,7 +7347,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '# END OF PUBLIC BGP PEERING POLICY FOR DATAWAYS',
+                                value: '# END OF PUBLIC BGP PEERING POLICY FOR ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -7449,7 +7407,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'mp-export',
-                                value: 'afi any to AS12713 to AS6866 announce AS-DATAWAYS AND <^AS15544+AS-DATAWAYS*$>;',
+                                value: 'afi any to AS12713 to AS6866 announce AS-ORG-TEST29-RIPE AND <^AS15544+AS-ORG-TEST29-RIPE*$>;',
                             },
                         },
                         {
@@ -7491,19 +7449,13 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'remarks',
-                                value: '# CYTANET Cyprus peering in GR-IX',
-                            },
-                        },
-                        {
-                            str: {
-                                name: 'remarks',
                                 value: '',
                             },
                         },
                         {
                             str: {
                                 name: 'mp-import',
-                                value: 'afi any from AS6866 accept AS-CYTANET AND <^AS6866+AS-CYTANET*$>;',
+                                value: 'afi any from AS6866 accept AS-TESTNET AND <^AS6866+AS-TESTNET*$>;',
                             },
                         },
                         {
@@ -7635,13 +7587,13 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'TCP977-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'DWNM1-RIPE',
+                                value: 'TSTTECHC2-RIPE',
                             },
                         },
                         {
@@ -7659,13 +7611,13 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'DWMR1-RIPE-MNT',
+                                value: 'TEST18-MNT',
                             },
                         },
                         {
                             str: {
                                 name: 'notify',
-                                value: '***@dataways.gr',
+                                value: '***@test.net',
                             },
                         },
                         {
@@ -7785,19 +7737,19 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'FW526-RIPE',
+                                value: 'TSTTECHC3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'FW526-RIPE',
+                                value: 'TSTTECHC3-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'RESILANS-MNT',
+                                value: 'TEST21-MNT',
                             },
                         },
                         {
@@ -7857,7 +7809,7 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'descr',
-                                value: '# RIPE-NCC PREFIX ADVERTISMENT FROM DATAWAYS',
+                                value: '# RIPE-NCC PREFIX ADVERTISMENT FROM ORG-TEST29-RIPE',
                             },
                         },
                         {
@@ -7881,25 +7833,25 @@ const fts_nohighlighting: any = {
                         {
                             str: {
                                 name: 'admin-c',
-                                value: 'LTS977-RIPE',
+                                value: 'TSTADMINC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'DP235-RIPE',
+                                value: 'TSTTECHC-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'tech-c',
-                                value: 'TCP977-RIPE',
+                                value: 'TSTADMINC2-RIPE',
                             },
                         },
                         {
                             str: {
                                 name: 'mnt-by',
-                                value: 'DATAWAYS-GR-MNT',
+                                value: 'ORG-TEST29-RIPE-GR-MNT',
                             },
                         },
                         {
@@ -7970,13 +7922,13 @@ const fts_nohighlighting: any = {
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.pre',
+                                        name: 'hl.test.pre',
                                         value: '<b>',
                                     },
                                 },
                                 {
                                     str: {
-                                        name: 'hl.simple.post',
+                                        name: 'hl.test.post',
                                         value: '</b>',
                                     },
                                 },

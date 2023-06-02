@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois-internal/api/mntner-pair/RIPE/person",
+    "requestUrl": "/api/whois-internal/api/mntner-pair/RIPE/person",
     "contentType": "application/javascript",
     "statusCode": 400,
     "data": {

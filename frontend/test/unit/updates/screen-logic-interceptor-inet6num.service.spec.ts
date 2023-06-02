@@ -223,11 +223,11 @@ describe('ScreenLogicInterceptorService Inet6Num', () => {
         },
         {
             name: 'netname',
-            value: 'FICIX-V6-20020201',
+            value: 'NETNAME-TST-20020201',
         },
         {
             name: 'descr',
-            value: 'Finnish Communication and Internet Exchange - FICIX ryy',
+            value: 'Test org',
         },
         {
             name: 'country',
@@ -235,15 +235,15 @@ describe('ScreenLogicInterceptorService Inet6Num', () => {
         },
         {
             name: 'org',
-            value: 'ORG-Fr4-RIPE',
+            value: 'ORG-TST05-RIPE',
         },
         {
             name: 'admin-c',
-            value: 'JM289-RIPE',
+            value: 'TSTADMINC-RIPE',
         },
         {
             name: 'tech-c',
-            value: 'JM289-RIPE',
+            value: 'TSTADMINC-RIPE',
         },
         {
             name: 'mnt-by',
@@ -251,23 +251,23 @@ describe('ScreenLogicInterceptorService Inet6Num', () => {
         },
         {
             name: 'mnt-by',
-            value: 'jome-mnt',
+            value: 'TST05-MNT',
         },
         {
             name: 'mnt-domains',
-            value: 'jome-mnt',
+            value: 'TST05-MNT',
         },
         {
             name: 'mnt-lower',
-            value: 'jome-mnt',
+            value: 'TST05-MNT',
         },
         {
             name: 'mnt-routes',
-            value: 'jome-mnt',
+            value: 'TST05-MNT',
         },
         {
             name: 'notify',
-            value: '***@ficix.fi',
+            value: '***@test.net',
         },
         {
             name: 'status',

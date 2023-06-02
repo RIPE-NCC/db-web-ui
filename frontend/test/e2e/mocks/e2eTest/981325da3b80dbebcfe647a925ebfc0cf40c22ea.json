@@ -8,7 +8,7 @@
                 "resource": "192.87.0.80 - 192.87.0.95",
                 "status": "LEGACY",
                 "type": "inetnum",
-                "netname": "NEGGERS-NET",
+                "netname": "NETNAME-TEST-04",
                 "usage": {
                     "total": 16,
                     "used": 0,
@@ -19,7 +19,7 @@
                 "resource": "192.87.0.208 - 192.87.0.223",
                 "status": "LEGACY",
                 "type": "inetnum",
-                "netname": "OTTER-NET",
+                "netname": "NETNAME-TEST-05",
                 "usage": {
                     "total": 16,
                     "used": 0,

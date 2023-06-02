@@ -8,7 +8,7 @@
                 "resource": "194.171.0.0 - 194.171.1.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SURFNET-TEST-PREFIXES",
+                "netname": "NETNAME-TEST04",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -19,7 +19,7 @@
                 "resource": "194.171.2.0 - 194.171.2.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SNET-AT-RU",
+                "netname": "NETNAME-TEST05",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -30,7 +30,7 @@
                 "resource": "194.171.3.0 - 194.171.3.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SN-CIDR-PART-V",
+                "netname": "NETNAME-TEST06",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -41,7 +41,7 @@
                 "resource": "194.171.4.0 - 194.171.4.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KNAWNET",
+                "netname": "NETNAME-TEST07",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -52,7 +52,7 @@
                 "resource": "194.171.5.0 - 194.171.5.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "METEONET",
+                "netname": "NETNAME-TEST08",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -63,7 +63,7 @@
                 "resource": "194.171.6.0 - 194.171.6.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "UVTNET-D",
+                "netname": "NETNAME-TEST09",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -74,7 +74,7 @@
                 "resource": "194.171.7.0 - 194.171.7.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NKI-NET",
+                "netname": "NETNAME-TEST10",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -85,7 +85,7 @@
                 "resource": "194.171.8.0 - 194.171.8.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KNAW-NIOO",
+                "netname": "NETNAME-TEST11",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -96,7 +96,7 @@
                 "resource": "194.171.9.0 - 194.171.9.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Graafschapcollege-NET",
+                "netname": "NETNAME-TEST12",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -107,7 +107,7 @@
                 "resource": "194.171.10.0 - 194.171.10.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SOLIS-NET",
+                "netname": "NETNAME-TEST13",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -118,7 +118,7 @@
                 "resource": "194.171.11.0 - 194.171.13.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "IHE-NET",
+                "netname": "NETNAME-TEST14",
                 "usage": {
                     "total": 768,
                     "used": 768,
@@ -129,7 +129,7 @@
                 "resource": "194.171.14.0 - 194.171.14.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "MAASTRO-NET",
+                "netname": "NETNAME-TEST15",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -140,7 +140,7 @@
                 "resource": "194.171.17.0 - 194.171.17.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SNET-AT-RU",
+                "netname": "NETNAME-TEST05",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -151,7 +151,7 @@
                 "resource": "194.171.18.0 - 194.171.18.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "INHOLLAND_ALK",
+                "netname": "NETNAME-TEST16",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -162,7 +162,7 @@
                 "resource": "194.171.19.0 - 194.171.23.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "INHOLLAND_ALK",
+                "netname": "NETNAME-TEST16",
                 "usage": {
                     "total": 1280,
                     "used": 1280,
@@ -173,7 +173,7 @@
                 "resource": "194.171.24.0 - 194.171.24.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KNAWNET",
+                "netname": "NETNAME-TEST07",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -184,7 +184,7 @@
                 "resource": "194.171.25.0 - 194.171.25.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SNET-AT-SARA",
+                "netname": "NETNAME-TEST17",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -195,7 +195,7 @@
                 "resource": "194.171.26.0 - 194.171.27.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SNET-AT-SARA",
+                "netname": "NETNAME-TEST17",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -206,7 +206,7 @@
                 "resource": "194.171.29.0 - 194.171.29.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "AMCNET",
+                "netname": "NETNAME-TEST18",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -217,7 +217,7 @@
                 "resource": "194.171.31.0 - 194.171.31.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "CWI-NET",
+                "netname": "NETNAME-TEST19",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -228,7 +228,7 @@
                 "resource": "194.171.32.0 - 194.171.32.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "CWI-NET",
+                "netname": "NETNAME-TEST19",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -239,7 +239,7 @@
                 "resource": "194.171.34.0 - 194.171.34.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "ROC-Horizon-College-NET",
+                "netname": "NETNAME-TEST20",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -250,7 +250,7 @@
                 "resource": "194.171.35.0 - 194.171.35.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "INHOLLAND_ISC",
+                "netname": "NETNAME-TEST21",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -261,7 +261,7 @@
                 "resource": "194.171.36.0 - 194.171.37.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "INHOLLAND_ROT",
+                "netname": "NETNAME-TEST22",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -272,7 +272,7 @@
                 "resource": "194.171.38.0 - 194.171.38.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "IHE-NET",
+                "netname": "NETNAME-TEST14",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -283,7 +283,7 @@
                 "resource": "194.171.40.0 - 194.171.40.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KNAWNET",
+                "netname": "NETNAME-TEST07",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -294,7 +294,7 @@
                 "resource": "194.171.41.0 - 194.171.41.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "CATHARIJNEKADE",
+                "netname": "NETNAME-TEST23",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -305,7 +305,7 @@
                 "resource": "194.171.42.0 - 194.171.47.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "HDH-NET",
+                "netname": "NETNAME-TEST24",
                 "usage": {
                     "total": 1536,
                     "used": 1536,
@@ -316,7 +316,7 @@
                 "resource": "194.171.48.0 - 194.171.48.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "ROC-EHV-NET",
+                "netname": "NETNAME-TEST25",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -327,7 +327,7 @@
                 "resource": "194.171.49.0 - 194.171.49.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "UVH-NET",
+                "netname": "NETNAME-TEST26",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -338,7 +338,7 @@
                 "resource": "194.171.51.0 - 194.171.51.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NOVA-NET",
+                "netname": "NETNAME-TEST27",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -349,7 +349,7 @@
                 "resource": "194.171.53.0 - 194.171.53.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SURFmarket-NET",
+                "netname": "NETNAME-TEST28",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -360,7 +360,7 @@
                 "resource": "194.171.54.0 - 194.171.54.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "CTT-PORT-NET",
+                "netname": "NETNAME-TEST29",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -371,7 +371,7 @@
                 "resource": "194.171.55.0 - 194.171.56.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "OBANET",
+                "netname": "NETNAME-TEST30",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -382,7 +382,7 @@
                 "resource": "194.171.57.0 - 194.171.57.255",
                 "status": "assigned PA",
                 "type": "inetnum",
-                "netname": "kabk-net",
+                "netname": "NETNAME-TEST31",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -393,7 +393,7 @@
                 "resource": "194.171.58.0 - 194.171.59.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "HDH-NET",
+                "netname": "NETNAME-TEST24",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -404,7 +404,7 @@
                 "resource": "194.171.60.0 - 194.171.60.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "WUR-net",
+                "netname": "NETNAME-TEST32",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -415,7 +415,7 @@
                 "resource": "194.171.61.0 - 194.171.61.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-5-NET",
+                "netname": "NETNAME-TEST33",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -426,7 +426,7 @@
                 "resource": "194.171.62.0 - 194.171.63.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-6-NET",
+                "netname": "NETNAME-TEST34",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -437,7 +437,7 @@
                 "resource": "194.171.64.0 - 194.171.64.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-NET",
+                "netname": "NETNAME-TEST35",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -448,7 +448,7 @@
                 "resource": "194.171.65.0 - 194.171.65.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "WUR-net",
+                "netname": "NETNAME-TEST32",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -459,7 +459,7 @@
                 "resource": "194.171.66.0 - 194.171.66.127",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Leeuwenborgh-NET",
+                "netname": "NETNAME-TEST36",
                 "usage": {
                     "total": 128,
                     "used": 128,
@@ -470,7 +470,7 @@
                 "resource": "194.171.67.0 - 194.171.67.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "WKAPNET",
+                "netname": "NETNAME-TEST37",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -481,7 +481,7 @@
                 "resource": "194.171.68.0 - 194.171.68.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "AMOLF-NET",
+                "netname": "NETNAME-TEST38",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -492,7 +492,7 @@
                 "resource": "194.171.69.0 - 194.171.69.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "AMOLF-NET",
+                "netname": "NETNAME-TEST38",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -503,7 +503,7 @@
                 "resource": "194.171.70.0 - 194.171.70.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "AMOLF-NET",
+                "netname": "NETNAME-TEST38",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -514,7 +514,7 @@
                 "resource": "194.171.71.0 - 194.171.71.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Aventus-NET",
+                "netname": "NETNAME-TEST39",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -525,7 +525,7 @@
                 "resource": "194.171.72.0 - 194.171.72.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "CFI-NET",
+                "netname": "NETNAME-TEST40",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -536,7 +536,7 @@
                 "resource": "194.171.73.0 - 194.171.73.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "pluryn-net",
+                "netname": "NETNAME-TEST41",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -547,7 +547,7 @@
                 "resource": "194.171.74.0 - 194.171.75.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "IPABO-NET",
+                "netname": "NETNAME-TEST42",
                 "usage": {
                     "total": 512,
                     "used": 1024,
@@ -558,7 +558,7 @@
                 "resource": "194.171.76.0 - 194.171.76.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "ROC-ALFA-LAN",
+                "netname": "NETNAME-TEST43",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -569,7 +569,7 @@
                 "resource": "194.171.77.0 - 194.171.77.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "DUO-NET",
+                "netname": "NETNAME-TEST44",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -580,7 +580,7 @@
                 "resource": "194.171.78.0 - 194.171.78.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NBLC",
+                "netname": "NETNAME-TEST45",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -591,7 +591,7 @@
                 "resource": "194.171.79.0 - 194.171.79.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "DUO-NET",
+                "netname": "NETNAME-TEST44",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -602,7 +602,7 @@
                 "resource": "194.171.80.0 - 194.171.80.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SWOV",
+                "netname": "NETNAME-TEST46",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -613,7 +613,7 @@
                 "resource": "194.171.81.0 - 194.171.81.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "IDCOLLEGE-NET",
+                "netname": "NETNAME-TEST47",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -624,7 +624,7 @@
                 "resource": "194.171.82.0 - 194.171.83.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NIKHEF-Hisparc-NET",
+                "netname": "NETNAME-TEST48",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -635,7 +635,7 @@
                 "resource": "194.171.84.0 - 194.171.85.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NLDA-NET",
+                "netname": "NETNAME-TEST49",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -646,7 +646,7 @@
                 "resource": "194.171.86.0 - 194.171.86.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "RU-SD-LAN",
+                "netname": "NETNAME-TEST50",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -657,7 +657,7 @@
                 "resource": "194.171.87.0 - 194.171.87.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "RU-SANS-LAN",
+                "netname": "NETNAME-TEST51",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -668,7 +668,7 @@
                 "resource": "194.171.88.0 - 194.171.88.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Trimbos-NET",
+                "netname": "NETNAME-TEST52",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -679,7 +679,7 @@
                 "resource": "194.171.89.0 - 194.171.90.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "CHSEDE-NET",
+                "netname": "NETNAME-TEST53",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -690,7 +690,7 @@
                 "resource": "194.171.91.0 - 194.171.91.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Floretti-NET",
+                "netname": "NETNAME-TEST54",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -701,7 +701,7 @@
                 "resource": "194.171.92.0 - 194.171.92.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "HSVENLO-NET",
+                "netname": "NETNAME-TEST55",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -712,7 +712,7 @@
                 "resource": "194.171.93.0 - 194.171.93.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "RMV-NET",
+                "netname": "NETNAME-TEST56",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -723,7 +723,7 @@
                 "resource": "194.171.94.0 - 194.171.95.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "RUL-NL",
+                "netname": "NETNAME-TEST57",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -734,7 +734,7 @@
                 "resource": "194.171.96.0 - 194.171.103.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NIKHEF-NET",
+                "netname": "NETNAME-TEST58",
                 "usage": {
                     "total": 2048,
                     "used": 2048,
@@ -745,7 +745,7 @@
                 "resource": "194.171.104.0 - 194.171.104.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KW1C-NET",
+                "netname": "NETNAME-TEST59",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -756,7 +756,7 @@
                 "resource": "194.171.106.0 - 194.171.106.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "RUL-NL",
+                "netname": "NETNAME-TEST57",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -767,7 +767,7 @@
                 "resource": "194.171.107.16 - 194.171.107.31",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "HUYSNET",
+                "netname": "NETNAME-TEST60",
                 "usage": {
                     "total": 16,
                     "used": 16,
@@ -778,7 +778,7 @@
                 "resource": "194.171.108.0 - 194.171.108.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SOLIS-NET",
+                "netname": "NETNAME-TEST13",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -789,7 +789,7 @@
                 "resource": "194.171.109.0 - 194.171.109.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "CBG-NET",
+                "netname": "NETNAME-TEST61",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -800,7 +800,7 @@
                 "resource": "194.171.110.0 - 194.171.111.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "AMOLF-NET",
+                "netname": "NETNAME-TEST38",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -811,7 +811,7 @@
                 "resource": "194.171.113.0 - 194.171.113.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "MAASNET-ext1",
+                "netname": "NETNAME-TEST62",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -822,7 +822,7 @@
                 "resource": "194.171.114.0 - 194.171.115.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "AMCNET",
+                "netname": "NETNAME-TEST18",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -833,7 +833,7 @@
                 "resource": "194.171.117.0 - 194.171.117.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "TNO-VOEDING",
+                "netname": "NETNAME-TEST63",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -844,7 +844,7 @@
                 "resource": "194.171.119.0 - 194.171.119.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KNAWNET",
+                "netname": "NETNAME-TEST07",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -855,7 +855,7 @@
                 "resource": "194.171.121.0 - 194.171.121.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "ROCMN-NET",
+                "netname": "NETNAME-TEST64",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -866,7 +866,7 @@
                 "resource": "194.171.122.0 - 194.171.122.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SOMT-NET",
+                "netname": "NETNAME-TEST65",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -877,7 +877,7 @@
                 "resource": "194.171.124.0 - 194.171.127.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "HSLEIDEN-NET",
+                "netname": "NETNAME-TEST66",
                 "usage": {
                     "total": 1024,
                     "used": 1024,
@@ -888,7 +888,7 @@
                 "resource": "194.171.128.0 - 194.171.135.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KIM",
+                "netname": "NETNAME-TEST67",
                 "usage": {
                     "total": 2048,
                     "used": 2048,
@@ -899,7 +899,7 @@
                 "resource": "194.171.136.0 - 194.171.137.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-NET",
+                "netname": "NETNAME-TEST35",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -910,7 +910,7 @@
                 "resource": "194.171.138.0 - 194.171.139.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-NET",
+                "netname": "NETNAME-TEST35",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -921,7 +921,7 @@
                 "resource": "194.171.140.0 - 194.171.141.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-2-NET",
+                "netname": "NETNAME-TEST68",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -932,7 +932,7 @@
                 "resource": "194.171.142.0 - 194.171.143.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-3-NET",
+                "netname": "NETNAME-TEST69",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -943,7 +943,7 @@
                 "resource": "194.171.144.0 - 194.171.144.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KNAWNET",
+                "netname": "NETNAME-TEST07",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -954,7 +954,7 @@
                 "resource": "194.171.146.0 - 194.171.147.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "Artez-4-NET",
+                "netname": "NETNAME-TEST70",
                 "usage": {
                     "total": 512,
                     "used": 512,
@@ -965,7 +965,7 @@
                 "resource": "194.171.150.0 - 194.171.150.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "ZONMW-NET",
+                "netname": "NETNAME-TEST71",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -976,7 +976,7 @@
                 "resource": "194.171.152.0 - 194.171.152.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KNAWNET",
+                "netname": "NETNAME-TEST07",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -987,7 +987,7 @@
                 "resource": "194.171.154.0 - 194.171.154.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "OGN-NET",
+                "netname": "NETNAME-TEST72",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -998,7 +998,7 @@
                 "resource": "194.171.156.0 - 194.171.159.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "ROCMN-NET",
+                "netname": "NETNAME-TEST64",
                 "usage": {
                     "total": 1024,
                     "used": 1024,
@@ -1009,7 +1009,7 @@
                 "resource": "194.171.160.0 - 194.171.160.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "AOCOOST-NET",
+                "netname": "NETNAME-TEST73",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -1020,7 +1020,7 @@
                 "resource": "194.171.162.0 - 194.171.162.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "HELICON-NET",
+                "netname": "NETNAME-TEST74",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -1031,7 +1031,7 @@
                 "resource": "194.171.165.0 - 194.171.165.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "KONBIB-NET",
+                "netname": "NETNAME-TEST75",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -1042,7 +1042,7 @@
                 "resource": "194.171.166.0 - 194.171.166.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "RKD-NET",
+                "netname": "NETNAME-TEST76",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -1053,7 +1053,7 @@
                 "resource": "194.171.167.0 - 194.171.167.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SNET-AT-UVT",
+                "netname": "NETNAME-TEST77",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -1064,7 +1064,7 @@
                 "resource": "194.171.168.0 - 194.171.168.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NWO",
+                "netname": "NETNAME-TEST78",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -1075,7 +1075,7 @@
                 "resource": "194.171.170.0 - 194.171.170.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "GOQ-NET",
+                "netname": "NETNAME-TEST79",
                 "usage": {
                     "total": 256,
                     "used": 256,
@@ -1086,7 +1086,7 @@
                 "resource": "194.171.172.0 - 194.171.175.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "SURFNET-SIPLAN-NET",
+                "netname": "NETNAME-TEST80",
                 "usage": {
                     "total": 1024,
                     "used": 1024,
@@ -1097,7 +1097,7 @@
                 "resource": "194.171.178.0 - 194.171.179.255",
                 "status": "ASSIGNED PA",
                 "type": "inetnum",
-                "netname": "NHTV-NET",
+                "netname": "NETNAME-TEST81",
                 "usage": {
                     "total": 512,
                     "used": 512,

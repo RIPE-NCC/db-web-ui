@@ -1,0 +1,4394 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources/ipanalyser/ipv4.json?org-id=ORG-TEST23-RIPE",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "allocations": [
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": []
+                },
+                "range": "5.1.128.0/17"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-07",
+                        "registrationDate": "20130205",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.0.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-08",
+                        "registrationDate": "20130520",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.1.0/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-09",
+                        "registrationDate": "20131202",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.1.64/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-10",
+                        "registrationDate": "20131212",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.1.80/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-11",
+                        "registrationDate": "20120925",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.9.0/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-12",
+                        "registrationDate": "20110215",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.9.128/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-12",
+                        "registrationDate": "20110215",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.9.144/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-13",
+                        "registrationDate": "20120313",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.9.192/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-14",
+                        "registrationDate": "20110512",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.10.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-15",
+                        "registrationDate": "20120215",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.13.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-16",
+                        "registrationDate": "20120430",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.14.0/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "SODEXO-PASS",
+                        "registrationDate": "20120508",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.14.64/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-17",
+                        "registrationDate": "20140410",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.16.0/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-18",
+                        "registrationDate": "20051102",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.32.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-19",
+                        "registrationDate": "20051102",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.36.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-19",
+                        "registrationDate": "20051102",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.38.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-20",
+                        "registrationDate": "20120828",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.40.0/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-21",
+                        "registrationDate": "20080225",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.40.32/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-21",
+                        "registrationDate": "20080225",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.40.48/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-22",
+                        "registrationDate": "20130710",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.40.64/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-20",
+                        "registrationDate": "20100824",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.41.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-23",
+                        "registrationDate": "20050825",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.42.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-24",
+                        "registrationDate": "20060315",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.48.0/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-25",
+                        "registrationDate": "20070201",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.48.32/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-26",
+                        "registrationDate": "20070404",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.48.64/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-27",
+                        "registrationDate": "20100930",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.48.128/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-28",
+                        "registrationDate": "20070925",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.49.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-29",
+                        "registrationDate": "20120116",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.52.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-30",
+                        "registrationDate": "20021105",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.53.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-31",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.54.16/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-32",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.54.64/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-33",
+                        "registrationDate": "20040707",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.56.0/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-34",
+                        "registrationDate": "20110513",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.56.32/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-35",
+                        "registrationDate": "20150617",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.56.64/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-36",
+                        "registrationDate": "20140707",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.56.128/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-37",
+                        "registrationDate": "20130626",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.57.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-20",
+                        "registrationDate": "20120828",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.58.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-38",
+                        "registrationDate": "20150703",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.59.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-39",
+                        "registrationDate": "20020415",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.60.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-40",
+                        "registrationDate": "20070711",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.61.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-41",
+                        "registrationDate": "20061027",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.0/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-42",
+                        "registrationDate": "20071129",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.32/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-43",
+                        "registrationDate": "20081107",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.48/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-44",
+                        "registrationDate": "20091215",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.64/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-44",
+                        "registrationDate": "20091215",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.96/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-45",
+                        "registrationDate": "20121213",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.128/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-46",
+                        "registrationDate": "20140828",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.144/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-47",
+                        "registrationDate": "20140523",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.160/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-47",
+                        "registrationDate": "20140523",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.176/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-45",
+                        "registrationDate": "20141112",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.192/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-48",
+                        "registrationDate": "20141126",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.208/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-49",
+                        "registrationDate": "20150824",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.184.224/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-45",
+                        "registrationDate": "20081113",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.185.0/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-50",
+                        "registrationDate": "20150731",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.185.64/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-44",
+                        "registrationDate": "20121003",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.186.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-51",
+                        "registrationDate": "20140715",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.192.0/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-52",
+                        "registrationDate": "20100105",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.193.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-53",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.194.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-54",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.200.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-55",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.208.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-56",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.209.0/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-57",
+                        "registrationDate": "20110519",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.209.64/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-58",
+                        "registrationDate": "20140715",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.209.96/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-59",
+                        "registrationDate": "20150603",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.209.128/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-59",
+                        "registrationDate": "20150609",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.209.136/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-60",
+                        "registrationDate": "20060420",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.209.144/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-61",
+                        "registrationDate": "20020508",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.211.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-62",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.212.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-63",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.215.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-64",
+                        "registrationDate": "20040227",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.216.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-65",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.220.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-66",
+                        "registrationDate": "20080109",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.224.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-13",
+                        "registrationDate": "20111114",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.226.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-54",
+                        "registrationDate": "20020613",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.227.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-56",
+                        "registrationDate": "20020515",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.228.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-67",
+                        "registrationDate": "20020716",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.232.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-68",
+                        "registrationDate": "20020717",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.233.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-69",
+                        "registrationDate": "20130717",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.234.8/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-70",
+                        "registrationDate": "20040920",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.234.16/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-71",
+                        "registrationDate": "20141202",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.234.64/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-72",
+                        "registrationDate": "20141210",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.234.128/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-73",
+                        "registrationDate": "20150910",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.234.160/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-74",
+                        "registrationDate": "20031106",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.235.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-75",
+                        "registrationDate": "20110629",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.237.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-76",
+                        "registrationDate": "20150417",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.238.0/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-73-CDN",
+                        "registrationDate": "20151002",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.239.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-53",
+                        "registrationDate": "20031217",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.240.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-77",
+                        "registrationDate": "20031217",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.242.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-78",
+                        "registrationDate": "20031217",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.243.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-74",
+                        "registrationDate": "20040317",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.244.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-79",
+                        "registrationDate": "20111220",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.248.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-39",
+                        "registrationDate": "20040616",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.252.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-39",
+                        "registrationDate": "20040616",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "62.67.253.0/24"
+                    }
+                ],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": []
+                },
+                "range": "62.67.0.0/16"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": []
+                },
+                "range": "185.210.12.0/22"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST04",
+                        "registrationDate": "20070301",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.0.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST05",
+                        "registrationDate": "20050117",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.2.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST06",
+                        "registrationDate": "20040810",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.3.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST07",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.4.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST08",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.5.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST09",
+                        "registrationDate": "20020725",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.6.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST10",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.7.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST11",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.8.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST12",
+                        "registrationDate": "20060920",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.9.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST13",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.10.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST14",
+                        "registrationDate": "20051218",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.11.0/24,/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST15",
+                        "registrationDate": "20140811",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.14.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST05",
+                        "registrationDate": "20070810",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.17.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST16",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.18.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST16",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.19.0/24,/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST07",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.24.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST17",
+                        "registrationDate": "20070330",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.25.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST17",
+                        "registrationDate": "20070508",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.26.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST18",
+                        "registrationDate": "20080325",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.29.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST19",
+                        "registrationDate": "20050211",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.31.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST19",
+                        "registrationDate": "20050704",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.32.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST20",
+                        "registrationDate": "20100419",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.34.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST21",
+                        "registrationDate": "20030424",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.35.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST22",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.36.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST14",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.38.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST07",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.40.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST23",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.41.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST24",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.42.0/23,/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST25",
+                        "registrationDate": "20171129",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.48.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST26",
+                        "registrationDate": "20171129",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.49.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST27",
+                        "registrationDate": "20140514",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.51.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST28",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.53.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST29",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.54.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST30",
+                        "registrationDate": "20070429",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.55.0/24,/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST31",
+                        "registrationDate": "20050412",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.57.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST24",
+                        "registrationDate": "20080213",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.58.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST32",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.60.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST33",
+                        "registrationDate": "20060622",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.61.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST34",
+                        "registrationDate": "20060622",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.62.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST35",
+                        "registrationDate": "20080414",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.64.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST32",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.65.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST36",
+                        "registrationDate": "20080604",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.66.0/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST37",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.67.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST38",
+                        "registrationDate": "20050907",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.68.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST38",
+                        "registrationDate": "20050907",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.69.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST38",
+                        "registrationDate": "20090928",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.70.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST39",
+                        "registrationDate": "20070205",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.71.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST40",
+                        "registrationDate": "20070615",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.72.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST41",
+                        "registrationDate": "20100209",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.73.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST42",
+                        "registrationDate": "20070615",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.74.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST42",
+                        "registrationDate": "20120525",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.74.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST42",
+                        "registrationDate": "20070619",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.75.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST43",
+                        "registrationDate": "20090123",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.76.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST44",
+                        "registrationDate": "20020605",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.77.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST45",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.78.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST44",
+                        "registrationDate": "20121108",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.79.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST46",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.80.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST47",
+                        "registrationDate": "20101101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.81.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST48",
+                        "registrationDate": "20080326",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.82.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST49",
+                        "registrationDate": "20070605",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.84.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST50",
+                        "registrationDate": "20090129",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.86.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST51",
+                        "registrationDate": "20090129",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.87.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST52",
+                        "registrationDate": "20080529",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.88.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST53",
+                        "registrationDate": "20020722",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.89.0/24,/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST54",
+                        "registrationDate": "20100527",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.91.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST55",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.92.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST56",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.93.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST57",
+                        "registrationDate": "20060308",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.94.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST58",
+                        "registrationDate": "20090330",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.96.0/21"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST59",
+                        "registrationDate": "20150126",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.104.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST57",
+                        "registrationDate": "20060928",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.106.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST60",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.107.16/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST13",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.108.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST61",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.109.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST38",
+                        "registrationDate": "20100303",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.110.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST62",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.113.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST18",
+                        "registrationDate": "20101122",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.114.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST63",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.117.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST07",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.119.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST64",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.121.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST65",
+                        "registrationDate": "20150702",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.122.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST66",
+                        "registrationDate": "20140625",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.124.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST67",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.128.0/21"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST35",
+                        "registrationDate": "20051101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.136.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST35",
+                        "registrationDate": "20051128",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.138.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST68",
+                        "registrationDate": "20051228",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.140.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST69",
+                        "registrationDate": "20060112",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.142.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST07",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.144.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST70",
+                        "registrationDate": "20060112",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.146.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST71",
+                        "registrationDate": "20141028",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.150.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST07",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.152.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST72",
+                        "registrationDate": "20150108",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.154.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST64",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.156.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST73",
+                        "registrationDate": "20150924",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.160.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST74",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.162.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST75",
+                        "registrationDate": "20080730",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.165.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST76",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.166.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST77",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.167.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST78",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.168.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST79",
+                        "registrationDate": "20150211",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.170.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST80",
+                        "registrationDate": "20120924",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.172.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST81",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.178.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-80",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.180.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-81",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.184.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-82",
+                        "registrationDate": "20150108",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.186.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST44",
+                        "registrationDate": "20020605",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.190.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST81",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.191.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-83",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.192.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-84",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.193.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-85",
+                        "registrationDate": "20061129",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.194.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-86",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.195.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-87",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.200.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-88",
+                        "registrationDate": "20070429",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.201.0/24,/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-88",
+                        "registrationDate": "20061006",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.203.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-88",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.204.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-89",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.208.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-90",
+                        "registrationDate": "20150629",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.210.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST66",
+                        "registrationDate": "20140703",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.212.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-91",
+                        "registrationDate": "20150205",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.220.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-92",
+                        "registrationDate": "20150112",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.224.0/21"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-93",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.240.0/21"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-94",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.248.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-95",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.251.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-96",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.252.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-96",
+                        "registrationDate": "20080125",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "194.171.254.0/23"
+                    }
+                ],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": [
+                        [
+                            {
+                                "status": "ASSIGNED PA",
+                                "netName": "NETNAME-TEST42",
+                                "registrationDate": "20120525",
+                                "infra": false,
+                                "range": "194.171.74.0/23"
+                            },
+                            {
+                                "status": "ASSIGNED PA",
+                                "netName": "NETNAME-TEST42",
+                                "registrationDate": "20070615",
+                                "infra": false,
+                                "range": "194.171.74.0/24"
+                            },
+                            {
+                                "status": "ASSIGNED PA",
+                                "netName": "NETNAME-TEST42",
+                                "registrationDate": "20070619",
+                                "infra": false,
+                                "range": "194.171.75.0/24"
+                            }
+                        ]
+                    ]
+                },
+                "range": "194.171.0.0/16"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-97",
+                        "registrationDate": "20120605",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.0.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST06I",
+                        "registrationDate": "20040810",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.2.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-98",
+                        "registrationDate": "20080526",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.3.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-99",
+                        "registrationDate": "20120525",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.4.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-100",
+                        "registrationDate": "20071107",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.6.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-101",
+                        "registrationDate": "20071220",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.8.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-102",
+                        "registrationDate": "20080707",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.9.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-103",
+                        "registrationDate": "20080429",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.10.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-104",
+                        "registrationDate": "20110404",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.11.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "SUPERTESTORG-mailfilter",
+                        "registrationDate": "20100421",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.13.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-102",
+                        "registrationDate": "20140423",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.15.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-106",
+                        "registrationDate": "20140730",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.16.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST35",
+                        "registrationDate": "20131016",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.18.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-107",
+                        "registrationDate": "20150422",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.20.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME1",
+                        "registrationDate": "20090610",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.22.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-108",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.26.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-109",
+                        "registrationDate": "20171129",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.28.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-110",
+                        "registrationDate": "20110629",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.30.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-111",
+                        "registrationDate": "20020620",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.32.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-111",
+                        "registrationDate": "20020620",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.36.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-112",
+                        "registrationDate": "20150511",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.38.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-113",
+                        "registrationDate": "20110915",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.40.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-114",
+                        "registrationDate": "20110629",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.44.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-115",
+                        "registrationDate": "20100902",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.47.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-115",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.48.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME24A",
+                        "registrationDate": "20020725",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.49.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST75",
+                        "registrationDate": "20120514",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.50.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-81",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.52.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-108",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.53.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-94",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.55.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "SUPERTESTORG-NET",
+                        "registrationDate": "20120718",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.56.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "SUPERTESTORG-NET",
+                        "registrationDate": "20130403",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.57.0/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-116",
+                        "registrationDate": "20140715",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.57.64/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-117",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.59.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-80",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.60.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST07",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.62.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-118",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.63.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST37",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.64.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-119",
+                        "registrationDate": "20021010",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.66.0/23,/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-117",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.70.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST10",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.71.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-113",
+                        "registrationDate": "20101021",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.72.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-120",
+                        "registrationDate": "20130215",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.76.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-121",
+                        "registrationDate": "20140430",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.78.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST66",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.80.0/21"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-122",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.88.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-123",
+                        "registrationDate": "20071024",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.90.0/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-124",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.90.128/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME13",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.91.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME13",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.92.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-116",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.94.0/23,/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-125",
+                        "registrationDate": "20041006",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.97.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-126",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.99.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-127",
+                        "registrationDate": "20150917",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.100.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-128",
+                        "registrationDate": "20131209",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.102.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-129",
+                        "registrationDate": "20101206",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.103.64/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-130",
+                        "registrationDate": "20111010",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.103.96/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-95",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.104.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-131",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.108.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-132",
+                        "registrationDate": "20150512",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.110.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-133",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.111.0/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-134",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.112.0/22,/23,/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-135",
+                        "registrationDate": "20150902",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.119.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-97",
+                        "registrationDate": "20141209",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.120.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-122",
+                        "registrationDate": "20080819",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.122.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-136",
+                        "registrationDate": "20040916",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.124.0/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-137",
+                        "registrationDate": "20031209",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.124.64/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-138",
+                        "registrationDate": "20031209",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.124.96/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-138-continued",
+                        "registrationDate": "20071130",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.124.128/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-139",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.125.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-140",
+                        "registrationDate": "20050620",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.126.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME13",
+                        "registrationDate": "20031113",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.128.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-140",
+                        "registrationDate": "19700101",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.130.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST35",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.132.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-129",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.134.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST78-SENTER-NET",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.136.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME1",
+                        "registrationDate": "20021128",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.138.0/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME6",
+                        "registrationDate": "20031003",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.138.128/25"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-141",
+                        "registrationDate": "20060829",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.140.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-141",
+                        "registrationDate": "20070619",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.142.0/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-141",
+                        "registrationDate": "20120207",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.142.32/30"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-142",
+                        "registrationDate": "20140324",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.142.40/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-143",
+                        "registrationDate": "20020517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.144.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-144",
+                        "registrationDate": "20050517",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.145.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-145",
+                        "registrationDate": "20071001",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.146.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-146",
+                        "registrationDate": "20060508",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.148.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-145",
+                        "registrationDate": "20120209",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.150.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-147",
+                        "registrationDate": "20020920",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.151.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-148",
+                        "registrationDate": "20120829",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.152.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-148",
+                        "registrationDate": "20021010",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.153.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST17-II",
+                        "registrationDate": "20021105",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.155.0/29"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-98",
+                        "registrationDate": "20030313",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.155.16/28,/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-149",
+                        "registrationDate": "20070412",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.155.48/28"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-150",
+                        "registrationDate": "20100309",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.155.64/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-151",
+                        "registrationDate": "20031110",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.155.96/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "SURFsara-EYR-admin-network",
+                        "registrationDate": "20120209",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.155.128/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-152",
+                        "registrationDate": "20100315",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.155.160/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST66",
+                        "registrationDate": "20121010",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.156.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST66",
+                        "registrationDate": "20090424",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.156.0/22,/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST66",
+                        "registrationDate": "20100902",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.161.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-148",
+                        "registrationDate": "20140430",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.162.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-145",
+                        "registrationDate": "20120530",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.164.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-153",
+                        "registrationDate": "20130312",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.166.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-154",
+                        "registrationDate": "20131021",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.168.0/21"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-155",
+                        "registrationDate": "20041007",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.178.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-156",
+                        "registrationDate": "20110722",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.181.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST74",
+                        "registrationDate": "20110725",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.184.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-157",
+                        "registrationDate": "20110725",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.186.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-157",
+                        "registrationDate": "20110725",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.188.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-158",
+                        "registrationDate": "20110901",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.190.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-159",
+                        "registrationDate": "20101130",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.192.0/21"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-160",
+                        "registrationDate": "20090922",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.200.0/21,/20,/23,/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-160",
+                        "registrationDate": "20090922",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.227.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-160",
+                        "registrationDate": "20150226",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.228.0/22"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-161",
+                        "registrationDate": "20111111",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.232.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-162",
+                        "registrationDate": "20111115",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.234.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-163",
+                        "registrationDate": "20111128",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.236.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST13",
+                        "registrationDate": "20111128",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.238.0/23"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-104",
+                        "registrationDate": "20111208",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.242.0/27"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-104-NET",
+                        "registrationDate": "20130312",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.242.64/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-160",
+                        "registrationDate": "20150226",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.242.192/26"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST25",
+                        "registrationDate": "20111213",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.243.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST25",
+                        "registrationDate": "20111213",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.244.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "TESTNETNAME2",
+                        "registrationDate": "20120125",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.248.0/24"
+                    },
+                    {
+                        "status": "ASSIGNED PA",
+                        "netName": "NETNAME-TEST-164",
+                        "registrationDate": "20120507",
+                        "infra": false,
+                        "violations": {
+                            "inetnumSyntaxErrors": [],
+                            "ripeDbAllocationMismatch": [],
+                            "overlappingInetnums": []
+                        },
+                        "range": "195.169.250.0/23"
+                    }
+                ],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": [
+                        [
+                            {
+                                "status": "ASSIGNED PA",
+                                "netName": "NETNAME-TEST66",
+                                "registrationDate": "20090424",
+                                "infra": false,
+                                "range": "195.169.156.0/22,/24"
+                            },
+                            {
+                                "status": "ASSIGNED PA",
+                                "netName": "NETNAME-TEST66",
+                                "registrationDate": "20121010",
+                                "infra": false,
+                                "range": "195.169.156.0/22"
+                            }
+                        ]
+                    ]
+                },
+                "range": "195.169.0.0/16"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": []
+                },
+                "range": "213.159.160.0/23"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": []
+                },
+                "range": "217.107.224.0/21"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": []
+                },
+                "range": "217.107.232.0/21"
+            },
+            {
+                "status": "ALLOCATED PA",
+                "assignments": [],
+                "violations": {
+                    "inetnumSyntaxErrors": [],
+                    "ripeDbAllocationMismatch": [],
+                    "overlappingInetnums": []
+                },
+                "range": "217.119.64.0/21"
+            }
+        ],
+        "errors": [],
+        "freeSpace": [
+            "5.1.128.0 - 5.1.255.255",
+            "62.67.1.32 - 62.67.1.63",
+            "62.67.1.96 - 62.67.8.255",
+            "62.67.9.64 - 62.67.9.127",
+            "62.67.9.160 - 62.67.9.191",
+            "62.67.11.0 - 62.67.12.255",
+            "62.67.14.16 - 62.67.14.63",
+            "62.67.14.128 - 62.67.15.255",
+            "62.67.16.128 - 62.67.31.255",
+            "62.67.34.0 - 62.67.35.255",
+            "62.67.37.0 - 62.67.37.255",
+            "62.67.39.0 - 62.67.39.255",
+            "62.67.40.16 - 62.67.40.31",
+            "62.67.40.72 - 62.67.40.255",
+            "62.67.44.0 - 62.67.47.255",
+            "62.67.48.80 - 62.67.48.127",
+            "62.67.48.192 - 62.67.48.255",
+            "62.67.50.0 - 62.67.51.255",
+            "62.67.54.0 - 62.67.54.15",
+            "62.67.54.32 - 62.67.54.63",
+            "62.67.54.128 - 62.67.55.255",
+            "62.67.56.16 - 62.67.56.31",
+            "62.67.62.0 - 62.67.183.255",
+            "62.67.184.56 - 62.67.184.63",
+            "62.67.184.240 - 62.67.184.255",
+            "62.67.185.16 - 62.67.185.63",
+            "62.67.185.128 - 62.67.185.255",
+            "62.67.187.0 - 62.67.191.255",
+            "62.67.192.32 - 62.67.192.255",
+            "62.67.195.0 - 62.67.199.255",
+            "62.67.201.0 - 62.67.207.255",
+            "62.67.209.160 - 62.67.210.255",
+            "62.67.214.0 - 62.67.214.255",
+            "62.67.217.0 - 62.67.219.255",
+            "62.67.221.0 - 62.67.223.255",
+            "62.67.234.0 - 62.67.234.7",
+            "62.67.234.32 - 62.67.234.63",
+            "62.67.234.192 - 62.67.234.255",
+            "62.67.236.0 - 62.67.236.255",
+            "62.67.238.128 - 62.67.238.255",
+            "62.67.254.0 - 62.67.255.255",
+            "185.210.12.0 - 185.210.15.255",
+            "194.171.15.0 - 194.171.16.255",
+            "194.171.28.0 - 194.171.28.255",
+            "194.171.30.0 - 194.171.30.255",
+            "194.171.33.0 - 194.171.33.255",
+            "194.171.39.0 - 194.171.39.255",
+            "194.171.50.0 - 194.171.50.255",
+            "194.171.52.0 - 194.171.52.255",
+            "194.171.66.128 - 194.171.66.255",
+            "194.171.105.0 - 194.171.105.255",
+            "194.171.107.0 - 194.171.107.15",
+            "194.171.107.32 - 194.171.107.255",
+            "194.171.112.0 - 194.171.112.255",
+            "194.171.116.0 - 194.171.116.255",
+            "194.171.118.0 - 194.171.118.255",
+            "194.171.120.0 - 194.171.120.255",
+            "194.171.123.0 - 194.171.123.255",
+            "194.171.145.0 - 194.171.145.255",
+            "194.171.148.0 - 194.171.149.255",
+            "194.171.151.0 - 194.171.151.255",
+            "194.171.153.0 - 194.171.153.255",
+            "194.171.155.0 - 194.171.155.255",
+            "194.171.161.0 - 194.171.161.255",
+            "194.171.163.0 - 194.171.164.255",
+            "194.171.169.0 - 194.171.169.255",
+            "194.171.171.0 - 194.171.171.255",
+            "194.171.176.0 - 194.171.177.255",
+            "194.171.185.0 - 194.171.185.255",
+            "194.171.187.0 - 194.171.189.255",
+            "194.171.196.0 - 194.171.199.255",
+            "194.171.209.0 - 194.171.209.255",
+            "194.171.211.0 - 194.171.211.255",
+            "194.171.216.0 - 194.171.219.255",
+            "194.171.222.0 - 194.171.223.255",
+            "194.171.232.0 - 194.171.239.255",
+            "194.171.249.0 - 194.171.250.255",
+            "195.169.5.0 - 195.169.5.255",
+            "195.169.12.0 - 195.169.12.255",
+            "195.169.14.0 - 195.169.14.255",
+            "195.169.21.0 - 195.169.21.255",
+            "195.169.24.0 - 195.169.25.255",
+            "195.169.27.0 - 195.169.27.255",
+            "195.169.29.0 - 195.169.29.255",
+            "195.169.31.0 - 195.169.31.255",
+            "195.169.39.0 - 195.169.39.255",
+            "195.169.45.0 - 195.169.46.255",
+            "195.169.54.0 - 195.169.54.255",
+            "195.169.57.128 - 195.169.58.255",
+            "195.169.65.0 - 195.169.65.255",
+            "195.169.77.0 - 195.169.77.255",
+            "195.169.79.0 - 195.169.79.255",
+            "195.169.90.64 - 195.169.90.127",
+            "195.169.93.0 - 195.169.93.255",
+            "195.169.98.0 - 195.169.98.255",
+            "195.169.101.0 - 195.169.101.255",
+            "195.169.103.0 - 195.169.103.63",
+            "195.169.103.80 - 195.169.103.95",
+            "195.169.103.112 - 195.169.103.255",
+            "195.169.111.8 - 195.169.111.255",
+            "195.169.129.0 - 195.169.129.255",
+            "195.169.131.0 - 195.169.131.255",
+            "195.169.135.0 - 195.169.135.255",
+            "195.169.137.0 - 195.169.137.255",
+            "195.169.139.0 - 195.169.139.255",
+            "195.169.142.36 - 195.169.142.39",
+            "195.169.142.48 - 195.169.143.255",
+            "195.169.154.0 - 195.169.154.255",
+            "195.169.155.8 - 195.169.155.15",
+            "195.169.155.192 - 195.169.155.255",
+            "195.169.165.0 - 195.169.165.255",
+            "195.169.167.0 - 195.169.167.255",
+            "195.169.176.0 - 195.169.177.255",
+            "195.169.180.0 - 195.169.180.255",
+            "195.169.182.0 - 195.169.183.255",
+            "195.169.185.0 - 195.169.185.255",
+            "195.169.187.0 - 195.169.187.255",
+            "195.169.189.0 - 195.169.189.255",
+            "195.169.191.0 - 195.169.191.255",
+            "195.169.233.0 - 195.169.233.255",
+            "195.169.235.0 - 195.169.235.255",
+            "195.169.237.0 - 195.169.237.255",
+            "195.169.240.0 - 195.169.241.255",
+            "195.169.242.32 - 195.169.242.63",
+            "195.169.242.128 - 195.169.242.191",
+            "195.169.245.0 - 195.169.247.255",
+            "195.169.249.0 - 195.169.249.255",
+            "195.169.252.0 - 195.169.255.255",
+            "213.159.160.0 - 213.159.161.255",
+            "217.107.224.0 - 217.107.231.255",
+            "217.107.232.0 - 217.107.239.255",
+            "217.119.64.0 - 217.119.71.255"
+        ]
+    }
+}

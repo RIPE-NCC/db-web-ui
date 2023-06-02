@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?flags=lr&ignore404=true&query-string=5.254.68.40/29&type-filter=inetnum",
+    "requestUrl": "/api/whois/search?flags=lr&ignore404=true&query-string=5.254.68.40/29&type-filter=inetnum",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -61,7 +61,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "Voxility"
+                                "value": "TstOrg1"
                             },
                             {
                                 "name": "descr",
@@ -69,7 +69,7 @@
                             },
                             {
                                 "name": "descr",
-                                "value": "customers of Voxility GmbH"
+                                "value": "customers of TstOrg1"
                             },
                             {
                                 "name": "country",
@@ -78,37 +78,37 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-VXDE1-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST42-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-VXDE1-RIPE",
+                                "value": "ORG-TEST42-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/SS7482-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "SS7482-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/VOX100-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "VOX100-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/AR16507-RIPE"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TSTABUSEC-RIPE"
                                 },
                                 "name": "abuse-c",
-                                "value": "AR16507-RIPE",
+                                "value": "TSTABUSEC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
@@ -118,10 +118,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/VOXILITY-MNT"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST02-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "VOXILITY-MNT",
+                                "value": "TEST02-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

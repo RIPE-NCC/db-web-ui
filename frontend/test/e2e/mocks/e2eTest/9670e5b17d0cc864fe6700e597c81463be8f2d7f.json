@@ -8,7 +8,7 @@
                 "resource": "192.87.0.0 - 192.87.0.255",
                 "status": "LEGACY",
                 "type": "inetnum",
-                "netname": "SNET-HOMELAN",
+                "netname": "NETNAME-TEST86",
                 "usage": {
                     "total": 256,
                     "used": 0,

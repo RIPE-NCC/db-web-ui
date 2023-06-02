@@ -1,0 +1,55 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-TEST23-RIPE&type=inet6num",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "stats": {
+            "numInetnums": 5,
+            "numInet6nums": 3,
+            "numAutnums": 1,
+            "numSponsoredInetnums": 3,
+            "numSponsoredInet6nums": 0,
+            "numSponsoredAutnums": 1
+        },
+        "orgId": "ORG-TEST41-RIPE",
+        "resources": [
+            {
+                "resource": "2001:67c:2334::/48",
+                "status": "ASSIGNED PI",
+                "type": "inet6num",
+                "sponsoredByOther": true,
+                "netname": "NETNAME-TEST-167",
+                "usage": {
+                    "total": 1,
+                    "used": 0,
+                    "blockSize": 48
+                }
+            },
+            {
+                "resource": "2001:67c:2338::/48",
+                "status": "ASSIGNED PI",
+                "type": "inet6num",
+                "netname": "NETNAME-TEST-168",
+                "usage": {
+                    "total": 1,
+                    "used": 0,
+                    "blockSize": 48
+                }
+            },
+            {
+                "resource": "2a02:18::/32",
+                "status": "ALLOCATED-BY-RIR",
+                "type": "inet6num",
+                "netname": "NETNAME-TEST-169",
+                "usage": {
+                    "total": 65536,
+                    "used": 0,
+                    "blockSize": 48
+                }
+            }
+        ],
+        "totalNumberOfResources": 3,
+        "filteredSize": 3,
+        "pageSize": 3
+    }
+}

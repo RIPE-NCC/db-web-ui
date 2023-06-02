@@ -9,7 +9,7 @@ describe('Resources, update object', () => {
     });
 
     it('should allow editing of the object', () => {
-        resourcesDetailPage.clickOnUpdate().typePassword('TPOL888-MNT').disableAssociateCheckbox().submitModal();
+        resourcesDetailPage.clickOnUpdate().typePassword('TST01-MNT').disableAssociateCheckbox().submitModal();
         const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
         whoisObjectEditor.expectFieldExist('abuse-c', false).typeOnField('descr', 'Updated test description').clickAddAttributeOnField('descr').submitModal();
         whoisObjectEditor
@@ -28,7 +28,7 @@ describe('Resources, update object', () => {
         });
 
         it('should edit netname', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TPOLYCHNIA4-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
             // ensure netname is editable and edit it
             resourcesDetailPage
                 .getWhoisObjectEditor()
@@ -39,7 +39,7 @@ describe('Resources, update object', () => {
         });
 
         it('should add org attribute', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TPOLYCHNIA4-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
             const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
             whoisObjectEditor
                 .expectFieldExist('org', false)
@@ -53,12 +53,12 @@ describe('Resources, update object', () => {
         });
 
         it('should contain delete button for not co-maintained by RIPE-NCC-*-MNT', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TPOLYCHNIA4-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
             resourcesDetailPage.getWhoisObjectEditor().expectDeleteObjectButtonExist(true);
         });
 
         it('should delete resource on click on delete button', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TPOLYCHNIA4-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
             resourcesDetailPage.getWhoisObjectEditor().clickDeleteObjectButton().clickOnConfirmDeleteObject();
 
             cy.expectCurrentUrlToContain(

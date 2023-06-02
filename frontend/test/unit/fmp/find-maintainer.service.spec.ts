@@ -46,7 +46,7 @@ describe('FindMaintainerService', () => {
                                 { name: 'mntner', value: 'I-AM-MNT' },
                                 {
                                     name: 'upd-to',
-                                    value: 'test@ripe.net',
+                                    value: 'TSTADMINC-RIPE',
                                 },
                             ],
                         },
@@ -58,7 +58,7 @@ describe('FindMaintainerService', () => {
         findMaintainerService.search(maintainerKey).subscribe((respons: any) => {
             expect(respons.mntnerFound).toBeTruthy();
             expect(respons.selectedMaintainer.name).toBe('world');
-            expect(respons.email).toBe('test@ripe.net');
+            expect(respons.email).toBe('TSTADMINC-RIPE');
             done();
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
@@ -196,7 +196,7 @@ describe('FindMaintainerService', () => {
                                 { name: 'mntner', value: 'I-AM-MNT' },
                                 {
                                     name: 'upd-to',
-                                    value: 'test@ripe.net',
+                                    value: 'TSTADMINC-RIPE',
                                 },
                             ],
                         },

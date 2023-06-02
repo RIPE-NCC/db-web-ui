@@ -1,6 +1,0 @@
-{
-    "requestUrl": "/db-web-ui/api/dns/status?ignore404=true&ns=dns01.estracom.it&record=48.109.91.in-addr.arpa",
-    "contentType": "application/javascript",
-    "statusCode": 200,
-    "data": { "ns": "dns01.estracom.it", "code": 0, "message": "Server is authoritative for 48.109.91.in-addr.arpa" }
-}

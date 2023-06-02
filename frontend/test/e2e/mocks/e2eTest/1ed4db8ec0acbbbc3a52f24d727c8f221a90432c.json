@@ -33,10 +33,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-SI89-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST4-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-SI89-RIPE",
+                                "value": "ORG-TEST4-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
@@ -58,19 +58,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/SIG20-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "SIG20-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "role"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/MF7462-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "MF7462-RIPE",
+                                "value": "TSTTECHC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -83,7 +83,7 @@
                             },
                             {
                                 "name": "notify",
-                                "value": "***@aladdin.com"
+                                "value": "***@test.com"
                             },
                             {
                                 "link": {
@@ -97,19 +97,19 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS5486-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST001-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "AS5486-MNT",
+                                "value": "TST001-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-ALADDIN"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-TEST"
                                 },
                                 "name": "mnt-routes",
-                                "value": "MNT-ALADDIN",
+                                "value": "MNT-TEST",
                                 "referenced-type": "mntner"
                             },
                             {
@@ -127,10 +127,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-AGNS1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST5-RIPE"
                                 },
                                 "name": "sponsoring-org",
-                                "value": "ORG-AGNS1-RIPE",
+                                "value": "ORG-TEST5-RIPE",
                                 "referenced-type": "organisation"
                             }
                         ]

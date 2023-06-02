@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true&unformatted=true",
+    "requestUrl": "/api/whois/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true&unformatted=true",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -30,7 +30,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "APPELBAUM-NET"
+                                "value": "NETNAME-TEST-02"
                             },
                             {
                                 "name": "country",
@@ -39,28 +39,28 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-JA88-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST09-RIPE"
                                 },
                                 "name": "org",
-                                "value": "ORG-JA88-RIPE",
+                                "value": "ORG-TEST09-RIPE",
                                 "referenced-type": "organisation"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/JA2712-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "admin-c",
-                                "value": "JA2712-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/JA2712-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
                                 },
                                 "name": "tech-c",
-                                "value": "JA2712-RIPE",
+                                "value": "TSTADMINC-RIPE",
                                 "referenced-type": "person"
                             },
                             {
@@ -79,37 +79,37 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST10-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "APPELBAUM-MNT",
+                                "value": "TEST10-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST10-MNT"
                                 },
                                 "name": "mnt-routes",
-                                "value": "APPELBAUM-MNT",
+                                "value": "TEST10-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST11-MNT"
                                 },
                                 "name": "mnt-routes",
-                                "value": "XS4ALL-MNT",
+                                "value": "TEST11-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST10-MNT"
                                 },
                                 "name": "mnt-domains",
-                                "value": "APPELBAUM-MNT",
+                                "value": "TEST10-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
@@ -127,10 +127,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-XIB1-RIPE"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST10-RIPE"
                                 },
                                 "name": "sponsoring-org",
-                                "value": "ORG-XIB1-RIPE",
+                                "value": "ORG-TEST10-RIPE",
                                 "referenced-type": "organisation"
                             }
                         ]

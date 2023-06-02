@@ -6,7 +6,7 @@
         {
             "key": "SHRYANE-MNT",
             "type": "mntner",
-            "auth": ["MD5-PW", "SSO", "PGPKEY-28F6CD6C"]
+            "auth": ["MD5-PW", "SSO", "PGPKEY-TEST1234"]
         }
     ]
 }

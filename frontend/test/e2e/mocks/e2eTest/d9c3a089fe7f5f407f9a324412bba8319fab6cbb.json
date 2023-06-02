@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=211.43.192.0",
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=211.43.192.0",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -245,10 +245,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/AS4663-RIPE-MNT"
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST14-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "AS4663-RIPE-MNT",
+                                "value": "TEST14-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

@@ -32,37 +32,37 @@
                     },
                     {
                         "name": "as-name",
-                        "value": "Kokonet-BGP"
+                        "value": "ASNAME-TEST"
                     },
                     {
                         "name": "descr",
-                        "value": "Kokonet Ltd Seychelles ISP"
+                        "value": "TESTORG3"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "https://rest-dev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+                            "href": "https://rest-dev.db.ripe.net/ripe/organisation/ORG-TEST23-RIPE"
                         },
                         "name": "org",
-                        "value": "ORG-Sb3-RIPE",
+                        "value": "ORG-TEST23-RIPE",
                         "referenced-type": "organisation"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "https://rest-dev.db.ripe.net/ripe/role/SNS1-RIPE"
+                            "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
                         },
                         "name": "admin-c",
-                        "value": "SNS1-RIPE",
+                        "value": "TSTADMINC-RIPE",
                         "referenced-type": "role"
                     },
                     {
                         "link": {
                             "type": "locator",
-                            "href": "https://rest-dev.db.ripe.net/ripe/person/JK9622-RIPE"
+                            "href": "https://rest-dev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
                         },
                         "name": "tech-c",
-                        "value": "JK9622-RIPE",
+                        "value": "TSTTECHC-RIPE",
                         "referenced-type": "person"
                     },
                     {
@@ -72,10 +72,10 @@
                     {
                         "link": {
                             "type": "locator",
-                            "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/KOKONET-MNT"
+                            "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST05-MNT"
                         },
                         "name": "mnt-by",
-                        "value": "KOKONET-MNT",
+                        "value": "TEST05-MNT",
                         "referenced-type": "mntner"
                     },
                     {

@@ -1,0 +1,21 @@
+{
+    "requestUrl": "/api/references/RIPE/role/TST1234-RIPE?limit=5",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "primaryKey": "TST1234-RIPE",
+        "objectType": "role",
+        "incoming": [
+            {
+                "primaryKey": "TST004-MNT",
+                "objectType": "mntner",
+                "incoming": [
+                    {
+                        "primaryKey": "TST1234-RIPE",
+                        "objectType": "role"
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -19,7 +19,7 @@ public class UserInfoResponseTest {
 
         try {
             UserInfoResponse userInfoResponse = (new ObjectMapper()).readValue(response, UserInfoResponse.class);
-            assertThat(userInfoResponse.user.username, is("test@ripe.net"));
+            assertThat(userInfoResponse.user.username, is("TSTADMINC-RIPE"));
         } catch (Exception e) {
             assertNull(e);
             System.out.println(e.getMessage());
