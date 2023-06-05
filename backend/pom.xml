@@ -36,7 +36,7 @@
         <sonar.tests>src/test</sonar.tests>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>2.7.2</spring-boot.version>
-        <whois.version>d37f9b57</whois.version>
+        <whois.version>82c3dcca</whois.version>
     </properties>
 
     <dependencyManagement>
