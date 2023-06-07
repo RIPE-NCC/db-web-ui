@@ -48,5 +48,6 @@ export const Labels = {
 
     'resource.createAssignment.text': 'Create assignment',
     'msg.sessionTimeout.text': 'Your RIPE NCC Access session has expired. You need to login again.',
+    'msg.sso.text': 'RIPE NCC Access (SSO) will be unavailable due to maintenance on Wednesday, 7 June, from 15:00-17:00 UTC.',
     'link.loginUrl.text': 'LOGIN',
 };
