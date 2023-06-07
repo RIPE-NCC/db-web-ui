@@ -8,6 +8,7 @@ import { AppComponent } from '../../src/app/app.component';
 import { BannerComponent } from '../../src/app/banner/banner.component';
 import { PropertiesService } from '../../src/app/properties.service';
 import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
+import { LabelPipe } from '../../src/app/shared/label.pipe';
 import { ReleaseNotificationService } from '../../src/app/shared/release-notification.service';
 
 describe('AppComponent', () => {
@@ -21,7 +22,7 @@ describe('AppComponent', () => {
         releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            declarations: [AppComponent, BannerComponent],
+            declarations: [AppComponent, BannerComponent, LabelPipe],
             providers: [
                 {
                     provide: PropertiesService,
