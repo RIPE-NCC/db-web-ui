@@ -39,7 +39,6 @@ describe('SessionInfoService', () => {
         sessionInfoService.refreshSession();
         tick(100);
         expect(userInfoService.pingUserInfo).toHaveBeenCalled();
-
         discardPeriodicTasks(); //remove ticks
     }));
 

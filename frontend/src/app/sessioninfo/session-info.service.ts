@@ -76,6 +76,7 @@ export class SessionInfoService {
         result.subscribe(() => {
             this.userInfoService.pingUserInfo().subscribe();
         });
+        this.refreshSession();
     }
 
     private waitTtlTime(ttl: number) {
