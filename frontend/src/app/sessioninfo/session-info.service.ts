@@ -13,6 +13,7 @@ export class SessionInfoService {
     public expiredSession$ = new EventEmitter<boolean>();
     public showUserLoggedIcon$ = new EventEmitter<boolean>();
     public checkingSession: boolean;
+    public startingChecking: boolean;
     private readonly onSessionManager;
 
     constructor(private properties: PropertiesService, private userInfoService: UserInfoService) {
@@ -29,6 +30,7 @@ export class SessionInfoService {
                 this.cancelAndRestartCounter();
             }
         };
+        this.startingChecking = false;
         window.addEventListener('storage', this.onSessionManager);
     }
 
@@ -39,6 +41,13 @@ export class SessionInfoService {
         if (userWasLoggedIn && !crowdRipeHintCookieExist) {
             localStorage.removeItem(hasCookie);
             localStorage.setItem(localStorageSessionExpiredKey, 'TTL expired');
+        }
+    }
+
+    public startCheckingSession() {
+        if (!this.startingChecking) {
+            this.startingChecking = true;
+            this.refreshSession();
         }
     }
 
@@ -61,6 +70,7 @@ export class SessionInfoService {
     }
 
     public authenticationFailure() {
+        this.startingChecking = false;
         this.userInfoService.removeUserInfo();
         if (this.checkingSession) {
             this.raiseAlert();
