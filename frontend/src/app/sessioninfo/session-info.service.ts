@@ -75,8 +75,8 @@ export class SessionInfoService {
         const result = this.waitTtlTime(this.properties.SESSION_TTL);
         result.subscribe(() => {
             this.userInfoService.pingUserInfo().subscribe();
+            this.refreshSession();
         });
-        this.refreshSession();
     }
 
     private waitTtlTime(ttl: number) {

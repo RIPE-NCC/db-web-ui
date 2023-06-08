@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { SessionInfoService } from './session-info.service';
 
 @Injectable()
@@ -10,9 +10,6 @@ export class SessionInterceptor implements HttpInterceptor {
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
-            map((event: HttpEvent<any>) => {
-                return event;
-            }),
             catchError((err: HttpErrorResponse) => {
                 if (err.status == 401) {
                     this.sessionInfoService.authenticationFailure();
