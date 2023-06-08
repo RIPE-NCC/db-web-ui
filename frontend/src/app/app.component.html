@@ -739,7 +739,6 @@
         <section id="app-banners-container" class="usprivacy">
             <ngx-loading-bar></ngx-loading-bar>
             <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning" unsafehtml="{{ properties.BANNER }}" permanent="true"></app-banner>
-            <app-banner id="notification-sso" level="info" [text]="'msg.sso.text' | label" permanent="true"></app-banner>
             <app-banner
                 *ngIf="showSessionExpireBanner"
                 id="notification-warning-session"
