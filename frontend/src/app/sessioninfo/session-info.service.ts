@@ -13,7 +13,6 @@ export class SessionInfoService {
     public expiredSession$ = new EventEmitter<boolean>();
     public showUserLoggedIcon$ = new EventEmitter<boolean>();
     public checkingSession: boolean;
-    public startingChecking: boolean;
     private readonly onSessionManager;
 
     constructor(private properties: PropertiesService, private userInfoService: UserInfoService) {
@@ -30,7 +29,6 @@ export class SessionInfoService {
                 this.cancelAndRestartCounter();
             }
         };
-        this.startingChecking = false;
         window.addEventListener('storage', this.onSessionManager);
     }
 
@@ -45,17 +43,11 @@ export class SessionInfoService {
     }
 
     public startCheckingSession() {
-        if (!this.startingChecking) {
-            this.startingChecking = true;
-            this.refreshSession();
-        }
-    }
-
-    public refreshSession() {
         if (!this.checkingSession) {
             // we set the item to let the other browsers/tabs that we have a new session
             localStorage.setItem(hasCookie, 'true');
             localStorage.setItem(localStorageSessionCheckStarted, 'session check started');
+            this.checkingSession = true;
         }
         this.cancelAndRestartCounter();
     }
@@ -63,14 +55,12 @@ export class SessionInfoService {
     private cancelAndRestartCounter() {
         localStorage.removeItem(localStorageSessionCheckStarted);
         this.cancelInterval$.next();
-        this.checkingSession = true;
         this.expiredSession$.emit(false);
         this.showUserLoggedIcon$.emit(true);
         this.checkingUserSessionExpired();
     }
 
     public authenticationFailure() {
-        this.startingChecking = false;
         this.userInfoService.removeUserInfo();
         if (this.checkingSession) {
             this.raiseAlert();
@@ -79,13 +69,14 @@ export class SessionInfoService {
             localStorage.removeItem(hasCookie);
             localStorage.setItem(localStorageSessionExpiredKey, 'TTL expired');
         }
+        this.checkingSession = false;
     }
 
     private checkingUserSessionExpired() {
         const result = this.waitTtlTime(this.properties.SESSION_TTL);
         result.subscribe(() => {
             this.userInfoService.pingUserInfo().subscribe();
-            this.refreshSession();
+            this.startCheckingSession();
         });
     }
 

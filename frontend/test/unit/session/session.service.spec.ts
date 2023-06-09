@@ -36,7 +36,7 @@ describe('SessionInfoService', () => {
     });
 
     it('should call pingUserInfo when checking the session', fakeAsync(() => {
-        sessionInfoService.refreshSession();
+        sessionInfoService.startCheckingSession();
         tick(100);
         expect(userInfoService.pingUserInfo).toHaveBeenCalled();
         discardPeriodicTasks(); //remove ticks
