@@ -47,9 +47,8 @@ export class SessionInfoService {
             // we set the item to let the other browsers/tabs that we have a new session
             localStorage.setItem(hasCookie, 'true');
             localStorage.setItem(localStorageSessionCheckStarted, 'session check started');
-            this.checkingSession = true;
+            this.cancelAndRestartCounter();
         }
-        this.cancelAndRestartCounter();
     }
 
     private cancelAndRestartCounter() {
@@ -57,6 +56,7 @@ export class SessionInfoService {
         this.cancelInterval$.next();
         this.expiredSession$.emit(false);
         this.showUserLoggedIcon$.emit(true);
+        this.checkingSession = true;
         this.checkingUserSessionExpired();
     }
 
@@ -76,7 +76,7 @@ export class SessionInfoService {
         const result = this.waitTtlTime(this.properties.SESSION_TTL);
         result.subscribe(() => {
             this.userInfoService.pingUserInfo().subscribe();
-            this.startCheckingSession();
+            this.cancelAndRestartCounter();
         });
     }
 
