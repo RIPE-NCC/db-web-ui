@@ -22,7 +22,7 @@ export class SessionInfoService {
                 //if we logged out from the current window, in other window we will rise
                 // the banner. However, we don't want to rise the banner in the current one
                 if (this.checkingSession) {
-                    this.raiseAlert();
+                    this.authenticationFailure();
                 }
                 localStorage.removeItem(localStorageSessionExpiredKey);
             } else if (e.key === localStorageSessionCheckStarted && e.newValue) {
