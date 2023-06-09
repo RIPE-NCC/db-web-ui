@@ -69,6 +69,7 @@ export class SessionInfoService {
             localStorage.removeItem(hasCookie);
             localStorage.setItem(localStorageSessionExpiredKey, 'TTL expired');
         }
+        this.checkingSession = false;
     }
 
     private checkingUserSessionExpired() {
@@ -86,7 +87,6 @@ export class SessionInfoService {
 
     private raiseAlert() {
         console.warn('TTL expired');
-        this.checkingSession = false;
         this.expiredSession$.emit(true);
         this.showUserLoggedIcon$.emit(false);
         this.cancelInterval$.next();
