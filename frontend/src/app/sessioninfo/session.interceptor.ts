@@ -13,8 +13,8 @@ export class SessionInterceptor implements HttpInterceptor {
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
                     //we are still logged, we need to refresh
-                    if (event.status === 200 && req.url.includes('/whois-internal/')) {
-                        this.sessionInfoService.refreshSession();
+                    if (event.status === 200 && req.url.includes('/whois-internal/api/user/info')) {
+                        this.sessionInfoService.startCheckingSession();
                     }
                     return event;
                 }

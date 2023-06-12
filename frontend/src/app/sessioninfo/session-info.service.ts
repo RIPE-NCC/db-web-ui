@@ -22,7 +22,7 @@ export class SessionInfoService {
                 //if we logged out from the current window, in other window we will rise
                 // the banner. However, we don't want to rise the banner in the current one
                 if (this.checkingSession) {
-                    this.raiseAlert();
+                    this.authenticationFailure();
                 }
                 localStorage.removeItem(localStorageSessionExpiredKey);
             } else if (e.key === localStorageSessionCheckStarted && e.newValue) {
@@ -42,21 +42,21 @@ export class SessionInfoService {
         }
     }
 
-    public refreshSession() {
+    public startCheckingSession() {
         if (!this.checkingSession) {
             // we set the item to let the other browsers/tabs that we have a new session
             localStorage.setItem(hasCookie, 'true');
             localStorage.setItem(localStorageSessionCheckStarted, 'session check started');
+            this.cancelAndRestartCounter();
         }
-        this.cancelAndRestartCounter();
     }
 
     private cancelAndRestartCounter() {
         localStorage.removeItem(localStorageSessionCheckStarted);
         this.cancelInterval$.next();
-        this.checkingSession = true;
         this.expiredSession$.emit(false);
         this.showUserLoggedIcon$.emit(true);
+        this.checkingSession = true;
         this.checkingUserSessionExpired();
     }
 
@@ -69,12 +69,14 @@ export class SessionInfoService {
             localStorage.removeItem(hasCookie);
             localStorage.setItem(localStorageSessionExpiredKey, 'TTL expired');
         }
+        this.checkingSession = false;
     }
 
     private checkingUserSessionExpired() {
         const result = this.waitTtlTime(this.properties.SESSION_TTL);
         result.subscribe(() => {
             this.userInfoService.pingUserInfo().subscribe();
+            this.cancelAndRestartCounter();
         });
     }
 
@@ -85,7 +87,6 @@ export class SessionInfoService {
 
     private raiseAlert() {
         console.warn('TTL expired');
-        this.checkingSession = false;
         this.expiredSession$.emit(true);
         this.showUserLoggedIcon$.emit(false);
         this.cancelInterval$.next();
