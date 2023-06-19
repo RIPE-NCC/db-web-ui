@@ -53,6 +53,7 @@ export class MaintainersEditorComponent implements OnInit {
     public isMntHelpShown = false;
 
     private source: string;
+    private justAddedMnt: IMntByModel;
 
     constructor(
         private attributeMetadataService: AttributeMetadataService,
@@ -81,6 +82,7 @@ export class MaintainersEditorComponent implements OnInit {
     }
 
     public onMntnerAdded(item: IMntByModel): void {
+        this.justAddedMnt = item;
         // enrich with new-flag
         this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.mntners.object);
 
@@ -178,10 +180,8 @@ export class MaintainersEditorComponent implements OnInit {
 
     private navigateAway(): void {
         if (!this.isModifyMode()) {
-            for (const mnt of this.mntners.object) {
-                this.onMntnerRemoved(mnt);
-            }
-            this.mntners.object = [];
+            this.onMntnerRemoved(this.justAddedMnt);
+            this.justAddedMnt = undefined;
         }
         if (this.authenticationFailedClbk) {
             this.authenticationFailedClbk.emit();
