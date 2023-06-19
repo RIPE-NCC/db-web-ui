@@ -155,6 +155,7 @@ describe('TextCreateComponent', () => {
                 'remarks:       \n' +
                 'notify:        \n' +
                 'MNT-BY:        \n' +
+                'mnt-ref:       \n' +
                 'SOURCE:        RIPE\n',
         );
     });
