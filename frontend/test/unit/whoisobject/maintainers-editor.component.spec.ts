@@ -25,12 +25,10 @@ describe('MaintainersEditorComponent', () => {
         let component: MaintainersEditorComponent;
         let fixture: ComponentFixture<MaintainersEditorComponent>;
         let modalMock: any;
-        let webUpdatesCommonsServiceMock: any;
         const BACKSPACE_KEYCODE = 8;
 
         beforeEach(() => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-            webUpdatesCommonsServiceMock = jasmine.createSpyObj('WebUpdatesCommonsService', ['performAuthentication']);
             TestBed.configureTestingModule({
                 imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
                 declarations: [MaintainersEditorComponent],
@@ -103,6 +101,26 @@ describe('MaintainersEditorComponent', () => {
             await fixture.whenStable();
             expect(component.mntners.object.length).toEqual(2);
             expect(component.updateMntnersClbk.emit).toHaveBeenCalled();
+        });
+
+        it('should remove just added mnt in case authentication was canceled', async () => {
+            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of('cancel') });
+            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(true);
+            component.ngOnInit();
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
+            expect(component.attributes.length).toEqual(10);
+            component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' });
+            expect(component.attributes.length).toEqual(10);
+        });
+
+        it('should not remove just added mnt in case authentication was success', async () => {
+            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
+            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(true);
+            component.ngOnInit();
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
+            expect(component.attributes.length).toEqual(10);
+            component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' });
+            expect(component.attributes.length).toEqual(11);
         });
 
         it('should remove the selected maintainers from the object emit update-mntners-clbk', async () => {
