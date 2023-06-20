@@ -733,7 +733,7 @@ export class WhoisMetaService {
         },
         'abuse-c': {
             description: `References an abuse contact. This can only be a <strong>role</strong> object containing an \"abuse-mailbox:\" attribute. Making this reference will remove any query limits for the <strong>role</strong> object. These <strong>role</strong> objects are considered to include only commercial data.`,
-            short: 'Enter the nic-handle of your abuse-c <strong>role</strong> object.',
+            short: 'Enter the nic-handle of your abuse-c role object.',
             syntax: this._shared.nicHandle.syntax,
         },
         address: {
@@ -884,7 +884,7 @@ export class WhoisMetaService {
         },
         encryption: {
             description: 'References a <strong>key-cert</strong> object representing a CSIRT public key used to encrypt correspondence sent to the CSIRT.',
-            short: 'A reference to a CSIRT <strong>key-cert</strong> object',
+            short: 'A reference to a CSIRT key-cert object',
             syntax: this._shared.keyCert.syntax,
         },
         export: {
@@ -1006,12 +1006,12 @@ export class WhoisMetaService {
         },
         irt: {
             description: `Specifies the name of the <strong>irt</strong> object. The name should start with the prefix \"IRT-\" reserved for this type of object.`,
-            short: `Specifies the name of the irt <strong>object</strong>, must start with \"IRT-\"`,
+            short: `Specifies the name of the irt object, must start with \"IRT-\"`,
             syntax: this._shared.irt.syntax,
         },
         'irt-nfy': {
             description: 'Specifies the e-mail address to be notified when a reference to the <strong>irt</strong> object is added or' + ' removed.',
-            short: 'Notification e-mail address when a reference to the <strong>irt</strong> object is added or' + ' removed.',
+            short: 'Notification e-mail address when a reference to the irt object is added or' + ' removed.',
             syntax: this._shared.email.syntax,
         },
         'key-cert': {
@@ -1060,17 +1060,17 @@ export class WhoisMetaService {
         },
         mntner: {
             description: 'A unique identifier of the <strong>mntner</strong> object.',
-            short: 'A unique identifier of the <strong>mntner</strong> object, e.g. EXAMPLE-MNT',
+            short: 'A unique identifier of the mntner object, e.g. EXAMPLE-MNT',
             syntax: this._shared.objectName.syntax,
         },
         'mnt-by': {
             description: `Specifies the identifier of a registered <strong>mntner</strong> object used for authorisation of operations performed with the object that contains this attribute.`,
-            short: 'Specifies one or more <strong>maintainer</strong> objects used for authorisation.',
+            short: 'Specifies one or more maintainer objects used for authorisation.',
             syntax: this._shared.objectName.syntax,
         },
         'mnt-domains': {
             description: `Specifies the identifier of a registered <strong>mntner</strong> object used for reverse domain authorisation. Protects <strong>domain</strong> objects. The authentication method of this <strong>maintainer</strong> object will be used for any encompassing <strong>reverse domain</strong> object.`,
-            short: 'Specifies the <strong>mntner</strong> object used for reverse domain authorisation.',
+            short: 'Specifies the mntner object used for reverse domain authorisation.',
             syntax: this._shared.objectName.syntax,
         },
         'mnt-irt': {
@@ -1081,7 +1081,7 @@ export class WhoisMetaService {
         },
         'mnt-lower': {
             description: `Specifies the identifier of a registered <strong>mntner</strong> object used for hierarchical authorisation. Protects creation of objects directly (one level) below in the hierarchy of an object type. The authentication method of this <strong>mntner</strong> object will then be used upon creation of any object directly below the object that contains the \"mnt-lower:\" attribute.  <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
-            short: 'Specifies the <strong>mntner</strong> object used for hierarchical authorisation.',
+            short: 'Specifies the mntner object used for hierarchical authorisation.',
             syntax: this._shared.objectName.syntax,
         },
         'mnt-nfy': {
@@ -1091,7 +1091,7 @@ export class WhoisMetaService {
         },
         'mnt-ref': {
             description: 'Specifies the <strong>mntner</strong> objects that are entitled to add references to this object' + ' from other objects.',
-            short: 'Specifies a <strong>mntner</strong> that may add references to this object from other objects.',
+            short: 'Specifies a mntner that may add references to this object from other objects.',
             syntax: this._shared.objectName.syntax,
         },
         'mp-default': {
@@ -1220,7 +1220,7 @@ export class WhoisMetaService {
         },
         org: {
             description: 'Points to an existing <strong>organisation</strong> object representing the entity that holds the resource.',
-            short: 'Reference to an <strong>organisation</strong> object representing the holder of the resource.',
+            short: 'Reference to an organisation object representing the holder of the resource.',
             syntax: this._shared.organisation.syntax,
         },
         'org-name': {
@@ -1296,7 +1296,7 @@ export class WhoisMetaService {
                 ' concerning the IP' +
                 ' address(es)' +
                 ' specified in the "pingable:" attribute.',
-            short: `References a <strong>person</strong> or <strong>role</strong> related to the \"pingable:\" attribute.`,
+            short: `References a person or role related to the \"pingable:\" attribute.`,
             syntax: this._shared.nicHandle.syntax,
         },
         pingable: {
@@ -1324,7 +1324,7 @@ export class WhoisMetaService {
                 'Specifies the e-mail address to be notified when a reference to the <strong>organisation</strong> object is added or' +
                 ' removed. This attribute is filtered from the default whois output when at least one of the objects' +
                 ' returned by the query contains an <strong>abuse-mailbox</strong> attribute.',
-            short: 'Notification e-mail address when a reference to the <strong>organisation</strong> object is' + ' added or removed.',
+            short: 'Notification e-mail address when a reference to the organisation object is' + ' added or removed.',
             syntax: this._shared.email.syntax,
         },
         remarks: {
@@ -1369,7 +1369,7 @@ export class WhoisMetaService {
         },
         signature: {
             description: 'References a <strong>key-cert</strong> object representing a CSIRT public key used by the team to sign their correspondence.',
-            short: 'References a CSIRT <strong>key-cert</strong> object.',
+            short: 'References a CSIRT key-cert object.',
             syntax: this._shared.keyCert.syntax,
         },
         source: {
@@ -1379,7 +1379,7 @@ export class WhoisMetaService {
         },
         'sponsoring-org': {
             description: 'Points to an existing <strong>organisation</strong> object representing the sponsoring organisation responsible for the resource.',
-            short: 'Reference to an <strong>organisation</strong> object representing the sponsor.',
+            short: 'Reference to an organisation object representing the sponsor.',
             syntax: this._shared.organisation.syntax,
         },
         'tech-c': {
@@ -1457,7 +1457,7 @@ export class WhoisMetaService {
             description:
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route6</strong> objects. This entry is for the mnt-routes attribute of <strong>route6</strong> and <strong>inet6num</strong> classes.` +
                 ` After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
-            short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of' + ' <strong>route6</strong> objects.',
+            short: 'References a mntner used in determining authorisation for the creation of' + ' route6 objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]',
         },
         inetnum: {
@@ -1465,7 +1465,7 @@ export class WhoisMetaService {
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route</strong> objects. After the reference to the maintainer, an optional list of` +
                 ` prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. Please refer to` +
                 ` <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
-            short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of' + ' <strong>route</strong> objects.',
+            short: 'References a mntner used in determining authorisation for the creation of' + ' route objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]',
         },
         route: {
@@ -1473,7 +1473,7 @@ export class WhoisMetaService {
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route</strong> objects. After the reference to the maintainer, an optional list of` +
                 ` prefix ranges inside of curly braces or the keyword "ANY" may follow. The default, when no additional set items are specified, is "ANY" or all more specifics. Please refer to` +
                 ` <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
-            short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of' + ' <strong>route</strong> objects.',
+            short: 'References a mntner used in determining authorisation for the creation of' + ' route objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]',
         },
         route6: {
@@ -1481,7 +1481,7 @@ export class WhoisMetaService {
                 `This attribute references a <strong>maintainer</strong> object which is used in determining authorisation for the creation of <strong>route6</strong> objects. This entry is for the mnt-routes attribute of <strong>route6</strong> and <strong>inet6num</strong> classes.` +
                 ` After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are` +
                 ` specified, is \"ANY\" or all more specifics. Please refer to <a href="/docs/19.Database-Support/03-Database-Security.html#maintainers" target="_blank">Learn more.</a>`,
-            short: 'References a <strong>mntner</strong> used in determining authorisation for the creation of <strong>route6</strong> objects.',
+            short: 'References a mntner used in determining authorisation for the creation of route6 objects.',
             syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]',
         },
     };
