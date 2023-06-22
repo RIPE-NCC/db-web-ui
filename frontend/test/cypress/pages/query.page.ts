@@ -195,12 +195,12 @@ export class QueryPage {
     }
 
     expectTypesMenuTitleToBe(title: string) {
-        cy.get('#typeMenu .mat-button-wrapper').should('contain.text', title);
+        cy.get('#typeMenu').should('contain.text', title);
         return this;
     }
 
     expectHierarchyFlagsMenuTitleToBe(title: string) {
-        cy.get('#hierarchyFlagsMenu .mat-button-wrapper').should('contain.text', title);
+        cy.get('#hierarchyFlagsMenu').should('contain.text', title);
         return this;
     }
 
@@ -210,12 +210,12 @@ export class QueryPage {
     }
 
     expectInverseLookupMenuTitleToBe(title: string) {
-        cy.get('#inverseLookupMenu .mat-button-wrapper').should('contain.text', title);
+        cy.get('#inverseLookupMenu').should('contain.text', title);
         return this;
     }
 
     expectAdvancedFilterMenuTitleToBe(title: string) {
-        cy.get('#advanceFilterMenu .mat-button-wrapper').should('contain.text', title);
+        cy.get('#advanceFilterMenu').should('contain.text', title);
         return this;
     }
 
@@ -242,6 +242,7 @@ export class QueryPage {
         cy.get('#templateResultsSection pre').should('contain.text', text);
         return this;
     }
+
     expectTemplateSearchResultToExist(exist: boolean) {
         cy.get('#templateResultsSection pre').should(exist ? 'exist' : 'not.exist');
         return this;
@@ -274,22 +275,20 @@ export class QueryPage {
 
 class TypesFilter {
     clickCheckbox(name: string) {
-        cy.get(`.mat-checkbox`).contains(name).find('input').click({ force: true });
+        cy.get(`.mat-mdc-checkbox:contains("${name}") input`).first().click({ force: true });
         return this;
     }
 
     expectCheckboxToBeDisabled(name: string, disabled: boolean) {
-        cy.get(`.mat-checkbox`)
-            .contains(name)
-            .find('input')
+        cy.get(`.mat-mdc-checkbox:contains("${name}") input`)
+            .first()
             .should(disabled ? 'be.disabled' : 'not.be.disabled');
         return this;
     }
 
     expectCheckboxToBeChecked(name: string, checked: boolean) {
-        cy.get(`.mat-checkbox`)
-            .contains(name)
-            .find('input')
+        cy.get(`.mat-mdc-checkbox:contains("${name}") input`)
+            .first()
             .should(checked ? 'be.checked' : 'not.be.checked');
         return this;
     }
@@ -320,7 +319,7 @@ class HierarchyFlagsFilter {
                     return 600;
             }
         })();
-        cy.get(`hierarchy-flags .mat-slider-track-wrapper`).click(index, 0, { force: true });
+        cy.get(`hierarchy-flags mat-slider input`).click(index, 0, { force: true });
         return this;
     }
 
@@ -341,7 +340,7 @@ class HierarchyFlagsFilter {
                     return 5;
             }
         })();
-        cy.get('hierarchy-flags mat-slider').should('have.attr', 'aria-valuenow', index);
+        cy.get('hierarchy-flags mat-slider input').should('have.attr', 'aria-valuetext', index);
         return this;
     }
 
@@ -368,45 +367,39 @@ class HierarchyFlagsFilter {
 
 class InverseLookupFilter {
     clickCheckbox(name: string) {
-        cy.get(`.mat-checkbox`).contains(name).find('input').click({ force: true });
+        cy.get(`.mat-mdc-checkbox:contains("${name}") input`).click({ force: true });
         return this;
     }
 
     expectCheckboxToBeDisabled(name: string, disabled: boolean) {
-        cy.get(`.mat-checkbox`)
-            .contains(name)
-            .find('input')
-            .should(disabled ? 'be.disabled' : 'not.be.disabled');
+        cy.get(`.mat-mdc-checkbox:contains("${name}") input`).should(disabled ? 'be.disabled' : 'not.be.disabled');
         return this;
     }
 
     expectCheckboxToBeChecked(name: string, checked: boolean) {
-        cy.get(`.mat-checkbox`)
-            .contains(name)
-            .find('input')
-            .should(checked ? 'be.checked' : 'not.be.checked');
+        cy.get(`.mat-mdc-checkbox:contains("${name}") input`).should(checked ? 'be.checked' : 'not.be.checked');
         return this;
     }
 }
 
 class AdvancedFilter {
     expectCheckboxDoNotRetrieveChecked(checked: boolean) {
-        cy.get('#doNotRetrieveRelatedObjects .mat-checkbox-input').should(checked ? 'be.checked' : 'not.be.checked');
+        cy.get('#doNotRetrieveRelatedObjects.mat-mdc-checkbox input').should(checked ? 'be.checked' : 'not.be.checked');
         return this;
     }
 
     clickCheckboxDoNotRetrieve() {
-        cy.get('#doNotRetrieveRelatedObjects .mat-checkbox-input').click({ force: true });
+        cy.get('#doNotRetrieveRelatedObjects.mat-mdc-checkbox input').click({ force: true });
         return this;
     }
 
     expectCheckboxShowFullObjectDetailsChecked(checked: boolean) {
-        cy.get('#showFullObjectDetails .mat-checkbox-input').should(checked ? 'be.checked' : 'not.be.checked');
+        cy.get('#showFullObjectDetails.mat-mdc-checkbox input').should(checked ? 'be.checked' : 'not.be.checked');
         return this;
     }
 
     clickCheckboxShowFullDetails() {
-        cy.get('#showFullObjectDetails .mat-checkbox-input').click({ force: true });
+        cy.get('#showFullObjectDetails.mat-mdc-checkbox input').click({ force: true });
         return this;
     }
 }

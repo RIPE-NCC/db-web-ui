@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
-                <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice: 0:nrAssociatedObjectToShow; index as i" class="break-all-word">
+                <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i" class="break-all-word">
                     <td class="w30">
                         <a
                             [routerLink]="['/query']"
@@ -76,7 +76,7 @@
             </tr>
         </thead>
         <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
-            <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice: 0:nrAssociatedObjectToShow; index as i">
+            <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i">
                 <td class="w40">
                     <a [routerLink]="['/lookup']" [queryParams]="{ source: source, key: associatedObject.domain, type: 'domain' }" target="_blank">
                         {{ associatedObject.domain }}</a

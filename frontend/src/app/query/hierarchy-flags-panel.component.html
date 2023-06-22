@@ -1,6 +1,6 @@
 <div class="padding">
     <section class="flag-description">
-        <span>{{ descriptionPreview }}</span>
+        <span>{{ setHierarchyFlagDescription(hierarchyFlag) }}</span>
     </section>
     <div class="slider-component">
         <mat-slider
@@ -9,11 +9,10 @@
             [step]="1"
             [max]="5"
             [min]="0"
-            [tickInterval]="1"
-            [(ngModel)]="hierarchyFlag"
-            (input)="setHierarchyFlag($event.value)"
+            [showTickMarks]="true"
             aria-labelledby="example-name-label"
         >
+            <input matSliderThumb [(ngModel)]="hierarchyFlag" (valueChange)="setHierarchyFlag($event)" />
         </mat-slider>
         <div class="slider-labels" (click)="$event.stopPropagation()">
             <div>{{ getShortHierarchyFlagName(0) }}</div>

@@ -13,19 +13,26 @@ $padding: 24px;
         input:-webkit-autofill:focus {
             transition: background-color 600000s 0s, color 600000s 0s;
         }
-    }
 
-    .mat-form-field-appearance-fill .mat-form-field-flex {
-        background-color: rgba(0, 0, 0, 0.1);
-        padding-left: $padding;
+        .mat-mdc-form-field-focus-overlay {
+            opacity: 0 !important;
+        }
+
+        .mdc-text-field {
+            padding: 0 $padding;
+            border-radius: 0;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple,
+        .mdc-text-field--filled:not(.mdc-text-field--disabled):hover .mdc-line-ripple,
+        .mat-mdc-form-field-subscript-wrapper {
+            display: none;
+        }
     }
 
     .mat-form-field-wrapper {
         padding: 0 !important;
-    }
-
-    .mat-form-field-underline {
-        display: none;
     }
 
     button.mat-icon-button {
@@ -47,6 +54,7 @@ $padding: 24px;
 
     .dropdown-menus-bar-buttons {
         display: flex;
+        align-items: center;
         justify-content: flex-start;
         @media (max-width: 768px) {
             flex-direction: column;
@@ -57,16 +65,13 @@ $padding: 24px;
     button {
         margin-right: common.spacing(1);
         background-color: #fff;
+        padding: common.spacing(0, 2);
 
         &[aria-expanded='true'] {
             background-color: rgba(0, 0, 0, 0.075);
         }
-
-        span.mat-button-wrapper {
-            > span {
-                margin-left: common.spacing(2);
-                vertical-align: unset;
-            }
+        .mdc-button__label .fal {
+            margin-left: common.spacing(2);
         }
         &.perma-link {
             background-color: transparent;
@@ -97,14 +102,20 @@ $padding: 24px;
         input {
             width: 100%;
             background-color: #fefefe;
+            &:disabled {
+                border: 0;
+            }
         }
         button {
             margin-left: 8px;
+            span.mdc-button__label {
+                white-space: nowrap;
+            }
         }
     }
 }
 
-.mat-menu-panel {
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
     max-width: unset !important;
 }
 
@@ -135,6 +146,16 @@ $padding: 24px;
 
 .query-padding-left {
     padding-left: $padding;
+}
+
+.mat-mdc-menu-content {
+    .row {
+        white-space: nowrap;
+
+        .mat-mdc-checkbox-touch-target {
+            display: none;
+        }
+    }
 }
 
 .query-padding-right {

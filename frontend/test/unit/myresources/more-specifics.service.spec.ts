@@ -26,7 +26,7 @@ describe('MoreSpecificsService', () => {
         expect(moreSpecificsService).toBeTruthy();
     });
 
-    it('should reject invalid initialization', (done) => {
+    it('should reject when objectType is empty', (done) => {
         moreSpecificsService.getSpecifics('', '', undefined, '').subscribe({
             next: () => {},
             error: (error: any) => {
@@ -34,7 +34,9 @@ describe('MoreSpecificsService', () => {
                 done();
             },
         });
+    });
 
+    it('should reject when objectType is empty', (done) => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', '', undefined, '').subscribe({
             next: (res: any) => {},
             error: (error: any) => {
@@ -42,7 +44,9 @@ describe('MoreSpecificsService', () => {
                 done();
             },
         });
+    });
 
+    it('should reject when objectName is empty', (done) => {
         moreSpecificsService.getSpecifics('', 'OBJECT_TYPE', undefined, '').subscribe({
             next: () => {},
             error: (error: any) => {
@@ -50,15 +54,22 @@ describe('MoreSpecificsService', () => {
                 done();
             },
         });
+    });
 
+    it('should do proper request without filter', (done) => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', 'OBJECT_TYPE', 0, '').subscribe((res: any) => {
             expect(res).toEqual({ resp: 'lol' });
             done();
         });
-        const req1 = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/resources/OBJECT_TYPE/OBJECT_NAME/more-specifics.json?filter=&page=0' });
+        const req1 = httpMock.expectOne({
+            method: 'GET',
+            url: 'api/whois-internal/api/resources/OBJECT_TYPE/OBJECT_NAME/more-specifics.json?filter=&page=0',
+        });
         expect(req1.request.method).toBe('GET');
         req1.flush({ resp: 'lol' });
+    });
 
+    it('should do proper reuqest with filter', (done) => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', 'OBJECT_TYPE', 0, 'FILTER').subscribe((res: any) => {
             expect(res).toEqual({ resp: 'lol' });
             done();
@@ -69,7 +80,9 @@ describe('MoreSpecificsService', () => {
         });
         expect(req2.request.method).toBe('GET');
         req2.flush({ resp: 'lol' });
+    });
 
+    it('should proper request for page', (done) => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', 'OBJECT_TYPE', 1, 'FILTER').subscribe((res: any) => {
             expect(res).toEqual({ resp: 'lol' });
             done();

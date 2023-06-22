@@ -3,12 +3,14 @@
 }
 
 .slider-component,
-.mat-slider-horizontal,
 .flag-description {
     width: 600px;
     @media (max-width: 1025px) {
         width: 400px;
     }
+}
+.slider-component .mat-mdc-slider {
+    width: 580px;
 }
 
 .slider-labels {
