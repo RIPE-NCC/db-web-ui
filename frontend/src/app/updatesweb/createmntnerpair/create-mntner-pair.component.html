@@ -5,7 +5,7 @@
         <ul class="form-fields appeared-fields">
             <li
                 attr.data-test-id="{{ attribute.name }}"
-                *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName: ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']"
+                *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName : ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']"
             >
                 <label>{{ attribute.name }}</label>
                 <span *ngIf="attribute.$$error" class="text-error">
@@ -33,7 +33,7 @@
 
             <li
                 attr.data-test-id="{{ attribute.name }}"
-                *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName: ['nic-hdl', 'mnt-by', 'source']"
+                *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName : ['nic-hdl', 'mnt-by', 'source']"
             >
                 <label>{{ attribute.name }}</label>
                 <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">

@@ -22,7 +22,7 @@
             <p *ngIf="canBeDeleted">Please note that this will also delete the following objects:</p>
 
             <ul class="bullets">
-                <ng-container *ngFor="let ref of incomingReferences | slice: 0:MAX_REFS_TO_SHOW">
+                <ng-container *ngFor="let ref of incomingReferences | slice : 0 : MAX_REFS_TO_SHOW">
                     <li *ngIf="!isEqualTo(inputData.objectType, inputData.name, ref)">
                         <div>
                             {{ ref.objectType }} - <a rel="noopener" target="_blank" href="{{ displayUrl(ref) }}">{{ ref.primaryKey }}</a>

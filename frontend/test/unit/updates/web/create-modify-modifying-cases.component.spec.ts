@@ -516,7 +516,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
         });
     });
 
-    describe('should be able to handle escape objected with slash', () => {
+    describe('slash', () => {
         const SOURCE = 'RIPE';
         const OBJECT_TYPE = 'route';
         const NAME = '12.235.32.0%2f19AS1680';
@@ -533,6 +533,9 @@ describe('CreateModifyComponent with modifying test cases', () => {
             });
             component = fixture.componentInstance;
             fixture.detectChanges();
+        });
+
+        it('should be able to handle escape objected with slash', () => {
             httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true' }).flush({
                 objects: {
                     object: [
@@ -549,7 +552,6 @@ describe('CreateModifyComponent with modifying test cases', () => {
                     ],
                 },
             });
-            await fixture.whenStable();
         });
     });
 
@@ -632,6 +634,10 @@ describe('CreateModifyComponent with modifying test cases', () => {
                 },
             });
             await fixture.whenStable();
+        });
+
+        it('should TODO', () => {
+            expect();
         });
     });
 });

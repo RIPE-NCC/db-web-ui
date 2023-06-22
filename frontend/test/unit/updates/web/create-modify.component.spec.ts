@@ -527,9 +527,11 @@ describe('CreateModifyComponent', () => {
             });
             component = fixture.componentInstance;
             fixture.detectChanges();
+        });
+
+        it('should do proper request', () => {
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(USER_WITH_MORE_ASSOCIATED_MNT_MOCK);
             fixture.detectChanges();
-            await fixture.whenStable();
         });
 
         function triggerKeyDownEvent(element: DebugElement, which: number, key = ''): void {

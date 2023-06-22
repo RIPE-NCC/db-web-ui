@@ -45,7 +45,7 @@
 
     <section class="visible-field-form" [hidden]="!hasAdminC()">
         <ul class="form-fields appeared-fields">
-            <li *ngFor="let attribute of maintainerAttributes | filteroutAttributeByName: ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']">
+            <li *ngFor="let attribute of maintainerAttributes | filteroutAttributeByName : ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']">
                 <label>{{ attribute.name }}</label>
 
                 <span *ngIf="attribute.$$error" class="text-error">

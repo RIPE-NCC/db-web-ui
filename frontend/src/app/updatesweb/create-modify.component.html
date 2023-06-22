@@ -20,7 +20,7 @@
                 attr.data-test-id="{{ attribute.name + '$' + idx }}"
                 class="attr-{{ idx }}"
                 *ngFor="
-                    let attribute of attributes | filteroutAttributeByName: ['mnt-by', 'last-modified', 'created'] | slice: 0:nrAttributesToRender;
+                    let attribute of attributes | filteroutAttributeByName : ['mnt-by', 'last-modified', 'created'] | slice : 0 : nrAttributesToRender;
                     index as idx
                 "
             >

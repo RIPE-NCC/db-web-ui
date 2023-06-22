@@ -10,7 +10,7 @@
     <div
         *ngIf="showProgressbar"
         class="progressbar-container"
-        [ngbTooltip]="'Usage as per RIPE policies: ' + (usedPercentage | number: '1.0-0') + '%'"
+        [ngbTooltip]="'Usage as per RIPE policies: ' + (usedPercentage | number : '1.0-0') + '%'"
         placement="top"
     >
         <ngb-progressbar max="100" [value]="usedPercentage"></ngb-progressbar>
