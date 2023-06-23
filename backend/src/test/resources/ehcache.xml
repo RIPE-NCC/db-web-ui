@@ -6,7 +6,7 @@
 
     <diskStore path="java.io.tmpdir" />
 
-    <cache name="net.ripe.whois.crowdSessions"
+    <cache name="net.ripe.whois.ssoSessions"
            maxEntriesLocalHeap="10"
            maxEntriesLocalDisk="0"
            eternal="false"

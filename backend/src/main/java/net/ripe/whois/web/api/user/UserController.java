@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/user")
@@ -34,9 +34,9 @@ public class UserController {
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getMaintainersCompact(final HttpServletRequest request,
-                                                @CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken) {
+                                                @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken) {
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr());
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
 
         try {
             final List<Map<String,Object>> response = whoisInternalService
@@ -56,8 +56,8 @@ public class UserController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUserInfo(final HttpServletRequest request,
-                                      @CookieValue(value = CROWD_TOKEN_KEY, required = false) final String crowdToken) {
-        return new ResponseEntity<>(whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr()), HttpStatus.OK);
+                                      @CookieValue(value = SSO_TOKEN_KEY, required = false) final String ssoToken) {
+        return new ResponseEntity<>(whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr()), HttpStatus.OK);
     }
 }
 

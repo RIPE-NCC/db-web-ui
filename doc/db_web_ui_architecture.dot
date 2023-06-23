@@ -1,7 +1,7 @@
 digraph G {
-   
+
    rankdir=LR;
-        
+
    subgraph clusterbrowser {
         label = "Browser";
 
@@ -30,7 +30,7 @@ digraph G {
    		label = "Backends";
 		Whois;
    		WhoisInternal;
-        Crowd;
+        Sso;
    }
 
     OldAppInBrowser -> ProxyOldAppRules;
@@ -43,10 +43,10 @@ digraph G {
 	ProxyNewAppRules -> NewAppRest [label="REST",color="blue"];
 	NewAppRest -> Whois [label="REST: rest.db.ripe.net",color="blue"];
 	NewAppRest -> WhoisInternal [label="REST: rest.db.ripe.net",color="blue"];
-	NewAppRest -> Crowd [color="blue"];
+	NewAppRest -> Sso [color="blue"];
     WhoisInternal -> Whois;
-    WhoisInternal -> Crowd;
-    Whois -> Crowd;
+    WhoisInternal -> Sso;
+    Whois -> Sso;
 
 
 }

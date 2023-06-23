@@ -34,7 +34,7 @@ import java.io.IOException;
 @DirtiesContext
 public abstract class AbstractIntegrationTest {
 
-    protected static final String CROWD_COOKIE_VALUE = "aabbccdd";
+    protected static final String SSO_COOKIE_VALUE = "aabbccdd";
 
     @Autowired
     protected Environment environment;
@@ -59,9 +59,9 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("portal.url", getMockServerUrl());
         System.setProperty("portal.url.account", getMockServerUrl());
         System.setProperty("portal.url.request", getMockServerUrl());
-        System.setProperty("crowd.access.url", getMockServerUrl());
-        System.setProperty("crowd.login.url", getMockServerUrl());
-        System.setProperty("crowd.logout.url", getMockServerUrl());
+        System.setProperty("sso.access.url", getMockServerUrl());
+        System.setProperty("sso.login.url", getMockServerUrl());
+        System.setProperty("sso.logout.url", getMockServerUrl());
         System.setProperty("rest.api.ripeUrl", getMockServerUrl());
         System.setProperty("dns.checker.url", getMockServerUrl());
         System.setProperty("server.servlet.context-path", "/db-web-ui");

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class DnsCheckerControllerTest {
 
-    private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
+    private static final String SSO_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
 
     @Mock
     private WhoisInternalService whoisInternalService;
@@ -42,14 +42,14 @@ public class DnsCheckerControllerTest {
     public void setup() throws IOException {
         subject = new DnsCheckerController(whoisInternalService, dnsClient, false);
         when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(CROWD_TOKEN, "")).thenReturn(new ObjectMapper()
+        when(whoisInternalService.getUserInfo(SSO_TOKEN, "")).thenReturn(new ObjectMapper()
             .readValue(getResource("mock/user-info.json"), UserInfoResponse.class));
     }
 
     @Test
     public void success() {
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenReturn(Optional.empty());
-        final ResponseEntity<DnsCheckerController.Response> response = subject.status(request, CROWD_TOKEN,
+        final ResponseEntity<DnsCheckerController.Response> response = subject.status(request, SSO_TOKEN,
             "ns.ripe.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getBody().getMessage(), is("Server is authoritative for 1.2.3.4.in-addr.arpa"));
@@ -58,10 +58,10 @@ public class DnsCheckerControllerTest {
     }
 
     @Test
-    public void inactive_crowd_session() {
-        when(whoisInternalService.getUserInfo(CROWD_TOKEN, "")).thenThrow(new RestClientException(401, "Unauthorized"));
+    public void inactive_sso_session() {
+        when(whoisInternalService.getUserInfo(SSO_TOKEN, "")).thenThrow(new RestClientException(401, "Unauthorized"));
         assertThrows(RestClientException.class,
-            () -> subject.status(request, CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa"));
+            () -> subject.status(request, SSO_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa"));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class DnsCheckerControllerTest {
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenAnswer(invocation -> Optional.of("invalid answer over TCP"));
 
         final ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
+            subject.status(request, SSO_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("invalid answer over TCP"));
@@ -82,7 +82,7 @@ public class DnsCheckerControllerTest {
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenAnswer(invocation -> Optional.of("invalid answer over UDP"));
 
         final ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
+            subject.status(request, SSO_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("invalid answer over UDP"));
@@ -93,7 +93,7 @@ public class DnsCheckerControllerTest {
     @Test
     public void nameserver_invalid_input() {
         final ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, CROWD_TOKEN, "{invalid}", "1.2.3.4.in-addr.arpa");
+            subject.status(request, SSO_TOKEN, "{invalid}", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("Invalid characters in input"));
@@ -104,14 +104,14 @@ public class DnsCheckerControllerTest {
     @Test
     public void nameserver_invalid() {
         ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, CROWD_TOKEN, "1.2.3.4", "1.2.3.4.in-addr.arpa");
+            subject.status(request, SSO_TOKEN, "1.2.3.4", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("Could not resolve 1.2.3.4"));
         assertThat(response.getBody().getCode(), is(- 1));
         assertThat(response.getBody().getNs(), is("1.2.3.4"));
 
-        response = subject.status(request, CROWD_TOKEN, "::0", "1.2.3.4.in-addr.arpa");
+        response = subject.status(request, SSO_TOKEN, "::0", "1.2.3.4.in-addr.arpa");
         assertThat(response.getBody().getMessage(), is("Could not resolve ::0"));
     }
 
@@ -121,7 +121,7 @@ public class DnsCheckerControllerTest {
         DnsCheckerController controllerWithDnsCheckDisabled = new DnsCheckerController(whoisInternalService, dnsClient, true);
 
         ResponseEntity<DnsCheckerController.Response> response =
-            controllerWithDnsCheckDisabled.status(request, CROWD_TOKEN, "ns.example.net", "1.2.3.4.in-addr.arpa");
+            controllerWithDnsCheckDisabled.status(request, SSO_TOKEN, "ns.example.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getBody().getMessage(), is("Server is authoritative for 1.2.3.4.in-addr.arpa"));
         assertThat(response.getBody().getCode(), is(0));

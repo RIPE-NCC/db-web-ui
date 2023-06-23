@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class BaAppsControllerTest {
 
 
-    private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
+    private static final String SSO_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
 
     private static final ResourceTicketResponse.ResourceTicket RESOURCE_TICKET_AS3333 = new ResourceTicketResponse.ResourceTicket("NCC#201707030123", "2017-07-03", "AS3333");
 
@@ -61,7 +61,7 @@ public class BaAppsControllerTest {
         }};
 
         when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(CROWD_TOKEN, "")).thenReturn(userInfoResponse);
+        when(whoisInternalService.getUserInfo(SSO_TOKEN, "")).thenReturn(userInfoResponse);
         when(resourceTicketService.getTicketsForMember(123L)).thenReturn(RESOURCE_TICKET_MAP);
         when(resourceTicketService.filteredResponse("AS3333", RESOURCE_TICKET_MAP)).thenReturn(RESOURCE_TICKET_RESPONSE);
     }
@@ -69,14 +69,14 @@ public class BaAppsControllerTest {
     @Test
     public void get_tickets() throws Exception {
         mock();
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-TEST28-RIPE", "AS3333");
+        final ResponseEntity response = subject.getTickets(request, SSO_TOKEN, "ORG-TEST28-RIPE", "AS3333");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(RESOURCE_TICKET_RESPONSE));
     }
 
     @Test
     public void get_tickets_invalid_org_id() {
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "INVALID", "193.0.0.0 - 193.0.23.255");
+        final ResponseEntity response = subject.getTickets(request, SSO_TOKEN, "INVALID", "193.0.0.0 - 193.0.23.255");
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));
@@ -84,7 +84,7 @@ public class BaAppsControllerTest {
 
     @Test
     public void get_tickets_invalid_resource() {
-        final ResponseEntity response = subject.getTickets(request, CROWD_TOKEN, "ORG-TEST28-RIPE", "INVALID");
+        final ResponseEntity response = subject.getTickets(request, SSO_TOKEN, "ORG-TEST28-RIPE", "INVALID");
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));

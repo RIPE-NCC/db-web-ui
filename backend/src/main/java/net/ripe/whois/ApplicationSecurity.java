@@ -13,7 +13,7 @@ public class ApplicationSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Security handled in CrowdTokenFilter
+        // Security handled in SsoTokenFilter
         return http
             .csrf().disable()
             .authorizeRequests()

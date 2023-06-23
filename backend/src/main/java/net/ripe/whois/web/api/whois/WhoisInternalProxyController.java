@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
-import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/whois-internal")
@@ -76,14 +76,14 @@ public class WhoisInternalProxyController extends ApiController {
 
     @GetMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request,
-                                                   @CookieValue(value = CROWD_TOKEN_KEY, required=false) final String crowdToken) {
+                                                   @CookieValue(value = SSO_TOKEN_KEY, required=false) final String ssoToken) {
 
-        if (Strings.isNullOrEmpty(crowdToken)){
+        if (Strings.isNullOrEmpty(ssoToken)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         try{
-            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr()));
+            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr()));
         } catch (RestClientException re){
             return new ResponseEntity<>(re.getMessage(), HttpStatus.valueOf(re.getStatus()));
         }

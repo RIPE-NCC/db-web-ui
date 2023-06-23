@@ -37,12 +37,12 @@ public class AngularConstantsController {
     private String ripeSource;
     @Value("${frontend.matomo.id:}")
     private String frontendMatomoId;
-    @Value("${crowd.login.url}")
-    private String crowdLoginUrl;
-    @Value("${crowd.logout.url}")
-    private String crowdLogoutUrl;
-    @Value("${crowd.access.url}")
-    private String crowdAccessUrl;
+    @Value("${sso.login.url}")
+    private String ssoLoginUrl;
+    @Value("${sso.logout.url}")
+    private String ssoLogoutUrl;
+    @Value("${sso.access.url}")
+    private String ssoAccessUrl;
     @Value("${portal.url}")
     private String portalUrl;
     @Value("${portal.url.account}")
@@ -101,9 +101,9 @@ public class AngularConstantsController {
         final AppConstants constants = new AppConstants();
         constants.setEnvironment(environment);
         constants.setSource(ripeSource);
-        constants.setLoginUrl(crowdLoginUrl);
-        constants.setAccessUrl(crowdAccessUrl);
-        constants.setLogoutUrl(crowdLogoutUrl);
+        constants.setLoginUrl(ssoLoginUrl);
+        constants.setAccessUrl(ssoAccessUrl);
+        constants.setLogoutUrl(ssoLogoutUrl);
         constants.setPortalUrl(portalUrl);
         constants.setPortalUrlAccount(portalUrlAccount);
         constants.setPortalUrlRequest(portalUrlRequest);

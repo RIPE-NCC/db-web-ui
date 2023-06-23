@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @Service
 public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceBase {
@@ -117,13 +117,13 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
                 String.class), LOGGER);
     }
 
-    public UserInfoResponse getUserInfo(String crowdToken, String clientIp) {
-        if (StringUtils.isEmpty(crowdToken)) {
+    public UserInfoResponse getUserInfo(final String ssoToken, final String clientIp) {
+        if (StringUtils.isEmpty(ssoToken)) {
             throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Cookie", CROWD_TOKEN_KEY + "=" + crowdToken);
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Cookie", SSO_TOKEN_KEY + "=" + ssoToken);
         httpHeaders.set(API_KEY_HEADER, apiKey);
         final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", "clientIp=" + clientIp, "", apiUrl);
         LOGGER.info("Calling Whois InternalService to retrieve user info {}", uri);
@@ -139,13 +139,13 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         }
     }
 
-    public boolean getActiveToken(String crowdToken, String clientIp) {
-        if (StringUtils.isEmpty(crowdToken)) {
+    public boolean getActiveToken(final String ssoToken, final String clientIp) {
+        if (StringUtils.isEmpty(ssoToken)) {
             throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Cookie", CROWD_TOKEN_KEY + "=" + crowdToken);
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Cookie", SSO_TOKEN_KEY + "=" + ssoToken);
         httpHeaders.add(API_KEY_HEADER, apiKey);
         final URI uri = whoisInternalProxy.composeProxyUrl("api/user/active", "clientIp=" + clientIp, "", apiUrl);
         LOGGER.info("Calling Whois InternalService to retrieve user active {}", uri);

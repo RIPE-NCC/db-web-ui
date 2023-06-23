@@ -22,8 +22,8 @@ export class AuthenticationGuard implements CanActivate {
 
     private redirectToLogin(originalPath: string) {
         const url = window.location.origin + `/db-web-ui${originalPath}`;
-        const crowdUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
-        console.info('Force crowd login:' + crowdUrl);
-        window.location.href = crowdUrl;
+        const ssoUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
+        console.info('Force SSO login:' + ssoUrl);
+        window.location.href = ssoUrl;
     }
 }
