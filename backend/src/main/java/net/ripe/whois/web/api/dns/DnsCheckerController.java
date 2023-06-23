@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/dns")
@@ -50,11 +50,11 @@ public class DnsCheckerController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<Response> status(final HttpServletRequest request,
-                                           @CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken,
+                                           @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken,
                                            @RequestParam(value = "ns") final String inNs,
                                            @RequestParam(value = "record") final String inRecord) {
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr());
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
         LOGGER.info("DNS check for user {}", userInfoResponse.user.username);
         // tidy up a bit
         final String ns = inNs.trim();

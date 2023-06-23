@@ -174,7 +174,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
                         "</whois-resources>", MediaType.APPLICATION_XML, HttpStatus.OK.value());
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=" + CROWD_COOKIE_VALUE);
+        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=" + SSO_COOKIE_VALUE);
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
 
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners", HttpMethod.GET, requestEntity, String.class);
@@ -193,7 +193,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
     public void get_maintainers_invalid_cookie() {
         mock("/api/user/info?clientIp=127.0.0.1", "", MediaType.APPLICATION_JSON, HttpStatus.UNAUTHORIZED.value());
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=invalid");
+        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=invalid");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
 
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners",
@@ -210,7 +210,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
         mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=" + CROWD_COOKIE_VALUE);
+        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=" + SSO_COOKIE_VALUE);
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", HttpMethod.GET, requestEntity, String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -226,7 +226,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
         mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
+        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=aabbccdd");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", HttpMethod.GET, requestEntity, String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

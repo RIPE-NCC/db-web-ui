@@ -34,9 +34,9 @@ export class SessionInfoService {
 
     private static propagateCurrentCookieStatus() {
         const userWasLoggedIn = localStorage.getItem(hasCookie) !== null;
-        const crowdRipeHintCookieExist = document.cookie.includes('crowd.ripe.hint');
+        const ssoRipeHintCookieExist = document.cookie.includes('crowd.ripe.hint');
         // user was logged and the crowd.ripe.hint cookie doesn't exist, so user is logged out
-        if (userWasLoggedIn && !crowdRipeHintCookieExist) {
+        if (userWasLoggedIn && !ssoRipeHintCookieExist) {
             localStorage.removeItem(hasCookie);
             localStorage.setItem(localStorageSessionExpiredKey, 'TTL expired');
         }

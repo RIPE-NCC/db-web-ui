@@ -232,7 +232,7 @@ describe('SelectController', () => {
         httpMock.verify();
     });
 
-    it('should navigate to crowd if currently logged out', () => {
+    it('should navigate to sso if currently logged out', () => {
         componentFixture.detectChanges();
         httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush('', { statusText: 'error', status: 401 });
         expect(component.loggedIn).toBeUndefined();
@@ -242,7 +242,7 @@ describe('SelectController', () => {
         component.navigateToCreate();
 
         expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, component.selected.objectType]);
-        // Note that the  error-interceptor is responsible for flagging redirect to crowd
+        // Note that the  error-interceptor is responsible for flagging redirect to sso
     });
 
     it('should navigate to create screen when logged in', () => {

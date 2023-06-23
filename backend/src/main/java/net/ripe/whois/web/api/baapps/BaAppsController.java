@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 
 @RestController
@@ -47,27 +47,27 @@ public class BaAppsController {
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}/{prefix:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTicketsPrefix(final HttpServletRequest request,
-                                           @CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken,
+                                           @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken,
                                            @PathVariable(name = "orgId") String orgIdIn,
                                            @PathVariable(name = "resource") String resourceIn,
                                            @PathVariable(name = "prefix") String prefix) {
-        return getTickets(request, crowdToken, orgIdIn, resourceIn + "/" + prefix);
+        return getTickets(request, ssoToken, orgIdIn, resourceIn + "/" + prefix);
     }
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTickets(final HttpServletRequest request,
-                                     @CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken,
+                                     @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken,
                                      @PathVariable(name = "orgId") String orgId,
                                      @PathVariable(name = "resource") String resource) {
 
-        if (Strings.isNullOrEmpty(crowdToken)){
+        if (Strings.isNullOrEmpty(ssoToken)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         try {
             validateOrgId(orgId);
             validateResource(resource);
-            UserInfoResponse userInfo = whoisInternalService.getUserInfo(crowdToken, request.getRemoteAddr());
+            UserInfoResponse userInfo = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
             // orgObjectId can be null in FYI pseudo-LIRs objects
             final Optional<UserInfoResponse.Member> member = userInfo.members.stream()
                 .filter(searchMember -> searchMember.orgObjectId != null && searchMember.orgObjectId.equals(orgId))

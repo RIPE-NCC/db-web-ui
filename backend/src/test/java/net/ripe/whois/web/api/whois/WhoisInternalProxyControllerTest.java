@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class WhoisInternalProxyControllerTest {
 
-    private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
+    private static final String SSO_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
 
     @Mock
     private HttpServletRequest request;
@@ -42,10 +42,10 @@ public class WhoisInternalProxyControllerTest {
                 UserInfoResponse.class);
 
         when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(CROWD_TOKEN, "")).thenReturn(mockedUserInfoData);
+        when(whoisInternalService.getUserInfo(SSO_TOKEN, "")).thenReturn(mockedUserInfoData);
 
-        ResponseEntity<?> response = subject.whoisInternalUserInfo(request, CROWD_TOKEN);
-        verify(whoisInternalService, Mockito.times(1)).getUserInfo(CROWD_TOKEN, "");
+        ResponseEntity<?> response = subject.whoisInternalUserInfo(request, SSO_TOKEN);
+        verify(whoisInternalService, Mockito.times(1)).getUserInfo(SSO_TOKEN, "");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockedUserInfoData, response.getBody());
     }

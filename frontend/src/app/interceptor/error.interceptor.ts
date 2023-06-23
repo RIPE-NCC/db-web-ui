@@ -57,9 +57,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     private redirectToLogin() {
         const url = location.href;
-        const crowdUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
-        console.info('Force crowd login:' + crowdUrl);
-        window.location.href = crowdUrl;
+        const ssoUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
+        console.info('Force SSO login:' + ssoUrl);
+        window.location.href = ssoUrl;
     }
 
     private isServerError(status: number) {

@@ -49,14 +49,14 @@ public class Application implements AsyncConfigurer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private final Environment environment;
-    private final CrowdTokenFilter crowdTokenFilter;
+    private final SsoTokenFilter ssoTokenFilter;
     private final CustomCacheFilter cacheFilter;
     private final RemoteAddressFilter remoteAddressFilter;
 
     @Autowired
-    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CustomCacheFilter cacheFilter, RemoteAddressFilter remoteAddressFilter) {
+    public Application(final Environment environment, final SsoTokenFilter ssoTokenFilter, final CustomCacheFilter cacheFilter, RemoteAddressFilter remoteAddressFilter) {
         this.environment = environment;
-        this.crowdTokenFilter = crowdTokenFilter;
+        this.ssoTokenFilter = ssoTokenFilter;
         this.cacheFilter = cacheFilter;
         this.remoteAddressFilter = remoteAddressFilter;
     }
@@ -110,8 +110,8 @@ public class Application implements AsyncConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean crowdFilter() {
-        return getFilterRegistrationBeanFor(crowdTokenFilter);
+    public FilterRegistrationBean ssoFilter() {
+        return getFilterRegistrationBeanFor(ssoTokenFilter);
     }
 
     @Bean
@@ -140,7 +140,7 @@ public class Application implements AsyncConfigurer {
     public EhCacheManagerFactoryBean ehCacheCacheManager() {
         EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
         cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
-        cmfb.setCacheManagerName("net.ripe.whois.crowdSessions");
+        cmfb.setCacheManagerName("net.ripe.whois.ssoSessions");
         cmfb.setShared(true);
         return cmfb;
     }

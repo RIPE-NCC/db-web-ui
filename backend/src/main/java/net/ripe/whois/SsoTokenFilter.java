@@ -1,7 +1,7 @@
 package net.ripe.whois;
 
 import net.ripe.db.whois.api.rest.client.RestClientException;
-import net.ripe.whois.services.crowd.CachingCrowdSessionChecker;
+import net.ripe.whois.services.CachingSessionChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CrowdTokenFilter implements Filter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CrowdTokenFilter.class);
+public class SsoTokenFilter implements Filter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SsoTokenFilter.class);
 
-    public static final String CROWD_TOKEN_KEY = "crowd.token_key";
+    public static final String SSO_TOKEN_KEY = "crowd.token_key";
     private static final String[] UNPROTECTED_URLS = {
             ".*/alerts.component.html",
             ".*/actuator/health/readiness",
@@ -51,12 +51,12 @@ public class CrowdTokenFilter implements Filter {
             ".*/ng/.*.html",
     };
 
-    private final String crowdLoginUrl;
-    private final CachingCrowdSessionChecker sessionChecker;
+    private final String ssoLoginUrl;
+    private final CachingSessionChecker sessionChecker;
 
     @Autowired
-    public CrowdTokenFilter(@Value("${crowd.login.url}") final String crowdLoginUrl, final CachingCrowdSessionChecker sessionChecker) {
-        this.crowdLoginUrl = crowdLoginUrl;
+    public SsoTokenFilter(@Value("${sso.login.url}") final String ssoLoginUrl, final CachingSessionChecker sessionChecker) {
+        this.ssoLoginUrl = ssoLoginUrl;
         this.sessionChecker = sessionChecker;
     }
 
@@ -72,7 +72,7 @@ public class CrowdTokenFilter implements Filter {
 
         boolean shouldFilter;
         try {
-            shouldFilter = isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request);
+            shouldFilter = isStaticResource(request) || isUnprotectedUrl(request) || hasSsoCookie(request);
         } catch (RestClientException e) {
             // whoisInternal is not available, we can't redirect to login page as it loops
             response.setHeader(HttpHeaders.LOCATION, generateErrorLocationHeader(request));
@@ -104,7 +104,7 @@ public class CrowdTokenFilter implements Filter {
         return url.toString();
     }
 
-    private boolean isStaticResource(HttpServletRequest request) {
+    private boolean isStaticResource(final HttpServletRequest request) {
         return (request.getRequestURI().endsWith(".css") ||
                 request.getRequestURI().endsWith(".js") ||
                 request.getRequestURI().endsWith(".json") ||
@@ -115,7 +115,7 @@ public class CrowdTokenFilter implements Filter {
                 request.getRequestURI().endsWith(".gif"));
     }
 
-    private boolean isUnprotectedUrl(HttpServletRequest request) {
+    private boolean isUnprotectedUrl(final HttpServletRequest request) {
         for (final String urlPattern : UNPROTECTED_URLS) {
             if (request.getRequestURI().matches(urlPattern)) {
                 return true;
@@ -124,10 +124,10 @@ public class CrowdTokenFilter implements Filter {
         return false;
     }
 
-    private boolean hasCrowdCookie(HttpServletRequest request) {
+    private boolean hasSsoCookie(final HttpServletRequest request) {
         if (request.getCookies() != null) {
             for (Cookie c : request.getCookies()) {
-                if (CROWD_TOKEN_KEY.equals(c.getName())) {
+                if (SSO_TOKEN_KEY.equals(c.getName())) {
                     return sessionChecker.hasActiveToken(c.getValue(), request.getRemoteAddr());
                 }
             }
@@ -146,7 +146,7 @@ public class CrowdTokenFilter implements Filter {
     }
 
     private String generateLocationHeader(final HttpServletRequest request) {
-        return String.format("%s?originalUrl=%s", crowdLoginUrl, encodeQueryParam(getOriginalUrl(request)));
+        return String.format("%s?originalUrl=%s", ssoLoginUrl, encodeQueryParam(getOriginalUrl(request)));
     }
 
     private String getOriginalUrl(final HttpServletRequest request) {
