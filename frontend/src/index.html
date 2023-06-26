@@ -32,6 +32,26 @@
         <script type="text/javascript" src="https://www.ripe.net/jquery.js"></script>
         <!-- END JQuery JavaScript placeholder here -->
         <script type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
+        <!-- Matomo -->
+        <script>
+            var _paq = (window._paq = window._paq || []);
+            _paq.push();
+            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function () {
+                var u = 'https://matomo.ripe.net/';
+                _paq.push(['setTrackerUrl', u + 'matomo.php']);
+                _paq.push(['setSiteId', '38']);
+                var d = document,
+                    g = d.createElement('script'),
+                    s = d.getElementsByTagName('script')[0];
+                g.async = true;
+                g.src = u + 'matomo.js';
+                s.parentNode.insertBefore(g, s);
+            })();
+        </script>
+        <!-- End Matomo Code -->
     </head>
     <body id="visual-portal-wrapper" class="mat-typography" dir="ltr">
         <noscript>
@@ -82,21 +102,5 @@
             }
         </script>
         <!-- End Usersnap widget -->
-        <!-- Matomo Tag Manager -->
-        <script type="text/javascript">
-            function loadMatomo(matomoId) {
-                var _mtm = _mtm || [];
-                _mtm.push({ 'mtm.startTime': new Date().getTime(), event: 'mtm.Start' });
-                var d = document,
-                    g = d.createElement('script'),
-                    s = d.getElementsByTagName('script')[0];
-                g.type = 'text/javascript';
-                g.async = true;
-                g.defer = true;
-                g.src = 'https://matomo.ripe.net/js/container_' + matomoId + '.js';
-                s.parentNode.insertBefore(g, s);
-            }
-        </script>
-        <!-- End Matomo Tag Manager -->
     </body>
 </html>
