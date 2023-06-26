@@ -27,21 +27,6 @@
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <id>npm clear cache</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>cache</argument>
-                                <argument>clean</argument>
-                                <argument>--force</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>npm install (initialize)</id>
                         <goals>
                             <goal>exec</goal>
