@@ -673,9 +673,18 @@ export class WhoisMetaService {
                 ' source name up to 9-character length.',
         },
         organisationName: {
-            syntax: `A list of 1 to 30 words separated by white space. A word is made up of letters, digits and the following characters:<br>
+            syntax: `A list of 1 to 30 words separated by white space.<br>
+            A word is made up of ASCII alphanumeric characters and additionally:<br>
              <span class='fraction'>][)(._"*@,&:!'\`+/-</span><br>
             A word may have up to 64 characters and is not case sensitive. Each word can have any combination of the above characters with no restriction on the start or end of a word.`,
+        },
+        personRole: {
+            syntax: `It should contain 2 to 10 words.<br>
+              A word is made up of ASCII alphanumeric characters and additionally:<br>
+              <span class='fraction'>.\`'_-</span><br>
+              The first word should begin with a letter.<br>
+              At least one other word should also begin with a letter.<br>
+              Max 64 characters can be used in each word.`,
         },
         organisation: {
             syntax: `The \"ORG-\" string followed by 2 to 4 characters, followed by up to 5 digits followed by a source specification. The first digit must not be \"0\". Source specification starts with \"-\" followed by source name up to 9-character length.`,
@@ -1280,7 +1289,7 @@ export class WhoisMetaService {
         person: {
             description: 'Specifies the full name of an administrative, technical or zone contact person for other objects in the database.',
             short: 'Specifies the full name of a contact, e.g. John Smith.',
-            syntax: '',
+            syntax: this._shared.personRole.syntax,
         },
         phone: {
             description: 'Specifies a telephone number of the contact.',
@@ -1331,7 +1340,7 @@ export class WhoisMetaService {
         },
         role: {
             description: 'Specifies the full name of a role entity, e.g. RIPE DBM.',
-            syntax: this._shared.organisationName.syntax,
+            syntax: this._shared.personRole.syntax,
         },
         route: {
             description:
