@@ -19,7 +19,7 @@ export interface IModalAuthentication {
     source: string;
 }
 
-// https://apps.db.ripe.net/docs/20.Appendices/04-Appendix-D--Route-Object-Creation-Flowchart.html
+// https://apps.db.ripe.net/docs/Appendices/Appendix-D--Route-Object-Creation-Flowchart.html
 @Component({
     selector: 'modal-authentication',
     templateUrl: './modal-authentication.component.html',

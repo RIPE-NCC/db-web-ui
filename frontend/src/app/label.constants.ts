@@ -43,7 +43,7 @@ export const Labels = {
     'query.optionRelatedObjects.title':
         'Do not return personal data and other related objects for each object in the query results. There are daily limits on personal data objects returned. You will be blocked if you exceed the limits.',
     'query.listOfAllQueryFlagsLabel.text':
-        'For a full list of query flags please see the <a href="/docs/13.Types-of-Queries"' +
+        'For a full list of query flags please see the <a href="/docs/Types-of-Queries"' +
         ' target=\'_blank\'>documentation <em class="fal fa-external-link"></em></a>.',
 
     'resource.createAssignment.text': 'Create assignment',

@@ -140,7 +140,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     public void search_specific_docs() {
         final ResponseEntity<String> response =
             restTemplate.exchange(
-                getServerUrl() + "/docs/04.RPSL-Object-Types/",
+                getServerUrl() + "/docs/RPSL-Object-Types/",
                 HttpMethod.GET,
                 null,
                 String.class

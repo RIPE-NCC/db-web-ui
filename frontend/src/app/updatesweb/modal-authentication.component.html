@@ -53,7 +53,7 @@
                         &nbsp;
                         <label for="associate"
                             >Also authorise my RIPE NCC Access account for this maintainer.
-                            <a href="../docs/10.Authorisation/02-Using-the-Authorisation-Methods.html" rel="noopener" target="_blank">Learn more.</a></label
+                            <a href="../docs/Authorisation/Using-the-Authorisation-Methods" rel="noopener" target="_blank">Learn more.</a></label
                         >
                     </li>
                 </ul>
@@ -69,7 +69,7 @@
                     <span *ngIf="!last">,</span>
                 </span>
                 <br />
-                <a href="/../docs/10.Authorisation/01-Authorisation-Model.html#solving-authentication-problems" taget="_blank">Learn more.</a>
+                <a href="/../docs/Authorisation/Authorisation-Model#solving-authentication-problems" taget="_blank">Learn more.</a>
                 <br />
                 <a class="forgot-password" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Recover Maintainer Access</a>
             </div>
@@ -79,7 +79,7 @@
             <div style="float: left" *ngIf="allowForceDelete()">
                 <a [routerLink]="['/forceDelete', resolve.source, resolve.objectType, resolve.objectName]" (click)="cancel('forceDelete')">Force delete</a> this
                 object?
-                <a href="/../docs/10.Authorisation/14-Force-Delete-Functionality.html" target="_blank">Learn More.</a>
+                <a href="/../docs/Authorisation/Force-Delete-Functionality" target="_blank">Learn More.</a>
             </div>
             <div *ngIf="resolve.mntners.length === 0">
                 <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
