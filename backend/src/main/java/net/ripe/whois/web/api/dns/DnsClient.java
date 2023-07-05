@@ -24,7 +24,7 @@ public class DnsClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DnsClient.class);
 
-    private static final String LEARN_MORE_MESSAGE = "<a href=https://apps.db.ripe.net/docs/19.Database-Support/04-Configuring-Reverse-DNS.html\" target=\"_blank\">Learn More</a>";
+    private static final String LEARN_MORE_MESSAGE = "<a href=https://apps.db.ripe.net/docs/Database-Support/Configuring-Reverse-DNS\" target=\"_blank\">Learn More</a>";
 
     private final int port;
 
