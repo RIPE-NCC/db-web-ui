@@ -248,6 +248,10 @@ export class WebupdatesPage {
         return this;
     }
 
+    expectErrorMessageToContain(text: string) {
+        cy.get('.banner-text', { includeShadowDom: true }).should('contain', text);
+    }
+
     expectValueInField(fieldName: string, text: string, index: number = 0) {
         cy.get(`#createForm [name^='${fieldName}']`).eq(index).should('contain.value', text);
         return this;
@@ -305,6 +309,15 @@ export class WebupdatesPage {
 
     expectErrorMessage(text: string) {
         cy.get('app-banner').shadow().find('.app-banner.level-alarm').should('contain.text', text);
+        return this;
+    }
+
+    expectUserLoggedImage(exist: boolean) {
+        cy.get('user-login')
+            .should('exist')
+            .shadow()
+            .find('image[id="user-img"]')
+            .should(exist ? 'exist' : 'not.exist');
         return this;
     }
 }
