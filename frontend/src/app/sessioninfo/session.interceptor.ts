@@ -20,7 +20,8 @@ export class SessionInterceptor implements HttpInterceptor {
                 }
             }),
             catchError((err: HttpErrorResponse) => {
-                if (err.status == 401) {
+                //we receive a 401 from user info or we receive a 401 that expires the cookie
+                if (err.status == 401 && (err.url.includes('/whois-internal/api/user/info') || !document.cookie.includes('crowd.ripe.hint'))) {
                     this.sessionInfoService.authenticationFailure();
                 }
                 return throwError(() => err);
