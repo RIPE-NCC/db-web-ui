@@ -65,7 +65,6 @@ describe('AppComponent', () => {
     });
 
     it('should set properties to app-switcher', () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(1025);
         fixture.detectChanges();
         const appSwitch = fixture.debugElement.query(By.css('app-switcher'));
         expect(appSwitch.properties.appenv).toBe('pre');
@@ -73,52 +72,11 @@ describe('AppComponent', () => {
     });
 
     it('should set properties to user-login', () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(1025);
         fixture.detectChanges();
         const appSwitch = fixture.debugElement.query(By.css('user-login'));
         expect(appSwitch.properties.accessurl).toBe('https://access.prepdev.ripe.net/');
         expect(appSwitch.properties.logoutredirecturl).toBe(
             'https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query',
         );
-    });
-
-    it("shouldn't open menu on init for mobile screen size", () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(1024);
-        fixture.detectChanges();
-        component.mobileOrDesktopView();
-        expect(component.isOpenMenu).toBeFalsy();
-    });
-
-    it('should open menu on init for desktop screen size', () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(1025);
-        fixture.detectChanges();
-        component.mobileOrDesktopView();
-        expect(component.isOpenMenu).toBeTruthy();
-    });
-
-    it('should show mobile-menu for mobile screen size', () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(1024);
-        fixture.detectChanges();
-        component.mobileOrDesktopView();
-        expect(component.isDesktopView).toBeFalsy();
-        const mobileMenuElement = fixture.debugElement.nativeElement.querySelector('mobile-menu');
-        expect(mobileMenuElement).not.toBeNull();
-        const appSwitcherElement = fixture.debugElement.nativeElement.querySelector('app-switcher');
-        expect(appSwitcherElement).toBeNull();
-        const userLoginElement = fixture.debugElement.nativeElement.querySelector('user-login');
-        expect(userLoginElement).toBeNull();
-    });
-
-    it('should show app-switcher and user-login for desktop screen size', () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(1025);
-        fixture.detectChanges();
-        component.mobileOrDesktopView();
-        expect(component.isDesktopView).toBeTruthy();
-        const mobileMenuElement = fixture.debugElement.nativeElement.querySelector('mobile-menu');
-        expect(mobileMenuElement).toBeNull();
-        const appSwitcherElement = fixture.debugElement.nativeElement.querySelector('app-switcher');
-        expect(appSwitcherElement).not.toBeNull();
-        const userLoginElement = fixture.debugElement.nativeElement.querySelector('user-login');
-        expect(userLoginElement).not.toBeNull();
     });
 });
