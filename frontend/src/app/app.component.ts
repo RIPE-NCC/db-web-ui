@@ -12,7 +12,7 @@ import { ReleaseNotificationService } from './shared/release-notification.servic
 export class AppComponent implements OnInit {
     // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
     public isDesktopView: boolean;
-    public isOpenMenu: boolean;
+    public isOpenMenu: boolean = true;
     public innerWidth: number;
     public showSessionExpireBanner: boolean = false;
     public showUserLoginIcon: boolean = false;
@@ -37,7 +37,6 @@ export class AppComponent implements OnInit {
 
     public ngOnInit() {
         this.mobileOrDesktopView();
-        this.isOpenMenu = this.isDesktopView;
         this.releaseNotificationService.startPolling();
     }
 
@@ -54,10 +53,6 @@ export class AppComponent implements OnInit {
         this.mobileOrDesktopView();
     }
 
-    open = (event: any) => {
-        this.isOpenMenu = event.detail.open;
-    };
-
     public mobileOrDesktopView() {
         this.innerWidth = this.getInnerWidth();
         this.isDesktopView = this.innerWidth >= this.properties.BREAKPOINTS_MOBILE_VIEW;
@@ -67,6 +62,10 @@ export class AppComponent implements OnInit {
     public getInnerWidth() {
         return window.innerWidth;
     }
+
+    open = (event: any) => {
+        this.isOpenMenu = event.detail.open;
+    };
 
     public isQueryPage(): boolean {
         return this.location.path().startsWith('/query');

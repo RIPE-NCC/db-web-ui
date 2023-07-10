@@ -24,7 +24,7 @@ export class MenuPage {
             .shadow()
             .find(`#menu menu-item.top-level`)
             .shadow()
-            .find(`.item.menu-level-1:contains('${parent}') + .menu-level-1 menu-item`)
+            .find(`.item.menu-level-1:contains('${parent}') + .menu-level-1 .item.isChild`)
             .should('have.length', size);
         return this;
     }
@@ -34,9 +34,7 @@ export class MenuPage {
             .shadow()
             .find(`#menu menu-item.top-level`)
             .shadow()
-            .find(`.item.menu-level-1:contains('${parent}') + .menu-level-1 menu-item:nth(${index})`)
-            .shadow()
-            .find('p')
+            .find(`.item.menu-level-1:contains('${parent}') + .menu-level-1 .item.isChild:nth(${index}) p`)
             .should('contain.text', title);
         return this;
     }

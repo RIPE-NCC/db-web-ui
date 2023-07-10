@@ -46,21 +46,11 @@
  * Zone JS is required by default for Angular itself.
  */
 import '@angular/localize/init';
-import {
-    AppBanner,
-    AppCookieConsent,
-    AppNavBar,
-    AppSwitcher,
-    LegalAccordion,
-    LiveChat,
-    MobileMenu,
-    RipeHeader,
-    UserLogin,
-} from '@technical-design/ripe-app-webcomponents';
+import { AppBanner, AppCookieConsent, AppNavBar, AppSwitcher, LegalAccordion, LiveChat, RipeHeader, UserLogin } from '@technical-design/ripe-app-webcomponents';
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
 import 'zone.js'; // Included with Angular CLI.
 
 // eslint-disable-next-line no-unused-vars
-const components = [AppBanner, AppNavBar, AppCookieConsent, AppSwitcher, RipeHeader, UserLogin, LegalAccordion, LiveChat, MobileMenu];
+const components = [AppBanner, AppNavBar, AppCookieConsent, AppSwitcher, RipeHeader, UserLogin, LegalAccordion, LiveChat];

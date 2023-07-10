@@ -1,6 +1,6 @@
 <!--TODO remove div class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
 <div class="usprivacy">
-    <ripe-header (ripe-header-menu-toggle)="open($event)" [open]="isOpenMenu">
+    <ripe-header (ripe-header-menu-toggle)="open($event)">
         <svg
             *ngIf="!properties.isTestEnv() && !properties.isTrainingEnv() && !properties.isRcEnv()"
             slot="logo-app"
@@ -709,27 +709,14 @@
                 />
             </g>
         </svg>
-        <mobile-menu
+        <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
+        <user-login *ngIf="showUserLoginIcon" class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+        <user-login
+            *ngIf="!showUserLoginIcon"
             class="web-component"
-            *ngIf="!isDesktopView; else desktopMenu"
-            [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
             [accessurl]="properties.LOGIN_URL"
-        ></mobile-menu>
-        <ng-template #desktopMenu>
-            <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
-            <user-login
-                *ngIf="showUserLoginIcon"
-                class="web-component"
-                [accessurl]="properties.LOGIN_URL"
-                [logoutredirecturl]="properties.LOGOUT_URL"
-            ></user-login>
-            <user-login
-                *ngIf="!showUserLoginIcon"
-                class="web-component"
-                [accessurl]="properties.LOGIN_URL"
-                [logoutredirecturl]="properties.LOGOUT_URL"
-            ></user-login>
-        </ng-template>
+            [logoutredirecturl]="properties.LOGOUT_URL"
+        ></user-login>
     </ripe-header>
 </div>
 <main id="app-grid">
@@ -748,8 +735,8 @@
                 [unsafehtml]="'msg.sessionTimeout.text' | label"
             ></app-banner>
             <alert-banners></alert-banners>
-            <app-cookie-consent></app-cookie-consent>
         </section>
+        <app-cookie-consent></app-cookie-consent>
         <section id="app-workspace" [ngClass]="{ 'with-padding': !isQueryPage() }">
             <div id="org-drop-down" *ngIf="!isQueryPage()">
                 <org-drop-down></org-drop-down>

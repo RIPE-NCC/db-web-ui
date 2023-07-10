@@ -37,6 +37,7 @@
             var _paq = (window._paq = window._paq || []);
             _paq.push();
             /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+            _paq.push(['requireCookieConsent']);
             _paq.push(['trackPageView']);
             _paq.push(['enableLinkTracking']);
             (function () {
@@ -79,6 +80,9 @@
                 window.onUsersnapCXLoad = function (api) {
                     api.init({
                         button: null,
+                        // Deactivate localStorage (Cookies)
+                        mountNode: document.getElementById('widgetContainer'),
+                        useLocalStorage: false,
                     });
                     api.on('open', function (event) {
                         event.api.setValue('custom', 'db-web-ui-' + buildTag);

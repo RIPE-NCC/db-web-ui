@@ -83,7 +83,7 @@
         "@ng-select/ng-select": "10.0.4",
         "@ngx-loading-bar/core": "6.0.2",
         "@ngx-loading-bar/http-client": "6.0.2",
-        "@technical-design/ripe-app-webcomponents": "3.3.0",
+        "@technical-design/ripe-app-webcomponents": "4.0.4",
         "@types/crypto-js": "4.1.1",
         "angulartics": "1.6.0",
         "angulartics-piwik": "1.0.6",
