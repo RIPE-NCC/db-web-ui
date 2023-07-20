@@ -209,6 +209,12 @@ User Interface Guidelines
 The Technical Design circle has published a storybook of user interface elements that we should use as a style guide:
 https://storybook.ripe.net
 
+Cookie Compliance Project
+-------------------------
+If you add or remove a cookie to the application, please notify legal-request@ripe.net.
+
+Do not store personal information in local storage.
+
 Deployment
 ----------
 Generally, we only deploy changes to production from the master branch, from a tag on a specific commit.
