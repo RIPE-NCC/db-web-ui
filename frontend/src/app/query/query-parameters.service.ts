@@ -102,7 +102,7 @@ export class QueryParametersService {
         const templateTerms: ITemplateTerm[] = [];
         let countTemplateQueries: number = 0;
         let countVerboseQueries: number = 0;
-        terms.map((term: string, index: number) => {
+        terms.forEach((term: string, index: number) => {
             if (allowedTemplateQueries.indexOf(term) > -1) {
                 _.includes(templateQueries, term) ? countTemplateQueries++ : countVerboseQueries++;
                 templateTerms.push({ templateType: terms[index], objectType: terms[index + 1] });

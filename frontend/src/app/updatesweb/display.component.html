@@ -1,7 +1,7 @@
 <h1>{{ objectType }} &quot;{{ objectName }}&quot;</h1>
 
 <section class="inner-container">
-    <table class="success-fields td-20 grey" *ngIf="!isDiff()">
+    <table class="success-fields td-20 grey" aria-describedby="differences" *ngIf="!isDiff()">
         <tr *ngFor="let attribute of attributes">
             <td>
                 <label>{{ attribute.name }}:</label>

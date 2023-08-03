@@ -1,7 +1,7 @@
 <h1>{{ objectType }} with primary key &quot;{{ objectTypeName }}&quot;</h1>
 
 <section class="inner-container">
-    <table class="success-fields td-20 grey">
+    <table class="success-fields td-20 grey" aria-describedby="object type">
         <tr *ngFor="let attribute of objectTypeAttributes">
             <td>
                 <label>{{ attribute.name }}:</label>
@@ -18,7 +18,7 @@
 
     <h1>mntner with primary key &quot;{{ mntnerName }}&quot;</h1>
 
-    <table class="success-fields td-20 grey">
+    <table class="success-fields td-20 grey" aria-describedby="mntner">
         <tr *ngFor="let attribute of mntnerAttributes">
             <td>
                 <label>{{ attribute.name }}:</label>

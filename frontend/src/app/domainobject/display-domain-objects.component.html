@@ -1,5 +1,5 @@
 <section class="inner-container">
-    <table class="success-fields grey" *ngFor="let object of objects | slice : 0 : 4">
+    <table class="success-fields grey" *ngFor="let object of objects | slice : 0 : 4" aria-describedby="display domain objects">
         <tr *ngFor="let attribute of object.attributes.attribute">
             <td class="col-sm-3">
                 <label>{{ attribute.name }}:</label>

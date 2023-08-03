@@ -1,6 +1,6 @@
 <div [hidden]="modalInProgress">
     <section *ngFor="let object of deletedObjects" class="inner-container">
-        <table class="success-fields td-20 grey">
+        <table class="success-fields td-20 grey" aria-describedby="table of deleting">
             <tr *ngFor="let attribute of object.attributes.attribute">
                 <td>
                     <label>{{ attribute.name }}:</label>

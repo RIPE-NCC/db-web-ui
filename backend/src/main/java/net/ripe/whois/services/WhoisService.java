@@ -81,16 +81,18 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         final URI uri = lessSpecificUrl(type, key);
 
         final ResponseEntity<WhoisResources> response;
+        final WhoisResources whoisResources;
         try {
             response = restTemplate.exchange(uri,
                     HttpMethod.GET,
                     getRequestEntity(Optional.empty()),
                     WhoisResources.class);
 
+            whoisResources = response.getBody();
             if (response.getStatusCode() != HttpStatus.OK) {
                 LOGGER.warn("Failed to retrieve less specific resources for resource {} due to {}",
                     key,
-                    (response.getBody() != null ? response.getBody().getErrorMessages() : "(no response body)"));
+                    (whoisResources != null ? whoisResources.getErrorMessages() : "(no response body)"));
 
                 throw new RestClientException(response.getStatusCode().value(), "Unable to get less specific resources");
             }
@@ -105,13 +107,15 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
 
         boolean metOrg = false;
         final List<String> resources = new ArrayList<>();
-        for (final WhoisObject o : response.getBody().getWhoisObjects()) {
-            final boolean hasOrg = o.getAttributes().stream().anyMatch(a -> "org".equals(a.getName()) && org.equals(a.getValue()));
-            if (hasOrg || metOrg) {
-                metOrg = true;
-                final String objectKey = getObjectSinglePrimaryKey(o);
-                if (!theSameResource(objectKey, key, type)) {
-                    resources.add(objectKey);
+        if (whoisResources != null) {
+            for (final WhoisObject o : whoisResources.getWhoisObjects()) {
+                final boolean hasOrg = o.getAttributes().stream().anyMatch(a -> "org".equals(a.getName()) && org.equals(a.getValue()));
+                if (hasOrg || metOrg) {
+                    metOrg = true;
+                    final String objectKey = getObjectSinglePrimaryKey(o);
+                    if (!theSameResource(objectKey, key, type)) {
+                        resources.add(objectKey);
+                    }
                 }
             }
         }
@@ -128,14 +132,11 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     }
 
     private boolean theSameResource(String r1, String r2, String type) {
-        switch (type) {
-            case "inetnum" :
-                return Ipv4Resource.parse(r1).equals(Ipv4Resource.parse(r2));
-            case "inet6num" :
-                return Ipv6Resource.parse(r1).equals(Ipv6Resource.parse(r2));
-            default:
-                return r1.equals(r2);
-        }
+        return switch (type) {
+            case "inetnum" -> Ipv4Resource.parse(r1).equals(Ipv4Resource.parse(r2));
+            case "inet6num" -> Ipv6Resource.parse(r1).equals(Ipv6Resource.parse(r2));
+            default -> r1.equals(r2);
+        };
     }
 
     private <T> RequestCallback httpEntityCallback(final HttpEntity<T> requestEntity) {

@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
@@ -29,7 +31,14 @@ public class WhoisRestController extends ApiController {
         this.whoisRestService = whoisRestService;
     }
 
-    @RequestMapping(value = "/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(value = "/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<String> getProxyRestCalls(
+            final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) throws Exception {
+        return this.proxyRestCalls(request, body, headers);
+    }
+    @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> proxyRestCalls(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
