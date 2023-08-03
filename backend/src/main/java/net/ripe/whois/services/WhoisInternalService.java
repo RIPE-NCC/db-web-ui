@@ -70,10 +70,10 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
 
             if (response.getStatusCode() != HttpStatus.OK) {
                 // Do not return internal-only error message to the user, just log it.
-
+                final WhoisResources whoisResources = response.getBody();
                 LOGGER.warn("Failed to retrieve mntners for UUID {} due to {}",
                     uuid,
-                    (response.getBody() != null ? response.getBody().getErrorMessages() : "(no response body)"));
+                    (whoisResources != null ? whoisResources.getErrorMessages() : "(no response body)"));
 
                 throw new RestClientException(response.getStatusCode().value(), "Unable to get maintainers");
             }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,7 +67,15 @@ public class WhoisInternalProxyController extends ApiController {
         return whoisInternalService.bypassFile(request, "", headers);
     }
 
-    @RequestMapping(value = "/api/fmp-pub/**")
+    @GetMapping(value = "/api/fmp-pub/**")
+    public ResponseEntity<String> getForgotMaintainerPassword(
+            final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
+    @RequestMapping(value = "/api/fmp-pub/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<String> forgotMaintainerPassword(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,

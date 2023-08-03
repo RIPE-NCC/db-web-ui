@@ -23,7 +23,7 @@ export class FeedbackSupportDialogComponent implements OnInit {
     }
 
     sendEmail() {
-        window.open('https://www.ripe.net/support/contact', '_blank');
+        window.open('https://www.ripe.net/support/contact', '_blank', 'noopener');
         this.dialogRef.close();
     }
 

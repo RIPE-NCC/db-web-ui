@@ -3,7 +3,7 @@ import { WebupdatesPage } from '../pages/webupdates.page';
 describe('Display an mntner', () => {
     const webupdatesPage = new WebupdatesPage();
 
-    it.only('should remove Filtered in display page after associating SSO mnt', () => {
+    it('should remove Filtered in display page after associating SSO mnt', () => {
         webupdatesPage
             .visit('modify/ripe/mntner/TEST03-MNT')
             .expectValueInField('auth', 'MD5-PW # Filtered', 0)
