@@ -5,6 +5,7 @@
 # backend
 backend/target/
 backend/src/main/resources/menu.properties
+backend/src/main/resources/config/application-local.properties
 
 # frontend
 frontend/target/
@@ -113,6 +114,7 @@ Desktop.ini
 # Logs
 ######################
 *.log
+requestlog*
 
 ######################
 # Others
