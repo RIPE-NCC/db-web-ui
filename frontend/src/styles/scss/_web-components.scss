@@ -44,6 +44,9 @@ swe-menu {
         grid-column: span 2 / span 2;
         grid-row: 1/-1;
         top: 70px;
+        nav {
+            z-index: 9999999;
+        }
     }
 }
 
@@ -57,7 +60,7 @@ swe-menu {
 #app-banners-container {
     position: sticky;
     background-color: white;
-    z-index: 1060;
+    z-index: 10;
     top: 70px;
 }
 
