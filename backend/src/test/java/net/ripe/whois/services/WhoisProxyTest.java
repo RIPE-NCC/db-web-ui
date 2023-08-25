@@ -2,6 +2,7 @@ package net.ripe.whois.services;
 
 import org.junit.jupiter.api.Test;
 
+import javax.ws.rs.BadRequestException;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -145,7 +146,7 @@ public class WhoisProxyTest {
     @Test
     public void shouldRemoveNormaliseUrlWithHtml() {
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
-        assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api" +
+        assertThrows(BadRequestException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api" +
                 "/resources//api/whois··/fmp-int/auditlog/<script" +
                 ">alert('Hi');</script>",
             "value=test@ripe.net",
@@ -156,7 +157,8 @@ public class WhoisProxyTest {
     @Test
     public void shouldRemoveNormaliseUrlWithSQL() {
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
-        assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois··/fmp-int/auditlog/select from 1 on 1",
+        assertThrows(BadRequestException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/resources//api/whois" +
+                        "··/fmp-int/auditlog/select from 1 on 1",
             "value=test@ripe.net",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET));
@@ -166,7 +168,8 @@ public class WhoisProxyTest {
     public void shouldRemoveAnyInjections() {
 
         WhoisProxy whoisProxy = new WhoisProxy("/db-web-ui");
-        assertThrows(IllegalArgumentException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/..//resources//api/whois../fmp-int/auditlog/select",
+        assertThrows(BadRequestException.class, () -> whoisProxy.composeProxyUrl("//db-web-ui/api/whois/api/..//resources//api/whois." +
+                        "./fmp-int/auditlog/select",
             "id=2 and 1=2",
             "/api/whois",
             HTTPS_TEST_WHOIS_RIPE_NET));

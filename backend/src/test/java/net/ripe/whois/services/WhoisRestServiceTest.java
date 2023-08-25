@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.BadRequestException;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,6 +54,6 @@ public class WhoisRestServiceTest {
     public void should_encode_query_parameters() {
         when(request.getRequestURI()).thenReturn("/api/rest/fulltextsearch/select");
         when(request.getQueryString()).thenReturn("q=<svg+onload=\"alert('XSS')\">");
-        assertThrows(IllegalArgumentException.class, () -> subject.bypass(request, body, httpHeaders));
+        assertThrows(BadRequestException.class, () -> subject.bypass(request, body, httpHeaders));
     }
 }
