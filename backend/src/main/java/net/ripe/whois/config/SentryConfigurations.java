@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.web.firewall.RequestRejectedException;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.ClientErrorException;
 
 @Configuration
 @PropertySource(value = "classpath:git.properties", ignoreResourceNotFound = true)
@@ -43,6 +45,8 @@ public class SentryConfigurations {
             options.setRelease(String.format("%s@%s", environment,  commitId));
             options.setEnvironment(environment);
             options.setDsn(sentryDsn);
+            options.addIgnoredExceptionForType(ClientErrorException.class);
+            options.addIgnoredExceptionForType(RequestRejectedException.class);
         });
     }
 }
