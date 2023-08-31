@@ -162,6 +162,8 @@ export class ModalAuthenticationComponent implements OnInit {
     }
 
     private setFmpPathQueryParam() {
-        this.fmpPath = `/db-web-ui/fmp?mntnerKey=${this.selected.item.key}`;
+        if (this.selected.item?.key) {
+            this.fmpPath = `/db-web-ui/fmp?mntnerKey=${this.selected.item.key}`;
+        }
     }
 }

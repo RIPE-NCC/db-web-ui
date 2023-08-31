@@ -205,6 +205,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 error: (error: any) => {
                     this.restCallInProgress = false;
                     console.error('MntnerService.getAuthForObjectIfNeeded rejected authorisation: ', error);
+                    this.setErrorPrimaryKey('Failed to authenticate parent resource');
                     if (!this.inetnumParentAuthError) {
                         this.alertsService.addGlobalError('Failed to authenticate parent resource');
                         this.inetnumParentAuthError = true;
@@ -592,6 +593,14 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             attr.$$invalid = false;
         });
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
+    }
+
+    private setErrorPrimaryKey(msg: string) {
+        this.attributes.map((attr) => {
+            if (attr.$$meta.$$primaryKey) {
+                attr.$$error = msg;
+            }
+        });
     }
 
     public setVisibilityAttrsHelp(attributeName: string) {

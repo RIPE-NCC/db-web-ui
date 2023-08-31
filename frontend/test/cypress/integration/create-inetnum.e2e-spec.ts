@@ -130,7 +130,7 @@ describe('The inetnum editor', () => {
             .typeOnField('inetnum', '5.254.68.40/29')
             .blurOnField('inetnum')
             .authenticateWithDisabledAssociate('TEST02-MNT')
-            .typeOnField('netname', 'SOMETHING')
+            .typeOnField('netname', 'SOMETHING.')
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'TSTADMINC-RIPE')
             .typeOnField('tech-c', 'TSTADMINC-RIPE')
@@ -143,6 +143,11 @@ describe('The inetnum editor', () => {
             .submitForm()
             .expectErrorOnField('inetnum', 'Value 5.254.68.40/29 converted to 5.254.68.40 - 5.254.68.47')
             .expectErrorOnField('netname', 'Syntax error in SOMETHING.');
+    });
+
+    it('should show authenticate error when modal window is dismissed', () => {
+        webupdatesPage.typeOnField('inetnum', '5.254.68.40/29').blurOnField('inetnum').getModalAuthentication().closeModal();
+        webupdatesPage.expectErrorOnField('inetnum', 'Failed to authenticate parent resource').expectErrorMessage('Failed to authenticate parent resource');
     });
 
     it('should show error message above field and in banner for existing resource', () => {

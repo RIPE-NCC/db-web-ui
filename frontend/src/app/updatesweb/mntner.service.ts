@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address4 } from 'ip-address';
 import * as _ from 'lodash';
-import { mergeMap, Observable, of } from 'rxjs';
+import { from, mergeMap, Observable, of } from 'rxjs';
 import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
 import { IpAddressService } from '../myresources/ip-address.service';
 import { PropertiesService } from '../properties.service';
@@ -61,7 +61,7 @@ export class MntnerService {
                         isLirObject: false,
                         source: object.source,
                     };
-                    return modalRef.closed;
+                    return from(modalRef.result);
                 }),
             );
         } else {
