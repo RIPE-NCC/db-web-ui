@@ -95,6 +95,7 @@ describe('FullTextSearchComponent', () => {
         component.selectNone();
         expect(component.selectedObjectTypes.length).toEqual(0);
         expect(component.selectableAttributes.length).toEqual(0);
+        expect(component.selectedAttrs.length).toEqual(0);
         expect(component.queryHash()).toEqual('alltrue');
 
         component.addObjectToFilter('inetnum');
