@@ -88,6 +88,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     public selectNone() {
         this.selectedObjectTypes = this.selectableAttributes = [];
+        this.selectedAttrs = [];
         this.objectTypeChanged();
     }
 
