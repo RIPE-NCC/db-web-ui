@@ -34,7 +34,7 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(tsttechc%5C-ripe)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22tsttechc%5C-ripe%22)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');
@@ -54,7 +54,7 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(tsttechc%5C-ripe))%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(%22tsttechc%5C-ripe%22))%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');
@@ -73,7 +73,7 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(tsttechc%5C-ripe%20AND%20etch%5C-mnt)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22tsttechc%5C-ripe%22%20AND%20%22etch%5C-mnt%22)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');
@@ -92,7 +92,7 @@ describe('FullTextSearchService', () => {
         });
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(tsttechc%5C-ripe%20OR%20etch%5C-mnt)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
+            url: 'api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22tsttechc%5C-ripe%22%20OR%20%22etch%5C-mnt%22)%20AND%20(object-type:inetnum%20OR%20object-type:mntner)&start=0&wt=json',
         });
         expect(req.request.method).toBe('GET');
         req.flush('response');

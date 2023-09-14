@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22Bad%22%20AND%20%22Entry%22)&start=0&wt=json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": "Invalid%20query%20syntax"
+}

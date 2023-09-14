@@ -2,6 +2,8 @@ import { FullTextSearchPage } from '../pages/fulltext-search.page';
 
 describe('The full text search', () => {
     const fullTextSearchPage = new FullTextSearchPage();
+    const personAuthError = './test/e2e/mocks/e2eTest/person-auth-error.json';
+    const personCreation = './test/e2e/mocks/e2eTest/d7ae9b71eb48edb1ed1bb684fb8c615ac6f1c7ee.json';
 
     beforeEach(() => {
         fullTextSearchPage.visit();
@@ -51,5 +53,12 @@ describe('The full text search', () => {
 
     it('should show version of whois after searching', () => {
         fullTextSearchPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().expectVersionToBe('RIPE Database Software Version 1.97-SNAPSHOT');
+    });
+
+    it('should show a banner if error', () => {
+        fullTextSearchPage
+            .typeSearchTerm('Bad Entry')
+            .clickOnSearchButton()
+            .expectErrorMessage('Error performing search query. Please review the terms and try again');
     });
 });

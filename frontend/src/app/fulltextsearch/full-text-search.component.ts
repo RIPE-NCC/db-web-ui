@@ -115,7 +115,10 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (resp: ISearchResponseModel) => this.handleResponse(resp),
                 error: (err) => {
+                    this.alertsService.setGlobalError('Error performing search query. Please review the terms and try again');
+                    this.numResults = 0;
                     this.results = [];
+                    this.resultSummary = [];
                     console.error('performSearch error', err);
                 },
             });

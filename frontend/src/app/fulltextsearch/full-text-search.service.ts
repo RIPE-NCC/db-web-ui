@@ -36,13 +36,14 @@ export class FullTextSearchService {
         // Main query input control
         const qmain: string[] = [];
         const splits = query.split(' ');
+        const escapedSplits = FullTextSearchService.wrapInQuotationMarks(splits);
         if (splits.length > 1) {
             switch (advancedMode) {
                 case 'all':
-                    qmain.push(splits.join(' AND '));
+                    qmain.push(escapedSplits.join(' AND '));
                     break;
                 case 'any':
-                    qmain.push(splits.join(' OR '));
+                    qmain.push(escapedSplits.join(' OR '));
                     break;
                 case 'exact':
                     qmain.unshift('"');
@@ -53,7 +54,7 @@ export class FullTextSearchService {
                     break;
             }
         } else {
-            qmain.push(query);
+            qmain.push(escapedSplits.join(' '));
         }
         qmain.unshift('(');
         qmain.push(')');
@@ -86,5 +87,11 @@ export class FullTextSearchService {
             }
         }
         return qmain.join('') + qadv.join('');
+    }
+
+    private static wrapInQuotationMarks(query: string[]): string[] {
+        const escapedQuery: string[] = [];
+        query.forEach((word) => escapedQuery.push('"'.concat(word).concat('"')));
+        return escapedQuery;
     }
 }
