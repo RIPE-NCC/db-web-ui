@@ -29,6 +29,11 @@ export class FullTextSearchPage {
         return this;
     }
 
+    expectErrorMessage(text: string) {
+        cy.get('app-banner[level="alarm"]').shadow().find('.app-banner.level-alarm').should('contain.text', text);
+        return this;
+    }
+
     expectValueInNthResult(index: number, text: string, contain: boolean) {
         cy.get(`full-text-result-summary tbody tr:nth(${index})`).should(contain ? 'contain.text' : 'not.contain.text', text);
         return this;
