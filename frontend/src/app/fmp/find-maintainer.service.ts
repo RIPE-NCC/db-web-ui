@@ -15,7 +15,7 @@ export interface IFindMaintainer {
 
 @Injectable()
 export class FindMaintainerService {
-    private readonly API_BASE_URL: string = 'api/whois-internal/api/fmp-pub/mntner/';
+    private readonly API_BASE_URL: string = 'api/whois-internal/public/fmp/mntner/';
 
     constructor(private http: HttpClient, private fmpErrorService: FmpErrorService) {}
 
