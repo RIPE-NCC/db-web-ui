@@ -61,10 +61,10 @@ describe('FindMaintainerService', () => {
             expect(respons.email).toBe('TSTADMINC-RIPE');
             done();
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(response);
-        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/validate' });
+        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/validate' });
         expect(reqValidation.request.method).toBe('GET');
         reqValidation.flush(validateResp);
     });
@@ -94,10 +94,10 @@ describe('FindMaintainerService', () => {
             expect(respons.email).toBe('first@ripe.net');
             done();
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(response);
-        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/validate' });
+        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/validate' });
         expect(reqValidation.request.method).toBe('GET');
         reqValidation.flush(validateResp);
     });
@@ -128,10 +128,10 @@ describe('FindMaintainerService', () => {
             expect(respons.expired).toBeFalse();
             done();
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(response);
-        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/validate' });
+        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/validate' });
         expect(reqValidation.request.method).toBe('GET');
         reqValidation.flush(validateResp);
     });
@@ -147,7 +147,7 @@ describe('FindMaintainerService', () => {
                 done();
             },
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(data, mockErrorResponse);
     });
@@ -163,7 +163,7 @@ describe('FindMaintainerService', () => {
                 done();
             },
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(data, mockErrorResponse);
     });
@@ -179,7 +179,7 @@ describe('FindMaintainerService', () => {
                 done();
             },
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/SHRYANE-MNT' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/SHRYANE-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(mockErrorResponse, mockErrorResponse);
     });
@@ -213,10 +213,10 @@ describe('FindMaintainerService', () => {
                 done();
             },
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
         req.flush(response);
-        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/validate' });
+        const reqValidation = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/validate' });
         expect(reqValidation.request.method).toBe('GET');
         reqValidation.flush(data, mockErrorResponse);
     });
@@ -230,7 +230,7 @@ describe('FindMaintainerService', () => {
         findMaintainerService.sendMail(maintainerKey).subscribe((res: any) => {
             expect(res).toBe(response);
         });
-        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json' });
+        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/emaillink.json' });
         expect(req.request.method).toBe('POST');
         req.flush(response);
     });
@@ -242,12 +242,10 @@ describe('FindMaintainerService', () => {
         findMaintainerService.sendMail(maintainerKey).subscribe({
             next: (res: any) => {},
             error: (error: any) => {
-                expect(error.message).toBe(
-                    'Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 500 Internal Server Error',
-                );
+                expect(error.message).toBe('Http failure response for api/whois-internal/public/fmp/mntner/I-AM-MNT/emaillink.json: 500 Internal Server Error');
             },
         });
-        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json' });
+        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/emaillink.json' });
         expect(req.request.method).toBe('POST');
         req.flush(data, mockErrorResponse);
     });
@@ -259,10 +257,10 @@ describe('FindMaintainerService', () => {
         findMaintainerService.sendMail(maintainerKey).subscribe({
             next: () => {},
             error: (error: any) => {
-                expect(error.message).toBe('Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 404 Not Found');
+                expect(error.message).toBe('Http failure response for api/whois-internal/public/fmp/mntner/I-AM-MNT/emaillink.json: 404 Not Found');
             },
         });
-        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json' });
+        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/emaillink.json' });
         expect(req.request.method).toBe('POST');
         req.flush(data, mockErrorResponse);
     });
@@ -274,10 +272,10 @@ describe('FindMaintainerService', () => {
         findMaintainerService.sendMail(maintainerKey).subscribe({
             next: (res: any) => {},
             error: (error: any) => {
-                expect(error.message).toBe('Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 401 Unauthorized');
+                expect(error.message).toBe('Http failure response for' + ' api/whois-internal/public/fmp/mntner/I-AM-MNT/emaillink.json: 401 Unauthorized');
             },
         });
-        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json' });
+        const req = httpMock.expectOne({ method: 'POST', url: 'api/whois-internal/public/fmp/mntner/I-AM-MNT/emaillink.json' });
         expect(req.request.method).toBe('POST');
         req.flush(data, mockErrorResponse);
     });

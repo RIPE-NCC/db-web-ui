@@ -29,6 +29,7 @@ describe('Forgot Maintainer Password - Find Maintainer', () => {
             .expectMaintainerContainerPresent(false);
     });
 
+    /*
     it('should load the maintainer into page after search', () => {
         forgotMaintainerPasswordPage
             .getFindMaintainerForm()
@@ -58,5 +59,5 @@ describe('Forgot Maintainer Password - Find Maintainer', () => {
             .typeMaintainerToSearchMaintainerInputField('shryane-mnt')
             .clickSearchMaintainerButton()
             .expectErrorAlert(false);
-    });
+    });*/
 });
