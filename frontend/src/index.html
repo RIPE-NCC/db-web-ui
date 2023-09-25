@@ -63,6 +63,15 @@
             </h1>
         </noscript>
         <script>
+            import supportedBrowsers from './supportedBrowsers.js';
+            if (!supportedBrowsers.test(navigator.userAgent)) {
+                document.write(
+                    "<meta http-equiv='refresh' content='5;URL=https://www.ripe.net/about-us/legal/supported-browsers' />" +
+                        "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
+                        "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
+                        '    </h1>',
+                );
+            }
             if (/msie\s|trident\/|edge\//i.test(window.navigator.userAgent)) {
                 document.write(
                     "<meta http-equiv='refresh' content='5;URL=https://www.ripe.net/about-us/legal/supported-browsers' />" +

@@ -1,14 +1,14 @@
 import { Location } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import supportedBrowsers from '../supportedBrowsers.js';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
-import supportedBrowsers from './supportedBrowsers.js';
 
 @Component({
     selector: 'app-db-web-ui',
-    templateUrl: 'app.component.html',
+    templateUrl: '../app.component.html',
 })
 export class AppComponent implements OnInit {
     // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
