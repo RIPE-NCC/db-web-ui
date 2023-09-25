@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import supportedBrowsers from '../supportedBrowsers.js';
+import supportedBrowsers from '../assets/js/supportedBrowsers.js';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
