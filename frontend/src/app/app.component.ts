@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
+import supportedBrowsers from './supportedBrowsers.js';
 
 @Component({
     selector: 'app-db-web-ui',
@@ -66,6 +67,10 @@ export class AppComponent implements OnInit {
     open = (event: any) => {
         this.isOpenMenu = event.detail.open;
     };
+
+    public isBrowserSupported(): boolean {
+        return supportedBrowsers.test(navigator.userAgent);
+    }
 
     public isQueryPage(): boolean {
         return this.location.path().startsWith('/query');
