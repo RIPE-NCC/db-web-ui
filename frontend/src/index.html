@@ -63,6 +63,9 @@
             </h1>
         </noscript>
         <app-db-web-ui></app-db-web-ui>
+        <script>
+            document.addEventListener('DOMContentLoaded', angularChecker);
+        </script>
         <!--  Webupdates specific body-end end -->
         <!-- Usersnap widget: always on -->
         <script>
@@ -94,12 +97,7 @@
                     document.getElementsByTagName('head')[0].appendChild(script);
                 }
             }
-        </script>
-        <!-- End Usersnap widget -->
-    </body>
-    <div id="unsupportedBrowser">
-        <script>
-            window.addEventListener('load', function () {
+            function angularChecker() {
                 if (typeof window['getAllAngularRootElements'] == 'undefined') {
                     document.write(
                         "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
@@ -107,7 +105,8 @@
                             '    </h1>',
                     );
                 }
-            });
+            }
         </script>
-    </div>
+        <!-- End Usersnap widget -->
+    </body>
 </html>
