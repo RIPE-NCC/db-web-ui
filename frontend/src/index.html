@@ -64,8 +64,7 @@
         </noscript>
         <app-db-web-ui></app-db-web-ui>
         <script>
-            const mainElement = document.getElementById('visual-portal-wrapper');
-            mainElement.addEventListener('load', function () {
+            window.onload = function browserChecked() {
                 if (document.getElementById('app-grid') == null) {
                     document.write(
                         "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
@@ -73,15 +72,11 @@
                             '    </h1>',
                     );
                 }
-            });
+            };
         </script>
         <!--  Webupdates specific body-end end -->
         <!-- Usersnap widget: always on -->
         <script>
-            function checkElementExist() {
-                var appGrid = document.getElementById('app-grid');
-                return document.getElementById('app-grid') != null;
-            }
             function loadUsersnap(buildTag) {
                 window.onUsersnapCXLoad = function (api) {
                     api.init({
