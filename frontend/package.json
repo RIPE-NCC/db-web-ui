@@ -17,8 +17,7 @@
         "lint-staged": "lint-staged",
         "cypress:open": "cypress open",
         "cypress:chrome": "ng run frontend:cypress --browser chrome",
-        "cypress:firefox": "ng run frontend:cypress --browser firefox",
-        "supportedBrowsers": "echo \"export default $(browserslist-useragent-regexp --allowHigherVersions);\" > src/assets/js/supportedBrowsers.js"
+        "cypress:firefox": "ng run frontend:cypress --browser firefox"
     },
     "private": true,
     "devDependencies": {
@@ -89,7 +88,6 @@
         "angulartics": "1.6.0",
         "angulartics-piwik": "1.0.6",
         "bootstrap": "5.2.3",
-        "browserslist-useragent-regexp": "^4.1.0",
         "classlist": "2.0.0",
         "cookie-parser": "1.4.6",
         "crypto-js": "4.1.1",
