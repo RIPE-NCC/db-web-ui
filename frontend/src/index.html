@@ -64,8 +64,8 @@
         </noscript>
         <app-db-web-ui></app-db-web-ui>
         <script>
-            window.onload = function browserChecked() {
-                if (document.getElementById('app-grid') == null) {
+            window.onload = function browserChecker() {
+                if (typeof window['getAllAngularRootElements'] == 'undefined') {
                     document.write(
                         "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
                             "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
