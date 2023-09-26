@@ -64,7 +64,19 @@
         </noscript>
         <app-db-web-ui></app-db-web-ui>
         <script>
-            document.addEventListener('DOMContentLoaded', angularChecker);
+            window.addEventListener('load', function () {
+                while (document.querySelector('app-db-web-ui') === null) {
+                    new Promise((resolve) => requestAnimationFrame(resolve));
+                }
+
+                if (typeof window['getAllAngularRootElements'] === 'undefined') {
+                    document.write(
+                        "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
+                            "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
+                            '    </h1>',
+                    );
+                }
+            });
         </script>
         <!--  Webupdates specific body-end end -->
         <!-- Usersnap widget: always on -->
@@ -95,15 +107,6 @@
                     script.async = true;
                     script.src = 'https://widget.usersnap.com/load/23af85c0-b461-4c01-bdf5-a1c36a854023?onload=onUsersnapCXLoad';
                     document.getElementsByTagName('head')[0].appendChild(script);
-                }
-            }
-            function angularChecker() {
-                if (typeof window['getAllAngularRootElements'] == 'undefined') {
-                    document.write(
-                        "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
-                            "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
-                            '    </h1>',
-                    );
                 }
             }
         </script>
