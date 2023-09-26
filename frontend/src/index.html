@@ -69,6 +69,10 @@
                     new Promise((resolve) => requestAnimationFrame(resolve));
                 }
 
+                const startTime = Date.now();
+                while (document.querySelector('[ng-version]') === null && Date.now() - startTime < 1000) {
+                    new Promise((resolve) => requestAnimationFrame(resolve));
+                }
                 if (document.querySelector('[ng-version]') === null) {
                     document.write(
                         "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
