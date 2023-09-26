@@ -1,20 +1,9 @@
 <div id="unsupported-browser" *ngIf="isUnsupportedBrowser()">
-    <script>
-        const visual = document.getElementById('visual-portal-wrapper');
-        const meta = document.createElement('meta');
-        meta.httpEquiv = 'refresh';
-        meta.content = '5;URL=https://www.ripe.net/about-us/legal/supported-browsers';
-
-        const browserNotification = document.createElement('h1');
-        browserNotification.style.textAlign = 'center';
-        browserNotification.style.marginTop = '20px';
-        browserNotification.style.backgroundColor = '#eee';
-        browserNotification.style.padding = '20px';
-        browserNotification.innerHTML =
-            "Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.";
-
-        visual.appendChild(browserNotification);
-    </script>
+    <meta http-equiv="refresh" content="5;URL=https://www.ripe.net/about-us/legal/supported-browsers" />
+    <h1 style="text-align: center; margin-top: 20px; background-color: #eee; padding: 20px">
+        Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a
+        <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.\n" +
+    </h1>
 </div>
 
 <!--TODO remove div class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
