@@ -65,12 +65,8 @@
         <app-db-web-ui></app-db-web-ui>
         <script>
             window.addEventListener('load', function () {
-                while (document.querySelector('app-db-web-ui') === null) {
-                    new Promise((resolve) => requestAnimationFrame(resolve));
-                }
-
                 const startTime = Date.now();
-                while (document.querySelector('[ng-version]') === null && Date.now() - startTime < 1000) {
+                while (document.querySelector('app-db-web-ui') === null && Date.now() - startTime < 3000) {
                     new Promise((resolve) => requestAnimationFrame(resolve));
                 }
                 if (document.querySelector('[ng-version]') === null) {
