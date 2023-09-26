@@ -62,27 +62,6 @@
                 <a href="https://www.ripe.net/about-us/legal/supported-browsers">Supported Browsers</a> page.
             </h1>
         </noscript>
-        <script>
-            import availableBrowsers from './assets/js/supportedBrowsers.js';
-
-            if (!availableBrowsers.test(navigator.userAgent)) {
-                const visual = document.getElementById('visual-portal-wrapper');
-                //const meta = document.createElement('meta');
-                //meta.httpEquiv = 'refresh';
-                //meta.content = '5;URL=https://www.ripe.net/about-us/legal/supported-browsers';
-
-                const browserNotification = document.createElement('h1');
-                browserNotification.style.textAlign = 'center';
-                browserNotification.style.marginTop = '20px';
-                browserNotification.style.backgroundColor = '#eee';
-                browserNotification.style.padding = '20px';
-                browserNotification.innerHTML =
-                    "Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.";
-
-                //visual.appendChild(meta);
-                visual.appendChild(browserNotification);
-            }
-        </script>
         <app-db-web-ui></app-db-web-ui>
         <!--  Webupdates specific body-end end -->
         <!-- Usersnap widget: always on -->

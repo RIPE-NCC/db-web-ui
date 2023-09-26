@@ -1,3 +1,21 @@
+<div id="unsupported-browser" *ngIf="isUnsupportedBrowser()">
+    <script>
+        const visual = document.getElementById('visual-portal-wrapper');
+        const meta = document.createElement('meta');
+        meta.httpEquiv = 'refresh';
+        meta.content = '5;URL=https://www.ripe.net/about-us/legal/supported-browsers';
+
+        const browserNotification = document.createElement('h1');
+        browserNotification.style.textAlign = 'center';
+        browserNotification.style.marginTop = '20px';
+        browserNotification.style.backgroundColor = '#eee';
+        browserNotification.style.padding = '20px';
+        browserNotification.innerHTML =
+            "Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.";
+
+        visual.appendChild(browserNotification);
+    </script>
+</div>
 <!--TODO remove div class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
 <div class="usprivacy">
     <ripe-header (ripe-header-menu-toggle)="open($event)">
@@ -124,7 +142,6 @@
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
             y="0px"
             viewBox="0 0 5647.2 569.02"
@@ -251,7 +268,6 @@
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
             y="0px"
             viewBox="0 0 2527.54 569.02"
@@ -318,7 +334,6 @@
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
             y="0px"
             viewBox="0 0 5305.85 569.02"
@@ -436,7 +451,6 @@
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
             y="0px"
             viewBox="0 0 2175.77 569.02"
@@ -494,7 +508,6 @@
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
             y="0px"
             viewBox="0 0 6576.76 569.02"
@@ -634,7 +647,6 @@
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
             y="0px"
             viewBox="0 0 3459.43 569.02"
