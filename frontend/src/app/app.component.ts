@@ -1,14 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import supportedBrowsers from '../assets/js/supportedBrowsers.js';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
 
 @Component({
     selector: 'app-db-web-ui',
-    templateUrl: '../app.component.html',
+    templateUrl: 'app/app.component.html',
 })
 export class AppComponent implements OnInit {
     // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
@@ -67,10 +66,6 @@ export class AppComponent implements OnInit {
     open = (event: any) => {
         this.isOpenMenu = event.detail.open;
     };
-
-    public isBrowserSupported(): boolean {
-        return supportedBrowsers.test(navigator.userAgent);
-    }
 
     public isQueryPage(): boolean {
         return this.location.path().startsWith('/query');
