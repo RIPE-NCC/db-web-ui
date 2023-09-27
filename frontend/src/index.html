@@ -64,16 +64,24 @@
         </noscript>
         <app-db-web-ui></app-db-web-ui>
         <script>
-            const module = import('./assets/js/supportedBrowsers.js');
-            module.then(function (result) {
-                if (!result.default.test(navigator.userAgent)) {
-                    document.write(
-                        "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
-                            "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
-                            '    </h1>',
-                    );
-                }
-            });
+            try {
+                const module = import('./assets/js/supportedBrowsers.js');
+                module.then(function (result) {
+                    if (!result.default.test(navigator.userAgent)) {
+                        document.write(
+                            "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
+                                "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
+                                '    </h1>',
+                        );
+                    }
+                });
+            } catch {
+                document.write(
+                    "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
+                        "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
+                        '    </h1>',
+                );
+            }
         </script>
 
         <!--  Webupdates specific body-end end -->
