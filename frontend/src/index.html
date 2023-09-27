@@ -64,33 +64,21 @@
         </noscript>
         <app-db-web-ui></app-db-web-ui>
         <script>
-            const loadModuleHandingError = async (modulePath) => {
-                try {
-                    return await import(modulePath);
-                } catch (e) {
-                    if (e instanceof SyntaxError) {
+            loadModuleHandingError().then((support) => {
+                if (support === 'invalid') {
+                    printUnsupportedBrowserMessage();
+                } else {
+                    if (!support.test(navigator.userAgent)) {
                         printUnsupportedBrowserMessage();
                     }
                 }
-            };
-
-            hasDynamicImport().then((support) => {
-                if (!support) {
-                    printUnsupportedBrowserMessage();
-                } else {
-                    loadModuleHandingError('./assets/js/supportedBrowsers.js').then(function (result) {
-                        if (typeof result !== 'undefined' && !result.default.test(navigator.userAgent)) {
-                            printUnsupportedBrowserMessage();
-                        }
-                    });
-                }
             });
 
-            function hasDynamicImport() {
+            function loadModuleHandingError() {
                 try {
-                    return new Function("return import('data:text/javascript;base64,Cg==').then(r => true)")();
+                    return new Function("return import('./assets/js/supportedBrowsers.js').then(r => r.default)")();
                 } catch (e) {
-                    return Promise.resolve(false);
+                    return Promise.resolve('invalid');
                 }
             }
 
