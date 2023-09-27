@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import supportedBrowsers from '../assets/js/supportedBrowsers.js';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
@@ -73,5 +74,9 @@ export class AppComponent implements OnInit {
 
     public isLegalPage(): boolean {
         return this.location.path().startsWith('/legal');
+    }
+
+    public isUnsupportedBrowser(): boolean {
+        return !supportedBrowsers.test(navigator.userAgent);
     }
 }
