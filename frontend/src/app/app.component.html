@@ -1,13 +1,3 @@
-<div id="unsupported-browser" *ngIf="isUnsupportedBrowser()">
-    <script>
-        document.write(
-            "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
-                "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
-                '    </h1>',
-        );
-    </script>
-</div>
-
 <!--TODO remove div class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
 <div class="usprivacy">
     <ripe-header (ripe-header-menu-toggle)="open($event)">
