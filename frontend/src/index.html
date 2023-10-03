@@ -73,7 +73,7 @@
             //Some old browsers does not support import module
             function loadModuleOrInvalid() {
                 try {
-                    return new Function("return import('./assets/js/supportedBrowsers.js').then(r => r.default)")();
+                    return new Function("return import('./assets/supportedBrowsers.js').then(r => r.default)")();
                 } catch (e) {
                     return Promise.resolve('invalid');
                 }

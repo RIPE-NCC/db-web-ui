@@ -35,8 +35,8 @@ build:
     - whois
   stage: build
   script:
+    - cd frontend && npm run supportedBrowsers && cd ..
     - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
-    - cd frontend && npm run supportedBrowsers
   artifacts:
     paths:
       - backend/target/db-web-ui*.jar
@@ -78,7 +78,7 @@ e2e-cypress-chrome:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
-        - cd frontend && npm run cypress:chrome
+        - cd frontend && npm run supportedBrowsers && npm run cypress:chrome
     artifacts:
         when: on_failure
         paths:
@@ -101,7 +101,7 @@ e2e-cypress-firefox:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
-        - cd frontend && npm run cypress:firefox
+        - cd frontend && npm run supportedBrowsers && npm run cypress:firefox
     artifacts:
         when: on_failure
         paths:
