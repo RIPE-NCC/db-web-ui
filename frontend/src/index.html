@@ -62,17 +62,32 @@
                 <a href="https://www.ripe.net/about-us/legal/supported-browsers">Supported Browsers</a> page.
             </h1>
         </noscript>
+        <app-db-web-ui></app-db-web-ui>
         <script>
-            if (/msie\s|trident\/|edge\//i.test(window.navigator.userAgent)) {
+            loadModuleOrInvalid().then((results) => {
+                if (results === 'invalid' || !results.test(navigator.userAgent)) {
+                    printUnsupportedBrowserMessage();
+                }
+            });
+
+            //Some old browsers does not support import module
+            function loadModuleOrInvalid() {
+                try {
+                    return new Function("return import('./assets/js/supportedBrowsers.js').then(r => r.default)")();
+                } catch (e) {
+                    return Promise.resolve('invalid');
+                }
+            }
+
+            function printUnsupportedBrowserMessage() {
                 document.write(
-                    "<meta http-equiv='refresh' content='5;URL=https://www.ripe.net/about-us/legal/supported-browsers' />" +
-                        "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
+                    "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
                         "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
                         '    </h1>',
                 );
             }
         </script>
-        <app-db-web-ui></app-db-web-ui>
+
         <!--  Webupdates specific body-end end -->
         <!-- Usersnap widget: always on -->
         <script>

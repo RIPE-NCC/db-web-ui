@@ -36,6 +36,7 @@ build:
   stage: build
   script:
     - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
+    - cd frontend && npm run supportedBrowsers
   artifacts:
     paths:
       - backend/target/db-web-ui*.jar
