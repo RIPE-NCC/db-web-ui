@@ -83,6 +83,8 @@ Frontend
 
 * run test using cypress
     * `npm run start-mock`
+    * `npm run supportedBrowsers`<br>
+      To automatically create the supported browser regex
     * `npm run cypress:open`<br>
       This will open cypress, there you could specify the browser and the e2e test that you want to run.
 
@@ -92,6 +94,7 @@ Frontend
 * You should be able to open https://localhost.ripe.net:9002/db-web-ui/query and perform some requests.
 * This mock will be automatically add into e2e/mocks/e2eTest folder <br>
   ![](doc/img/mocked_request.png)
+* `npm run supportedBrowsers` to automatically create the supported browser regex
 * `npm run cypress:open` to run it locally
 
 ### Updating NPM and NPM packages
