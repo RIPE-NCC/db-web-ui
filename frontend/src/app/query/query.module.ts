@@ -26,6 +26,7 @@ import { QueryFlagsService } from './query-flags.service';
 import { QueryParametersService } from './query-parameters.service';
 import { QueryComponent } from './query.component';
 import { QueryService } from './query.service';
+import { SharePanelComponent } from './share-panel.component';
 import { TemplateComponent } from './templatecomponent/template.component';
 import { TypesPanelComponent } from './types-panel.component';
 
@@ -57,6 +58,7 @@ import { TypesPanelComponent } from './types-panel.component';
         InverseLookupPanelComponent,
         AdvanceFilterPanelComponent,
         QueryFlagsComponent,
+        SharePanelComponent,
     ],
     providers: [LookupService, QueryParametersService, QueryService, HierarchyFlagsService, QueryFlagsService],
     exports: [CertificateBannerComponent],
