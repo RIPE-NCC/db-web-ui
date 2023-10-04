@@ -410,16 +410,6 @@ describe('QueryComponent', () => {
         expect(component.qp.source).toEqual('RIPE');
     });
 
-    it('should toggle PermaLinks panel', () => {
-        component.init();
-        fixture.detectChanges();
-        expect(component.showPermaLinks).toBeFalsy();
-        component.togglePermaLinks();
-        expect(component.showPermaLinks).toBeTruthy();
-        component.togglePermaLinks();
-        expect(component.showPermaLinks).toBeFalsy();
-    });
-
     describe('with no query string', () => {
         it('should set up default options for querying', () => {
             component.init();
@@ -434,12 +424,11 @@ describe('QueryComponent', () => {
             expect(component.qp.inverse).toEqual({});
         });
 
-        it('should show DocsLinks Panel and not to show Filters-dropdowns and Share button', () => {
+        it('should show DocsLinks Panel and not to show Filters-dropdowns', () => {
             component.init();
             fixture.detectChanges();
             expect(component.results.length).toEqual(0);
             expect(component.showFilters).toBeFalsy();
-            expect(component.showPermaLinks).toBeFalsy();
             expect(component.showNoResultsMsg).toBeFalsy();
             expect(component.showsDocsLink).toBeTruthy();
         });
@@ -588,16 +577,13 @@ describe('QueryComponent', () => {
             expect(component.isFiltersDisplayed()).toEqual(true);
         });
 
-        it("should show Filters-dropdowns and Share button, DocsLinks panel shouldn't be visible", () => {
+        it("should show Filters-dropdowns, DocsLinks panel shouldn't be visible", () => {
             component.init();
             fixture.detectChanges();
             component.qp.queryText = '193.0.0.0';
             component.doSearch();
             expect(component.results.length).toEqual(4);
             expect(component.showFilters).toBeTruthy();
-            expect(component.showPermaLinks).toBeFalsy();
-            component.togglePermaLinks();
-            expect(component.showPermaLinks).toBeTruthy();
             expect(component.showNoResultsMsg).toBeFalsy();
             expect(component.showsDocsLink).toBeFalsy();
         });

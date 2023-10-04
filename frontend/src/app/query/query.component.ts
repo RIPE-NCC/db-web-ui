@@ -22,6 +22,13 @@ export interface IQueryState {
     hierarchyFlag: string;
 }
 
+export type ShareLink = {
+    json: string;
+    perma: string;
+    xml: string;
+    plainText: string;
+};
+
 @Component({
     selector: 'query',
     templateUrl: './query.component.html',
@@ -35,7 +42,6 @@ export class QueryComponent implements OnDestroy {
     public numberSelectedHierarchyItems = 0;
     public numberSelectedInverseLookups = 0;
     public numberSelectedAdvanceFilterItems = 0;
-    public showPermaLinks = false;
     public searched = false;
     public titleDatabaseQueryPage: string;
 
@@ -48,12 +54,7 @@ export class QueryComponent implements OnDestroy {
     public showTemplatePanel: boolean;
     public queriedTemplateObject: ITemplateTerm;
     public subscription: any;
-    public link: {
-        json: string;
-        perma: string;
-        xml: string;
-        plainText: string;
-    };
+    public link: ShareLink;
     public showsQueryFlagsContainer: boolean;
     public showsDocsLink: boolean;
     public colorControl = new FormControl('primary');
@@ -125,7 +126,6 @@ export class QueryComponent implements OnDestroy {
             this.clearResults();
             this.showTemplatePanel = false;
             this.showFilters = false; // by default don't open share button with perma, xml and json links
-            this.showPermaLinks = false;
         }
     }
 
@@ -165,10 +165,6 @@ export class QueryComponent implements OnDestroy {
         this.qp.showFullObjectDetails = false;
         this.qp.doNotRetrieveRelatedObjects = true;
         this.qp.source = this.properties.SOURCE;
-    }
-
-    public togglePermaLinks() {
-        this.showPermaLinks = !this.showPermaLinks;
     }
 
     public uncheckReverseDomain() {
@@ -341,7 +337,6 @@ export class QueryComponent implements OnDestroy {
         }
         this.showScroller = response.objects.object.length >= this.queryService.PAGE_SIZE;
         this.showFilters = true;
-        this.showPermaLinks = false; // by default don't open share button with perma, xml and json links
         this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
         this.typeOfSearchedTerm = this.queryService.getTypeOfSearchedTerm(this.qp.queryText);
     }

@@ -106,8 +106,8 @@ export class QueryPage {
         return this;
     }
 
-    expectShareButtonDisabled(disabled: boolean) {
-        cy.get('button[mattooltip="Share Panel"]').should(disabled ? 'be.disabled' : 'not.be.disabled');
+    expectShowShareButton(exist: boolean) {
+        cy.get('button#sharePermaLink').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 

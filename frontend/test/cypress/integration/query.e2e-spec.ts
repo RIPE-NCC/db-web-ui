@@ -89,12 +89,12 @@ describe('Query scenario', () => {
         typeDropdown.clickCheckbox('mntner').expectCheckboxToBeDisabled('mntner', false).expectCheckboxToBeChecked('mntner', true);
     });
 
-    it('should have share button disable if there is no results', () => {
-        queryPage.typeSearchTerm('223.0.0.0 all').clickOnSearchButton().expectShareButtonDisabled(true);
+    it('should not show share button if there is no results', () => {
+        queryPage.typeSearchTerm('223.0.0.0 all').clickOnSearchButton().expectShowShareButton(false);
     });
 
-    it('should have share button enabled if there is results', () => {
-        queryPage.typeSearchTerm('AS9777').clickOnSearchButton().expectShareButtonDisabled(false);
+    it('should show share button if there is results', () => {
+        queryPage.typeSearchTerm('AS9777').clickOnSearchButton().expectShowShareButton(true);
     });
 
     it('should contain perm, xml and json links in Share Panel', () => {
@@ -667,6 +667,7 @@ describe('Query scenario', () => {
                 'last-modified:  [generated]  [single]     [ ]\n' +
                 'source:         [mandatory]  [single]     [ ]',
         );
+        queryPage.expectShowShareButton(false);
     });
 
     it('should not show template panel in case of error query', () => {
@@ -676,6 +677,7 @@ describe('Query scenario', () => {
             .expectNoResults()
             .expectTemplateSearchResultToExist(false)
             .expectQueryFlagsContainerVisible(true);
+        queryPage.expectShowShareButton(false);
     });
 
     it('should be able to search --template using the text box', () => {
@@ -739,6 +741,7 @@ describe('Query scenario', () => {
             .expectQueryFlagToContain(0, '-s')
             .expectQueryFlagToContain(1, '--sources')
             .clickOnSearchButton()
+            .expectShowShareButton(false)
             .expectErrorMessageToContain('ERROR:111: invalid option -z supplied.');
     });
 
