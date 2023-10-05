@@ -18,7 +18,8 @@
         "cypress:open": "cypress open",
         "cypress:chrome": "ng run frontend:cypress --browser chrome",
         "cypress:firefox": "ng run frontend:cypress --browser firefox",
-        "supportedBrowsers": "echo \"export default $(browserslist-useragent-regexp --allowHigherVersions);\" > src/assets/supportedBrowsers.js"
+        "supportedBrowsers": "echo \"export default $(browserslist-useragent-regexp --allowHigherVersions);\" > src/assets/supportedBrowsers.js",
+        "postinstall": "npm run supportedBrowsers"
     },
     "private": true,
     "devDependencies": {

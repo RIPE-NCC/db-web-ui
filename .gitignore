@@ -15,6 +15,7 @@ frontend/dist/
 frontend/out-tsc/
 frontend/.tscache/
 frontend/.angular/
+src/assets/supportedBrowsers.js
 # dependencies
 frontend/node_modules/
 frontend/instrumented/
