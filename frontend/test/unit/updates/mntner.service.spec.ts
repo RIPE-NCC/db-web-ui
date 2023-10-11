@@ -1,3 +1,4 @@
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -14,6 +15,7 @@ import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('MntnerService', () => {
     let mntnerService: MntnerService;
+    let httpMock: HttpTestingController;
     const credentialServiceMock = {
         getCredentials: () => {
             return [{ mntner: 'B-MNT', successfulPassword: 'secret' }];
@@ -42,7 +44,7 @@ describe('MntnerService', () => {
         propertiesService.TOP_RIPE_NCC_MNTNERS = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'];
 
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
+            imports: [UpdatesWebModule, HttpClientTestingModule],
             providers: [
                 MntnerService,
                 RestService,
@@ -67,6 +69,7 @@ describe('MntnerService', () => {
                 },
             ],
         });
+        httpMock = TestBed.inject(HttpTestingController);
         mntnerService = TestBed.inject(MntnerService);
     });
 
@@ -323,6 +326,16 @@ describe('MntnerService', () => {
         expect(mntnerService.removeDuplicatedMnts(objectMntners).length).toBe(1);
     });
 
+    it('should get default maintainers', () => {
+        mntnerService.getDefaultMaintainers('ORG-TEST01-RIPE').subscribe((response) => {
+            expect(response).toBe(defaultMntsMock);
+        });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/lir/ORG-TEST01-RIPE/mntner' });
+        expect(req.request.method).toBe('GET');
+        req.flush(defaultMntsMock);
+        httpMock.verify();
+    });
+
     it('should remove duplicated mnt-by from list of IAttributeModel', () => {
         const attributes = [
             {
@@ -390,3 +403,72 @@ describe('MntnerService', () => {
         expect(mntnerService.removeDuplicateMntsFromAttribute(attributes).length).toBe(5);
     });
 });
+
+export const defaultMntsMock = {
+    objects: {
+        object: [
+            {
+                type: 'mntner',
+                link: {
+                    type: 'locator',
+                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT',
+                },
+                source: {
+                    id: 'ripe',
+                },
+                'primary-key': {
+                    attribute: [
+                        {
+                            name: 'mntner',
+                            value: 'TEST-MNT',
+                        },
+                    ],
+                },
+                attributes: {
+                    attribute: [
+                        {
+                            name: 'mntner',
+                            value: 'TEST-MNT',
+                        },
+                        {
+                            name: 'auth',
+                            value: 'SSO',
+                        },
+                        {
+                            name: 'descr',
+                            value: '***',
+                        },
+                        {
+                            name: 'admin-c',
+                            value: 'test-RIPE',
+                        },
+                        {
+                            name: 'tech-c',
+                            value: 'test-RIPE',
+                        },
+                        {
+                            name: 'upd-to',
+                            value: '***@ripe.com',
+                        },
+                        {
+                            name: 'mnt-by',
+                            value: 'TEST-MNT',
+                        },
+                        {
+                            name: 'created',
+                            value: '2022-03-28T08:49:07Z',
+                        },
+                        {
+                            name: 'last-modified',
+                            value: '2023-09-18T09:01:26Z',
+                        },
+                        {
+                            name: 'source',
+                            value: 'RIPE',
+                        },
+                    ],
+                },
+            },
+        ],
+    },
+};

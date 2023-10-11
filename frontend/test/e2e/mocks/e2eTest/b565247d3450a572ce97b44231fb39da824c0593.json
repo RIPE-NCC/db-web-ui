@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/public/lir/ORG-TEST23-RIPE/mntner",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

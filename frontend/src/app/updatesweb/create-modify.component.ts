@@ -38,6 +38,7 @@ export interface IMaintainers {
     object: IMntByModel[];
     objectOriginal: IMntByModel[];
     sso: IMntByModel[];
+    defaultMntner?: IMntByModel[];
 }
 
 @Component({

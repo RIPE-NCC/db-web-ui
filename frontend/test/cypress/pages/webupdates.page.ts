@@ -6,9 +6,12 @@ import {
     ModalEditAttribute,
     ModalProcessing,
 } from './components/modals.component';
+import { OrganisationSelector } from './components/organisation-selector.component';
 import { TextupdatesPage } from './textupdates.page';
 
 export class WebupdatesPage {
+    private organisationSelector: OrganisationSelector = new OrganisationSelector();
+
     visit(url: string) {
         cy.visit(`webupdates/${url}`);
         return this;
@@ -218,6 +221,11 @@ export class WebupdatesPage {
 
     clickHelpOnField(fieldName: string) {
         cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-question`).eq(0).click({ force: true });
+        return this;
+    }
+
+    selectOrganization(text: string) {
+        this.organisationSelector.selectOrganization(text);
         return this;
     }
 
