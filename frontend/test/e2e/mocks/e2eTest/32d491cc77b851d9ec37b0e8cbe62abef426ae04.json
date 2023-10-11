@@ -1,0 +1,77 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/public/lir/ORG-ATEST-RIPE/mntner",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/lir-am-vxsoft-1-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "etchells-mnt"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "etchells-mnt"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$uWBBDkpT$31ZLYSr70AfXCgZEQEhwJ/"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "SSO ca81cdf1-95e8-4af1-a75e-84868c33b0ec"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "admin-c",
+                                "value": "AA39406-RIPE"
+                            },
+                            {
+                                "name": "tech-c",
+                                "value": "AA39406-RIPE"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@vxsoft.com"
+                            },
+                            {
+                                "name": "mnt-by",
+                                "value": "lir-am-vxsoft-1-MNT"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2022-03-28T08:49:07Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2023-09-18T09:01:26Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

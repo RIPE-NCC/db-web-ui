@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address4 } from 'ip-address';
@@ -10,6 +11,7 @@ import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel } from '../shared/whois-response-type.model';
+import { IDefaultMaintainer } from '../whois-object/types';
 import { ModalAuthenticationComponent } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
@@ -22,6 +24,7 @@ export class MntnerService {
         private modalService: NgbModal,
         private restService: RestService,
         private propertiesService: PropertiesService,
+        private http: HttpClient,
     ) {}
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
@@ -314,6 +317,10 @@ export class MntnerService {
                 return mntHandler([]);
             },
         });
+    }
+
+    getDefaultMaintainers(orgId: string): Observable<IDefaultMaintainer> {
+        return this.http.get<IDefaultMaintainer>(`api/whois-internal/public/lir/${orgId}/mntner`);
     }
 
     private static oneOfOriginalMntnersIsMine(originalObjectMntners: IMntByModel[]) {

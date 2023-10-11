@@ -4,6 +4,8 @@ import { concat, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { JsUtilService } from '../core/js-utils.service';
+import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
+import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { IAttributeModel, IMntByModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
@@ -12,6 +14,7 @@ import { MntnerService } from '../updatesweb/mntner.service';
 import { ObjectUtilService } from '../updatesweb/object-util.service';
 import { RestService } from '../updatesweb/rest.service';
 import { IAuthParams, WebUpdatesCommonsService } from '../updatesweb/web-updates-commons.service';
+import { IDefaultMaintainer, IWhoisObject } from './types';
 
 @Component({
     selector: 'maintainers-editor',
@@ -26,6 +29,7 @@ export class MaintainersEditorComponent implements OnInit {
     public authenticationSuccessClbk = new EventEmitter();
     @Output()
     public updateMntnersClbk: EventEmitter<any> = new EventEmitter<any>();
+    public subscription: any;
 
     // Parts of the model used in template
     public attributes: IAttributeModel[];
@@ -38,6 +42,7 @@ export class MaintainersEditorComponent implements OnInit {
         object: [],
         objectOriginal: [],
         sso: [],
+        defaultMntner: [],
     };
     // ng-select
     public loading = false;
@@ -54,6 +59,7 @@ export class MaintainersEditorComponent implements OnInit {
 
     private source: string;
     private justAddedMnt: IMntByModel;
+    private selectedOrg: IUserInfoOrganisation;
 
     constructor(
         private attributeMetadataService: AttributeMetadataService,
@@ -63,7 +69,16 @@ export class MaintainersEditorComponent implements OnInit {
         private webUpdatesCommonsService: WebUpdatesCommonsService,
         public alertsService: AlertsService,
         private jsUtilsService: JsUtilService,
-    ) {}
+        public orgDropDownSharedService: OrgDropDownSharedService,
+    ) {
+        this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
+            this.ngOnInit();
+        });
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
     public ngOnInit() {
         this.mntnerAutocomplete();
@@ -197,8 +212,6 @@ export class MaintainersEditorComponent implements OnInit {
         this.mntners.sso = results;
         if (this.mntners.sso.length > 0) {
             this.mntners.objectOriginal = [];
-            // populate ngselect box with sso-mntners
-            this.mntners.object = _.cloneDeep(this.mntners.sso);
             // copy mntners to attributes (for later submit)
             const mntnerAttrs = this.mntners.sso.map((i: IMntByModel) => {
                 return {
@@ -208,8 +221,8 @@ export class MaintainersEditorComponent implements OnInit {
             });
             this.mergeMaintainers(this.attributes, mntnerAttrs);
             this.attributeMetadataService.enrich(this.objectType, this.attributes);
+            this.filterPrefilledSsoMntsToDefaultMnts();
         }
-        this.updateMntnersClbk.emit(this.mntners);
     }
 
     private handleSsoResponseError(): void {
@@ -218,6 +231,56 @@ export class MaintainersEditorComponent implements OnInit {
             text: 'Error fetching maintainers associated with this SSO account',
             type: 'error',
         };
+    }
+
+    private filterPrefilledSsoMntsToDefaultMnts() {
+        this.selectedOrg = this.orgDropDownSharedService.getSelectedOrg();
+        this.mntners.defaultMntner = [];
+        //@ts-ignore only LIR can have default maintainer
+        if (this.selectedOrg && !!this.selectedOrg.regId) {
+            this.mntnerService.getDefaultMaintainers(this.selectedOrg.orgObjectId).subscribe({
+                next: (result: IDefaultMaintainer) => {
+                    this.intersectionDefaultMntAndSsoMnt(result);
+                    this.populateNgSelectFieldWithMnt();
+                },
+                error: (error: any) => {
+                    this.populateNgSelectFieldWithMnt();
+                },
+            });
+        } else {
+            this.populateNgSelectFieldWithMnt();
+        }
+    }
+
+    private intersectionDefaultMntAndSsoMnt(defaultMnts: IDefaultMaintainer) {
+        const auth: string[] = [];
+        defaultMnts.objects.object.forEach((object: IWhoisObject) => {
+            // get all auth for default mnt
+            object.attributes.attribute.map((attr) => {
+                if (attr.name === 'auth') {
+                    auth.push(attr.value);
+                }
+            });
+            const defaultMnt = {
+                key: object.attributes.attribute.find((attr) => attr.name === 'mntner').value,
+                type: 'mntner',
+                mine: true,
+                auth,
+            };
+            // when default maintainers of selected organisation exist in assigned - sso mnts
+            if (
+                this.mntners.sso.some((sso: IMntByModel) => {
+                    return sso.key === defaultMnt.key;
+                })
+            ) {
+                this.mntners.defaultMntner.push(defaultMnt);
+            }
+        });
+    }
+
+    private populateNgSelectFieldWithMnt() {
+        this.mntners.object = this.mntners.defaultMntner.length > 0 ? this.mntners.defaultMntner : _.cloneDeep(this.mntners.sso);
+        this.updateMntnersClbk.emit(this.mntners);
     }
 
     private mergeMaintainers(attrs: IAttributeModel[], maintainers: any): void {

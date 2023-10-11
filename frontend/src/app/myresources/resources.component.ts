@@ -29,7 +29,7 @@ export class ResourcesComponent implements OnDestroy {
     public isShowingSponsored: boolean = false;
     public activeSponsoredTab = 0;
     public showAlerts: boolean = true;
-    private subscription: any;
+    private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
     private readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
 
@@ -45,7 +45,7 @@ export class ResourcesComponent implements OnDestroy {
         private activatedRoute: ActivatedRoute,
         private router: Router,
     ) {
-        this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
+        const orgSub = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
                 this.selectedOrg = selected;
                 this.loading = true;
@@ -57,15 +57,15 @@ export class ResourcesComponent implements OnDestroy {
                 }
             }
         });
-        this.subscription = this.activatedRoute.queryParams.subscribe((params) => {
+        const queryParamSub = this.activatedRoute.queryParams.subscribe((params) => {
             this.init();
         });
+        this.subscriptions.push(orgSub);
+        this.subscriptions.push(queryParamSub);
     }
 
     public ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
     public init() {

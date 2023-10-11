@@ -157,4 +157,8 @@ describe('The inetnum editor', () => {
             .expectErrorOnField('inetnum', 'inetnum 5.154.68.40 - 5.154.68.47 already exists')
             .expectErrorMessage('inetnum 5.154.68.40/29 already exists');
     });
+
+    it('should prefill default maintainer when changing organization', () => {
+        webupdatesPage.selectOrganization('WTest').expectMaintainerToContain('etchells-mnt');
+    });
 });

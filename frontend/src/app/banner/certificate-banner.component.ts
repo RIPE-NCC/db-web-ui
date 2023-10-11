@@ -10,15 +10,20 @@ import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.servi
 export class CertificateBannerComponent implements OnInit {
     public closed: boolean;
     public member: boolean;
+    public subscription: any;
 
     constructor(private cookies: CookieService, private orgDropDownSharedService: OrgDropDownSharedService) {
-        this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
+        this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             this.isMemberOrg(selected);
         });
     }
 
     public ngOnInit() {
         this.closed = localStorage.getItem('certificate-banner') === 'closed';
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     public closeAlert() {

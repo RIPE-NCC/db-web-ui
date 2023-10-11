@@ -14,4 +14,8 @@ export class OrgDropDownSharedService {
         this.selectedOrg = org;
         this.selectedOrgChanged$.emit(org);
     }
+
+    public getSelectedOrg(): IUserInfoOrganisation {
+        return this.selectedOrg;
+    }
 }

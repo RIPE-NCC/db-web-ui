@@ -18,6 +18,7 @@ import { RestService } from '../../../src/app/updatesweb/rest.service';
 import { WebUpdatesCommonsService } from '../../../src/app/updatesweb/web-updates-commons.service';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 import { MaintainersEditorComponent } from '../../../src/app/whois-object/maintainers-editor.component';
+import { defaultMntsMock } from '../updates/mntner.service.spec';
 
 describe('MaintainersEditorComponent', () => {
     describe('- create mode', () => {
@@ -172,6 +173,7 @@ describe('MaintainersEditorComponent', () => {
             expect(component.mntners.sso.length).toBe(2);
             expect(component.mntners.objectOriginal.length).toBe(0);
             expect(component.mntners.object.length).toBe(2);
+            expect(component.mntners.defaultMntner.length).toBe(0);
 
             expect(component.mntners.sso[0].key).toEqual('TEST-MNT');
             expect(component.mntners.sso[0].type).toEqual('mntner');
@@ -187,6 +189,40 @@ describe('MaintainersEditorComponent', () => {
             expect(component.mntners.object[1].type).toEqual('mntner');
             expect(component.mntners.object[1].mine).toEqual(true);
             expect(component.mntners.object[1].auth).toEqual(['MD5-PW', 'SSO']);
+        });
+
+        it('should filter associated mnts by showing just associated default mnts of selected organisation', async () => {
+            const selectedOrg = {
+                membershipId: 72439,
+                orgObjectId: 'ORG-TEST1-RIPE',
+                organisationName: 'TEST LIR',
+                regId: 'test.regid',
+            };
+            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(MNTNERS_SSO_ACCOUNT_RESPONS));
+            spyOn(component.mntnerService, 'getDefaultMaintainers').and.returnValue(of(defaultMntsMock));
+            //@ts-ignore
+            spyOn(component.orgDropDownSharedService, 'getSelectedOrg').and.returnValue(selectedOrg);
+            fixture.detectChanges();
+            await fixture.whenStable();
+            expect(component.mntners.sso.length).toBe(2);
+            expect(component.mntners.objectOriginal.length).toBe(0);
+            expect(component.mntners.object.length).toBe(1);
+            expect(component.mntners.defaultMntner.length).toBe(1);
+
+            expect(component.mntners.sso[0].key).toEqual('TEST-MNT');
+            expect(component.mntners.sso[0].type).toEqual('mntner');
+            expect(component.mntners.sso[1].key).toEqual('TESTSSO-MNT');
+            expect(component.mntners.sso[1].type).toEqual('mntner');
+
+            expect(component.mntners.object[0].key).toEqual('TEST-MNT');
+            expect(component.mntners.object[0].type).toEqual('mntner');
+            expect(component.mntners.object[0].mine).toEqual(true);
+            expect(component.mntners.object[0].auth).toEqual(['SSO']);
+
+            expect(component.mntners.defaultMntner[0].key).toEqual('TEST-MNT');
+            expect(component.mntners.defaultMntner[0].type).toEqual('mntner');
+            expect(component.mntners.defaultMntner[0].mine).toEqual(true);
+            expect(component.mntners.defaultMntner[0].auth).toEqual(['SSO']);
         });
     });
 

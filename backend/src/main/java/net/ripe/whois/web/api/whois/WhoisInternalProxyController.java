@@ -41,6 +41,15 @@ public class WhoisInternalProxyController extends ApiController {
         this.whoisInternalService = whoisInternalService;
     }
 
+    @GetMapping(path = "/public/lir/{orgId}/mntner", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> getDefaultMaintainer(
+            final HttpServletRequest request,
+            @PathVariable final String orgId,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
     @GetMapping(path = "/api/resources/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> findMyResources(
             final HttpServletRequest request,
