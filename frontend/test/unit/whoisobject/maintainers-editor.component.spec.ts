@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY, of, throwError } from 'rxjs';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../src/app/attribute/attribute-shared.service';
 import { CoreModule } from '../../../src/app/core/core.module';
@@ -223,6 +223,13 @@ describe('MaintainersEditorComponent', () => {
             expect(component.mntners.defaultMntner[0].type).toEqual('mntner');
             expect(component.mntners.defaultMntner[0].mine).toEqual(true);
             expect(component.mntners.defaultMntner[0].auth).toEqual(['SSO']);
+        });
+
+        it('should report error when fetching sso maintainers fails', () => {
+            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(throwError(() => ({ data: 'error' })));
+            fixture.detectChanges();
+            expect(component.alertsService.alerts.errors.length > 0).toBeTruthy();
+            expect(component.alertsService.alerts.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
         });
     });
 

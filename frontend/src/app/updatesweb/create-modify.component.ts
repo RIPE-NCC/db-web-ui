@@ -609,39 +609,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     private fetchDataForCreate() {
-        this.restCallInProgress = true;
-        this.restService.fetchMntnersForSSOAccount().subscribe({
-            next: (results: any) => {
-                let attributes;
-                this.restCallInProgress = false;
-                this.maintainers.sso = results;
-                if (this.maintainers.sso.length > 0) {
-                    this.maintainers.objectOriginal = [];
-                    // populate ui-select box with sso-mntners
-                    this.maintainers.object = _.cloneDeep(this.maintainers.sso);
-
-                    // copy mntners to attributes (for later submit)
-                    const mntnerAttrs = _.map(this.maintainers.sso, (i: any) => {
-                        return { name: 'mnt-by', value: i.key };
-                    });
-
-                    attributes = this.whoisResourcesService.wrapAndEnrichAttributes(
-                        this.objectType,
-                        this.whoisResourcesService.addAttrsSorted(this.attributes, 'mnt-by', mntnerAttrs),
-                    );
-                } else {
-                    attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
-                }
-                // Post-process attributes before showing using screen-logic-interceptor
-                this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
-                this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
-            },
-            error: (error: any) => {
-                this.restCallInProgress = false;
-                console.error('Error fetching mntners for SSO:' + JSON.stringify(error));
-                this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
-            },
-        });
+        let attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
+        // Post-process attributes before showing using screen-logic-interceptor
+        this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
+        this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
     }
 
     private loadAlerts(errorMessages: string[], warningMessages: string[], infoMessages: string[]) {
