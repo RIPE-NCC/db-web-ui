@@ -254,7 +254,7 @@ export class MaintainersEditorComponent implements OnInit {
 
     private intersectionDefaultMntAndSsoMnt(defaultMnts: IDefaultMaintainer) {
         const auth: string[] = [];
-        defaultMnts.objects.object.forEach((object: IWhoisObject) => {
+        defaultMnts.objects?.object.forEach((object: IWhoisObject) => {
             // get all auth for default mnt
             object.attributes.attribute.map((attr) => {
                 if (attr.name === 'auth') {
