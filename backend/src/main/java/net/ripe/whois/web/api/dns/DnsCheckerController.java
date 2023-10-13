@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
 import java.util.regex.Pattern;
 

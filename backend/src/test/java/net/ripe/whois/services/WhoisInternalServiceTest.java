@@ -14,12 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 
 public class WhoisInternalServiceTest {
 
@@ -208,6 +210,7 @@ public class WhoisInternalServiceTest {
     public void shouldReturnFalseWhenActiveTokenUnauthorized(){
         mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active?clientIp=127.0.0.1"))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
-        assertFalse(whoisInternalService.getActiveToken(SSO_TOKEN, "127.0.0.1"));
+
+        assertThat(whoisInternalService.getActiveToken(SSO_TOKEN, "127.0.0.1"), is(false));
     }
 }

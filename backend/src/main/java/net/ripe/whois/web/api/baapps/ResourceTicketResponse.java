@@ -2,35 +2,36 @@ package net.ripe.whois.web.api.baapps;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
-
+/**
+ * Resource tickets for a specific member
+ *
+ */
+@XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ResourceTicketResponse {
 
-    ResourceTicketResponse() {
-        this.tickets = new HashMap<>();
+    @JsonProperty("tickets")
+    private final Map<String, List<ResourceTicket>> tickets;
+
+    public ResourceTicketResponse() {
+        this.tickets = Maps.newHashMap();
     }
 
-    void addTickets(final String resource, final List<ResourceTicket> resourceTickets) {
+    public void addTickets(final String resource, final List<ResourceTicket> resourceTickets) {
         if (!tickets.containsKey(resource)) {
-            tickets.put(resource, new ArrayList<>());
+            tickets.put(resource, Lists.newArrayList());
         }
         tickets.get(resource).addAll(resourceTickets);
     }
 
-    static final class ResourceTicket {
-
-        ResourceTicket(final String number, final String date, final String ticketResource) {
-            this.number = number;
-            this.date = date;
-            this.ticketResource = ticketResource;
-        }
-
-        String getTicketResource() {
-            return ticketResource;
-        }
+    public static class ResourceTicket {
 
         @JsonProperty("number")
         final private String number;
@@ -39,9 +40,16 @@ class ResourceTicketResponse {
         final private String date;
 
         @JsonProperty("resource")
-        final private String ticketResource;
-    }
+        final private String resource;
 
-    @JsonProperty("tickets")
-    private final Map<String, List<ResourceTicket>> tickets;
+        ResourceTicket(final String number, final String date, final String resource) {
+            this.number = number;
+            this.date = date;
+            this.resource = resource;
+        }
+
+        String getResource() {
+            return resource;
+        }
+    }
 }

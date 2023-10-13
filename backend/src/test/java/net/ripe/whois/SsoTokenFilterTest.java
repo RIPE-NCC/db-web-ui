@@ -1,5 +1,7 @@
 package net.ripe.whois;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.CachingSessionChecker;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,21 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.Cookie;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -33,7 +23,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(classes = {SsoTokenFilterTest.TestConfiguration.class})
 public class SsoTokenFilterTest {
 
     @Mock
@@ -46,25 +35,6 @@ public class SsoTokenFilterTest {
     private MockHttpServletRequest request;
 
     private SsoTokenFilter ssoInterceptor;
-
-    @Configuration
-    @EnableCaching
-    @ComponentScan(basePackages = "net.ripe.whois")
-    public static class TestConfiguration {
-
-        @Bean
-        public CacheManager cacheManager() {
-            return new EhCacheCacheManager(ehCacheCacheManager().getObject());
-        }
-
-        @Bean
-        public EhCacheManagerFactoryBean ehCacheCacheManager() {
-            EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
-            cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
-            cmfb.setShared(true);
-            return cmfb;
-        }
-    }
 
     @BeforeEach
     public void setup() {

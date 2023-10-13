@@ -2,7 +2,7 @@ package net.ripe.whois.services;
 
 import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

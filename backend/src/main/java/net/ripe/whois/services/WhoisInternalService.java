@@ -1,6 +1,7 @@
 package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
+import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.rpsl.AttributeType;
@@ -20,7 +21,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
 import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
@@ -94,7 +93,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
             objectSummary.put(AttributeType.AUTH.getName(), getValuesForAttribute(obj, AttributeType.AUTH));
             objectSummary.put("mine", true);
             return objectSummary;
-        }).collect(Collectors.toList());
+        }).toList();
 
     }
 
@@ -108,7 +107,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) {
         headers.set(API_KEY_HEADER, apiKey);
         final URI uri = composeWhoisUrl(request);
-        LOGGER.info("Calling WhoisInternalService {}", uri);
+        LOGGER.debug("Calling WhoisInternalService {}", uri);
         return handleErrors(() ->
             restTemplate.exchange(
                 uri,
@@ -126,15 +125,15 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         httpHeaders.add("Cookie", SSO_TOKEN_KEY + "=" + ssoToken);
         httpHeaders.set(API_KEY_HEADER, apiKey);
         final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", "clientIp=" + clientIp, "", apiUrl);
-        LOGGER.info("Calling Whois InternalService to retrieve user info {}", uri);
         try {
             return restTemplate.exchange(uri, HttpMethod.GET,
                 new HttpEntity<>("", httpHeaders), UserInfoResponse.class).getBody();
         } catch (HttpClientErrorException e) {
-            LOGGER.info("Failed to retrieve user info from whois internal {}", e.getMessage());
+            LOGGER.debug("Failed to retrieve user info from whois internal due to {}: {}", e.getClass().getName(), e.getMessage());
             throw new RestClientException(e.getStatusCode().value(), "");
         } catch (Exception e) {
-            LOGGER.info("Exception: Failed to parse user info from whois internal {}", e.getMessage());
+            LOGGER.error("Exception: Failed to retrieve user info from whois internal due to {}: {}", e.getClass().getName(), e.getMessage());
+            LOGGER.error(e.getClass().getName(), e);
             throw new RestClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
         }
     }
@@ -148,7 +147,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         httpHeaders.add("Cookie", SSO_TOKEN_KEY + "=" + ssoToken);
         httpHeaders.add(API_KEY_HEADER, apiKey);
         final URI uri = whoisInternalProxy.composeProxyUrl("api/user/active", "clientIp=" + clientIp, "", apiUrl);
-        LOGGER.info("Calling Whois InternalService to retrieve user active {}", uri);
+        LOGGER.debug("Calling Whois InternalService to retrieve user active {}", uri);
         try {
             return restTemplate.exchange(uri, HttpMethod.GET,
                 new HttpEntity<>("", httpHeaders), Boolean.class).getBody();
@@ -168,7 +167,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     public ResponseEntity<byte[]> bypassFile(final HttpServletRequest request, final String body, final HttpHeaders headers) {
         headers.set(API_KEY_HEADER, apiKey);
         final URI uri = composeWhoisUrl(request);
-        LOGGER.info("Calling WhoisInternalService {}", uri);
+        LOGGER.debug("Calling WhoisInternalService {}", uri);
         return restTemplate.exchange(
             uri,
             HttpMethod.valueOf(request.getMethod().toUpperCase()),

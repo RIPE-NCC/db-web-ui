@@ -33,7 +33,7 @@ public class RpkiValidatorService implements ExchangeErrorHandler {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         final Map<String, Object> params = Map.of("origin", origin, "route", route);
-        ResponseEntity<String> responseEntity = this.restTemplate.exchange(this.apiUrl + "{origin}/{route}",
+        final ResponseEntity<String> responseEntity = this.restTemplate.exchange(this.apiUrl + "{origin}/{route}",
             HttpMethod.GET,
             new HttpEntity<>(headers),
             String.class,
