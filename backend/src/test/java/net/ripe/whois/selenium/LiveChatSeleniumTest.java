@@ -12,8 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.net.URL;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 @ActiveProfiles(profiles = "selenium")
 public class LiveChatSeleniumTest extends AbstractSeleniumTest {
@@ -36,7 +36,7 @@ public class LiveChatSeleniumTest extends AbstractSeleniumTest {
 
             //quit the driver first otherwise broswerstack times out
             driver.quit();
-            assertTrue(title.contains("RIPE NCC Support"));
+            assertThat(title, containsString("RIPE NCC Support"));
         } catch (NoSuchElementException e) {
             //Live chat is not enabled, ignore
         }

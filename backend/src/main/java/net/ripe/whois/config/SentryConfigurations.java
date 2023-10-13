@@ -11,8 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.firewall.RequestRejectedException;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.ClientErrorException;
+import jakarta.annotation.PostConstruct;
+import jakarta.ws.rs.ClientErrorException;
 
 @Configuration
 @PropertySource(value = "classpath:git.properties", ignoreResourceNotFound = true)

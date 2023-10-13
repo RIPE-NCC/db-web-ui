@@ -9,9 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 public interface WhoisServiceBase {
@@ -25,14 +25,21 @@ public interface WhoisServiceBase {
         return obj.getPrimaryKey().stream().findFirst().map(Attribute::getValue).orElse(null);
     }
 
+    @Nullable
     default String getObjectType(final WhoisObject obj) {
-        return obj.getPrimaryKey().stream().findFirst().map(Attribute::getName).orElse(null);
+        return obj.getPrimaryKey()
+                .stream()
+                .findFirst()
+                .map(Attribute::getName)
+                .orElse(null);
     }
 
     default List<String> getValuesForAttribute(final WhoisObject obj, final AttributeType type) {
-        return obj.getAttributes().stream().
-            filter(a -> a.getName().equals(type.getName())).
-            map(Attribute::getValue).collect(Collectors.toList());
+        return obj.getAttributes()
+                .stream()
+                .filter(a -> a.getName().equals(type.getName()))
+                .map(Attribute::getValue)
+                .toList();
     }
 
     @Nonnull

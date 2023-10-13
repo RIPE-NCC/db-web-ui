@@ -1,5 +1,8 @@
 package net.ripe.whois.services;
 
+import com.google.common.collect.Lists;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
@@ -22,11 +25,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -106,7 +106,8 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         }
 
         boolean metOrg = false;
-        final List<String> resources = new ArrayList<>();
+        final List<String> resources = Lists.newArrayList();
+
         if (whoisResources != null) {
             for (final WhoisObject o : whoisResources.getWhoisObjects()) {
                 final boolean hasOrg = o.getAttributes().stream().anyMatch(a -> "org".equals(a.getName()) && org.equals(a.getValue()));

@@ -6,7 +6,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <!-- keep version in sync with spring-boot.version in backend pom -->
-        <version>2.7.2</version>
+        <version>3.1.4</version>
         <relativePath />
     </parent>
 
@@ -30,10 +30,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <prerequisites>
-        <maven>3.6.2</maven>
-    </prerequisites>
 
     <scm>
         <developerConnection>scm:git:ssh://git@stash.ripe.net:7999/swe/db-web-ui.git</developerConnection>
@@ -73,7 +69,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>7.0.1</version>
+                <version>7.4.4</version>
                 <executions>
                     <execution>
                         <!-- do not run by default -->

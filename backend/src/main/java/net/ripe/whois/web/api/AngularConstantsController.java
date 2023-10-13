@@ -1,6 +1,7 @@
 package net.ripe.whois.web.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.ripe.whois.config.LeftMenuConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-import static javax.ws.rs.core.HttpHeaders.CACHE_CONTROL;
+import static jakarta.ws.rs.core.HttpHeaders.CACHE_CONTROL;
 
 /**
  * This class serves up a configuration file in json format to the Angular web front end.

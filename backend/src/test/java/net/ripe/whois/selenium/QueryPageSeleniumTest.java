@@ -13,7 +13,8 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 @ActiveProfiles(profiles = "selenium")
 public class QueryPageSeleniumTest extends AbstractSeleniumTest {
@@ -74,6 +75,6 @@ public class QueryPageSeleniumTest extends AbstractSeleniumTest {
         //quit the driver first otherwise broswerstack times out
         driver.quit();
 
-        assertTrue(key.contains(TEST_OBJECT));
+        assertThat(key, containsString(TEST_OBJECT));
     }
 }

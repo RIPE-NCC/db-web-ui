@@ -3,23 +3,22 @@ package net.ripe.whois.web.api.whois.domain;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Lists;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import net.ripe.db.whois.api.rest.domain.Attribute;
 
-import javax.ws.rs.BadRequestException;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 @SuppressWarnings("UnusedDeclaration")
 @XmlAccessorType(XmlAccessType.FIELD)
 
-@JsonRootName("dto")
+@JsonRootName("dto")    // TODO: [ES] ignored if wrapping turned off
 @JsonInclude(NON_EMPTY)
 @XmlRootElement(name = "dto")
 public class WhoisWebDTO {
@@ -34,79 +33,63 @@ public class WhoisWebDTO {
     public List<String> passwords;
 
     /**
-     * Given the JSON below:
-     * <p>
-     * <pre>{@code
-     * {
-     *    "type": "prefix",
-     *    "attributes": [{
-     *       "name": "prefix",
-     *       "value": "193.0.0.0/22"
-     *    },
-     *    {
-     *       "name": "nserver",
-     *       "value": "ns.test.nl"
-     *    },
-     *    {
-     *       "name": "nserver",
-     *       "value": "ns1.test.nl"
-     *    }
-     * }
-     * }</pre>
-     * <p>
-     * getValues("nserver") returns ["ns.test.nl", "ns1.test.nl"]
+     * For example: getValues("nserver") returns ["ns.test.nl", "ns1.test.nl"]
      *
-     * @return all values of NameValuePairs with the given name.
+     * @return all attribute values matching a given name
      */
-    public List<String> getValues(String name) {
-
+    public List<String> getValues(final String name) {
         return attributes.stream()
                 .filter(nvp -> nvp.name.equals(name))
                 .map(nvp -> nvp.value)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
-     * @return value of the matching NameValuePair
+     * @return single matching attribute value
      * @throws BadRequestException when either no attribute or more than one attribute with name is found
      */
-    public String getValue(String name) {
+    public String getValue(final String name) {
         final List<String> values = getValues(name);
         if (values.size() != 1)
-            throw new BadRequestException(String.format("Missing attribute '%s'", name));
+            // TODO: [ES] throw ISE or IAE not web-specific exception
+            throw new BadRequestException(String.format("Expected a single attribute '%s' but found %d", name, values.size()));
         else
             return values.get(0);
     }
 
     /**
-     * @return list of Whois Attribute derived from this.attributes where NameValuePair.name exists in includeNames.
+     * @param includeNames list of attributes to include
+     * @return list of attributes matching includeNames.
      */
-    public List<Attribute> extractWhoisAttributes(String... includeNames) {
-
+    public List<Attribute> getAttributesIncluding(final String... includeNames) {
         final List<Attribute> whoisAttributes = Lists.newArrayList();
         final List<String> includeNamesList = Arrays.asList(includeNames);
 
         final List<NameValuePair> filteredNameValuePairs = attributes.stream()
                 .filter(nvp -> includeNamesList.contains(nvp.name))
-                .collect(Collectors.toList());
+                .toList();
 
         for (NameValuePair nameValuePair : filteredNameValuePairs) {
-
             whoisAttributes.add(new Attribute(nameValuePair.name, nameValuePair.value));
         }
+
         return whoisAttributes;
     }
 
-    public List<Attribute> extractWhoisAttributesExcludeNames(String... excludeNames) {
-
+    /**
+     *
+     * @param excludeNames attribute names to exclude
+     * @return list of attributes not matching excludeNames
+     */
+    public List<Attribute> getAttributesExcluding(final String... excludeNames) {
         final List<String> excludeNamesList = Arrays.asList(excludeNames);
 
         final List<String> includeNamesList = attributes.stream()
                 .map(nvp -> nvp.name)
                 .filter(name -> !excludeNamesList.contains(name))
-                .collect(Collectors.toList());
+                .toList();
 
-        return extractWhoisAttributes(includeNamesList.toArray(new String[]{}));
+        return getAttributesIncluding(includeNamesList.toArray(new String[]{}));
     }
 }
 
