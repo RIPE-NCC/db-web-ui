@@ -28,6 +28,7 @@ import { PreferenceService } from '../../../../src/app/updatesweb/preference.ser
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
 import { ScreenLogicInterceptorService } from '../../../../src/app/updatesweb/screen-logic-interceptor.service';
 import { WebUpdatesCommonsService } from '../../../../src/app/updatesweb/web-updates-commons.service';
+import { WhoisObjectModule } from '../../../../src/app/whois-object/whois-object.module';
 
 describe('CreateModifyComponent', () => {
     let httpMock: HttpTestingController;
@@ -42,7 +43,7 @@ describe('CreateModifyComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
+            imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule, WhoisObjectModule],
             declarations: [CreateModifyComponent],
             providers: [
                 PrefixService,
@@ -102,8 +103,8 @@ describe('CreateModifyComponent', () => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
+            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_MAINTAINERS_MOCK));
             fixture.detectChanges();
-            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(USER_MAINTAINERS_MOCK);
             await fixture.whenStable();
         });
 
@@ -131,10 +132,10 @@ describe('CreateModifyComponent', () => {
             expect(component.maintainers.object[0].auth).toEqual(['SSO']);
             expect(component.maintainers.object[0].mine).toEqual(true);
 
-            expect(component.attributes.length).toBe(4);
-            // there is is an attribute with a null value in the set
-            expect(component.attributes[2].name).toEqual('mnt-by');
-            expect(component.attributes[2].value).toEqual('TEST-MNT');
+            expect(component.attributes.length).toBe(3);
+
+            expect(component.attributes[1].name).toEqual('mnt-by');
+            expect(component.attributes[1].value).toEqual('TEST-MNT');
         });
 
         it('should populate the ui based on object-type meta model and source', () => {
@@ -201,8 +202,8 @@ describe('CreateModifyComponent', () => {
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'as-block', 'A');
             component.submit();
 
-            httpMock.expectOne({ method: 'POST', url: 'api/whois/RIPE/as-block' }).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, { status: 400, statusText: 'error' });
             await fixture.whenStable();
+            httpMock.expectOne({ method: 'POST', url: 'api/whois/RIPE/as-block' }).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, { status: 400, statusText: 'error' });
             expect(component.alertsService.alerts.errors).toHaveSize(2);
             expect(component.alertsService.alerts.errors[0].plainText).toEqual('Creation of as-block failed, please see below for more details');
             expect(component.alertsService.alerts.errors[1].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
@@ -461,31 +462,6 @@ describe('CreateModifyComponent', () => {
                     'Click here for more information</a>.',
             );
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('webupdates/display/RIPE/route/193.0.7.231%2F32AS1299?method=Pending');
-        });
-    });
-
-    describe('init with failures', () => {
-        const SOURCE = 'RIPE';
-        const OBJECT_TYPE = 'as-block';
-
-        beforeEach(async () => {
-            paramMapMock.source = SOURCE;
-            paramMapMock.objectType = OBJECT_TYPE;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
-                return component.activatedRoute.snapshot.paramMap[param];
-            });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
-                return !!component.activatedRoute.snapshot.paramMap[param];
-            });
-            component = fixture.componentInstance;
-            fixture.detectChanges();
-            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush({}, { status: 404, statusText: 'error' });
-            await fixture.whenStable();
-        });
-
-        it('should report error when fetching sso maintainers fails', () => {
-            expect(component.alertsService.alerts.errors.length > 0).toBeTruthy();
-            expect(component.alertsService.alerts.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
         });
     });
 

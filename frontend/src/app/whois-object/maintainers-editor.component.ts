@@ -231,6 +231,7 @@ export class MaintainersEditorComponent implements OnInit {
             text: 'Error fetching maintainers associated with this SSO account',
             type: 'error',
         };
+        this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
     }
 
     private filterPrefilledSsoMntsToDefaultMnts() {
