@@ -42,6 +42,21 @@ build:
     paths:
       - backend/target/db-web-ui*.jar
 
+build-container:
+  tags:
+    - whois
+  stage: build
+  before_script:
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+  script:
+    - >
+        docker build
+        --pull
+        --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
+        --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+        .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
 backend:
     tags:
       - whois
@@ -156,6 +171,17 @@ release:
         - mvn versions:set -DnewVersion=$NEW_VERSION -Dartifact=$ARTIFACT_NAME
         - mvn -DskipTests -DskipITs -Djar.finalName=$ARTIFACT_NAME-$NEW_VERSION.jar deploy
     extends: .release_template
+
+release-container:
+    stage: release
+    only:
+        - tags
+    before_script:
+      - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    script:
+      - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+      - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+      - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 browserstack:
     stage: browserstack
