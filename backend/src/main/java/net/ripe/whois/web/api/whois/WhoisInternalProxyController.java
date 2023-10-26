@@ -1,7 +1,6 @@
 package net.ripe.whois.web.api.whois;
 
 import com.google.common.base.Strings;
-import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.ApiController;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 
 import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
@@ -65,7 +65,7 @@ public class WhoisInternalProxyController extends ApiController {
                                                                  @PathVariable final String key,
                                                                  @RequestHeader final HttpHeaders headers) {
 
-        LOGGER.debug("Proxy call from db web ui getForgotMaintainerPasswordPDF {}", request.getRequestURI());
+        LOGGER.info("Proxy call from db web ui getForgotMaintainerPasswordPDF {}", request.getRequestURI());
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
 
@@ -136,7 +136,7 @@ public class WhoisInternalProxyController extends ApiController {
     private ResponseEntity<String> proxyRestCalls(final HttpServletRequest request,
                                                  @Nullable @RequestBody(required = false) final String body,
                                                  @RequestHeader final HttpHeaders headers) {
-        LOGGER.debug("Proxy call from db web ui {}", request.getRequestURI());
+        LOGGER.info("Proxy call from db web ui {}", request.getRequestURI());
         // can't return the original response as it can container wrong headers for HTTP2
         ResponseEntity<String> response = whoisInternalService.bypass(request, body, cleanHeaders(headers));
         return new ResponseEntity<>(response.getBody(), response.getStatusCode());

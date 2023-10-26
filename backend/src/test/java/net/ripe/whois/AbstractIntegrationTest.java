@@ -1,10 +1,7 @@
 package net.ripe.whois;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import com.google.common.util.concurrent.Uninterruptibles;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,21 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Base integration testing class for db-web-ui.
@@ -62,8 +49,6 @@ public abstract class AbstractIntegrationTest {
     private int localServerPort;
 
     protected static HttpServerMock httpServerMock;
-
-    private static String jettyRequestLogFile = createJettyRequestLogFile();
 
     @BeforeAll
     public static void beforeClass() {
@@ -142,77 +127,15 @@ public abstract class AbstractIntegrationTest {
         return "https://localhost";
     }
 
-    private static String createJettyRequestLogFile() {
+    protected static String getJettyRequestLogFile() {
+        return "/tmp/output.log";
+    }
+
+    public static String getResource(final String resource) {
         try {
-            final File tempFile = Files.createTempFile("jetty", "log").toFile();
-            tempFile.deleteOnExit();
-            return tempFile.getAbsolutePath();
+            return Resources.toString(Resources.getResource(resource), Charsets.UTF_8);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
-
-    private static String getJettyRequestLogFile() {
-        return jettyRequestLogFile;
-    }
-
-    protected static void clearJettyRequestLogFile() {
-        try {
-            Files.write(Path.of(getJettyRequestLogFile()), new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    protected static List<String> readJettyRequestLogFile() {
-        try {
-            Uninterruptibles.sleepUninterruptibly(1L, TimeUnit.SECONDS);    // wait for fsync
-            return Files.readAllLines(Path.of(getJettyRequestLogFile()));
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public static String getResource(final String resourceName) {
-        try {
-            return Resources.toString(Resources.getResource(resourceName), Charsets.UTF_8);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public static <T> T getResource(final String resourceName, final Class<T> className) {
-        try {
-            return new ObjectMapper().readValue(getResource(resourceName), className);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    // HTTP requests
-
-    public <T> ResponseEntity<T> get(final String path, final Class<T> type) {
-        return get(path, type, validSsoCookie());
-    }
-
-    public <T> ResponseEntity<T> get(final String path, final Class<T> type, final HttpEntity httpEntity) {
-        return restTemplate.exchange("http://localhost:" + getLocalServerPort() + path, HttpMethod.GET, httpEntity, type);
-    }
-
-    public <T> ResponseEntity<T> post(final String path, final Class<T> type, final HttpEntity httpEntity) {
-        return restTemplate.exchange("http://localhost:" + getLocalServerPort() + path, HttpMethod.POST, httpEntity, type);
-    }
-
-    public HttpEntity validSsoCookie() {
-        final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=" + SSO_COOKIE_VALUE);
-        return new HttpEntity<>(null, requestHeaders);
-    }
-
-    public HttpEntity invalidSsoCookie() {
-        final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=invalid");
-        return new HttpEntity<>(null, requestHeaders);
-    }
-
 }

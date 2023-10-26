@@ -1,0 +1,33 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true"
+         monitoring="autodetect"
+         dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir/db-web-ui" />
+
+    <cache name="net.ripe.whois.ssoSessions"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="0"
+           eternal="false"
+           diskSpoolBufferSizeMB="0"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off"
+           statistics="true">
+    </cache>
+
+    <cache name="net.ripe.whois.web.api.baapps.ResourceTicketService"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="0"
+           eternal="false"
+           diskSpoolBufferSizeMB="0"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off"
+           statistics="true">
+    </cache>
+
+</ehcache>

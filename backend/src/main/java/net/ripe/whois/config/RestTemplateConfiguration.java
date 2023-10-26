@@ -1,36 +1,28 @@
 package net.ripe.whois.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.config.ConnectionConfig;
-import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.client5.http.impl.DefaultClientConnectionReuseStrategy;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.NoConnectionReuseStrategy;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
+import java.nio.charset.Charset;
 
 @Configuration
 @SuppressWarnings("UnusedDeclaration")
 public class RestTemplateConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestTemplateConfiguration.class);
-
     // Socket timeout (in ms) until a connection is established. Default is undefined (system default).
-    private static final long HTTPCLIENT_CONNECT_TIMEOUT = 5 * 1_000;
+    private static final int HTTPCLIENT_CONNECT_TIMEOUT = 5 * 1_000;
 
     // Socket timeout (in ms). Default is undefined (system default).
     private static final int HTTPCLIENT_READ_TIMEOUT = 5 * 60 * 1_000;
@@ -38,27 +30,29 @@ public class RestTemplateConfiguration {
     // Total maximum client connections in pool. Default is 20.
     private static final int HTTPCLIENT_TOTAL_MAX_CONNECTIONS = 200;
 
+    // Maximum client connections per route in pool. Default is 2.
+    private static final int HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE = 25;
+
+    private static final RequestConfig DEFAULT_REQUEST_CONFIG = RequestConfig.custom()
+                                                                    .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT)
+                                                                    .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT)
+                                                                    .setSocketTimeout(HTTPCLIENT_READ_TIMEOUT)
+                                                                    .build();
+
     @Bean
     public RestTemplate restTemplate() {
         final RestTemplate restTemplate = new RestTemplate(httpRequestFactory());
-        restTemplate.getMessageConverters().removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
-        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        restTemplate.getMessageConverters().removeIf(httpMessageConverter -> httpMessageConverter instanceof MappingJackson2HttpMessageConverter);
-        restTemplate.getMessageConverters().add(1, mappingJackson2HttpMessageConverter());
+
+        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+
+        for (HttpMessageConverter<?> httpMessageConverter : restTemplate.getMessageConverters()) {
+            if (httpMessageConverter instanceof MappingJackson2HttpMessageConverter) {
+                final ObjectMapper objectMapper = ((MappingJackson2HttpMessageConverter) httpMessageConverter).getObjectMapper();
+                objectMapper.registerModule(new JaxbAnnotationModule());
+            }
+        }
+
         return restTemplate;
-    }
-
-    private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(objectMapper());
-        return converter;
-    }
-
-    private ObjectMapper objectMapper() {
-        return new ObjectMapper()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-            .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false)
-            .registerModule(new JakartaXmlBindAnnotationModule());
     }
 
     @Bean
@@ -68,24 +62,11 @@ public class RestTemplateConfiguration {
 
     @Bean
     public HttpClient httpClient() {
-        final ConnectionConfig connectionConfig = ConnectionConfig.custom()
-                                                    .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)   // long?
-                                                    .setSocketTimeout(HTTPCLIENT_READ_TIMEOUT, TimeUnit.MILLISECONDS)       // int ??
-                                                    .build();
-
-        final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setDefaultConnectionConfig(connectionConfig);     // not a builder pattern?
-        connectionManager.setMaxTotal(HTTPCLIENT_TOTAL_MAX_CONNECTIONS);
-
-        final RequestConfig requestConfig = RequestConfig.custom()
-                                                .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
-                                                .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
-                                                .build();
-
         return HttpClientBuilder.create()
-                .setConnectionReuseStrategy(DefaultClientConnectionReuseStrategy.INSTANCE)  // TODO: was no connection reuse
-                .setDefaultRequestConfig(requestConfig)
-                .setConnectionManager(connectionManager)
+                .setConnectionReuseStrategy(NoConnectionReuseStrategy.INSTANCE)
+                .setDefaultRequestConfig(DEFAULT_REQUEST_CONFIG)
+                .setMaxConnTotal(HTTPCLIENT_TOTAL_MAX_CONNECTIONS)
+                .setMaxConnPerRoute(HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE)
                 .build();
     }
 

@@ -8,8 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -41,7 +40,7 @@ public class WhoisSyncupdatesServiceTest {
             "source:          RIPE";
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         mockServer = MockRestServiceServer.createServer(restTemplate);
         httpHeaders = new HttpHeaders();
     }
@@ -59,10 +58,8 @@ public class WhoisSyncupdatesServiceTest {
 
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-
-        final String response = whoisSyncupdatesService.proxy("something", httpHeaders).toString();
-
-        assertThat(response, containsString(expectedResponse));
+        String respons = whoisSyncupdatesService.proxy("something", httpHeaders).toString();
+        assertTrue(respons.contains(expectedResponse));
     }
 
     @Test
@@ -73,10 +70,8 @@ public class WhoisSyncupdatesServiceTest {
                 "            not authenticated by: RIPE-NCC-HM-MNT, TST02-MNT";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-
-        final String response = whoisSyncupdatesService.proxy(rpslObject, httpHeaders).toString();
-
-        assertThat(response, containsString(expectedResponse));
+        String respons = whoisSyncupdatesService.proxy(rpslObject, httpHeaders).toString();
+        assertTrue(respons.contains(expectedResponse));
     }
 
     @Test
@@ -92,10 +87,8 @@ public class WhoisSyncupdatesServiceTest {
                 "***Warning: Submitted object identical to database object";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-
-        final String response = whoisSyncupdatesService.proxy(rpslObject.concat("password:TST02-MNT"), httpHeaders).toString();
-
-        assertThat(response, containsString(expectedResponse));
+        String respons = whoisSyncupdatesService.proxy(rpslObject.concat("password:TST02-MNT"), httpHeaders).toString();
+        assertTrue(respons.contains(expectedResponse));
     }
 
     @Test
@@ -134,10 +127,8 @@ public class WhoisSyncupdatesServiceTest {
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-
-        final String response = whoisSyncupdatesService.proxy(rpslObjectIsvMnt, httpHeaders).toString();
-
-        assertThat(response, containsString(expectedResponse));
+        String respons = whoisSyncupdatesService.proxy(rpslObjectIsvMnt, httpHeaders).toString();
+        assertTrue(respons.contains(expectedResponse));
     }
 
 }

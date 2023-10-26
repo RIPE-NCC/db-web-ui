@@ -2,36 +2,35 @@ package net.ripe.whois.web.api.baapps;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Resource tickets for a specific member
- *
- */
-@XmlRootElement
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ResourceTicketResponse {
 
-    @JsonProperty("tickets")
-    private final Map<String, List<ResourceTicket>> tickets;
-
-    public ResourceTicketResponse() {
-        this.tickets = Maps.newHashMap();
+    ResourceTicketResponse() {
+        this.tickets = new HashMap<>();
     }
 
-    public void addTickets(final String resource, final List<ResourceTicket> resourceTickets) {
+    void addTickets(final String resource, final List<ResourceTicket> resourceTickets) {
         if (!tickets.containsKey(resource)) {
-            tickets.put(resource, Lists.newArrayList());
+            tickets.put(resource, new ArrayList<>());
         }
         tickets.get(resource).addAll(resourceTickets);
     }
 
-    public static class ResourceTicket {
+    static final class ResourceTicket {
+
+        ResourceTicket(final String number, final String date, final String ticketResource) {
+            this.number = number;
+            this.date = date;
+            this.ticketResource = ticketResource;
+        }
+
+        String getTicketResource() {
+            return ticketResource;
+        }
 
         @JsonProperty("number")
         final private String number;
@@ -40,16 +39,9 @@ class ResourceTicketResponse {
         final private String date;
 
         @JsonProperty("resource")
-        final private String resource;
-
-        ResourceTicket(final String number, final String date, final String resource) {
-            this.number = number;
-            this.date = date;
-            this.resource = resource;
-        }
-
-        String getResource() {
-            return resource;
-        }
+        final private String ticketResource;
     }
+
+    @JsonProperty("tickets")
+    private final Map<String, List<ResourceTicket>> tickets;
 }

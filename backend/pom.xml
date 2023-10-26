@@ -12,32 +12,31 @@
     <artifactId>db-web-ui</artifactId>
 
     <properties>
+        <apache-httpclient>4.5.13</apache-httpclient>
         <assertj-core.version>3.22.0</assertj-core.version>
         <awaitility.version>4.2.0</awaitility.version>
-        <bucket4j.version>0.9.1</bucket4j.version>
-        <caffeine.version>3.0.6</caffeine.version>
-        <commons-io.version>2.13.0</commons-io.version>
+        <commons-io.version>2.11.0</commons-io.version>
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <dnsjava.version>2.1.9</dnsjava.version>
         <freemarker.version>2.3.31</freemarker.version>
-        <google-guava-version>32.1.2-jre</google-guava-version>
-        <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
-        <httpclient.version>5.2.1</httpclient.version>
-        <jackson.version>2.15.2</jackson.version>
+        <sentry.version>5.7.0</sentry.version>
+        <google-guava-version>31.1-jre</google-guava-version>
+        <jackson.version>2.13.2</jackson.version>
         <javax.inject.version>1</javax.inject.version>
-        <jcache.version>1.1.1</jcache.version>
+        <jodatime.version>2.10.14</jodatime.version>
         <json-path.version>2.7.0</json-path.version>
+        <maven-enforcer-plugin.version>3.0.0-M5</maven-enforcer-plugin.version>
+        <maven-sortpom-plugin.version>3.0.0-M5</maven-sortpom-plugin.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <reflections.version>0.10.2</reflections.version>
-        <sentry.version>6.26.0</sentry.version>
-        <selenium.version>4.13.0</selenium.version>
+        <maven.plugins.version>3.1.1</maven.plugins.version>
+        <reflection.version>0.10.2</reflection.version>
+        <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <sonar.sources>src/main</sonar.sources>
         <sonar.tests>src/test</sonar.tests>
-        <snakeyaml.version>2.2</snakeyaml.version>
         <!-- keep spring-boot.version in sync with parent pom -->
-        <spring-boot.version>3.1.4</spring-boot.version>
-        <whois.version>1edc0f0d</whois.version>
+        <spring-boot.version>2.7.2</spring-boot.version>
+        <whois.version>82c3dcca</whois.version>
     </properties>
 
     <dependencyManagement>
@@ -167,35 +166,27 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>${reflections.version}</version>
+            <version>${reflection.version}</version>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>${freemarker.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
-            <artifactId>jackson-jakarta-rs-base</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hppc</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
-            <artifactId>jackson-jakarta-rs-json-provider</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
         </dependency>
         <dependency>
-             <groupId>com.fasterxml.jackson.core</groupId>
-             <artifactId>jackson-annotations</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-json-org</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -228,6 +219,11 @@
             <version>${javax.inject.version}</version>
         </dependency>
         <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${jodatime.version}</version>
+        </dependency>
+        <dependency>
             <groupId>net.ripe.db</groupId>
             <artifactId>whois-client</artifactId>
             <version>${whois.version}</version>
@@ -240,27 +236,30 @@
         <dependency>
             <groupId>com.giffing.bucket4j.spring.boot.starter</groupId>
             <artifactId>bucket4j-spring-boot-starter</artifactId>
-            <version>${bucket4j.version}</version>
+            <version>0.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
-            <version>${jcache.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
-            <version>${caffeine.version}</version>
+            <version>3.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>jcache</artifactId>
-            <version>${caffeine.version}</version>
+            <version>3.0.6</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents.client5</groupId>
-            <artifactId>httpclient5</artifactId>
-            <version>${httpclient.version}</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${apache-httpclient}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -281,12 +280,12 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>${snakeyaml.version}</version>
+            <version>1.30</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
+            <version>3.141.59</version>
         </dependency>
     </dependencies>
 
@@ -328,7 +327,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>${maven-sortpom-plugin.version}</version>
                 <configuration>
                     <argLine>${argLine} -Xmx256m</argLine>
                     <!-- Force alphabetical order to have a reproducible build -->
@@ -345,7 +344,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>${maven-enforcer-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>

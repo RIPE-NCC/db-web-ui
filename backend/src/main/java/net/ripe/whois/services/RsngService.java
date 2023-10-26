@@ -1,17 +1,11 @@
 package net.ripe.whois.services;
 
 import net.ripe.db.whois.api.rest.client.RestClientException;
-import net.ripe.whois.web.api.baapps.MemberResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResourceAccessException;
@@ -41,32 +35,45 @@ public class RsngService implements ExchangeErrorHandler {
         this.apiKey = apiKey;
     }
 
-    public MemberResources getMemberResources(final long memberId) {
+    /**
+     * Get ALL resource tickets for a member.
+     *
+     * Caching
+     * This API call is cached through the ResourceTicketService (do not call this method directly).
+     *
+     * @param memberId
+     * @return
+     */
+    public String getResourceTickets(long memberId) {
+
+        String url = rsngBaseUrl + "/resource-services/member-resources/{memberId}";
         try {
-            LOGGER.debug("Calling RSNG with memberId {}", memberId);
-            final ResponseEntity<MemberResources> response = restTemplate.exchange(
-                    rsngBaseUrl + "/resource-services/member-resources/{memberId}",
+            LOGGER.info("Calling {} with memberId {}", url, memberId);
+            final ResponseEntity<String> response = restTemplate.exchange(
+                    url,
                     HttpMethod.GET,
-                    new HttpEntity<String>(withHeaders()),
-                    MemberResources.class,
+                    new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
+                    String.class,
                     memberId);
             if (response.getStatusCode() != HttpStatus.OK) {
-                LOGGER.warn("Unable to retrieve member resources for {} due to unexpected status {}", memberId, response.getStatusCode());
-                throw new RestClientException(response.getStatusCode().value(), "Unable to get member resources");
+                throw new RestClientException(response.getStatusCode().value(), "Unable to get resource tickets");
             }
             return response.getBody();
         } catch (RestClientException e) {
-            LOGGER.warn("Failed to retrieve LIRs due to {}: {}", e.getClass().getName(), e.getMessage());
+            logRequestException(e);
             throw new RestClientException(e);
         } catch (ResourceAccessException e) {
-            LOGGER.warn("Failed to retrieve LIRs due to {}: {}", e.getClass().getName(), e.getMessage());
-            throw new ResourceAccessException("Unable to get member resources");
+            logRequestException(e);
+            throw new ResourceAccessException("Unable to get resource tickets");
         }
     }
 
-    private MultiValueMap<String, String> withHeaders() {
+    private void logRequestException(Exception e) {
+        LOGGER.warn("Failed to retrieve LIRs due to {}", e.getMessage());
+    }
+    private MultiValueMap<String, String> withHeaders(final String accept) {
         final MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        headers.set("Accept", accept);
         headers.set("X-API_KEY", apiKey);
         return headers;
     }

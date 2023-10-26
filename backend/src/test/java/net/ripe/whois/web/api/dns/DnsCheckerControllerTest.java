@@ -1,6 +1,6 @@
 package net.ripe.whois.web.api.dns;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -41,8 +42,8 @@ public class DnsCheckerControllerTest {
     public void setup() throws IOException {
         subject = new DnsCheckerController(whoisInternalService, dnsClient, false);
         when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(SSO_TOKEN, ""))
-            .thenReturn(getResource("mock/user-info.json", UserInfoResponse.class));
+        when(whoisInternalService.getUserInfo(SSO_TOKEN, "")).thenReturn(new ObjectMapper()
+            .readValue(getResource("mock/user-info.json"), UserInfoResponse.class));
     }
 
     @Test

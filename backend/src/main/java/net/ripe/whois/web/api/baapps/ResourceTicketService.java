@@ -1,21 +1,23 @@
 package net.ripe.whois.web.api.baapps;
 
-import com.google.common.collect.Iterables;
 import net.ripe.db.whois.common.ip.Ipv4Resource;
 import net.ripe.db.whois.common.ip.Ipv6Resource;
 import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
 import net.ripe.db.whois.common.rpsl.attrs.AutNum;
-import net.ripe.whois.config.CacheConfiguration;
 import net.ripe.whois.services.RsngService;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.StreamSupport;
+import java.util.stream.Collectors;
 
 import static net.ripe.whois.web.api.baapps.ResourceTicketMap.KeyType;
+
 
 @Service
 public class ResourceTicketService {
@@ -27,58 +29,36 @@ public class ResourceTicketService {
         this.rsngService = rsngService;
     }
 
-    /**
-     * Get all resource tickets for a member.
-     * @param memberId
-     * @return
-     */
-    @Cacheable(CacheConfiguration.RESOURCE_TICKET_MEMBER_CACHE)
-    public ResourceTicketResponse getTicketsForMember(final long memberId) {
-        final ResourceTicketResponse resourceTickets = new ResourceTicketResponse();
+    @Cacheable("net.ripe.whois.web.api.baapps.ResourceTicketService")
+    public ResourceTicketMap getTicketsForMember(final long memberId) throws JSONException {
+        final String jsonTickets = rsngService.getResourceTickets(memberId);
+        final JSONObject content = new JSONObject(jsonTickets).getJSONObject("response").getJSONObject("content");
+        final ResourceTicketMap map = new ResourceTicketMap();
 
-        resourceTicketMap(rsngService.getMemberResources(memberId))
-            .getTickets()
-            .forEach(resourceTicket -> resourceTickets.addTickets(resourceTicket.getResource(), Collections.singletonList(resourceTicket)));
-
-        return resourceTickets;
+        JSONArray resourceArray;
+        resourceArray = content.getJSONArray("ipv4Allocations");
+        map.addTickets(KeyType.IPV4, jsonToList(resourceArray));
+        resourceArray = content.getJSONArray("ipv4Assignments");
+        map.addTickets(KeyType.IPV4, jsonToList(resourceArray));
+        resourceArray = content.getJSONArray("ipv4ErxResources");
+        map.addTickets(KeyType.IPV4, jsonToList(resourceArray));
+        resourceArray = content.getJSONArray("ipv6Allocations");
+        map.addTickets(KeyType.IPV6, jsonToList(resourceArray));
+        resourceArray = content.getJSONArray("ipv6Assignments");
+        map.addTickets(KeyType.IPV6, jsonToList(resourceArray));
+        resourceArray = content.getJSONArray("asns");
+        map.addTickets(KeyType.ASN, jsonToList(resourceArray));
+        return map;
     }
 
-    /**
-     * Get all tickets for a specified resource and member.
-     * @param memberId
-     * @param resource
-     * @return
-     */
-    @Cacheable(CacheConfiguration.RESOURCE_TICKET_MEMBER_AND_RESOURCE_CACHE)
-    public ResourceTicketResponse getTicketsForMember(final long memberId, final String resource) {
-        final MemberResources memberResources = rsngService.getMemberResources(memberId);
-        return filteredResponse(resource, resourceTicketMap(memberResources));
-    }
-
-    // TODO: [ES] refactor this code
-
-    private ResourceTicketMap resourceTicketMap(final MemberResources memberResources) {
-        final ResourceTicketMap resourceTicketMap = new ResourceTicketMap();
-        resourceTicketMap.addTickets(KeyType.ASN, resourceTickets(memberResources.getContent().getAsns()));
-        resourceTicketMap.addTickets(KeyType.IPV4, resourceTickets(Iterables.concat(memberResources.getContent().getIpv4Allocations(), memberResources.getContent().getIpv4Assignments(), memberResources.getContent().getIpv4ErxResources())));
-        resourceTicketMap.addTickets(KeyType.IPV6, resourceTickets(Iterables.concat(memberResources.getContent().getIpv6Allocations(), memberResources.getContent().getIpv6Assignments())));
-        return resourceTicketMap;
-    }
-
-    private List<ResourceTicketResponse.ResourceTicket> resourceTickets(final Iterable<MemberResources.Resource> resources) {
-        return StreamSupport.stream(resources.spliterator(), false)
-            .map(resource -> new ResourceTicketResponse.ResourceTicket(resource.getTicketNumber(), resource.getRegistrationDate(), resource.getResource()))
-            .toList();
-    }
-
-    private ResourceTicketResponse filteredResponse(final String resource, final ResourceTicketMap ticketMap) {
+    ResourceTicketResponse filteredResponse(final String resource, final ResourceTicketMap ticketMap) throws JSONException {
         final ResourceTicketResponse rtr = new ResourceTicketResponse();
         final KeyType type = determineType(resource);
         final List<ResourceTicketResponse.ResourceTicket> allTickets = ticketMap.getTickets(type);
         rtr.addTickets(resource,
                 allTickets.stream()
                         .filter(resourceTicket -> ticketFilter(type, resource, resourceTicket))
-                        .toList());
+                        .collect(Collectors.toList()));
         return rtr;
     }
 
@@ -136,14 +116,28 @@ public class ResourceTicketService {
         switch (type) {
             case IPV4:
                 final Ipv4Resource v4res = Ipv4Resource.parse(resource);
-                return v4res.intersects(Ipv4Resource.parse(resourceTicket.getResource()));
+                return v4res.intersects(Ipv4Resource.parse(resourceTicket.getTicketResource()));
             case IPV6:
                 final Ipv6Resource v6res = Ipv6Resource.parse(resource);
-                return v6res.intersects(Ipv6Resource.parse(resourceTicket.getResource()));
+                return v6res.intersects(Ipv6Resource.parse(resourceTicket.getTicketResource()));
             case ASN:
-                return resourceTicket.getResource().toUpperCase().startsWith(resource.toUpperCase());
+                return resourceTicket.getTicketResource().toUpperCase().startsWith(resource.toUpperCase());
             default:
                 return false;
         }
+    }
+
+    private ArrayList<ResourceTicketResponse.ResourceTicket> jsonToList(final JSONArray resourceArray) throws JSONException {
+        final ArrayList<ResourceTicketResponse.ResourceTicket> tickets = new ArrayList<>();
+        for (int i = 0; i < resourceArray.length(); i++) {
+            final JSONObject asn = resourceArray.getJSONObject(i);
+            final ResourceTicketResponse.ResourceTicket rt =
+                    new ResourceTicketResponse.ResourceTicket(
+                            asn.getString("ticketNumber"),
+                            asn.getString("registrationDate"),
+                            asn.getString("resource"));
+            tickets.add(rt);
+        }
+        return tickets;
     }
 }

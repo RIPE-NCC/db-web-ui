@@ -1,6 +1,5 @@
 package net.ripe.whois.web.api.rest;
 
-import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.whois.services.WhoisRestService;
 import net.ripe.whois.web.api.ApiController;
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/rest")
@@ -38,13 +38,14 @@ public class WhoisRestController extends ApiController {
             @RequestHeader final HttpHeaders headers) throws Exception {
         return this.proxyRestCalls(request, body, headers);
     }
-
     @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> proxyRestCalls(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) throws Exception {
-        headers.set(HttpHeaders.CONNECTION, "Close");
+
+        LOGGER.info("rest-request: {}", request);
+        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
         return whoisRestService.bypass(request, body, headers);
     }

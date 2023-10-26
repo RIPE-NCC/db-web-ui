@@ -1,15 +1,16 @@
 package net.ripe.whois.web.api.baapps;
 
 import com.google.common.base.Strings;
-import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.common.ip.IpInterval;
 import net.ripe.db.whois.common.rpsl.AttributeType;
 import net.ripe.db.whois.common.rpsl.ObjectType;
 import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
 import net.ripe.db.whois.common.rpsl.attrs.AutNum;
+import net.ripe.whois.services.RsngService;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
@@ -30,12 +32,15 @@ import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 @SuppressWarnings("UnusedDeclaration")
 public class BaAppsController {
 
+    private final RsngService rsngService;
     private final ResourceTicketService resourceTicketService;
     private final WhoisInternalService whoisInternalService;
 
     @Autowired
-    public BaAppsController(final ResourceTicketService resourceTicketService,
+    public BaAppsController(final RsngService rsngService,
+                            final ResourceTicketService resourceTicketService,
                             final WhoisInternalService whoisInternalService) {
+        this.rsngService = rsngService;
         this.resourceTicketService = resourceTicketService;
         this.whoisInternalService = whoisInternalService;
     }
@@ -62,7 +67,7 @@ public class BaAppsController {
         try {
             validateOrgId(orgId);
             validateResource(resource);
-            final UserInfoResponse userInfo = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
+            UserInfoResponse userInfo = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
             // orgObjectId can be null in FYI pseudo-LIRs objects
             final Optional<UserInfoResponse.Member> member = userInfo.members.stream()
                 .filter(searchMember -> searchMember.orgObjectId != null && searchMember.orgObjectId.equals(orgId))
@@ -73,14 +78,13 @@ public class BaAppsController {
                 return new ResponseEntity(HttpStatus.OK);
             }
 
-            final ResourceTicketResponse filtered = resourceTicketService.getTicketsForMember(member.get().membershipId, resource.trim());
+            final ResourceTicketMap resourceTicketMap = resourceTicketService.getTicketsForMember(member.get().membershipId);
+            final ResourceTicketResponse filtered = resourceTicketService.filteredResponse(resource.trim(), resourceTicketMap);
             return new ResponseEntity<>(filtered, HttpStatus.OK);
-
-        } catch (RestClientException | IllegalArgumentException | IllegalAccessError e) {
-            // TODO: return bad request on IllegalArgumentException
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
-        } catch (Exception e) {
+        } catch (JSONException e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (RestClientException | IllegalArgumentException | IllegalAccessError e) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
     }
 

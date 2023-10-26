@@ -12,17 +12,18 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 public class ApplicationSecurity {
 
     @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // Security handled in SsoTokenFilter
         return http
-            .csrf(config -> config.disable())
-            .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
-            .build();
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/**").permitAll()
+            .and().build();
     }
 
     @Bean
     public HttpFirewall allowUrlEncodedPercentHttpFirewall() {
-        final StrictHttpFirewall firewall = new StrictHttpFirewall();
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedPercent(true);
         firewall.setAllowUrlEncodedSlash(true);
         return firewall;

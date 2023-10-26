@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -99,7 +99,7 @@ public class WhoisDomainObjectController extends ApiController {
 
             List<Attribute> attributes = Lists.newArrayList();
             attributes.add(new Attribute(NameValuePair.NAME_DOMAIN, zone));
-            attributes.addAll(dto.getAttributesExcluding(NameValuePair.NAME_REVERSE_ZONE, NameValuePair.NAME_PREFIX));
+            attributes.addAll(dto.extractWhoisAttributesExcludeNames(NameValuePair.NAME_REVERSE_ZONE, NameValuePair.NAME_PREFIX));
 
             domainObject.setAttributes(attributes);
             domainObjects.add(domainObject);

@@ -1,7 +1,8 @@
 package net.ripe.whois;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.Filter;
+import com.giffing.bucket4j.spring.boot.starter.config.cache.SyncCacheResolver;
+import com.giffing.bucket4j.spring.boot.starter.config.cache.jcache.JCacheCacheResolver;
+import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -10,21 +11,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.PostConstruct;
+import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
+import javax.servlet.Filter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.OptionalLong;
 import java.util.concurrent.Executor;
 import java.util.stream.StreamSupport;
 
@@ -115,6 +128,38 @@ public class Application implements AsyncConfigurer {
         final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(filter);
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
+    }
+
+    @Bean
+    @Primary
+    public CacheManager cacheEhCacheManager() {
+        return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean ehCacheCacheManager() {
+        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        cmfb.setCacheManagerName("net.ripe.whois.ssoSessions");
+        cmfb.setShared(true);
+        return cmfb;
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+        prefix = "bucket4j",
+        value = {"enabled"}
+    )
+    public SyncCacheResolver bucket4jCacheResolver() {
+        final CachingProvider cachingProvider = Caching.getCachingProvider();
+
+        CaffeineConfiguration<Object, Object> configuration = new CaffeineConfiguration<>();
+        configuration.setExpireAfterWrite(OptionalLong.of(Duration.ofHours(1).toNanos()));
+        configuration.setMaximumSize(OptionalLong.of(1000000));
+
+        javax.cache.CacheManager cacheManager = cachingProvider.getCacheManager();
+        cacheManager.createCache("rate-limit-buckets", configuration);
+        return new JCacheCacheResolver(cacheManager);
     }
 
     @Override

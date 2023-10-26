@@ -1,4 +1,4 @@
-package net.ripe.whois.config;
+package net.ripe.whois.web.api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

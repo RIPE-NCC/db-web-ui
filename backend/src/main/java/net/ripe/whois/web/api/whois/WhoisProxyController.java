@@ -1,7 +1,5 @@
 package net.ripe.whois.web.api.whois;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import net.ripe.whois.services.WhoisService;
 import net.ripe.whois.web.api.ApiController;
 import org.slf4j.Logger;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/whois")
