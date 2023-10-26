@@ -6,6 +6,7 @@ import { AttributeMetadataService } from '../attribute/attribute-metadata.servic
 import { JsUtilService } from '../core/js-utils.service';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
+import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { IAttributeModel, IMntByModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
@@ -70,6 +71,7 @@ export class MaintainersEditorComponent implements OnInit {
         public alertsService: AlertsService,
         private jsUtilsService: JsUtilService,
         public orgDropDownSharedService: OrgDropDownSharedService,
+        private properties: PropertiesService,
     ) {
         this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             this.ngOnInit();
@@ -238,7 +240,7 @@ export class MaintainersEditorComponent implements OnInit {
         this.selectedOrg = this.orgDropDownSharedService.getSelectedOrg();
         this.mntners.defaultMntner = [];
         //@ts-ignore only LIR can have default maintainer
-        if (this.selectedOrg && !!this.selectedOrg.regId) {
+        if (this.selectedOrg && !!this.selectedOrg.regId && !this.properties.isTestEnv()) {
             this.mntnerService.getDefaultMaintainers(this.selectedOrg.orgObjectId).subscribe({
                 next: (result: IDefaultMaintainer) => {
                     this.intersectionDefaultMntAndSsoMnt(result);
