@@ -26,6 +26,7 @@ public class LiveChatSeleniumTest extends AbstractSeleniumTest {
         driver.get(QUERY_PAGE_URL);
 
         try {
+            acceptAllCookies(driver);
             WebDriverWait wait = new WebDriverWait(driver, Duration.of(10L, ChronoUnit.SECONDS));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(LIVE_CHAT_BUTTON)));
 
@@ -40,5 +41,11 @@ public class LiveChatSeleniumTest extends AbstractSeleniumTest {
         } catch (NoSuchElementException e) {
             //Live chat is not enabled, ignore
         }
+    }
+
+    private static void acceptAllCookies(final WebDriver driver) {
+        driver.findElement(By.cssSelector("app-cookie-consent"))
+            .getShadowRoot().findElement(By.cssSelector("div.cookie-banner > div.buttons > button.allcookies"))
+            .click();
     }
 }
