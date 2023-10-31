@@ -44,7 +44,6 @@ public class WhoisRestController extends ApiController {
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) throws Exception {
-        headers.set(HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
         return whoisRestService.bypass(request, body, headers);
     }

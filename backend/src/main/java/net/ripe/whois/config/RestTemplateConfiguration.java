@@ -11,7 +11,6 @@ import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.http.ConnectionReuseStrategy;
-import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpRequest;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.message.BasicHeader;
@@ -27,8 +26,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -90,21 +88,18 @@ public class RestTemplateConfiguration {
                                                 .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                                                 .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                                                 .build();
-
-        final List<Header> headers = new ArrayList<>();
-        headers.add(new BasicHeader(HttpHeaders.CONNECTION, "close"));
-
         return HttpClients.custom()
-                .setDefaultHeaders(headers)
+                .setDefaultHeaders(Collections.singleton(new BasicHeader(HttpHeaders.CONNECTION, "close")))
                 .setConnectionReuseStrategy(
                         new ConnectionReuseStrategy() {
                             @Override
                             public boolean keepAlive(HttpRequest httpRequest, HttpResponse httpResponse, HttpContext httpContext) {
+                                // always close connection immediately as keepalive / reuse causes timeouts in production / Connection value "keep-alive" doesn't work with rest-template
                                 return false;
                             }
                         }
 
-                ) // always close connection immediately as keepalive / reuse causes timeouts in production
+                )
                 .setDefaultRequestConfig(requestConfig)
                 .setConnectionManager(connectionManager)
                 .build();

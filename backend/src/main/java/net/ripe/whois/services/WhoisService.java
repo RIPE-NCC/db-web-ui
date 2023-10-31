@@ -52,10 +52,6 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final HttpServletResponse response, @Nullable final String requestBody, final HttpHeaders requestHeaders) {
-
-        // Connection value "keep-alive" doesn't work with rest-template
-        requestHeaders.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
-
         // Do not accept compressed response, as it's not handled properly (by whois)
         requestHeaders.remove(HttpHeaders.ACCEPT_ENCODING);
         requestHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
