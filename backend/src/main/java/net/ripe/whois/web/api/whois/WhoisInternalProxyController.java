@@ -66,7 +66,6 @@ public class WhoisInternalProxyController extends ApiController {
                                                                  @RequestHeader final HttpHeaders headers) {
 
         LOGGER.debug("Proxy call from db web ui getForgotMaintainerPasswordPDF {}", request.getRequestURI());
-        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
 
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -143,7 +142,6 @@ public class WhoisInternalProxyController extends ApiController {
     }
 
     private HttpHeaders cleanHeaders(final HttpHeaders headers){
-        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
         return headers;
     }
