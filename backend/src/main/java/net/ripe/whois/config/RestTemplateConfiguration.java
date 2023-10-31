@@ -4,12 +4,18 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
+import com.google.common.net.HttpHeaders;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.client5.http.impl.DefaultClientConnectionReuseStrategy;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.core5.http.ConnectionReuseStrategy;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpRequest;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +27,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -45,6 +53,7 @@ public class RestTemplateConfiguration {
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
         restTemplate.getMessageConverters().removeIf(httpMessageConverter -> httpMessageConverter instanceof MappingJackson2HttpMessageConverter);
         restTemplate.getMessageConverters().add(1, mappingJackson2HttpMessageConverter());
+
         return restTemplate;
     }
 
@@ -82,8 +91,20 @@ public class RestTemplateConfiguration {
                                                 .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                                                 .build();
 
-        return HttpClientBuilder.create()
-                .setConnectionReuseStrategy(DefaultClientConnectionReuseStrategy.INSTANCE)  // TODO: was no connection reuse
+        final List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader(HttpHeaders.CONNECTION, "close"));
+
+        return HttpClients.custom()
+                .setDefaultHeaders(headers)
+                .setConnectionReuseStrategy(
+                        new ConnectionReuseStrategy() {
+                            @Override
+                            public boolean keepAlive(HttpRequest httpRequest, HttpResponse httpResponse, HttpContext httpContext) {
+                                return false;
+                            }
+                        }
+
+                ) // always close connection immediately as keepalive / reuse causes timeouts in production
                 .setDefaultRequestConfig(requestConfig)
                 .setConnectionManager(connectionManager)
                 .build();
