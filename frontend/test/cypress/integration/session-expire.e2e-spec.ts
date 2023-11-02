@@ -22,7 +22,10 @@ describe('Session expire', () => {
         cy.setCookie('crowd.ripe.hint', 'true');
         queryPage.visit();
         cy.wait('@getProfile');
+        // replace responses
         cy.changeJsonResponseFile(userNotLoggedIn, userInfoFile);
+        cy.intercept('GET', 'https://access.prepdev.ripe.net/user/profile', { statusCode: 401, body: {} }).as('getProfile');
+        cy.intercept('GET', 'https://access.ripe.net/user/profile', { statusCode: 401, body: {} });
         cy.wait('@getProfile');
         cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/whois-internal\/api\/user\/info/).as('getUserInfo');
         cy.wait('@getUserInfo');
@@ -71,6 +74,7 @@ describe('Session expire', () => {
         cy.changeJsonResponseFile(personCreation, personAuthError);
         cy.clearCookie('crowd.ripe.hint');
         webupdatesPage.submitForm();
+        webupdatesPage.expectErrorMessageToContain('Creation of person failed, please see below for more details');
         webupdatesPage.expectUserLoggedImage(false).expectErrorMessageToContain('Your RIPE NCC Access session has' + ' expired. You need to login again.');
     });
 
