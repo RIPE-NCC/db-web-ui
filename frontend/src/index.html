@@ -64,18 +64,18 @@
         </noscript>
         <app-db-web-ui></app-db-web-ui>
         <script>
-            loadModuleOrInvalid().then((results) => {
-                if (results === 'invalid' || !results.test(navigator.userAgent)) {
+            loadModuleOrValid().then((results) => {
+                if (results === 'valid' || results.test(navigator.userAgent)) {
                     printUnsupportedBrowserMessage();
                 }
             });
 
             //Some old browsers does not support import module
-            function loadModuleOrInvalid() {
+            function loadModuleOrValid() {
                 try {
-                    return new Function("return import('./assets/supportedBrowsers.js').then(r => r.default)")();
+                    return new Function("return import('./assets/blockedBrowsers.js').then(r => r.default)")();
                 } catch (e) {
-                    return Promise.resolve('invalid');
+                    return Promise.resolve('valid');
                 }
             }
 

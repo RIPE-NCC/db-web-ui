@@ -16,6 +16,7 @@ frontend/out-tsc/
 frontend/.tscache/
 frontend/.angular/
 frontend/src/assets/supportedBrowsers.js
+frontend/src/assets/blockedBrowsers.js
 # dependencies
 frontend/node_modules/
 frontend/instrumented/

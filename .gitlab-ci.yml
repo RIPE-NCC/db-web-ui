@@ -30,6 +30,7 @@ cache:
     - .m2/repository
     - frontend/cache/Cypress/
     - frontend/src/assets/supportedBrowsers.js
+    - frontend/src/assets/blockedBrowsers.js
 
 build:
   tags:

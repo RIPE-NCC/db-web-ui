@@ -19,7 +19,8 @@
         "cypress:chrome": "ng run frontend:cypress --browser chrome",
         "cypress:firefox": "ng run frontend:cypress --browser firefox",
         "supportedBrowsers": "echo \"export default $(browserslist-useragent-regexp --allowHigherVersions);\" > src/assets/supportedBrowsers.js",
-        "postinstall": "npm run supportedBrowsers"
+        "blockedBrowsers": "echo \"export default $(browserslist-useragent-regexp \"firefox < 71 or safari < 14 or opera < 66 or chrome < 79 or dead\");\" > src/assets/blockedBrowsers.js",
+        "postinstall": "npm run supportedBrowsers && npm run blockedBrowsers"
     },
     "private": true,
     "devDependencies": {

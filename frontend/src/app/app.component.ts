@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import supportedBrowsers from '../../src/assets/supportedBrowsers.js';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
     public showSessionExpireBanner: boolean = false;
     public showUserLoginIcon: boolean = false;
     public loginUrl: string;
+    public isBrowserSupported: boolean = true;
 
     constructor(
         public properties: PropertiesService,
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
     }
 
     public ngOnInit() {
+        this.isBrowserSupported = supportedBrowsers.test(navigator.userAgent);
         this.mobileOrDesktopView();
         this.releaseNotificationService.startPolling();
     }
