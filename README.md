@@ -15,7 +15,7 @@ Pre-requisites
 
 Prepare application properties
 ------------------------------
-* Download `application-local.properties` file from folder `SWE-DB` in `1Password` and place it to `backend/src/main/resources/config`
+* Copy `backend/src/main/resources/config/application.properties` to `backend/src/main/resources/config/application-local.properties` and modify it with your values if necessary.
 
 Build on Local Machine
 -----------------------
