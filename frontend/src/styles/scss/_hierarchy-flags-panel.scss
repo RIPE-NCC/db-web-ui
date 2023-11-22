@@ -1,0 +1,22 @@
+.flag-description {
+    height: 67px;
+}
+
+.slider-component,
+.flag-description {
+    width: 600px;
+    @media (max-width: 1025px) {
+        width: 400px;
+    }
+}
+.slider-component .mat-mdc-slider {
+    width: 580px;
+}
+
+.slider-labels {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px;
+    margin-top: -20px;
+}

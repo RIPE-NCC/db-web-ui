@@ -1,0 +1,37 @@
+{
+    "requestUrl": "/api/whois-internal/api/mntner-pair/RIPE/person",
+    "contentType": "application/javascript",
+    "statusCode": 400,
+    "data": {
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "attribute": {
+                        "name": "mntner",
+                        "value": "<img src='https://www.yarrah.com/en/wp-content/uploads/sites/10/2019/01/Puppy-aanschaffen-header-800x600.png'/>"
+                    },
+                    "text": "Syntax error in %s",
+                    "args": [
+                        {
+                            "value": "<img src='https://www.yarrah.com/en/wp-content/uploads/sites/10/2019/01/Puppy-aanschaffen-header-800x600.png'/>"
+                        }
+                    ]
+                },
+                {
+                    "severity": "Error",
+                    "attribute": {
+                        "name": "mnt-by",
+                        "value": "         <img src='https://www.yarrah.com/en/wp-content/uploads/sites/10/2019/01/Puppy-aanschaffen-header-800x600.png'/>"
+                    },
+                    "text": "Syntax error in %s",
+                    "args": [
+                        {
+                            "value": "<img src='https://www.yarrah.com/en/wp-content/uploads/sites/10/2019/01/Puppy-aanschaffen-header-800x600.png'/>"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

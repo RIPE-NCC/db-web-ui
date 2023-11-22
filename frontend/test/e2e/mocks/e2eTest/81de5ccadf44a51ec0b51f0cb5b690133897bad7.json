@@ -1,0 +1,151 @@
+{
+    "requestUrl": "/api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::/38&type-filter=inet6num",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {
+                "type-filter": [
+                    {
+                        "id": "inet6num"
+                    }
+                ]
+            },
+            "flags": {
+                "flag": [
+                    {
+                        "value": "one-less"
+                    },
+                    {
+                        "value": "no-referenced"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "2001:888:2000::/38"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inet6num",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:888:2000::/36"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inet6num",
+                                "value": "2001:888:2000::/36"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inet6num",
+                                "value": "2001:888:2000::/36"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "ORG-TEST22"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "ORG-TEST22"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "Test organisation name"
+                            },
+                            {
+                                "name": "country",
+                                "value": "NL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "AGGREGATED-BY-LIR"
+                            },
+                            {
+                                "name": "assignment-size",
+                                "value": "48"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "Please send email to 'abuse@orgtest22.nl' for complaints"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "regarding portscans, DoS attacks and spam."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST11-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST11-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2011-02-16T08:38:25Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2011-02-16T14:41:14Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "tags": {
+                        "tag": [
+                            {
+                                "id": "RIPE-USER-RESOURCE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

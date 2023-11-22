@@ -1,0 +1,51 @@
+@use 'common-functions' as common;
+
+.feedback-support-panel {
+    min-width: 296px;
+
+    .mat-mdc-dialog-container {
+        padding: common.spacing(0, 0, 3, 0);
+
+        feedback-support-dialog {
+            h2 {
+                border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+                margin: 0;
+                padding: common.spacing(1, 3, 2, 3);
+                font-weight: 300;
+                color: black;
+            }
+
+            .mat-mdc-dialog-actions {
+                padding: 8px 0;
+                @media only screen and (max-width: 900px) {
+                    .mat-list-base .mat-list-item .mat-line {
+                        white-space: normal;
+                    }
+                }
+            }
+
+            .mat-mdc-action-list {
+                padding: 0;
+                .mat-mdc-list-item {
+                    height: auto;
+                    padding: common.spacing(2);
+                    .mdc-list-item__content {
+                        .mdc-list-item__primary-text {
+                            display: flex;
+                            align-items: center;
+                            gap: common.spacing(4);
+
+                            em {
+                                font-size: 24px;
+                            }
+                        }
+
+                        .secondary {
+                            color: var(--mdc-theme-text-secondary-on-background, rgba(0, 0, 0, 0.54));
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

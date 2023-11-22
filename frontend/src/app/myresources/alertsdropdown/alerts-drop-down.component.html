@@ -1,0 +1,37 @@
+<div class="btn-group float-end" ngbDropdown *ngIf="hasAllocations" placement="bottom-right">
+    <button
+        *ngIf="!hasAlerts"
+        id="grey-bell-button"
+        type="button"
+        class="grey-button"
+        [ngbPopover]="'No alerts'"
+        placement="bottom"
+        triggers="mouseenter:mouseleave"
+    >
+        <em class="fal fa-bell"></em>
+    </button>
+    <button *ngIf="hasAlerts" id="red-bell-button" type="button" class="red-button" ngbDropdownToggle>
+        <em class="fal fa-bell"></em>
+    </button>
+
+    <ul *ngIf="hasAlerts" class="dropdown-menu" ngbDropdownMenu role="menu" aria-labelledby="single-button">
+        <li class="dropdown-header">Invalid inetnums</li>
+        <li *ngIf="!syntaxErrors.length" ngbDropdownItem>
+            <span>Not present</span>
+        </li>
+        <li *ngFor="let syntaxError of syntaxErrors" ngbDropdownItem>
+            <span>{{ syntaxError }}</span>
+        </li>
+
+        <li class="dropdown-header">Overlapping objects</li>
+        <li *ngIf="!overlaps.length" ngbDropdownItem>
+            <span>Not present</span>
+        </li>
+        <li role="menuitem" *ngFor="let overlapz of overlaps">
+            <a class="overlap-link" *ngFor="let overlap of overlapz" (click)="showDetail(getRange(overlap.range))" style="border: 0px !important">
+                {{ getRange(overlap.range) }} <br />
+            </a>
+            <div style="border-bottom: 1px solid #eaeaea !important"></div>
+        </li>
+    </ul>
+</div>

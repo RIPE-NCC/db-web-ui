@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/api/whois-internal/api/abuse-validation/validate-token?token=FAILED-TOKEN-EXPIRATION-DATE",
+    "contentType": "application/javascript",
+    "statusCode": 403,
+    "data": {}
+}

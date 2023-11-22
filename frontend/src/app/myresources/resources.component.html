@@ -1,0 +1,65 @@
+<section class="my-resources">
+    <div class="resources-sponsored-tabs">
+        <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeSponsoredTab">
+            <li [ngbNavItem]="0" id="0">
+                <a ngbNavLink (click)="resourcesTabClicked()">My Resources</a>
+            </li>
+            <li [ngbNavItem]="1" id="1" *ngIf="isMemberOrg()">
+                <a ngbNavLink (click)="sponsoredResourcesTabClicked()">Sponsored Resources</a>
+            </li>
+        </ul>
+    </div>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+    <a
+        mat-flat-button
+        color="primary"
+        class="float-end margin-left uppercase"
+        *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'"
+        (click)="navigateToCreateAssignments()"
+        >{{ 'resource.createAssignment.text' | label }}</a
+    >
+    <transfer-drop-down *ngIf="isMemberOrg()" [sponsoredMenu]="isShowingSponsored"></transfer-drop-down>
+    <alerts-drop-down *ngIf="showAlerts" [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
+    <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
+    </ip-usage-of-all-resources>
+    <ul ngbNav #navIpv46ASN="ngbNav" id="ipv4-ipv6-asn-tabs" class="nav-tabs" [(activeId)]="lastTab" (navChange)="tabClicked($event)">
+        <li [ngbNavItem]="'inetnum'" id="inetnum">
+            <a ngbNavLink>IPv4</a>
+            <ng-template ngbNavContent>
+                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
+                <div class="resource-list" *ngFor="let resource of ipv4Resources">
+                    <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
+                </div>
+                <p class="resource-page-message" *ngIf="loading === false && ipv4Resources.length === 0">
+                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                </p>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="'inet6num'" id="inet6num">
+            <a ngbNavLink>IPv6</a>
+            <ng-template ngbNavContent>
+                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
+                <div class="resource-list" *ngFor="let resource of ipv6Resources">
+                    <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
+                </div>
+                <p class="resource-page-message" *ngIf="loading === false && ipv6Resources.length === 0">
+                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                </p>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="'aut-num'" id="aut-num">
+            <a ngbNavLink>ASN</a>
+            <ng-template ngbNavContent>
+                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
+                <div class="resource-list" *ngFor="let resource of asnResources">
+                    <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
+                </div>
+                <p class="resource-page-message" *ngIf="loading === false && asnResources.length === 0">
+                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                </p>
+            </ng-template>
+        </li>
+    </ul>
+    <div [ngbNavOutlet]="navIpv46ASN" id="ipv4-ipv6-asn-panes" class="mt-2"></div>
+</section>

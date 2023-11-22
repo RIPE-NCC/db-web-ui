@@ -1,0 +1,11 @@
+node_modules
+.angular
+target
+dist
+package-lock.json
+
+# ignore cypress cache on gitlab
+cache/Cypress
+
+# ignore test.ts to avoid reorganize imports
+test/unit/test.ts

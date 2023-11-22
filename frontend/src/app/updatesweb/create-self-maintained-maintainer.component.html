@@ -1,0 +1,81 @@
+<div id="createForm">
+    <h1>Create "mntner" object</h1>
+    <section class="form-fields maintainer-fields">
+        <strong>Please select your administrative contact before creating the shared maintainer object</strong>
+        <article class="maintainer-icons">
+            <span class="fal fa-search maintainer-search-icon"></span>
+            <a (click)="isAdminCHelpShown = !isAdminCHelpShown" class="btn btn-default ga-help-attr maintainer-help" id="admincHelp">
+                <span class="fal fa-question"></span>
+            </a>
+        </article>
+        <ng-select
+            id="adminCDropdown"
+            name="adminCDropdown"
+            bindLabel="key"
+            [multiple]="true"
+            [items]="adminC.alternatives$ | async"
+            [(ngModel)]="adminC.object"
+            [hideSelected]="true"
+            [minTermLength]="2"
+            [trackByFn]="trackByFn"
+            [typeahead]="alternativesInput$"
+            [loading]="loading"
+            (add)="onAdminCAdded($event)"
+        >
+            <ng-template ng-label-tmp let-admin="item" let-clear="clear">
+                <div>
+                    {{ admin.key }}
+                    <span class="ng-value-icon close right" aria-hidden="true" (click)="onAdminCRemoved(admin); clear(admin)">×</span>
+                </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+                <span class="title"
+                    >{{ item.key }} - <strong>{{ item.person }} {{ item.role }}</strong></span
+                >
+            </ng-template>
+        </ng-select>
+        <description-syntax [showComponent]="isAdminCHelpShown" [objectType]="'mntner'" [attrName]="'admin-c'"></description-syntax>
+        <div *ngIf="!hasAdminC()">
+            <strong
+                >Don't have an administrative contact?
+                <a id="linkToCreatePair" href="webupdates/create/{{ source }}/person/self">Create maintainer and person pair</a></strong
+            >
+        </div>
+    </section>
+
+    <section class="visible-field-form" [hidden]="!hasAdminC()">
+        <ul class="form-fields appeared-fields">
+            <li *ngFor="let attribute of maintainerAttributes | filteroutAttributeByName : ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']">
+                <label>{{ attribute.name }}</label>
+
+                <span *ngIf="attribute.$$error" class="text-error">
+                    <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
+                </span>
+
+                <input
+                    type="text"
+                    [attr.name]="attribute.name"
+                    class="form-control"
+                    placeholder="{{ attribute.$$meta.$$short }}"
+                    autocomplete="off"
+                    [(ngModel)]="attribute.value"
+                    [required]="attribute.$$meta.$$mandatory"
+                    (blur)="fieldVisited(attribute)"
+                />
+                <description-syntax [showComponent]="showAttrsHelp[attribute.name]" [objectType]="'mntner'" [attrName]="'mntner'"></description-syntax>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)">
+                            <span class="fal fa-question"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <submitting-agreement></submitting-agreement>
+        <button mat-flat-button color="primary" class="float-end margin-left" type="submit" [disabled]="!isFormValid() || submitInProgress" (click)="submit()">
+            SUBMIT
+        </button>
+        <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
+    </section>
+</div>

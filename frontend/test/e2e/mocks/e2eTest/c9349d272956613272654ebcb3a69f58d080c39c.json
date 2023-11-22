@@ -1,0 +1,80 @@
+{
+    "requestUrl": "/api/whois/RIPE/as-set/AS196613%3AAS-TEST?unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "as-set",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/as-set/AS196613:AS-TEST"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "as-set",
+                                "value": "AS196613:AS-TEST"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "as-set",
+                                "value": "AS196613:AS-TEST"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TSTTECHC-RIPE-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "etchells-mnt",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2017-10-10T12:34:19Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2017-10-10T12:34:19Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

@@ -1,0 +1,97 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources/aut-num/AS36867",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "resources": [],
+        "totalNumberOfResources": 0,
+        "filteredSize": 0,
+        "pageSize": 0,
+        "object": {
+            "type": "aut-num",
+            "link": {
+                "type": "locator",
+                "href": "http://rest-dev.db.ripe.net/ripe-nonauth/aut-num/AS36867"
+            },
+            "source": {
+                "id": "ripe-nonauth"
+            },
+            "primary-key": {
+                "attribute": [
+                    {
+                        "name": "aut-num",
+                        "value": "AS36867"
+                    }
+                ]
+            },
+            "attributes": {
+                "attribute": [
+                    {
+                        "name": "aut-num",
+                        "value": "AS36867"
+                    },
+                    {
+                        "name": "as-name",
+                        "value": "ASNAME-TEST"
+                    },
+                    {
+                        "name": "descr",
+                        "value": "TESTORG3"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-dev.db.ripe.net/ripe/organisation/ORG-TEST23-RIPE"
+                        },
+                        "name": "org",
+                        "value": "ORG-TEST23-RIPE",
+                        "referenced-type": "organisation"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-dev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                        },
+                        "name": "admin-c",
+                        "value": "TSTADMINC-RIPE",
+                        "referenced-type": "role"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-dev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
+                        },
+                        "name": "tech-c",
+                        "value": "TSTTECHC-RIPE",
+                        "referenced-type": "person"
+                    },
+                    {
+                        "name": "status",
+                        "value": "OTHER"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST05-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "TEST05-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "name": "created",
+                        "value": "2005-08-26T10:56:16Z"
+                    },
+                    {
+                        "name": "last-modified",
+                        "value": "2018-07-30T10:34:16Z"
+                    },
+                    {
+                        "name": "source",
+                        "value": "RIPE-NONAUTH"
+                    }
+                ]
+            }
+        }
+    }
+}

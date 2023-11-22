@@ -1,0 +1,32 @@
+{
+    "requestUrl": "/api/whois-internal/api/user/info",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "user": {
+            "username": "tdacruzper@ripe.net",
+            "uuid": "938c6a59-5302-4953-974e-686567eac074",
+            "active": true,
+            "displayName": "Fred Astaire",
+            "expiryDate": "2017-07-06T18:25:41.877"
+        },
+        "organisations": [
+            {
+                "orgObjectId": "ORG-TEST43-RIPE",
+                "organisationName": "WiTest organisation",
+                "roles": ["certification", "NON-MEMBER", "myResources"]
+            },
+            {
+                "orgObjectId": "ORG-TEST36-RIPE",
+                "organisationName": "SwTest organisation",
+                "roles": ["certification", "NON-MEMBER", "myResources"]
+            },
+            {
+                "orgObjectId": "ORG-TEST33-RIPE",
+                "organisationName": "ViTest organisation",
+                "roles": ["certification", "NON-MEMBER", "myResources"]
+            }
+        ],
+        "members": []
+    }
+}

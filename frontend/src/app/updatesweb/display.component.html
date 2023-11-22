@@ -1,0 +1,30 @@
+<h1>{{ objectType }} &quot;{{ objectName }}&quot;</h1>
+
+<section class="inner-container">
+    <table class="success-fields td-20 grey" aria-describedby="differences" *ngIf="!isDiff()">
+        <tr *ngFor="let attribute of attributes">
+            <td>
+                <label>{{ attribute.name }}:</label>
+            </td>
+            <td>
+                <p [hidden]="attribute.link">
+                    {{ attribute.value }}
+                </p>
+                <p [hidden]="!attribute.link">
+                    <a [href]="attribute.link?.href">{{ attribute.value }}</a>
+                </p>
+                <div [hidden]="!attribute.$$error">
+                    <span>{{ attribute.$$error }}</span>
+                    <em class="fal fa-info-circle"></em>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
+
+    <button mat-flat-button color="primary" class="float-end margin-left" (click)="navigateToSelect()">BACK TO CREATE OBJECT</button>
+    <span [hidden]="!modifyButtonToBeShown()">
+        <button mat-flat-button color="primary" class="float-end" (click)="navigateToModify()">{{ loggedIn ? 'MODIFY' : 'LOGIN TO MODIFY' }}</button>
+    </span>
+</section>

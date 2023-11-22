@@ -1,0 +1,52 @@
+digraph G {
+
+   rankdir=LR;
+
+   subgraph clusterbrowser {
+        label = "Browser";
+
+   		OldAppInBrowser;
+   		NewAppInBrowser;
+   }
+
+   subgraph clusterapacheproxy {
+        label = "ApacheProxy";
+        ProxyOldAppRules;
+        ProxyNewAppRules;
+   }
+
+   subgraph clusteroldapp {
+   	    label = "'DbWebWar' on http://apps.db.ripe.net/*";
+		OldApp [label="DbWebWar (JSF)"];
+   }
+
+   subgraph clusternewapp {
+   	    label = "'db-web-ui' on http://apps.db.ripe.net/db-web-ui/*";
+   		NewAppStatics [label="DbWebUi (Statics)"];;
+   		NewAppRest [label="DbWebUi (Web-service)",color="blue"];;
+   }
+
+   subgraph clusterbackends {
+   		label = "Backends";
+		Whois;
+   		WhoisInternal;
+        Sso;
+   }
+
+    OldAppInBrowser -> ProxyOldAppRules;
+    ProxyOldAppRules -> OldApp;
+    OldApp -> Whois [label="simplified interaction"];
+
+	NewAppInBrowser -> ProxyNewAppRules [label="html,css,js"];
+	NewAppInBrowser -> ProxyNewAppRules [label="REST"];
+	ProxyNewAppRules -> NewAppStatics [label="html,css,js"];
+	ProxyNewAppRules -> NewAppRest [label="REST",color="blue"];
+	NewAppRest -> Whois [label="REST: rest.db.ripe.net",color="blue"];
+	NewAppRest -> WhoisInternal [label="REST: rest.db.ripe.net",color="blue"];
+	NewAppRest -> Sso [color="blue"];
+    WhoisInternal -> Whois;
+    WhoisInternal -> Sso;
+    Whois -> Sso;
+
+
+}

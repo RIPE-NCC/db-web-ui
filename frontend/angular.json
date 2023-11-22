@@ -1,0 +1,181 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "frontend": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-builders/custom-webpack:browser",
+                    "options": {
+                        "customWebpackConfig": {
+                            "path": "test/e2e/extra-webpack.config.js"
+                        },
+                        "allowedCommonJsDependencies": ["lodash", "ip-address", "crypto-js", "sanitize-html"],
+                        "outputPath": "dist",
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "aot": true,
+                        "baseHref": "/db-web-ui/",
+                        "assets": ["src/assets"],
+                        "styles": ["src/styles.scss"]
+                    },
+                    "configurations": {
+                        "local": {
+                            "outputPath": "../backend/target/classes/static",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": false,
+                            "outputHashing": "all",
+                            "sourceMap": true,
+                            "namedChunks": false,
+                            "aot": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": false,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "15mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        },
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": {
+                                "scripts": true,
+                                "styles": {
+                                    "minify": true,
+                                    "inlineCritical": false
+                                }
+                            },
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve-mock": {
+                    "builder": "@angular-builders/custom-webpack:dev-server",
+                    "options": {
+                        "browserTarget": "frontend:build",
+                        "disableHostCheck": true,
+                        "port": 9002,
+                        "host": "0.0.0.0",
+                        "ssl": true
+                    },
+                    "configurations": {
+                        "local": {
+                            "publicHost": "localhost.ripe.net:9002/db-web-ui/",
+                            "browserTarget": "frontend:build:local"
+                        },
+                        "remote": {
+                            "publicHost": "db-tools-1.ripe.net:9002/db-web-ui/",
+                            "browserTarget": "frontend:build:production"
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "frontend:build",
+                        "proxyConfig": "proxy.conf.json",
+                        "disableHostCheck": true
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "frontend:build:production"
+                        },
+                        "local": {
+                            "browserTarget": "frontend:build:local"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "frontend:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "test/unit/test.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "test/unit/tsconfig.spec.json",
+                        "assets": ["src/assets"],
+                        "styles": ["src/styles.scss"],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "local": {
+                            "karmaConfig": "test/unit/karma.conf.js"
+                        },
+                        "remote": {
+                            "karmaConfig": "test/unit/karma.remote.conf.js"
+                        }
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+                    }
+                },
+                "cypress": {
+                    "builder": "@cypress/schematic:cypress",
+                    "options": {
+                        "devServerTarget": "frontend:serve-mock:local"
+                    }
+                }
+            }
+        }
+    },
+    "defaultProject": "frontend",
+    "cli": {
+        "analytics": "81bf981f-ca1c-4e1b-9aff-651e1a4771f3",
+        "defaultCollection": "@angular-eslint/schematics"
+    }
+}

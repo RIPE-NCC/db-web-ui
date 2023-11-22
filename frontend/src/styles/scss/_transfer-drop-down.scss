@@ -1,0 +1,15 @@
+transfer-drop-down {
+    button#single-button {
+        height: 40px;
+        padding: 0 10px;
+        position: relative;
+        > span {
+            font: {
+                size: 300%;
+                weight: bold;
+            }
+            position: relative;
+            top: -7px;
+        }
+    }
+}

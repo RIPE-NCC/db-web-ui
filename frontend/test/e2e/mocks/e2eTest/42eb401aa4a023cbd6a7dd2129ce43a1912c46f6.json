@@ -1,0 +1,124 @@
+{
+    "requestUrl": "/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22193.0.0.0%20ripe%22)&start=0&wt=json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "result": {
+            "name": "response",
+            "numFound": 0,
+            "start": 0,
+            "docs": []
+        },
+        "lsts": [
+            {
+                "lst": {
+                    "name": "responseHeader",
+                    "ints": [
+                        {
+                            "int": {
+                                "name": "status",
+                                "value": "0"
+                            }
+                        },
+                        {
+                            "int": {
+                                "name": "QTime",
+                                "value": "205"
+                            }
+                        }
+                    ],
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "params",
+                                "ints": null,
+                                "strs": [
+                                    {
+                                        "str": {
+                                            "name": "q",
+                                            "value": "(\"193.0.0.0 ripe\")"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "rows",
+                                            "value": "10"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "start",
+                                            "value": "0"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl",
+                                            "value": "true"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.pre",
+                                            "value": "<b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.post",
+                                            "value": "</b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "wt",
+                                            "value": "json"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "facet",
+                                            "value": "true"
+                                        }
+                                    }
+                                ],
+                                "lsts": null,
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "highlighting",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "facet_counts",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "facet_fields",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": [],
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            }
+        ]
+    }
+}

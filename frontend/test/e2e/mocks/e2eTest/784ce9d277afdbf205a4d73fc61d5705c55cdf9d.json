@@ -1,0 +1,1009 @@
+{
+    "requestUrl": "/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(Jamesits)&start=0&wt=json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "result": {
+            "name": "response",
+            "numFound": 2,
+            "start": 0,
+            "docs": [
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "18126691"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "aut-num"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS205610"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "aut-num",
+                                    "value": "AS205610"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-name",
+                                    "value": "JAMESITS"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Jamesits Networks <img src=\"https://files.swineson.me/public/cat.jpg\" /><script>alert(\"Your website has an XSS vulnerability.\")</script> ; '; SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Your website has a MySQL injection vulnerability.'; --"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "-----------------------"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "remarks"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "remarks"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "remarks"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Cat photo from: https://en.wikipedia.org/wiki/File:Kittyply_edit1.jpg"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-TEST33-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "sponsoring-org",
+                                    "value": "ORG-TEST34-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTADMINC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTADMINC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "remarks"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-END-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "TEST20-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2017-07-11T15:28:28Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2018-09-04T12:03:10Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "19368266"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "aut-num"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS200334"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "aut-num",
+                                    "value": "AS200334"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-name",
+                                    "value": "AS-TEST-NAME"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Org name"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-TEST30-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "sponsoring-org",
+                                    "value": "ORG-TEST31-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "==========================================================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "============[ ]============"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "=====================[]===================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "==========================================================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "====[All abuse reports will be handled within 48 hours]===="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "=============[]============="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "==========================================================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "******"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS9121 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS9121 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# *************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS6939 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS6939 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS34984 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS34984 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS6762 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS6762 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS6663 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS6663 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS20473 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS20473 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS48292 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS48292 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS205610 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS205610 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS137933 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS137933 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS197068 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS197068 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS29632 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS29632 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS202365 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS202365 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS205593 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS205593 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS205036 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS205036 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS44024 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS44024 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS23738 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS23738 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS137474 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS137474 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS202313 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS202313 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# *************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS207036 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS207036 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# *************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS396503 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS396503 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS204438 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS204438 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS204778 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS204778 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS136985 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS136985 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS202039 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS202039 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS42216 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS42216 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ************"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS41108 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS41108 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS31142 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS31142 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# ***********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS202409 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS202409 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# **********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "import",
+                                    "value": "from AS205381 accept ANY"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "export",
+                                    "value": "to AS205381 announce AS-TEST"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTADMINC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTADMINC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-END-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "TST-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2018-08-06T12:15:56Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2019-02-15T11:39:40Z"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "lsts": [
+            {
+                "lst": {
+                    "name": "responseHeader",
+                    "ints": [
+                        {
+                            "int": {
+                                "name": "status",
+                                "value": "0"
+                            }
+                        },
+                        {
+                            "int": {
+                                "name": "QTime",
+                                "value": "47"
+                            }
+                        }
+                    ],
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "params",
+                                "ints": null,
+                                "strs": [
+                                    {
+                                        "str": {
+                                            "name": "q",
+                                            "value": "(Jamesits) AND (object-type:aut-num)"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "rows",
+                                            "value": "10"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "start",
+                                            "value": "0"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl",
+                                            "value": "true"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.pre",
+                                            "value": "<b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.post",
+                                            "value": "</b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "wt",
+                                            "value": "json"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "facet",
+                                            "value": "true"
+                                        }
+                                    }
+                                ],
+                                "lsts": null,
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "highlighting",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "18126691",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>aut-num</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "as-name",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>JAMESITS</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>Jamesits</b> Networks <img src=\"https://files.swineson.me/public/cat.jpg\" /><script>alert(\"Your website has an XSS vulnerability.\")</script> ; '; SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Your website has a MySQL injection vulnerability.'; --"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>JAMESITS</b>-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "19368266",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>aut-num</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "# <b>Jamesits</b>"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "facet_counts",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "facet_fields",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": [
+                                    {
+                                        "lst": {
+                                            "name": "object-type",
+                                            "ints": [
+                                                {
+                                                    "int": {
+                                                        "name": "aut-num",
+                                                        "value": "2"
+                                                    }
+                                                }
+                                            ],
+                                            "strs": null,
+                                            "lsts": null,
+                                            "arrs": null
+                                        }
+                                    }
+                                ],
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            }
+        ]
+    }
+}

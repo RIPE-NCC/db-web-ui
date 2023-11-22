@@ -1,0 +1,157 @@
+{
+    "status": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "aut-num",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/aut-num/AS12467"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "aut-num",
+                                "value": "AS12467"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "aut-num",
+                                "value": "AS12467"
+                            },
+                            {
+                                "name": "as-name",
+                                "value": "UNSPECIFIED"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST4-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-TEST4-RIPE",
+                                "referenced-type": "organisation"
+                            },
+                            {
+                                "name": "import",
+                                "value": "from AS5400 accept ANY"
+                            },
+                            {
+                                "name": "import",
+                                "value": "from AS702 accept ANY"
+                            },
+                            {
+                                "name": "export",
+                                "value": "to AS5400 announce AS12467"
+                            },
+                            {
+                                "name": "export",
+                                "value": "to AS702 announce AS12467"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "For information on 'status:' attribute read https://www.ripe.net/data-tools/db/faq/faq-status-values-legacy-resources"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@test.com"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-END-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST001-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TST001-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-TEST"
+                                },
+                                "name": "mnt-routes",
+                                "value": "MNT-TEST",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "1970-01-01T00:00:00Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2015-05-05T04:31:55Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST5-RIPE"
+                                },
+                                "name": "sponsoring-org",
+                                "value": "ORG-TEST5-RIPE",
+                                "referenced-type": "organisation"
+                            }
+                        ]
+                    },
+                    "tags": {
+                        "tag": [
+                            {
+                                "id": "RIPE-REGISTRY-RESOURCE",
+                                "data": null
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    },
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/RIPE/aut-num/AS12467?unfiltered=true"
+}

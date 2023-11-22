@@ -1,0 +1,95 @@
+{
+    "requestUrl": "/api/whois/domain-objects/RIPE/status",
+    "contentType": "application/javascript",
+    "statusCode": 400,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://127.0.0.1:1080/domain-objects/RIPE"
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "domain",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-rc.db.ripe.net/ripe/domain/153.90.91.in-addr.arpa"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "domain",
+                                "value": "153.90.91.in-addr.arpa"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "domain",
+                                "value": "153.90.91.in-addr.arpa"
+                            },
+                            {
+                                "name": "nserver",
+                                "value": "dns1.test.net"
+                            },
+                            {
+                                "name": "nserver",
+                                "value": "dns2.test.de"
+                            },
+                            {
+                                "name": "admin-c",
+                                "value": "TSTADMINC4-RIPE"
+                            },
+                            {
+                                "name": "tech-c",
+                                "value": "NOEXISTING"
+                            },
+                            {
+                                "name": "zone-c",
+                                "value": "TSTADMINC4-RIPE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/SHWIVA1-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "SHWIVA1-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "attribute": {
+                        "name": "tech-c",
+                        "value": "NOEXISTING"
+                    },
+                    "text": "Syntax error in %s",
+                    "args": [
+                        {
+                            "value": "NOEXISTING"
+                        }
+                    ]
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "requestUrl": "/api/rpki/roa?origin=AS9777&route=211.43.192.0/19",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "validated_route": {
+            "route": {
+                "origin_asn": "AS9777",
+                "prefix": "211.43.192.0/19"
+            },
+            "validity": {
+                "state": "not-found",
+                "description": "No VRP Covers the Route Prefix",
+                "VRPs": {
+                    "matched": [],
+                    "unmatched_as": [],
+                    "unmatched_length": []
+                }
+            }
+        },
+        "generatedTime": "2022-05-10T12:20:22Z"
+    }
+}

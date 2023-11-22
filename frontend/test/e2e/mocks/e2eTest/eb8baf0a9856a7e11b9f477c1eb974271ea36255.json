@@ -1,0 +1,148 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources/inetnum/185.51.48.0%20-%20185.51.55.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "object": {
+            "type": "inetnum",
+            "link": {
+                "type": "locator",
+                "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/185.51.48.0 - 185.51.55.255"
+            },
+            "source": {
+                "id": "ripe"
+            },
+            "primary-key": {
+                "attribute": [
+                    {
+                        "name": "inetnum",
+                        "value": "185.51.48.0 - 185.51.55.255"
+                    }
+                ]
+            },
+            "attributes": {
+                "attribute": [
+                    {
+                        "name": "inetnum",
+                        "value": "185.51.48.0 - 185.51.55.255"
+                    },
+                    {
+                        "name": "netname",
+                        "value": "NETNAME-TEST-170"
+                    },
+                    {
+                        "name": "country",
+                        "value": "NL"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST37-RIPE"
+                        },
+                        "name": "org",
+                        "value": "ORG-TEST37-RIPE",
+                        "referenced-type": "organisation"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTROLE-RIPE"
+                        },
+                        "name": "admin-c",
+                        "value": "TSTROLE-RIPE",
+                        "referenced-type": "role"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTROLE-RIPE"
+                        },
+                        "name": "tech-c",
+                        "value": "TSTROLE-RIPE",
+                        "referenced-type": "role"
+                    },
+                    {
+                        "name": "status",
+                        "value": "ALLOCATED PA"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "RIPE-NCC-HM-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST07-MNT"
+                        },
+                        "name": "mnt-lower",
+                        "value": "TEST07-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST07-MNT"
+                        },
+                        "name": "mnt-routes",
+                        "value": "TEST07-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST006-MNT"
+                        },
+                        "name": "mnt-routes",
+                        "value": "TST006-MNT {185.51.54.0/23}",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST07-MNT"
+                        },
+                        "name": "mnt-domains",
+                        "value": "TEST07-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "name": "created",
+                        "value": "2014-12-16T10:00:50Z"
+                    },
+                    {
+                        "name": "last-modified",
+                        "value": "2015-08-17T14:33:19Z"
+                    },
+                    {
+                        "name": "source",
+                        "value": "RIPE",
+                        "comment": "Filtered"
+                    }
+                ]
+            }
+        },
+        "resources": [
+            {
+                "resource": "185.51.48.0 - 185.51.55.255",
+                "status": "ALLOCATED PA",
+                "type": "inetnum",
+                "iRR": true,
+                "rDNS": true,
+                "netname": "NETNAME-TEST-170",
+                "usage": {
+                    "total": 2048,
+                    "used": 1024,
+                    "blockSize": 32
+                }
+            }
+        ],
+        "totalNumberOfResources": 1,
+        "filteredSize": 1,
+        "pageSize": 1
+    }
+}

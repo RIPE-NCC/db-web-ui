@@ -1,0 +1,23 @@
+{
+    "requestUrl": "/api/whois-internal/api/resources/inetnum/192.87.0.0%20-%20192.87.0.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "resources": [
+            {
+                "resource": "192.87.0.0 - 192.87.0.255",
+                "status": "LEGACY",
+                "type": "inetnum",
+                "netname": "NETNAME-TEST86",
+                "usage": {
+                    "total": 256,
+                    "used": 0,
+                    "blockSize": 32
+                }
+            }
+        ],
+        "totalNumberOfResources": 1,
+        "filteredSize": 1,
+        "pageSize": 1
+    }
+}

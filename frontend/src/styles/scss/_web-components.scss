@@ -1,0 +1,81 @@
+:root {
+    --ripe-app-font-family: 'Public Sans';
+    --mdc-checkbox-state-layer-size: 20px;
+}
+
+@media only screen and (max-width: 900px) {
+    #app-grid {
+        #main-wrapper,
+        swe-menu app-nav-bar {
+            grid-column: 1 / span 2;
+        }
+    }
+}
+
+@media only screen and (min-width: 901px) {
+    #app-grid {
+        grid-template-columns: [left] max-content [right] 0 !important;
+    }
+
+    swe-menu {
+        app-nav-bar {
+            grid-column: left;
+            grid-column-start: 1;
+            grid-column: span 2 / span 2;
+        }
+    }
+
+    #main-wrapper {
+        grid-column: right;
+    }
+}
+
+#app-grid {
+    display: grid;
+    width: 100%;
+    grid-template-rows: repeat(1, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+swe-menu {
+    display: contents; //app-nav-bar must be first children of grid-layout, use `contents` to ignore it, this doesn't work on IE11
+    app-nav-bar {
+        grid-column-start: 1;
+        grid-column: span 2 / span 2;
+        grid-row: 1/-1;
+        top: 70px;
+        nav {
+            z-index: 9999999;
+        }
+    }
+}
+
+#main-wrapper {
+    position: relative;
+    grid-column-start: 1;
+    grid-column: span 2 / span 2;
+    grid-row: 1/-1;
+}
+
+#app-banners-container {
+    position: sticky;
+    background-color: white;
+    z-index: 10;
+    top: 70px;
+}
+
+#app-workspace {
+    background-color: white;
+
+    &.with-padding {
+        padding: 24px;
+    }
+}
+
+#visual-portal-wrapper > div {
+    z-index: 100000; //because of dropdown menus on query page
+}
+
+.web-component {
+    font-size: unset; //overwrite style from template.css
+}

@@ -1,0 +1,23 @@
+<div [hidden]="modalInProgress">
+    <section *ngFor="let object of deletedObjects" class="inner-container">
+        <table class="success-fields td-20 grey" aria-describedby="table of deleting">
+            <tr *ngFor="let attribute of object.attributes.attribute">
+                <td>
+                    <label>{{ attribute.name }}:</label>
+                </td>
+                <td>
+                    <p>{{ attribute.value }}</p>
+                    <div [hidden]="!attribute.$$error" class="modify-feedback">
+                        <span>{{ attribute.$$error }}</span>
+                        <em class="fal fa-info-circle"></em>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </section>
+    <section>
+        <br />
+        <a [routerLink]="['/webupdates/select']" mat-flat-button color="primary" class="uppercase">Create a new object</a>
+        <a [routerLink]="['/query']" mat-flat-button color="primary" class="uppercase margin-left">Search for an object</a>
+    </section>
+</div>

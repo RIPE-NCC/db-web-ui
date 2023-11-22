@@ -1,0 +1,168 @@
+table.whois-table {
+    /*@extend %brd-t;
+  @extend %brd-b;
+  @extend %brd-l;*/
+    width: 100% !important;
+    color: #333;
+    font: {
+        size: 90% !important;
+    }
+    text-align: left;
+    line-height: 20px;
+    thead {
+        background-color: #f1f1f1;
+        tr {
+            th {
+                //@extend %brd-r;
+                //width: auto !important;
+                font: {
+                    weight: 600 !important;
+                }
+                padding: 5px 10px;
+                border-bottom: none;
+                background-image: none;
+                text-align: left;
+                width: 20%;
+                div {
+                    text-shadow: none;
+                }
+                &.sortable {
+                    &.sort-asc,
+                    &.sort-desc {
+                        background-color: $dark-grey;
+                    }
+                }
+            }
+        }
+    }
+    tbody {
+        tr {
+            //@extend %brd-b;
+            td {
+                //@extend %brd-r;
+                padding: 5px 10px;
+                a {
+                    //@extend %pointer;
+                    color: $link;
+                    text-decoration: none;
+                    &:hover {
+                        color: $light-blue;
+                        text-decoration: underline;
+                    }
+                }
+                a.button-head {
+                    color: #968e6e;
+                    text-decoration: none;
+                    padding: 8px 15px;
+                    display: block;
+                }
+                &.date {
+                    //@extend %no-word-break;
+                }
+            }
+            &:nth-child(even) {
+                background-color: #fbfbfb;
+            }
+            &:hover {
+                background-color: #fffdf6;
+            }
+            &.noresults {
+                td {
+                    text-align: center;
+                    font: {
+                        size: 150%;
+                    }
+                    color: #999;
+                    padding: 20px !important;
+                }
+            }
+        }
+    }
+    tfoot {
+        display: none;
+    }
+}
+
+section.head {
+    h1 {
+        @extend %float-l;
+        a {
+            em {
+                font: {
+                    size: 50%;
+                }
+                color: $link;
+            }
+            &:hover {
+                em {
+                    color: $light-blue;
+                }
+            }
+        }
+        span.city {
+            @extend %clear-b;
+            font: {
+                size: 14px;
+            }
+            display: inherit;
+            color: $dark-grey-cr;
+            margin-top: 5px;
+        }
+    }
+
+    a.downloading {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    a#download-link {
+        display: none;
+    }
+}
+
+div.whois-table-pager {
+    margin-top: 20px;
+    padding-bottom: 30px;
+    ul.pagination {
+        @extend %float-r;
+        font: {
+            size: 90%;
+        }
+        li {
+            display: inline-block;
+            a {
+                padding: 5px 8px;
+                margin-left: 0 !important;
+                border: none;
+                border-radius: 0;
+                text-decoration: none;
+                color: #333 !important;
+                &:hover {
+                    border: none;
+                    background: none;
+                }
+            }
+            &.disabled {
+                a {
+                    color: #999 !important;
+                }
+            }
+            &.active {
+                a {
+                    background: $blue;
+                    color: #fff !important;
+                    border: none;
+                    &:hover {
+                        background: $blue;
+                        color: #fff !important;
+                        border: none;
+                    }
+                }
+            }
+        }
+    }
+    div.whois-table-counts {
+        display: none;
+    }
+}

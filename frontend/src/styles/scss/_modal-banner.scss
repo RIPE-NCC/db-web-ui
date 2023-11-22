@@ -1,0 +1,36 @@
+.modal-banner.info {
+    background-color: var(--ripe-app-info, #29abe2);
+    color: white;
+}
+
+.modal-banner.positive {
+    background-color: var(--ripe-app-positive, #6ebe49);
+}
+
+.modal-banner.warning {
+    background-color: var(--ripe-app-worried, #ff6a00);
+    color: white;
+}
+
+.modal-banner.alarm {
+    background-color: var(--ripe-app-warning, #ed1c24);
+    color: white;
+}
+
+.modal-banner {
+    position: relative;
+    display: flex;
+    max-height: 150px;
+    border-bottom: 1px solid var(--ripe-app-border-line, #2f2c56);
+    font-family: var(--ripe-app-font-family), Helvetica, Arial, sans-serif;
+    font-size: 0.875rem;
+    text-rendering: geometricprecision;
+    transition: all 0.2s ease-in-out;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px !important;
+    top: -1px;
+    p {
+        margin: 10px 0 10px 8px;
+    }
+}

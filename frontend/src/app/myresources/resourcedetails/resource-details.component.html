@@ -1,0 +1,52 @@
+<section class="resource-intro">
+    <h1>
+        <name-formatter [name]="objectName" [type]="objectType"></name-formatter>
+    </h1>
+    <div class="flags-container">
+        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text" uppercase></flag>
+    </div>
+</section>
+<section class="back-to-my-resources">
+    <hierarchy-selector *ngIf="resource" [resource]="resource"> </hierarchy-selector>
+</section>
+<ip-usage *ngIf="showUsage" [type]="objectType" [usage]="resource.usage"></ip-usage>
+
+<section class="db-object" id="editortop">
+    <h2>Object in RIPE Database</h2>
+    <loading-indicator class="resource-page-message" *ngIf="loadingResource"></loading-indicator>
+    <div *ngIf="whoisObject && !showRefreshButton && !loadingResource">
+        <whois-object-viewer *ngIf="!isEditing" [model]="whoisObject" (updateClicked)="showObjectEditor()"></whois-object-viewer>
+        <maintainers-editor [whoisObject]="whoisObject" *ngIf="isEditing" (authenticationFailedClbk)="hideObjectEditor()"></maintainers-editor>
+        <whois-object-editor
+            [model]="whoisObject"
+            [disableSubmit]="!isEditing"
+            [deletable]="isDeletable"
+            *ngIf="isEditing"
+            (cancelClicked)="hideObjectEditor()"
+            (updateClicked)="updateButtonClicked($event)"
+            (deleteClicked)="deleteClicked()"
+        ></whois-object-editor>
+    </div>
+    <refresh *ngIf="showRefreshButton" reason="There was problem reading resource please try again" (refreshClbk)="init()"></refresh>
+</section>
+
+<div *ngIf="!showRefreshButton && !loadingResource">
+    <more-specifics id="more-specifics" [objectType]="objectType" [objectName]="objectName" [sponsored]="sponsored"></more-specifics>
+
+    <associated-objects
+        id="associated-route-objects"
+        *ngIf="resource?.iRR"
+        title="Associated Route Objects"
+        associatedType="route"
+        [objectType]="objectType"
+        [objectName]="objectName"
+    ></associated-objects>
+    <associated-objects
+        id="associated-domain-objects"
+        *ngIf="resource?.rDNS"
+        title="Associated Domain Objects"
+        associatedType="domain"
+        [objectType]="objectType"
+        [objectName]="objectName"
+    ></associated-objects>
+</div>

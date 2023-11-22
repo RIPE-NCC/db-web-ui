@@ -1,0 +1,33 @@
+<div class="modal-content no-rounded">
+    <div class="modal-header">
+        <h2 class="modal-title">Enter the email address for the abuse contact</h2>
+        <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+    </div>
+    <div class="modal-body">
+        <div class="pass-strength-output"></div>
+        <input
+            type="email"
+            class="form-control margin-bottom"
+            name="email"
+            placeholder="abuse@example.net"
+            [(ngModel)]="email"
+            minlength="5"
+            maxlength="100"
+            [required]
+            autocomplete="off"
+        />
+    </div>
+    <div class="modal-footer">
+        <button
+            mat-flat-button
+            color="primary"
+            class="float-end margin-left"
+            type="submit"
+            data-dismiss="modal"
+            [disabled]="!isEmailValid()"
+            (click)="create()"
+        >
+            SUBMIT
+        </button>
+    </div>
+</div>

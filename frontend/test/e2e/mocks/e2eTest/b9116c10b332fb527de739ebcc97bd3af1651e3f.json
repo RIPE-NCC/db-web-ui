@@ -1,0 +1,110 @@
+{
+    "requestUrl": "/api/whois/RIPE/organisation/ORG-TEST3-RIPE?unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST3-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-TEST3-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-TEST3-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Test Org name 11"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "test address 55",
+                                "comment": "comment address"
+                            },
+                            {
+                                "name": "country",
+                                "value": "NL"
+                            },
+                            {
+                                "name": "e-mail",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTABUSEC-RIPE"
+                                },
+                                "name": "abuse-c",
+                                "value": "TSTABUSEC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTABUSEC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTABUSEC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST53-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "TEST53-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST53-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST53-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2016-10-17T15:39:54Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-10-17T15:49:33Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

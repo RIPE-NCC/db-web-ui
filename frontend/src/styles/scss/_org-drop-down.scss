@@ -1,0 +1,50 @@
+#org-drop-down {
+    display: inline-block;
+    width: 100%;
+}
+
+div.registry-selector-container {
+    @extend %flex-r;
+    margin-bottom: 0.5rem;
+    > span {
+        @extend %flex-r;
+        margin: 3px 10px 0 0;
+    }
+}
+
+// Organisation selector
+#organisation-selector {
+    display: inline-block;
+    width: 250px !important;
+    div.ng-select-container {
+        @extend %brd;
+        background: none;
+        border-radius: 0;
+        min-height: 26px;
+        height: 26px !important;
+        &.ng-select-focused {
+            box-shadow: none;
+        }
+    }
+    .ng-dropdown-panel {
+        @extend %brd;
+        border-radius: 0;
+        box-shadow: none;
+        border-top: 0;
+        div.ng-dropdown-panel-items {
+            padding: 0;
+            outline: none;
+            .ng-option {
+                padding: 5px;
+                white-space: normal;
+                small {
+                    color: $dark-grey-cr;
+                }
+                &.ng-option-selected {
+                    color: white;
+                    background-color: $dark-blue;
+                }
+            }
+        }
+    }
+}

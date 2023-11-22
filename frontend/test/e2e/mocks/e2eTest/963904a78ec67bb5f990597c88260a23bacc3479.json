@@ -1,0 +1,98 @@
+{
+    "requestUrl": "/api/whois/RIPE/key-cert/PGPKEY-TESTKEYCERT?unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "key-cert",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-TESTKEYCERT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "key-cert",
+                                "value": "PGPKEY-TESTKEYCERT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "key-cert",
+                                "value": "PGPKEY-TESTKEYCERT"
+                            },
+                            {
+                                "name": "method",
+                                "value": "PGP"
+                            },
+                            {
+                                "name": "owner",
+                                "value": "SYSTEM Internet Provider <hostmaster@test.pl>"
+                            },
+                            {
+                                "name": "fingerpr",
+                                "value": "-- -- --- --- -- --- "
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "!! !!"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "!! This key has been revoked on 2009-05-30 !!"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "!! !!"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                            },
+                            {
+                                "name": "certif",
+                                "value": "-----END PGP PUBLIC KEY BLOCK-----"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SYSTEM"
+                                },
+                                "name": "mnt-by",
+                                "value": "SYSTEM",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "1970-01-01T00:00:00Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2009-05-30T14:40:16Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

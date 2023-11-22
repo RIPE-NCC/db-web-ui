@@ -1,0 +1,12 @@
+{
+    "data": [
+        {
+            "key": "TEST1-HM-MNT",
+            "type": "mntner",
+            "auth": ["MD5-PW", "PGPKEY-TEST1", "PGPKEY-TEST2", "PGPKEY-TEST3", "PGPKEY-TEST4", "PGPKEY-TEST5", "PGPKEY-TEST6", "PGPKEY-TEST7", "PGPKEY-TEST8"]
+        }
+    ],
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-HM-MNT"
+}

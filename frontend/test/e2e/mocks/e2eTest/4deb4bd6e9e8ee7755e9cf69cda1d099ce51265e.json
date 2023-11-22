@@ -1,0 +1,21 @@
+{
+    "data": {
+        "resources": [
+            {
+                "resource": "2001:7f8::/48",
+                "status": "ASSIGNED PI",
+                "type": "inet6num",
+                "netname": "NETNAME-TEST-01"
+            },
+            {
+                "resource": "2001:7f8:1::/48",
+                "status": "ASSIGNED PI",
+                "type": "inet6num",
+                "netname": "NETNAME-TEST-172"
+            }
+        ]
+    },
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json?filter=&page=0"
+}

@@ -1,0 +1,34 @@
+aside.multisync-rpsl {
+    background-color: #f9f9f9;
+    padding: 1em;
+    section.footer {
+        @extend %mar-top-10;
+    }
+}
+
+aside.multisync-result {
+    table.multi-sync-table {
+        thead {
+            th.expand {
+                width: 6%;
+            }
+            th {
+                width: 21%;
+            }
+        }
+        tbody {
+            td {
+                button.add-button {
+                    width: 25px;
+                    height: 25px;
+                    padding: 0 !important;
+                }
+            }
+        }
+    }
+    button.grey-button {
+        background-color: #c0c0c0 !important;
+        border: none !important;
+        color: #363636;
+    }
+}

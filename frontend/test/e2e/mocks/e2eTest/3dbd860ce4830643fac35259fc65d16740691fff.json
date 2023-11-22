@@ -1,0 +1,28 @@
+{
+    "requestUrl": "/api/rest/search?flags=drM&ignore404=true&query-string=193.193.200.0/24&type-filter=domain",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://prepdev.ripe.net:1080/search?flags=drM&ignore404=true&query-string=193.193.200.0%2F24&type-filter=domain"
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "text": "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+                    "args": [
+                        {
+                            "value": "RIPE"
+                        }
+                    ]
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

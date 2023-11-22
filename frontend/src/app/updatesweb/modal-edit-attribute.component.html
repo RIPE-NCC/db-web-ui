@@ -1,0 +1,46 @@
+<div *ngIf="attr.name === 'address'" class="modal-content no-rounded">
+    <div class="modal-header">
+        <h2 class="modal-title" id="commonModalLabel">Updating address information</h2>
+        <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p>My organisation&apos;s legal address has changed</p>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToOrgaAddressEditor()">SELECT</button>
+        </div>
+        <div>
+            <p>My organisation&apos;s postal address has changed</p>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToAccountAddressEditor()">SELECT</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="attr.name === 'org-name'" class="modal-content no-rounded">
+    <div class="modal-header">
+        <h2 class="modal-title">Updating legal information</h2>
+        <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p>My organisation&apos;s legal name has changed; no other legal entity is involved</p>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToOrgNameEditor()">SELECT</button>
+        </div>
+        <div>
+            <p>The business structure of my organisation has changed (for example due to a merger or acquisition)</p>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToAccountOrgNameEditor()">SELECT</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="isModalContactField()" class="modal-content no-rounded">
+    <div class="modal-header">
+        <h2 class="modal-title">Updating contact information</h2>
+        <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p *ngIf="attr.name === 'phone'">My organisation&apos;s telephone number has changed</p>
+            <p *ngIf="attr.name === 'fax-no'">My organisation&apos;s fax number has changed</p>
+            <p *ngIf="attr.name === 'e-mail'">My organisation&apos;s email address has changed</p>
+            <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToAccountContactInfoEditor()">UPDATE</button>
+        </div>
+    </div>
+</div>

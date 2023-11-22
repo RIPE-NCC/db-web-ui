@@ -1,0 +1,96 @@
+//Variables
+$brd-color: #e0e0e0;
+
+$grey: #f1f1f1;
+$dark-grey: #e6e6e6;
+$dark-grey-cr: #777;
+
+$dark-red: #a94442;
+$light-red: #dca7a7;
+$lighter-red: #f2dede;
+$light-blue: #343f6c;
+$blue: #212c59;
+$dark-blue: #080037;
+
+$dark-green: #5ea942;
+$light-green: #b2e5a3;
+$lighter-green: #e5f2de;
+
+$orange: #eca911;
+$orange-light: #e5d1a3;
+$orange-lighter: #fff3d8;
+
+$white: #fff;
+$black: #000;
+$link: #00abab;
+//float - not recommended anymore
+%float-l {
+    float: left;
+}
+%float-r {
+    float: right;
+}
+%flex-r {
+    display: flex;
+    justify-content: flex-end;
+}
+%flex-l {
+    display: flex;
+    justify-content: flex-start;
+}
+%clear-b {
+    clear: both;
+}
+%width-100 {
+    width: 100%;
+}
+%grey {
+    background-color: #f9f9f9;
+}
+%brd {
+    border: 1px solid #ccc;
+}
+%no-pad-top {
+    padding-top: 0 !important;
+}
+%no-pad {
+    padding: 0 !important;
+}
+%mar-top-10 {
+    margin-top: 10px;
+}
+%green {
+    background-color: $lighter-green;
+    border-color: $light-green;
+    color: $dark-green;
+}
+%orange {
+    background-color: $orange-lighter;
+    border-color: $orange-light;
+    color: $orange;
+}
+%red {
+    background-color: $lighter-red;
+    border-color: $light-red;
+    color: $dark-red;
+}
+%brd {
+    border: 1px solid $brd-color;
+}
+%brd-r {
+    border-right: 1px solid $brd-color;
+}
+%brd-l {
+    border-left: 1px solid $brd-color;
+}
+%brd-b {
+    border-bottom: 1px solid $brd-color;
+}
+%brd-t {
+    border-top: 1px solid $brd-color;
+}
+%brd-box {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}

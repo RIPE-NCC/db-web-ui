@@ -1,0 +1,92 @@
+{
+    "requestUrl": "/api/whois/RIPE/mntner/TEST13-MNT?password=TEST13-MNT&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST13-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST13-MNT"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "SSO eshryane@ripe.net"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST13-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2006-07-14T14:26:53Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2022-08-05T10:11:35Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.103",
+            "timestamp": "2022-04-25T12:32:18Z",
+            "commit-id": "5fc8ac5"
+        }
+    }
+}

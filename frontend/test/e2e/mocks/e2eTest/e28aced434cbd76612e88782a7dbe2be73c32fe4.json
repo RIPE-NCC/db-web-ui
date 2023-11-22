@@ -1,0 +1,32 @@
+{
+    "data": {
+        "resources": [
+            {
+                "resource": "192.87.0.0 - 192.87.0.255",
+                "status": "LEGACY",
+                "type": "inetnum",
+                "netname": "NETNAME-TEST86",
+                "usage": {
+                    "total": 608,
+                    "used": 608,
+                    "blockSize": 32
+                }
+            },
+            {
+                "resource": "192.87.1.0 - 192.87.1.255",
+                "status": "LEGACY",
+                "type": "inetnum",
+                "netname": "NETNAME-TEST-152",
+                "usage": {
+                    "total": 608,
+                    "used": 608,
+                    "blockSize": 32
+                }
+            }
+        ],
+        "totalNumberOfResources": 2
+    },
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json?filter=&page=0"
+}

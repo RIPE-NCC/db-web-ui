@@ -1,0 +1,92 @@
+<section class="associated-objects" *ngIf="canHaveAssociatedObjects">
+    <h2>{{ title }}</h2>
+    <div class="prefix-filter">
+        <div class="input-group">
+            <input
+                type="text"
+                id="filter"
+                name="filter"
+                class="form-control"
+                placeholder="Search for {{ associatedType }}"
+                [(ngModel)]="filter"
+                (input)="applyFilter()"
+            />
+            <span class="input-group-btn" [hidden]="!filter">
+                <button type="button" class="btn" id="clearButton" (click)="filter = ''; applyFilter()">
+                    <span class="fal fa-times close"></span>
+                </button>
+            </span>
+        </div>
+        <span *ngIf="filter; else msgWithoutFilter" class="float-end">
+            Showing {{ resultObject.filteredSize }} out of {{ resultObject.totalNumberOfResources }}
+        </span>
+        <ng-template #msgWithoutFilter>
+            <span class="float-end"> Total associated {{ associatedType }}s: {{ resultObject.totalNumberOfResources }} </span>
+        </ng-template>
+    </div>
+    <div *ngIf="isShowingAssociatedRouteObjects; else domainAssociatedObjects">
+        <table
+            class="table table-bordered table-body-borderless resources table-striped"
+            *ngIf="resultObject.associatedObjects.length > 0"
+            aria-label="associated route objects"
+        >
+            <thead>
+                <tr>
+                    <th class="w30">Origin</th>
+                    <th class="w20">Prefix</th>
+                    <th class="w50"></th>
+                </tr>
+            </thead>
+            <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
+                <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i" class="break-all-word">
+                    <td class="w30">
+                        <a
+                            [routerLink]="['/query']"
+                            [queryParams]="{ source: 'GRS', searchtext: associatedObject.origin, bflag: false, dflag: false, rflag: true }"
+                            target="_blank"
+                        >
+                            <name-formatter [name]="associatedObject.origin"></name-formatter>
+                        </a>
+                    </td>
+                    <td class="w20">{{ associatedObject.prefix }}</td>
+                    <td class="w50 right">
+                        <a
+                            [routerLink]="['/webupdates/modify', source, associatedObject.type, associatedObject.prefix + associatedObject.origin]"
+                            target="_blank"
+                        >
+                            Manage</a
+                        >
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-warning" *ngIf="resultObject.associatedObjects.length === 0">No associated route objects exist.</div>
+    </div>
+</section>
+<ng-template #domainAssociatedObjects>
+    <table
+        class="table table-bordered table-body-borderless resources table-striped"
+        *ngIf="resultObject.associatedObjects.length > 0"
+        aria-label="domain associated objects"
+    >
+        <thead>
+            <tr>
+                <th scope="col" class="w40">Domain</th>
+                <th scope="col" class="w60"></th>
+            </tr>
+        </thead>
+        <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
+            <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i">
+                <td class="w40">
+                    <a [routerLink]="['/lookup']" [queryParams]="{ source: source, key: associatedObject.domain, type: 'domain' }" target="_blank">
+                        {{ associatedObject.domain }}</a
+                    >
+                </td>
+                <td class="w60 right">
+                    <a [routerLink]="['/webupdates/modify', source, 'domain', associatedObject.domain]" target="_blank">Manage</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-warning" *ngIf="resultObject.associatedObjects.length === 0">No associated domain objects exist.</div>
+</ng-template>

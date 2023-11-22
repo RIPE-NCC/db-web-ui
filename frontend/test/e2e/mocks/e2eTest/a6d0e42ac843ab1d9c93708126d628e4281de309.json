@@ -1,0 +1,119 @@
+{
+    "data": {
+        "object": {
+            "type": "inet6num",
+            "link": {
+                "type": "locator",
+                "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:7f8::/29"
+            },
+            "source": {
+                "id": "ripe"
+            },
+            "primary-key": {
+                "attribute": [
+                    {
+                        "name": "inet6num",
+                        "value": "2001:7f8::/29"
+                    }
+                ]
+            },
+            "attributes": {
+                "attribute": [
+                    {
+                        "name": "inet6num",
+                        "value": "2001:7f8::/29"
+                    },
+                    {
+                        "name": "netname",
+                        "value": "EU-ZZ-2001-07F8"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-NCC1-RIPE"
+                        },
+                        "name": "org",
+                        "value": "ORG-NCC1-RIPE",
+                        "referenced-type": "organisation"
+                    },
+                    {
+                        "name": "descr",
+                        "value": "RIPE Network Coordination Centre"
+                    },
+                    {
+                        "name": "descr",
+                        "value": "block for RIR assignments"
+                    },
+                    {
+                        "name": "remarks",
+                        "value": "These addresses are assigned to network operators. An explanation of how to find the correct contacts is available at <http://www.ripe.net/nicdb.html>"
+                    },
+                    {
+                        "name": "country",
+                        "value": "EU"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/CREW-RIPE"
+                        },
+                        "name": "admin-c",
+                        "value": "CREW-RIPE",
+                        "referenced-type": "role"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/CREW-RIPE"
+                        },
+                        "name": "tech-c",
+                        "value": "CREW-RIPE",
+                        "referenced-type": "role"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE"
+                        },
+                        "name": "tech-c",
+                        "value": "TSTTECHC-RIPE",
+                        "referenced-type": "role"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "RIPE-NCC-HM-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "name": "status",
+                        "value": "ALLOCATED-BY-RIR"
+                    },
+                    {
+                        "name": "created",
+                        "value": "2007-07-18T11:48:41Z"
+                    },
+                    {
+                        "name": "last-modified",
+                        "value": "2011-12-30T07:49:39Z"
+                    },
+                    {
+                        "name": "source",
+                        "value": "RIPE",
+                        "comment": "Filtered"
+                    }
+                ]
+            }
+        },
+        "resources": [{ "usage": { "total": 1, "used": 0, "blockSize": 48 } }],
+        "totalNumberOfResources": 2,
+        "filteredSize": 0,
+        "pageSize": 0
+    },
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois-internal/api/resources/inet6num/2001:7f8::/29"
+}

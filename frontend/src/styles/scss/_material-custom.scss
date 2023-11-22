@@ -1,0 +1,103 @@
+@use 'node_modules/@angular/material' as mat;
+@import 'node_modules/@angular/material/theming';
+@include mat.core();
+
+$mat-darkblue: (
+    50: #e3e4ec,
+    100: #b8bbd0,
+    200: #8b8fb0,
+    300: #606591,
+    400: #42477d,
+    500: #242b6a,
+    600: #1f2562,
+    700: #171d58,
+    800: #0f154c,
+    900: #080037,
+    A100: #5656ff,
+    A200: #2323ff,
+    A400: #0000ef,
+    A700: #0000d5,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: $white-87-opacity,
+        900: $white-87-opacity,
+        A100: $black-87-opacity,
+        A200: white,
+        A400: white,
+        A700: white,
+    ),
+);
+
+$mat-bondiblue: (
+    50: #EOF8F9,
+    100: #b3edf0,
+    200: #81e1e8,
+    300: #4fd3de,
+    400: #27cad8,
+    500: #00c0d3,
+    600: #00b0c0,
+    700: #009ba6,
+    800: #01878e,
+    900: #026364,
+    A100: #a8f4ff,
+    A200: #75edff,
+    A400: #42e7ff,
+    A700: #29e3ff,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: $white-87-opacity,
+        900: $white-87-opacity,
+        A100: $black-87-opacity,
+        A200: white,
+        A400: white,
+        A700: white,
+    ),
+);
+
+$custom-theme-primary: mat.define-palette($mat-darkblue, 900);
+$custom-theme-accent: mat.define-palette($mat-bondiblue, 700);
+$custom-theme-warn: mat.define-palette(mat.$red-palette);
+//$custom-theme-warn: mat.define-palette(#ed1c24);
+
+$custom-typography: mat.define-typography-config(
+    $font-family: 'Public Sans',
+    $headline-1: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+    $headline-2: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+    $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+    $headline-4: mat.define-typography-level(34px, 40px, 400),
+    $headline-5: mat.define-typography-level(1.563rem, 32px, 700),
+    $headline-6: mat.define-typography-level(20px, 32px, 500),
+    $subtitle-1: mat.define-typography-level(16px, 28px, 400),
+    $subtitle-2: mat.define-typography-level(16px, 24px, 400),
+    $body-2: mat.define-typography-level(16px, 24px, 400),
+    $body-1: mat.define-typography-level(16px, 24px, 400),
+    $caption: mat.define-typography-level(12px, 20px, 400),
+    $button: mat.define-typography-level(14px, 14px, 500),
+);
+$custom-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $custom-theme-primary,
+            accent: $custom-theme-primary,
+            warn: $custom-theme-warn,
+        ),
+        typography: $custom-typography,
+    )
+);
+@include mat.all-component-themes($custom-theme);
+@include mat.all-component-typographies($custom-typography);
+//@include mat.button-theme($custom-theme);

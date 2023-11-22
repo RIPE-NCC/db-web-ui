@@ -1,0 +1,81 @@
+<div id="createForm">
+    <section class="visible-field-form">
+        <h1>Create {{ objectType }} and maintainer pair</h1>
+
+        <ul class="form-fields appeared-fields">
+            <li
+                attr.data-test-id="{{ attribute.name }}"
+                *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName : ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']"
+            >
+                <label>{{ attribute.name }}</label>
+                <span *ngIf="attribute.$$error" class="text-error">
+                    <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
+                </span>
+                <input
+                    type="text"
+                    [attr.name]="attribute.name"
+                    [(ngModel)]="attribute.value"
+                    class="form-control"
+                    placeholder="{{ attribute.$$meta?.$$short }}"
+                    autocomplete="off"
+                    [required]="attribute.$$meta?.$$mandatory"
+                    (blur)="fieldVisited(attribute)"
+                />
+                <description-syntax [showComponent]="showMntAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="'mntner'"></description-syntax>
+                <ul class="input-group-btn">
+                    <li>
+                        <a class="btn btn-default ga-help-attr" (click)="setVisibilityMntAttrsHelp(attribute.name)">
+                            <span class="fal fa-question"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li
+                attr.data-test-id="{{ attribute.name }}"
+                *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName : ['nic-hdl', 'mnt-by', 'source']"
+            >
+                <label>{{ attribute.name }}</label>
+                <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">
+                    <span *ngIf="attribute.$$error" class="text-error">{{ attribute.$$error }}</span>
+                    <strong
+                        >Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{ linkToRoleOrPerson }}</a></strong
+                    >
+                </span>
+                <span *ngIf="attribute.$$error && attribute.name !== objectType" class="text-error">{{ attribute.$$error }}</span>
+                <input
+                    type="text"
+                    [attr.name]="attribute.name"
+                    [(ngModel)]="attribute.value"
+                    class="form-control"
+                    placeholder="{{ attribute.$$meta?.$$short }}"
+                    autocomplete="off"
+                    [required]="attribute.$$meta?.$$mandatory"
+                    (blur)="fieldVisited(attribute)"
+                />
+                <description-syntax [showComponent]="showAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>
+                <ul class="input-group-btn">
+                    <li>
+                        <a class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)">
+                            <span class="fal fa-question"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <submitting-agreement></submitting-agreement>
+
+        <button
+            mat-flat-button
+            color="primary"
+            id="btnSubmitCreate"
+            type="submit"
+            class="float-end margin-left"
+            [disabled]="!isFormValid() || submitInProgress"
+            (click)="submit()"
+        >
+            SUBMIT
+        </button>
+        <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
+    </section>
+</div>

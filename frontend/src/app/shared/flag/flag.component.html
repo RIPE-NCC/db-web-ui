@@ -1,0 +1,15 @@
+<span>
+    <span
+        class="flag"
+        #popover="ngbPopover"
+        *ngIf="text"
+        [ngbPopover]="tooltip"
+        placement="bottom"
+        autoClose="true"
+        triggers="mouseenter:mouseleave"
+        [class.open]="popover.isOpen()"
+        (click)="popover.toggle()"
+    >
+        {{ text }}
+    </span>
+</span>

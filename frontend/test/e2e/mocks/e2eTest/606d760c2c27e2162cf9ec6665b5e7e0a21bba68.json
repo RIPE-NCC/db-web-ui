@@ -1,0 +1,104 @@
+{
+    "requestUrl": "/api/whois/RIPE/mntner/TEST14-MNT?password=TEST14-MNT&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-dev.db.ripe.net/ripe/mntner/TEST14-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST14-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST14-MNT"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "Test org name"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "RIPE Maintainer Object for AS4663"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-dev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-dev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "***@test.net"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "MD5 passwords older than November 2011 were removed from this maintainer, see: https://www.ripe.net/removed2011pw"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-dev.db.ripe.net/ripe/mntner/TEST14-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST14-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-05-17T01:37:25Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2002-05-17T01:37:25Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

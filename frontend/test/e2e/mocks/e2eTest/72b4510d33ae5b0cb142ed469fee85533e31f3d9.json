@@ -1,0 +1,79 @@
+{
+    "requestUrl": "/api/whois/RIPE/route/211.43.192.0%2F19AS9777?dry-run=true&reason=dry-run",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://prepdev.ripe.net:1080/RIPE-NONAUTH/route/211.43.192.0%2F19AS9777?dry-run=true&reason=dry-run"
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "text": "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    "args": [
+                        {
+                            "value": "route"
+                        },
+                        {
+                            "value": "211.43.192.0/19AS9777"
+                        },
+                        {
+                            "value": "mnt-by"
+                        },
+                        {
+                            "value": "TEST14-MNT"
+                        }
+                    ]
+                },
+                {
+                    "severity": "Error",
+                    "text": "Authorisation for [%s] %s failed\nusing \"%s:\"\nno valid maintainer found\n",
+                    "args": [
+                        {
+                            "value": "inetnum"
+                        },
+                        {
+                            "value": "209.251.254.0 - 211.255.255.255"
+                        },
+                        {
+                            "value": "mnt-lower"
+                        },
+                        {}
+                    ]
+                },
+                {
+                    "severity": "Error",
+                    "text": "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    "args": [
+                        {
+                            "value": "inetnum"
+                        },
+                        {
+                            "value": "209.251.254.0 - 211.255.255.255"
+                        },
+                        {
+                            "value": "mnt-by"
+                        },
+                        {
+                            "value": "RIPE-NCC-HM-MNT"
+                        }
+                    ]
+                },
+                {
+                    "severity": "Warning",
+                    "text": "MD5 passwords older than November 2011 were removed for one or more maintainers of this object, see: https://www.ripe.net/removed2011pw"
+                },
+                {
+                    "severity": "Info",
+                    "text": "Dry-run performed, no changes to the database have been made"
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

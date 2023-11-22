@@ -1,0 +1,169 @@
+{
+    "requestUrl": "/api/whois/search?flags=r&ignore404=true&query-string=91.90.153.0/24&type-filter=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {
+                "type-filter": [
+                    {
+                        "id": "inetnum"
+                    }
+                ]
+            },
+            "flags": {
+                "flag": [
+                    {
+                        "value": "no-referenced"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "91.90.153.0/24"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-rc.db.ripe.net/ripe/inetnum/91.90.144.0 - 91.90.159.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "91.90.144.0 - 91.90.159.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "91.90.144.0 - 91.90.159.255"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "NETNAME-TEST-165"
+                            },
+                            {
+                                "name": "country",
+                                "value": "DE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/organisation/ORG-TEST39-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-TEST39-RIPE",
+                                "referenced-type": "organisation"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PI"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-END-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST13-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
+                                },
+                                "name": "mnt-routes",
+                                "value": "TEST13-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-rc.db.ripe.net/ripe/mntner/TEST13-MNT"
+                                },
+                                "name": "mnt-domains",
+                                "value": "TEST13-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2006-08-14T09:39:28Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-04-14T09:10:25Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "tags": {
+                        "tag": [
+                            {
+                                "id": "RIPE-REGISTRY-RESOURCE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.103",
+            "timestamp": "2022-04-25T12:32:18Z",
+            "commit-id": "5fc8ac5"
+        }
+    }
+}

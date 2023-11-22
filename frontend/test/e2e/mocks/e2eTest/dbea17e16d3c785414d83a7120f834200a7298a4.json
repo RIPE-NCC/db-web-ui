@@ -1,0 +1,44 @@
+{
+    "status": 200,
+    "data": [
+        {
+            "mine": true,
+            "auth": ["SSO"],
+            "type": "mntner",
+            "key": "etchells-mnt"
+        },
+        {
+            "mine": true,
+            "auth": ["MD5-PW", "SSO"],
+            "type": "mntner",
+            "key": "TST001-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["MD5-PW", "SSO", "SSO", "SSO", "SSO"],
+            "type": "mntner",
+            "key": "TST002-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["MD5-PW", "SSO"],
+            "type": "mntner",
+            "key": "TST003-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["MD5-PW", "SSO"],
+            "type": "mntner",
+            "key": "TEST53-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO"],
+            "type": "mntner",
+            "key": "TST004-MNT"
+        }
+    ],
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/user/mntners"
+}

@@ -1,0 +1,12 @@
+{
+    "data": [
+        {
+            "key": "RIPE-NCC-END-MNT",
+            "type": "mntner",
+            "auth": ["MD5-PW", "SSO", "PGPKEY-TEST9"]
+        }
+    ],
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=RIPE-NCC-END-MNT"
+}

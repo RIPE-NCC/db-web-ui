@@ -1,0 +1,28 @@
+{
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&source=GRS%3Cimg%20src%20onerror=alert(document.domain)%3E&flags=rB&offset=0&limit=20&query-string=zz",
+    "contentType": "application/javascript",
+    "statusCode": 400,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://127.0.0.1:1080/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&source=GRS%3Cimg%20src%20onerror=alert(document.domain)%3E&flags=rB&offset=0&limit=20&query-string=zz"
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "text": "Invalid source '%s'",
+                    "args": [
+                        {
+                            "value": "GRS<img src onerror=alert(document.domain)>"
+                        }
+                    ]
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

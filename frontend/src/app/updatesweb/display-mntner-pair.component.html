@@ -1,0 +1,45 @@
+<h1>{{ objectType }} with primary key &quot;{{ objectTypeName }}&quot;</h1>
+
+<section class="inner-container">
+    <table class="success-fields td-20 grey" aria-describedby="object type">
+        <tr *ngFor="let attribute of objectTypeAttributes">
+            <td>
+                <label>{{ attribute.name }}:</label>
+            </td>
+            <td>
+                <p>{{ attribute.value }}</p>
+                <div *ngIf="attribute.$$error" class="modify-feedback">
+                    <span>{{ attribute.$$error }}</span>
+                    <em class="fal fa-info-circle"></em>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <h1>mntner with primary key &quot;{{ mntnerName }}&quot;</h1>
+
+    <table class="success-fields td-20 grey" aria-describedby="mntner">
+        <tr *ngFor="let attribute of mntnerAttributes">
+            <td>
+                <label>{{ attribute.name }}:</label>
+            </td>
+            <td>
+                <p>{{ attribute.value }}</p>
+                <div *ngIf="attribute.$$error" class="modify-feedback">
+                    <span>{{ attribute.$$error }}</span>
+                    <em class="fal fa-info-circle"></em>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <p>We have created the following {{ objectType }} and maintainer pair for you.</p>
+    <p>You should only use this maintainer to make changes to your {{ objectType }} object.</p>
+    <p>
+        To create and update other objects, we recommend you create a "shared maintainer" for your organisation, if you don't already have one.
+        <a rel="noopener" target="_blank" href="/../docs/Database-Support/Database-Security#personal-maintainers-versus-shared-maintainers">Learn more...</a>
+    </p>
+
+    <button mat-flat-button color="primary" class="float-end margin-left" (click)="navigateToSharedMntner()">CREATE SHARED MAINTAINER</button>
+    <button mat-flat-button color="primary" class="float-end" (click)="navigateToSelect()">BACK TO CREATE OBJECT</button>
+</section>

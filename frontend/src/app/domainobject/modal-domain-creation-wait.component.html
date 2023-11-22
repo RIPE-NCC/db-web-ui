@@ -1,0 +1,15 @@
+<div id="processing-domainObjects" class="modal-content no-rounded">
+    <div class="modal-header">
+        <h2 class="modal-title">Processing your domain objects</h2>
+    </div>
+    <div class="modal-body">
+        <div class="panel-body">
+            <p class="orangebackground">Please do not close this window.</p>
+            <br />
+            <p>Validating reverse zones for your servers and creating domain object(s). This can take a few minutes. Please wait.</p>
+            <ngb-progressbar [striped]="true" [animated]="true" [value]="done" max="{{ numberOfDomains }}"
+                >Creating {{ numberOfDomains }} domain objects</ngb-progressbar
+            >
+        </div>
+    </div>
+</div>

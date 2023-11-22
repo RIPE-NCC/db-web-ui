@@ -1,0 +1,29 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/RIPE/person",
+    "contentType": "application/javascript",
+    "statusCode": 401,
+    "data": {
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "text": "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    "args": [
+                        {
+                            "value": "organisation"
+                        },
+                        {
+                            "value": "ORG-TEST-RIPE"
+                        },
+                        {
+                            "value": "mnt-ref"
+                        },
+                        {
+                            "value": "TEST"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

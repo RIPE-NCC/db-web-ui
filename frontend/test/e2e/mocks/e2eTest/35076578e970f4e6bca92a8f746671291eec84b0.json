@@ -1,0 +1,47 @@
+{
+    "requestUrl": "/api/whois-internal/api/user/info",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "user": {
+            "username": "tdacruzper@ripe.net",
+            "uuid": "938c6a59-5302-4953-974e-686567eac074",
+            "active": true,
+            "displayName": "Fred Astaire",
+            "expiryDate": "2017-07-06T18:25:41.877"
+        },
+        "organisations": [
+            {
+                "orgObjectId": "ORG-TEST43-RIPE",
+                "organisationName": "WiTest organisation",
+                "roles": ["certification", "NON-MEMBER"]
+            },
+            {
+                "orgObjectId": "ORG-TEST36-RIPE",
+                "organisationName": "SwTest organisation",
+                "roles": ["certification", "NON-MEMBER"]
+            },
+            {
+                "orgObjectId": "ORG-TEST33-RIPE",
+                "organisationName": "ViTest organisation",
+                "roles": ["certification", "NON-MEMBER"]
+            }
+        ],
+        "members": [
+            {
+                "membershipId": 49552,
+                "regId": "nl.atest",
+                "orgObjectId": "ORG-ATEST-RIPE",
+                "organisationName": "WTest Organisation name",
+                "roles": ["admin", "general", "generalMeeting", "resources", "myResources", "certification", "ticketing", "billing", "LIR"]
+            },
+            {
+                "membershipId": 3629,
+                "regId": "nl.supertestorg",
+                "orgObjectId": "ORG-TEST23-RIPE",
+                "organisationName": "SUPERTESTORG bv",
+                "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
+            }
+        ]
+    }
+}

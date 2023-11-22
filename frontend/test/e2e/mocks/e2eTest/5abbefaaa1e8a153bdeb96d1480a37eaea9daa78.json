@@ -1,0 +1,116 @@
+{
+    "requestUrl": "/api/whois/RIPE/mntner/TEST03-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://127.0.0.1:1080/RIPE/mntner/TEST03-MNT"
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST03-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST03-MNT"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "SSO isvonja@ripe.net"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "Maintainer for all TEST objects"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@test.com"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "***@test.com"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@test.com"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST03-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-08-19T16:53:54Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2019-10-04T09:38:01Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Warning",
+                    "text": "Submitted object identical to database object"
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

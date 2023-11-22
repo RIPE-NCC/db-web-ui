@@ -1,0 +1,1233 @@
+{
+    "requestUrl": "/db-web-ui/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22193.0.0.0%22%20OR%20%22ripe%22)&start=0&wt=json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "result": {
+            "name": "response",
+            "numFound": 7598534,
+            "start": 0,
+            "docs": [
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "2"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS2043 - AS2043"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS2043 - AS2043"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-04-08T12:43:46Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:13Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "7"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS2830 - AS2879"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS2830 - AS2879"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-04-08T12:43:48Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:16Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1863488"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS2026 - AS2029"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS2026 - AS2029"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-10-28T13:49:41Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:16Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1770946"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS7 - AS7"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS7 - AS7"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-08-22T14:57:24Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:12Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1770948"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS28 - AS28"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS28 - AS28"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-08-22T14:57:25Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:12Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1770950"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS137 - AS137"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS137 - AS137"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-08-22T14:57:25Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:12Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1770956"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS248 - AS251"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS248 - AS251"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-08-22T14:57:28Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:15Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1770960"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS286 - AS286"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS286 - AS286"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-08-22T14:57:29Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:12Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1770962"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS288 - AS288"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS288 - AS288"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-08-22T14:57:30Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:12Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1770999"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "as-block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS709 - AS710"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-block",
+                                    "value": "AS709 - AS710"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE NCC ASN block"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "These AS Numbers are assigned to network operators in the RIPE NCC service region."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2002-08-22T14:57:43Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-02-24T13:15:15Z"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "lsts": [
+            {
+                "lst": {
+                    "name": "responseHeader",
+                    "ints": [
+                        {
+                            "int": {
+                                "name": "status",
+                                "value": "0"
+                            }
+                        },
+                        {
+                            "int": {
+                                "name": "QTime",
+                                "value": "20898"
+                            }
+                        }
+                    ],
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "params",
+                                "ints": null,
+                                "strs": [
+                                    {
+                                        "str": {
+                                            "name": "q",
+                                            "value": "(193.0.0.0 OR ripe)"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "rows",
+                                            "value": "10"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "start",
+                                            "value": "0"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl",
+                                            "value": "true"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.pre",
+                                            "value": "<b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.post",
+                                            "value": "</b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "wt",
+                                            "value": "json"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "facet",
+                                            "value": "true"
+                                        }
+                                    }
+                                ],
+                                "lsts": null,
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "highlighting",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "2",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "7",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1863488",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1770946",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1770948",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1770950",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1770956",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1770960",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1770962",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1770999",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> NCC ASN block"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "These AS Numbers are assigned to network operators in the <b>RIPE<\\/b> NCC service region."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "facet_counts",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "facet_fields",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": [
+                                    {
+                                        "lst": {
+                                            "name": "object-type",
+                                            "ints": [
+                                                {
+                                                    "int": {
+                                                        "name": "inetnum",
+                                                        "value": "3820684"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "person",
+                                                        "value": "2399898"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "domain",
+                                                        "value": "686583"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "inet6num",
+                                                        "value": "338681"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "organisation",
+                                                        "value": "124925"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "role",
+                                                        "value": "78253"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "mntner",
+                                                        "value": "54773"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "route",
+                                                        "value": "42455"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "aut-num",
+                                                        "value": "29965"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "as-set",
+                                                        "value": "14531"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "key-cert",
+                                                        "value": "3236"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "route6",
+                                                        "value": "1745"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "route-set",
+                                                        "value": "1370"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "as-block",
+                                                        "value": "462"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "irt",
+                                                        "value": "319"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "peering-set",
+                                                        "value": "210"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "poem",
+                                                        "value": "202"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "filter-set",
+                                                        "value": "113"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "inet-rtr",
+                                                        "value": "102"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "rtr-set",
+                                                        "value": "21"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "poetic-form",
+                                                        "value": "6"
+                                                    }
+                                                }
+                                            ],
+                                            "strs": null,
+                                            "lsts": null,
+                                            "arrs": null
+                                        }
+                                    }
+                                ],
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            }
+        ]
+    }
+}

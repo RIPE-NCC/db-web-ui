@@ -1,0 +1,114 @@
+{
+    "requestUrl": "/api/whois/RIPE/mntner/TEST02-MNT?password=TEST02-MNT&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST02-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST02-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TEST02-MNT"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "Top maintainer for all TstOrg1 resources"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-SVS8-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-SVS8-RIPE",
+                                "referenced-type": "organisation"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@tstorg1.com"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "***@tstorg1.com"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@tstorg1.com"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST02-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST02-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2008-10-22T07:27:03Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2019-08-02T15:04:57Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.99",
+            "timestamp": "2020-12-09T19:50:04Z",
+            "commit-id": "ed91ac0"
+        }
+    }
+}

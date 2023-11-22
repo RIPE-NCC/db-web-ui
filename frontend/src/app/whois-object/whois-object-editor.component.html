@@ -1,0 +1,24 @@
+<section class="visible-field-form">
+    <ul class="form-fields appeared-fields">
+        <li
+            *ngFor="let attribute of attributes | filteroutAttributeByName : ['mnt-by', 'last-modified', 'created'] | filteroutAttributeByHidden; let i = index"
+            [hidden]="attribute.$$hidden"
+        >
+            <attribute-renderer
+                [source]="source"
+                [objectType]="objectType"
+                [attributes]="attributes"
+                [attribute]="attribute"
+                [idx]="i.toString()"
+            ></attribute-renderer>
+        </li>
+    </ul>
+    <submitting-agreement></submitting-agreement>
+    <button *ngIf="deletable" mat-flat-button color="warn" class="float-start" (click)="btnDeleteClicked()">DELETE THIS OBJECT</button>
+    <article class="float-end">
+        <button mat-flat-button color="primary" type="submit" class="float-end margin-left" [disabled]="disableSubmit" (click)="btnSubmitClicked()">
+            SUBMIT
+        </button>
+        <button mat-stroked-button color="primary" class="float-end" (click)="btnCancelClicked()">CANCEL</button>
+    </article>
+</section>

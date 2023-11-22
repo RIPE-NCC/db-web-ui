@@ -1,0 +1,33 @@
+<section>
+    <h1 id="anchorScroll" class="documentFirstHeading">Syncupdates</h1>
+    <p>This form allows an advanced user to paste one or more objects into the text area, and perform a whois update.</p>
+</section>
+<div *ngIf="updateResponse">
+    <pre id="updateResultPreview">{{ updateResponse }}</pre>
+</div>
+<ng-form class="ga-syncupdate-form">
+    <label for="rpslTextArea">Object Data</label>
+    <textarea autoFocusDirective id="rpslTextArea" name="rpslObject" [(ngModel)]="rpslObject" rows="18" class="full-width form-control margin-bottom">{{
+        rpslObject
+    }}</textarea>
+    <submitting-agreement></submitting-agreement>
+    <button mat-flat-button color="primary" name="btnSyncupdate" class="float-end" (click)="update()" [disabled]="isUpdating">UPDATE</button>
+</ng-form>
+<div id="instructionsSyncupdate">
+    <h3>Instructions</h3>
+
+    <p>You can include one or more RPSL objects in the text area above, each object separated by an empty line.</p>
+    <p>
+        To authenticate as a MNTNER, include one or more "password:" attributes on a separate line. If you are logged in to RIPE NCC Access, your credential is
+        submitted automatically.
+    </p>
+    <p>
+        To test an update without making any changes, include a "dry-run:" attribute.
+        <a href="https://labs.ripe.net/author/denis/dry-run-testing-in-the-ripe-database/">More information</a>
+    </p>
+    <p>
+        For more information about Syncupdates, please refer to the
+        <a href="/../docs/Update-Methods/Syncupdates">Syncupdates</a>
+        section in the RIPE NCC Database Manual.
+    </p>
+</div>

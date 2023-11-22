@@ -1,0 +1,13 @@
+$default-spacing: 8;
+
+@function spacing($args...) {
+    @if length($args) == 1 {
+        @return (#{$default-spacing * nth($args, 1)}px);
+    }
+    @if length($args) == 2 {
+        @return (#{$default-spacing * nth($args, 1)}px #{$default-spacing * nth($args, 2)}px);
+    }
+    @return (
+        #{$default-spacing * nth($args, 1)}px #{$default-spacing * nth($args, 2)}px #{$default-spacing * nth($args, 3)}px #{$default-spacing * nth($args, 4)}px
+    );
+}

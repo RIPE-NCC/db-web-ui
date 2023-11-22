@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <!-- keep version in sync with spring-boot.version in backend pom -->
+        <version>3.1.4</version>
+        <relativePath />
+    </parent>
+
+    <groupId>net.ripe.whois</groupId>
+    <artifactId>db-web-ui-parent</artifactId>
+    <!-- version is not used (CD server versions artifacts by specifying Implementation-Version (see maven-war-plugin below) -->
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>db-web-ui-parent</name>
+
+    <organization>
+        <name>RIPE NCC, the Netherlands</name>
+        <url>https://www.ripe.net/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>BSD</name>
+            <url>https://raw.github.com/RIPE-NCC/whois/master/LICENSE.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <developerConnection>scm:git:ssh://git@stash.ripe.net:7999/swe/db-web-ui.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>ripe-releases</id>
+            <url>https://artefacts.ripe.net/repository/maven-releases-ncc/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ripe-snapshots</id>
+            <url>https://artefacts.ripe.net/repository/maven-snapshots-ncc/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <java.version>17</java.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>ripe-releases</id>
+            <url>https://artefacts.ripe.net/repository/maven-releases-ncc/</url>
+        </repository>
+    </repositories>
+
+    <modules>
+        <module>frontend</module>
+        <module>backend</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <!-- dependency check is off by default. Run mvn dependency-check:aggregate to run standalone -->
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>7.4.4</version>
+                <executions>
+                    <execution>
+                        <!-- do not run by default -->
+                        <id>not-by-default</id>
+                        <phase>not-by-default</phase>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/backend/src/main/webapp</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/frontend/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/frontend/node</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/frontend/dist</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/frontend</directory>
+                            <includes>
+                                <include>.t*/</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

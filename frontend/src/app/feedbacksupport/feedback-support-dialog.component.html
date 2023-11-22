@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Feedback and Support</h2>
+<div mat-dialog-actions>
+    <mat-action-list>
+        <mat-list-item (click)="sendEmail()">
+            <em mat-list-icon class="fal fa-paper-plane"></em>
+            <div mat-line>
+                <div class="primary">Contact our support team</div>
+                <div class="secondary">Need help? Open a ticket.</div>
+            </div>
+        </mat-list-item>
+        <mat-list-item (click)="openUsersnap()">
+            <em mat-list-icon class="fal fa-bug"></em>
+            <div mat-line>
+                <div class="primary">Report a bug</div>
+                <div class="secondary">Something broken? Let us know!</div>
+            </div>
+        </mat-list-item>
+        <mat-list-item *ngIf="showChatMenuItem" (click)="openLiveChat()">
+            <em mat-list-icon class="fal fa-comment-alt"></em>
+            <div mat-line>
+                <div class="primary">Chat</div>
+                <div class="secondary">Launch Chat.</div>
+            </div>
+        </mat-list-item>
+    </mat-action-list>
+</div>

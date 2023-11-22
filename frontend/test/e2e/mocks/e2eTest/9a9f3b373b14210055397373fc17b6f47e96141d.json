@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/api/whois/RIPE/as-set/AS196613%3AAS-TEST?dry-run=false&reason=I%20don%27t%20need%20this%20object",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

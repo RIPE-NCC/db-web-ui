@@ -1,0 +1,92 @@
+<div class="modal-content no-rounded">
+    <form (submit)="submit()">
+        <div class="modal-header">
+            <h2 class="modal-title">Password authentication</h2>
+            <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+        </div>
+        <div *ngIf="selected.message?.length > 0" class="modal-banner alarm">
+            <p>{{ selected.message }}</p>
+        </div>
+        <div *ngIf="resolve.mntners.length === 0" class="modal-banner alarm">
+            <span *ngIf="!resolve.isLirObject">
+                You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are
+                protected with an MD5 password.
+            </span>
+
+            <span *ngIf="resolve.isLirObject">
+                <span *ngIf="resolve.mntnersWithoutPassword.length > 0">
+                    You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are
+                    protected with an MD5 password.
+                </span>
+
+                <span *ngIf="resolve.mntnersWithoutPassword.length === 0">
+                    The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default
+                    maintainer <a href="{{ PORTAL_URL }}#/account-details">here</a>.
+                </span>
+            </span>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="resolve.mntners && resolve.mntners.length > 0">
+                <ul>
+                    <li>
+                        <label for="selectAuthMntner">Select a maintainer to authenticate the update operation.</label>
+                        <select
+                            id="selectAuthMntner"
+                            name="selectAuthMntner"
+                            [(ngModel)]="selected.item"
+                            (ngModelChange)="onChangeMnt()"
+                            required="true"
+                            class="form-control select-height"
+                        >
+                            <option *ngFor="let item of resolve.mntners" label="{{ item.key }}" [ngValue]="item">{{ item.key }}</option>
+                        </select>
+                    </li>
+                    <li>
+                        <div>
+                            <label class="float-start">Provide the password for the selected maintainer</label>
+                            <a class="forgot-password float-end" [href]="fmpPath" (click)="cancel()">Forgotten MNTNER password?</a>
+                        </div>
+                        <input type="password" class="form-control" [(ngModel)]="selected.password" required="true" name="passwordAuth" />
+                    </li>
+                    <li>
+                        <input type="checkbox" [(ngModel)]="selected.associate" id="associate" name="associate" class="ga-associate-checkbox" />
+                        &nbsp;
+                        <label for="associate"
+                            >Also authorise my RIPE NCC Access account for this maintainer.
+                            <a href="../docs/Authorisation/Using-the-Authorisation-Methods" rel="noopener" target="_blank">Learn more.</a></label
+                        >
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="resolve.mntnersWithoutPassword && resolve.mntnersWithoutPassword.length > 0">
+                <hr />
+                The following maintainers are used to protect this object, but are not eligible to be used here:
+                <br />
+                <span *ngFor="let mnt of resolve.mntnersWithoutPassword; let last = last">
+                    <a href="webupdates/display/{{ resolve.source }}/mntner/{{ mnt.key }}" rel="noopener" target="_blank">
+                        {{ mnt.key }}
+                    </a>
+                    <span *ngIf="!last">,</span>
+                </span>
+                <br />
+                <a href="/../docs/Authorisation/Authorisation-Model#solving-authentication-problems" taget="_blank">Learn more.</a>
+                <br />
+                <a class="forgot-password" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Recover Maintainer Access</a>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div style="float: left" *ngIf="allowForceDelete()">
+                <a [routerLink]="['/forceDelete', resolve.source, resolve.objectType, resolve.objectName]" (click)="cancel('forceDelete')">Force delete</a> this
+                object?
+                <a href="/../docs/Authorisation/Force-Delete-Functionality" target="_blank">Learn More.</a>
+            </div>
+            <div *ngIf="resolve.mntners.length === 0">
+                <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
+            </div>
+            <div *ngIf="resolve.mntners.length > 0">
+                <button mat-flat-button color="primary" class="float-end" type="submit">SUBMIT</button>
+            </div>
+        </div>
+    </form>
+</div>

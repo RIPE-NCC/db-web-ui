@@ -1,0 +1,175 @@
+{
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=B&offset=0&limit=20&query-string=193.201.0.0",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {},
+            "flags": {
+                "flag": [
+                    {
+                        "value": "no-filtering"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "193.201.0.0"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest.db.ripe.net/ripe/inetnum/193.201.0.0 - 193.201.7.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "193.201.0.0 - 193.201.7.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "193.201.0.0 - 193.201.7.255",
+                                "managed": true
+                            },
+                            {
+                                "name": "netname",
+                                "value": "ORGTEST30"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "ORGTEST30 International Measurement Network"
+                            },
+                            {
+                                "name": "country",
+                                "value": "FR"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest.db.ripe.net/ripe/organisation/ORG-TEST30-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-TEST30-RIPE",
+                                "referenced-type": "organisation",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest.db.ripe.net/ripe/person/TSTADMINC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PI",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-END-MNT",
+                                "referenced-type": "mntner",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest.db.ripe.net/ripe/mntner/ORGTEST30-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "ORGTEST30-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest.db.ripe.net/ripe/mntner/ORGTEST30-MNT"
+                                },
+                                "name": "mnt-routes",
+                                "value": "ORGTEST30-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest.db.ripe.net/ripe/mntner/ORGTEST30-MNT"
+                                },
+                                "name": "mnt-domains",
+                                "value": "ORGTEST30-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2011-07-18T10:46:33Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-04-14T08:09:17Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "managed": true
+                            }
+                        ]
+                    },
+                    "tags": {
+                        "tag": [
+                            {
+                                "id": "RIPE-REGISTRY-RESOURCE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-TEST30-RIPE",
+                        "name": "ORGTEST30"
+                    },
+                    "abuse-contact": {
+                        "key": "TEST000-RIPE",
+                        "email": "lir@orgtest30.net"
+                    },
+                    "managed": true
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

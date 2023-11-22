@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/api/whois-internal/api/user/info",
+    "contentType": "application/javascript",
+    "statusCode": 401,
+    "data": {}
+}

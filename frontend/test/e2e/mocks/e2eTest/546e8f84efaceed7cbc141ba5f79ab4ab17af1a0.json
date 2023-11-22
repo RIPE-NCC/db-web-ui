@@ -1,0 +1,168 @@
+{
+    "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&type-filter=AUT-NUM&flags=rB&offset=0&limit=20&query-string=AS9777",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {
+                "type-filter": [
+                    {
+                        "id": "AUT-NUM"
+                    }
+                ]
+            },
+            "flags": {
+                "flag": [
+                    {
+                        "value": "no-referenced"
+                    },
+                    {
+                        "value": "no-filtering"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "AS9777"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "aut-num",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-dev.db.ripe.net/ripe-nonauth/aut-num/AS9777"
+                    },
+                    "source": {
+                        "id": "ripe-nonauth"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "aut-num",
+                                "value": "AS9777"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "aut-num",
+                                "value": "AS9777"
+                            },
+                            {
+                                "name": "as-name",
+                                "value": "TSTORG1-AS"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "TSTORG1 Powered by TEST1"
+                            },
+                            {
+                                "name": "import",
+                                "value": "from AS9457 action pref=100; accept ANY AND NOT {0.0.0.0/0}"
+                            },
+                            {
+                                "name": "import",
+                                "value": "from AS4663 action pref=100; accept ANY AND NOT {0.0.0.0/0}"
+                            },
+                            {
+                                "name": "export",
+                                "value": "to AS9457 announce AS-TSTORG1"
+                            },
+                            {
+                                "name": "export",
+                                "value": "to AS4663 announce AS-TSTORG1"
+                            },
+                            {
+                                "name": "default",
+                                "value": "to AS4663"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/person/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/person/TSTTECHC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "test test"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "Trouble Inquires: noc@testemail.net or opr@testemail.net"
+                            },
+                            {
+                                "name": "status",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@testemail.net"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@testemail.net"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@testemail.net"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@testemail.net"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST14-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST14-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "1970-01-01T00:00:00Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2017-11-15T09:16:50Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE-NONAUTH"
+                            }
+                        ]
+                    },
+                    "managed": false
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

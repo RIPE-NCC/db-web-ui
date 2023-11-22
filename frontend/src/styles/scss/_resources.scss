@@ -1,0 +1,267 @@
+%active-state {
+    border: 0;
+    border-bottom: 2px solid $link;
+    color: $black;
+    background: $white;
+}
+
+.nav-tabs {
+    border-bottom: 0;
+    margin-top: 5px;
+    @extend %width-100;
+    li.nav-item {
+        a {
+            padding: 8px 40px;
+            color: #9d9d9d;
+            cursor: pointer;
+            &:hover {
+            }
+            &.active,
+            &.active:focus,
+            &.active:hover {
+                @extend %active-state;
+            }
+        }
+    }
+}
+
+.resources-sponsored-tabs {
+    display: inline-block;
+    font: {
+        size: 1.6em;
+        weight: normal;
+    }
+    ul {
+        margin-top: 0;
+        li.nav-item {
+            padding-right: 10px;
+            & + li {
+                border-left: 2px $dark-grey solid;
+                padding-left: 10px;
+                padding-right: 0;
+            }
+
+            a {
+                color: #c1c1c1;
+                text-decoration: none;
+                padding: 0;
+                background-color: transparent;
+                &:hover {
+                    color: $link;
+                }
+                &.active,
+                &.active:hover,
+                &.active:focus {
+                    border: none;
+                    color: $black;
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}
+
+div.resource-list {
+    @extend %width-100;
+    @extend %float-l;
+    resource-item {
+        @extend %width-100;
+        @extend %float-l;
+        padding: 10px;
+        border: 1px transparent solid;
+        &:hover {
+            background-color: #fbfbfb;
+        }
+        .title {
+            font: {
+                size: 16px;
+                weight: bold;
+            }
+            cursor: pointer;
+            &:hover {
+                color: $link;
+            }
+            span {
+                line-height: 1.1em;
+            }
+        }
+        p.org-name {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0;
+            color: $black;
+        }
+        .flags-container {
+            @extend %width-100;
+            @extend %float-l;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        div.progressbar-container {
+            @extend .flags-container;
+            margin-top: 5px;
+        }
+        div.progressbar-container {
+            background: $grey none;
+            box-shadow: none;
+            height: 10px;
+            border-radius: 0;
+            margin: 0;
+        }
+        div.progress-bar {
+            min-width: 0;
+            background-image: none;
+            background-color: #44465d !important;
+            box-shadow: none;
+            height: 10px;
+            border-radius: 0;
+        }
+    }
+}
+
+@mixin tableCell($widz) {
+    width: $widz;
+    text-align: left;
+    display: inline-block;
+}
+
+table.resources > thead > tr {
+    background-color: $brd-color;
+}
+
+table.resources {
+    thead {
+        display: block;
+        tr {
+            width: 100%;
+            display: block;
+            th {
+                &.w20 {
+                    @include tableCell(20%);
+                }
+                &.w30 {
+                    @include tableCell(30%);
+                }
+                &.w40 {
+                    @include tableCell(40%);
+                }
+                &.w50 {
+                    @include tableCell(50%);
+                }
+                &.w60 {
+                    @include tableCell(60%);
+                }
+            }
+        }
+    }
+    tbody {
+        display: block;
+        overflow-y: auto;
+        tr {
+            width: 100%;
+            display: block;
+            td {
+                &.w20 {
+                    @include tableCell(20%);
+                }
+                &.w30 {
+                    @include tableCell(30%);
+                }
+                &.w40 {
+                    @include tableCell(40%);
+                }
+                &.w50 {
+                    @include tableCell(50%);
+                }
+                &.w60 {
+                    @include tableCell(60%);
+                }
+                &.right {
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
+
+table.table-body-borderless > tbody > tr > td,
+table.table-body-borderless > thead > tr > th {
+    border: 0;
+    a {
+        cursor: pointer;
+    }
+}
+
+ul.attrblock {
+    list-style-type: none;
+}
+
+.prefix-filter {
+    overflow: hidden;
+    margin-bottom: 20px;
+    div.input-group {
+        @extend %float-l;
+        width: 300px;
+        > span.input-group-btn {
+            position: relative;
+            right: 22px;
+            top: 6px;
+            button.btn {
+                background-color: transparent;
+                padding: 0;
+                margin-left: auto;
+                &:focus {
+                    outline: none;
+                }
+                span.fal {
+                    color: $dark-grey-cr;
+                }
+            }
+        }
+    }
+    p {
+        @extend %float-r;
+        line-height: 2;
+    }
+}
+
+whois-object > section {
+    margin-bottom: 41px;
+}
+
+#clearButton.btn {
+    border-radius: 0;
+}
+
+.resource-page-message {
+    margin: 80px 0 12px 0;
+    @extend %float-l;
+    @extend %width-100;
+    text-align: center;
+}
+section.resource-intro {
+    @extend %float-l;
+    width: 70%;
+    > h1 {
+        margin-bottom: 5px;
+        word-wrap: break-word;
+    }
+}
+section.back-to-my-resources {
+    @extend %float-r;
+    position: relative;
+}
+section.db-object {
+    @extend %float-l;
+    @extend %width-100;
+    margin-bottom: 1em;
+}
+section.more-specifics {
+    @extend %float-l;
+    @extend %width-100;
+}
+section.associated-objects {
+    @extend %float-l;
+    @extend %width-100;
+}

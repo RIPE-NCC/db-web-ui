@@ -1,0 +1,166 @@
+{
+    "requestUrl": "/api/whois/search?flags=r&ignore404=true&query-string=2001:db8::/48&type-filter=inet6num",
+    "contentType": "application/json",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {
+                "type-filter": [
+                    {
+                        "id": "inet6num"
+                    }
+                ]
+            },
+            "flags": {
+                "flag": [
+                    {
+                        "value": "no-referenced"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "2001:db8::/48"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inet6num",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/::/0"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inet6num",
+                                "value": "::/0"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inet6num",
+                                "value": "::/0"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "IANA-BLK"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "The whole IPv6 address space"
+                            },
+                            {
+                                "name": "country",
+                                "value": "EU",
+                                "comment": "Country is really world wide"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-IANA1-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-IANA1-RIPE",
+                                "referenced-type": "organisation"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "IANA1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/CREW-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "CREW-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTTECHC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECHC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ETCHELLS-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "ETCHELLS-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-HM-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-RPSL-MNT"
+                                },
+                                "name": "mnt-routes",
+                                "value": "RIPE-NCC-RPSL-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ALLOCATED-BY-RIR"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "This network in not allocated. This object is here for Database consistency and to allow hierarchical authorisation checks."
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-08-05T10:21:17Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2011-05-20T07:22:53Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

@@ -1,0 +1,107 @@
+{
+    "requestUrl": "/api/whois/RIPE/inetnum/193.0.0.224%20-%20193.0.0.239?unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/193.0.0.224 - 193.0.0.239"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "193.0.0.224 - 193.0.0.239"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "193.0.0.224 - 193.0.0.239"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "TESTNETNAME"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "TEST DESCR"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "TEST 2 DESCR"
+                            },
+                            {
+                                "name": "country",
+                                "value": "GR"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECH-C-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTTECH-C-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "1970-01-01T00:00:00Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2015-12-16T16:05:26Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "tags": {
+                        "tag": [
+                            {
+                                "id": "RIPE-USER-RESOURCE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}

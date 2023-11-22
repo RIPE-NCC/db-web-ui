@@ -1,0 +1,130 @@
+######################
+# Project Specific
+######################
+
+# backend
+backend/target/
+backend/src/main/resources/menu.properties
+backend/src/main/resources/config/application-local.properties
+
+# frontend
+frontend/target/
+# compiled output
+frontend/tmp/
+frontend/dist/
+frontend/out-tsc/
+frontend/.tscache/
+frontend/.angular/
+frontend/src/assets/supportedBrowsers.js
+frontend/src/assets/blockedBrowsers.js
+# dependencies
+frontend/node_modules/
+frontend/instrumented/
+frontend/.baseDir.ts
+frontend/!test/lib/*.jar
+frontend/tscommand-*.tmp.txt
+# cypress videos and screenshots
+frontend/test/cypress/videos
+frontend/test/cypress/screenshots
+# frontend coverage
+frontend/lcov.info
+reports
+
+# profiling files
+frontend/chrome-profiler-events*.json
+frontend/speed-measure-plugin*.json
+
+# root
+reports/
+sit/target/
+README.html
+
+######################
+# Eclipse
+######################
+*.pydevproject
+.project
+.metadata
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/**
+.loadpath
+
+# External tool builders
+.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+######################
+# Intellij
+######################
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+.idea/
+
+######################
+# Maven
+######################
+log/**
+target/**
+
+######################
+# Package Files
+######################
+*.jar
+*.war
+*.ear
+*.db
+
+######################
+# Windows
+######################
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+######################
+# Mac OSX
+######################
+.DS_Store
+.svn
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+######################
+# Logs
+######################
+*.log
+requestlog*
+
+######################
+# Others
+######################
+*.class
+*.*~
+*~
+.merge_file*
+.~*#
+
+!/frontend/

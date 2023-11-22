@@ -1,0 +1,45 @@
+<section class="maintainer-fields">
+    <strong>Please enter the maintainers you would like to use as mnt-by</strong>
+    <article class="maintainer-icons">
+        <span class="fal fa-search maintainer-search-icon"></span>
+        <a class="btn btn-default ga-help-attr maintainer-help" (click)="isMntHelpShown = !isMntHelpShown">
+            <span class="fal fa-question"></span>
+        </a>
+    </article>
+    <ng-select
+        id="selectMaintainerDropdown"
+        [multiple]="true"
+        [items]="mntners.alternatives$ | async"
+        bindLabel="key"
+        [(ngModel)]="mntners.object"
+        [hideSelected]="true"
+        [loading]="loading"
+        [minTermLength]="2"
+        [typeahead]="alternativesInput$"
+        [trackByFn]="trackByFn"
+        (add)="onMntnerAdded($event)"
+        [disabled]="isLirObject()"
+        [clearable]="isClearable()"
+        (remove)="onMntnerRemoved($event.value)"
+        placeholder="Type maintainer name"
+    >
+        <ng-template ng-label-tmp let-mntner="item" let-clear="clear">
+            <div [ngClass]="{ 'select-locked': !showMntCloseButton(mntner), default: true }">
+                {{ mntner.key }}
+                <span class="fal fa-star" *ngIf="mntner.mine"></span>
+                <span class="fal fa-lock" *ngIf="!isRemovable(mntner.key) || isLirObject()"></span>
+                <span class="ng-value-icon close right" aria-hidden="true" *ngIf="showMntCloseButton(mntner)" (click)="clear(mntner)">×</span>
+            </div>
+        </ng-template>
+        <ng-template ng-option-tmp let-mntner="item">
+            <div class="option">
+                <span class="title">{{ mntner.key }}</span>
+                <span class="star fal fa-star" *ngIf="mntner.$$isMine"></span>
+                <span class="auth sso" *ngIf="hasSSo(mntner)"> SSO </span>
+                <span class="auth pgp" *ngIf="hasPgp(mntner)"> PGP </span>
+                <span class="auth md5" *ngIf="hasMd5(mntner)"> MD5 </span>
+            </div>
+        </ng-template>
+    </ng-select>
+    <description-syntax [showComponent]="isMntHelpShown" [objectType]="'mntner'" [attrName]="'mnt-by'"></description-syntax>
+</section>

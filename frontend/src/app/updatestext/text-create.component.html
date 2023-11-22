@@ -1,0 +1,25 @@
+<button mat-flat-button color="primary" id="btnSwitchToWebCreate" class="float-end" (click)="switchToWebMode()">
+    <span class="fal fa-bars"></span> CREATE IN SINGLE LINES
+</button>
+<div>
+    <h1>Create &quot;{{ object.type }}&quot; object</h1>
+
+    <form id="textCreateForm">
+        <div class="form-group">
+            <label for="createRpsl">RPSL to create single object</label>
+            <textarea id="createRpsl" name="createRpsl" class="form-control" rows="20" [(ngModel)]="object.rpsl" style="font-family: monospace"></textarea>
+            <section class="supporting-text">
+                <span
+                    >You can optionally use the <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple
+                    passwords.</span
+                >
+            </section>
+            <submitting-agreement></submitting-agreement>
+
+            <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()" [disabled]="restCallInProgress">
+                SUBMIT
+            </button>
+            <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
+        </div>
+    </form>
+</div>

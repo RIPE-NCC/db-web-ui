@@ -1,0 +1,14 @@
+{
+    "requestUrl": "/api/whois/autocomplete?from=AUT-NUM&like=AS9777&select=aut-num&select=as-name&select=descr&where=aut-num&where=as-name&where=descr",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "key": "AS9777",
+            "type": "aut-num",
+            "descr": ["TSTORG1 Powered by TEST1"],
+            "as-name": "TSTORG1-AS",
+            "aut-num": "AS9777"
+        }
+    ]
+}

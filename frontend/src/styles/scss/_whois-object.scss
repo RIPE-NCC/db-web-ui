@@ -1,0 +1,64 @@
+whois-object-viewer {
+    display: block;
+    overflow: auto;
+    span.blue-button {
+        float: right;
+    }
+    pre {
+        border: 0;
+        background: inherit;
+        padding: 0;
+        margin: 0;
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li span {
+                word-break: break-all;
+            }
+        }
+    }
+    .show-more {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.resultpane {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px #ccc solid;
+    border-radius: 4px;
+}
+
+.no-result-msg {
+    display: flex;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+}
+
+.viewerbuttons {
+    position: absolute;
+    right: 37px;
+    border-color: #ffffff03;
+    border-width: 0 0 6px 2px;
+    border-style: solid;
+}
+
+.showripemanaged {
+    & > .ripemanaged {
+        background: #d1effe;
+    }
+
+    li {
+        white-space: break-spaces;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .viewerbuttons {
+        position: inherit !important;
+    }
+}

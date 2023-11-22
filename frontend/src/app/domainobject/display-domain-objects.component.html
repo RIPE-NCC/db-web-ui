@@ -1,0 +1,20 @@
+<section class="inner-container">
+    <table class="success-fields grey" *ngFor="let object of objects | slice : 0 : 4" aria-describedby="display domain objects">
+        <tr *ngFor="let attribute of object.attributes.attribute">
+            <td class="col-sm-3">
+                <label>{{ attribute.name }}:</label>
+            </td>
+            <td class="col-sm-9">
+                <p>{{ attribute.value }}</p>
+                <div *ngIf="attribute.$$error" class="modify-feedback">
+                    <span>{{ attribute.$$error }}</span>
+                    <em class="fal fa-info-circle"></em>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p *ngIf="objects.length > 4">
+        <a rel="noopener" target="_blank" href="query?searchtext=%20-M%20-rd%20-T%20domain%20{{ prefix }}&bflag=true"> and {{ objects.length - 4 }} more... </a>
+    </p>
+    <button mat-flat-button color="primary" class="float-end" (click)="navigateToSelect()">BACK TO CREATE OBJECT</button>
+</section>

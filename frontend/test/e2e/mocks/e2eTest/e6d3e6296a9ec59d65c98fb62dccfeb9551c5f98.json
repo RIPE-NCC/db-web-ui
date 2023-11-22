@@ -1,0 +1,6 @@
+{
+    "data": [],
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois/autocomplete?extended=true&field=inet6num&query=2001:888:2000::%2F38"
+}

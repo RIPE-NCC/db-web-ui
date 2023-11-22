@@ -1,0 +1,2475 @@
+{
+    "requestUrl": "/db-web-ui/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22193.0.0.0%22%20AND%20%22ripe%22)&start=0&wt=json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "result": {
+            "name": "response",
+            "numFound": 7,
+            "start": 0,
+            "docs": [
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "2084439"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 193.0.7.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 193.0.7.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "RIPE-NCC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE Network Coordination Centre"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-TEST28-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Amsterdam, Netherlands"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Used for RIPE NCC infrastructure."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "NL"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTADMINC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTADMINC2-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTTECHC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED PI"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2003-03-17T12:15:57Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2015-03-04T16:35:39Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "8359112"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 195.255.255.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 195.255.255.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "TEST-NETNAME"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "To determine the registration information for a more"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "specific range, please try a more specific query."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "If you see this object as a result of a single IP query,"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "it means the IP address is currently in the free pool of"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "address space managed by the RIPE NCC."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "EU # Country is in fact world wide"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "IANA1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "IANA1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ALLOCATED UNSPECIFIED"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "LIR-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2010-03-11T11:17:15Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2016-11-14T13:12:23Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "10777683"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 193.0.23.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 193.0.23.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "NL-RIPENCC-OPS-990305"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Amsterdam, Netherlands"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-TEST28-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "NL"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTADMINC2-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTTECHC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ALLOCATED PI"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "LIR-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-lower",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-routes",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2012-03-09T15:03:38Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2016-11-14T13:18:26Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "3446"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "aut-num"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS15544"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "aut-num",
+                                    "value": "AS15544"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "as-name",
+                                    "value": "ORG-TEST29-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Addresss"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Tel: +3*********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Fax: +3********"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Web: http://www.org-test29-ripe.gr"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-TEST35-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "------------ AS15544 / ORG-TEST29-RIPE HELLAS S.A ------------"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "--------- PUBLIC IPv4/IPv6 BGP PEERING POLICY ---------"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "24x7 NOC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "General Info about ORG-TEST29-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "==========================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "ORG-TEST29-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "founded in 2000 by a team of IT professionals with many"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "years of technical expertise and knowledge in the area"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "of information technology and telecommunications."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "The company has offices in Athens and Thessaloniki."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "We provide IPv4/IPv6 transit with at least two major"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "carriers in every location. We are also member of Greek"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Internet Exchange (GR-IX) and maintain peering agreements"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "with other Greek major networks and members of GR-IX."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "We are ISO/IEC 27001:2013 certified and maintain a"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "security policy according to Greek/EU laws. We are also"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "a RIPE member since 2000 and we operate as a LIR."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "We use the RIPE database as the primary IRR database"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "in which we register most of our objects."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "The as-set which contains our own AS number and all our"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "customers' AS numbers is AS-ORG-TEST29-RIPE. Please use this"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "as-set if you do prefix filtering, unless otherwise noted."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Our PeeringDB record"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "General Peering Policy Info"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "==========================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "- We honor no-export and no-advertise well-known"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "communities."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "- We do *NOT* honor the MED BGP attribute. All routes"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "received from our upstreams, customers or IX-peers on both"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "primary/backup routers get a metric of 0. Please see below"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "about our primary/backup scheme."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "- bogon/martian prefixes are rejected on import."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "- Prefixes containing a bogon/reserved/private AS number"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "in their as-path are rejected."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "- We reject the default-route prefix (0/0, ::/0) from all"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "peers (upstreams/customers/IX-peers)."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "- Prefixes longer than /24 for IPv4 or /48 for IPv6"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "are rejected."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "- We use BOTH prefix access lists and as-path access lists"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "for prefix filtering. Customers or IX-peers imported"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "prefixes must be registered with a valid route/route6"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "object in the RIPE database. The prefix must be originating"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "from the customer's AS or, in case the peer is an IX-peer,"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "the peer's AS and their adjacent AS if any."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "All other advertisements are rejected."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Our filters are automatically updated every business-day"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "morning. Contact noc@test.net for an irregular update."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Primary/Backup BGP Routers"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "=========================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "ORG-TEST29-RIPE prefers to connect with other autonomous systems"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "using a cluster of bgp routers with at least two BGP"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "sessions for redundancy. Each session originates from a"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "different router. The first/primary session is maintained"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "on our primary-designated router while any other secondary"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "sessions use our backup(s) router(s)."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Routes received from our peers on the primary router always"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "get a higher local preference than the backup router."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Our customers can fine-tune our local-preference values"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "using the appropriate community tags. See below."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Routes advertised to our peers have their metric set to 0"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "on primary and 20 on backup. If the remote AS does not"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "honor the MED attribute we follow the appropriate"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "technique as instructed by the remote AS import policy."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "BGP Communities used by our Customers"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "====================================="
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Our customers can use the following communities to"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "influence our BGP routers:"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "as-path prepend:"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "----------------"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "15544:5000 Prepend 5 times to all Upstreams"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "15544:5900 Prepend 5 times to all GR-IX Peers"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "local-preference override:"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "--------------------------"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "15544:7090 Set local-preference of customer's prefix"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "to very-low local-preference mode."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "In normal operations the customer's announcements have"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "a higher local-preference value than IX-peers and"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "upstreams announcements."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "The order is: [CUSTOMER] > [IX-PEERS] > [UPSTREAMS]"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "If you tag your advertisements with 15544:7090 then"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "the order changes to:"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "[IX-PEERS] > [UPSTREAMS] > [CUSTOMER]"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "In this mode, prefixes received from IX-peers and/or"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "from our upstreams are more preferred. A multi-homed"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "customer can utilize this mode to use us a"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "backup/last resort path."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Export Prefix Policy for our Customers"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "======================================"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "We advertise the following prefix-sets to our customers:"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "FIRT: advertise the entire global BGP routing table"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "GRIX: advertise only prefixes learned from our GR-IX peers."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "RIPE: advertise only the RIPE-NCC prefix. This is"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "193.0.0.0/21 for IPv4 and 2001:67c:2e8::/48 for IPv6"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "and they both originating from AS3333."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "default: advertise only the default route (0/0 or ::/0)"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Customer can select/change any of the above sets by"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "e-mailing noc@test.net."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# END OF PUBLIC BGP PEERING POLICY FOR ORG-TEST29-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Import/export policy in RPSL now follows. This is a"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "generic description of our current peering plan. No"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "strict filtering or local preference actions are"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "described. Use only for reference."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# UPSTREAMS"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from AS12713 from AS6866 accept ANY;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi any to AS12713 to AS6866 announce AS-ORG-TEST29-RIPE AND <^AS15544+AS-ORG-TEST29-RIPE*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# GR-IX PEERS"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from PRNG-AS15544-GRIX-PEERS accept (PeerAS OR PeerAS:AS-TO-AIX) AND <^PeerAS+PeerAS:AS-TO-AIX*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi any to PRNG-AS15544-GRIX-PEERS announce AS15544:AS-TO-AIX AND <^AS15544+AS15544:AS-TO-AIX*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# Cyprus peering in GR-IX"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from AS6866 accept AS-CYTANET AND <^AS6866+AS-CYTANET*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi any to AS25152 announce AS15544:AS-TO-AIX AND <^AS15544+AS15544:AS-TO-AIX*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# RIPE NCC K-ROOT Local Mirror in GR-IX"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from AS25152 accept RS-KROOT-GRNET AND <^AS25152*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi any to AS25152 announce AS15544 AND <^AS15544*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# VERISIGN J-ROOT/COM/NET Local Mirror in GR-IX"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from AS25152 accept AS26415 AND <^AS26415*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi any to AS25152 announce AS15544 AND <^AS15544*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "# CUSTOMERS"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from AS199382 accept AS199382 AND <^AS199382*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi ipv4 to AS199382 announce { 0.0.0.0/0 };"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi ipv6 to AS199382 announce { ::/0 };"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from AS199305 accept AS199305 AND <^AS199305*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi ipv4 to AS199305 announce { 193.0.0.0/21 };"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi ipv6 to AS199305 announce { 2001:67c:2e8::/48 };"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-import",
+                                    "value": "afi any from AS203780 accept AS203780 AND <^AS203780*$>;"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi ipv4 to AS203780 announce { 193.0.0.0/21 };"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mp-export",
+                                    "value": "afi ipv6 to AS203780 announce { 2001:67c:2e8::/48 };"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTADMINC2-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTTECHC2-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-END-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "TEST18-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "notify",
+                                    "value": "***@test.net"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "1970-01-01T00:00:00Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2015-12-03T12:22:16Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "1214822"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "route"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0/21AS3333"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "route",
+                                    "value": "193.0.0.0/21"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE-NCC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "origin",
+                                    "value": "AS3333"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "1970-01-01T00:00:00Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2008-09-10T14:27:53Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "3763302"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "route-set"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "rs-hack"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "route-set",
+                                    "value": "rs-hack"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Test of route-set."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "members",
+                                    "value": "194.68.48.0/24, 193.0.0.0/24"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTTECHC3-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTTECHC3-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "TEST21-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2005-06-15T11:18:42Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2011-08-22T11:31:17Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "14245753"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "route-set"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "AS15544:RS-RIPE-NCC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "route-set",
+                                    "value": "AS15544:RS-RIPE-NCC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "# THIS IS A PRIVATE USE OBJECT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "# RIPE-NCC PREFIX ADVERTISMENT FROM ORG-TEST29-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "# TO CUSTOMERS"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "members",
+                                    "value": "193.0.0.0/21 # RIPE-NCC AS3333"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "TSTADMINC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTTECHC-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "TSTADMINC2-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "TEST-GR-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2014-10-15T07:55:38Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2014-10-15T07:55:38Z"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "lsts": [
+            {
+                "lst": {
+                    "name": "responseHeader",
+                    "ints": [
+                        {
+                            "int": {
+                                "name": "status",
+                                "value": "0"
+                            }
+                        },
+                        {
+                            "int": {
+                                "name": "QTime",
+                                "value": "5079"
+                            }
+                        }
+                    ],
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "params",
+                                "ints": null,
+                                "strs": [
+                                    {
+                                        "str": {
+                                            "name": "q",
+                                            "value": "(193.0.0.0 AND ripe)"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "rows",
+                                            "value": "10"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "start",
+                                            "value": "0"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl",
+                                            "value": "true"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.pre",
+                                            "value": "<b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.test.post",
+                                            "value": "</b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "wt",
+                                            "value": "json"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "facet",
+                                            "value": "true"
+                                        }
+                                    }
+                                ],
+                                "lsts": null,
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "highlighting",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "2084439",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "lookup-key",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0<\\/b> - 193.0.7.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0<\\/b> - 193.0.7.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "netname",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b> Network Coordination Centre"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "org",
+                                            "str": {
+                                                "name": null,
+                                                "value": "ORG-RIEN1-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "Used for <b>RIPE<\\/b> NCC infrastructure."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "JDR-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "BRD-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "OPS4-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "8359112",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "lookup-key",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0<\\/b> - 195.255.255.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0<\\/b> - 195.255.255.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "address space managed by the <b>RIPE<\\/b> NCC."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "IANA1-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "IANA1-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "10777683",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "lookup-key",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0<\\/b> - 193.0.23.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0<\\/b> - 193.0.23.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "org",
+                                            "str": {
+                                                "name": null,
+                                                "value": "ORG-RIEN1-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "BRD-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "OPS4-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-HM-MNT"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-lower",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-MNT"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-routes",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "3446",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "org",
+                                            "str": {
+                                                "name": null,
+                                                "value": "ORG-DHA1-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "a <b>RIPE<\\/b> member since 2000 and we operate as a LIR."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "We use the <b>RIPE<\\/b> database as the primary IRR database"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "object in the <b>RIPE<\\/b> database. The prefix must be originating"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>: advertise only the <b>RIPE<\\/b>-NCC prefix. This is"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0/21<\\/b> for IPv4 and 2001:67c:2e8::/48 for IPv6"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "name": null,
+                                                "value": "# <b>RIPE<\\/b> NCC K-ROOT Local Mirror in GR-IX"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mp-export",
+                                            "str": {
+                                                "name": null,
+                                                "value": "afi ipv4 to AS199305 announce { <b>193.0.0.0/21<\\/b> };"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mp-export",
+                                            "str": {
+                                                "name": null,
+                                                "value": "afi ipv4 to AS203780 announce { <b>193.0.0.0/21<\\/b> };"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "TCP977-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "DWNM1-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-END-MNT"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "DWMR1-<b>RIPE<\\/b>-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "1214822",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "route",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0/21<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>RIPE<\\/b>-NCC-MNT"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "3763302",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "members",
+                                            "str": {
+                                                "name": null,
+                                                "value": "194.68.48.0/24, <b>193.0.0.0/24<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "FW526-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "FW526-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "14245753",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": null,
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "lookup-key",
+                                            "str": {
+                                                "name": null,
+                                                "value": "AS15544:RS-<b>RIPE<\\/b>-NCC"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "route-set",
+                                            "str": {
+                                                "name": null,
+                                                "value": "AS15544:RS-<b>RIPE<\\/b>-NCC"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "name": null,
+                                                "value": "# <b>RIPE<\\/b>-NCC PREFIX ADVERTISMENT FROM ORG-TEST29-RIPE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "members",
+                                            "str": {
+                                                "name": null,
+                                                "value": "<b>193.0.0.0/21<\\/b> # <b>RIPE<\\/b>-NCC AS3333"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "LTS977-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "DP235-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "name": null,
+                                                "value": "TCP977-<b>RIPE<\\/b>"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            },
+            {
+                "lst": {
+                    "name": "facet_counts",
+                    "ints": null,
+                    "strs": null,
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "facet_fields",
+                                "ints": null,
+                                "strs": null,
+                                "lsts": [
+                                    {
+                                        "lst": {
+                                            "name": "object-type",
+                                            "ints": [
+                                                {
+                                                    "int": {
+                                                        "name": "inetnum",
+                                                        "value": "3"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "route-set",
+                                                        "value": "2"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "aut-num",
+                                                        "value": "1"
+                                                    }
+                                                },
+                                                {
+                                                    "int": {
+                                                        "name": "route",
+                                                        "value": "1"
+                                                    }
+                                                }
+                                            ],
+                                            "strs": null,
+                                            "lsts": null,
+                                            "arrs": null
+                                        }
+                                    }
+                                ],
+                                "arrs": null
+                            }
+                        }
+                    ],
+                    "arrs": null
+                }
+            }
+        ]
+    }
+}
