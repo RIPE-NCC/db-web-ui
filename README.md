@@ -194,6 +194,7 @@ Use https://update.angular.io
 
 Matomo
 ------------------
+Matomo is our self-hosted web analytics service. We use aggregated statistics to improve the user interface.
 
 https://matomo.ripe.net/
 
