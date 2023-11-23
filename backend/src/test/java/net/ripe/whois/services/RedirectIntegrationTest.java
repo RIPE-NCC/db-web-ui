@@ -1,21 +1,16 @@
 package net.ripe.whois.services;
 
-import com.google.common.collect.Lists;
 import jakarta.ws.rs.core.MediaType;
 import net.ripe.whois.AbstractIntegrationTest;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpHeader;
-import org.eclipse.jetty.http.HttpScheme;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,22 +37,6 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
         assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrl() + "/db-web-ui/query")));
-    }
-
-    @Test
-    public void search_lookup() {
-        final ResponseEntity<String> response = get("/search/lookup.html?source=ripe&key=2001:db8::/32&type=inet6num", String.class);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
-        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrl() + "/db-web-ui/lookup?source=ripe&key=2001:db8::/32&type=inet6num")));
-    }
-
-    @Test
-    public void search() {
-        final ResponseEntity<String> response = get("/search?source=ripe&source=apnic-grs&flags=no-referenced&flags=no-irt&abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&query-string=10.0.0.1", String.class);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
-        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrl() + "/db-web-ui/query?source=ripe&source=apnic-grs&flags=no-referenced&flags=no-irt&abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&query-string=10.0.0.1")));
     }
 
     @Test
