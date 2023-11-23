@@ -143,16 +143,7 @@ public class JettyConfiguration  {
         redirectToHttpsRule.setTerminating(true);
         rewriteHandler.addRule(redirectToHttpsRule);
         rewriteHandler.addRule(new RedirectPatternRule("/search/abuse-finder.html", "https://www.ripe.net/support/abuse"));
-        rewriteHandler.addRule(new RedirectPatternRule("/search/geolocation-finder.html", "https://stat.ripe.net/widget/geoloc"));
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/$", "/db-web-ui/query")));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/webupdates", "/db-web-ui/"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/startup", "/db-web-ui/webupdates/select"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/syncupdates", "/db-web-ui/syncupdates"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search/full-text.html", "/db-web-ui/fulltextsearch"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search/query.html", "/db-web-ui/query"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search/lookup.html", "/db-web-ui/lookup"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/search$", "/db-web-ui/query"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/change-auth$", "/db-web-ui/fmp/"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));;
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "/docs/"));
     }
