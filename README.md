@@ -2,12 +2,6 @@
 README for db-web-ui
 ====================
 
-Links
------
-* [GitLab](https://gitlab.ripe.net/swe-database-team/db-web-ui)
-* [Environments (Marvin)](https://marvin.ripe.net/display/db/DB+Environments)
-* [Sonar](https://sonarqube.ripe.net/dashboard?id=db-web-ui)
-
 Pre-requisites
 -----------------
 * maven (v3.0+)
@@ -162,7 +156,7 @@ Rules of thumb:
 * Always try to solve problem in backend. if not possible in java-proxy, as last resort in angular UI. We could promote functions from java-proxy to backend over time, so others can also profit.
 * All services a provided by the java-proxy shall be protected by sso. If not logged in, a 403 shall be returned. The angular UI shall redirect to access.ripe.net on a REST 403
 
-Responsibilities of java-proxy: Non-functionals only
+Responsibilities of java-proxy: Non-functional requirements only
 
 * Security
 * Aggregation
@@ -186,8 +180,8 @@ Things every db-web-ui developer should know
 HOWTOs
 ------
 ### Ripe web components
-Join technical design bot channel on Mattermost to stay up to date with releases and change version in package.json file
-https://gitlab.ripe.net/technical-design/ripe-app-webcomponents
+
+Follow user interface guidelines provided by RIPE NCC Technical Design team.
 
 ### Update angular
 Use https://update.angular.io
@@ -195,8 +189,6 @@ Use https://update.angular.io
 Matomo
 ------------------
 Matomo is our self-hosted web analytics service. We use aggregated statistics to improve the user interface.
-
-https://matomo.ripe.net/
 
 User Interface Guidelines
 -------------------------
