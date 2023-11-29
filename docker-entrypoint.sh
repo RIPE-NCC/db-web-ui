@@ -11,6 +11,6 @@ JAVA_OPTS="
     -Dorg.eclipse.jetty.LEVEL=INFO
     -XX:-OmitStackTraceInFastThrow
     -Dspring.profiles.active=${PROFILE}
-    -Dspring.config.location=file:///app/resources/,file:///app/resources/menu.properties,classpath:/config/"
+    -Dspring.config.location=classpath:/config/,file:///app/resources/,file:///app/resources/menu.properties"
 
 java $JAVA_OPTS -jar /app/db-web-ui.jar
