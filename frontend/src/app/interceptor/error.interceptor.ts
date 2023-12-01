@@ -5,10 +5,11 @@ import * as _ from 'lodash';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { PropertiesService } from '../properties.service';
+import { AlertsService } from '../shared/alert/alerts.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private router: Router, private properties: PropertiesService) {}
+    constructor(private router: Router, private properties: PropertiesService, private alertService: AlertsService) {}
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
@@ -37,6 +38,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                         }
                         case 401: {
                             this.handleTransitionError(err);
+                            break;
+                        }
+                        case 429: {
+                            this.showBlockUserBanner(err);
                             break;
                         }
                         default: {
@@ -130,4 +135,13 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         return toBeSwallowed;
     };
+
+    private showBlockUserBanner(error: HttpErrorResponse) {
+        this.alertService.setGlobalError(
+            error.error.errormessages.errormessage[0].text,
+            'https://apps.db.ripe.net/docs/FAQ/#why-did-i-receive-an-error-201-access-denied',
+            'More information',
+            false,
+        );
+    }
 }
