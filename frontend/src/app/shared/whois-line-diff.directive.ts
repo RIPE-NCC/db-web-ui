@@ -1,8 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges, OnInit } from '@angular/core';
-import { Diff, DiffMatchPatchService, DiffOp } from 'ng-diff-match-patch';
+import DiffMatchPatch, { Diff } from 'diff-match-patch';
 
-// taken from ng-diff-match-patch and expanded with + or - in front of each different row
-// https://github.com/elliotforbes/ng-diff-match-patch/blob/master/projects/ng-diff-match-patch/src/lib/lineDiff.directive.ts
 @Directive({
     selector: '[whoisLineDiff]',
 })
@@ -11,8 +9,11 @@ export class WhoisLineDiffDirective implements OnInit, OnChanges {
     left: string | number | boolean;
     @Input()
     right: string | number | boolean;
+    public dmp: DiffMatchPatch;
 
-    public constructor(private el: ElementRef, private dmp: DiffMatchPatchService) {}
+    public constructor(private el: ElementRef) {
+        this.dmp = new DiffMatchPatch();
+    }
 
     public ngOnInit(): void {
         this.updateHtml();
@@ -29,24 +30,31 @@ export class WhoisLineDiffDirective implements OnInit, OnChanges {
         if (typeof this.right === 'number' || typeof this.right === 'boolean') {
             this.right = this.right.toString();
         }
-        this.el.nativeElement.innerHTML = this.createHtml(this.dmp.getLineDiff(this.left, this.right));
+        this.el.nativeElement.innerHTML = this.createHtml(this.getLineDiff(this.left, this.right));
+    }
+
+    private getLineDiff(left: string, right: string) {
+        var chars = this.dmp.diff_linesToChars_(left, right);
+        var diffs: DiffMatchPatch.Diff[] = this.dmp.diff_main(chars.chars1, chars.chars2, false);
+        this.dmp.diff_charsToLines_(diffs, chars.lineArray);
+        return diffs;
     }
 
     private createHtml(diffs: Array<Diff>): string {
         let html: string;
         html = '<div>';
         for (let diff of diffs) {
-            if (diff[0] === DiffOp.Equal) {
+            if (diff[0] === DiffMatchPatch.DIFF_EQUAL) {
                 html += `<span class="equal">${diff[1]}</span>`;
             }
-            if (diff[0] === DiffOp.Delete) {
+            if (diff[0] === DiffMatchPatch.DIFF_DELETE) {
                 const rowsDiff = diff[1].split(/\r\n|\r|\n/);
                 rowsDiff.pop();
                 for (let row of rowsDiff) {
                     html += `<div class=\"del\"><del> - ${row} </del></div>\n`;
                 }
             }
-            if (diff[0] === DiffOp.Insert) {
+            if (diff[0] === DiffMatchPatch.DIFF_INSERT) {
                 const rowsDiff = diff[1].split(/\r\n|\r|\n/);
                 rowsDiff.pop();
                 for (let row of rowsDiff) {
