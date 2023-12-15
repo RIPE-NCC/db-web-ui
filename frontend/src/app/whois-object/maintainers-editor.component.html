@@ -20,7 +20,7 @@
         (add)="onMntnerAdded($event)"
         [disabled]="isLirObject()"
         [clearable]="isClearable()"
-        (remove)="onMntnerRemoved($event.value)"
+        (remove)="onMntnerRemoved($event)"
         placeholder="Type maintainer name"
     >
         <ng-template ng-label-tmp let-mntner="item" let-clear="clear">

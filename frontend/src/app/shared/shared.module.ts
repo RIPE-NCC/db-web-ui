@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { DiffMatchPatchModule } from 'ng-diff-match-patch';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { WebAppVersionComponent } from '../version/web-app-version.component';
@@ -35,7 +34,7 @@ import { WhoisResourcesService } from './whois-resources.service';
 
 @NgModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [CommonModule, FormsModule, NgbModule, NgbNavModule, DiffMatchPatchModule, NgSelectModule, MatButtonModule],
+    imports: [CommonModule, FormsModule, NgbModule, NgbNavModule, NgSelectModule, MatButtonModule],
     declarations: [
         AlertBannersComponent,
         AutoFocusDirective,
