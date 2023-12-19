@@ -618,8 +618,7 @@ export class ScreenLogicInterceptorService {
             const obstructingObjectLink = this.linkService.getLink(source, obstructingType, obstructingName);
             const mntnersToConfirmLinks = this.linkService.filterAndCreateTextWithLinksForMntners(source, mntnersToConfirm);
 
-            const moreInfoUrl =
-                '/docs/10.Authorisation/07-Protection-of-Route-Object-Space.html#creating-route-objects-referring-to-resources-you-don-t-manage';
+            const moreInfoUrl = '/docs/Authorisation/Protection-of-Route-Object-Space/#creating-route-objects-referring-to-resources-you-don-t-manage';
             const moreInfoLink = `<a target="_blank" href="${moreInfoUrl}">Click here for more information</a>.`;
 
             const pendngMsg =
