@@ -458,7 +458,7 @@ describe('CreateModifyComponent', () => {
                     'Please ask them to confirm, by submitting the same object as outlined below using syncupdates or mail updates, ' +
                     'and authenticate it using the maintainer ' +
                     '<a target="_blank" href="webupdates/display/RIPE/mntner/TESTNET-MNT">TESTNET-MNT</a>. ' +
-                    '<a target="_blank" href="/docs/10.Authorisation/07-Protection-of-Route-Object-Space.html#creating-route-objects-referring-to-resources-you-don-t-manage">' +
+                    '<a target="_blank" href="/docs/Authorisation/Protection-of-Route-Object-Space/#creating-route-objects-referring-to-resources-you-don-t-manage">' +
                     'Click here for more information</a>.',
             );
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('webupdates/display/RIPE/route/193.0.7.231%2F32AS1299?method=Pending');
