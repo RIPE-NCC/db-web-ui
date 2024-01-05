@@ -19,7 +19,6 @@ export interface IProperties {
     REQUEST_UPDATE_URL: string;
     OPEN_ACQUISITION_URL: string;
     REQUEST_TRANSFER_URL: string;
-    IPV4_TRANSFER_LISTING_URL: string;
     RPKI_DASHBOARD_URL: string;
     REST_SEARCH_URL: string;
     QUERY_PAGE_LINK_TO_OTHER_DB: string;
@@ -52,7 +51,6 @@ export class PropertiesService {
     public RIPE_APP_WEBCOMPONENTS_ENV = 'pre';
     public BREAKPOINTS_MOBILE_VIEW = 1025;
     public MATOMO_ID = '';
-    public IPV4_TRANSFER_LISTING_URL = '';
     public LOGIN_URL = '';
     public LOGOUT_URL = '';
     public OPEN_ACQUISITION_URL = '';
@@ -100,7 +98,6 @@ export class PropertiesService {
                     this.REQUEST_UPDATE_URL = response.REQUEST_UPDATE_URL;
                     this.OPEN_ACQUISITION_URL = response.OPEN_ACQUISITION_URL;
                     this.REQUEST_TRANSFER_URL = response.REQUEST_TRANSFER_URL;
-                    this.IPV4_TRANSFER_LISTING_URL = response.IPV4_TRANSFER_LISTING_URL;
                     this.RPKI_DASHBOARD_URL = response.RPKI_DASHBOARD_URL;
                     this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                     this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;

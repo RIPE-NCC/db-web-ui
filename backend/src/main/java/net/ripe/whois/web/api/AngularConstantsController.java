@@ -114,7 +114,6 @@ public class AngularConstantsController {
         constants.setRequestUpdateUrl(leftMenuConfiguration.getRequestUpdateUrl());
         constants.setOpenAcquisitionUrl(leftMenuConfiguration.getOpenAcquisitionUrl());
         constants.setRequestTransferUrl(leftMenuConfiguration.getRequestTransferUrl());
-        constants.setIpv4TransferListingUrl(leftMenuConfiguration.getIpv4TransferListingServiceUrl());
         constants.setRpkiDashboardUrl(leftMenuConfiguration.getRpkiDashboardUrl());
         constants.setRestSearchUrl(restSearchUrl);
         constants.setQueryPageLinkToOtherDb(queryPageLinkToOtherDb);
@@ -158,8 +157,6 @@ public class AngularConstantsController {
         private String openAcquisitionUrl;
         @JsonProperty("REQUEST_TRANSFER_URL")
         private String requestTransferUrl;
-        @JsonProperty("IPV4_TRANSFER_LISTING_URL")
-        private String ipv4TransferListingUrl;
         @JsonProperty("RPKI_DASHBOARD_URL")
         private String rpkiDashboardUrl;
         @JsonProperty("REST_SEARCH_URL")
@@ -237,10 +234,6 @@ public class AngularConstantsController {
 
         public void setRequestTransferUrl(String requestTransferUrl) {
             this.requestTransferUrl = requestTransferUrl;
-        }
-
-        public void setIpv4TransferListingUrl(String ipv4TransferListingUrl) {
-            this.ipv4TransferListingUrl = ipv4TransferListingUrl;
         }
 
         public void setRpkiDashboardUrl(String rpkiDashboardUrl) {
