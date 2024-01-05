@@ -14,8 +14,6 @@ public class LeftMenuConfiguration {
     private String requestTransferUrl;
     @Value("${request.update.url:}")
     private String requestUpdateUrl;
-    @Value("${ipv4.transfer.listing.service.url}")
-    private String ipv4TransferListingServiceUrl;
     @Value("${rpki.dashboard.url:}")
     private String rpkiDashboardUrl;
     @Value("${open.acquisition.url:}") //we need it to be #/open-lir-org-change
@@ -31,10 +29,6 @@ public class LeftMenuConfiguration {
 
     public String getRequestTransferUrl() {
         return requestTransferUrl;
-    }
-
-    public String getIpv4TransferListingServiceUrl() {
-        return ipv4TransferListingServiceUrl;
     }
 
     public String getRpkiDashboardUrl() {
