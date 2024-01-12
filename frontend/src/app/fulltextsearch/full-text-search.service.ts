@@ -20,7 +20,7 @@ export class FullTextSearchService {
         searchAttributes: string[],
     ): Observable<ISearchResponseModel> {
         if (typeof query === 'string') {
-            const params = new HttpParams()
+            const params: HttpParams = new HttpParams()
                 .set('facet', String(true))
                 .set('format', 'xml')
                 .set('hl', String(true))
@@ -35,8 +35,8 @@ export class FullTextSearchService {
         query = FullTextSearchService.sanitizeString(query);
         // Main query input control
         const qmain: string[] = [];
-        const splits = query.split(' ');
-        const escapedSplits = FullTextSearchService.wrapInQuotationMarks(splits);
+        const splits: string[] = query.split(' ');
+        const escapedSplits: string[] = FullTextSearchService.wrapInQuotationMarks(splits);
         if (splits.length > 1) {
             switch (advancedMode) {
                 case 'all':
@@ -90,8 +90,6 @@ export class FullTextSearchService {
     }
 
     private static wrapInQuotationMarks(query: string[]): string[] {
-        const escapedQuery: string[] = [];
-        query.forEach((word) => escapedQuery.push('"'.concat(word).concat('"')));
-        return escapedQuery;
+        return query.map((word) => `"${word}"`);
     }
 }
