@@ -42,6 +42,7 @@ build:
   artifacts:
     paths:
       - backend/target/db-web-ui*.jar
+    expire_in: 6 months
 
 build-container:
   tags:
