@@ -73,6 +73,8 @@ public class AngularConstantsController {
     private int sessionTtl;
     @Value("${notification.polling.ms}")
     private int releaseNotificationPolling;
+    @Value("${git.commit.id.abbrev:}")
+    private String dbWebUiCommitId;
 
     private AppConstants appConstants;
 
@@ -118,6 +120,7 @@ public class AngularConstantsController {
         constants.setRestSearchUrl(restSearchUrl);
         constants.setQueryPageLinkToOtherDb(queryPageLinkToOtherDb);
         constants.setDbWebUiBuildTime(buildProperties.getTime().toString());
+        constants.setDbWebUiCommitId(dbWebUiCommitId);
         constants.setFrontendLiveChatKey(frontendLiveChatKey);
         constants.setRipeNccMntners(ripeNccMntners);
         constants.setTopRipeNccMntners(topRipeNccMntners);
@@ -165,6 +168,8 @@ public class AngularConstantsController {
         private String queryPageLinkToOtherDb;
         @JsonProperty("DB_WEB_UI_BUILD_TIME")
         private String dbWebUiBuildTime;
+        @JsonProperty("DB_WEB_UI_COMMIT_ID")
+        private String dbWebUiCommitId;
         @JsonProperty("LIVE_CHAT_KEY")
         private String frontendLiveChatKey;
         @JsonProperty("RIPE_NCC_MNTNERS")
@@ -250,6 +255,10 @@ public class AngularConstantsController {
 
         public void setDbWebUiBuildTime(String dbWebUiBuildTime) {
             this.dbWebUiBuildTime = dbWebUiBuildTime;
+        }
+
+        public void setDbWebUiCommitId(String dbWebUiCommitId) {
+            this.dbWebUiCommitId = dbWebUiCommitId;
         }
 
         public void setFrontendLiveChatKey(String frontendLiveChatKey) {
