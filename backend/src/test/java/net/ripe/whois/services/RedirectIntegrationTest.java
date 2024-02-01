@@ -59,10 +59,10 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void default_bad_request() {
+    public void default_not_found() {
         final ResponseEntity<String> response = get("/doesnt_exist", String.class);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 
     @Test
