@@ -124,7 +124,6 @@ public class JettyConfiguration  {
         final RewriteHandler rewriteHandler = new RewriteHandler();
         rewriteHandler.setRewriteRequestURI(true);
         rewriteHandler.setRewritePathInfo(true);
-        rewriteHandler.addRule(new ResponsePatternRule("*", "400", ""));
         return rewriteHandler;
     }
 
@@ -144,7 +143,7 @@ public class JettyConfiguration  {
         rewriteHandler.addRule(redirectToHttpsRule);
         rewriteHandler.addRule(new RedirectPatternRule("/search/abuse-finder.html", "https://www.ripe.net/support/abuse"));
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/$", "/db-web-ui/query")));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));;
+        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "/docs/"));
     }
 
