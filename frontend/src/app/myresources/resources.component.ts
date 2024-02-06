@@ -21,7 +21,7 @@ export class ResourcesComponent implements OnDestroy {
     public asnResources: IAsnResourceDetails[] = [];
     public selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
     public loading: boolean = false; // true until resources are loaded to tabs
-    public reason = 'No resources found';
+    public reason: string = 'No resources found';
     public fail: boolean;
     public isRedirectedFromIpAnalyser: boolean = false;
     public lastTab: string;

@@ -32,7 +32,7 @@
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
                 <p class="resource-page-message" *ngIf="loading === false && ipv4Resources.length === 0">
-                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                    <refresh *ngIf="fail; else noResourcesFound" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
                 </p>
             </ng-template>
         </li>
@@ -44,7 +44,7 @@
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
                 <p class="resource-page-message" *ngIf="loading === false && ipv6Resources.length === 0">
-                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                    <refresh *ngIf="fail; else noResourcesFound" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
                 </p>
             </ng-template>
         </li>
@@ -56,10 +56,13 @@
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
                 <p class="resource-page-message" *ngIf="loading === false && asnResources.length === 0">
-                    <refresh *ngIf="fail" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                    <refresh *ngIf="fail; else noResourcesFound" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
                 </p>
             </ng-template>
         </li>
     </ul>
     <div [ngbNavOutlet]="navIpv46ASN" id="ipv4-ipv6-asn-panes" class="mt-2"></div>
 </section>
+<ng-template #noResourcesFound>
+    <span class="resource-page-message">{{ reason.toString() }}</span>
+</ng-template>
