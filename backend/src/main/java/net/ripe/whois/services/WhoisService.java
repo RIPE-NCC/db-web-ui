@@ -9,8 +9,6 @@ import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.ip.Ipv4Resource;
 import net.ripe.db.whois.common.ip.Ipv6Resource;
 import org.apache.commons.io.IOUtils;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,18 +58,6 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         requestHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
         requestHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         return handleErrors(() -> stream(request, response, requestBody, requestHeaders), LOGGER);
-    }
-
-    private void setClientIp(final Request request) {
-        if (request.getQueryParameters() == null){
-            MultiMap<String> parameters = new MultiMap<>();
-            parameters.put("clientIp", request.getRemoteAddr());
-            request.setQueryParameters(parameters);
-            LOGGER.info("reading xforwarded {}", getLastValidHeader(request, X_FORWARDED_FOR.asString());
-            LOGGER.debug("Added clientIp to next request {}", request.getRequestURI());
-            return;
-        }
-        request.getQueryParameters().put("clientIp", request.getRemoteAddr());
     }
 
     private ResponseEntity<String> stream(final HttpServletRequest request, final HttpServletResponse response, final String requestBody, final HttpHeaders requestHeaders) {
