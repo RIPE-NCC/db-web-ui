@@ -29,7 +29,7 @@ public class RemoteAddressCustomizer implements HttpConfiguration.Customizer {
     public void customize(final Connector connector, final HttpConfiguration httpConfiguration, final Request request) {
         setRemoteAddr(request);
         setSecure(request);
-        setClientIp(request);
+        //setClientIp(request);
         LOGGER.debug("Received client ip is {}", request.getRemoteAddr());
     }
 
