@@ -7,7 +7,6 @@ import org.eclipse.jetty.http.HttpURI;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,6 @@ public class RemoteAddressCustomizer implements HttpConfiguration.Customizer {
     public void customize(final Connector connector, final HttpConfiguration httpConfiguration, final Request request) {
         setRemoteAddr(request);
         setSecure(request);
-        setClientIp(request);
         LOGGER.debug("Received client ip is {}", request.getRemoteAddr());
     }
 
@@ -43,18 +41,6 @@ public class RemoteAddressCustomizer implements HttpConfiguration.Customizer {
             HttpURI.build(request.getHttpURI())
                 .scheme(getScheme(request))
                 .asImmutable());
-    }
-
-    private void setClientIp(final Request request) {
-        if (request.getQueryParameters() == null){
-            MultiMap<String> parameters = new MultiMap<>();
-            parameters.put("clientIp", request.getRemoteAddr());
-            request.setQueryParameters(parameters);
-            LOGGER.info("reading xforwarded {}", request.getHeaders(X_FORWARDED_FOR.asString()));
-            LOGGER.debug("Added clientIp to next request {}", request.getRequestURI());
-            return;
-        }
-        request.getQueryParameters().put("clientIp", request.getRemoteAddr());
     }
 
     private String getScheme(final Request request) {
