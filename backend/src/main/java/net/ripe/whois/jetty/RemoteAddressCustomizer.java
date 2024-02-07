@@ -50,6 +50,7 @@ public class RemoteAddressCustomizer implements HttpConfiguration.Customizer {
             MultiMap<String> parameters = new MultiMap<>();
             parameters.put("clientIp", request.getRemoteAddr());
             request.setQueryParameters(parameters);
+            LOGGER.info("Added clientIp to next request {}", request.getRequestURI());
             return;
         }
         request.getQueryParameters().put("clientIp", request.getRemoteAddr());
