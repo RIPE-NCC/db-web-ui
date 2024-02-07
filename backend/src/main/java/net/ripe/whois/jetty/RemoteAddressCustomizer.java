@@ -7,6 +7,7 @@ import org.eclipse.jetty.http.HttpURI;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,13 @@ public class RemoteAddressCustomizer implements HttpConfiguration.Customizer {
     }
 
     private void setClientIp(final Request request) {
-        request.getQueryParameters().put("clientIp", getRemoteAddress(request));
+        if (request.getQueryParameters() == null){
+            MultiMap<String> parameters = new MultiMap<>();
+            parameters.put("clientIp", request.getRemoteAddr());
+            request.setQueryParameters(parameters);
+            return;
+        }
+        request.getQueryParameters().put("clientIp", request.getRemoteAddr());
     }
 
     private String getScheme(final Request request) {
