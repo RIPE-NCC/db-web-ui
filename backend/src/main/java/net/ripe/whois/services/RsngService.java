@@ -67,7 +67,7 @@ public class RsngService implements ExchangeErrorHandler {
     private MultiValueMap<String, String> withHeaders() {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        headers.set("X-API_KEY", apiKey);
+        headers.set("ncc-internal-api-key", apiKey);
         return headers;
     }
 
