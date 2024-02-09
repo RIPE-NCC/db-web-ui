@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public interface WhoisServiceBase {
 
-    String API_KEY_HEADER = "X-Api-Key";
+    String API_KEY_HEADER = "ncc-internal-api-key";
 
     @Deprecated
     default String getObjectSinglePrimaryKey(final WhoisObject obj) {
