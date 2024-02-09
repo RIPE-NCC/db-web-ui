@@ -30,6 +30,7 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 
 @Service
@@ -150,9 +151,12 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) {
+        final String clientIpParam = String.format("clientIp=%s", request.getRemoteAddr());
+        final String queryString = request.getQueryString() == null ? clientIpParam : new StringJoiner("&").add(request.getQueryString()).add(clientIpParam).toString();
+
         return whoisProxy.composeProxyUrl(request.getRequestURI(),
-            request.getQueryString(),
-            "/api/whois",
-            apiUrl);
+           queryString,
+           "/api/whois",
+           apiUrl);
     }
 }
