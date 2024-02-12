@@ -710,13 +710,15 @@
             </g>
         </svg>
         <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
-        <user-login *ngIf="showUserLoginIcon" class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
         <user-login
-            *ngIf="!showUserLoginIcon"
+            *ngIf="showUserLoginIcon; else reInitiateComponent"
             class="web-component"
             [accessurl]="properties.LOGIN_URL"
             [logoutredirecturl]="properties.LOGOUT_URL"
         ></user-login>
+        <ng-template #reInitiateComponent>
+            <user-login class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
+        </ng-template>
     </ripe-header>
 </div>
 <main id="app-grid">
