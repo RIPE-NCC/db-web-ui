@@ -27,11 +27,11 @@ export class AppComponent implements OnInit {
         private location: Location,
         private sessionInfoService: SessionInfoService,
     ) {
-        this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner) => {
+        this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner: boolean) => {
             this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
             this.showSessionExpireBanner = raiseSessionExpireBanner;
         });
-        this.sessionInfoService.showUserLoggedIcon$.subscribe((showUserLoggedIcon) => {
+        this.sessionInfoService.showUserLoggedIcon$.subscribe((showUserLoggedIcon: boolean) => {
             this.showUserLoginIcon = showUserLoggedIcon;
         });
         this.skipHash();
