@@ -11,7 +11,6 @@ const hasCookie = 'hasCookie';
 export class SessionInfoService {
     public cancelInterval$ = new Subject<void>();
     public expiredSession$ = new EventEmitter<boolean>();
-    public showUserLoggedIcon$ = new EventEmitter<boolean>();
     public checkingSession: boolean;
     private readonly onSessionManager;
 
@@ -55,7 +54,6 @@ export class SessionInfoService {
         localStorage.removeItem(localStorageSessionCheckStarted);
         this.cancelInterval$.next();
         this.expiredSession$.emit(false);
-        this.showUserLoggedIcon$.emit(true);
         this.checkingSession = true;
         this.checkingUserSessionExpired();
     }
@@ -88,7 +86,6 @@ export class SessionInfoService {
     private raiseAlert() {
         console.warn('TTL expired');
         this.expiredSession$.emit(true);
-        this.showUserLoggedIcon$.emit(false);
         this.cancelInterval$.next();
     }
 }
