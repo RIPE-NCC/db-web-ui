@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
     public isOpenMenu: boolean = true;
     public innerWidth: number;
     public showSessionExpireBanner: boolean = false;
-    public showUserLoginIcon: boolean = false;
     public loginUrl: string;
     public isBrowserSupported: boolean = true;
 
@@ -30,9 +29,11 @@ export class AppComponent implements OnInit {
         this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner: boolean) => {
             this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
             this.showSessionExpireBanner = raiseSessionExpireBanner;
-        });
-        this.sessionInfoService.showUserLoggedIcon$.subscribe((showUserLoggedIcon: boolean) => {
-            this.showUserLoginIcon = showUserLoggedIcon;
+            if (raiseSessionExpireBanner) {
+                // notify component of a user logout - icon
+                const userLogin = document.querySelector('user-login');
+                userLogin.dispatchEvent(new Event('access-logout'));
+            }
         });
         this.skipHash();
     }
