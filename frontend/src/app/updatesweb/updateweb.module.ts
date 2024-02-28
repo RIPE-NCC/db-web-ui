@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
-import { HeaderInterceptor } from '../interceptor/header.interceptor';
 import { SharedModule } from '../shared/shared.module';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
 import { CharsetToolsService } from './charset-tools.service';
@@ -73,7 +72,6 @@ import { TypeaheadComponent } from './typeahead.component';
         CryptService,
         OrganisationHelperService,
         RpkiValidatorService,
-        { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
     ],
 })
 export class UpdatesWebModule {}

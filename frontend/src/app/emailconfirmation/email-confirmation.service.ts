@@ -11,7 +11,7 @@ export class EmailConfirmationService {
     public confirmEmail(token: string): Observable<any> {
         if (!token) {
             console.error('Confirming email', token);
-            throw new TypeError('ResourcesDataService.fetchParentResource failed: not a resource');
+            throw new TypeError('EmailConfirmationService.confirmEmail failed: no token');
         }
 
         // temporary hack to work around Angular not uri encoding equals signs:
