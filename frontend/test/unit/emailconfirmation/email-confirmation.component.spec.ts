@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { EmailConfirmationComponent } from '../../../src/app/emailconfirmation/email-confirmation.component';
 import { EmailConfirmationService } from '../../../src/app/emailconfirmation/email-confirmation.service';
 import { LoadingIndicatorComponent } from '../../../src/app/shared/loadingindicator/loading-indicator.component';
@@ -59,7 +59,6 @@ describe('Testing EmailConfirmation with logged in user', () => {
 
 describe('Testing EmailConfirmation with not logged in user', () => {
     const url = 'api/whois-internal/api/abuse-validation/validate-token?token=123456789012345678';
-    const token = '123456789012345678';
 
     let component: EmailConfirmationComponent;
     let fixture: ComponentFixture<EmailConfirmationComponent>;
@@ -73,7 +72,7 @@ describe('Testing EmailConfirmation with not logged in user', () => {
             providers: [
                 EmailConfirmationService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
-                { provide: UserInfoService, useValue: { data: of(200) } },
+                { provide: UserInfoService, useValue: { data: throwError(() => 401) } },
             ],
         });
     }));

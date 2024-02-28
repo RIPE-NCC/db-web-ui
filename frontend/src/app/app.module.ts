@@ -36,6 +36,8 @@ import { SessionInterceptor } from './sessioninfo/session.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { SyncupdatesComponent } from './syncupdates/syncupdates.component';
 import { SyncupdatesService } from './syncupdates/syncupdates.service';
+import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
+import { UnsubscribeService } from './unsubscribe/unsubscribe.service';
 import { UpdatesTextModule } from './updatestext/update-text.module';
 import { UpdatesWebModule } from './updatesweb/updateweb.module';
 import { UserInfoModule } from './userinfo/user-info.module';
@@ -46,6 +48,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         AppComponent,
         SyncupdatesComponent,
         EmailConfirmationComponent,
+        UnsubscribeComponent,
         BannerComponent,
         IeBannerComponent,
         MenuComponent,
@@ -82,6 +85,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         AuthenticationGuard,
         SyncupdatesService,
         EmailConfirmationService,
+        UnsubscribeService,
         PropertiesService,
         MenuService,
         SessionInfoService,

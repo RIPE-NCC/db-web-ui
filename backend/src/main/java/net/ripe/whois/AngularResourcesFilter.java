@@ -60,6 +60,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/forceDelete") ||
                 uri.startsWith("/error") ||
                 uri.startsWith("/not-found") ||
+                uri.startsWith("/unsubscribe") ||
                 uri.startsWith("/legal");
     }
 }
