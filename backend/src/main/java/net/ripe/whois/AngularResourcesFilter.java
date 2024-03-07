@@ -61,6 +61,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/error") ||
                 uri.startsWith("/not-found") ||
                 uri.startsWith("/unsubscribe") ||
+                uri.startsWith("/unsubscribe-confirm") ||
                 uri.startsWith("/legal");
     }
 }

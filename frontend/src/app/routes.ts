@@ -19,6 +19,7 @@ import { LookupSingleObjectComponent } from './query/lookup-single-object.compon
 import { QueryComponent } from './query/query.component';
 import { SyncupdatesComponent } from './syncupdates/syncupdates.component';
 import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
+import { UnsubscribeConfirmationComponent } from './unsubscribeConfirmation/unsubscribe-confirm.component';
 import { TextCreateComponent } from './updatestext/text-create.component';
 import { TextModifyComponent } from './updatestext/text-modify.component';
 import { CreateModifyComponent } from './updatesweb/create-modify.component';
@@ -69,6 +70,7 @@ export const appRoutes: Routes = [
     { path: 'not-found', component: NotFoundPageComponent },
     { path: 'confirmEmail', component: EmailConfirmationComponent },
     { path: 'unsubscribe/:messageId', component: UnsubscribeComponent },
+    { path: 'unsubscribe-confirm/:messageId', component: UnsubscribeConfirmationComponent },
     { path: '', redirectTo: 'query', pathMatch: 'full' },
     { path: '**', redirectTo: 'query' },
 ];

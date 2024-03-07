@@ -42,6 +42,7 @@ import { UpdatesTextModule } from './updatestext/update-text.module';
 import { UpdatesWebModule } from './updatesweb/updateweb.module';
 import { UserInfoModule } from './userinfo/user-info.module';
 import { WhoisObjectModule } from './whois-object/whois-object.module';
+import {UnsubscribeConfirmationComponent} from "./unsubscribeConfirmation/unsubscribe-confirm.component";
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         SyncupdatesComponent,
         EmailConfirmationComponent,
         UnsubscribeComponent,
+        UnsubscribeConfirmationComponent,
         BannerComponent,
         IeBannerComponent,
         MenuComponent,
