@@ -5,7 +5,7 @@ import { SKIP_HEADER } from '../interceptor/header.interceptor';
 
 @Injectable()
 export class UnsubscribeConfirmService {
-    private readonly URL: string = `api/whois-internal/public/getEmailFromMessageId`;
+    private readonly URL: string = `api/whois-internal/public/unsubscribe/`;
 
     constructor(private http: HttpClient) {}
 
@@ -15,6 +15,6 @@ export class UnsubscribeConfirmService {
             throw new TypeError('UnsubscribeConfirmService.unsubscribe failed: no messageId');
         }
         const headers = new HttpHeaders().set('content-type', 'text/plain').set(SKIP_HEADER, '');
-        return this.http.get(this.URL, messageId, { headers, responseType: 'text' as 'json' });
+        return this.http.get(this.URL + messageId, { headers, responseType: 'text' as 'json' });
     }
 }
