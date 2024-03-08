@@ -17,7 +17,7 @@ export class UnsubscribeConfirmationComponent implements OnInit {
         this.messageId = this.activatedRoute.snapshot.paramMap.get('messageId');
 
         this.unsubscribeConfirmService.getEmailFromMessageId(this.messageId).subscribe({
-            next: (response: string) => {
+            next: (response: any) => {
                 console.log('email is : ' + response);
 
                 this.email = response;
