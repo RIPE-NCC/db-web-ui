@@ -18,8 +18,6 @@ export class UnsubscribeConfirmService {
         const params = new HttpParams().set('messageId', messageId);
         const headers = new HttpHeaders().set('content-type', 'text/plain').set(SKIP_HEADER, '');
 
-        const email = this.http.get(this.URL, { headers, params });
-        console.log('response from api is: ', email);
-        return email;
+        return this.http.get(this.URL, { headers, params, responseType: 'text' as 'json' });
     }
 }
