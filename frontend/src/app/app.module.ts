@@ -39,6 +39,7 @@ import { SyncupdatesService } from './syncupdates/syncupdates.service';
 import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
 import { UnsubscribeService } from './unsubscribe/unsubscribe.service';
 import { UnsubscribeConfirmationComponent } from './unsubscribeConfirmation/unsubscribe-confirm.component';
+import { UnsubscribeConfirmService } from './unsubscribeConfirmation/unsubscribe-confirm.service';
 import { UpdatesTextModule } from './updatestext/update-text.module';
 import { UpdatesWebModule } from './updatesweb/updateweb.module';
 import { UserInfoModule } from './userinfo/user-info.module';
@@ -88,6 +89,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         SyncupdatesService,
         EmailConfirmationService,
         UnsubscribeService,
+        UnsubscribeConfirmService,
         PropertiesService,
         MenuService,
         SessionInfoService,
