@@ -15,7 +15,6 @@ export class UnsubscribeConfirmService {
             throw new TypeError('UnsubscribeConfirmService.unsubscribe failed: no messageId');
         }
 
-        console.log('sending request to whois-inernal to fetch email');
         const params = new HttpParams().set('messageId', messageId);
         const headers = new HttpHeaders().set('content-type', 'text/plain').set(SKIP_HEADER, '');
 
