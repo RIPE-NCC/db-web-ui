@@ -6,11 +6,12 @@
         <div *ngIf="isSucess">
             <section>
                 <div class="padding grey">
-                    <h2>Please confirm you wish to unsubscribe {{ email }} from the RIPE mailing list</h2>
-                    <p>Be aware you will no longer receive any automated emails from Whois.</p>
-                    <p>Also, you will only unsubscribed from Whois, you may still receive mail from a different RIPE NCC service.</p>
-                    <p>If you did not mean to unsubscribe, please contact <a href="https://www.ripe.net/support/" target="_blank">support</a>.</p>
-
+                    <div class="padding grey">
+                        <h2>Please confirm you wish to unsubscribe {{ email }} from the RIPE mailing list</h2>
+                        <p>Be aware you will no longer receive any automated emails from Whois.</p>
+                        <p>Also, you will only unsubscribed from Whois, you may still receive mail from a different RIPE NCC service.</p>
+                        <p>If you did not mean to unsubscribe, please contact <a href="https://www.ripe.net/support/" target="_blank">support</a>.</p>
+                    </div>
                     <div class="clearfix margin-top">
                         <div class="float-centre">
                             <button mat-flat-button color="primary" type="button" (click)="confirm()">CONFIRM</button>
