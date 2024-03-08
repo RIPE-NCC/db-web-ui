@@ -44,6 +44,7 @@ public class SsoTokenFilter implements Filter {
             ".*/db-web-ui/fmp",
             ".*/db-web-ui/fmp/requireLogin",
             ".*/db-web-ui/unsubscribe.*",
+            ".*/db-web-ui/unsubscribe-confirm.*",
             ".*/db-web-ui/error",
             ".*/db-web-ui/not-found",
             ".*/db-web-ui/index.html",
