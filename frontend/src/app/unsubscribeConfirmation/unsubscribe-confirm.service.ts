@@ -5,7 +5,7 @@ import { SKIP_HEADER } from '../interceptor/header.interceptor';
 
 @Injectable()
 export class UnsubscribeConfirmService {
-    private readonly URL: string = `api/whois-internal/public/unsubscribe/`;
+    private readonly URL: string = `api/whois-internal/public/unsubscribe`;
 
     constructor(private http: HttpClient) {}
 
