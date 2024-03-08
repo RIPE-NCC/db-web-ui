@@ -18,15 +18,11 @@ export class UnsubscribeConfirmationComponent implements OnInit {
 
         this.unsubscribeConfirmService.getEmailFromMessageId(this.messageId).subscribe({
             next: (response: string) => {
-                console.log('email is : ' + response);
-
                 this.email = response;
                 this.loading = false;
                 this.isSucess = true;
             },
             error: () => {
-                console.log('Got error while fetching email id from message id');
-
                 this.loading = false;
                 this.isSucess = false;
             },
