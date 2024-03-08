@@ -26,6 +26,8 @@ export class UnsubscribeConfirmationComponent implements OnInit {
                 this.isSucess = true;
             },
             error: () => {
+                console.log('Got error while fetching email id from message id');
+
                 this.loading = false;
                 this.isSucess = false;
             },
