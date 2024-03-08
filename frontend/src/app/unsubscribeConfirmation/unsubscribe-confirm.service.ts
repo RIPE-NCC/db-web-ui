@@ -19,7 +19,7 @@ export class UnsubscribeConfirmService {
         const headers = new HttpHeaders().set('content-type', 'text/plain').set(SKIP_HEADER, '');
 
         const email = this.http.get(this.URL, { headers, params });
-        console.log('response from api is: ' + email);
+        console.log('response from api is: ', email);
         return email;
     }
 }
