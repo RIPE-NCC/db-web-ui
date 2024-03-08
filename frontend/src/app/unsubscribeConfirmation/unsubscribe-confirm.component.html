@@ -1,16 +1,25 @@
-<h1>Confirm Unsubscribe</h1>
+<section class="not-found">
+    <div *ngIf="loading">
+        <loading-indicator class="resource-page-message"></loading-indicator>
+    </div>
+    <div *ngIf="!loading">
+        <div *ngIf="isSucess">
+            <section>
+                <div class="padding grey">
+                    Please confirm that you wish to unsubscribe from the RIPE mailing list
 
-<div>
-    <section>
-        <div class="padding grey">
-            Please confirm that you wish to unsubscribe from the RIPE mailing list
-
-            <div class="clearfix margin-top">
-                <div class="float-end">
-                    <button mat-flat-button color="primary" type="button" (click)="confirm()">CONFIRM</button>
+                    <div class="clearfix margin-top">
+                        <div class="float-end">
+                            <button mat-flat-button color="primary" type="button" (click)="confirm()">CONFIRM</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <button mat-stroked-button color="primary" class="float-end" type="button" (click)="cancel()">CANCEL</button>
+            </section>
         </div>
-        <button mat-stroked-button color="primary" class="float-end" type="button" (click)="cancel()">CANCEL</button>
-    </section>
-</div>
+        <div *ngIf="!isSucess">
+            <em class="fal fa-exclamation-circle"></em>
+            <h2>We could not find an email address to unsubscribe.</h2>
+        </div>
+    </div>
+</section>
