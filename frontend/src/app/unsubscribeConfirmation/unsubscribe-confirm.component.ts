@@ -15,8 +15,12 @@ export class UnsubscribeConfirmationComponent implements OnInit {
 
     public ngOnInit() {
         this.messageId = this.activatedRoute.snapshot.paramMap.get('messageId');
+        console.log('messageId is : ' + this.messageId);
+
         this.unsubscribeConfirmService.getEmailFromMessageId(this.messageId).subscribe({
             next: (response: string) => {
+                console.log('email is : ' + response);
+
                 this.email = response;
                 this.loading = false;
                 this.isSucess = true;
