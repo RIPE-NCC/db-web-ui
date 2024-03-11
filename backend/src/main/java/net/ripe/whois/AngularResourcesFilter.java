@@ -30,17 +30,21 @@ public class AngularResourcesFilter implements Filter {
         LOGGER.debug("AngularResourcesFilter uri: {} addr:{}", uri, req.getRemoteAddr());
 
         if (isAngularPath(uri)) {
-            final String redirectPath = getRedirectPath(request, uri);
             chain.doFilter(
                     new HttpServletRequestWrapper(request) {
                         @Override
                         public String getServletPath() {
-                            return redirectPath;
+                            return request.getContextPath() + REDIRECT_PATH;
                         }
 
                         @Override
                         public String getRequestURI() {
-                            return redirectPath;
+                            return request.getContextPath() + REDIRECT_PATH;
+                        }
+
+                        @Override
+                        public StringBuffer getRequestURL() {
+                            return getRedirectPath(request, uri);
                         }
                     },
                     response);
@@ -49,16 +53,16 @@ public class AngularResourcesFilter implements Filter {
         }
     }
 
-    private String getRedirectPath(final HttpServletRequest request, final String uri) {
-        LOGGER.info("Testing angular redirect via method {}, {}", request.getMethod(), request.getContextPath());
-        if(uri.startsWith("/unsubscribe") && "GET".equals(request.getMethod())) {
-            final String redirectPath = request.getContextPath().replace("/unsubscribe", "/unsubscribe-confirm") + REDIRECT_PATH;
-            LOGGER.info("Testing angular redirect after replacing GET method {}", redirectPath);
+    private StringBuffer getRedirectPath(final HttpServletRequest request, final String uri) {
 
-            return redirectPath;
+        LOGGER.info("Original request url is {}, with uri {}", request.getRequestURL().toString(), uri);
+        if(uri.startsWith("/unsubscribe") && "GET".equals(request.getMethod())) {
+            final String newURL = request.getRequestURL().toString().replaceAll("/unsubscribe", "/unsubscribe-confirm");
+            LOGGER.info("New request url is {}", newURL);
+            return new StringBuffer(newURL);
         }
 
-        return request.getContextPath() + REDIRECT_PATH;
+        return request.getRequestURL();
     }
 
     private boolean isAngularPath(final String uri) {
