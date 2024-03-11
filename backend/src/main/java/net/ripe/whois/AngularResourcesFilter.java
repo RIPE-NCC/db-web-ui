@@ -50,7 +50,7 @@ public class AngularResourcesFilter implements Filter {
     }
 
     private String getRedirectPath(final HttpServletRequest request, final String uri) {
-        LOGGER.info("Testing angular redirect via method {}", request.getMethod());
+        LOGGER.info("Testing angular redirect via method {}, {}", request.getMethod(), request.getContextPath());
         if(uri.startsWith("/unsubscribe") && "GET".equals(request.getMethod())) {
             final String redirectPath = request.getContextPath().replace("/unsubscribe", "/unsubscribe-confirm") + REDIRECT_PATH;
             LOGGER.info("Testing angular redirect after replacing GET method {}", redirectPath);
