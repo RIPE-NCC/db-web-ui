@@ -30,22 +30,35 @@ public class AngularResourcesFilter implements Filter {
         LOGGER.debug("AngularResourcesFilter uri: {} addr:{}", uri, req.getRemoteAddr());
 
         if (isAngularPath(uri)) {
+            final String redirectPath = getRedirectPath(request, uri);
             chain.doFilter(
                     new HttpServletRequestWrapper(request) {
                         @Override
                         public String getServletPath() {
-                            return request.getContextPath() + REDIRECT_PATH;
+                            return redirectPath;
                         }
 
                         @Override
                         public String getRequestURI() {
-                            return request.getContextPath() + REDIRECT_PATH;
+                            return redirectPath;
                         }
                     },
                     response);
         } else {
             chain.doFilter(req, res);
         }
+    }
+
+    private String getRedirectPath(final HttpServletRequest request, final String uri) {
+        LOGGER.info("Testing angular redirect via method {}", request.getMethod());
+        if(uri.startsWith("/unsubscribe") && "GET".equals(request.getMethod())) {
+            final String redirectPath = request.getContextPath().replace("/unsubscribe", "/unsubscribe-confirm") + REDIRECT_PATH;
+            LOGGER.info("Testing angular redirect after replacing GET method {}", redirectPath);
+
+            return redirectPath;
+        }
+
+        return request.getContextPath() + REDIRECT_PATH;
     }
 
     private boolean isAngularPath(final String uri) {
@@ -61,7 +74,6 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/error") ||
                 uri.startsWith("/not-found") ||
                 uri.startsWith("/unsubscribe") ||
-                uri.startsWith("/unsubscribe-confirm") ||
                 uri.startsWith("/legal");
     }
 }
