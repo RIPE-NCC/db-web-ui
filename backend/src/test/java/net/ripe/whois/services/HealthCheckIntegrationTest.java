@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.availability.AvailabilityChangeEvent;
 import org.springframework.boot.availability.ReadinessState;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -28,11 +30,22 @@ public class HealthCheckIntegrationTest extends AbstractIntegrationTest {
     public void applicationAcceptingTraffic() {
         AvailabilityChangeEvent.publish(applicationContext, ReadinessState.ACCEPTING_TRAFFIC);
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class);
+        final ResponseEntity<String> response = post("/db-web-ui/api/unsubscribe/1d074165-4e2d-4153-836d-c1a6f48d73fb@ripe.net", String.class, new HttpEntity(new String(), new HttpHeaders()));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is("OK"));
     }
+
+    @Test
+    public void applicationAcceptingTrafficGET() {
+        AvailabilityChangeEvent.publish(applicationContext, ReadinessState.ACCEPTING_TRAFFIC);
+
+        final ResponseEntity<String> response = get("/db-web-ui/api/unsubscribe/1d074165-4e2d-4153-836d-c1a6f48d73fb@ripe.net", String.class);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is("OK"));
+    }
+
 
     @Test
     public void applicationRefusingTraffic() {
