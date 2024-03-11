@@ -7,7 +7,6 @@ import { UnsubscribeConfirmService } from './unsubscribe-confirm.service';
 })
 export class UnsubscribeConfirmationComponent implements OnInit {
     public messageId: string;
-    public isPost: string;
     public email: string;
     public loading: boolean = true;
     public isSucess: boolean = false;
@@ -16,23 +15,18 @@ export class UnsubscribeConfirmationComponent implements OnInit {
 
     public ngOnInit() {
         this.messageId = this.activatedRoute.snapshot.paramMap.get('messageId');
-        this.isPost = this.activatedRoute.snapshot.queryParamMap.get('isPost');
 
-        if (this.isPost == 'true') {
-            confirm();
-        } else {
-            this.unsubscribeConfirmService.getEmailFromMessageId(this.messageId).subscribe({
-                next: (response: string) => {
-                    this.email = response;
-                    this.loading = false;
-                    this.isSucess = true;
-                },
-                error: () => {
-                    this.loading = false;
-                    this.isSucess = false;
-                },
-            });
-        }
+        this.unsubscribeConfirmService.getEmailFromMessageId(this.messageId).subscribe({
+            next: (response: string) => {
+                this.email = response;
+                this.loading = false;
+                this.isSucess = true;
+            },
+            error: () => {
+                this.loading = false;
+                this.isSucess = false;
+            },
+        });
     }
 
     public confirm() {

@@ -1,6 +1,5 @@
 package net.ripe.whois;
 
-import com.google.common.net.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,7 +29,7 @@ public class AngularResourcesFilter implements Filter {
         final String uri = request.getRequestURI().substring(request.getContextPath().length());
         LOGGER.debug("AngularResourcesFilter uri: {} addr:{}", uri, req.getRemoteAddr());
 
-        if (isAngularPath(uri)) {
+        if (isAngularPath(request, uri)) {
             chain.doFilter(
                     new HttpServletRequestWrapper(request) {
                         @Override
@@ -43,28 +42,6 @@ public class AngularResourcesFilter implements Filter {
                             return request.getContextPath() + REDIRECT_PATH;
                         }
 
-                        @Override
-                        public StringBuffer getRequestURL() {
-                            return getRedirectPath(request, uri);
-                        }
-
-                        @Override
-                        public String getQueryString() {
-                            if(uri.startsWith("/unsubscribe-confirm")) {
-                                LOGGER.info("changing query parameters");
-
-                                final StringBuilder modifiedQueryString = (super.getQueryString() == null) ?
-                                    new StringBuilder() :
-                                    new StringBuilder(super.getQueryString()).append("&");
-
-
-                                final String finalQueryString = modifiedQueryString.append("isPost=").append("POST".equals(request.getMethod()) ? "true" : "false").toString();
-                                LOGGER.info("Final query string is : {}", finalQueryString);
-                                return  finalQueryString;
-                            }
-
-                            return super.getQueryString();
-                        }
                     },
                     response);
         } else {
@@ -84,7 +61,11 @@ public class AngularResourcesFilter implements Filter {
         return request.getRequestURL();
     }
 
-    private boolean isAngularPath(final String uri) {
+    private boolean isAngularPath(HttpServletRequest request, final String uri) {
+        if(uri.startsWith("/unsubscribe-confirm") &&  "GET".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         return uri.startsWith("/webupdates") ||
                 uri.startsWith("/query") ||
                 uri.startsWith("/fulltextsearch") ||
@@ -96,7 +77,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/forceDelete") ||
                 uri.startsWith("/error") ||
                 uri.startsWith("/not-found") ||
-                uri.startsWith("/unsubscribe-confirm") ||
+                uri.startsWith("/unsubscribe") ||
                 uri.startsWith("/legal");
     }
 }
