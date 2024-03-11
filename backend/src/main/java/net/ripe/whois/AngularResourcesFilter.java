@@ -1,5 +1,6 @@
 package net.ripe.whois;
 
+import com.google.common.net.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -46,6 +47,24 @@ public class AngularResourcesFilter implements Filter {
                         public StringBuffer getRequestURL() {
                             return getRedirectPath(request, uri);
                         }
+
+                        @Override
+                        public String getQueryString() {
+                            if(uri.startsWith("/unsubscribe-confirm")) {
+                                LOGGER.info("changing query parameters");
+
+                                final StringBuilder modifiedQueryString = (super.getQueryString() == null) ?
+                                    new StringBuilder() :
+                                    new StringBuilder(super.getQueryString()).append("&");
+
+
+                                final String finalQueryString = modifiedQueryString.append("isPost=").append("POST".equals(request.getMethod()) ? "true" : "false").toString();
+                                LOGGER.info("Final query string is : {}", finalQueryString);
+                                return  finalQueryString;
+                            }
+
+                            return super.getQueryString();
+                        }
                     },
                     response);
         } else {
@@ -77,7 +96,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/forceDelete") ||
                 uri.startsWith("/error") ||
                 uri.startsWith("/not-found") ||
-                uri.startsWith("/unsubscribe") ||
+                uri.startsWith("/unsubscribe-confirm") ||
                 uri.startsWith("/legal");
     }
 }
