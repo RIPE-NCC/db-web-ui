@@ -1,10 +1,9 @@
 package net.ripe.whois.web.api.whois;
 
-import net.ripe.whois.services.CachingSessionChecker;
+import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.ApiController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/api/unsubscribe")
-public class UnsubscribeController extends ApiController {
+public class UnsubscribeEmailController extends ApiController {
 
     private final WhoisInternalService whoisInternalService;
 
     @Autowired
-    public UnsubscribeController(final WhoisInternalService whoisInternalService) {
+    public UnsubscribeEmailController(final WhoisInternalService whoisInternalService) {
         this.whoisInternalService = whoisInternalService;
     }
 
@@ -31,7 +30,7 @@ public class UnsubscribeController extends ApiController {
 
     @RequestMapping(value = "/{messageId}", method = RequestMethod.POST)
     public ResponseEntity unsubscribe(@PathVariable final String messageId) {
-        whoisInternalService.unSubscribe(messageId);
-        return new ResponseEntity(HttpStatus.OK);
+        final ResponseEntity<String> response = whoisInternalService.unSubscribe(messageId);
+        return new ResponseEntity(response.getStatusCode());
     }
 }
