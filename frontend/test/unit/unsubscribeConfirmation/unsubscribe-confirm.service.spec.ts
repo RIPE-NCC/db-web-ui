@@ -2,8 +2,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { UnsubscribeConfirmService } from '../../../src/app/unsubscribeConfirmation/unsubscribe-confirm.service';
 
-describe('UnsubscribeService', () => {
-    let unsubscribeService: UnsubscribeConfirmService;
+describe('UnsubscribeConfirmService', () => {
+    let unsubscribeConfirmService: UnsubscribeConfirmService;
     let httpMock: HttpTestingController;
 
     beforeEach(() => {
@@ -12,7 +12,7 @@ describe('UnsubscribeService', () => {
             providers: [UnsubscribeConfirmService],
         });
         httpMock = TestBed.inject(HttpTestingController);
-        unsubscribeService = TestBed.inject(UnsubscribeConfirmService);
+        unsubscribeConfirmService = TestBed.inject(UnsubscribeConfirmService);
     });
 
     afterEach(() => {
@@ -20,14 +20,14 @@ describe('UnsubscribeService', () => {
     });
 
     it('should be created', () => {
-        expect(unsubscribeService).toBeTruthy();
+        expect(unsubscribeConfirmService).toBeTruthy();
     });
 
     it('should return email for a messageId', () => {
-        unsubscribeService.getEmailFromMessageId('messageId').subscribe((response: string) => {
+        unsubscribeConfirmService.getEmailFromMessageId('messageId').subscribe((response: string) => {
             expect(response).toBe('test@ripe.net');
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/unsubscribe/messageId' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/unsubscribe?messageId=messageId' });
         expect(req.request.method).toBe('GET');
     });
 });
