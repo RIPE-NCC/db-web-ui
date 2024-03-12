@@ -29,7 +29,7 @@ public class AngularResourcesFilter implements Filter {
         final String uri = request.getRequestURI().substring(request.getContextPath().length());
         LOGGER.debug("AngularResourcesFilter uri: {} addr:{}", uri, req.getRemoteAddr());
 
-        if (isAngularPath(request, uri)) {
+        if (isAngularPath(uri)) {
             chain.doFilter(
                     new HttpServletRequestWrapper(request) {
                         @Override
@@ -49,23 +49,7 @@ public class AngularResourcesFilter implements Filter {
         }
     }
 
-    private StringBuffer getRedirectPath(final HttpServletRequest request, final String uri) {
-
-        LOGGER.info("Original request url is {}, with uri {}", request.getRequestURL().toString(), uri);
-        if(uri.startsWith("/unsubscribe") && "GET".equals(request.getMethod())) {
-            final String newURL = request.getRequestURL().toString().replaceAll("/unsubscribe", "/unsubscribe-confirm");
-            LOGGER.info("New request url is {}", newURL);
-            return new StringBuffer(newURL);
-        }
-
-        return request.getRequestURL();
-    }
-
-    private boolean isAngularPath(HttpServletRequest request, final String uri) {
-        if(uri.startsWith("/unsubscribe-confirm") &&  "GET".equalsIgnoreCase(request.getMethod())) {
-            return true;
-        }
-
+    private boolean isAngularPath(final String uri) {
         return uri.startsWith("/webupdates") ||
                 uri.startsWith("/query") ||
                 uri.startsWith("/fulltextsearch") ||
@@ -78,6 +62,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/error") ||
                 uri.startsWith("/not-found") ||
                 uri.startsWith("/unsubscribe") ||
+                uri.startsWith("/unsubscribe-confirm") ||
                 uri.startsWith("/legal");
     }
 }
