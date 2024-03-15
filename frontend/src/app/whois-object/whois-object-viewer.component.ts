@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@a
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { PropertiesService } from '../properties.service';
+import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { IAttributeModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
 
@@ -38,10 +39,10 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     private readonly MAX_ATTR_NAME_MASK = '                ';
     private readonly HAS_RIPE_STAT_LINK = ['aut-num', 'route', 'route6', 'inetnum', 'inet6num'];
 
-    constructor(private userInfoService: UserInfoService, private properties: PropertiesService) {
-        this.subscription = this.userInfoService.userLoggedIn$.subscribe(
-            () => {
-                this.showUpdateButton();
+    constructor(private userInfoService: UserInfoService, private sessionInfoService: SessionInfoService, private properties: PropertiesService) {
+        this.subscription = this.sessionInfoService.expiredSession$.subscribe(
+            (expired: boolean) => {
+                this.setButtonText(!expired);
             },
             () => this.showLoginButton(),
         );
@@ -59,7 +60,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         if (this.show.ripeStatButton) {
             this.ripeStatLink = this.getRipeStatLink();
         }
-        this.userInfoService.isLogedIn() ? this.showUpdateButton() : this.showLoginButton();
+        this.setButtonText(this.userInfoService.isLogedIn());
         this.show.ripeManagedToggleControl = this.model.managed;
     }
 
@@ -98,6 +99,10 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
             key: attr.value,
             type: attr['referenced-type'],
         };
+    }
+
+    private setButtonText(isLoggedIn: boolean) {
+        isLoggedIn ? this.showUpdateButton() : this.showLoginButton();
     }
 
     private showLoginButton() {
