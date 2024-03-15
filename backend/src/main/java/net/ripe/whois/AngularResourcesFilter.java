@@ -41,7 +41,6 @@ public class AngularResourcesFilter implements Filter {
                         public String getRequestURI() {
                             return request.getContextPath() + REDIRECT_PATH;
                         }
-
                     },
                     response);
         } else {

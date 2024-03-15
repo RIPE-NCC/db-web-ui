@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { throwError } from 'rxjs';
 import { LoadingIndicatorComponent } from '../../../src/app/shared/loadingindicator/loading-indicator.component';
+import { UnsubscribeService } from '../../../src/app/unsubscribe/unsubscribe.service';
 import { UnsubscribeConfirmationComponent } from '../../../src/app/unsubscribeConfirmation/unsubscribe-confirm.component';
-import { UnsubscribeConfirmService } from '../../../src/app/unsubscribeConfirmation/unsubscribe-confirm.service';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
 describe('UnsubscribeConfirmationComponent', () => {
@@ -13,14 +13,14 @@ describe('UnsubscribeConfirmationComponent', () => {
     let component: UnsubscribeConfirmationComponent;
     let fixture: ComponentFixture<UnsubscribeConfirmationComponent>;
     let httpMock: HttpTestingController;
-    let service: UnsubscribeConfirmService;
+    let service: UnsubscribeService;
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [UnsubscribeConfirmationComponent, LoadingIndicatorComponent],
             providers: [
-                UnsubscribeConfirmService,
+                UnsubscribeService,
                 { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (messageId: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: throwError(() => 401) } }, // not logged in user
             ],
@@ -30,7 +30,7 @@ describe('UnsubscribeConfirmationComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(UnsubscribeConfirmationComponent);
         httpMock = TestBed.inject(HttpTestingController);
-        service = TestBed.inject(UnsubscribeConfirmService);
+        service = TestBed.inject(UnsubscribeService);
         component = fixture.componentInstance;
         component.messageId = '123456789012345678';
         fixture.detectChanges();

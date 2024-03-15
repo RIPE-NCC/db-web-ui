@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UnsubscribeConfirmService } from './unsubscribe-confirm.service';
+import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 
 @Component({
     templateUrl: './unsubscribe-confirm.component.html',
@@ -11,12 +11,12 @@ export class UnsubscribeConfirmationComponent implements OnInit {
     public loading: boolean = true;
     public isSucess: boolean = false;
 
-    constructor(public unsubscribeConfirmService: UnsubscribeConfirmService, public activatedRoute: ActivatedRoute) {}
+    constructor(public unsubscribeService: UnsubscribeService, public activatedRoute: ActivatedRoute) {}
 
     public ngOnInit() {
         this.messageId = this.activatedRoute.snapshot.paramMap.get('messageId');
 
-        this.unsubscribeConfirmService.getEmailFromMessageId(this.messageId).subscribe({
+        this.unsubscribeService.getEmailFromMessageId(this.messageId).subscribe({
             next: (response: string) => {
                 this.email = response;
                 this.loading = false;
