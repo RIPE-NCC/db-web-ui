@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 @Component({
     templateUrl: './unsubscribe-confirm.component.html',
 })
-export class UnsubscribeConfirmationComponent implements OnInit {
+export class UnsubscribeConfirmComponent implements OnInit {
     public messageId: string;
     public email: string;
     public loading: boolean = true;

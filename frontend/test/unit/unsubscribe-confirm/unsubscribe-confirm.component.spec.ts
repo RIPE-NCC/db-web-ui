@@ -3,22 +3,22 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { throwError } from 'rxjs';
 import { LoadingIndicatorComponent } from '../../../src/app/shared/loadingindicator/loading-indicator.component';
+import { UnsubscribeConfirmComponent } from '../../../src/app/unsubscribe-confirm/unsubscribe-confirm.component';
 import { UnsubscribeService } from '../../../src/app/unsubscribe/unsubscribe.service';
-import { UnsubscribeConfirmationComponent } from '../../../src/app/unsubscribeConfirmation/unsubscribe-confirm.component';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
 describe('UnsubscribeConfirmationComponent', () => {
     const url = 'api/whois-internal/public/unsubscribe?messageId=123456789012345678';
 
-    let component: UnsubscribeConfirmationComponent;
-    let fixture: ComponentFixture<UnsubscribeConfirmationComponent>;
+    let component: UnsubscribeConfirmComponent;
+    let fixture: ComponentFixture<UnsubscribeConfirmComponent>;
     let httpMock: HttpTestingController;
     let service: UnsubscribeService;
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            declarations: [UnsubscribeConfirmationComponent, LoadingIndicatorComponent],
+            declarations: [UnsubscribeConfirmComponent, LoadingIndicatorComponent],
             providers: [
                 UnsubscribeService,
                 { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (messageId: string) => '123456789012345678' } } } },
@@ -28,7 +28,7 @@ describe('UnsubscribeConfirmationComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(UnsubscribeConfirmationComponent);
+        fixture = TestBed.createComponent(UnsubscribeConfirmComponent);
         httpMock = TestBed.inject(HttpTestingController);
         service = TestBed.inject(UnsubscribeService);
         component = fixture.componentInstance;
