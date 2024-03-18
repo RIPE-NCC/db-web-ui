@@ -41,7 +41,7 @@ public class WhoisInternalProxy implements ExchangeErrorHandler, WhoisServiceBas
                 .replaceQuery(requestQueryString)
                 .build(encoded).toUri();
         } catch (Exception e) {
-            throw new IllegalStateException("Invalid URI " + requestURI, e);
+            throw new IllegalArgumentException("Invalid URI " + requestURI, e);
         }
     }
 
