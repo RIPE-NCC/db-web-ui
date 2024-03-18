@@ -37,19 +37,22 @@ class BatchUpdateSession {
     }
 
     public ResponseEntity getResponse() {
-
-        ResponseEntity result = null;
-
-        if (getStatus() == DONE) {
-            try {
-                result = response.get();
-            } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error(e.getMessage(), e);
-                result = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-            } finally {
-                response = null;
-            }
+        if (getStatus() != DONE){
+            throw new IllegalStateException("This should not happen, something went wrong");
         }
-        return result;
+
+        try {
+            final ResponseEntity responseEntity = response != null ? response.get() : null;
+            if (responseEntity == null){
+                LOGGER.error("Response is null when getting status");
+                return new ResponseEntity<>("Error processing your request", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return responseEntity;
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {
+            response = null;
+        }
     }
 }
