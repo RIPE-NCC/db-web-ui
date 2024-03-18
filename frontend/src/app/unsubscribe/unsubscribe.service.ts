@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SKIP_HEADER } from '../interceptor/header.interceptor';
@@ -16,5 +16,17 @@ export class UnsubscribeService {
         }
         const headers = new HttpHeaders().set('content-type', 'text/plain').set(SKIP_HEADER, '');
         return this.http.post(this.URL, messageId, { headers, responseType: 'text' as 'json' });
+    }
+
+    public getEmailFromMessageId(messageId: string): Observable<any> {
+        if (!messageId) {
+            console.error('Unsubscribing email', messageId);
+            throw new TypeError('UnsubscribeConfirmService.unsubscribe failed: no messageId');
+        }
+
+        const params = new HttpParams().set('messageId', messageId);
+        const headers = new HttpHeaders().set('content-type', 'text/plain').set(SKIP_HEADER, '');
+
+        return this.http.get(this.URL, { headers, params, responseType: 'text' as 'json' });
     }
 }

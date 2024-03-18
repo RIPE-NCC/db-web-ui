@@ -1,0 +1,28 @@
+<section class="not-found">
+    <div *ngIf="loading">
+        <loading-indicator class="resource-page-message"></loading-indicator>
+    </div>
+    <div *ngIf="!loading">
+        <div *ngIf="isSucess">
+            <section>
+                <div class="padding grey">
+                    <div class="padding grey">
+                        <h2>Please confirm you wish to unsubscribe {{ email }} from the RIPE mailing list</h2>
+                        <p>Be aware you will no longer receive any automated emails from Whois.</p>
+                        <p>Also, you will only unsubscribe from Whois, you may still receive mail from a different RIPE NCC service.</p>
+                    </div>
+                    <div class="clearfix margin-top">
+                        <div class="float-centre">
+                            <button mat-flat-button color="primary" type="button" (click)="confirm()">CONFIRM</button>
+                            <button mat-stroked-button class="margin-left" color="primary" type="button" (click)="cancel()">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div *ngIf="!isSucess">
+            <em class="fal fa-exclamation-circle"></em>
+            <h2>We could not find an email address to unsubscribe.</h2>
+        </div>
+    </div>
+</section>

@@ -58,6 +58,14 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
+    @GetMapping(path = "/public/unsubscribe", consumes = {MediaType.TEXT_PLAIN_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> whoisInternalGetEmailFromMessageId(
+        final HttpServletRequest request,
+        @Nullable @RequestBody(required = false) final String body,
+        @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
     @GetMapping(path = "/api/resources/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> findMyResources(
             final HttpServletRequest request,
