@@ -1,7 +1,10 @@
 package net.ripe.whois.config;
 
 import io.sentry.Sentry;
+import jakarta.annotation.PostConstruct;
+import jakarta.ws.rs.ClientErrorException;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.jetty.http.BadMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.firewall.RequestRejectedException;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.ws.rs.ClientErrorException;
 
 @Configuration
 @PropertySource(value = "classpath:git.properties", ignoreResourceNotFound = true)
@@ -47,6 +47,8 @@ public class SentryConfigurations {
             options.setDsn(sentryDsn);
             options.addIgnoredExceptionForType(ClientErrorException.class);
             options.addIgnoredExceptionForType(RequestRejectedException.class);
+            options.addIgnoredExceptionForType(IllegalArgumentException.class);
+            options.addIgnoredExceptionForType(BadMessageException.class);
         });
     }
 }
