@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class UnsubscribeConfirmComponent implements OnInit {
     public loading: boolean = true;
     public isSucess: boolean = false;
 
-    constructor(public unsubscribeService: UnsubscribeService, public activatedRoute: ActivatedRoute) {}
+    constructor(public unsubscribeService: UnsubscribeService, public router: Router, public activatedRoute: ActivatedRoute) {}
 
     public ngOnInit() {
         this.messageId = this.activatedRoute.snapshot.paramMap.get('messageId');
@@ -30,12 +30,10 @@ export class UnsubscribeConfirmComponent implements OnInit {
     }
 
     public confirm() {
-        const url = window.location.origin + `/db-web-ui/unsubscribe/${this.messageId}`;
-        window.location.href = url;
+        this.router.navigate(['unsubscribe', this.messageId]);
     }
 
     public cancel() {
-        const url = window.location.origin + `/db-web-ui/`;
-        window.location.href = url;
+        this.router.navigate(['query']);
     }
 }
