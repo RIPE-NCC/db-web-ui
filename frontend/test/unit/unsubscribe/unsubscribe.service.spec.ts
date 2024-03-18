@@ -32,4 +32,12 @@ describe('UnsubscribeService', () => {
         expect(req.request.body).toBe('messageId');
         req.flush('test@ripe.net');
     });
+
+    it('should return email for a messageId', () => {
+        unsubscribeService.getEmailFromMessageId('messageId').subscribe((response: string) => {
+            expect(response).toBe('test@ripe.net');
+        });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/unsubscribe?messageId=messageId' });
+        expect(req.request.method).toBe('GET');
+    });
 });

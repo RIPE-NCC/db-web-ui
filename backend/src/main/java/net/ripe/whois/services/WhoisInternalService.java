@@ -116,6 +116,27 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
                 String.class), LOGGER);
     }
 
+    public ResponseEntity<String> unSubscribe(final String messageId) {
+        if (StringUtils.isEmpty(messageId)) {
+            throw new RestClientException(HttpStatus.BAD_REQUEST.value(), "MessageId cannot be null");
+        }
+
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(API_KEY_HEADER, apiKey);
+
+        final URI uri = whoisInternalProxy.composeProxyUrl("/public/unsubscribe", "", "", apiUrl);
+        try {
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(messageId, httpHeaders), String.class);
+        } catch (HttpClientErrorException e) {
+            LOGGER.debug("Failed to unsbscribe email due to {}: {}", e.getClass().getName(), e.getMessage());
+            throw new RestClientException(e.getStatusCode().value(), "");
+        } catch (Exception e) {
+            LOGGER.error("Exception: Failed to unsbscribe email due to {}: {}", e.getClass().getName(), e.getMessage());
+            LOGGER.error(e.getClass().getName(), e);
+            throw new RestClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
+        }
+    }
+
     public UserInfoResponse getUserInfo(final String ssoToken, final String clientIp) {
         if (StringUtils.isEmpty(ssoToken)) {
             throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
