@@ -87,5 +87,6 @@ export class SessionInfoService {
         console.warn('TTL expired');
         this.expiredSession$.emit(true);
         this.cancelInterval$.next();
+        this.userInfoService.removeUserInfo();
     }
 }
