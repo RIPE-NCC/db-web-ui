@@ -195,7 +195,7 @@ export class QueryService {
     public getTypesAppropriateToQuery(searchText: string): string[] {
         let types: string[] = [];
         const searchTerm = searchText.trim();
-        const autNumRegexp = new RegExp('^AS\\d+');
+        const autNumRegexp = new RegExp('^AS\\d+$');
         const route = searchTerm.split('AS');
         if (IpAddressService.isValidIpv4(searchTerm)) {
             types.push(ObjectTypesEnum.INETNUM);

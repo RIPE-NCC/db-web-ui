@@ -249,6 +249,12 @@ describe('QueryService', () => {
         expect(queryService.getTypesAppropriateToQuery('shw-mnt something')).toEqual(Object.values(ObjectTypesEnum));
     });
 
+    it('should recognise mntner type and return mntner types even if starting with AS', () => {
+        expect(queryService.getTypesAppropriateToQuery('AS1234-MNT')).toEqual(['mntner']);
+        expect(queryService.getTypesAppropriateToQuery(' as1234-mnt ')).toEqual(['mntner']);
+        expect(queryService.getTypesAppropriateToQuery('as1234-mnt something')).toEqual(Object.values(ObjectTypesEnum));
+    });
+
     it('should recognise aut-num and return aut-num type', () => {
         expect(queryService.getTypesAppropriateToQuery('AS48693')).toEqual(['aut-num', 'as-block', 'as-set']);
         expect(queryService.getTypesAppropriateToQuery(' AS48693 ')).toEqual(['aut-num', 'as-block', 'as-set']);
