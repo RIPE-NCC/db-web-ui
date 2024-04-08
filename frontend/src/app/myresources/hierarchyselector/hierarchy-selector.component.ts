@@ -39,7 +39,7 @@ export class HierarchySelectorComponent implements OnChanges {
             sponsored: paramMap.get('sponsored'),
             type: this.resource.type,
         };
-        this.router.navigate(['myresources/overview'], { queryParams: params });
+        void this.router.navigate(['myresources/overview'], { queryParams: params });
     }
 
     public takeMeBackHome(parent: string) {
@@ -51,7 +51,7 @@ export class HierarchySelectorComponent implements OnChanges {
         const params = {
             ipanalyserRedirect: paramMap.get('ipanalyserRedirect'),
         };
-        this.router.navigate(['myresources/detail', this.resource.type, target, paramMap.get('sponsored')], { queryParams: params });
+        void this.router.navigate(['myresources/detail', this.resource.type, target, paramMap.get('sponsored')], { queryParams: params });
     }
 
     private fetchParents(orgId: string): void {

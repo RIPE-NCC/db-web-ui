@@ -116,6 +116,6 @@ export class ConfirmMaintainerComponent implements OnInit {
     }
 
     private navigateToSsoAdded(mntnerKey: string, user: any) {
-        this.router.navigate(['fmp/ssoAdded', mntnerKey, user]);
+        void this.router.navigate(['fmp/ssoAdded', mntnerKey, user]);
     }
 }

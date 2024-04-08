@@ -137,7 +137,7 @@ export class QueryComponent implements OnDestroy {
             this.clearResults();
             this.doSearch();
         } else {
-            this.router.navigate(['query'], { queryParams: formQueryParam });
+            void this.router.navigate(['query'], { queryParams: formQueryParam });
         }
     }
 

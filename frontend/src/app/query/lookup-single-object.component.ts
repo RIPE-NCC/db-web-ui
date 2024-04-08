@@ -79,6 +79,6 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
 
     public goToLookup() {
         const queryParam = { source: this.properties.SOURCE, type: this.objectType, key: this.objectName };
-        this.router.navigate(['lookup'], { queryParams: queryParam });
+        void this.router.navigate(['lookup'], { queryParams: queryParam });
     }
 }

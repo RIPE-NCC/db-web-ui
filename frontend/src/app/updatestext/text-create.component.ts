@@ -163,7 +163,7 @@ export class TextCreateComponent implements OnInit {
 
     public cancel() {
         if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
-            this.router.navigate(['webupdates/select']);
+            void this.router.navigate(['webupdates/select']);
         }
     }
 
@@ -178,7 +178,7 @@ export class TextCreateComponent implements OnInit {
         const attributesOnObjectType = this.whoisMetaService.getAllAttributesOnObjectType(this.object.type);
         if (_.isEmpty(attributesOnObjectType)) {
             console.error('Object type ' + this.object.type + ' was not found');
-            this.router.navigate(['not-found']);
+            void this.router.navigate(['not-found']);
             return;
         }
 

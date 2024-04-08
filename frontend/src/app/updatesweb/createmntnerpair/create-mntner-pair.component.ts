@@ -177,7 +177,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
 
     public cancel() {
         if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
-            this.router.navigate(['webupdates/select']);
+            void this.router.navigate(['webupdates/select']);
         }
     }
 
