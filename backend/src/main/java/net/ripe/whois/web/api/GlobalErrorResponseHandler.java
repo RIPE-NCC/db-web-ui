@@ -1,5 +1,6 @@
 package net.ripe.whois.web.api;
 
+import jakarta.ws.rs.BadRequestException;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -51,6 +52,10 @@ public class GlobalErrorResponseHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleControllerException(HttpServletRequest req, Exception ex) {
+        if (ex instanceof BadRequestException) {
+            LOGGER.info("Global error handler got {}: {}", ex.getClass().getName(), ex.getMessage());
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         LOGGER.error("Global error handler got Exception", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
