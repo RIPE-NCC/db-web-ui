@@ -79,4 +79,18 @@ describe('lookup', () => {
             lookupPage.expectVersionToBe('RIPE Database Software Version 1.97-SNAPSHOT');
         });
     });
+
+    describe('The lookup page with route object overlapping RPKI ROA with a different origin ', () => {
+        beforeEach(() => {
+            lookupPage.visit('RIPE', 'route', '193.4.0.0/16AS102');
+        });
+
+        it('should show warning message', () => {
+            lookupPage
+                .expectHeaderToExist(true)
+                .expectHeaderToContain(
+                    'Warning: this route object conflicts with an overlapping RPKI ROA with a different origin AS6505. As a result an announcement for this prefix may be rejected by many autonomous systems. You should either remove this route: object or delete the ROA.',
+                );
+        });
+    });
 });

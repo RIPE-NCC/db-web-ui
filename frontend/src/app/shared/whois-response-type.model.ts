@@ -1,12 +1,12 @@
-export interface IErrorMessageModel {
+export interface IObjectMessageModel {
     attribute?: IAttributeModel;
     severity?: string;
     text?: string;
-    args?: IErrorMessageArgValueModel[];
+    args?: IObjectMessageArgValueModel[];
     plainText?: string;
 }
 
-interface IErrorMessageArgValueModel {
+interface IObjectMessageArgValueModel {
     value: string;
 }
 
@@ -61,6 +61,9 @@ export interface IWhoisObjectModel {
     attributes: {
         attribute: IAttributeModel[];
     };
+    objectmessages?: {
+        objectmessage: IObjectMessageModel[];
+    };
     'resource-holder'?: {
         key: string;
         name: string;
@@ -85,7 +88,7 @@ export interface IVersion {
 export interface IWhoisResponseModel {
     link?: IWhoisLinkModel;
     errormessages?: {
-        errormessage: IErrorMessageModel[];
+        errormessage: IObjectMessageModel[];
     };
     service?: {
         name: string;

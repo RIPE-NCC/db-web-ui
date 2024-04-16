@@ -1,9 +1,9 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import * as _ from 'lodash';
 import { WhoisResourcesService } from '../whois-resources.service';
-import { IAttributeModel, IErrorMessageModel, IWhoisResponseModel } from '../whois-response-type.model';
+import { IAttributeModel, IObjectMessageModel, IWhoisResponseModel } from '../whois-response-type.model';
 
-export interface IAlertMessageModel extends IErrorMessageModel {
+export interface IAlertMessageModel extends IObjectMessageModel {
     level?: string;
     text?: string;
     linkurl?: string;

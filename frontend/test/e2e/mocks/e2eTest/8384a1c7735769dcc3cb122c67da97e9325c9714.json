@@ -1,0 +1,102 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/RIPE/route/193.4.0.0/16AS102?abuse-contact=true&managed-attributes=true&resource-holder=true&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "route",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-test.db.ripe.net/ripe/route/193.4.0.0/16AS102"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "route",
+                                "value": "193.4.0.0/16"
+                            },
+                            {
+                                "name": "origin",
+                                "value": "AS102"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "route",
+                                "value": "193.4.0.0/16"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "Ripe test allocation"
+                            },
+                            {
+                                "name": "origin",
+                                "value": "AS102"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-test.db.ripe.net/ripe/person/TP1-TEST"
+                                },
+                                "name": "admin-c",
+                                "value": "TP1-TEST",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-test.db.ripe.net/ripe/mntner/OWNER-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OWNER-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-test.db.ripe.net/ripe/mntner/OWNER-MNT"
+                                },
+                                "name": "mnt-lower",
+                                "value": "OWNER-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "objectmessages": {
+                        "objectmessage": [
+                            {
+                                "severity": "Info",
+                                "text": "Warning: this route object conflicts with an overlapping RPKI ROA with a different origin AS%s. As a result an announcement for this prefix may be rejected by many autonomous systems. You should either remove this route: object or delete the ROA.",
+                                "args": [
+                                    {
+                                        "value": "6505"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        },
+        "version": {
+            "version": "1.97-SNAPSHOT",
+            "timestamp": "2024-04-05T18:22:13Z",
+            "commit-id": "0e58632"
+        }
+    }
+}

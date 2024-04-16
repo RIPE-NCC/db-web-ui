@@ -32,5 +32,11 @@
             for further information.</span
         >
     </div>
+    <!--  Warning message for object conflicting with an overlapping RPKI ROA  -->
+    <div class="lookupheader" *ngIf="whoisObject.objectmessages?.objectmessage[0]">
+        <div *ngFor="let message of formatObjectMessages(whoisObject)">
+            <span>{{ message }}</span>
+        </div>
+    </div>
     <whois-object-viewer [model]="whoisObject" [linkable]="true"></whois-object-viewer>
 </div>

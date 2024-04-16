@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { PropertiesService } from '../properties.service';
+import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisObjectModel } from '../shared/whois-response-type.model';
 
 @Component({
@@ -25,5 +26,9 @@ export class LookupComponent implements OnChanges {
         this.abuseContactSuspectedWithoutOrgid =
             this.abuseContactSuspected && (!this.whoisObject['abuse-contact']['org-id'] || this.whoisObject['abuse-contact']['org-id'] === '');
         this.resourceHolderFound = !!this.whoisObject['resource-holder'];
+    }
+
+    formatObjectMessages(whoisObject: IWhoisObjectModel): string[] {
+        return WhoisResourcesService.getReadableObjectMessages(whoisObject);
     }
 }

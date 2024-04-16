@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Objects;
 
@@ -66,8 +65,8 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void request_with_query_string() throws IOException {
-        mock("/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=10.0.0.1&clientIp=127.0.0.1",
+    public void request_with_query_string() {
+        mock("/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=10.0.0.1&clientIp=127.0.0.1&roa-check=true",
             getResource("mock/search.xml"),
             MediaType.APPLICATION_XML,
             HttpStatus.OK.value());

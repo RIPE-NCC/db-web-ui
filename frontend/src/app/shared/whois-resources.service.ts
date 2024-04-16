@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { ObjectUtilService } from '../updatesweb/object-util.service';
 import { WhoisMetaService } from './whois-meta.service';
-import { IAttributeModel, IErrorMessageModel, IMntByModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
+import { IAttributeModel, IMntByModel, IObjectMessageModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
 
 @Injectable()
 export class WhoisResourcesService {
@@ -154,11 +154,11 @@ export class WhoisResourcesService {
         };
     }
 
-    public static readableError(errorMessage: IErrorMessageModel) {
+    public static readableError(message: IObjectMessageModel) {
         let idx = 0;
-        return errorMessage.text.replace(/%s|%d/g, (match) => {
-            if (errorMessage.args.length - 1 >= idx) {
-                const arg = errorMessage.args[idx].value;
+        return message.text.replace(/%s|%d/g, (match) => {
+            if (message.args.length - 1 >= idx) {
+                const arg = message.args[idx].value;
                 idx++;
                 return arg;
             } else {
@@ -167,11 +167,15 @@ export class WhoisResourcesService {
         });
     }
 
+    public static getReadableObjectMessages(whoisObject: IWhoisObjectModel) {
+        return whoisObject.objectmessages?.objectmessage?.map((message: IObjectMessageModel) => this.readableError(message)) ?? [];
+    }
+
     public getGlobalErrors(whoisResponse: any) {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IObjectMessageModel) => {
             errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
             return errorMessage.severity === 'Error' && !errorMessage.attribute;
         });
@@ -181,7 +185,7 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IObjectMessageModel) => {
             errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
             return errorMessage.severity === 'Warning' && !errorMessage.attribute;
         });
@@ -191,7 +195,7 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IObjectMessageModel) => {
             errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
             return errorMessage.severity === 'Info' && !errorMessage.attribute;
         });
@@ -201,7 +205,7 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IObjectMessageModel) => {
             errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
             return errorMessage.severity === 'Error';
         });
@@ -211,7 +215,7 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IObjectMessageModel) => {
             errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
             return errorMessage.severity === 'Warning';
         });
@@ -221,7 +225,7 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IObjectMessageModel) => {
             errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
             return errorMessage.severity === 'Info';
         });
@@ -237,7 +241,7 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        return whoisResponse.errormessages.errormessage.filter((errorMessage: IErrorMessageModel) => {
+        return whoisResponse.errormessages.errormessage.filter((errorMessage: IObjectMessageModel) => {
             if (errorMessage.attribute) {
                 errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.attribute.name === attributeName && errorMessage.attribute.value.trim() === attributeValue;
@@ -250,7 +254,7 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        const myMsgs = _.filter(whoisResponse.errormessages.errormessage, (msg: IErrorMessageModel) => {
+        const myMsgs = _.filter(whoisResponse.errormessages.errormessage, (msg: IObjectMessageModel) => {
             return msg.severity === 'Error' && msg.text === `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`;
         });
 
@@ -268,12 +272,12 @@ export class WhoisResourcesService {
     }
 
     public getRequiresAdminRightFromError(whoisResponse: IWhoisResponseModel) {
-        return _.some(whoisResponse.errormessages.errormessage, (msg: IErrorMessageModel) => {
+        return _.some(whoisResponse.errormessages.errormessage, (msg: IObjectMessageModel) => {
             return msg.text === 'Deleting this object requires administrative authorisation';
         });
     }
 
-    private static getRelatedAttribute(errorMessage: IErrorMessageModel) {
+    private static getRelatedAttribute(errorMessage: IObjectMessageModel) {
         if (errorMessage.attribute && typeof errorMessage.attribute.name === 'string') {
             return errorMessage.attribute.name + ': ';
         }
