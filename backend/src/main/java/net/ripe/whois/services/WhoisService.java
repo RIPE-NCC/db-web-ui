@@ -155,8 +155,12 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         final String queryString = request.getQueryString() == null ? clientIpParam : new StringJoiner("&").add(request.getQueryString()).add(clientIpParam).toString();
 
         return whoisProxy.composeProxyUrl(request.getRequestURI(),
-           queryString,
+           joinRoaCheck(queryString),
            "/api/whois",
            apiUrl);
+    }
+
+    private String joinRoaCheck(final String queryString){
+        return new StringJoiner("&").add(queryString).add("roa-check=true").toString();
     }
 }

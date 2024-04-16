@@ -5,7 +5,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { IErrorMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel } from '../shared/whois-response-type.model';
+import { IObjectMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
 import { ObjectTypesEnum } from './object-types.enum';
 import { IQueryParameters, ITemplateTerm, QueryParametersService } from './query-parameters.service';
@@ -187,14 +187,14 @@ export class QueryComponent implements OnDestroy {
         }
         const issues = this.queryParametersService.validate(cleanQp);
         for (const msg of issues.warnings) {
-            const war: IErrorMessageModel = {
+            const war: IObjectMessageModel = {
                 severity: 'warning',
                 plainText: msg,
             };
             this.alertsService.addGlobalWarning(this.formatError(war));
         }
         for (const msg of issues.errors) {
-            const err: IErrorMessageModel = {
+            const err: IObjectMessageModel = {
                 severity: 'error',
                 plainText: msg,
             };
@@ -281,7 +281,7 @@ export class QueryComponent implements OnDestroy {
     }
 
     // Move this to util queryService and test it properly, i.e. with all expected message variants
-    public formatError(msg: IErrorMessageModel) {
+    public formatError(msg: IObjectMessageModel) {
         const parts = msg.plainText.split(/%[a-z]/);
         const resultArr = [];
         if (parts.length < 2 || parts.length !== msg.args.length + 1) {
