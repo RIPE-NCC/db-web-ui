@@ -37,7 +37,7 @@
         <snakeyaml.version>2.2</snakeyaml.version>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>3.1.4</spring-boot.version>
-        <whois.version>1edc0f0d</whois.version>
+        <whois.version>00effd2d</whois.version>
     </properties>
 
     <dependencyManagement>
