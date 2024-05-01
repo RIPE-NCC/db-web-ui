@@ -179,19 +179,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
      */
     public resourceParentFound(parent: any) {
         // get the list of available statuses for the parent
-        let parentStatusValue: string;
-        let parentStatusAttr: IAttributeModel;
-        // if parent wasn't found but we got an event anyway, use the default
-        if (parent) {
-            parentStatusAttr = _.find(parent.attributes.attribute, (attr: IAttributeModel) => {
-                return 'status' === attr.name;
-            });
-            if (parentStatusAttr && parentStatusAttr.value) {
-                parentStatusValue = parentStatusAttr.value;
-            }
-        }
-
-        this.optionList.status = this.resourceStatusService.get(this.objectType, parentStatusValue);
+        this.setStatusOptions(parent.attributes.attribute);
 
         // Allow the user to authorize against mnt-by or mnt-lower of this parent object
         // first check if the user needs some auth...
@@ -701,6 +689,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
 
+                this.setStatusOptions(this.attributes);
+
                 // show description under fields
                 this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
@@ -825,4 +815,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     private onSuccessfulAuthentication = (associationResp: any) => {
         this.refreshObjectIfNeeded(associationResp);
     };
+
+    // set the list of available statuses for the parent
+    private setStatusOptions(attributes: IAttributeModel[]) {
+        const parentStatusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
+        this.optionList.status = this.resourceStatusService.get(this.objectType, parentStatusAttr.value);
+    }
 }

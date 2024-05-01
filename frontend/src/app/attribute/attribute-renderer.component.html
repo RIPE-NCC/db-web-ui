@@ -60,7 +60,7 @@
         [inputFormatter]="autocompleteAttributeIFormatter"
     />
     <input
-        *ngIf="(!isStaticList && !isDinamicList) || attribute.name === 'status'"
+        *ngIf="!isStaticList && !isDinamicList"
         type="text"
         [attr.name]="attribute.name + '$' + idx"
         class="form-control"
@@ -72,7 +72,7 @@
         (change)="valueChanged(objectType, attributes)"
     />
     <ng-select
-        *ngIf="isStaticList && attribute.name !== 'status'"
+        *ngIf="isStaticList"
         [attr.name]="attribute.name"
         [items]="staticList"
         bindLabel="key"
