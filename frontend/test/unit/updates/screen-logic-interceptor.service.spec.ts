@@ -94,6 +94,24 @@ describe('ScreenLogicInterceptorService', () => {
         expect(primaryKey.$$meta.$$disable).toBeTruthy();
     });
 
+    it('should disable status attribute on modify if not "ALLOCATED PA", "ALLOCATED-ASSIGNED PA" nor "NOT-SET"', () => {
+        let inetnumSubject = _wrap('inetnum', inetnumAssigned);
+
+        let attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetnumSubject);
+
+        let status = whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
+        expect(status.$$meta.$$disable).toBeTruthy();
+    });
+
+    it('should enable status attribute on modify if "ALLOCATED PA"', () => {
+        let inetnumSubject = _wrap('inetnum', inetnumAllocatedPa);
+
+        let attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetnumSubject);
+
+        let status = whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
+        expect(status.$$meta.$$disable).toBeFalsy();
+    });
+
     const _wrap = (type: any, attrs: any) => {
         return whoisResourcesService.wrapAndEnrichAttributes(type, attrs);
     };
@@ -114,6 +132,44 @@ describe('ScreenLogicInterceptorService', () => {
         {
             name: 'org',
             value: 'ORG-TST05-RIPE',
+        },
+        {
+            name: 'mnt-by',
+            value: 'RIPE-NCC-END-MNT',
+        },
+        {
+            name: 'source',
+            value: 'RIPE',
+        },
+    ];
+
+    let inetnumAssigned = [
+        {
+            name: 'inetnum',
+            value: 'AS123',
+        },
+        {
+            name: 'status',
+            value: 'ASSIGNED PI',
+        },
+        {
+            name: 'mnt-by',
+            value: 'RIPE-NCC-END-MNT',
+        },
+        {
+            name: 'source',
+            value: 'RIPE',
+        },
+    ];
+
+    let inetnumAllocatedPa = [
+        {
+            name: 'inetnum',
+            value: 'AS123',
+        },
+        {
+            name: 'status',
+            value: 'ALLOCATED PA',
         },
         {
             name: 'mnt-by',
