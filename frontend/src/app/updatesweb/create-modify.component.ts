@@ -688,8 +688,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 // store object to modify
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
-
-                this.setStatusOptions(this.attributes);
+                // status options are editable just in inetnum
+                if (this.objectType === ObjectTypesEnum.INETNUM) {
+                    this.setStatusOptions(this.attributes);
+                }
 
                 // show description under fields
                 this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
