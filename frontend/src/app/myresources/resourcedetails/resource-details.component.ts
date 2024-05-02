@@ -219,10 +219,10 @@ export class ResourceDetailsComponent implements OnDestroy {
             const params = {
                 alertMessage: `The ${this.objectType} for ${this.objectName} has been deleted`,
             };
-            this.router.navigate(['myresources/detail', this.objectType, parent, this.sponsored], { queryParams: params });
+            void this.router.navigate(['myresources/detail', this.objectType, parent, this.sponsored], { queryParams: params });
         });
         modalRef.dismissed.subscribe(() => {
-            this.router.navigate(['myresources/detail', this.objectType, this.objectName, this.sponsored]);
+            void this.router.navigate(['myresources/detail', this.objectType, this.objectName, this.sponsored]);
         });
     }
 

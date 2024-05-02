@@ -87,7 +87,7 @@ export class ResourcesComponent implements OnDestroy {
         if ($event.activeId !== $event.nextId) {
             this.lastTab = $event.nextId;
             const params = { type: $event.nextId, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
-            this.router.navigate(['myresources/overview'], { queryParams: params });
+            void this.router.navigate(['myresources/overview'], { queryParams: params });
         }
     }
 
@@ -95,7 +95,7 @@ export class ResourcesComponent implements OnDestroy {
         if (!this.isShowingSponsored) {
             this.isShowingSponsored = true;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
-            this.router.navigate(['myresources/overview'], { queryParams: params });
+            void this.router.navigate(['myresources/overview'], { queryParams: params });
         }
     }
 
@@ -103,7 +103,7 @@ export class ResourcesComponent implements OnDestroy {
         if (this.isShowingSponsored) {
             this.isShowingSponsored = false;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
-            this.router.navigate(['myresources/overview'], { queryParams: params });
+            void this.router.navigate(['myresources/overview'], { queryParams: params });
         }
     }
 
@@ -115,7 +115,7 @@ export class ResourcesComponent implements OnDestroy {
             });
         } else {
             if (this.selectedOrg.roles.indexOf('guest') > -1) {
-                this.router.navigate(['query']);
+                void this.router.navigate(['query']);
             } else {
                 this.fetchResourcesAndPopulatePage();
             }
@@ -127,7 +127,7 @@ export class ResourcesComponent implements OnDestroy {
     }
 
     public navigateToCreateAssignments() {
-        this.router.navigate(['webupdates/create', this.properties.SOURCE, this.lastTab]);
+        void this.router.navigate(['webupdates/create', this.properties.SOURCE, this.lastTab]);
     }
 
     private isUserInfoRegistration(arg: any): arg is IUserInfoRegistration {

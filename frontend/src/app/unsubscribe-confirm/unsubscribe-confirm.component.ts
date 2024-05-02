@@ -30,10 +30,10 @@ export class UnsubscribeConfirmComponent implements OnInit {
     }
 
     public confirm() {
-        this.router.navigate(['unsubscribe', this.messageId]);
+        void this.router.navigate(['unsubscribe', this.messageId]);
     }
 
     public cancel() {
-        this.router.navigate(['query']);
+        void this.router.navigate(['query']);
     }
 }

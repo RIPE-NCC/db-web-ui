@@ -17,19 +17,19 @@ export class ErrorInterceptor implements HttpInterceptor {
                 if (!this.mustErrorBeSwallowed(err)) {
                     switch (err.status) {
                         case 500: {
-                            this.router.navigate(['error']);
+                            void this.router.navigate(['error']);
                             break;
                         }
                         case 503: {
-                            this.router.navigate(['error']);
+                            void this.router.navigate(['error']);
                             break;
                         }
                         case 502: {
-                            this.router.navigate(['error']);
+                            void this.router.navigate(['error']);
                             break;
                         }
                         case 404: {
-                            this.router.navigate(['not-found']);
+                            void this.router.navigate(['not-found']);
                             break;
                         }
                         case 403: {

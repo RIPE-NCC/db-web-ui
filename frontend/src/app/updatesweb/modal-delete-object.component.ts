@@ -159,6 +159,6 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     }
 
     public transitionToState(source: string, objectType: string, pkey: string, onCancelPath: string) {
-        this.router.navigate([onCancelPath, source, objectType, pkey]);
+        void this.router.navigate([onCancelPath, source, objectType, pkey]);
     }
 }

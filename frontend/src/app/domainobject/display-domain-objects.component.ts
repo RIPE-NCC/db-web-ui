@@ -36,6 +36,6 @@ export class DisplayDomainObjectsComponent implements OnInit {
     }
 
     public navigateToSelect() {
-        this.router.navigate(['webupdates/select']);
+        void this.router.navigate(['webupdates/select']);
     }
 }

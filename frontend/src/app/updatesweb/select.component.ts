@@ -45,13 +45,13 @@ export class SelectComponent implements OnInit {
 
     public navigateToCreate() {
         if (this.selected.objectType === 'mntner') {
-            this.router.navigate(['webupdates/create', this.selected.source, 'mntner', 'self']);
+            void this.router.navigate(['webupdates/create', this.selected.source, 'mntner', 'self']);
         } else if (this.selected.objectType === 'domain') {
-            this.router.navigate(['webupdates/wizard', this.selected.source, 'domain']);
+            void this.router.navigate(['webupdates/wizard', this.selected.source, 'domain']);
         } else if (this.selected.objectType === 'role-mntnr') {
-            this.router.navigate(['webupdates/create', this.selected.source, 'role', 'self']);
+            void this.router.navigate(['webupdates/create', this.selected.source, 'role', 'self']);
         } else {
-            this.router.navigate(['webupdates/create', this.selected.source, this.selected.objectType]);
+            void this.router.navigate(['webupdates/create', this.selected.source, this.selected.objectType]);
         }
     }
 

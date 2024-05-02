@@ -57,7 +57,7 @@ export class FindMaintainerComponent implements OnInit {
         const mntKey = this.foundMaintainer.maintainerKey;
         this.findMaintainerService.sendMail(mntKey).subscribe({
             next: () => {
-                this.router.navigate(['fmp/mailSent', this.foundMaintainer.email], { queryParams: { maintainerKey: mntKey } });
+                void this.router.navigate(['fmp/mailSent', this.foundMaintainer.email], { queryParams: { maintainerKey: mntKey } });
             },
             error: (error: any) => {
                 console.error('Error validating email:' + JSON.stringify(error));
@@ -79,7 +79,7 @@ export class FindMaintainerComponent implements OnInit {
 
     public switchToManualResetProcess(maintainerKey: string, voluntaryChoice: boolean = true) {
         console.info('Switch to voluntary manual');
-        this.router.navigate(['fmp/forgotMaintainerPassword'], {
+        void this.router.navigate(['fmp/forgotMaintainerPassword'], {
             queryParams: {
                 mntnerKey: maintainerKey,
                 voluntary: voluntaryChoice,

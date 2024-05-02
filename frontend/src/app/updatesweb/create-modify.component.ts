@@ -135,7 +135,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             // Populate empty attributes based on meta-info
             const mandatoryAttributesOnObjectType = this.whoisMetaService.getMandatoryAttributesOnObjectType(this.objectType);
             if (_.isEmpty(mandatoryAttributesOnObjectType)) {
-                this.router.navigate(['not-found']);
+                void this.router.navigate(['not-found']);
                 return;
             }
 
@@ -575,7 +575,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public cancel() {
         if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
-            this.router.navigate(['webupdates/select']);
+            void this.router.navigate(['webupdates/select']);
         }
     }
 
