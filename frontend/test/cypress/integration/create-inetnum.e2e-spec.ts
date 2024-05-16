@@ -17,11 +17,9 @@ describe('The inetnum editor', () => {
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'aa1-ripe')
             .typeOnField('tech-c', 'aa1-ripe')
-            .expectOptionSizeFromNgSelect('status', 3)
-            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
-            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
-            .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
-            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .expectOptionSizeFromNgSelect('status', 1)
+            .expectOptionFromNgSelect('status', 'ALLOCATED-ASSIGNED PA')
+            .selectFromNgSelect('status', 'ALLOCATED-ASSIGNED PA')
             .expectDisabledSubmitCreate(false);
     });
 
@@ -40,11 +38,9 @@ describe('The inetnum editor', () => {
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'aa1-ripe')
             .typeOnField('tech-c', 'aa1-ripe')
-            .expectOptionSizeFromNgSelect('status', 3)
-            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
-            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
-            .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
-            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .expectOptionSizeFromNgSelect('status', 1)
+            .expectOptionFromNgSelect('status', 'ALLOCATED-ASSIGNED PA')
+            .selectFromNgSelect('status', 'ALLOCATED-ASSIGNED PA')
             .expectDisabledSubmitCreate(true);
     });
 

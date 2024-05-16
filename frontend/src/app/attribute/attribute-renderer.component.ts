@@ -61,12 +61,11 @@ export class AttributeRendererComponent implements OnInit {
     public ngOnInit() {
         this.isHelpShown = false;
         this.isMntHelpShown = false;
-
+        if (!this.attribute.$$meta) {
+            this.attribute.$$meta = {};
+        }
         if (this.attribute.name === 'source') {
             this.attribute.value = this.source;
-            if (!this.attribute.$$meta) {
-                this.attribute.$$meta = {};
-            }
             this.attribute.$$meta.$$disable = true;
             this.attribute.$$invalid = false;
         }
@@ -238,10 +237,6 @@ export class AttributeRendererComponent implements OnInit {
     }
 
     autocompleteList: OperatorFunction<string, readonly string[]> = (userInput$: Observable<string>) => {
-        if (this.attribute.name === 'status') {
-            // special treatment of the status, it need to react on the changes in parent attribute
-            return of(this.statusAutoCompleteList(this.objectType, this.attribute));
-        }
         const metadata = this.attributeMetadataService.getMetadata(this.objectType, this.attribute.name);
         if (metadata.refs) {
             return userInput$.pipe(
@@ -267,9 +262,15 @@ export class AttributeRendererComponent implements OnInit {
 
     private getStaticList() {
         const metadata = this.attributeMetadataService.getMetadata(this.objectType, this.attribute.name);
-        if (metadata.staticList) {
-            return this.enumService.get(this.objectType, this.attribute.name);
+        if (this.attribute.name === 'status') {
+            if (this.attribute.value !== 'NOT-SET' && this.attribute.value !== 'ALLOCATED PA' && this.attribute.value !== 'ALLOCATED-ASSIGNED PA') {
+                this.attribute.$$meta.$$disable = true;
+            }
         }
+        if (metadata.staticList) {
+            return this.enumService.get(this.objectType, this.attribute.name, this.attribute.value);
+        }
+
         return [];
     }
 
@@ -284,12 +285,6 @@ export class AttributeRendererComponent implements OnInit {
             // No suggestions since not a reference
             return of([]);
         }
-    }
-
-    private statusAutoCompleteList(objectType: string, attribute: IAttributeModel) {
-        // TODO Add all the parent-child stuff here
-        this.attribute.$$statusOptionList = this.enumService.get(objectType, attribute.name);
-        return this.attribute.$$statusOptionList;
     }
 
     private isServerLookupKey(refs: any) {
