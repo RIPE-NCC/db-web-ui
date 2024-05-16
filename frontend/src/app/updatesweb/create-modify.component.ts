@@ -690,7 +690,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
                 // status options are editable just in inetnum
                 if (this.objectType === ObjectTypesEnum.INETNUM) {
-                    this.setStatusOptions(this.attributes);
+                    this.setStatusOptions(this.attributes, true);
                 }
 
                 // show description under fields
@@ -819,7 +819,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     };
 
     // set the list of available statuses for the parent
-    private setStatusOptions(attributes: IAttributeModel[]) {
+    private setStatusOptions(attributes: IAttributeModel[], modify?: boolean) {
+        if (modify && this.objectType === ObjectTypesEnum.INETNUM) {
+            this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
+        }
         const parentStatusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
         this.optionList.status = this.resourceStatusService.get(this.objectType, parentStatusAttr.value);
     }
