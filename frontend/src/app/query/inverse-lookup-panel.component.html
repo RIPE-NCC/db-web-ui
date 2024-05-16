@@ -142,6 +142,11 @@
                     </mat-checkbox>
                 </li>
                 <li>
+                    <mat-checkbox [(ngModel)]="queryParameters.inverse.SPONSORING_ORG" [disabled]="isDisabled(InverseAttrsEnum.SPONSORING_ORG)">
+                        {{ InverseAttrsEnum.SPONSORING_ORG }}
+                    </mat-checkbox>
+                </li>
+                <li>
                     <mat-checkbox [(ngModel)]="queryParameters.inverse.TECH_C" [disabled]="isDisabled(InverseAttrsEnum.TECH_C)">
                         {{ InverseAttrsEnum.TECH_C }}
                     </mat-checkbox>

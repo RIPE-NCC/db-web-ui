@@ -24,6 +24,7 @@ export enum InverseAttrsEnum {
     PERSON = 'person',
     PING_HDL = 'ping-hdl',
     REF_NFY = 'ref-nfy',
+    SPONSORING_ORG = 'sponsoring-org',
     TECH_C = 'tech-c',
     UPD_TO = 'upd-to',
     ZONE_C = 'zone-c',
