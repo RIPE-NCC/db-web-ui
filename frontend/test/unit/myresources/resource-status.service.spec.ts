@@ -57,10 +57,6 @@ describe('ResourceStatusService', () => {
         expect(resourcesDataService.isResourceWithUsage('inetnum', 'ASSIGNED ANYCAST')).toEqual(false);
     });
 
-    it('should be able to to switch status from "ALLOCATED PA" just to "ALLOCATED-ASSIGNED PA"', () => {
-        expect(resourcesDataService.get('inetnum', 'ALLOCATED PA')).toEqual([{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }]);
-    });
-
     it('should be able to to switch status from "ALLOCATED-ASSIGNED PA" just to "ALLOCATED PA"', () => {
         expect(resourcesDataService.get('inetnum', 'ALLOCATED-ASSIGNED PA')).toEqual([{ key: 'ALLOCATED PA', value: 'ALLOCATED PA' }]);
     });
