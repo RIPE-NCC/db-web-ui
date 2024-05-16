@@ -39,11 +39,8 @@ export class ResourceStatusService {
             ],
         },
         inetnum: {
-            'ALLOCATED PA': [
-                { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
-                { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' },
-                { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' },
-            ],
+            'ALLOCATED PA': [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }],
+            'ALLOCATED-ASSIGNED PA': [{ key: 'ALLOCATED PA', value: 'ALLOCATED PA' }],
             'ALLOCATED PI': [
                 { key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST' }, // *
                 { key: 'ASSIGNED PI', value: 'ASSIGNED PI' },

@@ -56,4 +56,30 @@ describe('ResourceStatusService', () => {
         expect(resourcesDataService.isResourceWithUsage('INETNUM', 'ASSIGNED ANYCAST')).toEqual(false);
         expect(resourcesDataService.isResourceWithUsage('inetnum', 'ASSIGNED ANYCAST')).toEqual(false);
     });
+
+    it('should be able to to switch status from "ALLOCATED PA" just to "ALLOCATED-ASSIGNED PA"', () => {
+        expect(resourcesDataService.get('inetnum', 'ALLOCATED PA')).toEqual([{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }]);
+    });
+
+    it('should be able to to switch status from "ALLOCATED-ASSIGNED PA" just to "ALLOCATED PA"', () => {
+        expect(resourcesDataService.get('inetnum', 'ALLOCATED-ASSIGNED PA')).toEqual([{ key: 'ALLOCATED PA', value: 'ALLOCATED PA' }]);
+    });
+
+    it('should return default list of statuses if parent status is not specified', () => {
+        const defaultStatuses = [
+            { key: 'ALLOCATED PA', value: 'ALLOCATED PA' },
+            { key: 'ALLOCATED PI', value: 'ALLOCATED PI' },
+            { key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED' },
+            { key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST' },
+            { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
+            { key: 'ASSIGNED PI', value: 'ASSIGNED PI' },
+            { key: 'EARLY-REGISTRATION', value: 'EARLY-REGISTRATION' },
+            { key: 'LEGACY', value: 'LEGACY' },
+            { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' },
+            { key: 'LIR-PARTITIONED PI', value: 'LIR-PARTITIONED PI' },
+            { key: 'NOT-SET', value: 'NOT-SET' },
+            { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' },
+        ];
+        expect(resourcesDataService.get('inetnum')).toEqual(defaultStatuses);
+    });
 });
