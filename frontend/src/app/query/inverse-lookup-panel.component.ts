@@ -64,6 +64,7 @@ export class InverseLookupPanelComponent implements OnInit {
             [InverseAttrsEnum.PERSON, [ObjectTypesEnum.PERSON, ObjectTypesEnum.ROLE]],
             [InverseAttrsEnum.PING_HDL, [ObjectTypesEnum.PERSON, ObjectTypesEnum.ROLE]],
             [InverseAttrsEnum.REF_NFY, [TypeOfSearchTermEnum.EMAIL]],
+            [InverseAttrsEnum.SPONSORING_ORG, [ObjectTypesEnum.ORGANISATION]],
             [InverseAttrsEnum.TECH_C, [ObjectTypesEnum.PERSON, ObjectTypesEnum.ROLE]],
             [InverseAttrsEnum.UPD_TO, [TypeOfSearchTermEnum.EMAIL]],
             [InverseAttrsEnum.ZONE_C, [ObjectTypesEnum.PERSON, ObjectTypesEnum.ROLE]],
