@@ -161,6 +161,6 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     }
 
     private String joinRoaCheck(final String queryString){
-        return new StringJoiner("&").add(queryString).add("roa-check=true").toString();
+        return new StringJoiner("&").add(queryString).add("roa-check=false").toString();
     }
 }
