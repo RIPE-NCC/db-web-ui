@@ -820,10 +820,11 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     // set the list of available statuses for the parent
     private setStatusOptions(attributes: IAttributeModel[], modify?: boolean) {
-        if (modify && this.objectType === ObjectTypesEnum.INETNUM) {
+        const statusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
+        if (modify && this.objectType === ObjectTypesEnum.INETNUM && statusAttr.value === 'ALLOCATED PA') {
             this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
+        } else {
+            this.optionList.status = this.resourceStatusService.get(this.objectType, statusAttr.value);
         }
-        const parentStatusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
-        this.optionList.status = this.resourceStatusService.get(this.objectType, parentStatusAttr.value);
     }
 }
