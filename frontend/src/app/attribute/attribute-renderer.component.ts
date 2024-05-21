@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { Observable, of, OperatorFunction } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
+import { ObjectTypesEnum } from '../query/object-types.enum';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -265,6 +266,9 @@ export class AttributeRendererComponent implements OnInit {
         if (this.attribute.name === 'status') {
             if (this.attribute.value !== 'NOT-SET' && this.attribute.value !== 'ALLOCATED PA' && this.attribute.value !== 'ALLOCATED-ASSIGNED PA') {
                 this.attribute.$$meta.$$disable = true;
+            }
+            if (this.objectType === ObjectTypesEnum.INETNUM && this.attribute.value === 'ALLOCATED PA') {
+                return [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
             }
         }
         if (metadata.staticList) {
