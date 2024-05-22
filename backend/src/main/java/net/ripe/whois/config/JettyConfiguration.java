@@ -1,12 +1,12 @@
 package net.ripe.whois.config;
 
+import net.ripe.whois.jetty.DocsHostPermanentRedirectRegexRule;
 import net.ripe.whois.jetty.RedirectToHttpsRule;
 import net.ripe.whois.jetty.RedirectWithQueryParamRule;
 import net.ripe.whois.jetty.RemoteAddressCustomizer;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RedirectPatternRule;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
-import org.eclipse.jetty.rewrite.handler.ResponsePatternRule;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
 import org.eclipse.jetty.server.ConnectionFactory;
@@ -141,6 +141,11 @@ public class JettyConfiguration  {
         redirectToHttpsRule.setHandling(true);
         redirectToHttpsRule.setTerminating(true);
         rewriteHandler.addRule(redirectToHttpsRule);
+
+        final DocsHostPermanentRedirectRegexRule docsHostPermanentRedirectRegexRule = new DocsHostPermanentRedirectRegexRule("^/(.*)$", "https://apps.db.ripe.net/docs/$1");
+        docsHostPermanentRedirectRegexRule.setTerminating(true);
+        rewriteHandler.addRule(docsHostPermanentRedirectRegexRule);
+
         rewriteHandler.addRule(new RedirectPatternRule("/search/abuse-finder.html", "https://www.ripe.net/support/abuse"));
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/$", "/db-web-ui/query")));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
