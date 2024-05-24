@@ -79,4 +79,38 @@ describe('Resources, update object', () => {
             resourcesDetailPage.getWhoisObjectEditor().expectDeleteObjectButtonExist(false);
         });
     });
+
+    describe('which has ALLOCATED PA status', () => {
+        beforeEach(() => {
+            cy.setCookie('activeMembershipId', '3629', { path: '/' });
+            resourcesDetailPage = new ResourcesPage().visitDetails('inetnum/193.228.143.0%20-%20193.228.143.255/false');
+        });
+
+        it('should have only status ALLOCATED-ASSIGNED PA', () => {
+            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TESTMD-MNT').submitModal();
+            resourcesDetailPage
+                .expectModalToExist(false)
+                .expectFieldToExist('status', true)
+                .expectDisabledField('status', false)
+                .expectOptionSizeFromNgSelect('status', 1)
+                .expectOptionFromNgSelect('status', 'ALLOCATED-ASSIGNED PA');
+        });
+    });
+
+    describe('which has ALLOCATED-ASSIGNED PA status', () => {
+        beforeEach(() => {
+            cy.setCookie('activeMembershipId', '3629', { path: '/' });
+            resourcesDetailPage = new ResourcesPage().visitDetails('inetnum/80.73.136.0%20-%2080.73.143.255/false');
+        });
+
+        it('should have only status ALLOCATED PA', () => {
+            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TESTMD-MNT').submitModal();
+            resourcesDetailPage
+                .expectModalToExist(false)
+                .expectFieldToExist('status', true)
+                .expectDisabledField('status', false)
+                .expectOptionSizeFromNgSelect('status', 1)
+                .expectOptionFromNgSelect('status', 'ALLOCATED PA');
+        });
+    });
 });

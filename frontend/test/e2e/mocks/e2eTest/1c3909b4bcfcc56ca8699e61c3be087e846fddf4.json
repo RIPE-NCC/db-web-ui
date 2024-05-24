@@ -1,0 +1,148 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources/inetnum/80.73.136.0%20-%2080.73.143.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "resources": [
+            {
+                "type": "inetnum",
+                "resource": "80.73.136.0 - 80.73.143.255",
+                "status": "ALLOCATED-ASSIGNED PA",
+                "type": "inetnum",
+                "iRR": false,
+                "rDNS": false,
+                "netname": "NL-TEST-20010618",
+                "usage": {
+                    "total": 2048,
+                    "used": 0,
+                    "blockSize": 32
+                }
+            }
+        ],
+        "totalNumberOfResources": 1,
+        "filteredSize": 1,
+        "pageSize": 1,
+        "object": {
+            "type": "inetnum",
+            "link": {
+                "type": "locator",
+                "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/80.73.136.0 - 80.73.143.255"
+            },
+            "source": {
+                "id": "ripe"
+            },
+            "primary-key": {
+                "attribute": [
+                    {
+                        "name": "inetnum",
+                        "value": "80.73.136.0 - 80.73.143.255"
+                    }
+                ]
+            },
+            "attributes": {
+                "attribute": [
+                    {
+                        "name": "inetnum",
+                        "value": "80.73.136.0 - 80.73.143.255"
+                    },
+                    {
+                        "name": "netname",
+                        "value": "NL-TEST-20010618"
+                    },
+                    {
+                        "name": "country",
+                        "value": "NL"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TST1-RIPE"
+                        },
+                        "name": "org",
+                        "value": "ORG-TST1-RIPE",
+                        "referenced-type": "organisation"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/person/WS1234-RIPE"
+                        },
+                        "name": "admin-c",
+                        "value": "WS1234-RIPE",
+                        "referenced-type": "person"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/person/WS1234-RIPE"
+                        },
+                        "name": "tech-c",
+                        "value": "WS1234-RIPE",
+                        "referenced-type": "person"
+                    },
+                    {
+                        "name": "status",
+                        "value": "ALLOCATED-ASSIGNED PA"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TESTMD-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "TESTMD-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TESTMD-MNT"
+                        },
+                        "name": "mnt-lower",
+                        "value": "TESTMD-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TESTMD-MNT"
+                        },
+                        "name": "mnt-routes",
+                        "value": "TESTMD-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TESTMD-MNT"
+                        },
+                        "name": "mnt-domains",
+                        "value": "TESTMD-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "RIPE-NCC-HM-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "name": "created",
+                        "value": "2020-03-13T14:27:01Z"
+                    },
+                    {
+                        "name": "last-modified",
+                        "value": "2024-05-21T20:08:10Z"
+                    },
+                    {
+                        "name": "source",
+                        "value": "RIPE"
+                    }
+                ]
+            }
+        }
+    }
+}

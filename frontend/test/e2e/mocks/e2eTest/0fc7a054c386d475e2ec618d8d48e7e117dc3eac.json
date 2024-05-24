@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/hierarchy/parents-of?key=80.73.136.0%20-%2080.73.143.255&org=ORG-TEST23-RIPE&type=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
+}

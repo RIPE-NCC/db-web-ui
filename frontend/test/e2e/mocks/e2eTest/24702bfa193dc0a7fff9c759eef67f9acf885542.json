@@ -1,0 +1,16 @@
+{
+    "requestUrl": "/db-web-ui/api/ba-apps/resources/ORG-TEST-RIPE/193.228.143.0%20-%20193.228.143.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "tickets": {
+            "193.228.143.0 - 193.228.143.255": [
+                {
+                    "number": "260990",
+                    "date": "2020-03-17",
+                    "resource": "193.228.143.0/24"
+                }
+            ]
+        }
+    }
+}

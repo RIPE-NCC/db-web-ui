@@ -47,4 +47,30 @@ describe('Modifying an inetnum', () => {
                 .expectDeleteButtonToExist(false);
         });
     });
+
+    describe('which has ALLOCATED PA status', () => {
+        it('should have only status ALLOCATED-ASSIGNED PA', () => {
+            webupdatesPage.visit('modify/RIPE/inetnum/193.228.143.0%20-%20193.228.143.255');
+            webupdatesPage.getModalAuthentication().typePassword('TESTMD-MNT').disableAssociateCheckbox().submitModal();
+            webupdatesPage
+                .expectModalToExist(false)
+                .expectFieldToExist('status', true)
+                .expectDisabledField('status', false)
+                .expectOptionSizeFromNgSelect('status', 1)
+                .expectOptionFromNgSelect('status', 'ALLOCATED-ASSIGNED PA');
+        });
+    });
+
+    describe('which has ALLOCATED-ASSIGNED PA status', () => {
+        it('should have only status ALLOCATED PA', () => {
+            webupdatesPage.visit('modify/RIPE/inetnum/80.73.136.0%20-%2080.73.143.255');
+            webupdatesPage.getModalAuthentication().typePassword('TESTMD-MNT').disableAssociateCheckbox().submitModal();
+            webupdatesPage
+                .expectModalToExist(false)
+                .expectFieldToExist('status', true)
+                .expectDisabledField('status', false)
+                .expectOptionSizeFromNgSelect('status', 1)
+                .expectOptionFromNgSelect('status', 'ALLOCATED PA');
+        });
+    });
 });

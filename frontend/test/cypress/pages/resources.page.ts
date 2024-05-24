@@ -113,6 +113,39 @@ export class ResourcesDetailPage {
         cy.get('app-banner[level="info"]').shadow().find('.app-banner.level-info').should('contain.text', text);
         return this;
     }
+
+    expectModalToExist(exist: boolean) {
+        cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectFieldToExist(attrName: string, exist: boolean) {
+        cy.get(`#editortop [name^='${attrName}']`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectDisabledField(fieldName: string, disabled: boolean) {
+        // depends on ng-select is used, the input tag might be in different DOM location
+        cy.get(`#editortop input[name^='${fieldName}'], #editortop [name^='${fieldName}'] input`).should(disabled ? 'be.disabled' : 'not.be.disabled');
+        return this;
+    }
+
+    expectOptionSizeFromNgSelect(fieldName: string, size: number) {
+        this.clickOnField(fieldName);
+        cy.get(`#editortop [name^='${fieldName}'] .ng-option`).should('have.length', size);
+        return this;
+    }
+
+    clickOnField(fieldName: string) {
+        cy.get(`#editortop [name^='${fieldName}']`).click();
+        return this;
+    }
+
+    expectOptionFromNgSelect(fieldName: string, option: string) {
+        this.clickOnField(fieldName);
+        cy.get(`#editortop [name^='${fieldName}'] .ng-option:contains('${option}')`).should('exist');
+        return this;
+    }
 }
 
 export class ResourcesOverViewPage {
