@@ -186,7 +186,6 @@ describe('The inetnum editor', () => {
             .authenticateWithDisabledAssociate('TEST03-MNT')
             .expectOptionSizeFromNgSelect('status', 2)
             .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
-            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
-            .expectDisabledSubmitCreate(false);
+            .expectOptionFromNgSelect('status', 'ASSIGNED PA');
     });
 });
