@@ -74,6 +74,7 @@ export class ResourceStatusService {
             'EARLY-REGISTRATION': [] as string[],
             LEGACY: [{ key: 'LEGACY', value: 'LEGACY' }],
             'LIR-PARTITIONED PA': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
                 { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' }, // *
                 { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' }, // *
@@ -83,6 +84,7 @@ export class ResourceStatusService {
                 { key: 'LIR-PARTITIONED PI', value: 'LIR-PARTITIONED PI' }, // *
             ],
             'SUB_ALLOCATED PA': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
                 { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' }, // *
                 { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' }, // *
