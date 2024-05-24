@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/autocomplete?extended=true&field=inetnum&query=5.104.73.0%20-%205.104.73.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
+}

@@ -39,6 +39,10 @@ export class ResourceStatusService {
             ],
         },
         inetnum: {
+            'AGGREGATED-BY-LIR': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
+                { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
+            ],
             'ALLOCATED PA': [
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
                 { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' },
@@ -84,6 +88,7 @@ export class ResourceStatusService {
                 { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' }, // *
             ],
             default: [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ALLOCATED PA', value: 'ALLOCATED PA' },
                 { key: 'ALLOCATED PI', value: 'ALLOCATED PI' },
                 { key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED' },
