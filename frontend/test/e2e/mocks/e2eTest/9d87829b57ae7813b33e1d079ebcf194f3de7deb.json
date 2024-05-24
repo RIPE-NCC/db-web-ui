@@ -1,0 +1,84 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/RIPE/mntner/TESTMD-MNT?password=TESTMD-MNT&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TESTMD-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TESTMD-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "TESTMD-MNT"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $BLAblahblahqBagd1"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/TEST88-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TEST88-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@ripe.nu"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TESTMD-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TESTMD-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2020-03-16T15:24:40Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2020-03-16T15:34:21Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://apps.db.ripe.net/docs/HTML-Terms-And-Conditions"
+        },
+        "version": {
+            "version": "1.113-SNAPSHOT",
+            "timestamp": "2024-05-02T09:29:02Z",
+            "commit-id": "c85137a"
+        }
+    }
+}
