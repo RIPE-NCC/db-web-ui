@@ -149,6 +149,12 @@ $padding: 24px;
             display: none;
         }
     }
+
+    em.close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
 }
 
 .query-padding-right {

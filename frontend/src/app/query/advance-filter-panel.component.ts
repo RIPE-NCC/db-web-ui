@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PropertiesService } from '../properties.service';
 import { IQueryParameters } from './query-parameters.service';
 
 @Component({
@@ -10,4 +11,5 @@ export class AdvanceFilterPanelComponent {
     public queryParameters: IQueryParameters;
     @Output()
     public queryParametersChange = new EventEmitter<IQueryParameters>();
+    public isMobileView: boolean = PropertiesService.isMobileView();
 }

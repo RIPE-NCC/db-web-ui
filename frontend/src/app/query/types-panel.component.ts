@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PropertiesService } from '../properties.service';
 import { ObjectTypesEnum } from './object-types.enum';
 import { IQueryParameters, QueryParametersService } from './query-parameters.service';
 
@@ -14,6 +15,7 @@ export class TypesPanelComponent {
     @Output()
     public queryParametersChange = new EventEmitter<IQueryParameters>();
     readonly ObjectTypesEnum = ObjectTypesEnum;
+    public isMobileView: boolean = PropertiesService.isMobileView();
 
     isDisabled(type: ObjectTypesEnum) {
         // enable all types if inverse lookup is first choice

@@ -58,13 +58,9 @@ export class AppComponent implements OnInit {
     }
 
     public mobileOrDesktopView() {
-        this.innerWidth = this.getInnerWidth();
-        this.isDesktopView = this.innerWidth >= this.properties.BREAKPOINTS_MOBILE_VIEW;
+        this.innerWidth = PropertiesService.getInnerWidth();
+        this.isDesktopView = !PropertiesService.isMobileView();
         this.isOpenMenu = this.isDesktopView;
-    }
-
-    public getInnerWidth() {
-        return window.innerWidth;
     }
 
     open = (event: any) => {
