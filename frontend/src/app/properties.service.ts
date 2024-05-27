@@ -49,7 +49,7 @@ export class PropertiesService {
     public LEGAL = 'legal';
     public ENV = 'local';
     public RIPE_APP_WEBCOMPONENTS_ENV = 'pre';
-    public BREAKPOINTS_MOBILE_VIEW = 1025;
+    public static BREAKPOINTS_MOBILE_VIEW = 1025;
     public MATOMO_ID = '';
     public LOGIN_URL = '';
     public LOGOUT_URL = '';
@@ -154,5 +154,13 @@ export class PropertiesService {
 
     public isNccHmMntner(mntnerKey: string): boolean {
         return this.RIPE_NCC_HM_MNT === mntnerKey.toUpperCase();
+    }
+
+    public static getInnerWidth() {
+        return window.innerWidth;
+    }
+
+    public static isMobileView() {
+        return PropertiesService.getInnerWidth() < PropertiesService.BREAKPOINTS_MOBILE_VIEW;
     }
 }

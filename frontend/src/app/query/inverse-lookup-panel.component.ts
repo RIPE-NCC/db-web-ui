@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PropertiesService } from '../properties.service';
 import { InverseAttrsEnum } from './inverse-attrs.enum';
 import { ObjectTypesEnum } from './object-types.enum';
 import { IQueryParameters } from './query-parameters.service';
@@ -19,6 +20,7 @@ export class InverseLookupPanelComponent implements OnInit {
     public queryParametersChange = new EventEmitter<IQueryParameters>();
     readonly InverseAttrsEnum = InverseAttrsEnum;
     public mapInverseLookupAttributesWithTypes: Map<string, string[]>;
+    public isMobileView = PropertiesService.isMobileView();
 
     ngOnInit(): void {
         this.mapInverseLookupAttributesWithTypes = InverseLookupPanelComponent.mapInverseLookupAttributesToTypes();
