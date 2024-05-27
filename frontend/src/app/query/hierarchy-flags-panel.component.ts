@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { PropertiesService } from '../properties.service';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
 import { IQueryParameters } from './query-parameters.service';
 
@@ -12,6 +13,7 @@ export class HierarchyFlagsPanelComponent implements OnInit, OnChanges {
     @Output()
     public queryParametersChange = new EventEmitter<IQueryParameters>();
     public hierarchyFlag: number = 0;
+    public isMobileView: boolean = PropertiesService.isMobileView();
 
     public ngOnInit() {
         this.hierarchyFlag = HierarchyFlagsService.idHierarchyFlagFromShort(this.queryParameters.hierarchy);
