@@ -44,6 +44,7 @@ export class ResourceStatusService {
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
             ],
             'ALLOCATED PA': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
                 { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' },
                 { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' },
