@@ -82,6 +82,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
         this.activeModal.dismiss();
         this.isDismissed = false;
     }
+
     public dismiss() {
         this.transitionToState(this.inputData.source, this.inputData.objectType, this.inputData.name, this.inputData.onCancelPath);
         this.isDismissed = true;
@@ -152,8 +153,13 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     private checkRpkiRoa() {
         if (this.inputData.objectType === ObjectTypesEnum.ROUTE || this.inputData.objectType === ObjectTypesEnum.ROUTE6) {
             const index = this.inputData.name.indexOf('AS');
-            this.rpkiValidatorService.hasRoa(this.inputData.name.substring(index), this.inputData.name.substring(0, index)).subscribe((response) => {
-                this.showRoaMsg = response.validated_route.validity.state === 'valid';
+            this.rpkiValidatorService.hasRoa(this.inputData.name.substring(index), this.inputData.name.substring(0, index)).subscribe({
+                next: (response) => {
+                    this.showRoaMsg = response.validated_route.validity.state === 'valid';
+                },
+                error: (response) => {
+                    console.error(response.error);
+                },
             });
         }
     }
