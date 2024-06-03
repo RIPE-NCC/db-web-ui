@@ -96,6 +96,9 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (this.isForbiddenError(error.status) && _.endsWith(error.url, 'api/user/info')) {
                 toBeSwallowed = true;
             }
+            if (error.url.indexOf('api/rpki/roa') > -1) {
+                toBeSwallowed = true;
+            }
             if (this.isNotFoundError(error.status)) {
                 if (_.startsWith(error.url, 'api/whois-internal/')) {
                     toBeSwallowed = true;
