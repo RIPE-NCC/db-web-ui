@@ -3,18 +3,11 @@ package net.ripe.whois.jetty;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import org.eclipse.jetty.http.HttpURI;
-import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.http.HttpField;
+import org.eclipse.jetty.http.HttpFields;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.InetSocketAddress;
-import java.util.Enumeration;
-
-import static org.eclipse.jetty.http.HttpHeader.X_FORWARDED_FOR;
-import static org.eclipse.jetty.http.HttpHeader.X_FORWARDED_PROTO;
 
 /**
  * X-Forwarded-For address will replace the request address.
@@ -22,57 +15,55 @@ import static org.eclipse.jetty.http.HttpHeader.X_FORWARDED_PROTO;
  */
 public class RemoteAddressCustomizer implements HttpConfiguration.Customizer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteAddressCustomizer.class);
     private static final Splitter COMMA_SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 
     @Override
-    public void customize(final Connector connector, final HttpConfiguration httpConfiguration, final Request request) {
-        setRemoteAddr(request);
-        setSecure(request);
-        LOGGER.debug("Received client ip is {}", request.getRemoteAddr());
+    public Request customize(final Request request, final HttpFields.Mutable responseHeaders) {
+        return new RemoteAddressRequest(request);
     }
 
-    private void setRemoteAddr(final Request request) {
-        request.setRemoteAddr(InetSocketAddress.createUnresolved(getRemoteAddress(request), request.getRemotePort()));
-    }
+    // TODO: override remote address similar to ProxyCustomizer
 
-    private void setSecure(final Request request) {
-        request.setHttpURI(
-            HttpURI.build(request.getHttpURI())
-                .scheme(getScheme(request))
-                .asImmutable());
-    }
+    private static class RemoteAddressRequest extends Request.Wrapper {
 
-    private String getScheme(final Request request) {
-        String header = getLastValidHeader(request, X_FORWARDED_PROTO.asString());
-        if (Strings.isNullOrEmpty(header)) {
-            return request.getScheme();
-        }
-        return header;
-    }
+        final String remoteAddress;
+        final String scheme;
 
-    private String getRemoteAddress(final Request request) {
-        String header = getLastValidHeader(request, X_FORWARDED_FOR.asString());
-        if (Strings.isNullOrEmpty(header)) {
-            return request.getRemoteAddr();
-        }
-        return header;
-    }
-
-    private String getLastValidHeader(final Request request, final String headerName) {
-        final Enumeration<String> headers = request.getHeaders(headerName);
-        if (headers == null || !headers.hasMoreElements()) {
-            return "";
+        public RemoteAddressRequest(Request wrapped) {
+            super(wrapped);
+            this.remoteAddress = parseRemoteAddress(wrapped);
+            this.scheme = parseScheme(wrapped);
         }
 
-        String header = "";
-        while (headers.hasMoreElements()) {
-            final String next = headers.nextElement();
-            if (!Strings.isNullOrEmpty(next)) {
-                header = next;
+        private String parseRemoteAddress(final Request request) {
+            // request.setRemoteAddr(InetSocketAddress.createUnresolved(getRemoteAddress(request), request.getRemotePort()));
+            String header = getLastValidHeader(request, HttpHeader.X_FORWARDED_FOR);
+            if (Strings.isNullOrEmpty(header)) {
+                return Request.getRemoteAddr(request);
+            } else {
+                return header;
             }
         }
 
-        return Iterables.getLast(COMMA_SPLITTER.split(header));
+        private String parseScheme(final Request request) {
+            final String header = getLastValidHeader(request, HttpHeader.X_FORWARDED_PROTO);
+            if (Strings.isNullOrEmpty(header)) {
+                return request.getHttpURI().getScheme();
+            }
+            return header;
+        }
+
+        private String getLastValidHeader(final Request request, final HttpHeader headerName) {
+            final HttpField lastField = request.getHeaders().stream()
+                .filter(httpField -> httpField.getHeader().equals(headerName))
+                .reduce((first, second) -> second)
+                .orElse(null);
+
+            if (lastField != null) {
+                return Iterables.getLast(COMMA_SPLITTER.split(lastField.getValue()));
+            } else {
+                return "";
+            }
+        }
     }
 }
