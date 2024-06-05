@@ -5,37 +5,46 @@ import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.Rule;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.URIUtil;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class RedirectToHttpsRule extends Rule {
 
     @Override
-    public String matchAndApply(String target, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (hasTransport(request)) {
-            StringBuilder location = new StringBuilder();
-            URIUtil.appendSchemeHostPort(location, HttpScheme.HTTPS.toString(), request.getServerName(), 443);
-            location.append(request.getRequestURI());
+    public Handler matchAndApply(Handler input) throws IOException {
+        if (hasTransport(input)) {
+            return new Handler(input)
+            {
+                @Override
+                protected boolean handle(final Response response, final Callback callback)
+                {
+                    final StringBuilder location = new StringBuilder();
+                    URIUtil.appendSchemeHostPort(location, HttpScheme.HTTPS.toString(), Request.getServerName(input), HttpScheme.HTTPS.getDefaultPort());
+                    location.append(input.getHttpURI());
 
-            if (StringUtils.isNotBlank(request.getQueryString())) {
-                location.append("?").append(request.getQueryString());
-            }
+                    final String queryString = input.getHttpURI().getQuery();
+                    if (StringUtils.isNotBlank(queryString)) {
+                        location.append("?").append(queryString);
+                    }
 
-            response.setHeader("Location", location.toString());
-            response.setStatus(HttpStatus.MOVED_PERMANENTLY_301);
-            response.getOutputStream().flush(); // no output / content
-            response.getOutputStream().close();
-            return target;
+                    response.setStatus(HttpStatus.MOVED_PERMANENTLY_301);
+                    response.getHeaders().put(HttpHeader.LOCATION, location.toString());
+
+                    callback.succeeded();
+                    return true;
+                }
+            };
         }
         return null;
     }
 
-    private boolean hasTransport(final HttpServletRequest request) {
-        final String header = request.getHeader(HttpHeader.X_FORWARDED_PROTO.toString());
-        return !StringUtils.isEmpty(header) && HttpScheme.HTTP.is(header);
+    private boolean hasTransport(final Request request) {
+        final String value = request.getHeaders().get(HttpHeader.X_FORWARDED_PROTO);
+        return !StringUtils.isEmpty(value) && HttpScheme.HTTP.is(value);
     }
 
 }
