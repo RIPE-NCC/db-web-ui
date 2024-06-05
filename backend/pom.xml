@@ -36,8 +36,8 @@
         <sonar.tests>src/test</sonar.tests>
         <snakeyaml.version>2.2</snakeyaml.version>
         <!-- keep spring-boot.version in sync with parent pom -->
-        <spring-boot.version>3.1.4</spring-boot.version>
-        <whois.version>00effd2d</whois.version>
+        <spring-boot.version>3.3.0</spring-boot.version>
+        <whois.version>d114d80e</whois.version>
     </properties>
 
     <dependencyManagement>
@@ -152,7 +152,7 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.http2</groupId>
-            <artifactId>http2-server</artifactId>
+            <artifactId>jetty-http2-server</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
