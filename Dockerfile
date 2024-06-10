@@ -1,11 +1,15 @@
+# TODO: [ES] switch to common gitlab-ci image
+
 # Build
-FROM maven:3.8.3-openjdk-17-slim AS build
+FROM maven:3.9-amazoncorretto-21-al2023 AS build
 
 WORKDIR /src
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -yq nodejs build-essential && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# INSTALL: node 18
+RUN curl -sL https://rpm.nodesource.com/setup_18.x | bash - && \
+    dnf install -y nodejs && \
+    dnf clean all && \
+    rm -rf /var/cache/dnf
 
 COPY . /src
 ARG CI_COMMIT_SHA
@@ -13,7 +17,7 @@ ARG CI_COMMIT_SHA
 RUN mvn clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
 
 # Release
-FROM amazoncorretto:17-alpine
+FROM amazoncorretto:21-alpine
 
 ENV PROFILE local
 ENV START_HEAP_SIZE 256m
