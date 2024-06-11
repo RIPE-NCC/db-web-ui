@@ -7,6 +7,6 @@ export class RpkiValidatorService {
 
     hasRoa(origin: string, route: string) {
         const params = new HttpParams().set('origin', origin).set('route', route);
-        return this.http.get<any>(`api/rpki/roa`, { params });
+        return this.http.get<any>(`api/whois-internal/public/rpki/roa`, { params });
     }
 }
