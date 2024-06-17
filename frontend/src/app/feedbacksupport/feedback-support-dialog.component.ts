@@ -3,8 +3,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { PropertiesService } from '../properties.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 
-declare let useUsersnapCX: (sso_email?: string) => any;
-
 @Component({
     selector: 'feedback-support-dialog',
     templateUrl: './feedback-support-dialog.component.html',
@@ -24,15 +22,6 @@ export class FeedbackSupportDialogComponent implements OnInit {
 
     sendEmail() {
         window.open('https://www.ripe.net/support/contact', '_blank', 'noopener');
-        this.dialogRef.close();
-    }
-
-    openUsersnap() {
-        if (this.userInfoService.isLogedIn()) {
-            this.userInfoService.getUserOrgsAndRoles().subscribe((user) => useUsersnapCX(user.user.username));
-        } else {
-            useUsersnapCX();
-        }
         this.dialogRef.close();
     }
 

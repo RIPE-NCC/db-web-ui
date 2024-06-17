@@ -72,7 +72,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
             // hence skip clearing the error message so as to be able to display it to user
             this.skipClearError = true;
             console.debug('ERROR deleting object' + JSON.stringify(errorResp));
-            if (errorResp.data) {
+            if (errorResp?.data) {
                 this.alertsService.setErrors(errorResp.data);
             }
         });
