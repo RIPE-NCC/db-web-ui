@@ -89,37 +89,5 @@
         </script>
 
         <!--  Webupdates specific body-end end -->
-        <!-- Usersnap widget: always on -->
-        <script>
-            function loadUsersnap(buildTag) {
-                window.onUsersnapCXLoad = function (api) {
-                    api.init({
-                        button: null,
-                        // Deactivate localStorage (Cookies)
-                        mountNode: document.getElementById('widgetContainer'),
-                        useLocalStorage: false,
-                    });
-                    api.on('open', function (event) {
-                        event.api.setValue('custom', 'db-web-ui-' + buildTag);
-                        event.api.setValue('visitor', window.username || '');
-                    });
-                    api.open();
-                    window.UsersnapCX = api;
-                };
-            }
-            function useUsersnapCX(sso_email) {
-                if (window.UsersnapCX) {
-                    window.UsersnapCX.open();
-                } else {
-                    window.username = sso_email;
-                    var script = document.createElement('script');
-                    script.type = 'text/javascript';
-                    script.async = true;
-                    script.src = 'https://widget.usersnap.com/load/23af85c0-b461-4c01-bdf5-a1c36a854023?onload=onUsersnapCXLoad';
-                    document.getElementsByTagName('head')[0].appendChild(script);
-                }
-            }
-        </script>
-        <!-- End Usersnap widget -->
     </body>
 </html>

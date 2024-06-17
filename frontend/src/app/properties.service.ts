@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 declare var loadMatomo: (matomoId: string) => any;
-declare var loadUsersnap: (buildTag: string) => any;
 
 export interface IProperties {
     ENV: string;
@@ -122,9 +121,6 @@ export class PropertiesService {
     private injectProperties() {
         if (typeof loadMatomo === 'function') {
             loadMatomo(this.MATOMO_ID);
-        }
-        if (typeof loadUsersnap === 'function') {
-            loadUsersnap(this.DB_WEB_UI_BUILD_TIME);
         }
     }
 

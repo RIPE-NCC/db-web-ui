@@ -11,10 +11,9 @@ import { FeedbackSupportDialogComponent } from '../feedbacksupport/feedback-supp
 import { PropertiesService } from '../properties.service';
 import { MenuService } from './menu.service';
 
-// TODO remove class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots
 @Component({
     selector: 'swe-menu',
-    template: `<app-nav-bar class="usprivacy" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>`,
+    template: `<app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>`,
 })
 export class MenuComponent implements OnInit, OnDestroy {
     @Input()

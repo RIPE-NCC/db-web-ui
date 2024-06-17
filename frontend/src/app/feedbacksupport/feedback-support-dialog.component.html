@@ -8,13 +8,6 @@
                 <div class="secondary">Need help? Open a ticket.</div>
             </div>
         </mat-list-item>
-        <mat-list-item (click)="openUsersnap()">
-            <em mat-list-icon class="fal fa-bug"></em>
-            <div mat-line>
-                <div class="primary">Report a bug</div>
-                <div class="secondary">Something broken? Let us know!</div>
-            </div>
-        </mat-list-item>
         <mat-list-item *ngIf="showChatMenuItem" (click)="openLiveChat()">
             <em mat-list-icon class="fal fa-comment-alt"></em>
             <div mat-line>
