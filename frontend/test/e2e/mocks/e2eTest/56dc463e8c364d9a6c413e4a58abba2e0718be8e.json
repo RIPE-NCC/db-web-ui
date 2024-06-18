@@ -1,0 +1,128 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/search?flags=lr&ignore404=true&query-string=5.104.73.0%20-%205.104.73.255&type-filter=inetnum",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {
+                "type-filter": [
+                    {
+                        "id": "inetnum"
+                    }
+                ]
+            },
+            "flags": {
+                "flag": [
+                    {
+                        "value": "one-less"
+                    },
+                    {
+                        "value": "no-referenced"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "5.104.73.0 - 5.104.73.255"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/5.104.72.0 - 5.104.73.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "5.104.72.0 - 5.104.73.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "5.104.72.0 - 5.104.73.255"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "Sub-allocated"
+                            },
+                            {
+                                "name": "country",
+                                "value": "GB"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ST13100-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "ST13100-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ST13100-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "ST13100-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "AGGREGATED-BY-LIR"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST03-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2022-06-30T07:49:22Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2024-05-24T09:24:30Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://apps.db.ripe.net/docs/HTML-Terms-And-Conditions"
+        },
+        "version": {
+            "version": "1.113-SNAPSHOT",
+            "timestamp": "2024-05-23T14:32:16Z",
+            "commit-id": "30957d9"
+        }
+    }
+}

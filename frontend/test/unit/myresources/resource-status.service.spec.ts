@@ -63,6 +63,7 @@ describe('ResourceStatusService', () => {
 
     it('should return default list of statuses if parent status is not specified', () => {
         const defaultStatuses = [
+            { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
             { key: 'ALLOCATED PA', value: 'ALLOCATED PA' },
             { key: 'ALLOCATED PI', value: 'ALLOCATED PI' },
             { key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED' },
