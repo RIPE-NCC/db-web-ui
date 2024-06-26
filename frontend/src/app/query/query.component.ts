@@ -182,6 +182,7 @@ export class QueryComponent implements OnDestroy {
         // Reset on-screen widgets
         this.alertsService.clearAlertMessages();
 
+        // by default in flag search related objects are shown, in search with filters related objects are not shown
         if (this.showsQueryFlagsContainer) {
             cleanQp.doNotRetrieveRelatedObjects = false;
         }

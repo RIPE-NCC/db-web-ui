@@ -418,7 +418,7 @@ describe('QueryComponent', () => {
             expect(component.offset).toEqual(0);
             expect(component.qp.showFullObjectDetails).toEqual(false);
             expect(component.qp.reverseDomain).toEqual(false);
-            expect(component.qp.doNotRetrieveRelatedObjects).toEqual(true);
+            expect(component.qp.doNotRetrieveRelatedObjects).toBeTruthy();
             expect(component.qp.source).toEqual('RIPE');
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});
@@ -740,7 +740,7 @@ describe('QueryComponent', () => {
             expect(component.offset).toEqual(0);
             expect(component.qp.showFullObjectDetails).toEqual(false);
             expect(component.qp.reverseDomain).toEqual(false);
-            expect(component.qp.doNotRetrieveRelatedObjects).toEqual(true);
+            expect(component.qp.doNotRetrieveRelatedObjects).toBeTruthy();
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});
             component.doSearch();
@@ -762,7 +762,7 @@ describe('QueryComponent', () => {
             expect(component.offset).toEqual(0);
             expect(component.qp.showFullObjectDetails).toEqual(false);
             expect(component.qp.reverseDomain).toEqual(false);
-            expect(component.qp.doNotRetrieveRelatedObjects).toEqual(true);
+            expect(component.qp.doNotRetrieveRelatedObjects).toBeTruthy();
             expect(component.qp.source).toEqual('RIPE');
             expect(component.qp.types).toEqual({});
             expect(component.qp.inverse).toEqual({});

@@ -22,6 +22,7 @@ export interface IQueryParameters {
     // TODO Replace source with Set type asap IE allow it
     source: string;
     noGrouping?: boolean;
+    otherFlags?: string[];
 }
 
 const templateQueries = ['-t', '--template'];
@@ -134,8 +135,7 @@ export class QueryParametersService {
         let invOptionPos = -1;
         let typeOptionPos = -1;
         let sourcesPos = -1;
-        let addedInvalidOptionWarning = false; // Only shown once
-        let supportedFlag = false; // Only shown once
+        let supportedFlag = false;
         let addedHierarchyWarning = false; // Only shown once
         const isSupportedFlag = (flag: string) => {
             this.queryFlagsService.getFlags([flag]).subscribe((queryFlags) => {
@@ -179,11 +179,13 @@ export class QueryParametersService {
                         typeOptionPos = idx + 1;
                     } else if (item === '--no-grouping') {
                         queryParams.noGrouping = true;
-                    } else if (supportedFlag) {
+                    } else if (!supportedFlag) {
                         errors.push(`ERROR:111: unsupported flag ${item}.`);
-                    } else if (!addedInvalidOptionWarning && !supportedFlag) {
-                        addedInvalidOptionWarning = true;
-                        errors.push(`ERROR:111: invalid option ${item} supplied.`);
+                    } else {
+                        if (!queryParams.otherFlags) {
+                            queryParams.otherFlags = [];
+                        }
+                        queryParams.otherFlags.push(item.substring(2));
                     }
                 } else if (item.indexOf('-') === 0 && item.length > 1) {
                     const opts = item.substring(1);
@@ -221,11 +223,8 @@ export class QueryParametersService {
                             queryParams.source = 'GRS';
                         } else if (opts[i] === 'G') {
                             queryParams.noGrouping = true;
-                        } else if (supportedFlag) {
+                        } else if (!supportedFlag) {
                             errors.push(`ERROR:111: unsupported flag -${opts[i]}.`);
-                        } else if (!addedInvalidOptionWarning && !supportedFlag) {
-                            addedInvalidOptionWarning = true;
-                            errors.push(`ERROR:111: invalid option -${opts[i]} supplied.`);
                         }
                     }
                 } else {
