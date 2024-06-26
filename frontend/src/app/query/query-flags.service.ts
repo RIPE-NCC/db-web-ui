@@ -40,7 +40,7 @@ export class QueryFlagsService {
             const queryFlag = this.findFlag(flag);
             if (!!queryFlag) {
                 this.detectedQueryFlags.push(queryFlag);
-            } else if (flag.length > 2) {
+            } else if (flag.length > 2 && flag.indexOf('--') !== 0) {
                 // grouped flags "-i" = 2
                 const groupedFlags: string[] = flag.split('');
                 groupedFlags.shift();

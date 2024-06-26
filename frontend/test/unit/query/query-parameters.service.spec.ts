@@ -50,7 +50,7 @@ describe('QueryParameters', () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(1);
-        expect(validationIssues.errors[0]).toContain('ERROR:111: invalid option --no-such-flag supplied.');
+        expect(validationIssues.errors[0]).toContain('ERROR:111: unsupported flag --no-such-flag.');
 
         expect(qp.queryText).toEqual('etchells-mnt');
         expect(qp.showFullObjectDetails).toEqual(false);
@@ -118,8 +118,7 @@ describe('QueryParameters', () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(2);
-        expect(validationIssues.errors[0]).toContain('ERROR:111: invalid option -f supplied.');
-        expect(validationIssues.errors[1]).toEqual('No search term provided');
+        expect(validationIssues.errors[0]).toEqual('ERROR:111: unsupported flag -f.');
 
         expect(validationIssues.warnings.length).toEqual(0);
 
@@ -395,6 +394,36 @@ describe('QueryParameters', () => {
         expect(validationIssuesAllSources.warnings.length).toEqual(0);
     });
 
+    it('should parse --no-personal and --show-personal flag', () => {
+        const response_no_personal: IQueryFlag[] = [
+            {
+                longFlag: '--no-personal',
+                shortFlag: '',
+                description: 'Filter PERSON and ROLE objects from results.',
+            },
+        ];
+        const response_show_personal: IQueryFlag[] = [
+            {
+                longFlag: '--show-personal',
+                shortFlag: '',
+                description: 'Include PERSON and ROLE objects in results.',
+            },
+        ];
+        queryFlagsServiceSpy.getFlags.and.returnValues(of(response_no_personal), of(response_show_personal));
+
+        qp.queryText = '--no-personal SHW-MNT';
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+
+        qp.queryText = '--show-personal SHW-MNT';
+
+        let validationIssuesAllSources = queryParametersService.validate(qp);
+        expect(validationIssuesAllSources.errors.length).toEqual(0);
+        expect(validationIssuesAllSources.warnings.length).toEqual(0);
+    });
+
     it('should recognise unsupported flag', () => {
         const response_b: IQueryFlag[] = [
             {
@@ -416,8 +445,7 @@ describe('QueryParameters', () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(queryFlagsServiceSpy.getFlags).toHaveBeenCalledTimes(2);
-        expect(validationIssues.errors.length).toEqual(1);
-        expect(validationIssues.errors[0]).toEqual('ERROR:111: unsupported flag -b.');
+        expect(validationIssues.errors.length).toEqual(0);
         expect(validationIssues.warnings.length).toEqual(0);
     });
 
@@ -427,7 +455,7 @@ describe('QueryParameters', () => {
 
         let validationIssues = queryParametersService.validate(qp);
         expect(validationIssues.errors.length).toEqual(1);
-        expect(validationIssues.errors[0]).toEqual('ERROR:111: invalid option -z supplied.');
+        expect(validationIssues.errors[0]).toEqual('ERROR:111: unsupported flag -z.');
         expect(validationIssues.warnings.length).toEqual(0);
     });
 });

@@ -94,6 +94,12 @@ export class QueryService {
             params = params.append('flags', flags);
         }
 
+        if (qp.otherFlags) {
+            for (let flag of qp.otherFlags) {
+                params = params.append('flags', flag);
+            }
+        }
+
         const acc = _.cloneDeep(EMPTY_MODEL);
 
         // paging:
