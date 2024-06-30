@@ -39,7 +39,12 @@ export class ResourceStatusService {
             ],
         },
         inetnum: {
+            'AGGREGATED-BY-LIR': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
+                { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
+            ],
             'ALLOCATED PA': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
                 { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' },
                 { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' },
@@ -70,6 +75,7 @@ export class ResourceStatusService {
             'EARLY-REGISTRATION': [] as string[],
             LEGACY: [{ key: 'LEGACY', value: 'LEGACY' }],
             'LIR-PARTITIONED PA': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
                 { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' }, // *
                 { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' }, // *
@@ -79,11 +85,13 @@ export class ResourceStatusService {
                 { key: 'LIR-PARTITIONED PI', value: 'LIR-PARTITIONED PI' }, // *
             ],
             'SUB_ALLOCATED PA': [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
                 { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' }, // *
                 { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' }, // *
             ],
             default: [
+                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
                 { key: 'ALLOCATED PA', value: 'ALLOCATED PA' },
                 { key: 'ALLOCATED PI', value: 'ALLOCATED PI' },
                 { key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED' },
