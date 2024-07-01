@@ -59,6 +59,7 @@ describe('SelectController', () => {
                     { name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE'] },
                     { name: 'abuse-c', mandatory: false, multiple: false, refs: ['ROLE'] },
                     { name: 'status', mandatory: true, multiple: false, refs: refs, isEnum: true },
+                    { name: 'assignment-size', mandatory: false, multiple: false, refs: refs },
                     { name: 'remarks', mandatory: false, multiple: true, refs: refs },
                     { name: 'notify', mandatory: false, multiple: true, refs: refs },
                     { name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER'] },

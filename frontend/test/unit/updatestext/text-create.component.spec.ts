@@ -181,6 +181,7 @@ describe('TextCreateComponent', () => {
                 'TECH-C:        \n' +
                 'abuse-c:       \n' +
                 'STATUS:        \n' +
+                'assignment-size:\n' +
                 'remarks:       \n' +
                 'notify:        \n' +
                 'MNT-BY:        TEST-MNT\n' +
@@ -215,6 +216,7 @@ describe('TextCreateComponent', () => {
                 'TECH-C:        \n' +
                 'abuse-c:       \n' +
                 'STATUS:        \n' +
+                'assignment-size:\n' +
                 'remarks:       \n' +
                 'notify:        \n' +
                 'MNT-BY:        \n' +
@@ -260,6 +262,7 @@ describe('TextCreateComponent', () => {
                 'TECH-C:        \n' +
                 'abuse-c:       \n' +
                 'STATUS:        \n' +
+                'assignment-size:\n' +
                 'remarks:       \n' +
                 'notify:        \n' +
                 'MNT-BY:        \n' +
