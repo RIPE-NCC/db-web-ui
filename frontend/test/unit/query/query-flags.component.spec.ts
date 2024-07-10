@@ -12,7 +12,7 @@ describe('QueryFlagsComponent', () => {
     let queryFlagsServiceSpy: jasmine.SpyObj<QueryFlagsService>;
 
     beforeEach(() => {
-        queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlags']);
+        queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlags', 'addSpaceBehindFlagT']);
         TestBed.configureTestingModule({
             imports: [SharedModule, CoreModule, HttpClientTestingModule],
             declarations: [QueryFlagsComponent],
@@ -29,6 +29,7 @@ describe('QueryFlagsComponent', () => {
 
     it("shouldn't call service if there is no flags in query terms which user entered", () => {
         component.inputTerm = '';
+        queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);
         component.ngOnChanges();
         fixture.detectChanges();
         expect(queryFlagsServiceSpy.getFlags).toHaveBeenCalledTimes(0);
@@ -46,6 +47,7 @@ describe('QueryFlagsComponent', () => {
         queryFlagsServiceSpy.getFlags.and.returnValue(of(response));
         spyOn(component.hasValidQueryFlags, 'emit');
         component.inputTerm = '-i -ne -da';
+        queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);
         component.ngOnChanges();
         fixture.detectChanges();
         expect(component.flags).toEqual(['-i', '-ne', '-da']);
@@ -56,6 +58,7 @@ describe('QueryFlagsComponent', () => {
 
     it('should find all fags from user entered value (valid and invalid flags)', () => {
         component.inputTerm = '-i mnt-by -q -r';
+        queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);
         fixture.detectChanges();
         expect(component.getFlags()).toEqual(['-i', '-q', '-r']);
     });

@@ -32,7 +32,8 @@ export class QueryFlagsComponent implements OnChanges {
     }
 
     public getFlags() {
-        let allTerms = this.inputTerm.split(' ');
+        const sanitizedString: string = this.queryFlagsService.addSpaceBehindFlagT(this.inputTerm);
+        const allTerms = sanitizedString.split(' ');
         return allTerms.filter((term) => term.startsWith('-'));
     }
 }

@@ -147,6 +147,18 @@ describe('QueryFlagsService', () => {
         });
         httpMock.expectNone({ method: 'GET', url: 'api/metadata/help' });
     });
+
+    it('should add space behind -T flag', () => {
+        expect(queryFlagsService.addSpaceBehindFlagT('--no-personal -Tmntner,organisation shryane-mnt')).toBe(
+            '--no-personal -T mntner,organisation shryane-mnt',
+        );
+    });
+
+    it('should not add space behind -T flag', () => {
+        expect(queryFlagsService.addSpaceBehindFlagT('--no-personal -T mntner,organisation shryane-mnt')).toBe(
+            '--no-personal -T mntner,organisation shryane-mnt',
+        );
+    });
 });
 
 const mockAllFLAGS: IQueryFlag[] = [
