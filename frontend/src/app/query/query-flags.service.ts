@@ -17,7 +17,7 @@ export class QueryFlagsService {
 
     constructor(private http: HttpClient) {}
 
-    public getFlags(flags: string[]): Observable<IQueryFlag[]> {
+    getFlags(flags: string[]): Observable<IQueryFlag[]> {
         this.detectedQueryFlags = [];
         if (this.FLAGS) {
             return of(this.findFlags(flags));
@@ -29,6 +29,11 @@ export class QueryFlagsService {
                 }),
             );
         }
+    }
+
+    // exception -Tmntner, case without space
+    addSpaceBehindFlagT(inputTerm: string) {
+        return inputTerm.replace('-T ', '-T').replace('-T', '-T ');
     }
 
     private helpWhois(): Observable<IQueryFlag[]> {
