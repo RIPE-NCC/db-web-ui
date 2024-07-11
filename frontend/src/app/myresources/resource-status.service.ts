@@ -108,7 +108,7 @@ export class ResourceStatusService {
         },
     };
 
-    private readonly ipv4StatusesWithUsage = ['ALLOCATED PA', 'SUB-ALLOCATED PA', 'LIR-PARTITIONED PA'];
+    private readonly ipv4StatusesWithUsage = ['ALLOCATED PA', 'SUB-ALLOCATED PA', 'LIR-PARTITIONED PA', 'ALLOCATED-ASSIGNED PA'];
     private readonly ipv6StatusesWithUsage = ['ALLOCATED-BY-RIR', 'ALLOCATED-BY-LIR'];
 
     // check if usage have sense to be displayed
