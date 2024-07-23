@@ -770,7 +770,7 @@ export class WhoisMetaService {
         },
         'assignment-size': {
             description: 'Specifies the size of blocks assigned to end users from this aggregated' + ' <strong>inet(6)num</strong>' + ' assignment.',
-            short: 'Prefix size as a numeric value, e.g. 48',
+            short: 'Specifies the size of blocks assigned to end users from this aggregated inet(6)num assignment.',
             syntax: 'Specifies a numeric value.',
         },
         'as-block': {
