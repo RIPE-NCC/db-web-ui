@@ -400,6 +400,27 @@ describe('QueryParameters', () => {
         expect(qp.types).toEqual({ MNTNER: true, ORGANISATION: true });
     });
 
+    it('should not handle type specified with Tflag when is not used as a flag', () => {
+        qp.queryText = 'MH-AUTH-TM';
+        queryFlagsService.FLAGS = [
+            {
+                description: 'Select the types of objects to lookup in the query.',
+                longFlag: '--select-types',
+                shortFlag: '-T',
+            },
+        ];
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+        expect(qp.queryText).toEqual('MH-AUTH-TM');
+        expect(qp.types).toEqual({});
+
+        qp.queryText = 'MH-AUTH-TM';
+
+        queryParametersService.validate(qp);
+    });
+
     it('should report error for quering with template flag not existing object', () => {
         qp.queryText = ' -B  --no-referenced -if mnt-by --inverse person -t --reverse-domain --no-filtering --select-types aut-num';
 

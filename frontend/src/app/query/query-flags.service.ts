@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ObjectTypesEnum } from './object-types.enum';
 
 export interface IQueryFlag {
     longFlag: string;
@@ -31,9 +32,30 @@ export class QueryFlagsService {
         }
     }
 
-    // exception -Tmntner, case without space
+    // exception -Tmntner or -rTmntner, case without space
     addSpaceBehindFlagT(inputTerm: string) {
-        return inputTerm.replace('-T ', '-T').replace('-T', '-T ');
+        const regex = /(-\w*T)(\S+)/g; // Regex to capture any flag containing T followed by the whole word
+        let match: RegExpExecArray | null;
+
+        while ((match = regex.exec(inputTerm)) !== null) {
+            const TIndex = match.index; // -T index
+            const flag = match[1];
+            const terms = match[2].split(','); // should cover mntner,person use case
+
+            //Guarantee that the -T is used as a flag
+            if (terms.some(QueryFlagsService.isObjectTypeSearchTerm)) {
+                inputTerm = this.addSpaceAfterFlag(inputTerm, flag, TIndex);
+            }
+        }
+        return inputTerm;
+    }
+
+    private static isObjectTypeSearchTerm(inputTerm: string): boolean {
+        return Object.values(ObjectTypesEnum).includes(inputTerm as ObjectTypesEnum);
+    }
+
+    private addSpaceAfterFlag(input: string, flag: string, TIndex: number): string {
+        return input.slice(0, TIndex + flag.length) + ' ' + input.slice(TIndex + flag.length);
     }
 
     private helpWhois(): Observable<IQueryFlag[]> {
