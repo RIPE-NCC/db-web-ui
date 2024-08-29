@@ -24,6 +24,7 @@ describe('The organisation editor', () => {
             .expectDisabledField('org-name', false)
             .expectDisabledField('org-type', true)
             .expectDisabledField('address', false)
+            .expectDisabledField('country', false)
             .expectDisabledField('e-mail', false)
             .expectDisabledField('abuse-c', false)
             .expectDisabledField('mnt-ref', false)

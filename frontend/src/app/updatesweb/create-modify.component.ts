@@ -743,7 +743,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     private validateForm() {
-        return this.whoisResourcesService.validate(this.attributes) && this.organisationHelperService.validateAbuseC(this.objectType, this.attributes);
+        return (
+            this.whoisResourcesService.validate(this.attributes) &&
+            this.organisationHelperService.validateOrganisationAttributes(this.objectType, this.attributes)
+        );
     }
 
     private stripNulls() {
