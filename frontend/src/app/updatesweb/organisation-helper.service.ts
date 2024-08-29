@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import trim from 'lodash/trim';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { RestService } from './rest.service';
@@ -8,34 +9,42 @@ import { RestService } from './rest.service';
 export class OrganisationHelperService {
     constructor(private whoisResourcesService: WhoisResourcesService, private restService: RestService) {}
 
-    public validateAbuseC(objectType: string, attributes: IAttributeModel[]): boolean {
+    public validateOrganisationAttributes(objectType: string, attributes: IAttributeModel[]): boolean {
         if (objectType === 'organisation') {
-            if (this.containsAbuseC(attributes)) {
-                return true;
-            } else {
-                const abuseC = _.find(attributes, (attr: IAttributeModel) => {
-                    return attr.name === 'abuse-c';
-                });
-
-                if (abuseC) {
-                    abuseC.$$error = 'Please provide an Abuse-c or remove the attribute if you would like to do it later';
-                    return false;
-                } else {
-                    return true;
-                }
-            }
+            const countryValidated = this.validateCountry(attributes);
+            const abuseCValidated = this.validateAbuseC(attributes);
+            return countryValidated && abuseCValidated;
         } else {
             return true;
         }
     }
 
+    public validateCountry(attributes: IAttributeModel[]): boolean {
+        const country = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'country');
+
+        if (country && isEmpty(trim(country.value))) {
+            country.$$error = 'Please provide a valid country code or remove the attribute if you would like to do it later';
+            return false;
+        }
+        return true;
+    }
+
+    public validateAbuseC(attributes: IAttributeModel[]): boolean {
+        if (!this.containsAbuseC(attributes)) {
+            const abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'abuse-c');
+            if (abuseC) {
+                abuseC.$$error = 'Please provide an Abuse-c or remove the attribute if you would like to do it later';
+                return false;
+            }
+        }
+        return true;
+    }
+
     public containsAbuseC(attributes: IAttributeModel[]): boolean {
-        const abuseC = _.find(attributes, (attr: IAttributeModel) => {
-            return attr.name === 'abuse-c';
-        });
+        const abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'abuse-c');
 
         if (abuseC) {
-            return !_.isEmpty(_.trim(abuseC.value));
+            return !isEmpty(trim(abuseC.value));
         } else {
             return false;
         }
@@ -55,13 +64,13 @@ export class OrganisationHelperService {
     public updateAbuseC(source: string, objectType: string, roleForAbuseC: any, organisationAttributes: any, passwords?: any) {
         if (objectType === 'organisation' && roleForAbuseC) {
             roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
-            _.forEach(WhoisResourcesService.getAllAttributesOnName(roleForAbuseC, 'mnt-by'), (mnt) => {
+            WhoisResourcesService.getAllAttributesOnName(roleForAbuseC, 'mnt-by').forEach((mnt) => {
                 roleForAbuseC = this.whoisResourcesService.removeAttribute(roleForAbuseC, mnt);
                 roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC); // I really don't know when to use the wrappers! ;(
             });
 
             roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
-            _.forEach(WhoisResourcesService.getAllAttributesOnName(organisationAttributes, 'mnt-by'), (mnt) => {
+            WhoisResourcesService.getAllAttributesOnName(organisationAttributes, 'mnt-by').forEach((mnt) => {
                 roleForAbuseC = this.whoisResourcesService.addAttributeAfterType(roleForAbuseC, { name: 'mnt-by', value: mnt.value }, { name: 'nic-hdl' });
                 roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
             });

@@ -427,6 +427,7 @@ export class ScreenLogicInterceptorService {
             if (!this.organisationHelperService.containsAbuseC(attributes)) {
                 attributes = this.organisationHelperService.addAbuseC(objectType, attributes);
             }
+            attributes = this.whoisResourcesService.addAttributeAfterType(attributes, { name: 'country', value: undefined }, { name: 'address' });
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'organisation', 'AUTO-1');
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER');
         }

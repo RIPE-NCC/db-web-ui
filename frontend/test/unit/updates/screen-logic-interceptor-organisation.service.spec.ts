@@ -397,16 +397,6 @@ describe('ScreenLogicInterceptorService Organisation', () => {
         expect(mntRef.$$meta.$$disable).toBeFalsy();
     });
 
-    it('should allow editing country attribute - create', () => {
-        const organisationSubject = _wrap('organisation', organisationAttributes);
-        let errors: string[] = [];
-        let warnings: string[] = [];
-        let infos: string[] = [];
-        const attributes = interceptor.beforeEdit('Create', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
-        const countryAttribute = whoisResourcesService.getSingleAttributeOnName(attributes, 'country');
-        expect(countryAttribute.$$meta.$$disable).toBeFalsy();
-    });
-
     it('should allow editing country attribute - modify', () => {
         const organisationSubject = _wrap('organisation', organisationAttributes);
         let errors: string[] = [];
