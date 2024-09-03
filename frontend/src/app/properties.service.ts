@@ -44,7 +44,7 @@ export class PropertiesService {
     public OBJECT_LOOKUP_URL = 'lookup';
     public DATABASE_SYNCUPDATES_URL = 'syncupdates';
     public DATABASE_CREATE_URL = 'webupdates/select';
-    public DOCUMENTATION_URL = '/../docs';
+    public DOCUMENTATION_URL = 'https://docs.db.ripe.net';
     public LEGAL = 'legal';
     public ENV = 'local';
     public RIPE_APP_WEBCOMPONENTS_ENV = 'pre';
