@@ -13,7 +13,4 @@ async:
 
 spring:
 
-docs:
-    path: src/test/resources/docs
-
 

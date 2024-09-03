@@ -13,7 +13,6 @@ import java.net.URI;
 import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -90,34 +89,32 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
     public void search_specific_docs() {
         final ResponseEntity<String> response = get("/docs/RPSL-Object-Types/", String.class);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.toString(), containsString("RPSL Object Types"));
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/RPSL-Object-Types/")));
     }
 
     @Test
     public void search_specific_docs_index() {
         final ResponseEntity<String> response = get("/docs/RPSL-Object-Types/index.html", String.class);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.toString(), containsString("RPSL Object Types"));
-    }
-
-    @Test
-    public void search_docs_without_slash() {
-        final ResponseEntity<String> response = get("/docs", String.class);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
-        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrl() + "/docs/")));
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/RPSL-Object-Types/index.html")));
     }
 
     @Test
     public void search_docs_correct_path() {
         final ResponseEntity<String> response = get("/docs/", String.class);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getHeaders().get("Cache-Control"), is(not(nullValue())));
-        assertThat(Objects.requireNonNull(response.getHeaders().get("Cache-Control")), is(not(empty())));
-        assertThat(response.toString(), containsString("Introduction to the RIPE Database"));
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/")));
+    }
+
+    @Test
+    public void search_docs_without_slash() {
+        final ResponseEntity<String> response = get("/docs", String.class);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
+        assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/")));
     }
 
 
