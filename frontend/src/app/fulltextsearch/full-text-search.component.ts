@@ -105,6 +105,15 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         this.performSearch(0);
     }
 
+    public getResultText(result: any): string {
+        let text = '';
+        result.hls.forEach((hls, index) => {
+            if (index > 0) text += ', ';
+            text = `${text}${hls.name}=${hls.value}`;
+        });
+        return text;
+    }
+
     private performSearch(start: number) {
         this.alertsService.clearAlertMessages();
         if (!this.advancedSearch) {
