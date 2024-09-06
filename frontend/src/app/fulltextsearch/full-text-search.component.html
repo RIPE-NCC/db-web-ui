@@ -95,9 +95,7 @@
                         >{{ result.name }}: {{ result.lookupKey }}</a
                     >
                 </div>
-                <span class="small" *ngFor="let hl of result.hls; let i = index">
-                    <span *ngIf="i !== 0">, </span>{{ hl.name }}=<span [innerHTML]="hl.value | sanitizeImgHtml"></span>
-                </span>
+                <div class="small" [innerHTML]="getResultText(result) | sanitizeImgHtml"></div>
             </div>
         </div>
         <paginator
