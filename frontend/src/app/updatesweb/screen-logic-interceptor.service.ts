@@ -424,15 +424,24 @@ export class ScreenLogicInterceptorService {
         infos: string[],
     ) {
         if (method === 'Create') {
-            if (!this.organisationHelperService.containsAbuseC(attributes)) {
+            if (!this.organisationHelperService.containsAttribute(attributes, 'abuse-c')) {
                 attributes = this.organisationHelperService.addAbuseC(objectType, attributes);
             }
-            attributes = this.whoisResourcesService.addAttributeAfterType(attributes, { name: 'country', value: undefined }, { name: 'address' });
+            if (!this.organisationHelperService.containsAttribute(attributes, 'country')) {
+                attributes = this.whoisResourcesService.addAttributeAfterType(
+                    attributes,
+                    {
+                        name: 'country',
+                        value: undefined,
+                    },
+                    { name: 'address' },
+                );
+            }
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'organisation', 'AUTO-1');
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER');
         }
 
-        if (method === 'Modify' && !this.organisationHelperService.containsAbuseC(attributes)) {
+        if (method === 'Modify' && !this.organisationHelperService.containsAttribute(attributes, 'abuse-c')) {
             attributes = this.organisationHelperService.addAbuseC(objectType, attributes);
             let abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'abuse-c');
             // abuseC.$$meta.$$missing = true;

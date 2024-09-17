@@ -35,7 +35,7 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
                 PropertiesService,
                 {
                     provide: 'OrganisationHelperService',
-                    useValue: { containsAbuseC: (attributes: any) => attributes, addAbuseC: (attributes: any) => attributes },
+                    useValue: { containsAttribute: (attributes: any, attribute: string) => attributes, addAbuseC: (attributes: any) => attributes },
                 },
                 { provide: MntnerService, useValue: MockMntnerService },
                 { provide: Router, useValue: { navigate: () => {}, events: of() } },

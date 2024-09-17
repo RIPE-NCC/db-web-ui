@@ -39,7 +39,7 @@ describe('OrganisationHelperService', () => {
                 value: 'a@b.c',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
     });
 
     it('should inform if abuse-c is available', () => {
@@ -57,7 +57,7 @@ describe('OrganisationHelperService', () => {
                 value: 'some abuse-c',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeTruthy();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeTruthy();
     });
 
     it('should inform if abuse-c is available but with empty value', () => {
@@ -74,7 +74,7 @@ describe('OrganisationHelperService', () => {
                 name: 'abuse-c',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
     });
 
     it('should inform if abuse-c is available but with empty string', () => {
@@ -92,7 +92,7 @@ describe('OrganisationHelperService', () => {
                 value: ' ',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
     });
 
     it('should add abuse-c is object type is organisation', () => {
