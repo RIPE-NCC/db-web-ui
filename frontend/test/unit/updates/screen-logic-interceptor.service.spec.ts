@@ -33,7 +33,7 @@ describe('ScreenLogicInterceptorService', () => {
                 { provide: '$log', useValue: { info: () => {}, error: () => {} } },
                 {
                     provide: 'OrganisationHelperService',
-                    useValue: { containsAbuseC: (attributes: any) => attributes, addAbuseC: (attributes: any) => attributes },
+                    useValue: { containsAttribute: (attributes: any, attribute: string) => attributes, addAbuseC: (attributes: any) => attributes },
                 },
                 { provide: CredentialsService, useValue: credentialServiceMock },
                 MessageStoreService,

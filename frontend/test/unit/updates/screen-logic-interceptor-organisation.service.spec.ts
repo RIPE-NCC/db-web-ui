@@ -52,7 +52,7 @@ describe('ScreenLogicInterceptorService Organisation', () => {
                 {
                     provide: 'OrganisationHelperService',
                     useValue: {
-                        containsAbuseC: (attributes: any) => attributes,
+                        containsAttribute: (attributes: any, attribute: string) => attributes,
                         addAbuseC: (attributes: any) => attributes,
                     },
                 },

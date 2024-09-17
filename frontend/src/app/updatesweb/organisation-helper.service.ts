@@ -30,7 +30,7 @@ export class OrganisationHelperService {
     }
 
     public validateAbuseC(attributes: IAttributeModel[]): boolean {
-        if (!this.containsAbuseC(attributes)) {
+        if (!this.containsAttribute(attributes, 'abuse-c')) {
             const abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'abuse-c');
             if (abuseC) {
                 abuseC.$$error = 'Please provide an Abuse-c or remove the attribute if you would like to do it later';
@@ -40,14 +40,9 @@ export class OrganisationHelperService {
         return true;
     }
 
-    public containsAbuseC(attributes: IAttributeModel[]): boolean {
-        const abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'abuse-c');
-
-        if (abuseC) {
-            return !isEmpty(trim(abuseC.value));
-        } else {
-            return false;
-        }
+    public containsAttribute(attributes: IAttributeModel[], attributeName: string): boolean {
+        const attribute = this.whoisResourcesService.getSingleAttributeOnName(attributes, attributeName);
+        return attribute ? !isEmpty(trim(attribute.value)) : false;
     }
 
     public addAbuseC(objectType: string, attributes: any): IAttributeModel[] {
