@@ -21,4 +21,18 @@ describe('Modifying an aut-num', () => {
                 .expectItemInList('sponsoring-org', false);
         });
     });
+
+    it('should show non Latin1 character error', () => {
+        webupdatesPage
+            .typeOnField('as-name', 'UNSPECIFIEDč')
+            .typeOnField('remarks', 'remarksŠ')
+            .typeOnField('notify', 'notifyč')
+            .typeOnField('tech-c', 'č')
+            .typeOnField('remarks', 'remarksŠ')
+            .expectDisabledSubmitModify(true)
+            .expectErrorOnField('as-name', 'You can only enter latin1 characters')
+            .expectErrorOnField('remarks', 'You can only enter latin1 characters')
+            .expectErrorOnField('notify', 'You can only enter latin1 characters')
+            .expectErrorOnField('tech-c', 'You can only enter latin1 characters');
+    });
 });

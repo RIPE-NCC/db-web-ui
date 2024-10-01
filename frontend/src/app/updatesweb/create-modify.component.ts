@@ -325,6 +325,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 },
             });
         } else {
+            this.attributes = this.interceptAfterEdit(this.operation, this.attributes);
             this.fetchParentResourceCaseCreate(attribute);
         }
     }

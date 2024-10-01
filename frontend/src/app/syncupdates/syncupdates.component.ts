@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { PreferenceService } from '../updatesweb/preference.service';
+import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { SyncupdatesService } from './syncupdates.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class SyncupdatesComponent {
     public errorMessages: string;
 
     public isUpdating: boolean = false;
+    public haveNonLatin1: boolean;
 
     constructor(private router: Router, private preferenceService: PreferenceService, private syncupdatesService: SyncupdatesService) {}
 
@@ -31,5 +33,10 @@ export class SyncupdatesComponent {
             },
             complete: () => (this.isUpdating = false),
         });
+    }
+
+    hasNonLatin1(): boolean {
+        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1(this.rpslObject);
+        return this.haveNonLatin1;
     }
 }

@@ -175,6 +175,11 @@ export class WebupdatesPage {
         return this;
     }
 
+    expectDisabledSubmitModify(disabled: boolean) {
+        cy.get('#btnSubmitModify').should(disabled ? 'be.disabled' : 'not.be.disabled');
+        return this;
+    }
+
     getModalAddAttribute() {
         return new ModalAddAttribute();
     }

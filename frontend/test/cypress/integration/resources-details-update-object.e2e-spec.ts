@@ -21,6 +21,22 @@ describe('Resources, update object', () => {
         resourcesDetailPage.expectSuccessMessage('Your object has been successfully updated.');
     });
 
+    it('should show non Latin1 character error', () => {
+        resourcesDetailPage.clickOnUpdate().typePassword('TST01-MNT').disableAssociateCheckbox().submitModal();
+        const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
+        whoisObjectEditor
+            .typeOnField('netname', 'UNSPECIFIEDč')
+            .typeOnField('org', 'remarksŠ')
+            .typeOnField('tech-c', 'č')
+            .typeOnField('remarks', 'remarksŠ')
+            .typeOnField('org', 'remarksŠ')
+            .expectDisabledSubmit(true)
+            .expectErrorOnField('netname', 'You can only enter latin1 characters')
+            .expectErrorOnField('org', 'You can only enter latin1 characters')
+            .expectErrorOnField('tech-c', 'You can only enter latin1 characters')
+            .expectErrorOnField('remarks', 'You can only enter latin1 characters');
+    });
+
     describe('not comaintained by ripe', () => {
         beforeEach(() => {
             cy.setCookie('activeMembershipId', '3629', { path: '/' });

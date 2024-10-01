@@ -349,7 +349,8 @@ export class ScreenLogicInterceptorService {
     }
 
     public afterEdit(method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) {
-        const attrs = this.globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
+        let attrs = this.globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
+        attrs = this.setErrorForNonLatin1(attrs);
         const interceptorFunc = this._getInterceptorFunc(objectType, 'afterEdit');
         if (_.isUndefined(interceptorFunc)) {
             return attrs;
@@ -583,6 +584,22 @@ export class ScreenLogicInterceptorService {
         if (assSizeAttr) {
             assSizeAttr.$$meta.$$disable = true;
         }
+    }
+
+    public static hasNonLatin1(attributeValue: string): boolean {
+        const regExp = /[^\u0000-\u00FF]+/g;
+        return regExp.test(attributeValue);
+    }
+
+    public static setErrorForNonLatin1(attrValue: string) {
+        return ScreenLogicInterceptorService.hasNonLatin1(attrValue) ? 'You can only enter latin1 characters' : undefined;
+    }
+
+    private setErrorForNonLatin1(attributes: IAttributeModel[]) {
+        return attributes.map((attribute) => {
+            attribute.$$error = ScreenLogicInterceptorService.setErrorForNonLatin1(attribute.value);
+            return attribute;
+        });
     }
 
     private _disableOrgWhenStatusIsAssignedPI(attributes: any) {

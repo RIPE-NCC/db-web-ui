@@ -14,6 +14,11 @@ export class SyncupdatesPage {
         return this;
     }
 
+    expectDisabledSubmitButton(disabled: boolean) {
+        cy.get('button[name="btnSyncupdate"]').should(disabled ? 'be.disabled' : 'not.be.disabled');
+        return this;
+    }
+
     expectPreviewSyncupdatesShown(shown: boolean) {
         cy.get('#updateResultPreview').should(shown ? 'exist' : 'not.exist');
         return this;
@@ -31,6 +36,11 @@ export class SyncupdatesPage {
 
     expectSyncupdatesInstructionsText(text: string) {
         cy.get('#instructionsSyncupdate').should('contain.text', text);
+        return this;
+    }
+
+    expectErrorOnTextArea(text: string) {
+        cy.get(`.text-error`).should('contain.text', text);
         return this;
     }
 }

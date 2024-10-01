@@ -20,7 +20,7 @@
         "REQUEST_TRANSFER_URL": "https://my.prepdev.ripe.net/#/transfers",
         "RPKI_DASHBOARD_URL": "https://my.prepdev.ripe.net/#/rpki",
         "REST_SEARCH_URL": "https://rest-prepdev.db.ripe.net/",
-        "QUERY_PAGE_LINK_TO_OTHER_DB": "https://apps-test.db.ripe.net/search/query.html",
+        "QUERY_PAGE_LINK_TO_OTHER_DB": "https://apps-test.db.ripe.net/db-web-ui/query",
         "DB_WEB_UI_BUILD_TIME": "2021-04-19T06:27:41.113Z",
         "LIVE_CHAT_KEY": "live-chat-key",
         "RIPE_NCC_MNTNERS": [

@@ -9,6 +9,7 @@ import { ErrorReporterService } from '../updatesweb/error-reporter.service';
 import { MessageStoreService } from '../updatesweb/message-store.service';
 import { PreferenceService } from '../updatesweb/preference.service';
 import { RestService } from '../updatesweb/rest.service';
+import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { RpslService } from './rpsl.service';
 import { TextCommonsService } from './text-commons.service';
 import { ITextObject } from './text-create.component';
@@ -29,6 +30,7 @@ export class TextModifyComponent implements OnInit {
     public override: string;
     public passwords: string[] = [];
     public deletable: boolean;
+    public haveNonLatin1: boolean;
 
     constructor(
         private whoisResourcesService: WhoisResourcesService,
@@ -165,6 +167,11 @@ export class TextModifyComponent implements OnInit {
 
     public deleteObject() {
         this.textCommonsService.navigateToDelete(this.object.source, this.object.type, this.object.name, 'textupdates/modify');
+    }
+
+    hasNonLatin1(): boolean {
+        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1(this.object.rpsl);
+        return this.haveNonLatin1;
     }
 
     private fetchAndPopulateObject() {
