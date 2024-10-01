@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/autocomplete?extended=true&field=mntner&query=TEST%C4%8D16-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
+}

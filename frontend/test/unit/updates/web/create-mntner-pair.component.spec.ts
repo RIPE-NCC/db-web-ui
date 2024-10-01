@@ -142,6 +142,7 @@ describe('CreateMntnerPairComponent', () => {
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'upd-to').value).toEqual(SSO_EMAIL);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'mnt-by').value).toEqual(MNTNER_NAME);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'source').value).toEqual(SOURCE);
+            expect(component.isFormValid()).toBe(true);
 
             httpMock
                 .expectOne({ method: 'POST', url: 'api/whois-internal/api/mntner-pair/RIPE/person' })

@@ -13,6 +13,7 @@ import { ErrorReporterService } from '../error-reporter.service';
 import { LinkService } from '../link.service';
 import { MessageStoreService } from '../message-store.service';
 import { RestService } from '../rest.service';
+import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.service';
 
 @Component({
     selector: 'create-mntner-pair',
@@ -182,13 +183,12 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     }
 
     public fieldVisited(attr: IAttributeModel) {
-        console.debug('fieldVisited:' + JSON.stringify(attr));
+        attr.$$error = ScreenLogicInterceptorService.setErrorForNonLatin1(attr.value);
         if (attr.name === 'person') {
-            attr.$$error = !attr.value || this.personRe.exec(attr.value) ? '' : 'Input contains unsupported characters.';
+            attr.$$error = !attr.value || this.personRe.exec(attr.value) ? undefined : 'Input contains unsupported characters.';
             attr.$$invalid = !!attr.$$error;
         }
         if (attr.$$meta.$$primaryKey === true) {
-            attr.$$error = '';
             this.restService.autocomplete(attr.name, attr.value, true, []).subscribe((data: any) => {
                 const found = _.find(data, (item: any) => {
                     if (item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase()) {

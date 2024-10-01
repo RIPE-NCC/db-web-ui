@@ -16,7 +16,14 @@
     <submitting-agreement></submitting-agreement>
     <button *ngIf="deletable" mat-flat-button color="warn" class="float-start" (click)="btnDeleteClicked()">DELETE THIS OBJECT</button>
     <article class="float-end">
-        <button mat-flat-button color="primary" type="submit" class="float-end margin-left" [disabled]="disableSubmit" (click)="btnSubmitClicked()">
+        <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="float-end margin-left"
+            [disabled]="disableSubmit || hasErrorAttribute()"
+            (click)="btnSubmitClicked()"
+        >
             SUBMIT
         </button>
         <button mat-stroked-button color="primary" class="float-end" (click)="btnCancelClicked()">CANCEL</button>

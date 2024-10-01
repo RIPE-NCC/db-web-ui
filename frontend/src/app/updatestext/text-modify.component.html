@@ -9,6 +9,7 @@
         <form id="textModifyForm">
             <div class="form-group">
                 <label for="modifyRpsl">RPSL to modify a single object</label>
+                <span *ngIf="hasNonLatin1()" class="text-error"> You can only enter latin1 characters </span>
                 <textarea id="modifyRpsl" name="modifyRpsl" class="form-control" rows="20" [(ngModel)]="object.rpsl" style="font-family: monospace"></textarea>
 
                 <section class="supporting-text">
@@ -19,7 +20,9 @@
                 </section>
                 <submitting-agreement></submitting-agreement>
 
-                <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()">SUBMIT</button>
+                <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()" [disabled]="haveNonLatin1">
+                    SUBMIT
+                </button>
                 <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
 
                 <button *ngIf="deletable" mat-flat-button color="warn" class="float-start" (click)="deleteObject()">DELETE THIS OBJECT</button>
