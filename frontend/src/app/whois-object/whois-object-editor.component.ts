@@ -100,7 +100,7 @@ export class WhoisObjectEditorComponent implements OnInit {
     }
 
     public hasErrorAttribute(): boolean {
-        return this.attributes.some((attribute) => attribute.$$error !== undefined);
+        return this.attributes.some((attribute) => attribute.$$error !== undefined && attribute.$$error !== '');
     }
 
     private removeEmptyAttributes() {

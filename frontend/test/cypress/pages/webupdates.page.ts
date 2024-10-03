@@ -122,6 +122,11 @@ export class WebupdatesPage {
         return new ModalCreateDomain();
     }
 
+    expectDisabledSubmitDomain(disabled: boolean) {
+        cy.get('[data-test-id="submit"]').should(disabled ? 'be.disabled' : 'not.be.disabled');
+        return this;
+    }
+
     submitModification() {
         cy.get('#btnSubmitModify').click();
         return new WebupdatesDisplayPage();
