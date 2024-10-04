@@ -136,12 +136,20 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="border padding margin-bottom">
-                    <p style="font-weight: 600">Querying the RIPE Database</p>
+                    <p style="font-weight: 600">{{ headingDatabaseQueryPage }}</p>
                     You can query the RIPE Database via the web interface, the RESTful API or a command line tool. Learn more about each option by clicking the
                     link below.
                     <p>&nbsp;</p>
-                    <a href="https://docs.db.ripe.net/How-to-Query-the-RIPE-Database/" target="_blank" class="link-color"
-                        >Read documentation <em class="fal fa-external-link"></em>
+                    <a *ngIf="!properties.isTestEnv()" href="https://docs.db.ripe.net/How-to-Query-the-RIPE-Database/" target="_blank" class="link-color">
+                        Read documentation <em class="fal fa-external-link"></em>
+                    </a>
+                    <a
+                        *ngIf="properties.isTestEnv()"
+                        href="https://docs.db.ripe.net/Appendices/Appendix-J--Ripe-Test-Database/"
+                        target="_blank"
+                        class="link-color"
+                    >
+                        Read documentation <em class="fal fa-external-link"></em>
                     </a>
                 </div>
             </div>
