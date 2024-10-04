@@ -412,13 +412,13 @@ export class QueryComponent implements OnDestroy {
 
     private setPageTitle() {
         if (this.properties.isProdEnv()) {
-            this.headingDatabaseQueryPage = 'Querying the RIPE Database';
+            this.headDatabaseQueryPage = 'Querying the RIPE Database';
             this.titleDatabaseQueryPage = 'RIPE Database Query';
         } else if (this.properties.isTrainingEnv()) {
-            this.headingDatabaseQueryPage = 'Querying the TEST Database';
+            this.headDatabaseQueryPage = 'Querying the TEST Database';
             this.titleDatabaseQueryPage = 'Training Database Query';
         } else {
-            this.headingDatabaseQueryPage = `Querying the ${this.properties.ENV.toUpperCase()} Database`;
+            this.headDatabaseQueryPage = `Querying the ${this.properties.ENV.toUpperCase()} Database`;
             this.titleDatabaseQueryPage = `${this.properties.ENV.toUpperCase()} Database Query`;
         }
     }
