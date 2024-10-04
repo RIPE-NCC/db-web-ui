@@ -44,7 +44,7 @@ export class QueryComponent implements OnDestroy {
     public numberSelectedAdvanceFilterItems = 0;
     public searched = false;
     public titleDatabaseQueryPage: string;
-    public headingDatabaseQueryPage: string;
+    public headDatabaseQueryPage: string;
 
     public results: IWhoisObjectModel[];
     public showNoResultsMsg = false;
