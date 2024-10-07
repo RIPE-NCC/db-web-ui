@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { PropertiesService } from '../../properties.service';
-import { AssociatedObjectsService, AssociatedObjectType, IAssociatedObjectApiResult } from './associated-objects.service';
+import { AssociatedObjectType, AssociatedObjectsService, IAssociatedObjectApiResult } from './associated-objects.service';
 
 @Component({
     selector: 'associated-objects',

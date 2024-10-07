@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
 import { IMoreSpecificsApiResult } from './morespecifics/more-specifics.service';
-import { IIpv4Analysis, IIPv4ResourcesResponse, IIPv6ResourcesResponse, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
+import { IIPv4ResourcesResponse, IIPv6ResourcesResponse, IIpv4Analysis, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
 
 @Injectable()
 export class ResourcesDataService {

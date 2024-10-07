@@ -35,8 +35,8 @@
 @import 'src/styles/scss/hierarchy-selector.scss';
 @import 'src/styles/scss/feedback-support-dialog.scss';
 @import 'src/styles/scss/syncupdates.scss';
-@import '~@ng-select/ng-select/themes/default.theme.css';
-@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '@ng-select/ng-select/themes/default.theme.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 //this is needed until we migrate to bootstrap4
 .popover {

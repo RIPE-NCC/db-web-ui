@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
 import { ReleaseNotificationService } from '../../../src/app/shared/release-notification.service';

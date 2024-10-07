@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { EMPTY } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';

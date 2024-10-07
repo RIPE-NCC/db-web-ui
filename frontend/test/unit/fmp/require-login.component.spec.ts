@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
 import { RequireLoginComponent } from '../../../src/app/fmp/require-login.component';
 import { PropertiesService } from '../../../src/app/properties.service';
 

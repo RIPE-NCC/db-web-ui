@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { concat, of, Subject } from 'rxjs';
+import { Subject, concat, of } from 'rxjs';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
