@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';

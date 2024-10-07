@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../../src/app/properties.service';

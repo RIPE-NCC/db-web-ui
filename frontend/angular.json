@@ -120,23 +120,23 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "frontend:build",
                         "proxyConfig": "proxy.conf.json",
-                        "disableHostCheck": true
+                        "disableHostCheck": true,
+                        "buildTarget": "frontend:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "frontend:build:production"
+                            "buildTarget": "frontend:build:production"
                         },
                         "local": {
-                            "browserTarget": "frontend:build:local"
+                            "buildTarget": "frontend:build:local"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "frontend:build"
+                        "buildTarget": "frontend:build"
                     }
                 },
                 "test": {
