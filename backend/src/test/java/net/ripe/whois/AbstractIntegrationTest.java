@@ -96,7 +96,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("request.resources.url", "https://my.prepdev.ripe.net/#/request");
         System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
         System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
-        System.setProperty("rpki.dashboard.url", "https://my.prepdev.ripe.net/#/rpki");
+        System.setProperty("rpki.dashboard.url", "https://dashboard.rpki.prepdev.ripe.net/");
         System.setProperty("spring.profiles.active", "test");
         System.setProperty("git.commit.id.abbrev", "0");
         System.setProperty("shutdown.pause.sec", "0");
