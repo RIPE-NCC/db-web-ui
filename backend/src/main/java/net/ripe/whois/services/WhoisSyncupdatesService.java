@@ -1,5 +1,7 @@
 package net.ripe.whois.services;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +40,8 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         this.syncupdatesApiUrl = apiUrl;
     }
 
-    public ResponseEntity<String> proxy(final String rpslObject, final HttpHeaders headers) {
+    public ResponseEntity<String> proxy(final String rpslObject, final HttpServletRequest request,
+                                        final HttpHeaders headers) {
         final HttpHeaders proxyHeaders = new HttpHeaders();
 
         final List<String> cookie = headers.get(HttpHeaders.COOKIE);
@@ -55,7 +59,7 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         proxyHeaders.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
         proxyHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
 
-        final URI uri = new UriTemplate(syncupdatesApiUrl).expand(newHashMap());
+        final URI uri = composeSyncupdatesUrl(request);
 
         LOGGER.info("Performing syncupdates {}", uri.toString());
 
@@ -63,5 +67,17 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
                 HttpMethod.POST,
                 new HttpEntity<>("DATA=" + rpslObject, proxyHeaders),
                 String.class), LOGGER);
+    }
+
+    private URI composeSyncupdatesUrl(final HttpServletRequest request) {
+        try {
+            final URIBuilder uriBuilder = new URIBuilder(new UriTemplate(syncupdatesApiUrl).expand(newHashMap()));
+            uriBuilder.addParameter("clientIp", request.getRemoteAddr());
+            return uriBuilder.build();
+        } catch (URISyntaxException ex){
+            LOGGER.error("Unable to compose client IP");
+            throw new IllegalStateException(ex);
+        }
+
     }
 }
