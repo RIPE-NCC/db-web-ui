@@ -30,6 +30,7 @@ export interface IProperties {
     MNTNER_ALLOWED_TO_CREATE_AUTNUM: string;
     SESSION_TTL: number;
     RELEASE_NOTIFICATION_POLLING: number;
+    SHOW_API_KEY_MENU: boolean;
 }
 
 @Injectable()
@@ -44,6 +45,7 @@ export class PropertiesService {
     public OBJECT_LOOKUP_URL = 'lookup';
     public DATABASE_SYNCUPDATES_URL = 'syncupdates';
     public DATABASE_CREATE_URL = 'webupdates/select';
+    public DATABASE_API_KEYS = 'api-keys';
     public DOCUMENTATION_URL = 'https://docs.db.ripe.net';
     public LEGAL = 'legal';
     public ENV = 'local';
@@ -74,6 +76,7 @@ export class PropertiesService {
     public MNTNER_ALLOWED_TO_CREATE_AUTNUM = {};
     public SESSION_TTL = 30000;
     public RELEASE_NOTIFICATION_POLLING = 30000;
+    public SHOW_API_KEY_MENU = false;
 
     constructor(private httpClient: HttpClient) {}
 
@@ -110,6 +113,7 @@ export class PropertiesService {
                     this.MNTNER_ALLOWED_TO_CREATE_AUTNUM = response.MNTNER_ALLOWED_TO_CREATE_AUTNUM || {};
                     this.SESSION_TTL = response.SESSION_TTL;
                     this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
+                    this.SHOW_API_KEY_MENU = response.SHOW_API_KEY_MENU;
                     // once we deploy the db-operational
 
                     this.injectProperties();

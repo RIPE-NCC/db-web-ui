@@ -73,6 +73,13 @@ export const menuObject = {
             roles: ['unauthorised', 'admin', 'billing', 'certification', 'general', 'generalMeeting', 'guest', 'myResources', 'ticketing'],
         },
         {
+            title: 'API Keys',
+            id: 'api_keys',
+            parent: 'database',
+            url: 'DATABASE_API_KEYS',
+            roles: ['admin', 'billing', 'certification', 'general', 'generalMeeting', 'guest', 'myResources', 'ticketing', 'NON-MEMBER'],
+        },
+        {
             title: 'RPKI',
             subtitle: 'RPKI Dashboard',
             id: 'rpki_dashboard',

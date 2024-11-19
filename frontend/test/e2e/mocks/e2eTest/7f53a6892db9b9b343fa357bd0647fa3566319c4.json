@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/autocomplete?attribute=auth&extended=true&field=mnt-by&query=MHM-MNT",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
+}

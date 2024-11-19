@@ -1,0 +1,36 @@
+h1 {
+    color: #090037;
+    font-size: 2rem;
+}
+th {
+    font-weight: 700;
+}
+
+.text {
+    margin-bottom: 24px;
+}
+.mat-expansion-panel-header {
+    height: 6.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+.mat-expansion-panel-header-title {
+    color: #090037;
+}
+
+.keys-table {
+    background-color: white;
+    padding: 24px;
+
+    h2 {
+        font-weight: bold;
+    }
+
+    .mat-column-delete {
+        text-align: right;
+    }
+}
+
+mat-paginator {
+    padding: 0 24px;
+}
