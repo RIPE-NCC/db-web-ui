@@ -106,6 +106,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("top.ripe.ncc.mntners","RIPE-NCC-HM-MNT, RIPE-NCC-END-MNT, RIPE-NCC-LEGACY-MNT");
         System.setProperty("ripe.ncc.hm.mnt","RIPE-NCC-HM-MNT");
         System.setProperty("rpki-validator.api.url","https://rpki-validator.ripe.net/api/v1/validity/");
+        System.setProperty("show.api.key.menu","false");
     }
 
     @AfterAll

@@ -1,0 +1,23 @@
+<div class="create-new-api-key-form">
+    <mat-form-field>
+        <mat-label>Key name</mat-label>
+        <input matInput [(ngModel)]="apiKeyName" />
+        <mat-hint>Give the key a name that helps you to identify it. For example, the name of your local application or script that will be using it </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Expiration date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="expirationDate" />
+        <mat-hint>MM/DD/YYYY up to a year in the future</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Maintainer</mat-label>
+        <input matInput type="text" autocomplete="off" [(ngModel)]="maintainer" (ngModelChange)="onInputChange()" [matAutocomplete]="auto" />
+        <mat-hint>Optional limit key to this maintainer only</mat-hint>
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of maintainers" [value]="option.key">{{ option.key }}</mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="saveApiKey()">Create a key</button>
+</div>

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ApiKeysComponent } from './apikeys/api-keys.component';
 import { AuthenticationGuard } from './authentication-guard.service';
 import { DisplayDomainObjectsComponent } from './domainobject/display-domain-objects.component';
 import { DomainObjectWizardComponent } from './domainobject/domain-object-wizard.component';
@@ -51,6 +52,7 @@ export const appRoutes: Routes = [
     { path: 'forceDelete/:source/:objectType/:objectName', component: ForceDeleteComponent, canActivate: [AuthenticationGuard] },
     { path: 'lookup', component: LookupSingleObjectComponent },
     { path: 'query', component: QueryComponent },
+    { path: 'api-keys', component: ApiKeysComponent, canActivate: [AuthenticationGuard] },
     { path: 'syncupdates', component: SyncupdatesComponent },
     { path: 'fulltextsearch', component: FullTextSearchComponent },
     { path: 'textupdates/create/:source/:objectType', component: TextCreateComponent, canActivate: [AuthenticationGuard] },

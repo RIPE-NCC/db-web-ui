@@ -91,6 +91,8 @@ export class MenuComponent implements OnInit, OnDestroy {
             this.activeItem = 'query';
         } else if (this.activeUrl.indexOf('/myresources') > -1) {
             this.activeItem = this.activeUrl.indexOf('sponsored') === -1 || this.activeUrl.indexOf('sponsored=false') > -1 ? 'myresources' : 'sponsored';
+        } else if (this.activeUrl.indexOf('/api-keys') > -1) {
+            this.activeItem = 'api_keys';
         } else {
             this.activeItem = this.activeUrl.substring(this.activeUrl.lastIndexOf('/') + 1);
         }

@@ -34,6 +34,13 @@ export const menuTrainingObject = {
             url: 'DATABASE_CREATE_URL',
             roles: ['unauthorised', 'admin', 'billing', 'certification', 'general', 'generalMeeting', 'guest', 'myResources', 'ticketing'],
         },
+        {
+            title: 'API Keys',
+            id: 'api_keys',
+            parent: 'database',
+            url: 'DATABASE_API_KEYS',
+            roles: ['admin', 'billing', 'certification', 'general', 'generalMeeting', 'guest', 'myResources', 'ticketing', 'NON-MEMBER'],
+        },
     ],
     footer: [
         {

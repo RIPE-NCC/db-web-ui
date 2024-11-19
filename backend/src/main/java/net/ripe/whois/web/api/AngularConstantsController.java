@@ -75,6 +75,8 @@ public class AngularConstantsController {
     private int releaseNotificationPolling;
     @Value("${git.commit.id.abbrev:}")
     private String dbWebUiCommitId;
+    @Value("${show.api.key.menu}")
+    private boolean showApiKeyMenu;
 
     private AppConstants appConstants;
 
@@ -128,6 +130,7 @@ public class AngularConstantsController {
         constants.setMntnersAllowedToCreateAutnum(mntnersAllowedToCreateAutnum);
         constants.setSessionTtl(sessionTtl);
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
+        constants.setShowApiKeyMenu(showApiKeyMenu);
         return constants;
     }
 
@@ -184,6 +187,8 @@ public class AngularConstantsController {
         private int sessionTtl;
         @JsonProperty("RELEASE_NOTIFICATION_POLLING")
         private int releaseNotificationPolling;
+        @JsonProperty("SHOW_API_KEY_MENU")
+        private boolean showApiKeyMenu;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -286,6 +291,10 @@ public class AngularConstantsController {
 
         public void setReleaseNotificationPolling(int releaseNotificationPolling) {
             this.releaseNotificationPolling = releaseNotificationPolling;
+        }
+
+        public void setShowApiKeyMenu(boolean showApiKeyMenu) {
+            this.showApiKeyMenu = showApiKeyMenu;
         }
     }
 }

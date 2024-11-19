@@ -1,0 +1,48 @@
+<h2 mat-dialog-title><em class="fal fa-key"></em> Your Database Key</h2>
+<mat-dialog-content>
+    <h3>Use the “Basic” HTTP Authentication Scheme in your Whois REST API request</h3>
+    <mat-card appearance="outlined">
+        <mat-card-content>
+            <div>In case you use an HTTP Authorization header</div>
+            <div class="copy-content">
+                <div>
+                    Authorization: <strong>{{ getBasicAuthorizationHeader(data.accessKey, data.secretKey) }}</strong>
+                </div>
+                <div class="copy-key-content">
+                    <button mat-flat-button color="primary" [cdkCopyToClipboard]="getBasicAuthorizationHeader(data.accessKey, data.secretKey)">
+                        <span class="fal fa-copy"></span> Copy
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+        <mat-card-content>
+            <div>In case you use a username and password</div>
+            <div class="copy-content">
+                <div>
+                    Username: <strong>{{ data.accessKey }}</strong>
+                </div>
+                <div class="copy-key-content">
+                    <button mat-flat-button color="primary" [cdkCopyToClipboard]="data.accessKey"><span class="fal fa-copy"></span> Copy</button>
+                </div>
+            </div>
+            <div class="copy-content">
+                <div>
+                    Password: <strong>{{ data.secretKey }}</strong>
+                </div>
+                <div class="copy-key-content">
+                    <button mat-flat-button color="primary" [cdkCopyToClipboard]="data.secretKey"><span class="fal fa-copy"></span> Copy</button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <div class="alert">
+        <span class="fal fa-exclamation-triangle"></span>Please copy these values and keep them safe. The password will not be shown to you again while the
+        username is part of the API
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-stroked-button color="primary" mat-dialog-close>Done</button>
+</mat-dialog-actions>

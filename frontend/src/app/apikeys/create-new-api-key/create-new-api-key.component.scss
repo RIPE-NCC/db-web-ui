@@ -1,0 +1,11 @@
+.create-new-api-key-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 50%;
+
+    button {
+        width: max-content;
+        align-self: flex-end;
+    }
+}

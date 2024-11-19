@@ -1,0 +1,46 @@
+.mat-mdc-card {
+    margin-bottom: 16px;
+
+    .mat-mdc-card-content {
+        background-color: #f7f7fa;
+
+        .copy-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            strong {
+                word-break: break-all;
+            }
+            button {
+                width: max-content;
+            }
+        }
+
+        .copy-key-content {
+            padding: 4px 8px;
+        }
+    }
+}
+
+.mat-mdc-dialog-title {
+    background-color: #ebeffc;
+}
+
+.mat-mdc-dialog-content {
+    width: 820px;
+}
+
+// this should be its own component with text/icon/color as input properties
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 16px;
+    background-color: #ffdfcc;
+    border-radius: 10px;
+    font-size: 12px;
+    width: max-content;
+    color: #3d3d3d;
+}

@@ -10,6 +10,7 @@ html {
         font-weight: 700;
     }
     h2 {
+        color: #090037;
         font-size: 1.25rem;
         font-weight: 500;
     }
@@ -25,6 +26,10 @@ html {
     &.section-manage-ips-and-asns main {
         background: none !important; //overwrite style from template.css
     }
+
+    --mat-paginator-container-text-size: 14px;
+    --mat-paginator-select-trigger-text-size: 14px;
+    --mdc-dialog-supporting-text-color: $neutral;
 }
 
 a {
@@ -135,6 +140,9 @@ code {
 button {
     &:focus {
         outline: none;
+    }
+    &.mat-mdc-outlined-button.mat-primary {
+        --mdc-outlined-button-outline-color: $neutral;
     }
 }
 

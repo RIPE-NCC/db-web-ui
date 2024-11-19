@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,6 +75,30 @@ public class WhoisInternalProxyController extends ApiController {
         @Nullable @RequestBody(required = false) final String body,
         @RequestHeader final HttpHeaders headers) {
         return proxyRestCalls(request, body, headers);
+    }
+
+    @GetMapping(path = "/public/api-key", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> getApiKeys(
+        final HttpServletRequest request,
+        @Nullable @RequestBody(required = false) final String body,
+        @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
+    @PostMapping(path = "/public/api-key", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> saveApiKey(
+        final HttpServletRequest request,
+        @Nullable @RequestBody(required = false) final String body,
+        @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
+    @DeleteMapping(path = "/public/api-key/{key}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> deleteApiKeys(
+        final HttpServletRequest request,
+        @PathVariable final String key,
+        @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, "", headers);
     }
 
     @GetMapping(path = "/api/resources/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })

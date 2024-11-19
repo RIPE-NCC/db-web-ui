@@ -8,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { CookieService } from 'ngx-cookie-service';
+import { ApiKeysModule } from './apikeys/api-keys.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationGuard } from './authentication-guard.service';
@@ -81,6 +82,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         MatListModule,
         MatLineModule,
         SessionInfoModule,
+        ApiKeysModule,
     ],
     providers: [
         CookieService,

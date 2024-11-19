@@ -1,0 +1,11 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/public/api-key",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "accessKey": "my mocked access key",
+            "details": "MHM-MNT"
+        }
+    ]
+}
