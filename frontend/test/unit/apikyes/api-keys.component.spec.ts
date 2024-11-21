@@ -19,9 +19,9 @@ describe('ApiKeysComponent', () => {
 
     const apiKeysResponse: ApiKey[] = [
         {
-            expirationDate: '2024-01-01',
-            lastUsed: '',
-            name: 'my key name',
+            expiresAt: '2024-01-01',
+            createdAt: '',
+            label: 'my key name',
             accessKey: 'accessKey',
             secretKey: 'secretKey',
         },

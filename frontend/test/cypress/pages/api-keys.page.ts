@@ -9,10 +9,10 @@ export class ApiKeysPage {
         return this;
     }
 
-    createApiKey(name: string, expirationDate: string, maintainer: string) {
+    createApiKey(label: string, expiresAt: string, maintainer: string) {
         this.toggleAccordion();
-        this.getInput('Key name').clear().type(name);
-        this.getInput('Expiration date').clear().type(expirationDate);
+        this.getInput('Key name').clear().type(label);
+        this.getInput('Expiration date').clear().type(expiresAt);
         this.getInput('Maintainer').clear().type(maintainer);
         cy.get('button:contains("Create a key")').click();
         return this;
