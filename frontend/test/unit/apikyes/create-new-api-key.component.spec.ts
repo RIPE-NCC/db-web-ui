@@ -57,21 +57,21 @@ describe('CreateNewApiKeyComponent', () => {
 
     it('should save the new api aki', () => {
         const apiKeyResponse: ApiKey = {
-            expirationDate: '2024-01-01',
-            lastUsed: '',
-            name: 'my key name',
+            expiresAt: '2024-01-01',
+            createdAt: '',
+            label: 'my key name',
             accessKey: 'accessKey',
             secretKey: 'secretKey',
         };
         apiKeysServiceMock.saveApiKey.and.returnValue(of(apiKeyResponse));
 
         component.apiKeyName = 'fake api key name';
-        component.expirationDate = new Date();
+        component.expiresAt = new Date();
         component.maintainer = 'fake maintainer';
         component.saveApiKey();
 
         expect(component.apiKeyName).toBeUndefined();
-        expect(component.expirationDate).toBeUndefined();
+        expect(component.expiresAt).toBeUndefined();
         expect(component.maintainer).toBeUndefined();
         expect(matDialogMock.open).toHaveBeenCalledWith(ApiKeyConfirmationDialogComponent, {
             data: { accessKey: apiKeyResponse.accessKey, secretKey: apiKeyResponse.secretKey },
@@ -89,7 +89,7 @@ describe('CreateNewApiKeyComponent', () => {
         apiKeysServiceMock.saveApiKey.and.returnValue(throwError(() => akiKeyErrorResponse));
 
         component.apiKeyName = 'fake api key name';
-        component.expirationDate = new Date();
+        component.expiresAt = new Date();
         component.maintainer = 'fake maintainer';
         component.saveApiKey();
 

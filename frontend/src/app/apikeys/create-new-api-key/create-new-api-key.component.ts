@@ -20,7 +20,7 @@ export class CreateNewApiKeyComponent implements OnInit {
     created = new EventEmitter();
 
     apiKeyName: string;
-    expirationDate: Date;
+    expiresAt: Date;
     maintainer: string;
     maintainers: IMntByModel[];
 
@@ -45,8 +45,8 @@ export class CreateNewApiKeyComponent implements OnInit {
     }
 
     saveApiKey() {
-        const expirationDate = moment(this.expirationDate);
-        this.apiKeysService.saveApiKey(this.apiKeyName, expirationDate.format('YYYY-MM-DDTHH:mm:ss'), this.maintainer).subscribe({
+        const expiresAtUtc = moment(this.expiresAt).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z';
+        this.apiKeysService.saveApiKey(this.apiKeyName, expiresAtUtc, this.maintainer).subscribe({
             next: (response: ApiKey) => {
                 this.openConfirmDialog(response);
                 this.created.emit();
@@ -65,7 +65,7 @@ export class CreateNewApiKeyComponent implements OnInit {
 
     private cleanValuesInInputFields() {
         this.apiKeyName = undefined;
-        this.expirationDate = undefined;
+        this.expiresAt = undefined;
         this.maintainer = undefined;
     }
 }

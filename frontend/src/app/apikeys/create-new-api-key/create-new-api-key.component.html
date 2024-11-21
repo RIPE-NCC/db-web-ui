@@ -6,7 +6,7 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>Expiration date</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="expirationDate" />
+        <input matInput [matDatepicker]="picker" [(ngModel)]="expiresAt" />
         <mat-hint>MM/DD/YYYY up to a year in the future</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

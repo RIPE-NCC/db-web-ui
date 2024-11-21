@@ -1,7 +1,7 @@
 export type ApiKey = {
-    name: string;
-    lastUsed: string;
-    expirationDate: string;
+    label: string;
+    createdAt: string;
+    expiresAt: string;
     details?: string;
     application?: string;
     scopes?: string[];

@@ -9,10 +9,10 @@ export class ApiKeysService {
 
     constructor(private http: HttpClient) {}
 
-    saveApiKey(apiKeyName: string, expirationDate: string, mnt: string): Observable<ApiKey> {
+    saveApiKey(apiKeyName: string, expiresAt: string, mnt: string): Observable<ApiKey> {
         const body = {
-            name: apiKeyName,
-            expirationDate,
+            label: apiKeyName,
+            expiresAt,
             details: mnt,
         };
         return this.http.post<ApiKey>(this.API_BASE_URL, body);
