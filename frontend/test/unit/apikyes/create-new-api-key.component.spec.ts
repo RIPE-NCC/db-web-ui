@@ -58,7 +58,7 @@ describe('CreateNewApiKeyComponent', () => {
     it('should save the new api aki', () => {
         const apiKeyResponse: ApiKey = {
             expiresAt: '2024-01-01',
-            createdAt: '',
+            lastUsed: '',
             label: 'my key name',
             accessKey: 'accessKey',
             secretKey: 'secretKey',
