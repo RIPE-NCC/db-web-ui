@@ -13,7 +13,7 @@ import { ApiKey } from './types';
     styleUrl: './api-keys.component.scss',
 })
 export class ApiKeysComponent implements OnInit {
-    displayedColumns: string[] = ['label', 'accessKey', 'createdAt', 'expiresAt', 'details', 'delete'];
+    displayedColumns: string[] = ['label', 'accessKey', 'lastUsed', 'expiresAt', 'details', 'delete'];
     dataSource: MatTableDataSource<ApiKey>;
     selection = new SelectionModel<ApiKey>(true, []);
 
