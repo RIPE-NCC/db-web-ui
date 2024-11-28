@@ -104,7 +104,7 @@ public class JettyConfiguration  {
     }
 
     private void regexRules(final RewriteHandler rewriteHandler) {
-        final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
+        final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1");        // TODO: [ES] dropped ?$Q
         defaultRule.setTerminating(true);
         rewriteHandler.addRule(defaultRule);
     }
