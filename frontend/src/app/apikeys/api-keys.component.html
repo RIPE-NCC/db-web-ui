@@ -1,0 +1,75 @@
+<h1>Database API Keys management</h1>
+<div class="text">
+    <div>
+        API Keys allow you to script updates to the RIPE database without needing to login to RIPE NCC Access. Read documentation to find out how. <br />
+        You can create as many different keys as you’d like. We suggest that you create a separate key for each application that you’d like to provide with
+        access. That way, if you believe the key has been compromised, you can revoke access to that application without affecting other applications that you
+        have provided with access.
+    </div>
+    <div>The keys you create on this page can only be used to make updates in the RIPE database and not with any other RIPE NCC service.</div>
+</div>
+
+<mat-accordion>
+    <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="mat-elevation-z0">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Create a new Database key</mat-panel-title>
+        </mat-expansion-panel-header>
+        <create-new-api-key (created)="createdApiKey()"></create-new-api-key>
+    </mat-expansion-panel>
+</mat-accordion>
+<br />
+<div class="keys-table">
+    <h2>Database Keys</h2>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
+        <!-- Name Column -->
+        <ng-container matColumnDef="label">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.label }}</td>
+        </ng-container>
+
+        <!-- Key Column -->
+        <ng-container matColumnDef="accessKey">
+            <th mat-header-cell *matHeaderCellDef>Key ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.accessKey }}</td>
+        </ng-container>
+
+        <!-- Last used Column -->
+        <ng-container matColumnDef="lastUsed">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Last used</th>
+            <td mat-cell *matCellDef="let element">{{ element.lastUsed }}</td>
+        </ng-container>
+
+        <!-- Expiration date Column -->
+        <ng-container matColumnDef="expiresAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Expiration date</th>
+            <td mat-cell *matCellDef="let element">{{ element.expiresAt }}</td>
+        </ng-container>
+
+        <!-- Details Column -->
+        <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef>Details</th>
+            <td mat-cell *matCellDef="let element">{{ element.details }}</td>
+        </ng-container>
+
+        <!-- Delete Column -->
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button
+                    mat-stroked-button
+                    color="primary"
+                    id="search-maintainer"
+                    attr.data-test-id="{{ element.accessKey }}"
+                    (click)="openRevokeDialog(element.accessKey)"
+                >
+                    <span class="fal fa-trash"></span> Revoke
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+    </table>
+    <mat-paginator [length]="dataSource?.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" showFirstLastButtons="true">
+    </mat-paginator>
+</div>

@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { EMPTY, of } from 'rxjs';
@@ -181,6 +181,7 @@ describe('TextCreateComponent', () => {
                 'TECH-C:        \n' +
                 'abuse-c:       \n' +
                 'STATUS:        \n' +
+                'assignment-size:\n' +
                 'remarks:       \n' +
                 'notify:        \n' +
                 'MNT-BY:        TEST-MNT\n' +
@@ -215,6 +216,7 @@ describe('TextCreateComponent', () => {
                 'TECH-C:        \n' +
                 'abuse-c:       \n' +
                 'STATUS:        \n' +
+                'assignment-size:\n' +
                 'remarks:       \n' +
                 'notify:        \n' +
                 'MNT-BY:        \n' +
@@ -260,6 +262,7 @@ describe('TextCreateComponent', () => {
                 'TECH-C:        \n' +
                 'abuse-c:       \n' +
                 'STATUS:        \n' +
+                'assignment-size:\n' +
                 'remarks:       \n' +
                 'notify:        \n' +
                 'MNT-BY:        \n' +

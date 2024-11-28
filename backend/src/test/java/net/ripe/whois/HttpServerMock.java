@@ -1,23 +1,22 @@
 package net.ripe.whois;
 
-import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jetty.http.HttpHeader;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.NetworkConnector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.core.MediaType;
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.NetworkConnector;
+import org.eclipse.jetty.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Stack;
@@ -34,24 +33,21 @@ public class HttpServerMock {
     Server createAndStartServer(final int port) {
         final WebAppContext context = new WebAppContext();
         context.setContextPath("/");
-        context.setResourceBase("src/main/webapp");
-
-        final HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{context});
+        context.setBaseResourceAsString("src/main/webapp/");
 
         this.mockServlet = new MockServlet();
         mockServlet.deploy(context);
 
         try {
-            return createAndStartServer(port, handlers);
+            return createAndStartServer(port, context);
         } catch (Exception e) {
             throw new RuntimeException("Unable to start server", e);
         }
     }
 
-    private Server createAndStartServer(int port, HandlerList handlers) throws Exception {
+    private Server createAndStartServer(int port, Handler handler) throws Exception {
         final Server server = new Server(port);
-        server.setHandler(handlers);
+        server.setHandler(handler);
         server.setStopAtShutdown(true);
         server.start();
         this.port = ((NetworkConnector)server.getConnectors()[0]).getLocalPort();

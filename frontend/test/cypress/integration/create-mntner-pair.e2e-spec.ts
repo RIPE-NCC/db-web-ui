@@ -26,6 +26,33 @@ describe('The CreateMntnerPairComponent', () => {
             .expectErrorOnField('person', 'Input contains unsupported characters.');
     });
 
+    it('should show non Latin1 character error over all fields - person - maintainer pair', () => {
+        webupdatesPage
+            .clickOnSwitchToPersonRole()
+            .typeOnField('mntner', 'TESTč16-MNT')
+            .typeOnField('person', 'Üna Švoña')
+            .typeOnField('address', 'Utrechtč')
+            .typeOnField('phone', '+3161234567')
+            .expectDisabledSubmitCreate(true)
+            .expectErrorOnField('mntner', 'You can only enter latin1 characters')
+            .expectErrorOnField('person', 'Input contains unsupported characters.')
+            .expectErrorOnField('address', 'You can only enter latin1 characters');
+    });
+
+    it('should show non Latin1 character error over all fields - role and maintainer pair', () => {
+        webupdatesPage
+            .typeOnField('mntner', 'TESTč16-MNT')
+            .typeOnField('role', 'Švonja')
+            .typeOnField('address', 'Utrechtč')
+            .typeOnField('e-mail', 'išvonja@ripe.net')
+            .typeOnField('role', 'Švonja')
+            .expectDisabledSubmitCreate(true)
+            .expectErrorOnField('mntner', 'You can only enter latin1 characters')
+            .expectErrorOnField('role', 'You can only enter latin1 characters')
+            .expectErrorOnField('address', 'You can only enter latin1 characters')
+            .expectErrorOnField('e-mail', 'You can only enter latin1 characters');
+    });
+
     it('should open description under mntner field on click on question mark', () => {
         webupdatesPage
             .clickOnSwitchToPersonRole()

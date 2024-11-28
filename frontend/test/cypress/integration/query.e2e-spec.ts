@@ -742,7 +742,7 @@ describe('Query scenario', () => {
             .expectQueryFlagToContain(1, '--sources')
             .clickOnSearchButton()
             .expectShowShareButton(false)
-            .expectErrorMessageToContain('ERROR:111: invalid option -z supplied.');
+            .expectErrorMessageToContain('ERROR:111: unsupported flag -z.');
     });
 
     it('should recognise -G or --no-grouping flag', () => {

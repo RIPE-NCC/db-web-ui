@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
-import { Observable, of, OperatorFunction } from 'rxjs';
+import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { CredentialsService } from '../shared/credentials.service';

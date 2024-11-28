@@ -1,8 +1,10 @@
 package net.ripe.whois.services;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.whois.SsoTokenFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -10,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -19,11 +22,15 @@ public class WhoisSyncupdatesServiceTest {
 
     private static final String MOCK_SYNCUPDATE_URL = "http://localhost:8090";
 
-    private WhoisSyncupdatesService whoisSyncupdatesService = new WhoisSyncupdatesService(restTemplate, MOCK_SYNCUPDATE_URL);
+    private static final String EXPECTED_MOCK_SYNCUPDATE_URL = "http://localhost:8090?clientIp=127.0.0.1";
+
+    private final WhoisSyncupdatesService whoisSyncupdatesService = new WhoisSyncupdatesService(restTemplate, MOCK_SYNCUPDATE_URL);
 
     private MockRestServiceServer mockServer;
 
     private HttpHeaders httpHeaders;
+
+    private HttpServletRequest request;
 
     final String rpslObject =
             "inetnum:         192.0.2.0 - 192.0.2.255\n" +
@@ -44,6 +51,12 @@ public class WhoisSyncupdatesServiceTest {
     public void setUp() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
         httpHeaders = new HttpHeaders();
+        request = Mockito.mock(HttpServletRequest.class);
+        commonMocks();
+    }
+
+    private void commonMocks(){
+        when(request.getRemoteAddr()).thenReturn("127.0.0.1");
     }
 
     @Test
@@ -57,10 +70,10 @@ public class WhoisSyncupdatesServiceTest {
                 "\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 
-        mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
+        mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy("something", httpHeaders).toString();
+        final String response = whoisSyncupdatesService.proxy("something", request, httpHeaders).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
@@ -71,10 +84,10 @@ public class WhoisSyncupdatesServiceTest {
                 "***Error:   Authorisation for [inetnum] 192.0.2.0 - 192.0.2.255 failed\n" +
                 "            using \"mnt-by:\"\n" +
                 "            not authenticated by: RIPE-NCC-HM-MNT, TST02-MNT";
-        mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
+        mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy(rpslObject, httpHeaders).toString();
+        final String response = whoisSyncupdatesService.proxy(rpslObject, request, httpHeaders).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
@@ -90,10 +103,11 @@ public class WhoisSyncupdatesServiceTest {
                 "\n" +
                 "\n" +
                 "***Warning: Submitted object identical to database object";
-        mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
+        mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy(rpslObject.concat("password:TST02-MNT"), httpHeaders).toString();
+        final String response = whoisSyncupdatesService.proxy(rpslObject.concat("password:TST02-MNT"), request,
+                httpHeaders).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
@@ -132,10 +146,10 @@ public class WhoisSyncupdatesServiceTest {
                 "\n" +
                 "\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-        mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
+        mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy(rpslObjectIsvMnt, httpHeaders).toString();
+        final String response = whoisSyncupdatesService.proxy(rpslObjectIsvMnt, request, httpHeaders).toString();
 
         assertThat(response, containsString(expectedResponse));
     }

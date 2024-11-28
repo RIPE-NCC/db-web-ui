@@ -57,12 +57,17 @@ export class MenuService {
     }
 
     private getMenuByEnvironment(): IMenu {
+        let menu: IMenu;
         if (this.properties.isTestEnv() || this.properties.isRcEnv()) {
-            return menuTestRcEnvObject;
+            menu = menuTestRcEnvObject;
         } else if (this.properties.isTrainingEnv()) {
-            return menuTrainingObject;
+            menu = menuTrainingObject;
         } else {
-            return menuObject;
+            menu = menuObject;
         }
+        if (!this.properties.SHOW_API_KEY_MENU) {
+            return { main: menu.main.filter((menu) => menu.id !== 'api_keys'), footer: menu.footer };
+        }
+        return menu;
     }
 }

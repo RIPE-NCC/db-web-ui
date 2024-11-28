@@ -175,6 +175,7 @@ export class WhoisMetaService {
                 { name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE'] },
                 { name: 'abuse-c', mandatory: false, multiple: false, refs: ['ROLE'] },
                 { name: 'status', mandatory: true, multiple: false, refs: this.refs, isEnum: true },
+                { name: 'assignment-size', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'remarks', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'notify', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER'] },
@@ -768,8 +769,8 @@ export class WhoisMetaService {
             syntax: this._shared.alias.syntax,
         },
         'assignment-size': {
-            description: 'Specifies the size of blocks assigned to end users from this aggregated' + ' <strong>inet6num</strong>' + ' assignment.',
-            short: 'Prefix size as a numeric value, e.g. 48',
+            description: 'Specifies the size of blocks assigned to end users from this aggregated' + ' <strong>inet(6)num</strong>' + ' assignment.',
+            short: 'Specifies the size of blocks assigned to end users from this aggregated inet(6)num assignment.',
             syntax: 'Specifies a numeric value.',
         },
         'as-block': {

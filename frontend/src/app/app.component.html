@@ -1,5 +1,4 @@
-<!--TODO remove div class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
-<div class="usprivacy">
+<div>
     <ripe-header (ripe-header-menu-toggle)="open($event)">
         <svg
             *ngIf="!properties.isTestEnv() && !properties.isTrainingEnv() && !properties.isRcEnv()"
@@ -716,8 +715,7 @@
 <main id="app-grid">
     <swe-menu [open]="isOpenMenu"></swe-menu>
     <div id="main-wrapper">
-        <!--TODO remove class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots-->
-        <section id="app-banners-container" class="usprivacy">
+        <section id="app-banners-container">
             <ngx-loading-bar></ngx-loading-bar>
             <app-banner
                 *ngIf="!isBrowserSupported"

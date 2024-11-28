@@ -96,7 +96,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("request.resources.url", "https://my.prepdev.ripe.net/#/request");
         System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
         System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
-        System.setProperty("rpki.dashboard.url", "https://my.prepdev.ripe.net/#/rpki");
+        System.setProperty("rpki.dashboard.url", "https://dashboard.rpki.prepdev.ripe.net/");
         System.setProperty("spring.profiles.active", "test");
         System.setProperty("git.commit.id.abbrev", "0");
         System.setProperty("shutdown.pause.sec", "0");
@@ -106,6 +106,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("top.ripe.ncc.mntners","RIPE-NCC-HM-MNT, RIPE-NCC-END-MNT, RIPE-NCC-LEGACY-MNT");
         System.setProperty("ripe.ncc.hm.mnt","RIPE-NCC-HM-MNT");
         System.setProperty("rpki-validator.api.url","https://rpki-validator.ripe.net/api/v1/validity/");
+        System.setProperty("show.api.key.menu","false");
     }
 
     @AfterAll

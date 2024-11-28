@@ -1,5 +1,4 @@
-@use 'node_modules/@angular/material' as mat;
-@import 'node_modules/@angular/material/theming';
+@use '@angular/material' as mat;
 @include mat.core();
 
 $mat-darkblue: (
@@ -18,17 +17,17 @@ $mat-darkblue: (
     A400: #0000ef,
     A700: #0000d5,
     contrast: (
-        50: $black-87-opacity,
-        100: $black-87-opacity,
-        200: $black-87-opacity,
-        300: $black-87-opacity,
-        400: $black-87-opacity,
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
         500: white,
         600: white,
         700: white,
-        800: $white-87-opacity,
-        900: $white-87-opacity,
-        A100: $black-87-opacity,
+        800: rgba(white, 0.87),
+        900: rgba(white, 0.87),
+        A100: rgba(black, 0.87),
         A200: white,
         A400: white,
         A700: white,
@@ -51,17 +50,17 @@ $mat-bondiblue: (
     A400: #42e7ff,
     A700: #29e3ff,
     contrast: (
-        50: $black-87-opacity,
-        100: $black-87-opacity,
-        200: $black-87-opacity,
-        300: $black-87-opacity,
-        400: $black-87-opacity,
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
         500: white,
         600: white,
         700: white,
-        800: $white-87-opacity,
-        900: $white-87-opacity,
-        A100: $black-87-opacity,
+        800: rgba(white, 0.87),
+        900: rgba(white, 0.87),
+        A100: rgba(black, 0.87),
         A200: white,
         A400: white,
         A700: white,

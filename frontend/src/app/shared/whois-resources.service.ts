@@ -473,7 +473,9 @@ export class WhoisResourcesService {
     public validateWithoutSettingErrors(attributes: IAttributeModel[]) {
         return !attributes.some((attr: IAttributeModel) => {
             return (
-                attr.$$invalid || (attr.$$meta.$$mandatory === true && !attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0)
+                attr.$$invalid ||
+                attr.$$error ||
+                (attr.$$meta.$$mandatory === true && !attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0)
             );
         });
     }

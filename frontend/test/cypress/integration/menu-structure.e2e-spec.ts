@@ -30,6 +30,17 @@ describe('The left hand menu structure depend on logged in user role', () => {
     const expectRipeDatabaseMenuItemWithAllSubItems = () => {
         menuPage
             .openTopLevelMenu('LOCAL Database')
+            .expectSecondLevelMenuSize('LOCAL Database', 5)
+            .expectSecondLevelTitleToBe('LOCAL Database', 0, 'Query Database')
+            .expectSecondLevelTitleToBe('LOCAL Database', 1, 'Full Text Search')
+            .expectSecondLevelTitleToBe('LOCAL Database', 2, 'Syncupdates')
+            .expectSecondLevelTitleToBe('LOCAL Database', 3, 'Create an Object')
+            .expectSecondLevelTitleToBe('LOCAL Database', 4, 'API Keys');
+    };
+
+    const expectRipeDatabaseMenuItemWithoutApiKeysItem = () => {
+        menuPage
+            .openTopLevelMenu('LOCAL Database')
             .expectSecondLevelMenuSize('LOCAL Database', 4)
             .expectSecondLevelTitleToBe('LOCAL Database', 0, 'Query Database')
             .expectSecondLevelTitleToBe('LOCAL Database', 1, 'Full Text Search')
@@ -86,7 +97,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             /* My Resource structure is empty */
             .expectSecondLevelMenuSize('Resources', 0);
 
-        expectRipeDatabaseMenuItemWithAllSubItems();
+        expectRipeDatabaseMenuItemWithoutApiKeysItem();
     });
 
     it('should show menu structure for no logged in user', () => {
@@ -99,7 +110,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             .expectTopMenuTitleToBe(1, 'LOCAL Database')
             /* My Resource structure is empty */
             .expectSecondLevelMenuSize('Resources', 0);
-        expectRipeDatabaseMenuItemWithAllSubItems();
+        expectRipeDatabaseMenuItemWithoutApiKeysItem();
     });
 
     it('should show menu structure for a guest user', () => {

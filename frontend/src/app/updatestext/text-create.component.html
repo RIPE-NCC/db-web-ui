@@ -7,6 +7,7 @@
     <form id="textCreateForm">
         <div class="form-group">
             <label for="createRpsl">RPSL to create single object</label>
+            <span *ngIf="hasNonLatin1()" class="text-error"> You can only enter latin1 characters </span>
             <textarea id="createRpsl" name="createRpsl" class="form-control" rows="20" [(ngModel)]="object.rpsl" style="font-family: monospace"></textarea>
             <section class="supporting-text">
                 <span
@@ -16,7 +17,14 @@
             </section>
             <submitting-agreement></submitting-agreement>
 
-            <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()" [disabled]="restCallInProgress">
+            <button
+                mat-flat-button
+                color="primary"
+                class="float-end margin-left"
+                type="submit"
+                (click)="submit()"
+                [disabled]="restCallInProgress || haveNonLatin1"
+            >
                 SUBMIT
             </button>
             <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>

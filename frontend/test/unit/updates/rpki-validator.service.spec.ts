@@ -27,7 +27,7 @@ describe('RpkiValidatorService', () => {
         rpkiValidatorService.hasRoa(origin, prefix).subscribe((resp) => {
             expect(resp).toBe(roaValid);
         });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/rpki/roa?origin=AS1759&route=192.194.0.0/16' });
+        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/public/rpki/roa?origin=AS1759&route=192.194.0.0/16' });
         expect(req.request.method).toBe('GET');
         req.flush(roaValid);
     });

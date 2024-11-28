@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
@@ -142,6 +142,7 @@ describe('CreateMntnerPairComponent', () => {
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'upd-to').value).toEqual(SSO_EMAIL);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'mnt-by').value).toEqual(MNTNER_NAME);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'source').value).toEqual(SOURCE);
+            expect(component.isFormValid()).toBe(true);
 
             httpMock
                 .expectOne({ method: 'POST', url: 'api/whois-internal/api/mntner-pair/RIPE/person' })

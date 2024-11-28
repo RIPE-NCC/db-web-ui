@@ -11,10 +11,9 @@ import { FeedbackSupportDialogComponent } from '../feedbacksupport/feedback-supp
 import { PropertiesService } from '../properties.service';
 import { MenuService } from './menu.service';
 
-// TODO remove class="usprivacy" once Usersnap is replaced; added just to enable authentic screenshots
 @Component({
     selector: 'swe-menu',
-    template: `<app-nav-bar class="usprivacy" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>`,
+    template: `<app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>`,
 })
 export class MenuComponent implements OnInit, OnDestroy {
     @Input()
@@ -92,6 +91,8 @@ export class MenuComponent implements OnInit, OnDestroy {
             this.activeItem = 'query';
         } else if (this.activeUrl.indexOf('/myresources') > -1) {
             this.activeItem = this.activeUrl.indexOf('sponsored') === -1 || this.activeUrl.indexOf('sponsored=false') > -1 ? 'myresources' : 'sponsored';
+        } else if (this.activeUrl.indexOf('/api-keys') > -1) {
+            this.activeItem = 'api_keys';
         } else {
             this.activeItem = this.activeUrl.substring(this.activeUrl.lastIndexOf('/') + 1);
         }

@@ -44,6 +44,7 @@ export class QueryComponent implements OnDestroy {
     public numberSelectedAdvanceFilterItems = 0;
     public searched = false;
     public titleDatabaseQueryPage: string;
+    public headDatabaseQueryPage: string;
 
     public results: IWhoisObjectModel[];
     public showNoResultsMsg = false;
@@ -182,6 +183,7 @@ export class QueryComponent implements OnDestroy {
         // Reset on-screen widgets
         this.alertsService.clearAlertMessages();
 
+        // by default in flag search related objects are shown, in search with filters related objects are not shown
         if (this.showsQueryFlagsContainer) {
             cleanQp.doNotRetrieveRelatedObjects = false;
         }
@@ -410,10 +412,13 @@ export class QueryComponent implements OnDestroy {
 
     private setPageTitle() {
         if (this.properties.isProdEnv()) {
+            this.headDatabaseQueryPage = 'Querying the RIPE Database';
             this.titleDatabaseQueryPage = 'RIPE Database Query';
         } else if (this.properties.isTrainingEnv()) {
+            this.headDatabaseQueryPage = 'Querying the TEST Database';
             this.titleDatabaseQueryPage = 'Training Database Query';
         } else {
+            this.headDatabaseQueryPage = `Querying the ${this.properties.ENV.toUpperCase()} Database`;
             this.titleDatabaseQueryPage = `${this.properties.ENV.toUpperCase()} Database Query`;
         }
     }

@@ -93,10 +93,12 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('admin-c', 'TSTADMINC4-RIPE')
             .selectFromFieldAutocomplete('admin-c', 'TSTADMINC4-RIPE')
+            .expectDisabledSubmitDomain(true)
             .typeOnField('tech-c', 'TSTADMINC4-RIPE')
             .selectFromFieldAutocomplete('tech-c', 'TSTADMINC4-RIPE')
             .typeOnField('zone-c', 'TSTADMINC4-RIPE')
             .selectFromFieldAutocomplete('zone-c', 'TSTADMINC4-RIPE')
+            .expectDisabledSubmitDomain(false)
             .submitCreate()
             .expectSuccessMessage('object(s) have been successfully created');
     });

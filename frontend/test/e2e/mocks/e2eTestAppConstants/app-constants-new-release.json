@@ -18,7 +18,7 @@
         "REQUEST_UPDATE_URL": "https://my.prepdev.ripe.net/#/generic-request",
         "OPEN_ACQUISITION_URL": "https://my.prepdev.ripe.net/#/open-lir-org-change",
         "REQUEST_TRANSFER_URL": "https://my.prepdev.ripe.net/#/transfers",
-        "RPKI_DASHBOARD_URL": "https://my.prepdev.ripe.net/#/rpki",
+        "RPKI_DASHBOARD_URL": "https://dashboard.rpki.prepdev.ripe.net/",
         "REST_SEARCH_URL": "https://rest-prepdev.db.ripe.net/",
         "QUERY_PAGE_LINK_TO_OTHER_DB": "https://apps-test.db.ripe.net/db-web-ui/query",
         "DB_WEB_UI_BUILD_TIME": "2022-04-19T06:27:41.113Z",
@@ -36,6 +36,7 @@
         ],
         "TOP_RIPE_NCC_MNTNERS": ["RIPE-NCC-HM-MNT", "RIPE-NCC-END-MNT", "RIPE-NCC-LEGACY-MNT"],
         "SESSION_TTL": 2000,
-        "RELEASE_NOTIFICATION_POLLING": 2000
+        "RELEASE_NOTIFICATION_POLLING": 2000,
+        "SHOW_API_KEY_MENU": true
     }
 }

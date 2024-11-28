@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../../src/app/properties.service';
@@ -59,6 +59,7 @@ describe('SelectController', () => {
                     { name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE'] },
                     { name: 'abuse-c', mandatory: false, multiple: false, refs: ['ROLE'] },
                     { name: 'status', mandatory: true, multiple: false, refs: refs, isEnum: true },
+                    { name: 'assignment-size', mandatory: false, multiple: false, refs: refs },
                     { name: 'remarks', mandatory: false, multiple: true, refs: refs },
                     { name: 'notify', mandatory: false, multiple: true, refs: refs },
                     { name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER'] },

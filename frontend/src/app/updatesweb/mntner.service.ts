@@ -167,8 +167,8 @@ export class MntnerService {
 
     public needsPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
         if (originalObjectMntners.length === 0) {
-            // it is a create
-            originalObjectMntners = objectMntners.filter((mnt) => !this.isMntnerOnlist(ssoMntners, mnt));
+            // it is a creat
+            originalObjectMntners = objectMntners.filter((mnt: IMntByModel) => !this.isMntnerOnlist(ssoMntners, mnt));
             // filter out sso maintainers from objectMaintainers, so we can made check just on originalMainatiners
         }
         const mntners = this.enrichWithSsoStatus(ssoMntners, originalObjectMntners);

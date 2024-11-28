@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { interval, Subject, takeUntil } from 'rxjs';
+import { Subject, interval, takeUntil } from 'rxjs';
 import { PropertiesService } from '../properties.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 

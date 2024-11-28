@@ -1,6 +1,5 @@
 package net.ripe.whois.config;
 
-import net.ripe.whois.jetty.DocsHostPermanentRedirectRegexRule;
 import net.ripe.whois.jetty.RedirectToHttpsRule;
 import net.ripe.whois.jetty.RedirectWithQueryParamRule;
 import net.ripe.whois.jetty.RemoteAddressCustomizer;
@@ -17,11 +16,8 @@ import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.RequestLogWriter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.server.session.DefaultSessionIdManager;
-import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.session.DefaultSessionIdManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -54,16 +50,13 @@ public class JettyConfiguration  {
     @Value("${jetty.accesslog.retention-period}")
     private int jettyAccessLogRetentionPeriod;
 
-    @Value("${docs.path:docs}")
-    private String docsPath;
 
     @Bean
     public ConfigurableServletWebServerFactory jettyCustomServlet() {
-        final HandlerList handlerList = new HandlerList(resourceOneDayCacheHandler());
-        return getConfigurableServletWebServerFactory(handlerList);
+        return getConfigurableServletWebServerFactory();
     }
 
-    private ConfigurableServletWebServerFactory getConfigurableServletWebServerFactory(final HandlerList handlerList) {
+    private ConfigurableServletWebServerFactory getConfigurableServletWebServerFactory() {
         final JettyServletWebServerFactory factory = new JettyServletWebServerFactory();
         factory.addServerCustomizers(server -> {
             final ServerConnector httpConnector = new ServerConnector(server);
@@ -72,12 +65,10 @@ public class JettyConfiguration  {
             server.addConnector(httpConnector);
             final DefaultSessionIdManager sessionIdManager = new DefaultSessionIdManager(server);
             sessionIdManager.setWorkerName(workerName);
-            server.setSessionIdManager(sessionIdManager);
-            handlerList.addHandler(rewriteHandler());
-            handlerList.addHandler(resourceStaticHandler());
-            handlerList.addHandler(server.getHandler());
-            handlerList.addHandler(badRequestRewriteHandler());
-            server.setHandler(handlerList);
+            server.addBean(sessionIdManager, true);
+            server.insertHandler(rewriteHandler());
+            server.insertHandler(resourceStaticHandler());
+            server.insertHandler(badRequestRewriteHandler());
             server.setRequestLog(createRequestLog());
             addRemoteAddressCustomizerToAllConnectors(server);
         });
@@ -93,44 +84,26 @@ public class JettyConfiguration  {
         }
     }
 
-    private ContextHandler resourceOneDayCacheHandler(){
-        final ResourceHandler staticResourceHandler = new ResourceHandler();
-        staticResourceHandler.setResourceBase(docsPath);
-        staticResourceHandler.setDirectoriesListed(true);
-        staticResourceHandler.setCacheControl("public, max-age=86400");
-        final ContextHandler contextHandler= new ContextHandler("/docs/");
-        contextHandler.setHandler(staticResourceHandler);
-        return contextHandler;
-    }
-
     private ResourceHandler resourceStaticHandler(){
-        final ResourceHandler iconResourceHandler = new ResourceHandler();
-        iconResourceHandler.setDirectoriesListed(true);
-        iconResourceHandler.setBaseResource(Resource.newClassPathResource("/static/"));
-        iconResourceHandler.setCacheControl("public, max-age=31536000");
-        return iconResourceHandler;
+        final ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setBaseResourceAsString("./classes/static/");
+        resourceHandler.setDirAllowed(false);
+        resourceHandler.setCacheControl("public, max-age=31536000");
+        return resourceHandler;
     }
 
     private RewriteHandler rewriteHandler() {
         final RewriteHandler rewriteHandler = new RewriteHandler();
-        rewriteHandler.setRewriteRequestURI(true);
-        rewriteHandler.setRewritePathInfo(true);
         redirectRules(rewriteHandler);
         regexRules(rewriteHandler);
         return rewriteHandler;
     }
 
     private RewriteHandler badRequestRewriteHandler() {
-        final RewriteHandler rewriteHandler = new RewriteHandler();
-        rewriteHandler.setRewriteRequestURI(true);
-        rewriteHandler.setRewritePathInfo(true);
-        return rewriteHandler;
+        return new RewriteHandler();
     }
 
     private void regexRules(final RewriteHandler rewriteHandler) {
-        final RewriteRegexRule defaultDocRule = new RewriteRegexRule("^/docs/(.*)$", "/docs/$1");
-        defaultDocRule.setTerminating(true);
-        rewriteHandler.addRule(defaultDocRule);
         final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
         defaultRule.setTerminating(true);
         rewriteHandler.addRule(defaultRule);
@@ -138,18 +111,13 @@ public class JettyConfiguration  {
 
     private void redirectRules(final RewriteHandler rewriteHandler) {
         final RedirectToHttpsRule redirectToHttpsRule = new RedirectToHttpsRule();
-        redirectToHttpsRule.setHandling(true);
         redirectToHttpsRule.setTerminating(true);
         rewriteHandler.addRule(redirectToHttpsRule);
-
-        final DocsHostPermanentRedirectRegexRule docsHostPermanentRedirectRegexRule = new DocsHostPermanentRedirectRegexRule("^/(.*)$", "https://apps.db.ripe.net/docs/$1");
-        docsHostPermanentRedirectRegexRule.setTerminating(true);
-        rewriteHandler.addRule(docsHostPermanentRedirectRegexRule);
-
         rewriteHandler.addRule(new RedirectPatternRule("/search/abuse-finder.html", "https://www.ripe.net/support/abuse"));
+        rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/docs/?(.*)$", "https://docs.db.ripe.net/$1")));
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/$", "/db-web-ui/query")));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
-        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "/docs/"));
+        rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "https://docs.db.ripe.net"));
     }
 
 

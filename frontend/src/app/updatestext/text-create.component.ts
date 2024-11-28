@@ -12,6 +12,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 import { MntnerService } from '../updatesweb/mntner.service';
 import { PreferenceService } from '../updatesweb/preference.service';
 import { RestService } from '../updatesweb/rest.service';
+import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { IRpslObject, RpslService } from './rpsl.service';
 import { TextCommonsService } from './text-commons.service';
 
@@ -37,6 +38,7 @@ export class TextCreateComponent implements OnInit {
     public name: string;
     public override: string;
     public passwords: string[];
+    public haveNonLatin1: boolean;
 
     constructor(
         public whoisResourcesService: WhoisResourcesService,
@@ -172,6 +174,11 @@ export class TextCreateComponent implements OnInit {
 
         this.preferenceService.setWebMode();
         this.router.navigateByUrl(`webupdates/create/${this.object.source}/${this.object.type}?noRedirect`);
+    }
+
+    hasNonLatin1(): boolean {
+        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1(this.object.rpsl);
+        return this.haveNonLatin1;
     }
 
     private prepopulateRpsl() {

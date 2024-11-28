@@ -99,6 +99,10 @@ export class WhoisObjectEditorComponent implements OnInit {
         this.deleteClicked.emit(this.model);
     }
 
+    public hasErrorAttribute(): boolean {
+        return this.attributes.some((attribute) => attribute.$$error !== undefined && attribute.$$error !== '');
+    }
+
     private removeEmptyAttributes() {
         // find indexes of empty attributes, highest index first
         const emptyAttrIndexes = this.attributes

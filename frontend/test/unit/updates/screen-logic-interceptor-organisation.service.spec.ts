@@ -52,7 +52,7 @@ describe('ScreenLogicInterceptorService Organisation', () => {
                 {
                     provide: 'OrganisationHelperService',
                     useValue: {
-                        containsAbuseC: (attributes: any) => attributes,
+                        containsAttribute: (attributes: any, attribute: string) => attributes,
                         addAbuseC: (attributes: any) => attributes,
                     },
                 },
@@ -395,16 +395,6 @@ describe('ScreenLogicInterceptorService Organisation', () => {
 
         const mntRef = whoisResourcesService.getSingleAttributeOnName(attributes, 'mnt-ref');
         expect(mntRef.$$meta.$$disable).toBeFalsy();
-    });
-
-    it('should allow editing country attribute - create', () => {
-        const organisationSubject = _wrap('organisation', organisationAttributes);
-        let errors: string[] = [];
-        let warnings: string[] = [];
-        let infos: string[] = [];
-        const attributes = interceptor.beforeEdit('Create', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
-        const countryAttribute = whoisResourcesService.getSingleAttributeOnName(attributes, 'country');
-        expect(countryAttribute.$$meta.$$disable).toBeFalsy();
     });
 
     it('should allow editing country attribute - modify', () => {

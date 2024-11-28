@@ -122,6 +122,11 @@ export class WebupdatesPage {
         return new ModalCreateDomain();
     }
 
+    expectDisabledSubmitDomain(disabled: boolean) {
+        cy.get('[data-test-id="submit"]').should(disabled ? 'be.disabled' : 'not.be.disabled');
+        return this;
+    }
+
     submitModification() {
         cy.get('#btnSubmitModify').click();
         return new WebupdatesDisplayPage();
@@ -172,6 +177,11 @@ export class WebupdatesPage {
 
     expectModifyButtonToExist(exist: boolean) {
         cy.get('#btnSubmitModify').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectDisabledSubmitModify(disabled: boolean) {
+        cy.get('#btnSubmitModify').should(disabled ? 'be.disabled' : 'not.be.disabled');
         return this;
     }
 

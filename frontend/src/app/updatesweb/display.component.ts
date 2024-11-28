@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { combineLatest, Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { UserInfoService } from '../userinfo/user-info.service';

@@ -38,4 +38,8 @@ describe('The syncupdates page', () => {
                 'For more information about Syncupdates, please refer to the Syncupdates section in the RIPE NCC Database Manual.',
             );
     });
+
+    it('should show non Latin1 character error', () => {
+        syncupdatesPage.typeSyncupdateString('Šid').expectDisabledSubmitButton(true).expectErrorOnTextArea('You can only enter latin1 characters');
+    });
 });

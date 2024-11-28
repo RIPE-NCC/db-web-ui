@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
-import { concat, of, Subject } from 'rxjs';
+import { Subject, concat, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { JsUtilService } from '../core/js-utils.service';

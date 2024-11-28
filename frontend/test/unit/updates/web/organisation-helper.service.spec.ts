@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
+import find from 'lodash/find';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
@@ -39,7 +39,7 @@ describe('OrganisationHelperService', () => {
                 value: 'a@b.c',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
     });
 
     it('should inform if abuse-c is available', () => {
@@ -57,7 +57,7 @@ describe('OrganisationHelperService', () => {
                 value: 'some abuse-c',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeTruthy();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeTruthy();
     });
 
     it('should inform if abuse-c is available but with empty value', () => {
@@ -74,7 +74,7 @@ describe('OrganisationHelperService', () => {
                 name: 'abuse-c',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
     });
 
     it('should inform if abuse-c is available but with empty string', () => {
@@ -92,7 +92,7 @@ describe('OrganisationHelperService', () => {
                 value: ' ',
             },
         ];
-        expect(organisationHelperService.containsAbuseC(attributes)).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
     });
 
     it('should add abuse-c is object type is organisation', () => {
@@ -108,7 +108,7 @@ describe('OrganisationHelperService', () => {
         ];
 
         const attrs = organisationHelperService.addAbuseC('organisation', attributes);
-        const abuseC = _.find(attrs, (attr) => {
+        const abuseC = find(attrs, (attr) => {
             return attr.name === 'abuse-c';
         });
 
@@ -124,7 +124,7 @@ describe('OrganisationHelperService', () => {
         ];
 
         const attrs = organisationHelperService.addAbuseC('something', attributes);
-        const abuseC = _.find(attrs, (attr) => {
+        const abuseC = find(attrs, (attr) => {
             return attr.name === 'abuse-c';
         });
 
@@ -132,7 +132,7 @@ describe('OrganisationHelperService', () => {
     });
 
     it('should be valid if it is not an organisation object', () => {
-        expect(organisationHelperService.validateAbuseC('mntner', [])).toBeTruthy();
+        expect(organisationHelperService.validateOrganisationAttributes('mntner', [])).toBeTruthy();
     });
 
     it('should be valid if abuse-c is not present', () => {
@@ -147,7 +147,7 @@ describe('OrganisationHelperService', () => {
             },
         ];
 
-        expect(organisationHelperService.validateAbuseC('organisation', attributes)).toBeTruthy();
+        expect(organisationHelperService.validateOrganisationAttributes('organisation', attributes)).toBeTruthy();
     });
 
     it('should be invalid if abuse-c is empty', () => {
@@ -165,7 +165,7 @@ describe('OrganisationHelperService', () => {
             },
         ];
 
-        expect(organisationHelperService.validateAbuseC('organisation', attributes)).toBeFalse();
+        expect(organisationHelperService.validateOrganisationAttributes('organisation', attributes)).toBeFalse();
     });
 
     it('should be set message if abuse-c is empty', () => {
@@ -183,8 +183,8 @@ describe('OrganisationHelperService', () => {
             },
         ];
 
-        organisationHelperService.validateAbuseC('organisation', attributes);
-        const abuseC = _.find(attributes, (attr) => {
+        organisationHelperService.validateOrganisationAttributes('organisation', attributes);
+        const abuseC = find(attributes, (attr) => {
             return attr.name === 'abuse-c';
         });
         //@ts-ignore
@@ -203,7 +203,7 @@ describe('OrganisationHelperService', () => {
             },
         ];
 
-        expect(organisationHelperService.validateAbuseC('organisation', attributes)).toBeTruthy();
+        expect(organisationHelperService.validateOrganisationAttributes('organisation', attributes)).toBeTruthy();
     });
 
     it('should be valid if abuse-c is present', () => {
@@ -222,6 +222,29 @@ describe('OrganisationHelperService', () => {
             },
         ];
 
-        expect(organisationHelperService.validateAbuseC('organisation', attributes)).toBeTruthy();
+        expect(organisationHelperService.validateOrganisationAttributes('organisation', attributes)).toBeTruthy();
+    });
+
+    it('should be set message if country is empty', () => {
+        const attributes = [
+            {
+                name: 'organisation',
+                value: 'ORG-TEST70-RIPE',
+            },
+            {
+                name: 'e-mail',
+                value: 'a@b.c',
+            },
+            {
+                name: 'country',
+            },
+        ];
+
+        organisationHelperService.validateOrganisationAttributes('organisation', attributes);
+        const abuseC = find(attributes, (attr) => {
+            return attr.name === 'country';
+        });
+        //@ts-ignore
+        expect(abuseC.$$error).toBe('Please provide a valid country code or remove the attribute if you would like to do it later');
     });
 });

@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
+import { Subscription } from 'rxjs';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../../dropdown/org-drop-down-shared.service';
 import { Labels } from '../../label.constants';
@@ -64,7 +65,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         private alertsService: AlertsService,
         private router: Router,
     ) {
-        const orgSubs = orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
+        const orgSubs: Subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             const selectedId = this.cookies.get('activeMembershipId');
             if (selected && selectedId) {
                 if (selectedId.indexOf('org:') === 0) {
@@ -75,7 +76,7 @@ export class ResourceDetailsComponent implements OnDestroy {
                     return;
                 }
             }
-            router.navigate(['myresources/overview']);
+            void router.navigate(['myresources/overview']);
         });
         const routeSubs = this.activatedRoute.params.subscribe(() => {
             this.isEditing = false;
