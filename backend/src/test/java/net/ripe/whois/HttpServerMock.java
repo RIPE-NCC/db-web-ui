@@ -33,7 +33,7 @@ public class HttpServerMock {
     Server createAndStartServer(final int port) {
         final WebAppContext context = new WebAppContext();
         context.setContextPath("/");
-        context.setBaseResourceAsString("src/main/webapp/");
+        context.setBaseResourceAsString("./");      // TODO: [ES] was src/main/webapp
 
         this.mockServlet = new MockServlet();
         mockServlet.deploy(context);
