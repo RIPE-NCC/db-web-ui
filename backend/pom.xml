@@ -24,6 +24,8 @@
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
         <httpclient.version>5.4.1</httpclient.version>
         <jackson.version>2.18.2</jackson.version>
+        <jaxb.api.version>4.0.2</jaxb.api.version>
+        <jaxb.impl.version>4.0.5</jaxb.impl.version>
         <javax.inject.version>1</javax.inject.version>
         <jcache.version>1.1.1</jcache.version>
         <!-- align jetty with spring-boot-starter-jetty -->
@@ -199,6 +201,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
             <artifactId>jackson-jakarta-rs-base</artifactId>
             <version>${jackson.version}</version>
@@ -217,6 +224,18 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- JAXB -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jaxb.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jaxb.impl.version}</version>
         </dependency>
 
         <dependency>
