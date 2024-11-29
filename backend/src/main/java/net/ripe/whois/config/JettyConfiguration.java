@@ -18,6 +18,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.session.DefaultSessionIdManager;
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -66,9 +68,9 @@ public class JettyConfiguration  {
             final DefaultSessionIdManager sessionIdManager = new DefaultSessionIdManager(server);
             sessionIdManager.setWorkerName(workerName);
             server.addBean(sessionIdManager, true);
-            server.insertHandler(rewriteHandler());
             server.insertHandler(resourceStaticHandler());
             server.insertHandler(badRequestRewriteHandler());
+            server.insertHandler(rewriteHandler());
             server.setRequestLog(createRequestLog());
             addRemoteAddressCustomizerToAllConnectors(server);
         });
@@ -84,9 +86,10 @@ public class JettyConfiguration  {
         }
     }
 
-    private ResourceHandler resourceStaticHandler(){
+    private ResourceHandler resourceStaticHandler() {
         final ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setBaseResourceAsString("./classes/static/");
+        final Resource base = ResourceFactory.of(resourceHandler).newClassLoaderResource("/static/", true);
+        resourceHandler.setBaseResource(base);
         resourceHandler.setDirAllowed(false);
         resourceHandler.setCacheControl("public, max-age=31536000");
         return resourceHandler;

@@ -10,12 +10,10 @@ import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.URIUtil;
 
-import java.io.IOException;
-
 public class RedirectToHttpsRule extends Rule {
 
     @Override
-    public Handler matchAndApply(Handler input) throws IOException {
+    public Handler matchAndApply(Handler input) {
         if (hasTransport(input)) {
             return new Handler(input)
             {
