@@ -82,7 +82,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
         final ResponseEntity<String> response = get("/", String.class, xForwardedProto("https"));
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
-        assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttps() + "/db-web-ui/query")));
+        assertThat(response.getHeaders().getLocation(), is(URI.create("/db-web-ui/query")));
     }
 
     @Test
