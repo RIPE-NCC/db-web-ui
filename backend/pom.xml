@@ -284,12 +284,6 @@
             <groupId>net.ripe.db</groupId>
             <artifactId>whois-rpsl</artifactId>
             <version>${whois.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.giffing.bucket4j.spring.boot.starter</groupId>
