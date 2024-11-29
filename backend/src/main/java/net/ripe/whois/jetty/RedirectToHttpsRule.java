@@ -22,9 +22,8 @@ public class RedirectToHttpsRule extends Rule {
                 @Override
                 protected boolean handle(final Response response, final Callback callback)
                 {
-                    final StringBuilder location = new StringBuilder();
-                    URIUtil.appendSchemeHostPort(location, HttpScheme.HTTPS.toString(), Request.getServerName(input), HttpScheme.HTTPS.getDefaultPort());
-                    location.append(input.getHttpURI());
+                    final StringBuilder location = URIUtil.newURIBuilder(HttpScheme.HTTPS.toString(), Request.getServerName(input), HttpScheme.HTTPS.getDefaultPort());
+                    location.append(input.getHttpURI().getPath());
 
                     final String queryString = input.getHttpURI().getQuery();
                     if (StringUtils.isNotBlank(queryString)) {
