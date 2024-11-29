@@ -2,7 +2,7 @@ package net.ripe.whois.web.api;
 
 import jakarta.ws.rs.BadRequestException;
 import net.ripe.db.whois.api.rest.client.RestClientException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

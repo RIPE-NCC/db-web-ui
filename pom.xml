@@ -48,7 +48,6 @@
 
     <properties>
         <java.version>21</java.version>
-        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     </properties>
 
     <repositories>
@@ -69,7 +68,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>7.4.4</version>
+                <version>11.1.0</version>
                 <executions>
                     <execution>
                         <!-- do not run by default -->
@@ -82,7 +81,9 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
+                <version>3.4.0</version>
                 <configuration>
                     <filesets>
                         <fileset>
