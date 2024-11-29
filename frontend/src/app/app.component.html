@@ -708,7 +708,12 @@
                 />
             </g>
         </svg>
-        <app-switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
+        <app-switcher
+            class="web-component"
+            [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV"
+            [current]="'database'"
+            onclick="_paq.push(['trackEvent', 'app-switcher click', 'Click', 'Click'])"
+        ></app-switcher>
         <user-login class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
     </ripe-header>
 </div>
