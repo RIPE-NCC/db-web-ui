@@ -52,17 +52,16 @@ public class RateLimitCheckIntegrationTest extends AbstractIntegrationTest {
     public void shouldUseXforwardedIpForRateLimiting() {
         ipRanges.setTrusted("127.0.0.1","::1");
 
-        ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class, xForwardedFor(List.of("10.0.0.0", "20.0.0.0")));
+        ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class, xForwardedFor(List.of("10.0.0.0")));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is("OK"));
-
-        response = get("/db-web-ui/api/healthcheck", String.class, xForwardedFor(List.of("10.0.0.0", "20.0.0.0")));
-        assertThat(response.getStatusCode(), is(HttpStatus.TOO_MANY_REQUESTS));
 
         response = get("/db-web-ui/api/healthcheck", String.class, xForwardedFor(List.of("10.0.0.0")));
+        assertThat(response.getStatusCode(), is(HttpStatus.TOO_MANY_REQUESTS));
+
+        response = get("/db-web-ui/api/healthcheck", String.class, xForwardedFor(List.of("20.0.0.0")));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is("OK"));
-
     }
 
     @Test
