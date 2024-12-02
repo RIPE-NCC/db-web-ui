@@ -2,7 +2,6 @@ package net.ripe.whois.config;
 
 import net.ripe.whois.jetty.RedirectToHttpsRule;
 import net.ripe.whois.jetty.RedirectWithQueryParamRule;
-import net.ripe.whois.jetty.RemoteAddressCustomizer;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RedirectPatternRule;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
@@ -11,6 +10,7 @@ import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
 import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.CustomRequestLog;
+import org.eclipse.jetty.server.ForwardedRequestCustomizer;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.RequestLogWriter;
@@ -72,16 +72,16 @@ public class JettyConfiguration  {
             server.insertHandler(badRequestRewriteHandler());
             server.insertHandler(rewriteHandler());
             server.setRequestLog(createRequestLog());
-            addRemoteAddressCustomizerToAllConnectors(server);
+            addForwardedRequestCustomizerToAllConnectors(server);
         });
         return factory;
     }
 
-    private void addRemoteAddressCustomizerToAllConnectors(final Server server) {
+    private void addForwardedRequestCustomizerToAllConnectors(final Server server) {
         for (final Connector connector : server.getConnectors()) {
             final ConnectionFactory defaultConnectionFactory = connector.getDefaultConnectionFactory();
             if (defaultConnectionFactory instanceof HttpConnectionFactory) {
-                ((HttpConnectionFactory) defaultConnectionFactory).getHttpConfiguration().addCustomizer(new RemoteAddressCustomizer());
+                ((HttpConnectionFactory) defaultConnectionFactory).getHttpConfiguration().addCustomizer(new ForwardedRequestCustomizer());
             }
         }
     }
