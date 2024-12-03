@@ -7,8 +7,6 @@ import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
 import net.ripe.db.whois.common.rpsl.attrs.AutNum;
 import net.ripe.whois.config.CacheConfiguration;
 import net.ripe.whois.services.RsngService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,6 @@ import static net.ripe.whois.web.api.baapps.ResourceTicketMap.KeyType;
 
 @Service
 public class ResourceTicketService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceTicketService.class);
 
     private final RsngService rsngService;
 
@@ -38,8 +34,6 @@ public class ResourceTicketService {
      */
     @Cacheable(CacheConfiguration.RESOURCE_TICKET_MEMBER_CACHE)
     public ResourceTicketResponse getTicketsForMember(final long memberId) {
-        LOGGER.info("Cacheable: getTicketsForMember {}", memberId);
-
         final ResourceTicketResponse resourceTickets = new ResourceTicketResponse();
 
         resourceTicketMap(rsngService.getMemberResources(memberId))
@@ -57,7 +51,6 @@ public class ResourceTicketService {
      */
     @Cacheable(CacheConfiguration.RESOURCE_TICKET_MEMBER_AND_RESOURCE_CACHE)
     public ResourceTicketResponse getTicketsForMember(final long memberId, final String resource) {
-        LOGGER.info("Cacheable: getTicketsForMember {},{}", memberId, resource);
         final MemberResources memberResources = rsngService.getMemberResources(memberId);
         return filteredResponse(resource, resourceTicketMap(memberResources));
     }
