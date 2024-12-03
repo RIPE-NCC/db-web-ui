@@ -13,6 +13,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Component
 public class RemoteAddressFilter implements Filter {
@@ -21,11 +22,21 @@ public class RemoteAddressFilter implements Filter {
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
+            logHeaders((HttpServletRequest)request);
             chain.doFilter(new RemoteAddressRequestWrapper((HttpServletRequest) request), response);
         } else {
             chain.doFilter(request, response);
         }
     }
+
+    private void logHeaders(final HttpServletRequest request) {
+        final Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            final String nextHeaderName = headerNames.nextElement();
+            LOGGER.info("{}: {}", nextHeaderName, request.getHeader(nextHeaderName));
+        }
+    }
+
 
     @Override
     public void init(FilterConfig filterConfig) {}
