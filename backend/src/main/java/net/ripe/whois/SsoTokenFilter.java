@@ -74,7 +74,7 @@ public class SsoTokenFilter implements Filter {
 
         boolean shouldFilter;
         try {
-            shouldFilter = hasSsoCookie(request) || isStaticResource(request) || isUnprotectedUrl(request);
+            shouldFilter = isStaticResource(request) || isUnprotectedUrl(request) || hasSsoCookie(request);
         } catch (RestClientException e) {
             // whoisInternal is not available, we can't redirect to login page as it loops
             response.setHeader(HttpHeaders.LOCATION, generateErrorLocationHeader(request));
