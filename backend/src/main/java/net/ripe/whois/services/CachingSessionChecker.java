@@ -21,16 +21,19 @@ public class CachingSessionChecker {
 
     @Cacheable(CacheConfiguration.SSO_SESSIONS_CACHE)
     public boolean hasActiveToken(final String ssoToken, final String clientIp) {
+        LOGGER.info("Cacheable: hasActiveToken: {},{}", ssoToken, clientIp);
         return whoisInternalService.getActiveToken(ssoToken, clientIp);
     }
 
     @CacheEvict(CacheConfiguration.SSO_SESSIONS_CACHE)
     public void markNotAuthenticated(final String ssoToken) {
+        LOGGER.info("Cacheable: markNotAuthenticated");
         LOGGER.debug("markNotAuthenticated:{}", ssoToken);
     }
 
     @CacheEvict(value = CacheConfiguration.SSO_SESSIONS_CACHE, allEntries = true)
     public void markAllNotAuthenticated() {
+        LOGGER.info("Cacheable: markAllNotAuthenticated");
         LOGGER.debug("markAllAuthenticated:{}");
     }
 }
