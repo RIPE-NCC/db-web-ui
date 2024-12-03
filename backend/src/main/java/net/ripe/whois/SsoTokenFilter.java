@@ -127,13 +127,9 @@ public class SsoTokenFilter implements Filter {
     }
 
     private boolean hasSsoCookie(final HttpServletRequest request) {
-        LOGGER.info("hasSsoCookie");
         if (request.getCookies() != null) {
-            LOGGER.info("getCookies not null");
             for (Cookie c : request.getCookies()) {
-                LOGGER.info("cookie {}", c.getName());
                 if (SSO_TOKEN_KEY.equals(c.getName())) {
-                    LOGGER.info("Found SSO_TOKEN_KEY");
                     return sessionChecker.hasActiveToken(c.getValue(), request.getRemoteAddr());
                 }
             }
