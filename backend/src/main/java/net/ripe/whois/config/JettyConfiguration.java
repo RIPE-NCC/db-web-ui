@@ -2,6 +2,7 @@ package net.ripe.whois.config;
 
 import net.ripe.whois.jetty.RedirectToHttpsRule;
 import net.ripe.whois.jetty.RedirectWithQueryParamRule;
+import net.ripe.whois.jetty.RemoteAddressCustomizer;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RedirectPatternRule;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
@@ -10,7 +11,6 @@ import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
 import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.CustomRequestLog;
-import org.eclipse.jetty.server.ForwardedRequestCustomizer;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.RequestLogWriter;
@@ -81,7 +81,7 @@ public class JettyConfiguration  {
         for (final Connector connector : server.getConnectors()) {
             final ConnectionFactory defaultConnectionFactory = connector.getDefaultConnectionFactory();
             if (defaultConnectionFactory instanceof HttpConnectionFactory) {
-                ((HttpConnectionFactory) defaultConnectionFactory).getHttpConfiguration().addCustomizer(new ForwardedRequestCustomizer());
+                ((HttpConnectionFactory) defaultConnectionFactory).getHttpConfiguration().addCustomizer(new RemoteAddressCustomizer());
             }
         }
     }
@@ -161,4 +161,5 @@ public class JettyConfiguration  {
             super.write(filtered);
         }
     }
+
 }
