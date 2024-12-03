@@ -16,6 +16,7 @@ public class CachingSessionChecker {
 
     @Autowired
     public CachingSessionChecker(final WhoisInternalService whoisInternalService) {
+        LOGGER.info("Cacheable session checker initialized");
         this.whoisInternalService = whoisInternalService;
     }
 
