@@ -21,10 +21,8 @@ export class QueryFlagsComponent implements OnChanges {
     public ngOnChanges() {
         this.flags = this.getFlags();
         if (this.flags.length > 0) {
-            this.queryFlagsService.getFlags(this.flags).subscribe((queryFlags) => {
-                this.queryFlags = queryFlags;
-                this.hasValidQueryFlags.emit(this.queryFlags.length > 0);
-            });
+            this.queryFlags = this.queryFlagsService.getFlags(this.flags);
+            this.hasValidQueryFlags.emit(this.queryFlags.length > 0);
         } else {
             this.queryFlags = [];
             this.hasValidQueryFlags.emit(false);

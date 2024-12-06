@@ -17,6 +17,7 @@ import { FullTextSearchComponent } from './fulltextsearch/full-text-search.compo
 import { ResourceDetailsComponent } from './myresources/resourcedetails/resource-details.component';
 import { ResourcesComponent } from './myresources/resources.component';
 import { LookupSingleObjectComponent } from './query/lookup-single-object.component';
+import { queryFlagResolver } from './query/query-flag.resolver';
 import { QueryComponent } from './query/query.component';
 import { SyncupdatesComponent } from './syncupdates/syncupdates.component';
 import { UnsubscribeConfirmComponent } from './unsubscribe-confirm/unsubscribe-confirm.component';
@@ -51,7 +52,7 @@ export const appRoutes: Routes = [
     { path: 'forceDeleteSelect', component: ForceDeleteSelectComponent, canActivate: [AuthenticationGuard] },
     { path: 'forceDelete/:source/:objectType/:objectName', component: ForceDeleteComponent, canActivate: [AuthenticationGuard] },
     { path: 'lookup', component: LookupSingleObjectComponent },
-    { path: 'query', component: QueryComponent },
+    { path: 'query', component: QueryComponent, resolve: { data: queryFlagResolver } },
     { path: 'api-keys', component: ApiKeysComponent, canActivate: [AuthenticationGuard] },
     { path: 'syncupdates', component: SyncupdatesComponent },
     { path: 'fulltextsearch', component: FullTextSearchComponent },

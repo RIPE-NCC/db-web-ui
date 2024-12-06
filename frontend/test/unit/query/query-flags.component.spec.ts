@@ -1,6 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs/internal/observable/of';
 import { CoreModule } from '../../../src/app/core/core.module';
 import { QueryFlagsComponent } from '../../../src/app/query/query-flags.component';
 import { IQueryFlag, QueryFlagsService } from '../../../src/app/query/query-flags.service';
@@ -44,7 +43,7 @@ describe('QueryFlagsComponent', () => {
                 description: 'Perform an inverse query.',
             },
         ];
-        queryFlagsServiceSpy.getFlags.and.returnValue(of(response));
+        queryFlagsServiceSpy.getFlags.and.returnValue(response);
         spyOn(component.hasValidQueryFlags, 'emit');
         component.inputTerm = '-i -ne -da';
         queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);

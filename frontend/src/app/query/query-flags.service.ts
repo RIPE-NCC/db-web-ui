@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ObjectTypesEnum } from './object-types.enum';
 
@@ -18,18 +18,17 @@ export class QueryFlagsService {
 
     constructor(private http: HttpClient) {}
 
-    getFlags(flags: string[]): Observable<IQueryFlag[]> {
+    loadFlags(): Observable<void> {
+        return this.helpWhois().pipe(
+            map((help) => {
+                this.FLAGS = help;
+            }),
+        );
+    }
+
+    getFlags(flags: string[]): IQueryFlag[] {
         this.detectedQueryFlags = [];
-        if (this.FLAGS) {
-            return of(this.findFlags(flags));
-        } else {
-            return this.helpWhois().pipe(
-                map((help) => {
-                    this.FLAGS = help;
-                    return this.findFlags(flags);
-                }),
-            );
-        }
+        return this.findFlags(flags);
     }
 
     // exception -Tmntner or -rTmntner, case without space
