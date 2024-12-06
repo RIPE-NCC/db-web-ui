@@ -13,6 +13,7 @@ describe('QueryFlagsService', () => {
         });
         httpMock = TestBed.inject(HttpTestingController);
         queryFlagsService = TestBed.inject(QueryFlagsService);
+        queryFlagsService.FLAGS = mockAllFLAGS;
     });
 
     afterEach(() => {
@@ -24,7 +25,7 @@ describe('QueryFlagsService', () => {
     });
 
     it('should load FLAGS', () => {
-        queryFlagsService.getFlags([]).subscribe((flags) => {
+        queryFlagsService.loadFlags().subscribe((flags) => {
             expect(queryFlagsService.FLAGS).toEqual(mockAllFLAGS);
         });
         const request = httpMock.expectOne({ method: 'GET', url: 'api/metadata/help' });
@@ -33,118 +34,90 @@ describe('QueryFlagsService', () => {
     });
 
     it('should detect multple flags', () => {
-        queryFlagsService.getFlags(['-i', '-q', '--show-tag-info']).subscribe((flags) => {
-            const queryFlags: IQueryFlag[] = [
-                {
-                    longFlag: '--inverse',
-                    shortFlag: '-i',
-                    description: 'Perform an inverse query.',
-                },
-                {
-                    longFlag: '',
-                    shortFlag: '-q',
-                    description: '"sources"  see list-sources.\n"version"  see version.\n"types"    show all object types.',
-                },
-                {
-                    longFlag: '--show-tag-info',
-                    shortFlag: '',
-                    description: 'Switches on tagging information.',
-                },
-            ];
-            expect(flags).toEqual(queryFlags);
-        });
-        const request = httpMock.expectOne({ method: 'GET', url: 'api/metadata/help' });
-        expect(request.request.method).toBe('GET');
-        request.flush(mockAllFLAGS);
+        const queryFlags: IQueryFlag[] = [
+            {
+                longFlag: '--inverse',
+                shortFlag: '-i',
+                description: 'Perform an inverse query.',
+            },
+            {
+                longFlag: '',
+                shortFlag: '-q',
+                description: '"sources"  see list-sources.\n"version"  see version.\n"types"    show all object types.',
+            },
+            {
+                longFlag: '--show-tag-info',
+                shortFlag: '',
+                description: 'Switches on tagging information.',
+            },
+        ];
+        expect(queryFlagsService.getFlags(['-i', '-q', '--show-tag-info'])).toEqual(queryFlags);
     });
 
     it('should return empty list if flag is not valid', () => {
-        queryFlagsService.getFlags(['-zg']).subscribe((flags) => {
-            expect(flags).toEqual([]);
-        });
-        const request = httpMock.expectOne({ method: 'GET', url: 'api/metadata/help' });
-        expect(request.request.method).toBe('GET');
-        request.flush(mockAllFLAGS);
+        expect(queryFlagsService.getFlags(['-zg'])).toEqual([]);
     });
 
     it('should return just valid query flags', () => {
-        queryFlagsService.getFlags(['-zg', '-i']).subscribe((flags) => {
-            expect(flags).toEqual([
-                {
-                    longFlag: '--inverse',
-                    shortFlag: '-i',
-                    description: 'Perform an inverse query.',
-                },
-            ]);
-        });
-        const request = httpMock.expectOne({ method: 'GET', url: 'api/metadata/help' });
-        expect(request.request.method).toBe('GET');
-        request.flush(mockAllFLAGS);
+        expect(queryFlagsService.getFlags(['-zg', '-i'])).toEqual([
+            {
+                longFlag: '--inverse',
+                shortFlag: '-i',
+                description: 'Perform an inverse query.',
+            },
+        ]);
     });
 
     it('should return just valid query flag from grouped flags', () => {
-        queryFlagsService.getFlags(['-zb']).subscribe((flags) => {
-            expect(flags).toEqual([
-                {
-                    longFlag: '--abuse-contact',
-                    shortFlag: '-b',
-                    description:
-                        'Requests the "abuse-mailbox:" address related to the specified inetnum or inet6num object. Only specified object key and "abuse-mailbox:" attributes are shown.',
-                },
-            ]);
-        });
-        const request = httpMock.expectOne({ method: 'GET', url: 'api/metadata/help' });
-        expect(request.request.method).toBe('GET');
-        request.flush(mockAllFLAGS);
+        expect(queryFlagsService.getFlags(['-zb'])).toEqual([
+            {
+                longFlag: '--abuse-contact',
+                shortFlag: '-b',
+                description:
+                    'Requests the "abuse-mailbox:" address related to the specified inetnum or inet6num object. Only specified object key and "abuse-mailbox:" attributes are shown.',
+            },
+        ]);
     });
 
     it('should return query flags for grouped flags', () => {
-        queryFlagsService.getFlags(['-xdBr', '--sources']).subscribe((flags) => {
-            expect(flags).toEqual([
-                {
-                    longFlag: '--exact',
-                    shortFlag: '-x',
-                    description: 'Requests that only an exact match on a prefix be performed. If no exact match is found no objects are returned.',
-                },
-                {
-                    longFlag: '--reverse-domain',
-                    shortFlag: '-d',
-                    description:
-                        'When used with hierarchical flags (like --one-less), both address and route object types and domain object types are returned.',
-                },
-                {
-                    longFlag: '--no-filtering',
-                    shortFlag: '-B',
-                    description: 'Disables the filtering of "notify:" and "e-mail:" attributes.',
-                },
-                {
-                    longFlag: '--no-referenced',
-                    shortFlag: '-r',
-                    description: 'Switches off referenced lookup for related information after retrieving the objects that match the query string.',
-                },
-                {
-                    longFlag: '--sources',
-                    shortFlag: '-s',
-                    description: 'Specifies which sources and in which order are to be looked up when performing a query.',
-                },
-            ]);
-        });
-        const request = httpMock.expectOne({ method: 'GET', url: 'api/metadata/help' });
-        expect(request.request.method).toBe('GET');
-        request.flush(mockAllFLAGS);
+        expect(queryFlagsService.getFlags(['-xdBr', '--sources'])).toEqual([
+            {
+                longFlag: '--exact',
+                shortFlag: '-x',
+                description: 'Requests that only an exact match on a prefix be performed. If no exact match is found no objects are returned.',
+            },
+            {
+                longFlag: '--reverse-domain',
+                shortFlag: '-d',
+                description: 'When used with hierarchical flags (like --one-less), both address and route object types and domain object types are returned.',
+            },
+            {
+                longFlag: '--no-filtering',
+                shortFlag: '-B',
+                description: 'Disables the filtering of "notify:" and "e-mail:" attributes.',
+            },
+            {
+                longFlag: '--no-referenced',
+                shortFlag: '-r',
+                description: 'Switches off referenced lookup for related information after retrieving the objects that match the query string.',
+            },
+            {
+                longFlag: '--sources',
+                shortFlag: '-s',
+                description: 'Specifies which sources and in which order are to be looked up when performing a query.',
+            },
+        ]);
     });
 
     it("shouldn't load FLAGS if they were already loaded", () => {
         queryFlagsService.FLAGS = mockAllFLAGS;
-        queryFlagsService.getFlags(['-i']).subscribe((flags) => {
-            expect(flags).toEqual([
-                {
-                    longFlag: '--inverse',
-                    shortFlag: '-i',
-                    description: 'Perform an inverse query.',
-                },
-            ]);
-        });
+        expect(queryFlagsService.getFlags(['-i'])).toEqual([
+            {
+                longFlag: '--inverse',
+                shortFlag: '-i',
+                description: 'Perform an inverse query.',
+            },
+        ]);
         httpMock.expectNone({ method: 'GET', url: 'api/metadata/help' });
     });
 

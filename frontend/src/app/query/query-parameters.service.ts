@@ -117,84 +117,83 @@ export class QueryParametersService {
         let hierarchyFlagsInQueryCount: number = 0; // Count hierarchyFlags in query text
 
         const parseFlag = (flag: string, flagWithoutDash: string, idx: number) => {
-            this.queryFlagsService.getFlags([flag]).subscribe((queryFlags) => {
-                // if not supported flag
-                if (queryFlags.length <= 0) {
-                    errors.push(`ERROR:111: unsupported flag ${flag}.`);
-                    return;
+            const queryFlags = this.queryFlagsService.getFlags([flag]);
+            // if not supported flag
+            if (queryFlags.length <= 0) {
+                errors.push(`ERROR:111: unsupported flag ${flag}.`);
+                return;
+            }
+            switch (flagWithoutDash) {
+                case 'l':
+                case 'L':
+                case 'm':
+                case 'M':
+                case 'x': {
+                    queryParams.hierarchy = flagWithoutDash;
+                    hierarchyFlagsInQueryCount++;
+                    break;
                 }
-                switch (flagWithoutDash) {
-                    case 'l':
-                    case 'L':
-                    case 'm':
-                    case 'M':
-                    case 'x': {
-                        queryParams.hierarchy = flagWithoutDash;
-                        hierarchyFlagsInQueryCount++;
-                        break;
-                    }
-                    case 'one-less':
-                    case 'all-less':
-                    case 'one-more':
-                    case 'all-more':
-                    case 'exact': {
-                        queryParams.hierarchy = HierarchyFlagsService.longHierarchyFlagToShort(flagWithoutDash);
-                        hierarchyFlagsInQueryCount++;
-                        break;
-                    }
-                    case 'resource':
-                    case 'a':
-                    case 'all-sources': {
-                        queryParams.source = 'GRS';
-                        break;
-                    }
-                    case 's':
-                    case 'sources': {
-                        sourcesPos = idx + 1;
-                        break;
-                    }
-                    case 'r':
-                    case 'no-referenced': {
-                        queryParams.doNotRetrieveRelatedObjects = true;
-                        break;
-                    }
-                    case 'd':
-                    case 'reverse-domain': {
-                        queryParams.reverseDomain = true;
-                        break;
-                    }
-                    case 'B':
-                    case 'no-filtering': {
-                        queryParams.showFullObjectDetails = true;
-                        break;
-                    }
-                    case 'i':
-                    case 'inverse': {
-                        invOptionPos = idx + 1;
-                        break;
-                    }
-                    case 'T':
-                    case 'select-types': {
-                        if (typeOptionPos > -1) {
-                            errors.push('Error parsing object type');
-                        }
-                        typeOptionPos = idx + 1;
-                        break;
-                    }
-                    case 'G':
-                    case 'no-grouping': {
-                        queryParams.noGrouping = true;
-                        break;
-                    }
-                    default: {
-                        if (!queryParams.otherFlags) {
-                            queryParams.otherFlags = [];
-                        }
-                        queryParams.otherFlags.push(flagWithoutDash);
-                        break;
-                    }
+                case 'one-less':
+                case 'all-less':
+                case 'one-more':
+                case 'all-more':
+                case 'exact': {
+                    queryParams.hierarchy = HierarchyFlagsService.longHierarchyFlagToShort(flagWithoutDash);
+                    hierarchyFlagsInQueryCount++;
+                    break;
                 }
-            });
+                case 'resource':
+                case 'a':
+                case 'all-sources': {
+                    queryParams.source = 'GRS';
+                    break;
+                }
+                case 's':
+                case 'sources': {
+                    sourcesPos = idx + 1;
+                    break;
+                }
+                case 'r':
+                case 'no-referenced': {
+                    queryParams.doNotRetrieveRelatedObjects = true;
+                    break;
+                }
+                case 'd':
+                case 'reverse-domain': {
+                    queryParams.reverseDomain = true;
+                    break;
+                }
+                case 'B':
+                case 'no-filtering': {
+                    queryParams.showFullObjectDetails = true;
+                    break;
+                }
+                case 'i':
+                case 'inverse': {
+                    invOptionPos = idx + 1;
+                    break;
+                }
+                case 'T':
+                case 'select-types': {
+                    if (typeOptionPos > -1) {
+                        errors.push('Error parsing object type');
+                    }
+                    typeOptionPos = idx + 1;
+                    break;
+                }
+                case 'G':
+                case 'no-grouping': {
+                    queryParams.noGrouping = true;
+                    break;
+                }
+                default: {
+                    if (!queryParams.otherFlags) {
+                        queryParams.otherFlags = [];
+                    }
+                    queryParams.otherFlags.push(flagWithoutDash);
+                    break;
+                }
+            }
         };
 
         const sanitizedString = this.queryFlagsService.addSpaceBehindFlagT(queryParams.queryText);
