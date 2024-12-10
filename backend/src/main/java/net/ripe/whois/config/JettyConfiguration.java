@@ -16,10 +16,10 @@ import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.RequestLogWriter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.server.session.DefaultSessionIdManager;
+import org.eclipse.jetty.session.DefaultSessionIdManager;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -55,10 +55,10 @@ public class JettyConfiguration  {
 
     @Bean
     public ConfigurableServletWebServerFactory jettyCustomServlet() {
-        return getConfigurableServletWebServerFactory(new HandlerList());
+        return getConfigurableServletWebServerFactory();
     }
 
-    private ConfigurableServletWebServerFactory getConfigurableServletWebServerFactory(final HandlerList handlerList) {
+    private ConfigurableServletWebServerFactory getConfigurableServletWebServerFactory() {
         final JettyServletWebServerFactory factory = new JettyServletWebServerFactory();
         factory.addServerCustomizers(server -> {
             final ServerConnector httpConnector = new ServerConnector(server);
@@ -67,19 +67,17 @@ public class JettyConfiguration  {
             server.addConnector(httpConnector);
             final DefaultSessionIdManager sessionIdManager = new DefaultSessionIdManager(server);
             sessionIdManager.setWorkerName(workerName);
-            server.setSessionIdManager(sessionIdManager);
-            handlerList.addHandler(rewriteHandler());
-            handlerList.addHandler(resourceStaticHandler());
-            handlerList.addHandler(server.getHandler());
-            handlerList.addHandler(badRequestRewriteHandler());
-            server.setHandler(handlerList);
+            server.addBean(sessionIdManager, true);
+            server.insertHandler(resourceStaticHandler());
+            server.insertHandler(badRequestRewriteHandler());
+            server.insertHandler(rewriteHandler());
             server.setRequestLog(createRequestLog());
-            addRemoteAddressCustomizerToAllConnectors(server);
+            addForwardedRequestCustomizerToAllConnectors(server);
         });
         return factory;
     }
 
-    private void addRemoteAddressCustomizerToAllConnectors(final Server server) {
+    private void addForwardedRequestCustomizerToAllConnectors(final Server server) {
         for (final Connector connector : server.getConnectors()) {
             final ConnectionFactory defaultConnectionFactory = connector.getDefaultConnectionFactory();
             if (defaultConnectionFactory instanceof HttpConnectionFactory) {
@@ -88,42 +86,36 @@ public class JettyConfiguration  {
         }
     }
 
-    private ResourceHandler resourceStaticHandler(){
-        final ResourceHandler iconResourceHandler = new ResourceHandler();
-        iconResourceHandler.setDirectoriesListed(true);
-        iconResourceHandler.setBaseResource(Resource.newClassPathResource("/static/"));
-        iconResourceHandler.setCacheControl("public, max-age=31536000");
-        return iconResourceHandler;
+    private ResourceHandler resourceStaticHandler() {
+        final ResourceHandler resourceHandler = new ResourceHandler();
+        final Resource base = ResourceFactory.of(resourceHandler).newClassLoaderResource("/static/", true);
+        resourceHandler.setBaseResource(base);
+        resourceHandler.setDirAllowed(false);
+        resourceHandler.setCacheControl("public, max-age=31536000");
+        return resourceHandler;
     }
 
     private RewriteHandler rewriteHandler() {
         final RewriteHandler rewriteHandler = new RewriteHandler();
-        rewriteHandler.setRewriteRequestURI(true);
-        rewriteHandler.setRewritePathInfo(true);
         redirectRules(rewriteHandler);
         regexRules(rewriteHandler);
         return rewriteHandler;
     }
 
     private RewriteHandler badRequestRewriteHandler() {
-        final RewriteHandler rewriteHandler = new RewriteHandler();
-        rewriteHandler.setRewriteRequestURI(true);
-        rewriteHandler.setRewritePathInfo(true);
-        return rewriteHandler;
+        return new RewriteHandler();
     }
 
     private void regexRules(final RewriteHandler rewriteHandler) {
-        final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1?$Q");
+        final RewriteRegexRule defaultRule = new RewriteRegexRule("^/db-web-ui/(.*)$", "/db-web-ui/$1");
         defaultRule.setTerminating(true);
         rewriteHandler.addRule(defaultRule);
     }
 
     private void redirectRules(final RewriteHandler rewriteHandler) {
         final RedirectToHttpsRule redirectToHttpsRule = new RedirectToHttpsRule();
-        redirectToHttpsRule.setHandling(true);
         redirectToHttpsRule.setTerminating(true);
         rewriteHandler.addRule(redirectToHttpsRule);
-
         rewriteHandler.addRule(new RedirectPatternRule("/search/abuse-finder.html", "https://www.ripe.net/support/abuse"));
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/docs/?(.*)$", "https://docs.db.ripe.net/$1")));
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/$", "/db-web-ui/query")));
@@ -169,4 +161,5 @@ public class JettyConfiguration  {
             super.write(filtered);
         }
     }
+
 }

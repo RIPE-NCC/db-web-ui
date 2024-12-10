@@ -4,9 +4,9 @@ import net.ripe.whois.AbstractIntegrationTest;
 import net.ripe.whois.services.RsngService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 class ResourceTicketServiceCachedIntegrationTest extends AbstractIntegrationTest {
 
-    @MockBean
+    @MockitoBean
     private RsngService rsngService;
 
     @BeforeEach
