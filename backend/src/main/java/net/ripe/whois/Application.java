@@ -4,8 +4,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -124,11 +122,6 @@ public class Application implements AsyncConfigurer {
         taskExecutor.setThreadNamePrefix("DbWebUI-Executor-");
         taskExecutor.initialize();
         return taskExecutor;
-    }
-
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler();
     }
 
     private void logProperties() {

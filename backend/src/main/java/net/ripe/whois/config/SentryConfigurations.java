@@ -3,7 +3,7 @@ package net.ripe.whois.config;
 import io.sentry.Sentry;
 import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.ClientErrorException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.BadMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
