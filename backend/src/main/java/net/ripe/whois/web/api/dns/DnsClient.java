@@ -53,10 +53,10 @@ public class DnsClient {
 
     private Optional<String> checkDnsConfig(final String ns, final String record, final InetAddress address, final TransportProtocol protocol) {
         try {
-            LOGGER.info("Querying for {}@{} ({}) using {}", record, ns, address, protocol);
+            LOGGER.debug("Querying for {}@{} ({}) using {}", record, ns, address, protocol);
             final Resolver resolver = getResolver(address, port, protocol);
             final Lookup lookup = executeQuery(record, resolver);
-            LOGGER.info("Response message for {} ({}):{}", ns, address, lookup.getErrorString());
+            LOGGER.debug("Response message for {} ({}):{}", ns, address, lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) ||
                     "network error".equalsIgnoreCase(lookup.getErrorString())) {
                 return Optional.of(String.format("No reply from %s on port %d/%s. %s", address.getHostAddress(), port, protocol, LEARN_MORE_MESSAGE));
