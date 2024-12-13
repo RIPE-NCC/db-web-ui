@@ -55,7 +55,7 @@ public class DnsCheckerController {
                                            @RequestParam(value = "record") final String inRecord) {
 
         UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
-        LOGGER.info("DNS check for user {}", userInfoResponse.user.username);
+        LOGGER.debug("DNS check for user {}", userInfoResponse.user.username);
         // tidy up a bit
         final String ns = inNs.trim();
         final String record = inRecord.trim();
@@ -75,7 +75,7 @@ public class DnsCheckerController {
             }
         }
 
-        LOGGER.info("Success DNS check for {}", ns);
+        LOGGER.debug("Success DNS check for {}", ns);
         return new ResponseEntity<>(new Response(ns, 0, "Server is authoritative for " + record), HttpStatus.OK);
     }
 
