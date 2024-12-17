@@ -41,9 +41,7 @@ public class WhoisReferencesController extends ApiController {
     public ResponseEntity<String> search(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
                                          @RequestParam(value = "limit", required = false) Integer limit,
                                          @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
-
         LOGGER.debug("search {} {} {}->{}", source, objectType, name, name);
-
         removeUnnecessaryHeaders(headers);
 
         return whoisReferencesService.getReferences(source, objectType, name, limit, headers);
@@ -72,7 +70,7 @@ public class WhoisReferencesController extends ApiController {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleAllExceptions() {
+    public void handleIllegalArgumentExceptions() {
         // Nothing to do
     }
 }

@@ -87,6 +87,7 @@ public class RestTemplateConfiguration {
         final RequestConfig requestConfig = RequestConfig.custom()
                                                 .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                                                 .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+                                                .setResponseTimeout(HTTPCLIENT_READ_TIMEOUT, TimeUnit.MILLISECONDS)
                                                 .build();
         return HttpClients.custom()
                 .setDefaultHeaders(Collections.singleton(new BasicHeader(HttpHeaders.CONNECTION, "close")))

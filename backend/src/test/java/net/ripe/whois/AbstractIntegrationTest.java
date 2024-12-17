@@ -203,6 +203,10 @@ public abstract class AbstractIntegrationTest {
         return restTemplate.exchange("http://localhost:" + getLocalServerPort() + path, HttpMethod.POST, httpEntity, type);
     }
 
+    public <T> ResponseEntity<T> delete(final String path, final Class<T> type, final HttpEntity httpEntity) {
+        return restTemplate.exchange("http://localhost:" + getLocalServerPort() + path, HttpMethod.DELETE, httpEntity, type);
+    }
+
     public HttpEntity validSsoCookie() {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=" + SSO_COOKIE_VALUE);
