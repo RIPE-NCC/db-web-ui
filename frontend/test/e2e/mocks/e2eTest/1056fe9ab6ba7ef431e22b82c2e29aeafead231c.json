@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/references/RIPE/as-set/AS196613%253AAS-TEST?limit=5",
+    "requestUrl": "/db-web-ui/api/references/RIPE/as-set/AS196613%3AAS-TEST?limit=5",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

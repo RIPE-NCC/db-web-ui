@@ -31,8 +31,7 @@ export class RestService {
 
     public getReferences(source: string, objectType: string, name: string, limit: string) {
         const params = new HttpParams().set('limit', limit);
-        const encodedName = encodeURIComponent(name); // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
-        return this.http.get(`api/references/${source.toUpperCase()}/${objectType}/${encodeURIComponent(encodedName)}`, { params }).pipe(
+        return this.http.get(`api/references/${source.toUpperCase()}/${objectType}/${encodeURIComponent(name)}`, { params }).pipe(
             tap({
                 next: (result: any) => {
                     console.debug('getReferences success:' + JSON.stringify(result));
