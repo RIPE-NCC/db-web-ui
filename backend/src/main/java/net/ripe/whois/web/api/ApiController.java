@@ -8,7 +8,7 @@ public class ApiController {
         // The address used for this header was the one used on the browser.
         // This problem was caused by the need to bypass all the request to the proxy,
         // but it was not able to resolve it and the response was HTTP-400.
-        headers.remove(com.google.common.net.HttpHeaders.HOST);
+        headers.remove(HttpHeaders.HOST);
     }
 
 }
