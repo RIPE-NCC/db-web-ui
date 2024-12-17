@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/references/RIPE/route/211.43.192.0%252F19AS9777?limit=5",
+    "requestUrl": "/db-web-ui/api/references/RIPE/route/211.43.192.0%2F19AS9777?limit=5",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
