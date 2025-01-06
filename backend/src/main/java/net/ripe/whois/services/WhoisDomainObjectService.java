@@ -1,6 +1,7 @@
 package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
+import jakarta.ws.rs.core.MediaType;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import org.slf4j.Logger;
@@ -19,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriTemplate;
 
-import jakarta.ws.rs.core.MediaType;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -40,19 +40,26 @@ public class WhoisDomainObjectService {
     }
 
     @Async
-    public Future<ResponseEntity<String>> createDomainObjects(final String source, List<String> passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
+    public Future<ResponseEntity<String>> createDomainObjects(
+                final String source,
+                List<String> passwords,
+                final List<WhoisObject> domainObjects,
+                final String remoteAddress,
+                final String cookie) {
 
         final WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
 
-        headers.remove(HttpHeaders.ACCEPT_ENCODING);
-        headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
-        headers.remove(HttpHeaders.ACCEPT);
-        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE.toString());
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE.toString());
+        headers.add(HttpHeaders.ACCEPT_ENCODING, "identity");
+        headers.add(HttpHeaders.COOKIE, cookie);
+        headers.add(HttpHeaders.CONNECTION, "close");
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.toString());
 
         ResponseEntity<String> result;
         try {
-            result = restTemplate.postForEntity(getCreateDomainUri(source, passwords), new HttpEntity<>(whoisResources, headers), String.class);
+            result = restTemplate.postForEntity(getCreateDomainUri(source, passwords, remoteAddress), new HttpEntity<>(whoisResources, headers), String.class);
         } catch (HttpClientErrorException.BadRequest e) {
             // whois update failed due to validation failure etc. (expected)
             LOGGER.info("Failed to create domain object(s): {}:{}\n{}\n{}", e.getClass().getName(), e.getMessage(), e.getResponseBodyAsString(), e.getStatusCode());
@@ -68,13 +75,12 @@ public class WhoisDomainObjectService {
         return new AsyncResult<>(result);
     }
 
-    private URI getCreateDomainUri(final String source, final List<String> passwords) {
+    private URI getCreateDomainUri(final String source, final List<String> passwords, final String clientIp) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", restApiUrl);
         variables.put("source", source);
-
-        final URI uri = new UriTemplate("{url}/domain-objects/{source}").expand(variables);
-
+        variables.put("clientIp", clientIp);
+        final URI uri = new UriTemplate("{url}/domain-objects/{source}?clientIp={clientIp}").expand(variables);
         final UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUri(uri);
         if (passwords != null) {
             for (String password : passwords){
