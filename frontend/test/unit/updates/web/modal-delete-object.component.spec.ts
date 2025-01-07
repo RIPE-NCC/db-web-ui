@@ -307,7 +307,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
     it('should show info message that roa exist for route object', async () => {
         await componentFixture.whenStable();
         modalDeleteObjectComponent.inputData = {
-            name: '192.194.0.0/16AS1759',
+            name: '192.194.0.0/16as1759', // in case origin is specified with lowercase
             objectType: 'route',
             onCancelPath: ON_CANCEL,
             source: source,
@@ -340,6 +340,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         );
         modalDeleteObjectComponent.ngOnInit();
         expect(modalDeleteObjectComponent.showRoaMsg).toBeTruthy();
+        expect(rpkiValidatorServiceMock.hasRoa).toHaveBeenCalledWith('as1759', '192.194.0.0/16');
     });
 
     it("shouldn't show info message when roa doesn't exist for route object", async () => {
