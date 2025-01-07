@@ -58,7 +58,6 @@ export class AttributeMetadataService {
     public existingDomainTo: any;
     private timeout: any;
     private lastPrefix: any;
-    private cachedResponses = {};
 
     constructor(
         private jsUtils: JsUtilService,
@@ -271,7 +270,6 @@ export class AttributeMetadataService {
             return;
         }
 
-        this.cachedResponses = {}; // prefix changed, so empty the cache
         if (PrefixServiceUtils.isValidPrefix(attribute.value)) {
             this.lastPrefix = attribute.value;
             this.attributeSharedService.prefixOk(attribute.value);
@@ -419,63 +417,7 @@ export class AttributeMetadataService {
             attribute.$$error = 'Duplicate value';
             return true;
         }
-        if (_.isObject(this.cachedResponses[attribute.value])) {
-            const result = this.cachedResponses[attribute.value];
-            if (result.code === 0) {
-                attribute.$$info = result.message;
-                attribute.$$error = '';
-                attribute.$$invalid = false;
-            } else {
-                attribute.$$info = '';
-                attribute.$$error = result.message;
-                attribute.$$invalid = true;
-            }
-            return attribute.$$invalid;
-        }
-
-        const doCall = () => {
-            attribute.$$info = 'Checking name server...';
-            attribute.$$error = '';
-            // any reverse zone will do
-            this.prefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).subscribe({
-                next: (resp: any) => {
-                    if (!resp || !_.isNumber(resp.code)) {
-                        this.cachedResponses[attribute.value] = { code: -1, message: 'No response during check' };
-                        return;
-                    }
-                    const nserverResult: any = resp;
-                    if (nserverResult.ns !== attribute.value) {
-                        // ignore this result. input has changed since req was fired
-                        return;
-                    }
-                    this.cachedResponses[attribute.value] = nserverResult;
-                    // put response in cache
-                    this.attributeSharedService.stateChanged(attribute);
-                },
-                error: (err: any) => {
-                    if (err.status === 404) {
-                        this.cachedResponses[attribute.value] = { code: -1, message: 'FAILED' };
-                        this.attributeSharedService.stateChanged(attribute);
-                    } else if (keepTrying) {
-                        keepTrying -= 1;
-                        if (this.timeout) {
-                            clearTimeout(this.timeout);
-                        }
-                        this.timeout = setTimeout(doCall, 1000);
-                    } else {
-                        this.cachedResponses[attribute.value] = { code: -1, message: 'FAILED' };
-                        this.attributeSharedService.stateChanged(attribute);
-                    }
-                },
-            });
-        };
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(doCall, 600);
-        // This is a wrapper for an async call, so should return "true" (invalid). The
-        // async response will set the success/errors.
-        return this.jsUtils.typeOf(attribute.$$invalid) === 'boolean' ? attribute.$$invalid : true;
+        return false;
     };
 
     private isModifyMode(objectType: string, attributes: IAttributeModel[]): boolean {

@@ -34,16 +34,11 @@ describe('The create domain screen', () => {
             .authenticateWithDisabledAssociate('TEST03-MNT')
             .typeOnField('nserver$1', 'ns1.orgtest22.nl')
             .blurOnField('nserver$1')
-            .typeOnField('nserver$2', 'nsXXX.orgtest22.nl')
-            .blurOnField('nserver$2')
-            .expectErrorOnField('nserver$2', 'Could not resolve nsXXX.orgtest22.nl')
             .typeOnField('nserver$2', 'ns2.orgtest22.nl')
             .blurOnField('nserver$2');
 
         webupdatesPage
             .expectInfoOnField('prefix', 'Prefix looks OK')
-            .expectInfoOnField('nserver$1', 'Server is authoritative for 110.17.212.in-addr.arpa')
-            .expectInfoOnField('nserver$2', 'Server is authoritative for 110.17.212.in-addr.arpa')
             .expectFieldToExist('admin-c', true)
             .expectFieldToExist('tech-c', true)
             .expectFieldToExist('zone-c', true)
@@ -56,27 +51,19 @@ describe('The create domain screen', () => {
             .blurOnField('prefix')
             .typeOnField('nserver$1', 'ns1.orgtest22.nl')
             .blurOnField('nserver$1')
-            .typeOnField('nserver$2', 'nsXXX.orgtest22.nl')
-            .blurOnField('nserver$2')
             .expectFieldToExist('admin-c', false)
             .expectFieldToExist('tech-c', false)
             .expectFieldToExist('zone-c', false)
             .typeOnField('nserver$2', 'ns2.orgtest22.nl')
-            .blurOnField('nserver$2');
+            .blurOnField('nserver$2')
+            .expectFieldToExist('admin-c', true)
+            .expectFieldToExist('tech-c', true)
+            .expectFieldToExist('zone-c', true);
 
-        webupdatesPage
-            .expectInfoOnField('prefix', 'Prefix looks OK')
-            .expectInfoOnField('nserver$1', 'Server is authoritative for 0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa')
-            .expectInfoOnField('nserver$2', 'Server is authoritative for 0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa')
-            .expectReverseZoneTableToHaveRows(1);
+        webupdatesPage.expectInfoOnField('prefix', 'Prefix looks OK').expectReverseZoneTableToHaveRows(1);
 
         // User changes his mind!
-        webupdatesPage
-            .typeOnField('prefix', '212.17.110.0/23')
-            .blurOnField('prefix')
-            .expectInfoOnField('prefix', 'Prefix looks OK')
-            .expectInfoOnField('nserver$1', 'Server is authoritative for 110.17.212.in-addr.arpa')
-            .expectInfoOnField('nserver$2', 'Server is authoritative for 110.17.212.in-addr.arpa');
+        webupdatesPage.typeOnField('prefix', '212.17.110.0/23').blurOnField('prefix').expectInfoOnField('prefix', 'Prefix looks OK');
     });
 
     it('should show a popup and a nice message on success', () => {
