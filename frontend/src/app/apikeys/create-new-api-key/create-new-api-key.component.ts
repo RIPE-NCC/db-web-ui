@@ -23,12 +23,16 @@ export class CreateNewApiKeyComponent implements OnInit {
     expiresAt: Date;
     maintainer: string;
     maintainers: IMntByModel[];
+    minDate: Date = new Date();
+    maxDate: Date = new Date();
 
     private searchMaintainers = new Subject<string>();
 
     constructor(private restService: RestService, private apiKeysService: ApiKeysService, public dialog: MatDialog, private alertsService: AlertsService) {}
 
     ngOnInit(): void {
+        this.minDate.setDate(this.minDate.getDate() + 1);
+        this.maxDate.setFullYear(this.maxDate.getFullYear() + 1);
         this.searchMaintainers
             .pipe(
                 debounceTime(300),
