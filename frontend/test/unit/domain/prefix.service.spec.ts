@@ -23,39 +23,6 @@ describe('PrefixService', () => {
         expect(prefixService).toBeTruthy();
     });
 
-    describe('checkNameserverAsync', () => {
-        it('should throw an error if no ns', (done) => {
-            prefixService.checkNameserverAsync(undefined, 'zone').subscribe({
-                next: null,
-                error: (error) => {
-                    expect(error).toBe('checkNameserverAsync called without ns');
-                    done();
-                },
-            });
-        });
-
-        it('should throw an error if no zone', (done) => {
-            prefixService.checkNameserverAsync('ns', undefined).subscribe({
-                next: null,
-                error: (error) => {
-                    expect(error).toBe('checkNameserverAsync called without rDnsZone');
-                    done();
-                },
-            });
-        });
-
-        it('should call the proper url when ns and zone', (done) => {
-            prefixService.checkNameserverAsync('ns', 'zone').subscribe({
-                next: (response) => {
-                    expect(response).toBe('response');
-                    done();
-                },
-            });
-            const req = httpMock.expectOne({ method: 'GET', url: 'api/dns/status?ignore404=true&ns=ns&record=zone' });
-            req.flush('response');
-        });
-    });
-
     describe('findExistingDomainsForPrefix', () => {
         it('should zip ', (done) => {
             prefixService.findExistingDomainsForPrefix('prefix').subscribe({

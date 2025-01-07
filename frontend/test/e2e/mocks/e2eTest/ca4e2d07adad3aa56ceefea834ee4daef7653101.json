@@ -1,6 +1,0 @@
-{
-    "requestUrl": "/api/dns/status?ignore404=true&ns=dns1.test.net&record=153.90.91.in-addr.arpa",
-    "contentType": "application/javascript",
-    "statusCode": 200,
-    "data": { "ns": "dns1.test.net", "code": 0, "message": "Server is authoritative for 153.90.91.in-addr.arpa" }
-}

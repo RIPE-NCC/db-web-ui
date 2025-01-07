@@ -1,23 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, throwError, zip } from 'rxjs';
+import { of, zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class PrefixService {
     constructor(private http: HttpClient) {}
-
-    public checkNameserverAsync(ns: any, rDnsZone: any) {
-        if (!ns) {
-            return throwError(() => 'checkNameserverAsync called without ns');
-        }
-
-        if (!rDnsZone) {
-            return throwError(() => 'checkNameserverAsync called without rDnsZone');
-        }
-
-        return this.http.get(`api/dns/status?ignore404=true&ns=${ns}&record=${rDnsZone}`);
-    }
 
     public findExistingDomainsForPrefix(prefixStr: string) {
         const createRequest = (flag: string) => {
