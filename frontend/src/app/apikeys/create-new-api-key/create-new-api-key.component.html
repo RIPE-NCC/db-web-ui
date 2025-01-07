@@ -1,13 +1,13 @@
 <div class="create-new-api-key-form">
     <mat-form-field>
         <mat-label>Key name</mat-label>
-        <input matInput [(ngModel)]="apiKeyName" />
+        <input matInput maxlength="24" [(ngModel)]="apiKeyName" />
         <mat-hint>Give the key a name that helps you to identify it. For example, the name of your local application or script that will be using it </mat-hint>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Expiration date</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="expiresAt" />
-        <mat-hint>MM/DD/YYYY up to a year in the future</mat-hint>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="expiresAt" [min]="minDate" [max]="maxDate" />
+        <mat-hint>Enter a date up to a year in the future</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
