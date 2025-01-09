@@ -24,7 +24,7 @@ describe('CreateNewApiKeyComponent', () => {
         restServiceMock = jasmine.createSpyObj<RestService>('RestService', ['autocomplete']);
         apiKeysServiceMock = jasmine.createSpyObj<ApiKeysService>('ApiKeysService', ['saveApiKey']);
         matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
-        alertsServiceMock = jasmine.createSpyObj<AlertsService>('AlertsService', ['addGlobalError']);
+        alertsServiceMock = jasmine.createSpyObj<AlertsService>('AlertsService', ['addGlobalError', 'clearAlertMessages']);
         void TestBed.configureTestingModule({
             imports: [ApiKeysModule, MatDialogModule, NoopAnimationsModule],
             declarations: [CreateNewApiKeyComponent],
@@ -70,6 +70,9 @@ describe('CreateNewApiKeyComponent', () => {
         component.maintainer = 'fake maintainer';
         component.saveApiKey();
 
+        //should clear previous error messages
+        expect(alertsServiceMock.clearAlertMessages).toHaveBeenCalled();
+
         expect(component.apiKeyName).toBeUndefined();
         expect(component.expiresAt).toBeUndefined();
         expect(component.maintainer).toBeUndefined();
@@ -93,6 +96,8 @@ describe('CreateNewApiKeyComponent', () => {
         component.maintainer = 'fake maintainer';
         component.saveApiKey();
 
+        //should clear previous error messages
+        expect(alertsServiceMock.clearAlertMessages).toHaveBeenCalled();
         expect(alertsServiceMock.addGlobalError).toHaveBeenCalledWith('my error');
     });
 });

@@ -49,6 +49,7 @@ export class CreateNewApiKeyComponent implements OnInit {
     }
 
     saveApiKey() {
+        this.alertsService.clearAlertMessages();
         const expiresAtUtc = moment(this.expiresAt).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z';
         this.apiKeysService.saveApiKey(this.apiKeyName, expiresAtUtc, this.maintainer).subscribe({
             next: (response: ApiKey) => {
