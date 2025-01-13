@@ -26,6 +26,7 @@ import { FullTextSearchModule } from './fulltextsearch/full-text-search.module';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { HeaderInterceptor } from './interceptor/header.interceptor';
 import { MetaDataCleanerInterceptor } from './interceptor/meta-data-cleaner.interceptor';
+import { CustomDateAdapterModule } from './material-custom/custom-date-adapter';
 import { MenuComponent } from './menu/menu.component';
 import { MenuService } from './menu/menu.service';
 import { MyResourcesModule } from './myresources/my-resources.module';
@@ -83,6 +84,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         MatLineModule,
         SessionInfoModule,
         ApiKeysModule,
+        CustomDateAdapterModule,
     ],
     providers: [
         CookieService,
