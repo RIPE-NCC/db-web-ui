@@ -4,7 +4,7 @@ describe('api keys', () => {
     const apiKeysPage = new ApiKeysPage();
 
     it('should show the current api keys in the table', () => {
-        apiKeysPage.visit().expectTableToContain('my mocked access key');
+        apiKeysPage.visit().expectTableToContain('my mocked access key').expectTableToContain('2025-01-08 10:21');
     });
 
     it('should create new api key', () => {
