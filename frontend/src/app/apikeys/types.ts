@@ -1,6 +1,6 @@
 export type ApiKey = {
     label: string;
-    lastUsed?: string;
+    lastUsed?: Date;
     expiresAt: string;
     details?: string;
     application?: string;

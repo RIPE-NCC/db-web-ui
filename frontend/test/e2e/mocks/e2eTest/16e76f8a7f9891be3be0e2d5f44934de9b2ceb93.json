@@ -5,7 +5,9 @@
     "data": [
         {
             "accessKey": "my mocked access key",
-            "details": "MHM-MNT"
+            "details": "MHM-MNT",
+            "lastUsed": "2025-01-08T10:21:49.96061Z",
+            "expiresAt": "2025-01-22"
         }
     ]
 }
