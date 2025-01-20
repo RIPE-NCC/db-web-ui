@@ -101,6 +101,17 @@ describe('primitives of modalDeleteObject', () => {
         expect(modalDeleteObjectComponent.isDeletable(refs)).toBeTruthy();
     });
 
+    it('should not allow deletion of ORGANISATION', () => {
+        const empty: any[] = [];
+        const refs = {
+            objectType: 'organisation',
+            primaryKey: 'ORGTEST30',
+            incoming: [{ objectType: 'mntner', primaryKey: 'TEST-MNT' }],
+            outgoing: empty,
+        };
+        expect(modalDeleteObjectComponent.isDeletable(refs)).toBeFalsy();
+    });
+
     it('should allow deletion of simple mntner-person pair', () => {
         expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_TEST_MNT)).toBeTruthy();
     });
