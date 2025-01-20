@@ -26,6 +26,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
 
     public reason = "I don't need this object";
     public incomingReferences: any;
+    public objectToDeleteWithRefs: boolean;
     public canBeDeleted: boolean;
     public restCallInProgress = false;
     private isDismissed: boolean = true;
@@ -55,15 +56,13 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const deleteWithRefs = this.hasNonSelfIncomingRefs(this.inputData.objectType, this.inputData.name, this.incomingReferences);
-
         this.restService
             .deleteObject(
                 this.inputData.source,
                 this.inputData.objectType,
                 this.inputData.name,
                 this.reason,
-                deleteWithRefs,
+                this.objectToDeleteWithRefs,
                 this.credentialsService.getPasswordsForRestCall(),
             )
             .subscribe({
@@ -97,7 +96,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     }
 
     public isDeletable(parent: any) {
-        if (_.isUndefined(parent) || _.isUndefined(parent.objectType)) {
+        if (!parent?.objectType || !this.shouldDeleteWithRefs(parent.objectType)) {
             return false;
         }
         // parent is the object we asked references for
@@ -142,6 +141,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
                 this.restCallInProgress = false;
                 this.canBeDeleted = this.isDeletable(resp);
                 this.incomingReferences = resp.incoming;
+                this.objectToDeleteWithRefs = this.hasNonSelfIncomingRefs(this.inputData.objectType, this.inputData.name, resp.incoming);
             },
             error: (error: any) => {
                 this.restCallInProgress = false;
@@ -166,5 +166,16 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
 
     public transitionToState(source: string, objectType: string, pkey: string, onCancelPath: string) {
         void this.router.navigate([onCancelPath, source, objectType, pkey]);
+    }
+
+    private shouldDeleteWithRefs(objectType: string) {
+        if (_.isUndefined(this.objectToDeleteWithRefs) || !this.objectToDeleteWithRefs) {
+            return true;
+        }
+        return this.isSupportedType(objectType);
+    }
+
+    private isSupportedType(objectType: string) {
+        return objectType == ObjectTypesEnum.PERSON || objectType == ObjectTypesEnum.ROLE || objectType == ObjectTypesEnum.MNTNER;
     }
 }
