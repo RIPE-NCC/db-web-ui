@@ -47,6 +47,20 @@ public class WhoisReferencesController extends ApiController {
         return whoisReferencesService.getReferences(source, objectType, name, limit, headers);
     }
 
+    @RequestMapping(value = "/{source}/{objectType}/{keyPrefix:.*}/{keySuffix:.*}", method = RequestMethod.GET, produces =
+            { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<String> search(@PathVariable String source, @PathVariable String objectType,
+                                         @PathVariable String keyPrefix, @PathVariable String keySuffix,
+                                         @RequestParam(value = "limit", required = false) Integer limit,
+                                         @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
+
+        final String key = keyPrefix.concat("/").concat(keySuffix);
+        LOGGER.debug("search {} {} {} ->{}", source, objectType, key, key);
+        removeUnnecessaryHeaders(headers);
+
+        return whoisReferencesService.getReferences(source, objectType, key, limit, headers);
+    }
+
     @RequestMapping(value = "/{source}", method = RequestMethod.POST)
     public ResponseEntity<String> create(@PathVariable String source,
                                          @RequestBody(required = true) final String body,
