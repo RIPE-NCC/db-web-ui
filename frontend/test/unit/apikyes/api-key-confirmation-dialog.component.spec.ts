@@ -22,6 +22,6 @@ describe('ApiKeyConfirmationDialogComponent', () => {
     });
 
     it('should get Basic Authorization Header', () => {
-        expect(component.getBasicAuthorizationHeader('username', 'password')).toEqual('Basic dXNlcm5hbWU6cGFzc3dvcmQ=');
+        expect(component.getBasicAuthorizationHeader('username', 'password')).toEqual('Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=');
     });
 });
