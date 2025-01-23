@@ -13,7 +13,7 @@ export class ApiKeyConfirmationDialogComponent {
     protected readonly btoa = btoa;
 
     public getBasicAuthorizationHeader(username: string, password: string) {
-        return `Basic ${this.encodeUsernamePassword(username, password)}`;
+        return `Authorization: Basic ${this.encodeUsernamePassword(username, password)}`;
     }
 
     private encodeUsernamePassword(username: string, password: string) {

@@ -6,7 +6,7 @@
             <div>In case you use an HTTP Authorization header</div>
             <div class="copy-content">
                 <div>
-                    Authorization: <strong>{{ getBasicAuthorizationHeader(data.accessKey, data.secretKey) }}</strong>
+                    <strong>{{ getBasicAuthorizationHeader(data.accessKey, data.secretKey) }}</strong>
                 </div>
                 <div class="copy-key-content">
                     <button mat-flat-button color="primary" [cdkCopyToClipboard]="getBasicAuthorizationHeader(data.accessKey, data.secretKey)">
