@@ -139,9 +139,9 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
         this.restService.getReferences(source, objectType, name, this.MAX_REFS_TO_SHOW.toString()).subscribe({
             next: (resp: any) => {
                 this.restCallInProgress = false;
-                this.canBeDeleted = this.isDeletable(resp);
                 this.incomingReferences = resp.incoming;
                 this.objectToDeleteWithRefs = this.hasNonSelfIncomingRefs(this.inputData.objectType, this.inputData.name, resp.incoming);
+                this.canBeDeleted = this.isDeletable(resp);
             },
             error: (error: any) => {
                 this.restCallInProgress = false;
