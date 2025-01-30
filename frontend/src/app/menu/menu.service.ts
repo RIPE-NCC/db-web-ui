@@ -38,11 +38,14 @@ export class MenuService {
         const filteredItemsByRoles = this.menu.main
             .filter((item) => item.roles.some((role) => userRoles.includes(role)))
             .map((item) => {
-                if (item.id === 'resources' && userRoles.includes('NON-MEMBER')) {
-                    return { ...item, subtitle: 'My Resources' };
-                } else {
-                    return item;
+                if (userRoles.includes('NON-MEMBER')) {
+                    if (item.id === 'resources') {
+                        return { ...item, subtitle: 'My Resources' };
+                    } else if (item.id === 'api_keys') {
+                        return { ...item, subtitle: 'API Keys' };
+                    }
                 }
+                return item;
             });
         // @ts-ignore
         this.menu.main.forEach((menuItem) => {
