@@ -9,6 +9,7 @@ import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { FeedbackSupportDialogComponent } from '../feedbacksupport/feedback-support-dialog.component';
 import { PropertiesService } from '../properties.service';
+import { UserInfoService } from '../userinfo/user-info.service';
 import { MenuService } from './menu.service';
 
 @Component({
@@ -31,6 +32,7 @@ export class MenuComponent implements OnInit, OnDestroy {
         public dialog: MatDialog,
         private location: Location,
         private router: Router,
+        private userInfoService: UserInfoService,
     ) {
         // mainly because switching between My Resources and Sponsored Resources
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
@@ -49,7 +51,8 @@ export class MenuComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.activeUrl = this.location.path();
         this.setActiveMenuItem();
-        this.menu = JSON.stringify(this.menuService.createMenu(['unauthorised']));
+        let userRoles = this.userInfoService.isLogedIn() ? ['unauthorised', 'NON-MEMBER'] : ['unauthorised'];
+        this.menu = JSON.stringify(this.menuService.createMenu(userRoles));
     }
 
     public ngOnDestroy() {
