@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     public menu: string;
     public activeItem: string = 'create'; // id from menu.json
     public activeUrl: string; // browser url - location path
-    public loggedIn: boolean;
+    public loggedIn: boolean = false;
     private readonly navigationEnd: Subscription;
 
     constructor(
@@ -60,6 +60,7 @@ export class MenuComponent implements OnInit, OnDestroy {
             this.loggedIn = true;
         });
 
+        console.log('is logged' + this.loggedIn);
         console.log(userRoles);
         this.menu = JSON.stringify(this.menuService.createMenu(userRoles));
     }
