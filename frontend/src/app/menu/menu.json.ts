@@ -77,7 +77,7 @@ export const menuObject = {
             id: 'api_keys',
             parent: 'database',
             url: 'DATABASE_API_KEYS',
-            roles: ['admin', 'billing', 'certification', 'general', 'generalMeeting', 'guest', 'myResources', 'ticketing', 'LOGGED'],
+            roles: ['admin', 'billing', 'certification', 'general', 'generalMeeting', 'guest', 'myResources', 'ticketing', 'NON-MEMBER', 'LOGGED'],
         },
         {
             title: 'RPKI',
