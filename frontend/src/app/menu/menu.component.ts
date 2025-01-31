@@ -52,6 +52,7 @@ export class MenuComponent implements OnInit, OnDestroy {
         this.activeUrl = this.location.path();
         this.setActiveMenuItem();
         let userRoles = this.userInfoService.isLogedIn() ? ['LOGIN'] : ['unauthorised'];
+        console.log(userRoles);
         this.menu = JSON.stringify(this.menuService.createMenu(userRoles));
     }
 
