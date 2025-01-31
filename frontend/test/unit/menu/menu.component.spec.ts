@@ -8,6 +8,7 @@ import { MenuComponent } from '../../../src/app/menu/menu.component';
 import { MenuService } from '../../../src/app/menu/menu.service';
 import { IpUsageService } from '../../../src/app/myresources/ip-usage.service';
 import { PropertiesService } from '../../../src/app/properties.service';
+import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
 describe('LeftHandMenuComponent', () => {
     let component: MenuComponent;
@@ -18,7 +19,14 @@ describe('LeftHandMenuComponent', () => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule],
             declarations: [MenuComponent],
-            providers: [MenuService, IpUsageService, PropertiesService, OrgDropDownSharedService, { provide: Location, useValue: { path: () => '' } }],
+            providers: [
+                MenuService,
+                IpUsageService,
+                PropertiesService,
+                OrgDropDownSharedService,
+                UserInfoService,
+                { provide: Location, useValue: { path: () => '' } },
+            ],
         });
     });
 
