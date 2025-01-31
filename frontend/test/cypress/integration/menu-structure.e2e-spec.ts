@@ -86,7 +86,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
-    it('should show menu structure for user without org or lir', () => {
+    it('should show menu structure for logged in user without org or lir', () => {
         cy.changeJsonResponseFile(userWithoutOrgOrLir, userInfoFile);
         cy.visit('');
         menuPage
@@ -97,7 +97,7 @@ describe('The left hand menu structure depend on logged in user role', () => {
             /* My Resource structure is empty */
             .expectSecondLevelMenuSize('Resources', 0);
 
-        expectRipeDatabaseMenuItemWithoutApiKeysItem();
+        expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
     it('should show menu structure for no logged in user', () => {
