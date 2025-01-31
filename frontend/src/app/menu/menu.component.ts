@@ -22,6 +22,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     public menu: string;
     public activeItem: string = 'create'; // id from menu.json
     public activeUrl: string; // browser url - location path
+    public loggedIn: boolean;
     private readonly navigationEnd: Subscription;
 
     constructor(
@@ -35,6 +36,9 @@ export class MenuComponent implements OnInit, OnDestroy {
         private userInfoService: UserInfoService,
     ) {
         // mainly because switching between My Resources and Sponsored Resources
+        this.userInfoService.userLoggedIn$.subscribe(() => {
+            this.loggedIn = true;
+        });
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
             this.activeUrl = evt.url;
@@ -51,7 +55,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.activeUrl = this.location.path();
         this.setActiveMenuItem();
-        let userRoles = this.userInfoService.isLogedIn() ? ['LOGIN'] : ['unauthorised'];
+        let userRoles = this.loggedIn ? ['LOGIN'] : ['unauthorised'];
         console.log(userRoles);
         this.menu = JSON.stringify(this.menuService.createMenu(userRoles));
     }
