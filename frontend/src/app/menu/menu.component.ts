@@ -53,8 +53,7 @@ export class MenuComponent implements OnInit, OnDestroy {
         this.setActiveMenuItem();
 
         this.userInfoService.userLoggedIn$.subscribe(() => {
-            console.log('logged in');
-            this.menu = JSON.stringify(this.menuService.createMenu(['LOGIN']));
+            this.menu = JSON.stringify(this.menuService.createMenu(['unauthorised', 'NON-MEMBER']));
         });
 
         this.menu = JSON.stringify(this.menuService.createMenu(['unauthorised']));
