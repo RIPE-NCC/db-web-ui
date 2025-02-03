@@ -14,7 +14,10 @@ import { MenuService } from './menu.service';
 
 @Component({
     selector: 'swe-menu',
-    template: `<app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>`,
+    template: `
+        <app-nav-bar *ngIf="isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
+        <app-nav-bar *ngIf="!isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
+    `,
 })
 export class MenuComponent implements OnInit, OnDestroy {
     @Input()
@@ -22,6 +25,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     public menu: string;
     public activeItem: string = 'create'; // id from menu.json
     public activeUrl: string; // browser url - location path
+    public isUserLogged = false; // to rerender menu - so API Key menu item could be shown as selected - web component expand parent(s) of active item only at initial render
     private readonly navigationEnd: Subscription;
 
     constructor(
@@ -46,15 +50,15 @@ export class MenuComponent implements OnInit, OnDestroy {
             }
             this.menu = JSON.stringify(this.menuService.createMenu(selected.roles));
         });
+        this.userInfoService.userLoggedIn$.subscribe(() => {
+            this.menu = JSON.stringify(this.menuService.createMenu(['unauthorised', 'LOGGED']));
+            this.isUserLogged = true;
+        });
     }
 
     ngOnInit() {
         this.activeUrl = this.location.path();
         this.setActiveMenuItem();
-
-        this.userInfoService.userLoggedIn$.subscribe(() => {
-            this.menu = JSON.stringify(this.menuService.createMenu(['unauthorised', 'LOGGED']));
-        });
 
         this.menu = JSON.stringify(this.menuService.createMenu(['unauthorised']));
     }
