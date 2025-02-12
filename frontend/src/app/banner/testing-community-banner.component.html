@@ -1,0 +1,10 @@
+<div *ngIf="!closed" class="promo-banner">
+    <div class="content">
+        <span class="fal fa-hands-heart"></span> Help shape the future of RIPE NCC services! Participate in our user research.
+        <a href="https://www.ripe.net/about-us/what-we-do/user-research/">Learn more</a>
+    </div>
+    <div class="content">
+        <button mat-stroked-button color="primary" mat-dialog-close (click)="closeBanner()">No, thanks</button>
+        <a mat-flat-button color="primary" href="https://ripe-ncc.typeform.com/user-research" target="_blank">Sign up</a>
+    </div>
+</div>

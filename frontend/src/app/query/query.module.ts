@@ -12,6 +12,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { CertificateBannerComponent } from '../banner/certificate-banner.component';
+import { TestingCommunityBannerComponent } from '../banner/testing-community-banner.component';
 import { SharedModule } from '../shared/shared.module';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
 import { AdvanceFilterPanelComponent } from './advance-filter-panel.component';
@@ -46,6 +47,7 @@ import { TypesPanelComponent } from './types-panel.component';
         MatIconModule,
         ClipboardModule,
         MatTooltipModule,
+        TestingCommunityBannerComponent,
     ],
     declarations: [
         LookupComponent,
