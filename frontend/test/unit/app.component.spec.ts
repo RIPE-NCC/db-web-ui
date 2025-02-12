@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AppComponent } from '../../src/app/app.component';
-import { BannerComponent } from '../../src/app/banner/banner.component';
 import { PropertiesService } from '../../src/app/properties.service';
 import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
 import { ReleaseNotificationService } from '../../src/app/shared/release-notification.service';
@@ -21,7 +20,7 @@ describe('AppComponent', () => {
         releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            declarations: [AppComponent, BannerComponent],
+            declarations: [AppComponent],
             providers: [
                 {
                     provide: PropertiesService,
