@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AlertsService } from '../shared/alert/alerts.service';
 import { ApiKeysService } from './api-keys.service';
 import { RevokeKeyDialogComponent } from './revoke-key-dialog/revoke-key-dialog.component';
 import { ApiKey } from './types';
@@ -24,7 +25,7 @@ export class ApiKeysComponent implements OnInit {
 
     readonly revokeDialog = inject(MatDialog);
 
-    constructor(private apiKeysService: ApiKeysService) {}
+    constructor(private apiKeysService: ApiKeysService, private alertsService: AlertsService) {}
 
     ngOnInit(): void {
         this.loadTableData();
@@ -53,9 +54,14 @@ export class ApiKeysComponent implements OnInit {
     }
 
     private loadTableData() {
-        this.apiKeysService.getApiKeys().subscribe((apiKeys: ApiKey[]) => {
-            this.dataSource = new MatTableDataSource<ApiKey>(apiKeys);
-            this.afterViewInit();
+        this.apiKeysService.getApiKeys().subscribe({
+            next: (apiKeys: ApiKey[]) => {
+                this.dataSource = new MatTableDataSource<ApiKey>(apiKeys);
+                this.afterViewInit();
+            },
+            error: () => {
+                this.alertsService.addGlobalError('Failed to load data. Please try again later.');
+            },
         });
     }
 }
