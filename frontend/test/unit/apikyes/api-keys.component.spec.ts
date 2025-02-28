@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ApiKeysComponent } from '../../../src/app/apikeys/api-keys.component';
 import { ApiKeysModule } from '../../../src/app/apikeys/api-keys.module';
 import { ApiKeysService } from '../../../src/app/apikeys/api-keys.service';
@@ -15,6 +15,7 @@ describe('ApiKeysComponent', () => {
     let component: ApiKeysComponent;
     let fixture: ComponentFixture<ApiKeysComponent>;
     let apiKeysServiceMock: SpyObj<ApiKeysService>;
+    let alertsServiceMock: SpyObj<AlertsService>;
     let matDialogMock: SpyObj<MatDialog>;
 
     const apiKeysResponse: ApiKey[] = [
@@ -29,6 +30,7 @@ describe('ApiKeysComponent', () => {
 
     beforeEach(waitForAsync(() => {
         apiKeysServiceMock = jasmine.createSpyObj<ApiKeysService>('ApiKeysService', ['getApiKeys', 'deleteApiKey']);
+        alertsServiceMock = jasmine.createSpyObj<AlertsService>('AlertsService', ['addGlobalError']);
         matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
 
         void TestBed.configureTestingModule({
@@ -37,7 +39,7 @@ describe('ApiKeysComponent', () => {
             providers: [
                 { provide: ApiKeysService, useValue: apiKeysServiceMock },
                 { provide: RestService, useValue: {} },
-                { provide: AlertsService, useValue: {} },
+                { provide: AlertsService, useValue: alertsServiceMock },
                 { provide: MatDialog, useValue: matDialogMock },
             ],
         }).compileComponents();
@@ -48,6 +50,12 @@ describe('ApiKeysComponent', () => {
         fixture = TestBed.createComponent(ApiKeysComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+    });
+
+    it('should show error message when fail loading data', () => {
+        apiKeysServiceMock.getApiKeys.and.returnValue(throwError(() => 400));
+        component.ngOnInit();
+        expect(alertsServiceMock.addGlobalError).toHaveBeenCalledWith('Failed to load data. Please try again later.');
     });
 
     it('should load api keys on init', () => {
