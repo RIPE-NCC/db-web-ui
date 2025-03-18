@@ -1,14 +1,14 @@
 <div *ngIf="whoisObject.attributes">
     <div class="lookupheader" *ngIf="header">
-        Responsible organisation:
         <span *ngIf="resourceHolderFound">
+            Responsible organisation:
             <a
                 [routerLink]="['/lookup']"
                 [queryParams]="{ source: whoisObject['source'].id, key: whoisObject['resource-holder'].key, type: 'organisation' }"
                 target="_blank"
                 >{{ whoisObject['resource-holder'].name }}</a
-            > </span
-        ><span *ngIf="!resourceHolderFound"> {{ 'msg.noResourceHolderFound.text' | label }}</span>
+            >
+        </span>
         <br />
         <span *ngIf="abuseContactFound">
             Abuse contact info:

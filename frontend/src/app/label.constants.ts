@@ -21,7 +21,6 @@ export const Labels = {
     'lookup.updateObjectButton.text': 'Update object',
 
     'msg.noAbuseContactFound.text': 'No abuse contact found',
-    'msg.noResourceHolderFound.text': 'Not found',
     'msg.ripeTandCSubmitLink.text':
         'By submitting this form you explicitly express your agreement with the <a' +
         " href='https://apps.db.ripe.net/db-web-ui/legal#terms-and-conditions' target='_blank'>RIPE Database Terms and Conditions <em class=\"fal fa-external-link\"></em></a>",
