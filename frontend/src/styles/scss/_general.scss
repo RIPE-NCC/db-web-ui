@@ -354,6 +354,10 @@ div.portlet.navigation {
     vertical-align: top;
     white-space: normal;
     width: 100%;
+
+    display: block;
+    flex-direction: column;
+    justify-content: center;
 }
 
 section .resultlinks {
