@@ -176,7 +176,7 @@ describe('LeftHandMenuComponent', () => {
             roles: ['certification', 'NON-MEMBER'],
         });
         expect(component.menu).not.toContain('My LIR');
-        expect(component.menu).toContain('Requests');
+        expect(component.menu).not.toContain('Requests');
         expect(component.menu).toContain('Resources');
         expect(component.menu).toContain('My Resources');
         expect(component.menu).not.toContain('Sponsored Resources');

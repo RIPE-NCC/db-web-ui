@@ -52,11 +52,10 @@ describe('The left hand menu structure depend on logged in user role', () => {
         cy.changeJsonResponseFile(enduser, userInfoFile);
         cy.visit('');
         menuPage
-            .expectTopMenuSize(4)
-            .expectTopMenuTitleToBe(0, 'Requests')
-            .expectTopMenuTitleToBe(1, 'Resources')
-            .expectTopMenuTitleToBe(2, 'LOCAL Database')
-            .expectTopMenuTitleToBe(3, 'RPKI')
+            .expectTopMenuSize(3)
+            .expectTopMenuTitleToBe(0, 'Resources')
+            .expectTopMenuTitleToBe(1, 'LOCAL Database')
+            .expectTopMenuTitleToBe(2, 'RPKI')
             .openTopLevelMenu('Resources')
             /* My Resource structure of menu items
                 My Resources
