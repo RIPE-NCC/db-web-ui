@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,9 +13,9 @@ describe('ModalAddAttributeComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalAddAttributeComponent],
-            providers: [{ provide: NgbActiveModal, useValue: modalMock }],
+            imports: [FormsModule, SharedModule],
+            providers: [{ provide: NgbActiveModal, useValue: modalMock }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         componentFixture = TestBed.createComponent(ModalAddAttributeComponent);
         modalAddAttributeComponent = componentFixture.componentInstance;

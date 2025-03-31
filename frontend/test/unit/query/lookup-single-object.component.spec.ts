@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,9 +21,16 @@ describe('LookupSingleObjectComponent', () => {
     beforeEach(() => {
         lookupServiceSpy = jasmine.createSpyObj('LookupService', ['lookupWhoisObject']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
             declarations: [LookupSingleObjectComponent, LookupComponent, WhoisObjectViewerComponent],
-            providers: [PropertiesService, UserInfoService, CookieService, { provide: LookupService, useValue: lookupServiceSpy }],
+            imports: [SharedModule, RouterTestingModule],
+            providers: [
+                PropertiesService,
+                UserInfoService,
+                CookieService,
+                { provide: LookupService, useValue: lookupServiceSpy },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
     });
 

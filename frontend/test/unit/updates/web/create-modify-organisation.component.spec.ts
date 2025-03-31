@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -42,8 +43,8 @@ describe('CreateModifyComponent for organisation', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ) });
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
             declarations: [CreateModifyComponent],
+            imports: [SharedModule, CoreModule, NgSelectModule],
             providers: [
                 PrefixService,
                 ResourceStatusService,
@@ -82,6 +83,8 @@ describe('CreateModifyComponent for organisation', () => {
                     },
                 },
                 { provide: NgbModal, useValue: modalMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

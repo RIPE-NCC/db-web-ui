@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FullTextSearchModule } from '../../../src/app/fulltextsearch/full-text-search.module';
 import { FullTextSearchService } from '../../../src/app/fulltextsearch/full-text-search.service';
@@ -9,8 +10,13 @@ describe('FullTextSearchService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [FullTextSearchModule, HttpClientTestingModule],
-            providers: [FullTextSearchService, { provide: '$log', useValue: { error: () => {} } }],
+            imports: [FullTextSearchModule],
+            providers: [
+                FullTextSearchService,
+                { provide: '$log', useValue: { error: () => {} } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
         httpMock = TestBed.inject(HttpTestingController);
         fullTextSearchService = TestBed.inject(FullTextSearchService);

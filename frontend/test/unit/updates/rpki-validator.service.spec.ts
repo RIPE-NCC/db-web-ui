@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RpkiValidatorService } from '../../../src/app/updatesweb/rpki-validator.service';
 import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
@@ -9,8 +10,8 @@ describe('RpkiValidatorService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, UpdatesWebModule],
-            providers: [RpkiValidatorService],
+            imports: [UpdatesWebModule],
+            providers: [RpkiValidatorService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         rpkiValidatorService = TestBed.inject(RpkiValidatorService);

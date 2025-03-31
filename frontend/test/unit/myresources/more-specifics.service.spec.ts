@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AppModule } from '../../../src/app/app.module';
 import { MoreSpecificsService } from '../../../src/app/myresources/morespecifics/more-specifics.service';
@@ -10,8 +11,8 @@ describe('MoreSpecificsService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, MyResourcesModule, AppModule],
-            providers: [MoreSpecificsService],
+            imports: [MyResourcesModule, AppModule],
+            providers: [MoreSpecificsService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });

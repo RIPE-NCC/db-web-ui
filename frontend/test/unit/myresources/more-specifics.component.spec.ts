@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule } from '../../../src/app/core/core.module';
@@ -16,9 +17,15 @@ describe('MoreSpecificsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, RouterTestingModule, HttpClientTestingModule],
             declarations: [MoreSpecificsComponent, RefreshComponent],
-            providers: [MoreSpecificsService, PropertiesService, { provide: Location, useValue: { path: () => '/myresources/detail' } }],
+            imports: [SharedModule, CoreModule, RouterTestingModule],
+            providers: [
+                MoreSpecificsService,
+                PropertiesService,
+                { provide: Location, useValue: { path: () => '/myresources/detail' } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
         httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(MoreSpecificsComponent);

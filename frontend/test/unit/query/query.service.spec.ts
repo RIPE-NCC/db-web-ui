@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
@@ -13,13 +14,15 @@ describe('QueryService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            imports: [],
             providers: [
                 QueryService,
                 QueryParametersService,
                 WhoisMetaService,
                 { provide: PropertiesService, useValue: { SOURCE: 'TEST' } },
                 { provide: '$log', useValue: { info: () => {} } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

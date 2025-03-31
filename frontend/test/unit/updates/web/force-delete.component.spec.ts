@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
@@ -70,8 +71,8 @@ describe('ForceDeleteController', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
 
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
             declarations: [ForceDeleteComponent],
+            imports: [FormsModule],
             providers: [
                 {
                     provide: ActivatedRoute,
@@ -92,6 +93,8 @@ describe('ForceDeleteController', () => {
                 WhoisMetaService,
                 PrefixService,
                 PropertiesService,
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -243,8 +246,8 @@ describe('ForceDeleteController should be able to handle escape objected with sl
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
             declarations: [ForceDeleteComponent],
+            imports: [FormsModule],
             providers: [
                 {
                     provide: ActivatedRoute,
@@ -266,6 +269,8 @@ describe('ForceDeleteController should be able to handle escape objected with sl
                 WhoisMetaService,
                 PrefixService,
                 PropertiesService,
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

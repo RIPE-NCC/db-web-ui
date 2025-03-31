@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
 import { RequireLoginComponent } from '../../../src/app/fmp/require-login.component';
@@ -14,11 +15,13 @@ describe('RequireLoginComponent', () => {
         mockLocation = jasmine.createSpyObj('Location', ['search', 'absUrl']);
         queryParamMock = convertToParamMap({});
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             declarations: [RequireLoginComponent],
+            imports: [],
             providers: [
                 { provide: PropertiesService, useValue: { LOGIN_URL: 'https://access.prepdev.ripe.net/' } },
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: queryParamMock } } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         fixture = TestBed.createComponent(RequireLoginComponent);

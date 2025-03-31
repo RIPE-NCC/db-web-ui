@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -12,12 +13,14 @@ describe('RestService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, HttpClientTestingModule],
+            imports: [SharedModule],
             providers: [
                 RestService,
                 PropertiesService,
                 { provide: 'WhoisResources', useValue: { wrapError: (error: string) => error, wrapSuccess: (success: string) => success } },
                 { provide: Router, useValue: { navigateByUrl: () => {}, events: of() } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

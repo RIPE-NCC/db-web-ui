@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { throwError } from 'rxjs';
@@ -17,12 +18,14 @@ describe('UnsubscribeComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             declarations: [UnsubscribeComponent, LoadingIndicatorComponent],
+            imports: [],
             providers: [
                 UnsubscribeService,
                 { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (messageId: string) => '123456789012345678' } } } },
-                { provide: UserInfoService, useValue: { data: throwError(() => 401) } }, // not logged in user
+                { provide: UserInfoService, useValue: { data: throwError(() => 401) } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
     }));

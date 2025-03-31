@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule } from '../../../src/app/core/core.module';
 import { QueryFlagsComponent } from '../../../src/app/query/query-flags.component';
@@ -13,9 +14,13 @@ describe('QueryFlagsComponent', () => {
     beforeEach(() => {
         queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlags', 'addSpaceBehindFlagT']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, HttpClientTestingModule],
             declarations: [QueryFlagsComponent],
-            providers: [{ provide: QueryFlagsService, useValue: queryFlagsServiceSpy }],
+            imports: [SharedModule, CoreModule],
+            providers: [
+                { provide: QueryFlagsService, useValue: queryFlagsServiceSpy },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
 
         fixture = TestBed.createComponent(QueryFlagsComponent);

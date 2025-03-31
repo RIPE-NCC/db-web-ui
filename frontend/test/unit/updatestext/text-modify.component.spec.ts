@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
@@ -83,8 +84,8 @@ describe('TextModifyComponent', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [TextModifyComponent],
+            imports: [FormsModule, SharedModule],
             providers: [
                 { provide: PreferenceService, useValue: preferencesServiceMock },
                 WhoisResourcesService,
@@ -110,6 +111,8 @@ describe('TextModifyComponent', () => {
                         },
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

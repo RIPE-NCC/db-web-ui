@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
@@ -45,8 +46,8 @@ describe('TextCreateComponent', () => {
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}), dismissed: EMPTY });
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [TextCreateComponent],
+            imports: [FormsModule, SharedModule],
             providers: [
                 { provide: PreferenceService, useValue: preferencesServiceMock },
                 WhoisResourcesService,
@@ -72,6 +73,8 @@ describe('TextCreateComponent', () => {
                         },
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatLineModule } from '@angular/material/core';
@@ -60,10 +60,10 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         FeedbackSupportDialogComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    bootstrap: [AppComponent],
     imports: [
         BrowserModule,
         FormsModule,
-        HttpClientModule,
         SharedModule,
         UpdatesWebModule,
         UpdatesTextModule,
@@ -103,7 +103,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: SessionInterceptor, multi: true },
+        provideHttpClient(withInterceptorsFromDi()),
     ],
-    bootstrap: [AppComponent],
 })
 export class AppModule {}

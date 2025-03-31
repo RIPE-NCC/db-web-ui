@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule } from '../../../../src/app/core/core.module';
 import { DescriptionSyntaxComponent } from '../../../../src/app/shared/descriptionsyntax/description-syntax.component';
@@ -11,7 +12,8 @@ describe('DescriptionSyntaxComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule, CoreModule],
+            imports: [SharedModule, CoreModule],
+            providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(DescriptionSyntaxComponent);

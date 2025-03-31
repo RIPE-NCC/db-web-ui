@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -31,8 +32,8 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
             declarations: [ModalCreateRoleForAbuseCComponent],
+            imports: [FormsModule],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 WhoisResourcesService,
@@ -43,6 +44,8 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
                 PropertiesService,
                 { provide: RestService, useValue: restServiceMock },
                 { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

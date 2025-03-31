@@ -52,42 +52,80 @@ $mat-bondiblue: (
     contrast: (
         50: rgba(black, 0.87),
         100: rgba(black, 0.87),
-        200: rgba(black, 0.87),
-        300: rgba(black, 0.87),
-        400: rgba(black, 0.87),
-        500: white,
-        600: white,
-        700: white,
-        800: rgba(white, 0.87),
-        900: rgba(white, 0.87),
-        A100: rgba(black, 0.87),
-        A200: white,
-        A400: white,
-        A700: white,
     ),
 );
 
-$custom-theme-primary: mat.define-palette($mat-darkblue, 900);
-$custom-theme-accent: mat.define-palette($mat-bondiblue, 700);
-$custom-theme-warn: mat.define-palette(mat.$red-palette);
-//$custom-theme-warn: mat.define-palette(#ed1c24);
+$custom-theme-primary: mat.m2-define-palette($mat-darkblue, 900);
+$custom-theme-accent: mat.m2-define-palette($mat-bondiblue, 700);
+$custom-theme-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$custom-typography: mat.define-typography-config(
+$custom-typography: mat.m2-define-typography-config(
     $font-family: 'Public Sans',
-    $headline-1: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
-    $headline-2: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
-    $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
-    $headline-4: mat.define-typography-level(34px, 40px, 400),
-    $headline-5: mat.define-typography-level(1.563rem, 32px, 700),
-    $headline-6: mat.define-typography-level(20px, 32px, 500),
-    $subtitle-1: mat.define-typography-level(16px, 28px, 400),
-    $subtitle-2: mat.define-typography-level(16px, 24px, 400),
-    $body-2: mat.define-typography-level(16px, 24px, 400),
-    $body-1: mat.define-typography-level(16px, 24px, 400),
-    $caption: mat.define-typography-level(12px, 20px, 400),
-    $button: mat.define-typography-level(14px, 14px, 500),
+    $headline-1: (
+        font-size: 112px,
+        line-height: 112px,
+        font-weight: 300,
+        letter-spacing: -0.05em,
+    ),
+    $headline-2: (
+        font-size: 56px,
+        line-height: 56px,
+        font-weight: 400,
+        letter-spacing: -0.02em,
+    ),
+    $headline-3: (
+        font-size: 45px,
+        line-height: 48px,
+        font-weight: 400,
+        letter-spacing: -0.005em,
+    ),
+    $headline-4: (
+        font-size: 34px,
+        line-height: 40px,
+        font-weight: 400,
+    ),
+    $headline-5: (
+        font-size: 1.563rem,
+        line-height: 32px,
+        font-weight: 700,
+    ),
+    $headline-6: (
+        font-size: 20px,
+        line-height: 32px,
+        font-weight: 500,
+    ),
+    $subtitle-1: (
+        font-size: 16px,
+        line-height: 28px,
+        font-weight: 400,
+    ),
+    $subtitle-2: (
+        font-size: 16px,
+        line-height: 24px,
+        font-weight: 400,
+    ),
+    $body-2: (
+        font-size: 16px,
+        line-height: 24px,
+        font-weight: 400,
+    ),
+    $body-1: (
+        font-size: 16px,
+        line-height: 24px,
+        font-weight: 400,
+    ),
+    $caption: (
+        font-size: 12px,
+        line-height: 20px,
+        font-weight: 400,
+    ),
+    $button: (
+        font-size: 14px,
+        line-height: 14px,
+        font-weight: 500,
+    ),
 );
-$custom-theme: mat.define-light-theme(
+$custom-theme: mat.m2-define-light-theme(
     (
         color: (
             primary: $custom-theme-primary,

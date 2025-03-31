@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,9 +18,17 @@ describe('ForceDeleteSelectComponent', () => {
     beforeEach(() => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
             declarations: [ForceDeleteSelectComponent],
-            providers: [PropertiesService, AlertsService, WhoisMetaService, WhoisResourcesService, { provide: Router, useValue: routerMock }],
+            imports: [FormsModule],
+            providers: [
+                PropertiesService,
+                AlertsService,
+                WhoisMetaService,
+                WhoisResourcesService,
+                { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
         httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(ForceDeleteSelectComponent);

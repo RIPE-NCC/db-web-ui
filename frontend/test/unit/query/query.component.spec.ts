@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { convertToParamMap } from '@angular/router';
@@ -169,8 +170,8 @@ describe('QueryComponent', () => {
             'getTypeOfSearchedTerm',
         ]);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([]), MatMenuModule],
             declarations: [QueryComponent, CertificateBannerComponent, LookupComponent, TemplateComponent, WhoisObjectViewerComponent],
+            imports: [SharedModule, CoreModule, RouterTestingModule.withRoutes([]), MatMenuModule],
             providers: [
                 { provide: QueryService, useValue: queryServiceSpy },
                 WhoisMetaService,
@@ -188,6 +189,8 @@ describe('QueryComponent', () => {
                         userLoggedIn$: of(),
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         whoisMetaService = TestBed.inject(WhoisMetaService);

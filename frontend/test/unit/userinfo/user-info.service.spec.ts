@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie-service';
 import { IUserInfoOrganisation, IUserInfoRegistration, IUserInfoResponseData } from '../../../src/app/dropdown/org-data-type.model';
@@ -11,8 +12,8 @@ describe('UserInfoService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [UserInfoService, CookieService],
+            imports: [],
+            providers: [UserInfoService, CookieService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         userInfoService = TestBed.inject(UserInfoService);

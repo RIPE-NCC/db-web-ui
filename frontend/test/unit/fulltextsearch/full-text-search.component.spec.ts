@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -19,13 +20,15 @@ describe('FullTextSearchComponent', () => {
     beforeEach(() => {
         fullTextSearchService = jasmine.createSpyObj('FullTextSearchService', ['doSearch']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule],
             declarations: [FullTextSearchComponent, FullTextResultSummaryComponent],
+            imports: [SharedModule, CoreModule, RouterTestingModule],
             providers: [
                 { provide: FullTextSearchService, useValue: fullTextSearchService },
                 FullTextResponseService,
                 WhoisMetaService,
                 { provide: PropertiesService, useValue: {} },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         }).compileComponents();
     });
