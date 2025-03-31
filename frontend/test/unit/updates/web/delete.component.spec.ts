@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -33,8 +34,8 @@ describe('DeleteController', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             declarations: [DeleteComponent],
+            imports: [],
             providers: [
                 WhoisResourcesService,
                 AlertsService,
@@ -51,6 +52,8 @@ describe('DeleteController', () => {
                         },
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

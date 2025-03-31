@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import find from 'lodash/find';
@@ -15,7 +16,7 @@ describe('OrganisationHelperService', () => {
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
 
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            imports: [],
             providers: [
                 OrganisationHelperService,
                 WhoisResourcesService,
@@ -23,6 +24,8 @@ describe('OrganisationHelperService', () => {
                 RestService,
                 PropertiesService,
                 { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         organisationHelperService = TestBed.inject(OrganisationHelperService);

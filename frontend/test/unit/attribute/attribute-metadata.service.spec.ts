@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
@@ -53,7 +54,7 @@ describe('AttributeMetadataService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, AttributeModule],
+            imports: [AttributeModule],
             providers: [
                 AttributeMetadataService,
                 JsUtilService,
@@ -63,6 +64,8 @@ describe('AttributeMetadataService', () => {
                 { provide: Location, useValue: {} },
                 { provide: PropertiesService, useValue: MockPropertiesService },
                 { provide: 'ModalService', useValue: {} },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

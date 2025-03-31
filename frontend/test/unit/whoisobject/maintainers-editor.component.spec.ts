@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -31,8 +32,8 @@ describe('MaintainersEditorComponent', () => {
         beforeEach(() => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
                 declarations: [MaintainersEditorComponent],
+                imports: [SharedModule, CoreModule, NgSelectModule],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,
@@ -50,6 +51,8 @@ describe('MaintainersEditorComponent', () => {
                     WebUpdatesCommonsService,
                     UserInfoService,
                     { provide: NgbModal, useValue: modalMock },
+                    provideHttpClient(withInterceptorsFromDi()),
+                    provideHttpClientTesting(),
                 ],
             });
             httpMock = TestBed.inject(HttpTestingController);
@@ -244,8 +247,8 @@ describe('MaintainersEditorComponent', () => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
             webUpdatesCommonsServiceMock = jasmine.createSpyObj('WebUpdatesCommonsService', ['performAuthentication']);
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
                 declarations: [MaintainersEditorComponent],
+                imports: [SharedModule, CoreModule, NgSelectModule],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,
@@ -263,6 +266,8 @@ describe('MaintainersEditorComponent', () => {
                     WebUpdatesCommonsService,
                     UserInfoService,
                     { provide: NgbModal, useValue: modalMock },
+                    provideHttpClient(withInterceptorsFromDi()),
+                    provideHttpClientTesting(),
                 ],
             });
             httpMock = TestBed.inject(HttpTestingController);

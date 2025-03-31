@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -38,7 +38,6 @@ import { SelectComponent } from './select.component';
 import { TypeaheadComponent } from './typeahead.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, HttpClientModule, SharedModule, NgSelectModule, WhoisObjectModule, RouterModule],
     declarations: [
         DisplayComponent,
         DisplayMntnerPairComponent,
@@ -57,6 +56,7 @@ import { TypeaheadComponent } from './typeahead.component';
         ModalEditAttributeComponent,
         TypeaheadComponent,
     ],
+    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule, WhoisObjectModule, RouterModule],
     providers: [
         PreferenceService,
         CookieService,
@@ -72,6 +72,7 @@ import { TypeaheadComponent } from './typeahead.component';
         CryptService,
         OrganisationHelperService,
         RpkiValidatorService,
+        provideHttpClient(withInterceptorsFromDi()),
     ],
 })
 export class UpdatesWebModule {}

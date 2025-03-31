@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -19,8 +20,9 @@ describe('AppComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             declarations: [AppComponent],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            imports: [],
             providers: [
                 {
                     provide: PropertiesService,
@@ -48,8 +50,9 @@ describe('AppComponent', () => {
                     provide: ReleaseNotificationService,
                     useValue: releaseNotificationService,
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
         });
     }));
 

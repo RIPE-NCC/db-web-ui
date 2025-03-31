@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,8 +18,8 @@ describe('LeftHandMenuComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule],
             declarations: [MenuComponent],
+            imports: [RouterTestingModule, MatDialogModule],
             providers: [
                 MenuService,
                 IpUsageService,
@@ -26,6 +27,8 @@ describe('LeftHandMenuComponent', () => {
                 OrgDropDownSharedService,
                 UserInfoService,
                 { provide: Location, useValue: { path: () => '' } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
     });

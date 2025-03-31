@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -44,7 +45,7 @@ describe('MntnerService', () => {
         propertiesService.TOP_RIPE_NCC_MNTNERS = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'];
 
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule, HttpClientTestingModule],
+            imports: [UpdatesWebModule],
             providers: [
                 MntnerService,
                 RestService,
@@ -67,6 +68,8 @@ describe('MntnerService', () => {
                         events: of(),
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

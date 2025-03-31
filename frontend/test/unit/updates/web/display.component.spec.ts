@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -35,8 +36,8 @@ describe('DisplayComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule],
             declarations: [DisplayComponent],
+            imports: [SharedModule],
             providers: [
                 CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
@@ -58,6 +59,8 @@ describe('DisplayComponent', () => {
                         queryParams: of({}),
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -247,8 +250,8 @@ describe('DisplayComponent with object containing slash', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule],
             declarations: [DisplayComponent],
+            imports: [SharedModule],
             providers: [
                 CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
@@ -270,6 +273,8 @@ describe('DisplayComponent with object containing slash', () => {
                         queryParams: of({}),
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -384,8 +389,8 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule],
             declarations: [DisplayComponent],
+            imports: [SharedModule],
             providers: [
                 CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
@@ -407,6 +412,8 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
                         queryParams: of({}),
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

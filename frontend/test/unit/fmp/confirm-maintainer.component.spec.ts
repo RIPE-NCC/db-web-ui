@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -20,8 +21,8 @@ describe('ConfirmMaintainerComponent', () => {
         mockEmailLinkService = jasmine.createSpyObj('EmailLinkService', ['get', 'update']);
         mockFmpErrorService = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             declarations: [ConfirmMaintainerComponent],
+            imports: [],
             providers: [
                 AlertsService,
                 WhoisMetaService,
@@ -31,6 +32,8 @@ describe('ConfirmMaintainerComponent', () => {
                 { provide: EmailLinkService, useValue: mockEmailLinkService },
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParams: {} } } },
                 { provide: Router, useValue: { navigate: () => {} } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
     });

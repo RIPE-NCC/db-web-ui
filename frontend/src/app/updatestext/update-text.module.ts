@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from '../core/core.module';
@@ -12,8 +12,8 @@ import { TextCreateComponent } from './text-create.component';
 import { TextModifyComponent } from './text-modify.component';
 
 @NgModule({
-    imports: [CoreModule, CommonModule, FormsModule, HttpClientModule, SharedModule, UpdatesWebModule],
     declarations: [TextCreateComponent, TextModifyComponent],
-    providers: [RpslService, SerialExecutorService, TextCommonsService],
+    imports: [CoreModule, CommonModule, FormsModule, SharedModule, UpdatesWebModule],
+    providers: [RpslService, SerialExecutorService, TextCommonsService, provideHttpClient(withInterceptorsFromDi())],
 })
 export class UpdatesTextModule {}

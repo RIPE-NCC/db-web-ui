@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -15,8 +16,16 @@ describe('FmpErrorService', () => {
     beforeEach(() => {
         alertServiceSpy = jasmine.createSpyObj('AlertsService', ['setGlobalError']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [FmpErrorService, { provide: AlertsService, useValue: alertServiceSpy }, WhoisResourcesService, WhoisMetaService, PropertiesService],
+            imports: [],
+            providers: [
+                FmpErrorService,
+                { provide: AlertsService, useValue: alertServiceSpy },
+                WhoisResourcesService,
+                WhoisMetaService,
+                PropertiesService,
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
         fmpErrorService = TestBed.inject(FmpErrorService);
     });

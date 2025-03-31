@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { EMPTY } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -12,11 +13,13 @@ describe('SessionInfoService', () => {
     beforeEach(() => {
         userInfoService = jasmine.createSpyObj('UserInfoService', ['pingUserInfo', 'removeUserInfo']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            imports: [],
             providers: [
                 { provide: PropertiesService, useValue: { SESSION_TTL: 20, USER_LOGGED_INTERVAL: 20 } },
                 SessionInfoService,
                 { provide: UserInfoService, useValue: userInfoService },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

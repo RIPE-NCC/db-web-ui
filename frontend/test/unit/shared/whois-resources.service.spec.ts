@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -24,8 +25,14 @@ describe('WhoisResourcesService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, HttpClientTestingModule],
-            providers: [WhoisResourcesService, WhoisMetaService, { provide: PropertiesService, useFactory: () => propertiesService }],
+            imports: [SharedModule],
+            providers: [
+                WhoisResourcesService,
+                WhoisMetaService,
+                { provide: PropertiesService, useFactory: () => propertiesService },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
         whoisResourcesService = TestBed.inject(WhoisResourcesService);
     });

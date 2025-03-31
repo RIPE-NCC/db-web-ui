@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { IQueryFlag, QueryFlagsService } from '../../../src/app/query/query-flags.service';
 
@@ -8,8 +9,8 @@ describe('QueryFlagsService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [QueryFlagsService],
+            imports: [],
+            providers: [QueryFlagsService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         queryFlagsService = TestBed.inject(QueryFlagsService);

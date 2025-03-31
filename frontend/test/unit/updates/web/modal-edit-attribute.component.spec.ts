@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,9 +17,14 @@ describe('ModalEditAttributeController', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalEditAttributeComponent],
-            providers: [{ provide: NgbActiveModal, useValue: modalMock }, PropertiesService],
+            imports: [FormsModule, SharedModule],
+            providers: [
+                { provide: NgbActiveModal, useValue: modalMock },
+                PropertiesService,
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
         httpMock = TestBed.inject(HttpTestingController);
         propertiesService = TestBed.inject(PropertiesService);

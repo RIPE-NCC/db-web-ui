@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -50,7 +51,6 @@ describe('ResourceDetailsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule, HttpClientTestingModule],
             declarations: [
                 ResourceDetailsComponent,
                 FlagComponent,
@@ -65,6 +65,7 @@ describe('ResourceDetailsComponent', () => {
                 AttributeReverseZonesComponent,
                 RefreshComponent,
             ],
+            imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
             providers: [
                 IpAddressService,
                 ResourceStatusService,
@@ -79,6 +80,8 @@ describe('ResourceDetailsComponent', () => {
                 // { provide: AssociatedObjectsService, useValue: MockAssociatedService},
                 UserInfoService,
                 CookieService,
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
     });

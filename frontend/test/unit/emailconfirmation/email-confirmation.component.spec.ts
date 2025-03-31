@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -17,12 +18,14 @@ describe('Testing EmailConfirmation with logged in user', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             declarations: [EmailConfirmationComponent, LoadingIndicatorComponent],
+            imports: [],
             providers: [
                 EmailConfirmationService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: of(200) } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
     }));
@@ -67,12 +70,14 @@ describe('Testing EmailConfirmation with not logged in user', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             declarations: [EmailConfirmationComponent, LoadingIndicatorComponent],
+            imports: [],
             providers: [
                 EmailConfirmationService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: throwError(() => 401) } },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
     }));

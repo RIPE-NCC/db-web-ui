@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
@@ -205,8 +206,8 @@ describe('SelectController', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}) });
 
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
             declarations: [SelectComponent],
+            imports: [FormsModule],
             providers: [
                 { provide: WhoisMetaService, useValue: whoisMetaServiceMock },
                 UserInfoService,
@@ -222,6 +223,8 @@ describe('SelectController', () => {
                         },
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

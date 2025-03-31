@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -38,8 +39,8 @@ describe('CreateMntnerPairComponent', () => {
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule, RouterTestingModule],
                 declarations: [CreateMntnerPairComponent],
+                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
                 providers: [
                     PropertiesService,
                     CreateService,
@@ -63,6 +64,8 @@ describe('CreateMntnerPairComponent', () => {
                             },
                         },
                     },
+                    provideHttpClient(withInterceptorsFromDi()),
+                    provideHttpClientTesting(),
                 ],
             });
             httpMock = TestBed.inject(HttpTestingController);
@@ -211,8 +214,8 @@ describe('CreateMntnerPairComponent', () => {
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule, RouterTestingModule],
                 declarations: [CreateMntnerPairComponent],
+                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
                 providers: [
                     PropertiesService,
                     CreateService,
@@ -236,6 +239,8 @@ describe('CreateMntnerPairComponent', () => {
                             },
                         },
                     },
+                    provideHttpClient(withInterceptorsFromDi()),
+                    provideHttpClientTesting(),
                 ],
             });
             httpMock = TestBed.inject(HttpTestingController);

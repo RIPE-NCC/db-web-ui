@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -27,8 +28,8 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, HttpClientTestingModule],
             declarations: [CreateSelfMaintainedMaintainerComponent],
+            imports: [SharedModule, CoreModule, NgSelectModule],
             providers: [
                 PropertiesService,
                 MessageStoreService,
@@ -54,6 +55,8 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
                     },
                 },
                 { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

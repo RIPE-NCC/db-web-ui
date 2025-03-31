@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FindMaintainerService } from '../../../src/app/fmp/find-maintainer.service';
 import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
@@ -16,7 +17,7 @@ describe('FindMaintainerService', () => {
         fmpErrorServiceSpy = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
         fmpErrorServiceSpy.isYourAccountBlockedError.and.returnValue(false);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            imports: [],
             providers: [
                 FindMaintainerService,
                 { provide: FmpErrorService, useValue: fmpErrorServiceSpy },
@@ -24,6 +25,8 @@ describe('FindMaintainerService', () => {
                 WhoisResourcesService,
                 WhoisMetaService,
                 PropertiesService,
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

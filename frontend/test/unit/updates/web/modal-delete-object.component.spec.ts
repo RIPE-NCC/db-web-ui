@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,13 +31,15 @@ describe('primitives of modalDeleteObject', () => {
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
         restServiceMock.getReferences.and.returnValue(of({ objectType: 'mntner', primaryKey: 'TEST-MNT' }));
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],
+            imports: [FormsModule, SharedModule],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
                 RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -145,13 +148,15 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
         restServiceMock.deleteObject.and.returnValue(of({}).toPromise());
         restServiceMock.getReferences.and.returnValue(of(REFS_FOR_UNDELETEABLE_OBJECTS));
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],
+            imports: [FormsModule, SharedModule],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
                 RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -226,14 +231,16 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],
+            imports: [FormsModule, SharedModule],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
                 { provide: RpkiValidatorService, useValue: rpkiValidatorServiceMock },
                 { provide: CredentialsService, useValue: credentialsServiceMock },
                 { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
@@ -394,13 +401,15 @@ describe('ModalDeleteObjectComponent loading references failures ', () => {
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
         restServiceMock.getReferences.and.returnValue(throwError(() => ({ data: 'error' })));
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule, SharedModule],
             declarations: [ModalDeleteObjectComponent],
+            imports: [FormsModule, SharedModule],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
                 RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);

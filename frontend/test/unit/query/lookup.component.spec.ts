@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -14,8 +15,8 @@ describe('LookupComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
             declarations: [LookupComponent, WhoisObjectViewerComponent],
+            imports: [SharedModule, RouterTestingModule],
             providers: [
                 PropertiesService,
                 {
@@ -25,6 +26,8 @@ describe('LookupComponent', () => {
                         userLoggedIn$: of(),
                     },
                 },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
         });
     });
