@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import supportedBrowsers from '../../src/assets/supportedBrowsers.js';
 import { PropertiesService } from './properties.service';
@@ -10,7 +10,7 @@ import { ReleaseNotificationService } from './shared/release-notification.servic
     selector: 'app-db-web-ui',
     templateUrl: 'app.component.html',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
     // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
     public isDesktopView: boolean;
     public isOpenMenu: boolean = true;
@@ -18,6 +18,8 @@ export class AppComponent implements OnInit {
     public showSessionExpireBanner: boolean = false;
     public loginUrl: string;
     public isBrowserSupported: boolean = true;
+
+    @ViewChild('switcher', { static: false }) switcher!: ElementRef;
 
     constructor(
         public properties: PropertiesService,
@@ -43,6 +45,18 @@ export class AppComponent implements OnInit {
         this.mobileOrDesktopView();
         this.releaseNotificationService.startPolling();
     }
+
+    ngAfterViewInit() {
+        if (this.switcher) {
+            this.switcher.nativeElement.addEventListener('click', this.handleSwitcherClick);
+        }
+    }
+
+    handleSwitcherClick = (event: Event) => {
+        console.log('Switcher clicked!', event);
+        (window as any)._paq = (window as any)._paq || [];
+        (window as any)._paq.push(['trackEvent', 'Web Component', 'Click', 'app-switcher']);
+    };
 
     private skipHash() {
         const hash = window.location.hash;
