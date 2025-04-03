@@ -7,8 +7,15 @@
     Do you use the RIPE Database regularly as a researching and data registration tool? You can earn a verifiable digital badge from the RIPE NCC that certifies
     your skills and expertise in using RIPE Database.
     <div class="documentByLine"><span class="byline"></span></div>
-    <a href="https://www.ripe.net/support/certified-professionals" rel="noopener" target="_blank" class="link-color">Find out more</a> about how you can earn
-    the RIPE Database Associate badge and get certified!
+    <a
+        href="https://www.ripe.net/support/certified-professionals"
+        rel="noopener"
+        target="_blank"
+        class="link-color"
+        (click)="trackLinkClick($event, 'https://www.ripe.net/support/certified-professionals')"
+        >Find out more</a
+    >
+    about how you can earn the RIPE Database Associate badge and get certified!
 </div>
 
 <div *ngIf="!closed && member" class="alert alert-light alert-dismissible padding margin-bottom" role="alert">
