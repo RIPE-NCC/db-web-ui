@@ -3,7 +3,12 @@
         <span class="fal fa-hands-heart"></span
         ><span
             >Help shape the future of RIPE NCC services! Participate in our user research.
-            <a href="https://www.ripe.net/about-us/what-we-do/user-research/"> Learn more</a></span
+            <a
+                href="https://www.ripe.net/about-us/what-we-do/user-research/"
+                (click)="trackLinkClick($event, 'https://www.ripe.net/about-us/what-we-do/user-research/')"
+            >
+                Learn more</a
+            ></span
         >
     </div>
     <div class="content">

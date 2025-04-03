@@ -21,4 +21,15 @@ export class TestingCommunityBannerComponent implements OnInit {
         element.parentNode.removeChild(element);
         localStorage.setItem('testing-community-banner', 'closed');
     }
+
+    trackLinkClick(event: Event, url: string) {
+        event.preventDefault(); // Prevents navigation before tracking
+        (window as any)._paq = (window as any)._paq || [];
+        (window as any)._paq.push(['trackEvent', 'Learn more Click', 'Click', url]);
+
+        // Delay navigation slightly to allow tracking
+        setTimeout(() => {
+            window.location.href = url;
+        }, 200);
+    }
 }
