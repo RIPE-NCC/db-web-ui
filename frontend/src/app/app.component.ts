@@ -53,7 +53,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     handleSwitcherClick = (event: Event) => {
-        console.log('Switcher clicked!', event);
         (window as any)._paq = (window as any)._paq || [];
         (window as any)._paq.push(['trackEvent', 'Web Component', 'Click', 'app-switcher']);
     };
