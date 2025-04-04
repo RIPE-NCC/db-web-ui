@@ -17,7 +17,8 @@ describe('The inetnum editor', () => {
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'aa1-ripe')
             .typeOnField('tech-c', 'aa1-ripe')
-            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionSizeFromNgSelect('status', 4)
+            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
             .expectOptionFromNgSelect('status', 'ASSIGNED PA')
             .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
             .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
@@ -40,7 +41,8 @@ describe('The inetnum editor', () => {
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'aa1-ripe')
             .typeOnField('tech-c', 'aa1-ripe')
-            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionSizeFromNgSelect('status', 4)
+            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
             .expectOptionFromNgSelect('status', 'ASSIGNED PA')
             .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
             .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
@@ -117,7 +119,8 @@ describe('The inetnum editor', () => {
             .typeOnField('admin-c', 'TSTADMINC-RIPE')
             .typeOnField('tech-c', 'TSTADMINC-RIPE')
             .expectDisabledSubmitCreate(true)
-            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionSizeFromNgSelect('status', 4)
+            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
             .expectOptionFromNgSelect('status', 'ASSIGNED PA')
             .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
             .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
@@ -135,7 +138,8 @@ describe('The inetnum editor', () => {
             .typeOnField('admin-c', 'TSTADMINC-RIPE')
             .typeOnField('tech-c', 'TSTADMINC-RIPE')
             .expectDisabledSubmitCreate(true)
-            .expectOptionSizeFromNgSelect('status', 3)
+            .expectOptionSizeFromNgSelect('status', 4)
+            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
             .expectOptionFromNgSelect('status', 'ASSIGNED PA')
             .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
             .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
@@ -162,7 +166,7 @@ describe('The inetnum editor', () => {
         webupdatesPage.selectOrganization('WTest').expectMaintainerToContain('etchells-mnt');
     });
 
-    it.only('should offer correct statuses when parent inetnum is AGGREGATED-BY-LIR', () => {
+    it('should offer correct statuses when parent inetnum is AGGREGATED-BY-LIR', () => {
         webupdatesPage
             .expectDisabledSubmitCreate(true)
             // should offer all default statuses

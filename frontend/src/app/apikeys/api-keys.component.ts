@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import moment from 'moment';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { ApiKeysService } from './api-keys.service';
 import { RevokeKeyDialogComponent } from './revoke-key-dialog/revoke-key-dialog.component';
@@ -54,9 +55,11 @@ export class ApiKeysComponent implements OnInit {
     }
 
     private loadTableData() {
+        const today = moment.now();
         this.apiKeysService.getApiKeys().subscribe({
             next: (apiKeys: ApiKey[]) => {
-                this.dataSource = new MatTableDataSource<ApiKey>(apiKeys);
+                const filteredOldApiKeys = apiKeys.filter((apiKey) => moment(apiKey.expiresAt).utc().isAfter(today));
+                this.dataSource = new MatTableDataSource<ApiKey>(filteredOldApiKeys);
                 this.afterViewInit();
             },
             error: () => {

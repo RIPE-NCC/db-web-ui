@@ -34,13 +34,12 @@
 // this should be its own component with text/icon/color as input properties
 .alert {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 8px;
-
     padding: 12px 16px;
     background-color: #ffdfcc;
     border-radius: 10px;
     font-size: 12px;
-    width: max-content;
+    width: 100%;
     color: #3d3d3d;
 }
