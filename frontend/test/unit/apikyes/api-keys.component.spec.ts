@@ -18,9 +18,19 @@ describe('ApiKeysComponent', () => {
     let alertsServiceMock: SpyObj<AlertsService>;
     let matDialogMock: SpyObj<MatDialog>;
 
-    const apiKeysResponse: ApiKey[] = [
+    const filteredApiKeysResponse: ApiKey[] = [
         {
-            expiresAt: '2024-01-01',
+            expiresAt: '2124-01-01', // just to ensure that next 100 years this test won't fail
+            lastUsed: new Date('2023-12-08T10:21:49.96061Z'),
+            label: 'my key name',
+            accessKey: 'accessKey',
+            secretKey: 'secretKey',
+        },
+    ];
+    const apiKeysResponse: ApiKey[] = [
+        ...filteredApiKeysResponse,
+        {
+            expiresAt: '2024-01-01', // just to ensure that next 100 years this test won't fail
             lastUsed: new Date('2023-12-08T10:21:49.96061Z'),
             label: 'my key name',
             accessKey: 'accessKey',
@@ -59,7 +69,7 @@ describe('ApiKeysComponent', () => {
     });
 
     it('should load api keys on init', () => {
-        expect(component.dataSource.data).toEqual(apiKeysResponse);
+        expect(component.dataSource.data).toEqual(filteredApiKeysResponse);
     });
 
     it('should revoke api key when accepting modal', () => {
