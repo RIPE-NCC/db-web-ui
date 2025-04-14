@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -68,9 +69,14 @@ public class WhoisDomainObjectService {
             LOGGER.info("Failed to create domain object(s): {}:{}\n{}\n{}", e.getClass().getName(), e.getMessage(), e.getResponseBodyAsString(), e.getStatusCode());
             result = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
         } catch (HttpServerErrorException e) {
-            String msg = "Call to Whois backend failed: ";
-            LOGGER.error(msg + e.getMessage(), e);
-            result = new ResponseEntity<>(msg + e.getMessage(), e.getStatusCode());
+            final String msg = "Call to Whois backend failed: ";
+            final String responseBody = e.getResponseBodyAsString();
+            LOGGER.error("{}: {}: {}\n{}", msg, e.getClass().getName(), e.getMessage(), responseBody);
+            if ((responseBody != null) && responseBody.contains("errormessages")) {
+                result = new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
+            } else {
+                result = new ResponseEntity<>(msg + e.getMessage(), e.getStatusCode());
+            }
         }
         return new AsyncResult<>(result);
     }

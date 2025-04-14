@@ -39,7 +39,8 @@ public class RestTemplateConfiguration {
     private static final long HTTPCLIENT_CONNECT_TIMEOUT = 5 * 1_000;
 
     // Socket timeout (in ms). Default is undefined (system default).
-    private static final int HTTPCLIENT_READ_TIMEOUT = 5 * 60 * 1_000;
+    // Make sure it's longer than the Whois read timeout so we don't close the connection before reading the response.
+    private static final int HTTPCLIENT_READ_TIMEOUT = (5 * 60 + 10) * 1_000;
 
     // Total maximum client connections in pool. Default is 20.
     private static final int HTTPCLIENT_TOTAL_MAX_CONNECTIONS = 200;
