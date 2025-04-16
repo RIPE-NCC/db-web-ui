@@ -1,0 +1,21 @@
+.tf-container {
+    height: 100%;
+    width: 100%;
+}
+
+:host ::ng-deep .tf-v1-popup {
+    height: 100%;
+    width: 100%;
+
+    iframe {
+        height: 100%;
+    }
+
+    button {
+        background-color: white;
+        border: 0;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+}

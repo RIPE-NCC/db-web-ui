@@ -1,0 +1,20 @@
+<section *ngIf="!closed && loggedInUser" id="typeform" name="typeform">
+    <div class="border padding margin-bottom col-sm-12">
+        <div class="row flex-column">
+            <div class="align-self-start w-auto">
+                <p class="title">Would you like to provide feedback to help us improve the RIPE Database?</p>
+                <p>
+                    If you agree, we will show feedback form provided by Typeform. Displaying this content may result in Typform processing your personal data
+                    and/or placing cookies on your computer or other device. Further information is available
+                    <a href="https://www.typeform.com/help/a/security-privacy-standards-at-typeform-9350912237844/" target="_blank"
+                        >here <em class="fal fa-external-link"></em></a
+                    >.
+                </p>
+            </div>
+            <div class="align-self-end w-auto">
+                <button mat-stroked-button color="primary" (click)="closeTypeformBanner()">No, thanks</button>
+                <button mat-flat-button class="margin-left" color="primary" (click)="openConfirmDialog()">Give feedback</button>
+            </div>
+        </div>
+    </div>
+</section>

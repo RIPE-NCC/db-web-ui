@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { CertificateBannerComponent } from '../banner/certificate-banner.component';
 import { OpenHouseBannerComponent } from '../banner/openhouse/open-house-banner.component';
 import { TestingCommunityBannerComponent } from '../banner/testing-community-banner.component';
+import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { SharedModule } from '../shared/shared.module';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
 import { AdvanceFilterPanelComponent } from './advance-filter-panel.component';
@@ -30,6 +32,7 @@ import { QueryComponent } from './query.component';
 import { QueryService } from './query.service';
 import { SharePanelComponent } from './share-panel.component';
 import { TemplateComponent } from './templatecomponent/template.component';
+import { TypeformDialogComponent } from './typeform-dialog/typeform-dialog.component';
 import { TypesPanelComponent } from './types-panel.component';
 
 @NgModule({
@@ -50,6 +53,10 @@ import { TypesPanelComponent } from './types-panel.component';
         MatTooltipModule,
         TestingCommunityBannerComponent,
         OpenHouseBannerComponent,
+        MatDialogContent,
+        MatDialogClose,
+        TypeformBannerComponent,
+        MatDialogTitle,
     ],
     declarations: [
         LookupComponent,
@@ -63,6 +70,7 @@ import { TypesPanelComponent } from './types-panel.component';
         AdvanceFilterPanelComponent,
         QueryFlagsComponent,
         SharePanelComponent,
+        TypeformDialogComponent,
     ],
     providers: [LookupService, QueryParametersService, QueryService, HierarchyFlagsService, QueryFlagsService],
     exports: [CertificateBannerComponent],
