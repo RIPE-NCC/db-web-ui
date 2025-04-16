@@ -13,7 +13,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { CertificateBannerComponent } from '../banner/certificate-banner.component';
-import { OpenHouseBannerComponent } from '../banner/openhouse/open-house-banner.component';
 import { TestingCommunityBannerComponent } from '../banner/testing-community-banner.component';
 import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { SharedModule } from '../shared/shared.module';
@@ -52,7 +51,6 @@ import { TypesPanelComponent } from './types-panel.component';
         ClipboardModule,
         MatTooltipModule,
         TestingCommunityBannerComponent,
-        OpenHouseBannerComponent,
         MatDialogContent,
         MatDialogClose,
         TypeformBannerComponent,
