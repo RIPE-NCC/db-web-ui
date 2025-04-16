@@ -16,11 +16,14 @@ export class TypeformBannerComponent implements OnInit {
     public closed: boolean;
     public loggedInUser: boolean;
 
-    constructor(public dialog: MatDialog, private userInfoService: UserInfoService) {}
+    constructor(public dialog: MatDialog, private userInfoService: UserInfoService) {
+        this.userInfoService.userLoggedIn$.subscribe(() => {
+            this.loggedInUser = true;
+        });
+    }
 
     public ngOnInit() {
         this.closed = localStorage.getItem('typeform-banner') === 'closed';
-        this.loggedInUser = this.userInfoService.isLogedIn();
     }
 
     openConfirmDialog() {
