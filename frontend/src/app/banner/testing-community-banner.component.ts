@@ -13,13 +13,13 @@ export class TestingCommunityBannerComponent implements OnInit {
     public closed: boolean;
 
     public ngOnInit() {
-        this.closed = localStorage.getItem('testing-community-banner') === 'closed';
+        this.closed = localStorage.getItem('testing-lisbon-25-banner') === 'closed';
     }
 
     public closeBanner() {
         const element = document.getElementsByClassName('promo-banner')[0];
         element.parentNode.removeChild(element);
-        localStorage.setItem('testing-community-banner', 'closed');
+        localStorage.setItem('testing-lisbon-25-banner', 'closed');
     }
 
     trackLinkClick(event: Event, url: string) {
