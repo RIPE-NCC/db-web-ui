@@ -12,12 +12,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { CertificateBannerComponent } from '../banner/certificate-banner.component';
 import { TestingCommunityBannerComponent } from '../banner/testing-community-banner.component';
 import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { SharedModule } from '../shared/shared.module';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
 import { AdvanceFilterPanelComponent } from './advance-filter-panel.component';
+import { CertificateInfoComponent } from './certificate-info.component';
 import { HierarchyFlagsPanelComponent } from './hierarchy-flags-panel.component';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
 import { InverseLookupPanelComponent } from './inverse-lookup-panel.component';
@@ -59,7 +59,7 @@ import { TypesPanelComponent } from './types-panel.component';
     declarations: [
         LookupComponent,
         LookupSingleObjectComponent,
-        CertificateBannerComponent,
+        CertificateInfoComponent,
         QueryComponent,
         TemplateComponent,
         TypesPanelComponent,
@@ -71,6 +71,6 @@ import { TypesPanelComponent } from './types-panel.component';
         TypeformDialogComponent,
     ],
     providers: [LookupService, QueryParametersService, QueryService, HierarchyFlagsService, QueryFlagsService],
-    exports: [CertificateBannerComponent],
+    exports: [CertificateInfoComponent],
 })
 export class QueryModule {}

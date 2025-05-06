@@ -80,7 +80,7 @@ export class QueryPage {
     }
 
     expectCertificateBannerToContain(text: string) {
-        cy.get('certificate-banner').should('include.text', text);
+        cy.get('certificate-info').should('include.text', text);
         return this;
     }
 

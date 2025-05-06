@@ -84,7 +84,6 @@
 <div class="query-padding">
     <org-drop-down></org-drop-down>
     <!--    <testing-community-banner></testing-community-banner>-->
-    <certificate-banner></certificate-banner>
     <section>
         <a id="anchorTop"></a>
         <div class="visualClear"></div>
@@ -166,11 +165,7 @@
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
-    <section id="databaseSwitchSection" *ngIf="showsDocsLink">
-        <div class="row">
-            <div class="col-sm-12 align-self-start">
+            <div class="col-sm-6">
                 <div class="border padding margin-bottom">
                     <p style="font-weight: 600">{{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database</p>
                     <div *ngIf="properties.SOURCE === 'RIPE'; else inTestEnv">
@@ -185,6 +180,9 @@
                         >Take me to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database <em class="fal fa-external-link"></em>
                     </a>
                 </div>
+            </div>
+            <div class="col-sm-6">
+                <certificate-info></certificate-info>
             </div>
         </div>
     </section>
