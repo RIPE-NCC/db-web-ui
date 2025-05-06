@@ -1,18 +1,19 @@
 <div *ngIf="!closed" class="promo-banner">
     <div class="content">
-        <span class="fal fa-hands-heart"></span
-        ><span
-            >Help shape the future of RIPE NCC services! Participate in our user research.
-            <a href="https://www.ripe.net/about-us/what-we-do/user-research/"> Learn more</a></span
-        >
+        <span class="fal fa-hands-heart fa-lg"></span
+        ><span>
+            <b>Attending RIPE Meeting 90 in Lisbon?</b><br />
+            We're running short test sessions on a new prototype and demoing our OAuth 2.0 solution to improve our services. We’d love your input and ask you to
+            join us!
+        </span>
     </div>
     <div class="content">
         <button mat-stroked-button color="primary" mat-dialog-close (click)="closeBanner()">No, thanks</button>
         <a
             mat-flat-button
             color="primary"
-            href="https://ripe-ncc.typeform.com/user-research"
-            (click)="trackLinkClick($event, 'https://www.ripe.net/about-us/what-we-do/user-research/')"
+            href="https://nccsurvey.ripe.net/m6Nk6P"
+            (click)="trackLinkClick($event, 'https://nccsurvey.ripe.net/m6Nk6P')"
             target="_blank"
             >Sign up</a
         >
