@@ -7,9 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CookieService } from 'ngx-cookie-service';
 import { throwError } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
-import { CertificateBannerComponent } from '../../../src/app/banner/certificate-banner.component';
 import { CoreModule } from '../../../src/app/core/core.module';
 import { PropertiesService } from '../../../src/app/properties.service';
+import { CertificateInfoComponent } from '../../../src/app/query/certificate-info.component';
 import { LookupComponent } from '../../../src/app/query/lookup.component';
 import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
 import { QueryFlagsService } from '../../../src/app/query/query-flags.service';
@@ -170,7 +170,7 @@ describe('QueryComponent', () => {
             'getTypeOfSearchedTerm',
         ]);
         TestBed.configureTestingModule({
-            declarations: [QueryComponent, CertificateBannerComponent, LookupComponent, TemplateComponent, WhoisObjectViewerComponent],
+            declarations: [QueryComponent, CertificateInfoComponent, LookupComponent, TemplateComponent, WhoisObjectViewerComponent],
             imports: [SharedModule, CoreModule, RouterTestingModule.withRoutes([]), MatMenuModule],
             providers: [
                 { provide: QueryService, useValue: queryServiceSpy },
