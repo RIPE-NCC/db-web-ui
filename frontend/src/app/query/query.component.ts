@@ -8,6 +8,7 @@ import { AlertsService } from '../shared/alert/alerts.service';
 import { IObjectMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
 import { ObjectTypesEnum } from './object-types.enum';
+import { QueryFlagsService } from './query-flags.service';
 import { IQueryParameters, ITemplateTerm, QueryParametersService } from './query-parameters.service';
 import { QueryService } from './query.service';
 
@@ -67,6 +68,7 @@ export class QueryComponent implements OnDestroy {
     constructor(
         public properties: PropertiesService,
         public queryService: QueryService,
+        public queryFlagService: QueryFlagsService,
         private queryParametersService: QueryParametersService,
         public alertsService: AlertsService,
         private viewportScroller: ViewportScroller,
@@ -184,7 +186,7 @@ export class QueryComponent implements OnDestroy {
         this.alertsService.clearAlertMessages();
 
         // by default in flag search related objects are shown, in search with filters related objects are not shown
-        if (this.showsQueryFlagsContainer) {
+        if (this.isShownQueryFlagsContainer()) {
             cleanQp.doNotRetrieveRelatedObjects = false;
         }
         const issues = this.queryParametersService.validate(cleanQp);
@@ -233,8 +235,10 @@ export class QueryComponent implements OnDestroy {
         }
     }
 
-    public isShownQueryFlagsContainer(event: boolean) {
-        this.showsQueryFlagsContainer = event;
+    private isShownQueryFlagsContainer(): boolean {
+        const queryFlags = this.queryFlagService.getFlagsFromTerm(this.qp.queryText);
+        this.showsQueryFlagsContainer = queryFlags.length > 0;
+        return this.showsQueryFlagsContainer;
     }
 
     public isFiltersDisplayed(): boolean {

@@ -19,7 +19,7 @@
                     </button>
                 </mat-form-field>
                 <div class="query-padding-left query-padding-right">
-                    <query-flags [inputTerm]="qp.queryText" (hasValidQueryFlags)="isShownQueryFlagsContainer($event)"></query-flags>
+                    <query-flags [inputTerm]="qp.queryText"></query-flags>
                 </div>
             </div>
             <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">

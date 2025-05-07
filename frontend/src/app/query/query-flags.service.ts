@@ -26,6 +26,12 @@ export class QueryFlagsService {
         );
     }
 
+    getFlagsFromTerm(inputTerm: string): string[] {
+        const sanitizedString: string = this.addSpaceBehindFlagT(inputTerm);
+        const allTerms = sanitizedString.split(' ');
+        return allTerms.filter((term) => term.startsWith('-'));
+    }
+
     getFlags(flags: string[]): IQueryFlag[] {
         this.detectedQueryFlags = [];
         return this.findFlags(flags);
