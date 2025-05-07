@@ -12,7 +12,7 @@ describe('QueryFlagsComponent', () => {
     let queryFlagsServiceSpy: jasmine.SpyObj<QueryFlagsService>;
 
     beforeEach(() => {
-        queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlags', 'addSpaceBehindFlagT']);
+        queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlagsFromTerm', 'getFlags', 'addSpaceBehindFlagT']);
         TestBed.configureTestingModule({
             declarations: [QueryFlagsComponent],
             imports: [SharedModule, CoreModule],
@@ -36,11 +36,12 @@ describe('QueryFlagsComponent', () => {
         queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);
         component.ngOnChanges();
         fixture.detectChanges();
+        expect(queryFlagsServiceSpy.getFlagsFromTerm).toHaveBeenCalledTimes(1);
         expect(queryFlagsServiceSpy.getFlags).toHaveBeenCalledTimes(0);
         expect(component.queryFlags).toEqual([]);
     });
 
-    it('should show just one flag and emit event to hide rest of query form', () => {
+    it('should show just one flag', () => {
         const response: IQueryFlag[] = [
             {
                 longFlag: '--inverse',
@@ -49,21 +50,12 @@ describe('QueryFlagsComponent', () => {
             },
         ];
         queryFlagsServiceSpy.getFlags.and.returnValue(response);
-        spyOn(component.hasValidQueryFlags, 'emit');
         component.inputTerm = '-i -ne -da';
-        queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);
+        queryFlagsServiceSpy.getFlagsFromTerm.and.returnValue(['-i', '-ne', '-da']);
         component.ngOnChanges();
         fixture.detectChanges();
         expect(component.flags).toEqual(['-i', '-ne', '-da']);
         expect(component.queryFlags.length).toEqual(1);
         expect(queryFlagsServiceSpy.getFlags).toHaveBeenCalledTimes(1);
-        expect(component.hasValidQueryFlags.emit).toHaveBeenCalledWith(true);
-    });
-
-    it('should find all fags from user entered value (valid and invalid flags)', () => {
-        component.inputTerm = '-i mnt-by -q -r';
-        queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);
-        fixture.detectChanges();
-        expect(component.getFlags()).toEqual(['-i', '-q', '-r']);
     });
 });

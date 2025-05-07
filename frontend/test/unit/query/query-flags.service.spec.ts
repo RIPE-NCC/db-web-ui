@@ -133,6 +133,10 @@ describe('QueryFlagsService', () => {
             '--no-personal -T mntner,organisation shryane-mnt',
         );
     });
+
+    it('should get flags from query term', () => {
+        expect(queryFlagsService.getFlagsFromTerm('-i mnt-by -q -r')).toEqual(['-i', '-q', '-r']);
+    });
 });
 
 const mockAllFLAGS: IQueryFlag[] = [
