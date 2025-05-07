@@ -8,13 +8,14 @@
         </span>
     </div>
     <div class="content">
-        <button mat-stroked-button color="primary" mat-dialog-close (click)="closeBanner()">No, thanks</button>
+        <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="closeBanner()">No, thanks</button>
         <a
             mat-flat-button
             color="primary"
             href="https://nccsurvey.ripe.net/m6Nk6P"
             (click)="trackLinkClick($event, 'https://nccsurvey.ripe.net/m6Nk6P')"
             target="_blank"
+            class="no-shrink"
             >Sign up</a
         >
     </div>

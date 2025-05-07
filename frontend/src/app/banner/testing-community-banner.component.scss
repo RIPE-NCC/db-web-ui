@@ -12,3 +12,8 @@
         gap: 16px;
     }
 }
+
+.no-shrink {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
