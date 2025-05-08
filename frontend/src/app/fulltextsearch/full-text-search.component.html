@@ -98,13 +98,6 @@
                 <div class="small" [innerHTML]="getResultText(result) | sanitizeImgHtml"></div>
             </div>
         </div>
-        <paginator
-            [pages]="navbarSyncArray"
-            [activePage]="activePage"
-            [numResults]="numResults"
-            [resultsPerPage]="numResultsPerPage"
-            (pageClicked)="pageClicked($event)"
-        ></paginator>
     </div>
 </section>
 <whois-version [version]="whoisVersion"></whois-version>
