@@ -168,14 +168,14 @@
             <div class="col-sm-6">
                 <div class="border padding margin-bottom">
                     <p style="font-weight: 600">{{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database</p>
-                    <div *ngIf="properties.SOURCE === 'RIPE'; else inTestEnv">
+                    <div *ngIf="properties.SOURCE === 'RIPE'">
                         You can use this environment to learn and experiment with the RIPE Database. It uses a TEST source. Important: All changes are reverted
                         every day at night.
                     </div>
-                    <ng-template #inTestEnv>
+                    <div *ngIf="properties.SOURCE !== 'RIPE'">
                         TEST environment is to learn and experiment with RIPE Database and all changes are reverted in the night. Switch to RIPE Database for
                         live action.
-                    </ng-template>
+                    </div>
                     <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank" class="link-color"
                         >Take me to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database <em class="fal fa-external-link"></em>
                     </a>
@@ -186,7 +186,7 @@
             </div>
         </div>
     </section>
-    <typeform-banner></typeform-banner>
+    <typeform-banner *ngIf="showsDocsLink"></typeform-banner>
     <whois-version [version]="whoisVersion"></whois-version>
     <web-app-version></web-app-version>
 </div>
