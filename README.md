@@ -23,12 +23,11 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 
 * map `127.0.0.1` to `localhost.ripe.net` in your local hosts file
 
-* cd into the `backend` sub folder
+* Copy and paste `application-local.properties` from the credentials' manager. (make sure that this file is ignored by 
+  git)
 
-* execute (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Dspring-boot.run.profiles=local -Dspring.profiles.active=local -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC"```. On the other hand, you can add a new configuration in Intellij.
+* Add and execute this configuration in Intellij.
   ![](doc/img/run_intellij_config.png)
-
-* or Right click on ```/backend/src/main/java/net/ripe/whois/Application.java run in intellij, make sure to add -Dspring.profiles.active=local```
 
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
