@@ -135,3 +135,43 @@ export class ModalProcessing {
         return this;
     }
 }
+
+export class ModalSSOPrefilledAuthentication {
+    expectSelectedAuthenticationMaintainer(maintainer: string) {
+        cy.get('#selectAuthMntnerForSSOPrefill').should('contain.text', maintainer);
+        return this;
+    }
+
+    expectItemInList(itemValue: string, exist: boolean) {
+        cy.get(`#selectAuthMntnerForSSOPrefill select option[label='${itemValue}']`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    submitModal(expectFail: boolean = false) {
+        cy.get('.modal-content button[type=submit]').click();
+        if (!expectFail) {
+            cy.get('.modal-content .modal-body').should('not.exist');
+        }
+        return this;
+    }
+
+    expectFooterToContain(text: string, contain: boolean = true) {
+        cy.get('.modal-content .modal-footer').should(contain ? 'contain.text' : 'not.contain.text', text);
+        return this;
+    }
+
+    expectBodyToContain(text: string) {
+        cy.get('.modal-content .modal-body').should('contain.text', text);
+        return this;
+    }
+
+    expectBannerToContain(text: string) {
+        cy.get('.modal-content .modal-banner').should('contain.text', text);
+        return this;
+    }
+
+    closeModal() {
+        cy.get('.modal-header .close').click();
+        cy.get('.modal-content .modal-body').should('not.exist');
+    }
+}

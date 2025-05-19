@@ -111,11 +111,11 @@ export class RestService {
         }
     }
 
-    public authenticate(method: any, source: string, objectType: string, objectName: string, passwords: string) {
+    public authenticate(source: string, objectType: string, objectName: string, passwords?: any, override?: string) {
         if (!source) {
             throw new TypeError('restService.authenticate source must have a value');
         }
-        const params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('password', passwords).set('unfiltered', 'true');
+        const params = this.setParams(passwords, override).set('unfiltered', 'true');
         const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params }).pipe(
             map((result: any) => {
@@ -159,10 +159,10 @@ export class RestService {
         );
     }
 
-    private setParams(passwords: string[], overrides?: any, unformatted?: any): HttpParams {
+    private setParams(passwords: string[], override?: any, unformatted?: any): HttpParams {
         let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
-        if (overrides) {
-            params = params.set('override', overrides);
+        if (override) {
+            params = params.set('override', override);
         }
         if (passwords) {
             if (Array.isArray(passwords)) {
@@ -206,6 +206,15 @@ export class RestService {
             catchError((error: any) => {
                 console.error('modifyObject error:' + JSON.stringify(error));
                 return throwError(() => this.whoisResourcesService.wrapError(error));
+            }),
+        );
+    }
+
+    public associateSSOMntnerByOverride(source: string, objectType: string, objectName: string, whoisResources: any, override: string) {
+        return this.http.put(`api/whois/${source}/${objectType}/${objectName}?override=${encodeURIComponent(override)}`, whoisResources).pipe(
+            tap({
+                next: (result: any) => console.debug('associateSSOMntner success:' + JSON.stringify(result.data)),
+                error: (error: any) => console.error('associateSSOMntner error:' + JSON.stringify(error)),
             }),
         );
     }

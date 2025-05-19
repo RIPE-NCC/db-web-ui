@@ -7,6 +7,7 @@ import { AlertsService } from '../shared/alert/alerts.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from './create-modify.component';
 import { MntnerService } from './mntner.service';
+import { ModalAuthenticationSSOPrefilledComponent } from './modal-authentication-sso-prefilled.component';
 import { ModalAuthenticationComponent } from './modal-authentication.component';
 
 export interface IAuthParams {
@@ -24,13 +25,19 @@ export interface IAuthParams {
 
 @Injectable()
 export class WebUpdatesCommonsService {
+    public enableNonAuthUpdates: boolean;
+
     constructor(
         private router: Router,
         private alertService: AlertsService,
         private mntnerService: MntnerService,
         private modalService: NgbModal,
         public properties: PropertiesService,
-    ) {}
+    ) {
+        this.enableNonAuthUpdates =
+            !properties.isProdEnv() && // Security property, this should never be enabled in PROD
+            properties.WHOIS_OVERRIDE_ENABLE;
+    }
 
     public performAuthentication(authParams: IAuthParams) {
         console.debug('Perform authentication', authParams.maintainers);
@@ -47,7 +54,9 @@ export class WebUpdatesCommonsService {
         const allowForcedDelete = !_.find(authParams.maintainers.object, (o: any) => {
             return this.mntnerService.isAnyNccMntner(o.key);
         });
-        const modalRef = this.modalService.open(ModalAuthenticationComponent);
+
+        const modalRef = this.modalService.open(this.enableNonAuthUpdates ? ModalAuthenticationSSOPrefilledComponent : ModalAuthenticationComponent);
+
         modalRef.componentInstance.resolve = {
             method: null,
             objectType: authParams.object.type,

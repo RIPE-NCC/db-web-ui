@@ -24,6 +24,7 @@ import { LinkService } from './link.service';
 import { MessageStoreService } from './message-store.service';
 import { MntnerService } from './mntner.service';
 import { ModalAddAttributeComponent } from './modal-add-attribute.component';
+import { ModalAuthenticationSSOPrefilledComponent } from './modal-authentication-sso-prefilled.component';
 import { ModalAuthenticationComponent } from './modal-authentication.component';
 import { ModalCreateRoleForAbuseCComponent } from './modal-create-role-for-abusec.component';
 import { ModalDeleteObjectComponent } from './modal-delete-object.component';
@@ -50,6 +51,7 @@ import { TypeaheadComponent } from './typeahead.component';
         CreateSelfMaintainedMaintainerComponent,
         ModalAddAttributeComponent,
         ModalAuthenticationComponent,
+        ModalAuthenticationSSOPrefilledComponent,
         ModalCreateRoleForAbuseCComponent,
         ModalDeleteObjectComponent,
         ModalMd5PasswordComponent,

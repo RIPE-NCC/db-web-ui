@@ -74,7 +74,7 @@ describe('RestService', () => {
     });
 
     it('should encode password when authenticate mntner', () => {
-        restService.authenticate(null, 'RIPE', 'mntner', 'SVONJA-MNT', 'test 123+&456').subscribe((resp) => {
+        restService.authenticate('RIPE', 'mntner', 'SVONJA-MNT', 'test 123+&456').subscribe((resp) => {
             expect(resp).toBe('TEST');
         });
         // test 123+456 should be encoded to test%20123%2B456

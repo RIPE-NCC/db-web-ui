@@ -1,6 +1,8 @@
 package net.ripe.whois.web.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 import net.ripe.whois.config.LeftMenuConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import static jakarta.ws.rs.core.HttpHeaders.CACHE_CONTROL;
@@ -77,6 +77,10 @@ public class AngularConstantsController {
     private String dbWebUiCommitId;
     @Value("${show.api.key.menu}")
     private boolean showApiKeyMenu;
+    @Value("${whois.override:}")
+    private String whoisOverride;
+    @Value("${whois.override.enable:false}")
+    private boolean whoisOverrideEnable;
 
     private AppConstants appConstants;
 
@@ -131,6 +135,8 @@ public class AngularConstantsController {
         constants.setSessionTtl(sessionTtl);
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
         constants.setShowApiKeyMenu(showApiKeyMenu);
+        constants.setWhoisOverride(whoisOverride);
+        constants.setWhoisOverrideEnable(whoisOverrideEnable);
         return constants;
     }
 
@@ -189,6 +195,10 @@ public class AngularConstantsController {
         private int releaseNotificationPolling;
         @JsonProperty("SHOW_API_KEY_MENU")
         private boolean showApiKeyMenu;
+        @JsonProperty("WHOIS_OVERRIDE")
+        private String whoisOverride;
+        @JsonProperty("WHOIS_OVERRIDE_ENABLE")
+        private boolean whoisOverrideEnable;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -295,6 +305,14 @@ public class AngularConstantsController {
 
         public void setShowApiKeyMenu(boolean showApiKeyMenu) {
             this.showApiKeyMenu = showApiKeyMenu;
+        }
+
+        public void setWhoisOverride(String whoisOverride) {
+            this.whoisOverride = whoisOverride;
+        }
+
+        public void setWhoisOverrideEnable(boolean whoisOverrideEnable) {
+            this.whoisOverrideEnable = whoisOverrideEnable;
         }
     }
 }

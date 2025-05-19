@@ -4,26 +4,33 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel } from '../shared/whois-response-type.model';
 import { MntnerService } from '../updatesweb/mntner.service';
+import { ModalAuthenticationSSOPrefilledComponent } from '../updatesweb/modal-authentication-sso-prefilled.component';
 import { ModalAuthenticationComponent } from '../updatesweb/modal-authentication.component';
 import { ObjectUtilService } from '../updatesweb/object-util.service';
 
 @Injectable()
 export class TextCommonsService {
+    public enableNonAuthUpdates: boolean;
+
     constructor(
         private router: Router,
         private whoisResourcesService: WhoisResourcesService,
         private whoisMetaService: WhoisMetaService,
-        private credentialsService: CredentialsService,
         private alertService: AlertsService,
         private mntnerService: MntnerService,
         private modalService: NgbModal,
-    ) {}
+        public properties: PropertiesService,
+    ) {
+        this.enableNonAuthUpdates =
+            !properties.isProdEnv() && // Security property, this should never be enabled in PROD
+            properties.WHOIS_OVERRIDE_ENABLE;
+    }
 
     public enrichWithDefaults(objectSource: string, objectType: string, attributes: IAttributeModel[]) {
         // This does only add value if attribute exist
@@ -179,7 +186,7 @@ export class TextCommonsService {
         const allowForcedDelete = !_.find(objectMntners, (o) => {
             return this.mntnerService.isAnyNccMntner(o.key);
         });
-        const modalRef = this.modalService.open(ModalAuthenticationComponent);
+        const modalRef = this.modalService.open(this.enableNonAuthUpdates ? ModalAuthenticationSSOPrefilledComponent : ModalAuthenticationComponent);
         modalRef.componentInstance.resolve = {
             method: method,
             objectType: object.type,
