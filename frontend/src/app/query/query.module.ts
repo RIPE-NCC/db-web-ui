@@ -12,7 +12,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { TestingCommunityBannerComponent } from '../banner/testing-community-banner.component';
 import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { SharedModule } from '../shared/shared.module';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
@@ -50,7 +49,6 @@ import { TypesPanelComponent } from './types-panel.component';
         MatIconModule,
         ClipboardModule,
         MatTooltipModule,
-        TestingCommunityBannerComponent,
         MatDialogContent,
         MatDialogClose,
         TypeformBannerComponent,
