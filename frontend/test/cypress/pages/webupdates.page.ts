@@ -5,6 +5,7 @@ import {
     ModalDeleteObject,
     ModalEditAttribute,
     ModalProcessing,
+    ModalSSOPrefilledAuthentication,
 } from './components/modals.component';
 import { OrganisationSelector } from './components/organisation-selector.component';
 import { TextupdatesPage } from './textupdates.page';
@@ -39,6 +40,10 @@ export class WebupdatesPage {
 
     getModalAuthentication() {
         return new ModalAuthentication();
+    }
+
+    getModalSSOPrefilledAuthentication() {
+        return new ModalSSOPrefilledAuthentication();
     }
 
     typeOnField(fieldName: string, text: string) {
@@ -263,6 +268,11 @@ export class WebupdatesPage {
 
     expectError(text: string) {
         cy.get('#anchor-certif ~ .text-error').should('contain.text', text);
+        return this;
+    }
+
+    expectedModalError(text: string) {
+        cy.get('modal-content').shadow().find('.modal-banner alarm').should('contain.text', text);
         return this;
     }
 

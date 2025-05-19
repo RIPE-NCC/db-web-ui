@@ -31,3 +31,9 @@ Cypress.Commands.add('expectCurrentUrlToContain', (url: string) => {
 Cypress.Commands.add('changeJsonResponseFile', (sourceFilePath: string, targetFilePath: string) => {
     return cy.readFile(sourceFilePath, null).then((data) => cy.writeFile(targetFilePath, data, null));
 });
+
+Cypress.Commands.add('wasUrlCalled', (alias: string): Cypress.Chainable<boolean> => {
+    return cy.get(`@${alias}.all`, { log: false }).then((calls: any[]) => {
+        return calls.length > 0;
+    });
+});

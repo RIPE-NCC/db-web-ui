@@ -1,0 +1,45 @@
+<div class="modal-content no-rounded">
+    <form (submit)="submit()">
+        <div class="modal-header">
+            <h2 class="modal-title">Password authentication</h2>
+            <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+        </div>
+        <div *ngIf="selected.message?.length > 0" class="modal-banner alarm">
+            <p>{{ selected.message }}</p>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="resolve.mntners && resolve.mntners.length > 0">
+                <ul>
+                    <li>
+                        <label for="selectAuthMntnerForSSOPrefill">Select a maintainer to authenticate the update operation.</label>
+                        <select
+                            id="selectAuthMntnerForSSOPrefill"
+                            name="selectAuthMntner"
+                            [(ngModel)]="selected.item"
+                            required="true"
+                            class="form-control select-height"
+                        >
+                            <option *ngFor="let item of resolve.mntners" label="{{ item.key }}" [ngValue]="item">{{ item.key }}</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label>Your RIPE NCC Access account will be associated with this maintainer. </label>
+                        <br />
+                        <a href="https://docs.db.ripe.net/Authorisation/Using-the-Authorisation-Methods" rel="noopener" target="_blank"
+                            >Learn more <em class="fal fa-external-link"></em>.</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div *ngIf="resolve.mntners.length === 0">
+                <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
+            </div>
+            <div *ngIf="resolve.mntners.length > 0">
+                <button mat-flat-button color="primary" class="float-end" type="submit">SUBMIT</button>
+            </div>
+        </div>
+    </form>
+</div>

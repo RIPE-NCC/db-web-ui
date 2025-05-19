@@ -2,9 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
+import { IUserInfoResponseData } from '../dropdown/org-data-type.model';
 import { PropertiesService } from '../properties.service';
 import { CredentialsService } from '../shared/credentials.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
+import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { RestService } from './rest.service';
 
@@ -83,15 +85,15 @@ export class ModalAuthenticationComponent implements OnInit {
         if (!this.selected.item || !this.selected.item.key) {
             return;
         }
-        this.restService.authenticate(this.resolve.method, this.SOURCE, 'mntner', this.selected.item.key, this.selected.password).subscribe({
-            next: (whoisResources: any) => {
+        this.restService.authenticate(this.SOURCE, 'mntner', this.selected.item.key, this.selected.password).subscribe({
+            next: (whoisResources: IWhoisResponseModel) => {
                 if (this.whoisResourcesService.isFiltered(whoisResources)) {
                     this.selected.message = "You have not supplied the correct password for mntner: '" + this.selected.item.key + "'";
                     return;
                 }
 
                 this.credentialsService.setCredentials(this.selected.item.key, this.selected.password);
-                this.userInfoService.getUserOrgsAndRoles().subscribe((userInfo: any) => {
+                this.userInfoService.getUserOrgsAndRoles().subscribe((userInfo: IUserInfoResponseData) => {
                     const ssoUserName = userInfo.user.username;
                     if (this.selected.associate && ssoUserName) {
                         // append auth-md5 attribute

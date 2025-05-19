@@ -31,6 +31,8 @@ export interface IProperties {
     SESSION_TTL: number;
     RELEASE_NOTIFICATION_POLLING: number;
     SHOW_API_KEY_MENU: boolean;
+    WHOIS_OVERRIDE: string;
+    WHOIS_OVERRIDE_ENABLE: boolean;
 }
 
 @Injectable()
@@ -77,6 +79,8 @@ export class PropertiesService {
     public SESSION_TTL = 30000;
     public RELEASE_NOTIFICATION_POLLING = 30000;
     public SHOW_API_KEY_MENU = false;
+    public WHOIS_OVERRIDE = 'whois,test';
+    public WHOIS_OVERRIDE_ENABLE = false;
 
     constructor(private httpClient: HttpClient) {}
 
@@ -114,6 +118,8 @@ export class PropertiesService {
                     this.SESSION_TTL = response.SESSION_TTL;
                     this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
                     this.SHOW_API_KEY_MENU = response.SHOW_API_KEY_MENU;
+                    this.WHOIS_OVERRIDE = response.WHOIS_OVERRIDE;
+                    this.WHOIS_OVERRIDE_ENABLE = response.WHOIS_OVERRIDE_ENABLE;
                     // once we deploy the db-operational
 
                     this.injectProperties();

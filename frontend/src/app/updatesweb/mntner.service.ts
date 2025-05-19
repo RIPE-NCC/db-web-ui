@@ -12,11 +12,14 @@ import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel } from '../shared/whois-response-type.model';
 import { IDefaultMaintainer } from '../whois-object/types';
+import { ModalAuthenticationSSOPrefilledComponent } from './modal-authentication-sso-prefilled.component';
 import { ModalAuthenticationComponent } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
 @Injectable()
 export class MntnerService {
+    public enableNonAuthUpdates: boolean;
+
     constructor(
         private credentialsService: CredentialsService,
         private whoisResourcesService: WhoisResourcesService,
@@ -25,7 +28,12 @@ export class MntnerService {
         private restService: RestService,
         private propertiesService: PropertiesService,
         private http: HttpClient,
-    ) {}
+        public properties: PropertiesService,
+    ) {
+        this.enableNonAuthUpdates =
+            !properties.isProdEnv() && // Security property, this should never be enabled in PROD
+            properties.WHOIS_OVERRIDE_ENABLE;
+    }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
         const object = {
@@ -53,7 +61,9 @@ export class MntnerService {
                 mergeMap((enrichedMntners: IMntByModel[]) => {
                     const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
                     const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                    const modalRef = this.modalService.open(ModalAuthenticationComponent);
+                    const modalRef = this.modalService.open(
+                        this.enableNonAuthUpdates ? ModalAuthenticationSSOPrefilledComponent : ModalAuthenticationComponent,
+                    );
                     modalRef.componentInstance.resolve = {
                         method: operation,
                         objectType: object.type,
