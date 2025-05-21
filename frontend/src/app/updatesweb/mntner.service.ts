@@ -59,7 +59,7 @@ export class MntnerService {
             // pop up an auth box
             return this.restService.detailsForMntners(parentMntners).pipe(
                 mergeMap((enrichedMntners: IMntByModel[]) => {
-                    const mntnersWithPasswords = this.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                    const mntnersWithPasswords = this.getMntnersForAuthentication(ssoAccts, enrichedMntners, []);
                     const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
                     const modalRef = this.modalService.open(
                         this.enableNonAuthUpdates ? ModalAuthenticationSSOPrefilledComponent : ModalAuthenticationComponent,
@@ -201,7 +201,7 @@ export class MntnerService {
         return true;
     }
 
-    public getMntnersForPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]) {
+    public getMntnersForAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]) {
         let input = originalObjectMntners;
         if (originalObjectMntners.length === 0) {
             // it is a create
@@ -210,7 +210,10 @@ export class MntnerService {
         const mntners = this.enrichWithSsoStatus(ssoMntners, input);
         return _.uniqBy(mntners, 'key').filter((mntner) => {
             if (mntner.mine === true) {
+                // Mntner is in the list already
                 return false;
+            } else if (this.enableNonAuthUpdates) {
+                return true;
             } else if (this.isAnyNccMntner(mntner.key)) {
                 // prevent authenticating against any RIPE-NCC mntner (not just TOP-RIPE-NCC mntner)
                 return false;

@@ -1,0 +1,95 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/ripe/mntner/RIPE-NCC-END-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "RIPE-NCC-END-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "RIPE-NCC-END-MNT"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "TEST21 plc Fareham UK"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TM13068-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TM13068-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "***@TEST21.co.uk"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "***@TEST21.co.uk"
+                            },
+                            {
+                                "name": "abuse-mailbox",
+                                "value": "abuse@TEST21.co.uk"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "***@TEST21.co.uk"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-END-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-07-08T15:25:13Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2017-03-31T14:13:21Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
+}
