@@ -181,7 +181,7 @@ export class TextCommonsService {
             source: objectSource,
             type: objectType,
         };
-        const mntnersWithPasswords = this.mntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
+        const mntnersWithPasswords = this.mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
         const mntnersWithoutPasswords = this.mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
         const allowForcedDelete = !_.find(objectMntners, (o) => {
             return this.mntnerService.isAnyNccMntner(o.key);

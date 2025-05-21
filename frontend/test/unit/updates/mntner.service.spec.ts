@@ -224,12 +224,12 @@ describe('MntnerService', () => {
             { type: 'mntner', key: 'E-MNT', auth: ['SSO', 'PGP'] },
         ];
 
-        const mntnersWithPasswordCreate = mntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
+        const mntnersWithPasswordCreate = mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
         expect(mntnersWithPasswordCreate.length).toBe(2);
         expect(mntnersWithPasswordCreate[0].key).toBe('C-MNT');
         expect(mntnersWithPasswordCreate[1].key).toBe('D-MNT');
 
-        const mntnersWithPasswordModify = mntnerService.getMntnersForPasswordAuthentication(ssoMntners, objectMntners, []);
+        const mntnersWithPasswordModify = mntnerService.getMntnersForAuthentication(ssoMntners, objectMntners, []);
         expect(mntnersWithPasswordModify.length).toBe(2);
         expect(mntnersWithPasswordModify[0].key).toBe('C-MNT');
         expect(mntnersWithPasswordModify[1].key).toBe('D-MNT');
@@ -242,11 +242,11 @@ describe('MntnerService', () => {
             { type: 'mntner', key: 'A-MNT', auth: ['MD5-PW'] },
         ];
 
-        const mntnersWithPasswordCreate = mntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
+        const mntnersWithPasswordCreate = mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
         expect(mntnersWithPasswordCreate.length).toBe(1);
         expect(mntnersWithPasswordCreate[0].key).toBe('A-MNT');
 
-        const mntnersWithPasswordModify = mntnerService.getMntnersForPasswordAuthentication(ssoMntners, objectMntners, []);
+        const mntnersWithPasswordModify = mntnerService.getMntnersForAuthentication(ssoMntners, objectMntners, []);
         expect(mntnersWithPasswordModify.length).toBe(1);
         expect(mntnersWithPasswordModify[0].key).toBe('A-MNT');
     });
@@ -311,11 +311,11 @@ describe('MntnerService', () => {
         expect(mntnersWithoutPasswordModify.length).toBe(1);
         expect(mntnersWithoutPasswordModify[0].key).toBe('A-MNT');
 
-        const mntnersWithPasswordCreate = mntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
+        const mntnersWithPasswordCreate = mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
         expect(mntnersWithPasswordCreate.length).toBe(1);
         expect(mntnersWithPasswordCreate[0].key).toBe('F-MNT');
 
-        const mntnersWithPasswordModify = mntnerService.getMntnersForPasswordAuthentication(ssoMntners, objectMntners, []);
+        const mntnersWithPasswordModify = mntnerService.getMntnersForAuthentication(ssoMntners, objectMntners, []);
         expect(mntnersWithPasswordModify.length).toBe(1);
         expect(mntnersWithPasswordModify[0].key).toBe('F-MNT');
     });

@@ -41,7 +41,7 @@ export class WebUpdatesCommonsService {
 
     public performAuthentication(authParams: IAuthParams) {
         console.debug('Perform authentication', authParams.maintainers);
-        const mntnersWithPasswords = this.mntnerService.getMntnersForPasswordAuthentication(
+        const mntnersWithPasswords = this.mntnerService.getMntnersForAuthentication(
             authParams.maintainers.sso,
             authParams.maintainers.objectOriginal,
             authParams.maintainers.object,
