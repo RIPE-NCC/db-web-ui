@@ -148,7 +148,7 @@ Rules of thumb:
 
 * All rest calls from angular ui go via java-proxy. Java proxy transparently forwards to backends.
 * In the new angular CRUD-ui (searching, creating, modifying and deleting whois objects) we stick to the "whoisresources-objects-object"-protocol.
-  So when searching for maintainers of sso-user, we return a regular search result. What todo with the star?
+  So when searching for maintainers of sso-user, we return a regular search result. What to do with the star?
   For the service that delivers info for the upper-right-sso-info, we use a dedicated protocol.
 * When designing new urls for the java-proxy, stick to the whois conventions
 * UI should be as simple as possible: So fetching or pushing information should be done with a single call. The java proxy can aggregate to achieve this.
@@ -162,7 +162,7 @@ Responsibilities of java-proxy: Non-functional requirements only
 * Same origin
 * Api-key to backends
 * Caching
-* Flexibilty: fix whois problems temporarily
+* Flexibility: fix whois problems temporarily
 
 
 Things every db-web-ui developer should know
