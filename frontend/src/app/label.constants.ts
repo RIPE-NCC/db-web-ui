@@ -13,7 +13,7 @@ export const Labels = {
     'fullText.attributeHelpText.title':
         'Only objects where search string is contained within specified fields are returned in result set, but all attributes containing the search string within those objects are reported',
     'fullText.emptyQueryText.text': 'Empty query - please specify at least one character',
-    'fullText.emptyResult.text': 'No results were found for your search. Your search details may be too selective.',
+    'fullText.emptyRresult.text': 'No results were found for your search. Your search details may be too selective.',
 
     'lookup.ripeManagedValuesCheckbox.text': 'Highlight RIPE NCC managed values',
     'lookup.ripestatLink.text': 'RIPEstat',

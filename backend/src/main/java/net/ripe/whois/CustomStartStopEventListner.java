@@ -7,8 +7,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-@Component("customStartStopEventListener")
-public class CustomStartStopEventListener {
+@Component("customStartStopEventListner")
+public class CustomStartStopEventListner {
 
     final private LoadBalancerEnabler loadBalancerEnabler;
 
@@ -16,7 +16,7 @@ public class CustomStartStopEventListener {
     private int preShutdownPause;
 
     @Autowired
-    public CustomStartStopEventListener(final LoadBalancerEnabler loadBalancerEnabler) {
+    public CustomStartStopEventListner(final LoadBalancerEnabler loadBalancerEnabler) {
         this.loadBalancerEnabler = loadBalancerEnabler;
     }
 
