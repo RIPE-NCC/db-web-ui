@@ -145,7 +145,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         this.resultSummary = responseModel.summary;
         this.whoisVersion = this.fullTextResponseService.getVersionFromResponse(resp);
         if (this.results.length === 0) {
-            this.alertsService.setGlobalWarning(Labels['fullText.emptyResult.text']);
+            this.alertsService.setGlobalWarning(Labels['fullText.emptyRresult.text']);
         }
     }
 
