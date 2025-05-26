@@ -12,20 +12,38 @@
 <ip-usage *ngIf="showUsage" [type]="objectType" [usage]="resource.usage"></ip-usage>
 
 <section class="db-object" id="editortop">
-    <h2>Object in RIPE Database</h2>
+    <div class="align-center">
+        <h2 class="no-margin">Object in RIPE Database</h2>
+        <button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" *ngIf="isEditing && isWebEditingMode" (click)="switchToTextMode()">
+            <span class="fal fa-edit"></span> EDIT IN TEXT AREA
+        </button>
+        <button mat-flat-button color="primary" id="btnSwitchToTextModify" class="float-end" *ngIf="isEditing && !isWebEditingMode" (click)="switchToWebMode()">
+            <span class="fal fa-bars"></span> EDIT IN SINGLE LINES
+        </button>
+    </div>
     <loading-indicator class="resource-page-message" *ngIf="loadingResource"></loading-indicator>
     <div *ngIf="whoisObject && !showRefreshButton && !loadingResource">
         <whois-object-viewer *ngIf="!isEditing" [model]="whoisObject" (updateClicked)="showObjectEditor()"></whois-object-viewer>
-        <maintainers-editor [whoisObject]="whoisObject" *ngIf="isEditing" (authenticationFailedClbk)="hideObjectEditor()"></maintainers-editor>
-        <whois-object-editor
-            [model]="whoisObject"
-            [disableSubmit]="!isEditing"
-            [deletable]="isDeletable"
-            *ngIf="isEditing"
-            (cancelClicked)="hideObjectEditor()"
-            (updateClicked)="updateButtonClicked($event)"
-            (deleteClicked)="deleteClicked()"
-        ></whois-object-editor>
+        <div *ngIf="isEditing && isWebEditingMode">
+            <maintainers-editor [whoisObject]="whoisObject" (authenticationFailedClbk)="hideObjectEditor()"></maintainers-editor>
+            <whois-object-editor
+                [model]="whoisObject"
+                [disableSubmit]="!isEditing"
+                [deletable]="isDeletable"
+                (cancelClicked)="hideObjectEditor()"
+                (updateClicked)="updateButtonClicked($event)"
+                (deleteClicked)="deleteClicked()"
+            ></whois-object-editor>
+        </div>
+        <whois-object-text-editor
+            *ngIf="isEditing && !isWebEditingMode"
+            [type]="objectType"
+            [source]="source"
+            [objectName]="objectName"
+            (submitEvent)="submit($event)"
+            (cancelEvent)="isEditing = false"
+            (deleteEvent)="deleteClicked()"
+        ></whois-object-text-editor>
     </div>
     <refresh *ngIf="showRefreshButton" reason="There was problem reading resource please try again" (refreshClbk)="init()"></refresh>
 </section>

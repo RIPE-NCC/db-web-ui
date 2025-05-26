@@ -461,3 +461,13 @@ ngx-loading-bar {
         word-break: break-all;
     }
 }
+
+align-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+no-margin {
+    margin: 0;
+}

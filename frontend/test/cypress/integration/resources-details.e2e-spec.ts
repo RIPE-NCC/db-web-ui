@@ -335,6 +335,7 @@ describe('Resources detail', () => {
     describe('for out of region aut-num', () => {
         beforeEach(() => {
             cy.setCookie('activeMembershipId', '3629', { path: '/' });
+            cy.setCookie('pref-ui-mode', 'webupdates', { path: '/' });
             resourcesDetailPage = resourcesPage.visitDetails('aut-num/AS36867//');
         });
 

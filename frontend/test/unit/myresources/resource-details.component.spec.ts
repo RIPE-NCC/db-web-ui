@@ -25,11 +25,15 @@ import { ResourcesDataService } from '../../../src/app/myresources/resources-dat
 import { PropertiesService } from '../../../src/app/properties.service';
 import { FlagComponent } from '../../../src/app/shared/flag/flag.component';
 import { SharedModule } from '../../../src/app/shared/shared.module';
+import { RpslService } from '../../../src/app/updatestext/rpsl.service';
+import { TextCommonsService } from '../../../src/app/updatestext/text-commons.service';
 import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
+import { PreferenceService } from '../../../src/app/updatesweb/preference.service';
 import { RestService } from '../../../src/app/updatesweb/rest.service';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 import { MaintainersEditorComponent } from '../../../src/app/whois-object/maintainers-editor.component';
 import { WhoisObjectEditorComponent } from '../../../src/app/whois-object/whois-object-editor.component';
+import { WhoisObjectTextEditorComponent } from '../../../src/app/whois-object/whois-object-text-editor.component';
 import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
 
 describe('ResourceDetailsComponent', () => {
@@ -43,12 +47,6 @@ describe('ResourceDetailsComponent', () => {
         },
     };
 
-    // let MockAssociatedService = {
-    //    getAssociatedRoutes: (objectType : string, objectName : string, page: number, filter: string) => {
-    //     return of(MOCK_ASSOCIATED_ROUTE_OBJECT);
-    //   }
-    // };
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -60,6 +58,7 @@ describe('ResourceDetailsComponent', () => {
                 AssociatedObjectsComponent,
                 WhoisObjectViewerComponent,
                 WhoisObjectEditorComponent,
+                WhoisObjectTextEditorComponent,
                 MaintainersEditorComponent,
                 AttributeRendererComponent,
                 AttributeReverseZonesComponent,
@@ -74,10 +73,12 @@ describe('ResourceDetailsComponent', () => {
                 RestService,
                 MoreSpecificsService,
                 PropertiesService,
+                PreferenceService,
+                TextCommonsService,
+                RpslService,
                 ResourcesDataService,
                 OrgDropDownSharedService,
                 IpUsageService,
-                // { provide: AssociatedObjectsService, useValue: MockAssociatedService},
                 UserInfoService,
                 CookieService,
                 provideHttpClient(withInterceptorsFromDi()),

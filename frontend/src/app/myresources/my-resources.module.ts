@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { UpdatesTextModule } from '../updatestext/update-text.module';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
 import { AlertsDropDownComponent } from './alertsdropdown/alerts-drop-down.component';
 import { AssociatedObjectsComponent } from './associatedobjects/associated-objects.component';
@@ -23,7 +24,7 @@ import { ResourcesComponent } from './resources.component';
 import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, SharedModule, WhoisObjectModule, RouterModule],
+    imports: [CommonModule, FormsModule, SharedModule, WhoisObjectModule, RouterModule, UpdatesTextModule],
     declarations: [
         AlertsDropDownComponent,
         TransferDropDownComponent,
