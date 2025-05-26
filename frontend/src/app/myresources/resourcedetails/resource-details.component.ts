@@ -12,8 +12,10 @@ import { CredentialsService } from '../../shared/credentials.service';
 import { IFlag } from '../../shared/flag/flag.component';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
 import { IAttributeModel, IWhoisObjectModel, IWhoisResponseModel } from '../../shared/whois-response-type.model';
+import { ITextObject } from '../../updatestext/text-create.component';
 import { MntnerService } from '../../updatesweb/mntner.service';
 import { ModalDeleteObjectComponent } from '../../updatesweb/modal-delete-object.component';
+import { PreferenceService } from '../../updatesweb/preference.service';
 import { RestService } from '../../updatesweb/rest.service';
 import { HierarchySelectorService } from '../hierarchyselector/hierarchy-selector.service';
 import { ResourceStatusService } from '../resource-status.service';
@@ -26,6 +28,10 @@ import { ResourcesDataService } from '../resources-data.service';
 })
 export class ResourceDetailsComponent implements OnDestroy {
     public whoisObject: IWhoisObjectModel;
+    public textObject: ITextObject = {
+        source: '',
+        type: '',
+    };
     public resource: any;
     public flags: IFlag[] = [];
     public show: {
@@ -38,6 +44,7 @@ export class ResourceDetailsComponent implements OnDestroy {
     public sponsored = false;
     public isEditing = false;
     public isDeletable = false;
+    public isWebEditingMode = true; // alternative is text editor mode
     public ipanalyserRedirect = false;
     public loadingResource: boolean = false; // true until resources are loaded to tabs
     public showRefreshButton: boolean = false;
@@ -46,7 +53,7 @@ export class ResourceDetailsComponent implements OnDestroy {
     public objectName: string;
     public objectType: string;
 
-    private source: string;
+    public source: string;
     private subscriptions: any[] = [];
 
     constructor(
@@ -64,6 +71,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         private whoisResourcesService: WhoisResourcesService,
         private alertsService: AlertsService,
         private router: Router,
+        private preferenceService: PreferenceService,
     ) {
         const orgSubs: Subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             const selectedId = this.cookies.get('activeMembershipId');
@@ -102,8 +110,8 @@ export class ResourceDetailsComponent implements OnDestroy {
             viewer: true,
         };
         const paramMap = this.activatedRoute.snapshot.paramMap;
-        this.objectName = decodeURIComponent(paramMap.get('objectName'));
-        this.objectType = paramMap.get('objectType').toLowerCase();
+        this.textObject.name = this.objectName = decodeURIComponent(paramMap.get('objectName'));
+        this.textObject.type = this.objectType = paramMap.get('objectType').toLowerCase();
         this.sponsored = paramMap.get('sponsored') === 'true';
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         if (queryParamMap.has('alertMessage')) {
@@ -117,7 +125,7 @@ export class ResourceDetailsComponent implements OnDestroy {
                 this.loadingResource = false;
                 this.showRefreshButton = false;
                 this.whoisObject = response.object;
-                this.source = this.whoisObject ? this.whoisObject.source.id : this.properties.SOURCE;
+                this.textObject.source = this.source = this.whoisObject ? this.whoisObject.source.id : this.properties.SOURCE;
                 // should only be one
                 this.resource = response.resources[0]
                     ? response.resources[0]
@@ -189,10 +197,20 @@ export class ResourceDetailsComponent implements OnDestroy {
         }, 1000);
     }
 
+    public submit(whoisResources: any) {
+        if (whoisResources.data?.errormessages) {
+            this.onSubmitError(whoisResources);
+        } else {
+            this.textObject.rpsl = whoisResources.rpsl;
+            this.onSubmitSuccess(whoisResources);
+        }
+    }
+
     public showObjectEditor() {
         this.resetMessages();
         this.isEditing = true;
         this.isDeletable = this.isDeletableResource();
+        this.isWebEditingMode = this.preferenceService.isWebMode();
         document.querySelector('#editortop').scrollIntoView();
     }
 
@@ -200,6 +218,16 @@ export class ResourceDetailsComponent implements OnDestroy {
         this.resetMessages();
         this.isEditing = false;
         this.isDeletable = false;
+    }
+
+    switchToTextMode() {
+        this.preferenceService.setTextMode();
+        this.isWebEditingMode = false;
+    }
+
+    switchToWebMode() {
+        this.preferenceService.setWebMode();
+        this.isWebEditingMode = true;
     }
 
     public isDeletableResource(): boolean {
@@ -238,6 +266,10 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     private onSubmitSuccess(whoisResources: IWhoisResponseModel): void {
         const results = whoisResources.objects.object;
+        results[0].attributes.attribute = results[0].attributes.attribute.map((attr) => ({
+            ...attr,
+            value: attr.value.trim(),
+        }));
         if (results.length >= 1) {
             this.whoisObject = results[0];
         }

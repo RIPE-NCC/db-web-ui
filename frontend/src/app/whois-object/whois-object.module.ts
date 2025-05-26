@@ -9,12 +9,13 @@ import { WebUpdatesCommonsService } from '../updatesweb/web-updates-commons.serv
 import { UserInfoService } from '../userinfo/user-info.service';
 import { MaintainersEditorComponent } from './maintainers-editor.component';
 import { WhoisObjectEditorComponent } from './whois-object-editor.component';
+import { WhoisObjectTextEditorComponent } from './whois-object-text-editor.component';
 import { WhoisObjectViewerComponent } from './whois-object-viewer.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, SharedModule, AttributeModule, NgSelectModule, RouterModule],
-    declarations: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent],
+    declarations: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent, WhoisObjectTextEditorComponent],
     providers: [WebUpdatesCommonsService, UserInfoService],
-    exports: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent],
+    exports: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent, WhoisObjectTextEditorComponent],
 })
 export class WhoisObjectModule {}

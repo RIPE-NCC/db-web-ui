@@ -5,6 +5,7 @@ describe('Resources, update object', () => {
 
     beforeEach(() => {
         cy.setCookie('activeMembershipId', '3629', { path: '/' });
+        cy.setCookie('pref-ui-mode', 'webupdates', { path: '/' });
         resourcesDetailPage = new ResourcesPage().visitDetails('inetnum/192.87.0.0%20-%20192.87.255.255/');
     });
 
@@ -35,6 +36,14 @@ describe('Resources, update object', () => {
             .expectErrorOnField('org', 'You can only enter latin1 characters')
             .expectErrorOnField('tech-c', 'You can only enter latin1 characters')
             .expectErrorOnField('remarks', 'You can only enter latin1 characters');
+    });
+
+    it('should switch to text editor', () => {
+        resourcesDetailPage.clickOnUpdate().typePassword('TST01-MNT').disableAssociateCheckbox().submitModal();
+        const whoisTextEditor = resourcesDetailPage.switchToTextAreaEditor().getWhoisTextEditor();
+        whoisTextEditor.expectTextAreaToContain('netname:NETNAME-TEST-02');
+        const whoisObjectEditor = resourcesDetailPage.switchToObjectEditor().getWhoisObjectEditor();
+        whoisObjectEditor.expectValueInField('netname', 'NETNAME-TEST-02');
     });
 
     describe('not comaintained by ripe', () => {
