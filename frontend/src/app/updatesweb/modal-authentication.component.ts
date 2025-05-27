@@ -54,7 +54,7 @@ export class ModalAuthenticationComponent implements OnInit {
             associate: true,
             item: this.resolve.mntners[0],
             message: undefined,
-            password: this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM[this.resolve.mntners[0]?.key] || '',
+            password: '',
         };
         this.setFmpPathQueryParam();
         this.allowForceDelete();
@@ -69,7 +69,7 @@ export class ModalAuthenticationComponent implements OnInit {
 
     // password prefilled for TEST maintainers - defined in properties
     public onChangeMnt() {
-        this.selected.password = this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM[this.selected.item.key] || '';
+        this.selected.password = '';
         this.setFmpPathQueryParam();
     }
 

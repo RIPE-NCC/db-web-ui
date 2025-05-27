@@ -67,8 +67,6 @@ public class AngularConstantsController {
     private String[] topRipeNccMntners;
     @Value("${ripe.ncc.hm.mnt}")
     private String ripeNccHmMnt;
-    @Value("#{${mntners.allowed.to.create.autnum:{:}}}")
-    private Map<String, String> mntnersAllowedToCreateAutnum;
     @Value("${sso.session.ttl.ms}")
     private int sessionTtl;
     @Value("${notification.polling.ms}")
@@ -131,7 +129,6 @@ public class AngularConstantsController {
         constants.setRipeNccMntners(ripeNccMntners);
         constants.setTopRipeNccMntners(topRipeNccMntners);
         constants.setRipeNccHmMnt(ripeNccHmMnt);
-        constants.setMntnersAllowedToCreateAutnum(mntnersAllowedToCreateAutnum);
         constants.setSessionTtl(sessionTtl);
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
         constants.setShowApiKeyMenu(showApiKeyMenu);
@@ -187,8 +184,6 @@ public class AngularConstantsController {
         private String[] topRipeNccMntners;
         @JsonProperty("RIPE_NCC_HM_MNT")
         private String ripeNccHmMnt;
-        @JsonProperty("MNTNER_ALLOWED_TO_CREATE_AUTNUM")
-        private Map<String, String> mntnersAllowedToCreateAutnum;
         @JsonProperty("SESSION_TTL")
         private int sessionTtl;
         @JsonProperty("RELEASE_NOTIFICATION_POLLING")
@@ -292,9 +287,6 @@ public class AngularConstantsController {
             this.ripeNccHmMnt = ripeNccHmMnt;
         }
 
-        public void setMntnersAllowedToCreateAutnum(Map<String, String> mntnersAllowedToCreateAutnum) {
-            this.mntnersAllowedToCreateAutnum = mntnersAllowedToCreateAutnum;
-        }
         public void setSessionTtl(final int sessionTtl) {
             this.sessionTtl = sessionTtl;
         }
