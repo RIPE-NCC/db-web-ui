@@ -25,7 +25,7 @@
                 "
             >
                 <label id="anchor-{{ attribute.name }}">{{ attribute.name }}</label>
-                <span *ngIf="attribute.$$error" class="text-error">
+                <span *ngIf="attribute.$$error" class="text-error" [matTooltip]="attribute.$$error">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
                 <span *ngIf="attribute.$$success" class="text-success">{{ attribute.$$success }}</span>
