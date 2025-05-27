@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
@@ -58,7 +59,7 @@ import { TypeaheadComponent } from './typeahead.component';
         ModalEditAttributeComponent,
         TypeaheadComponent,
     ],
-    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule, WhoisObjectModule, RouterModule],
+    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule, WhoisObjectModule, RouterModule, MatTooltip],
     providers: [
         PreferenceService,
         CookieService,
