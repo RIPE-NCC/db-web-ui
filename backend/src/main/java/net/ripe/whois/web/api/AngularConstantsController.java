@@ -79,8 +79,8 @@ public class AngularConstantsController {
     private boolean showApiKeyMenu;
     @Value("${whois.override:}")
     private String whoisOverride;
-    @Value("${whois.override.enable:false}")
-    private boolean whoisOverrideEnable;
+    @Value("${nopassword.auth.popup:false}")
+    private boolean noPasswordAuthPopup;
 
     private AppConstants appConstants;
 
@@ -136,7 +136,7 @@ public class AngularConstantsController {
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
         constants.setShowApiKeyMenu(showApiKeyMenu);
         constants.setWhoisOverride(whoisOverride);
-        constants.setWhoisOverrideEnable(whoisOverrideEnable);
+        constants.setNoPasswordAuthPopup(noPasswordAuthPopup);
         return constants;
     }
 
@@ -197,8 +197,8 @@ public class AngularConstantsController {
         private boolean showApiKeyMenu;
         @JsonProperty("WHOIS_OVERRIDE")
         private String whoisOverride;
-        @JsonProperty("WHOIS_OVERRIDE_ENABLE")
-        private boolean whoisOverrideEnable;
+        @JsonProperty("NO_PASSWORD_AUTH_POPUP")
+        private boolean noPasswordAuthPopup;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -311,8 +311,8 @@ public class AngularConstantsController {
             this.whoisOverride = whoisOverride;
         }
 
-        public void setWhoisOverrideEnable(boolean whoisOverrideEnable) {
-            this.whoisOverrideEnable = whoisOverrideEnable;
+        public void setNoPasswordAuthPopup(boolean noPasswordAuthPopup) {
+            this.noPasswordAuthPopup = noPasswordAuthPopup;
         }
     }
 }

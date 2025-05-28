@@ -39,6 +39,6 @@
         "RELEASE_NOTIFICATION_POLLING": 2000,
         "SHOW_API_KEY_MENU": true,
         "WHOIS_OVERRIDE": "whois,test",
-        "WHOIS_OVERRIDE_ENABLE": true
+        "NO_PASSWORD_AUTH_POPUP": true
     }
 }
