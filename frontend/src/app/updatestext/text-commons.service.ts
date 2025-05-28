@@ -29,7 +29,7 @@ export class TextCommonsService {
     ) {
         this.enableNonAuthUpdates =
             !properties.isProdEnv() && // Security property, this should never be enabled in PROD
-            properties.WHOIS_OVERRIDE_ENABLE;
+            properties.NO_PASSWORD_AUTH_POPUP;
     }
 
     public enrichWithDefaults(objectSource: string, objectType: string, attributes: IAttributeModel[]) {

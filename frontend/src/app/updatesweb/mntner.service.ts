@@ -32,7 +32,7 @@ export class MntnerService {
     ) {
         this.enableNonAuthUpdates =
             !properties.isProdEnv() && // Security property, this should never be enabled in PROD
-            properties.WHOIS_OVERRIDE_ENABLE;
+            properties.NO_PASSWORD_AUTH_POPUP;
     }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
