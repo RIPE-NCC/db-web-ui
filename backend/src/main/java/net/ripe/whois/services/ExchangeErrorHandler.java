@@ -16,7 +16,6 @@ public interface ExchangeErrorHandler {
         } catch (HttpStatusCodeException  e) {
             return errorHandler.handle(e);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
             throw e;
         }
     }
