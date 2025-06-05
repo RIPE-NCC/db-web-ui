@@ -12,6 +12,7 @@ import { WebUpdatesCommonsService } from './web-updates-commons.service';
 @Component({
     selector: 'display',
     templateUrl: './display.component.html',
+    standalone: false,
 })
 export class DisplayComponent implements OnInit, OnDestroy {
     public objectSource: string;

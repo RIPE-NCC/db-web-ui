@@ -27,6 +27,7 @@ export interface ITextObject {
 @Component({
     selector: 'text-create',
     templateUrl: './text-create.component.html',
+    standalone: false,
 })
 export class TextCreateComponent implements OnInit {
     public restCallInProgress: boolean = false;

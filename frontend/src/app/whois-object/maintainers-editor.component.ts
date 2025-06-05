@@ -20,6 +20,7 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
 @Component({
     selector: 'maintainers-editor',
     templateUrl: './maintainers-editor.component.html',
+    standalone: false,
 })
 export class MaintainersEditorComponent implements OnInit {
     @Input()

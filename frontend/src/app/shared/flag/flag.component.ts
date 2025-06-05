@@ -9,6 +9,7 @@ export interface IFlag {
 @Component({
     selector: 'flag',
     templateUrl: './flag.component.html',
+    standalone: false,
 })
 export class FlagComponent implements OnInit {
     @Input()

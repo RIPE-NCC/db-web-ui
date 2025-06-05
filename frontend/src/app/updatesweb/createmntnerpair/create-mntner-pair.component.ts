@@ -18,6 +18,7 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
 @Component({
     selector: 'create-mntner-pair',
     templateUrl: './create-mntner-pair.component.html',
+    standalone: false,
 })
 export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     public submitInProgress: boolean;

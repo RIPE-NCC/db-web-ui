@@ -9,6 +9,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 @Component({
     selector: 'whois-object-editor',
     templateUrl: './whois-object-editor.component.html',
+    standalone: false,
 })
 export class WhoisObjectEditorComponent implements OnInit {
     @Input()

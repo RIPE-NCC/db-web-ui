@@ -100,7 +100,7 @@
                 "serve-mock": {
                     "builder": "@angular-builders/custom-webpack:dev-server",
                     "options": {
-                        "browserTarget": "frontend:build",
+                        "buildTarget": "frontend:build",
                         "disableHostCheck": true,
                         "port": 9002,
                         "host": "0.0.0.0",
@@ -109,11 +109,11 @@
                     "configurations": {
                         "local": {
                             "publicHost": "localhost.ripe.net:9002/db-web-ui/",
-                            "browserTarget": "frontend:build:local"
+                            "buildTarget": "frontend:build:local"
                         },
                         "remote": {
                             "publicHost": "db-tools-1.ripe.net:9002/db-web-ui/",
-                            "browserTarget": "frontend:build:production"
+                            "buildTarget": "frontend:build:production"
                         }
                     }
                 },

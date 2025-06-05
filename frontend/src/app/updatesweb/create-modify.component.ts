@@ -44,6 +44,7 @@ export interface IMaintainers {
 @Component({
     selector: 'create-modify',
     templateUrl: './create-modify.component.html',
+    standalone: false,
 })
 export class CreateModifyComponent implements OnInit, OnDestroy {
     public optionList: IOptionList = { status: [] };

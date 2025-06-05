@@ -15,6 +15,7 @@ import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interc
 @Component({
     selector: 'whois-object-text-editor',
     templateUrl: './whois-object-text-editor.component.html',
+    standalone: false,
 })
 export class WhoisObjectTextEditorComponent implements OnInit {
     @Input()

@@ -24,6 +24,7 @@ import { RestService } from './rest.service';
         [resultFormatter]="autocompleteAttributeRFormatter"
         [inputFormatter]="autocompleteAttributeIFormatter"
     />`,
+    standalone: false,
 })
 export class TypeaheadComponent {
     @Input()

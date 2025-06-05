@@ -7,6 +7,7 @@ import { HierarchySelectorService } from './hierarchy-selector.service';
 @Component({
     selector: 'hierarchy-selector',
     templateUrl: './hierarchy-selector.component.html',
+    standalone: false,
 })
 export class HierarchySelectorComponent implements OnChanges {
     public parents: string[];

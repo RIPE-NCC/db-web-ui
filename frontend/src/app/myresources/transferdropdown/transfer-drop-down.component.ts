@@ -4,6 +4,7 @@ import { PropertiesService } from '../../properties.service';
 @Component({
     selector: 'transfer-drop-down',
     templateUrl: './transfer-drop-down.component.html',
+    standalone: false,
 })
 export class TransferDropDownComponent {
     @Input()

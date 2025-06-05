@@ -6,6 +6,7 @@ import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.servi
 @Component({
     selector: 'certificate-info',
     templateUrl: './certificate-info.component.html',
+    standalone: false,
 })
 export class CertificateInfoComponent implements OnDestroy {
     public member: boolean;

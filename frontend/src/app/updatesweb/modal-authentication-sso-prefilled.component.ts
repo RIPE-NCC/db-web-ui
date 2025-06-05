@@ -24,6 +24,7 @@ export interface IModalAuthentication {
 @Component({
     selector: 'modal-authentication-sso-prefilled',
     templateUrl: './modal-authentication-sso-prefilled.component.html',
+    standalone: false,
 })
 export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     public close: any;

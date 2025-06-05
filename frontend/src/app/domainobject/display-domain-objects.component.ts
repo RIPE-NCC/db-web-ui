@@ -7,6 +7,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 @Component({
     selector: 'display-domain-objects',
     templateUrl: './display-domain-objects.component.html',
+    standalone: false,
 })
 export class DisplayDomainObjectsComponent implements OnInit {
     public source: string;

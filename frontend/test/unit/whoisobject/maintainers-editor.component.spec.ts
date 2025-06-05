@@ -28,6 +28,7 @@ describe('MaintainersEditorComponent', () => {
         let fixture: ComponentFixture<MaintainersEditorComponent>;
         let modalMock: any;
         const BACKSPACE_KEYCODE = 8;
+        const BACKSPACE_KEY = 'Backspace';
 
         beforeEach(() => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
@@ -73,7 +74,7 @@ describe('MaintainersEditorComponent', () => {
             await fixture.whenStable();
             // simulate manual removal of the last and only mntner
             const mntInput = fixture.debugElement.query(By.css('ng-select'));
-            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
+            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE, BACKSPACE_KEY);
             expect(component.onMntnerRemoved).toHaveBeenCalled();
             expect(component.mntners.object.length === 0).toBeTruthy();
 
@@ -158,12 +159,12 @@ describe('MaintainersEditorComponent', () => {
             fixture.detectChanges();
             expect(fixture.debugElement.queryAll(By.css('#selectMaintainerDropdown .ng-value')).length).toBe(4);
             const mntInput = fixture.debugElement.query(By.css('ng-select'));
-            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
+            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE, BACKSPACE_KEY);
             expect(component.onMntnerRemoved).toHaveBeenCalled(); //method which remove mnt-by from attributes
             fixture.detectChanges();
             expect(fixture.debugElement.queryAll(By.css('#selectMaintainerDropdown .ng-value')).length).toBe(3);
             expect(component.attributes.length).toBe(11);
-            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
+            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE, BACKSPACE_KEY);
             fixture.detectChanges();
             expect(fixture.debugElement.queryAll(By.css('#selectMaintainerDropdown .ng-value')).length).toBe(2);
             expect(component.attributes.length).toBe(10);

@@ -14,6 +14,7 @@ interface IModalCreateRoleForAbuceC {
 @Component({
     selector: 'modal-create-role-for-abusec',
     templateUrl: './modal-create-role-for-abusec.component.html',
+    standalone: false,
 })
 export class ModalCreateRoleForAbuseCComponent {
     private static NEW_ROLE_TEMPLATE: IAttributeModel[] = [

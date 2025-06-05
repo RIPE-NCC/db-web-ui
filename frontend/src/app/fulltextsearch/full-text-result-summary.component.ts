@@ -4,6 +4,7 @@ import { IResultSummary } from './types.model';
 @Component({
     selector: 'full-text-result-summary',
     templateUrl: './full-text-result-summary.component.html',
+    standalone: false,
 })
 export class FullTextResultSummaryComponent implements OnChanges {
     @Input()

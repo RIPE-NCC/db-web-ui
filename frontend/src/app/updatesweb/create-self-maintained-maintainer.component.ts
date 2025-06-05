@@ -16,6 +16,7 @@ import { RestService } from './rest.service';
 @Component({
     selector: 'create-self-maintained-maintainer',
     templateUrl: './create-self-maintained-maintainer.component.html',
+    standalone: false,
 })
 export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     public submitInProgress = false;

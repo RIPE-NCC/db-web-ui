@@ -4,6 +4,7 @@ import { IQueryFlag, QueryFlagsService } from './query-flags.service';
 @Component({
     selector: 'query-flags',
     templateUrl: './query-flags.component.html',
+    standalone: false,
 })
 export class QueryFlagsComponent implements OnChanges {
     // whole string entered in search field

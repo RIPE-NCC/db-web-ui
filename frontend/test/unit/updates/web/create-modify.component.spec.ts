@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -512,14 +511,6 @@ describe('CreateModifyComponent', () => {
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(USER_WITH_MORE_ASSOCIATED_MNT_MOCK);
             fixture.detectChanges();
         });
-
-        function triggerKeyDownEvent(element: DebugElement, which: number, key = ''): void {
-            element.triggerEventHandler('keydown', {
-                which: which,
-                key: key,
-                preventDefault: () => {},
-            });
-        }
     });
 });
 

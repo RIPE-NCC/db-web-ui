@@ -3,6 +3,7 @@ import DiffMatchPatch, { Diff } from 'diff-match-patch';
 
 @Directive({
     selector: '[whoisLineDiff]',
+    standalone: false,
 })
 export class WhoisLineDiffDirective implements OnInit, OnChanges {
     @Input()

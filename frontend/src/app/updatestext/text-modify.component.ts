@@ -13,6 +13,7 @@ import { ITextObject } from './text-create.component';
 @Component({
     selector: 'text-modify',
     templateUrl: './text-modify.component.html',
+    standalone: false,
 })
 export class TextModifyComponent implements OnInit {
     public restCallInProgress: boolean = false;

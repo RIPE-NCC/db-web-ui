@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
         <p>Sorry, something went wrong</p>
         <a mat-flat-button color="primary" routerLink="/">BACK TO THE QUERY PAGE</a>
     </section>`,
+    standalone: false,
 })
 export class ErrorPageComponent {}

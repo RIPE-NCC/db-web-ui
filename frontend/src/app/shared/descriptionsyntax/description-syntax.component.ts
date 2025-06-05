@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
         <strong>Syntax</strong><br />
         <attr-info [objectType]="objectType" [syntax]="attrName"></attr-info>
     </div>`,
+    standalone: false,
 })
 export class DescriptionSyntaxComponent {
     @Input()

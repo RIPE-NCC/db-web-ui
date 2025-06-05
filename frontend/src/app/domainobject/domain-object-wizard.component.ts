@@ -32,6 +32,7 @@ interface IDomainObject {
 @Component({
     selector: 'domain-object-wizard',
     templateUrl: './domain-object-wizard.component.html',
+    standalone: false,
 })
 export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public objectType: string;

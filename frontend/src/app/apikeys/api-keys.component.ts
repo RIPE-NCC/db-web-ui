@@ -13,6 +13,7 @@ import { ApiKey } from './types';
 @Component({
     templateUrl: './api-keys.component.html',
     styleUrl: './api-keys.component.scss',
+    standalone: false,
 })
 export class ApiKeysComponent implements OnInit {
     displayedColumns: string[] = ['label', 'accessKey', 'lastUsed', 'expiresAt', 'details', 'delete'];

@@ -9,6 +9,7 @@ import { ReleaseNotificationService } from './shared/release-notification.servic
 @Component({
     selector: 'app-db-web-ui',
     templateUrl: 'app.component.html',
+    standalone: false,
 })
 export class AppComponent implements OnInit, AfterViewInit {
     // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW

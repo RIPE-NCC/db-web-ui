@@ -12,6 +12,7 @@ interface ISelectedObjectType {
 @Component({
     selector: 'select-component',
     templateUrl: './select.component.html',
+    standalone: false,
 })
 export class SelectComponent implements OnInit {
     public selected: ISelectedObjectType;

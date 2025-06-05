@@ -5,6 +5,7 @@ import { CryptService } from './crypt.service';
 @Component({
     selector: 'modal-md5-password',
     templateUrl: './modal-md5-password.component.html',
+    standalone: false,
 })
 export class ModalMd5PasswordComponent {
     public password: string = '';

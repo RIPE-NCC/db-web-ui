@@ -17,6 +17,7 @@ interface IModalDelete {
 @Component({
     selector: 'modal-delete-object',
     templateUrl: './modal-delete-object.component.html',
+    standalone: false,
 })
 export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     public MAX_REFS_TO_SHOW: number = 5;

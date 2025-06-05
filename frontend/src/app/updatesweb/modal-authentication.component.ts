@@ -25,6 +25,7 @@ export interface IModalAuthentication {
 @Component({
     selector: 'modal-authentication',
     templateUrl: './modal-authentication.component.html',
+    standalone: false,
 })
 export class ModalAuthenticationComponent implements OnInit {
     public close: any;

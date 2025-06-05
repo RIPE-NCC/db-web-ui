@@ -18,6 +18,7 @@ export function debounce(delay: number = 25): MethodDecorator {
 
 @Directive({
     selector: '[table-scroller]',
+    standalone: false,
 })
 export class TableScrollerDirective {
     @Output() scrolled = new EventEmitter();

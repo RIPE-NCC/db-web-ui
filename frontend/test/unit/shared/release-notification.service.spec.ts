@@ -33,57 +33,70 @@ describe('ReleaseNotificationService', () => {
     afterEach(() => {
         httpMock.verify();
     });
-    it('should start polling', fakeAsync(() => {
-        releaseNotificationService.startPolling();
-        tick(pollInterval);
-        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
 
-        discardPeriodicTasks();
-    }));
+    it('should start polling', fakeAsync(
+        () => {
+            releaseNotificationService.startPolling();
+            tick(pollInterval);
+            httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
 
-    it('should show banner', fakeAsync(() => {
-        releaseNotificationService.startPolling();
-        tick(pollInterval);
-        const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
-        req.flush({ DB_WEB_UI_BUILD_TIME: '1' });
+            discardPeriodicTasks();
+        },
+        { flush: false },
+    ));
 
-        expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith(
-            'There is a new release available. Click reload to start using it.',
-            document.location.href,
-            'RELOAD',
-        );
+    it('should show banner', fakeAsync(
+        () => {
+            releaseNotificationService.startPolling();
+            tick(pollInterval);
+            const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
+            req.flush({ DB_WEB_UI_BUILD_TIME: '1' });
 
-        discardPeriodicTasks();
-    }));
+            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith(
+                'There is a new release available. Click reload to start using it.',
+                document.location.href,
+                'RELOAD',
+            );
 
-    it('should not show banner if the build is the same', fakeAsync(() => {
-        releaseNotificationService.startPolling();
-        tick(pollInterval);
-        const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
-        req.flush({ DB_WEB_UI_BUILD_TIME: '0' });
+            discardPeriodicTasks();
+        },
+        { flush: false },
+    ));
 
-        expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
+    it('should not show banner if the build is the same', fakeAsync(
+        () => {
+            releaseNotificationService.startPolling();
+            tick(pollInterval);
+            const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
+            req.flush({ DB_WEB_UI_BUILD_TIME: '0' });
 
-        discardPeriodicTasks();
-    }));
+            expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
 
-    it('should trigger banner only 1 time', fakeAsync(() => {
-        releaseNotificationService.startPolling();
-        tick(pollInterval);
-        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '1' });
+            discardPeriodicTasks();
+        },
+        { flush: false },
+    ));
 
-        expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith(
-            'There is a new release available. Click reload to start using it.',
-            document.location.href,
-            'RELOAD',
-        );
+    it('should trigger banner only 1 time', fakeAsync(
+        () => {
+            releaseNotificationService.startPolling();
+            tick(pollInterval);
+            httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '1' });
 
-        alertServiceSpy.addGlobalWarning.calls.reset();
+            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith(
+                'There is a new release available. Click reload to start using it.',
+                document.location.href,
+                'RELOAD',
+            );
 
-        tick(pollInterval);
-        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '2' });
+            alertServiceSpy.addGlobalWarning.calls.reset();
 
-        expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
-        discardPeriodicTasks();
-    }));
+            tick(pollInterval);
+            httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '2' });
+
+            expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
+            discardPeriodicTasks();
+        },
+        { flush: false },
+    ));
 });

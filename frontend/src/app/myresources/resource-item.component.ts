@@ -7,6 +7,7 @@ import { ResourceStatusService } from './resource-status.service';
 @Component({
     selector: 'resource-item',
     templateUrl: './resource-item.component.html',
+    standalone: false,
 })
 export class ResourceItemComponent implements OnInit {
     @Input()

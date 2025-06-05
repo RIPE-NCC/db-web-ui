@@ -8,6 +8,7 @@ import { TypeOfSearchTermEnum } from './type-of-search-term.enum';
 @Component({
     selector: 'inverse-lookup-panel',
     templateUrl: './inverse-lookup-panel.component.html',
+    standalone: false,
 })
 export class InverseLookupPanelComponent implements OnInit {
     @Input()

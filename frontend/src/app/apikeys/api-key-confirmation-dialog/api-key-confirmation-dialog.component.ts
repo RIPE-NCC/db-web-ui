@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     templateUrl: 'api-key-confirmation-dialog.component.html',
     styleUrl: 'api-key-confirmation-dialog.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false,
 })
 export class ApiKeyConfirmationDialogComponent {
     constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}

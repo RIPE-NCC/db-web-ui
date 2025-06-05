@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
             <em class="fal fa-redo"></em>
         </button>
     </p>`,
+    standalone: false,
 })
 export class RefreshComponent {
     @Input()

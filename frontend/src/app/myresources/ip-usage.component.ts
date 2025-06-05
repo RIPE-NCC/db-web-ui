@@ -5,6 +5,7 @@ import { IUsage } from './resource-type.model';
 @Component({
     selector: 'ip-usage',
     templateUrl: './ip-usage.component.html',
+    standalone: false,
 })
 export class IpUsageComponent implements OnChanges {
     @Input()
