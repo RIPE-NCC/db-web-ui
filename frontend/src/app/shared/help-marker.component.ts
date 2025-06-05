@@ -7,6 +7,7 @@ import { Labels } from '../label.constants';
         <a [href]="hrefLabel" *ngIf="hrefLabel" target="_blank"> <span class="fal fa-question fa-lg" aria-hidden="true"></span></a>
         <span *ngIf="!hrefLabel" class="fal fa-question fa-lg" aria-hidden="true"></span>
     </span>`,
+    standalone: false,
 })
 export class HelpMarkerComponent implements OnInit {
     @Input()

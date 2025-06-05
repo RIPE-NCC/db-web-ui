@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'modal-add-attribute',
     templateUrl: './modal-add-attribute.component.html',
+    standalone: false,
 })
 export class ModalAddAttributeComponent implements OnInit {
     public close: any;

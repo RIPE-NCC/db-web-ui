@@ -33,6 +33,7 @@ export type ShareLink = {
 @Component({
     selector: 'query',
     templateUrl: './query.component.html',
+    standalone: false,
 })
 export class QueryComponent implements OnDestroy {
     public offset = 0;

@@ -7,6 +7,7 @@ import { ModalDeleteObjectComponent } from './modal-delete-object.component';
 @Component({
     selector: 'delete-component',
     templateUrl: './delete.component.html',
+    standalone: false,
 })
 export class DeleteComponent implements OnInit, OnDestroy {
     public modalInProgress: boolean;

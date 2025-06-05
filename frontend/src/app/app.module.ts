@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatLineModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -93,12 +93,13 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         PropertiesService,
         MenuService,
         SessionInfoService,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(),
-            deps: [PropertiesService],
-            multi: true,
-        },
+        provideAppInitializer(() => {
+            const initializerFn = (
+                (propertiesService: PropertiesService) => () =>
+                    propertiesService.load()
+            )(inject(PropertiesService));
+            return initializerFn();
+        }),
         { provide: HTTP_INTERCEPTORS, useClass: MetaDataCleanerInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

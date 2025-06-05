@@ -4,6 +4,7 @@ import { AlertsService, IAlerts } from './alerts.service';
 @Component({
     selector: 'alert-banners',
     templateUrl: './alert-banners.component.html',
+    standalone: false,
 })
 export class AlertBannersComponent implements OnInit, OnDestroy {
     public alerts: IAlerts;

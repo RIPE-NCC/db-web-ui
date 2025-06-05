@@ -12,6 +12,7 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
 @Component({
     selector: 'full-text-search',
     templateUrl: './full-text-search.component.html',
+    standalone: false,
 })
 export class FullTextSearchComponent implements OnInit, OnDestroy {
     // In

@@ -6,6 +6,7 @@ import { IWhoisObjectModel } from '../shared/whois-response-type.model';
 @Component({
     selector: 'lookup',
     templateUrl: './lookup.component.html',
+    standalone: false,
 })
 export class LookupComponent implements OnChanges {
     @Input()

@@ -22,6 +22,7 @@ interface IObjectFromParameters {
 @Component({
     selector: 'force-delete',
     templateUrl: './force-delete.component.html',
+    standalone: false,
 })
 export class ForceDeleteComponent implements OnInit {
     public object: IObjectFromParameters = {

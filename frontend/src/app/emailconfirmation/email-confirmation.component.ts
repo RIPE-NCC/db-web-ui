@@ -5,6 +5,7 @@ import { EmailConfirmationService } from './email-confirmation.service';
 @Component({
     selector: 'email-confirmation',
     templateUrl: './email-confirm.component.html',
+    standalone: false,
 })
 export class EmailConfirmationComponent implements OnInit {
     public token: string;

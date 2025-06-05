@@ -9,6 +9,7 @@ import { FmpErrorService } from './fmp-error.service';
 @Component({
     selector: 'confirm-maintainer',
     templateUrl: './confirm-maintainer.component.html',
+    standalone: false,
 })
 export class ConfirmMaintainerComponent implements OnInit {
     public key: string = '';

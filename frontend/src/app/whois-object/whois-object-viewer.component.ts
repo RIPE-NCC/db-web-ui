@@ -9,6 +9,7 @@ import { UserInfoService } from '../userinfo/user-info.service';
 @Component({
     selector: 'whois-object-viewer',
     templateUrl: './whois-object-viewer.component.html',
+    standalone: false,
 })
 export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     @Input()

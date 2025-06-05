@@ -8,6 +8,7 @@ import { ForgotMaintainerPasswordService, IForgotMaintainerPassword } from './fo
 @Component({
     selector: 'fmp',
     templateUrl: './forgot-maintainer-password.component.html',
+    standalone: false,
 })
 export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
     public generatedPDFUrl: string;

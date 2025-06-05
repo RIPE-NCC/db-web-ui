@@ -9,6 +9,7 @@ import { OrgDropDownSharedService } from './org-drop-down-shared.service';
 @Component({
     selector: 'org-drop-down',
     templateUrl: './org-drop-down.component.html',
+    standalone: false,
 })
 export class OrgDropDownComponent implements OnInit {
     public selectedOrg: IUserInfoOrganisation;

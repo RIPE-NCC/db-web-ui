@@ -18,6 +18,7 @@ import { AttributeMetadataService } from './attribute-metadata.service';
 @Component({
     selector: 'attribute-renderer',
     templateUrl: './attribute-renderer.component.html',
+    standalone: false,
 })
 export class AttributeRendererComponent implements OnInit {
     @Input()

@@ -6,6 +6,7 @@ import { UserInfoService } from '../userinfo/user-info.service';
 @Component({
     selector: 'feedback-support-dialog',
     templateUrl: './feedback-support-dialog.component.html',
+    standalone: false,
 })
 export class FeedbackSupportDialogComponent implements OnInit {
     public showChatMenuItem: boolean;

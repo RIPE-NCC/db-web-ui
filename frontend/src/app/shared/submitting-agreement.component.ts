@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
             <span [innerHTML]="'msg.ripeTandCSubmitLink.text' | label"></span>
         </section>
     </div>`,
+    standalone: false,
 })
 export class SubmittingAgreementComponent {}

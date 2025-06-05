@@ -6,6 +6,7 @@ import { AlertsService } from '../../shared/alert/alerts.service';
 @Component({
     selector: 'force-delete-select',
     templateUrl: './force-delete-select.component.html',
+    standalone: false,
 })
 export class ForceDeleteSelectComponent implements OnInit {
     public objectTypes: string[] = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];

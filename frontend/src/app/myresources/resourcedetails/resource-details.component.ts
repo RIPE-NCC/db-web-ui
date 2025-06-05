@@ -25,6 +25,7 @@ import { ResourcesDataService } from '../resources-data.service';
 @Component({
     selector: 'resource-details',
     templateUrl: './resource-details.component.html',
+    standalone: false,
 })
 export class ResourceDetailsComponent implements OnDestroy {
     public whoisObject: IWhoisObjectModel;

@@ -6,6 +6,7 @@ import { ResourceStatusService } from './resource-status.service';
 @Component({
     selector: 'ip-usage-of-all-resources',
     templateUrl: './ip-usage-of-all-resources.component.html',
+    standalone: false,
 })
 export class IpUsageOfAllResourcesComponent implements OnChanges {
     @Input()

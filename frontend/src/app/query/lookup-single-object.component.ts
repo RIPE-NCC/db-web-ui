@@ -10,6 +10,7 @@ import { LookupService } from './lookup.service';
 @Component({
     selector: 'lookup-single',
     templateUrl: './lookup-single-object.component.html',
+    standalone: false,
 })
 export class LookupSingleObjectComponent implements OnInit, OnDestroy {
     public whoisResponse: any;

@@ -5,6 +5,7 @@ import { AlertsService } from '../shared/alert/alerts.service';
 @Component({
     selector: 'sso-added',
     templateUrl: './sso-added.component.html',
+    standalone: false,
 })
 export class SsoAddedComponent implements OnInit, OnDestroy {
     public mntnerKey: string;

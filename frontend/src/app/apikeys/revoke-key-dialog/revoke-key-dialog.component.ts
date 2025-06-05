@@ -5,5 +5,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     templateUrl: 'revoke-key-dialog.component.html',
     styleUrl: 'revoke-key-dialog.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false,
 })
 export class RevokeKeyDialogComponent {}

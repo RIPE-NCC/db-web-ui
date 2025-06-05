@@ -7,6 +7,7 @@ import { PropertiesService } from '../properties.service';
         <span *ngIf="trainingEnv">RIPE Database Web Application: {{ properties.DB_WEB_UI_BUILD_TIME }} </span>
     </div>`,
     styles: ['span { color: grey; }'],
+    standalone: false,
 })
 export class WebAppVersionComponent implements OnInit {
     public trainingEnv: boolean;

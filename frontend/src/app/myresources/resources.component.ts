@@ -14,6 +14,7 @@ import { ResourcesDataService } from './resources-data.service';
 @Component({
     selector: 'resource-component',
     templateUrl: './resources.component.html',
+    standalone: false,
 })
 export class ResourcesComponent implements OnDestroy {
     public ipv4Resources: IIPv4ResourceDetails[] = [];

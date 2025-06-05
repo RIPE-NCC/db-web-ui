@@ -6,6 +6,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 @Component({
     selector: 'modal-edit-attribute',
     templateUrl: './modal-edit-attribute.component.html',
+    standalone: false,
 })
 export class ModalEditAttributeComponent {
     @Input()

@@ -9,6 +9,7 @@ import { FmpErrorService } from './fmp-error.service';
 @Component({
     selector: 'find-maintainer',
     templateUrl: './find-maintainer.component.html',
+    standalone: false,
 })
 export class FindMaintainerComponent implements OnInit {
     public foundMaintainer: IFindMaintainer;

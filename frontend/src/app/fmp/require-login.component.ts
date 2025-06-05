@@ -5,6 +5,7 @@ import { PropertiesService } from '../properties.service';
 @Component({
     selector: 'require-login',
     templateUrl: './require-login.component.html',
+    standalone: false,
 })
 export class RequireLoginComponent implements OnInit {
     public loginUrl: string;

@@ -6,6 +6,7 @@ import { createPopup } from '@typeform/embed';
     selector: 'typeform-dialog',
     templateUrl: 'typeform-dialog.component.html',
     styleUrl: 'typeform-dialog.component.scss',
+    standalone: false,
 })
 export class TypeformDialogComponent implements OnInit {
     constructor(private dialogRef: MatDialogRef<TypeformDialogComponent>) {}

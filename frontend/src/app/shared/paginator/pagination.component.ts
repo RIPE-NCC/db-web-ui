@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 @Component({
     selector: 'paginator',
     templateUrl: './paginator.component.html',
+    standalone: false,
 })
 export class PaginationComponent implements OnInit, OnChanges {
     @Input()

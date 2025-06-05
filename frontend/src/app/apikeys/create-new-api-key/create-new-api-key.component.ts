@@ -14,6 +14,7 @@ import { ApiKey } from '../types';
     selector: 'create-new-api-key',
     templateUrl: './create-new-api-key.component.html',
     styleUrl: './create-new-api-key.component.scss',
+    standalone: false,
 })
 export class CreateNewApiKeyComponent implements OnInit {
     @Output()

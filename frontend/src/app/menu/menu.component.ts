@@ -18,6 +18,7 @@ import { MenuService } from './menu.service';
         <app-nav-bar *ngIf="isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
         <app-nav-bar *ngIf="!isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
     `,
+    standalone: false,
 })
 export class MenuComponent implements OnInit, OnDestroy {
     @Input()

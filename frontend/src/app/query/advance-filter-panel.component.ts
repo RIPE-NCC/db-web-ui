@@ -5,6 +5,7 @@ import { IQueryParameters } from './query-parameters.service';
 @Component({
     selector: 'advance-filter-panel',
     templateUrl: './advance-filter-panel.component.html',
+    standalone: false,
 })
 export class AdvanceFilterPanelComponent {
     @Input()

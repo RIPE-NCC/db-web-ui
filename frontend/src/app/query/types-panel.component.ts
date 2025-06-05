@@ -6,6 +6,7 @@ import { IQueryParameters, QueryParametersService } from './query-parameters.ser
 @Component({
     selector: 'types-panel',
     templateUrl: './types-panel.component.html',
+    standalone: false,
 })
 export class TypesPanelComponent {
     @Input()

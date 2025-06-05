@@ -9,6 +9,7 @@ import { RestService } from './rest.service';
 @Component({
     selector: 'display-mntner-pair',
     templateUrl: './display-mntner-pair.component.html',
+    standalone: false,
 })
 export class DisplayMntnerPairComponent implements OnInit, OnDestroy {
     public objectSource: string;

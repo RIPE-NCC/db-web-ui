@@ -7,6 +7,7 @@ import { SyncupdatesService } from './syncupdates.service';
 @Component({
     selector: 'syncupdates',
     templateUrl: './syncupdates.component.html',
+    standalone: false,
 })
 export class SyncupdatesComponent {
     public rpslObject: string;

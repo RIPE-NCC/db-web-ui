@@ -1,7 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import sanitizeHtml from 'sanitize-html';
 
-@Pipe({ name: 'sanitizeHtml' })
+@Pipe({
+    name: 'sanitizeHtml',
+    standalone: false,
+})
 export class SanitizeHtmlPipe implements PipeTransform {
     constructor() {
         sanitizeHtml.defaults.allowedTags = sanitizeHtml.defaults.allowedTags.filter((tag) => tag !== 'a');

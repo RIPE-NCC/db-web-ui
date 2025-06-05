@@ -4,6 +4,7 @@ import { UnsubscribeService } from './unsubscribe.service';
 
 @Component({
     templateUrl: './unsubscribe.component.html',
+    standalone: false,
 })
 export class UnsubscribeComponent implements OnInit {
     public messageId: string;

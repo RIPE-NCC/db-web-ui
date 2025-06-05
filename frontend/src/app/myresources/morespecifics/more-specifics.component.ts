@@ -5,6 +5,7 @@ import { IMoreSpecificsApiResult, MoreSpecificsService } from './more-specifics.
 @Component({
     selector: 'more-specifics',
     templateUrl: './more-specifics.component.html',
+    standalone: false,
 })
 export class MoreSpecificsComponent implements OnChanges {
     @Input()

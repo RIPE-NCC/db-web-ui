@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
         <a mat-flat-button color="primary" [routerLink]="['/query']" id="btnNavigateToQuery">Search for an object</a>
         <a mat-flat-button class="margin-left" color="primary" [routerLink]="['/webupdates/select']" id="btnNavigateToCreate">Create an object</a>
     </section> `,
+    standalone: false,
 })
 export class NotFoundPageComponent {}
