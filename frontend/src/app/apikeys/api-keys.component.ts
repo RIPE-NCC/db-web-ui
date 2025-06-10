@@ -16,7 +16,7 @@ import { ApiKey } from './types';
     standalone: false,
 })
 export class ApiKeysComponent implements OnInit {
-    displayedColumns: string[] = ['label', 'accessKey', 'lastUsed', 'expiresAt', 'details', 'delete'];
+    displayedColumns: string[] = ['label', 'id', 'lastUsed', 'expiresAt', 'details', 'delete'];
     dataSource: MatTableDataSource<ApiKey>;
     selection = new SelectionModel<ApiKey>(true, []);
 
@@ -38,12 +38,12 @@ export class ApiKeysComponent implements OnInit {
         this.dataSource.sort = this.sort;
     }
 
-    openRevokeDialog(accessKey: string) {
+    openRevokeDialog(id: string) {
         const dialogRef = this.revokeDialog.open(RevokeKeyDialogComponent);
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
             if (result === true) {
-                this.apiKeysService.deleteApiKey(accessKey).subscribe((response) => {
+                this.apiKeysService.deleteApiKey(id).subscribe((response) => {
                     this.loadTableData();
                 });
             }

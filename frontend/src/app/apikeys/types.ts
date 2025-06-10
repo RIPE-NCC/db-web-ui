@@ -5,7 +5,7 @@ export type ApiKey = {
     details?: string;
     application?: string;
     scopes?: string[];
-    accessKey?: string;
+    id?: string;
     secretKey?: string;
     userId?: string;
 };

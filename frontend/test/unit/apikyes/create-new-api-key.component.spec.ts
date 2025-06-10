@@ -55,12 +55,12 @@ describe('CreateNewApiKeyComponent', () => {
         expect(component.maintainers).toEqual(autocompleteResponse);
     }));
 
-    it('should save the new api aki', () => {
+    it('should save the new apikey', () => {
         const apiKeyResponse: ApiKey = {
             expiresAt: '2024-01-01',
             lastUsed: new Date('2023-12-08T10:21:49.96061Z'),
             label: 'my key name',
-            accessKey: 'accessKey',
+            id: 'accessKey',
             secretKey: 'secretKey',
         };
         apiKeysServiceMock.saveApiKey.and.returnValue(of(apiKeyResponse));
@@ -77,7 +77,7 @@ describe('CreateNewApiKeyComponent', () => {
         expect(component.expiresAt).toBeUndefined();
         expect(component.maintainer).toBeUndefined();
         expect(matDialogMock.open).toHaveBeenCalledWith(ApiKeyConfirmationDialogComponent, {
-            data: { accessKey: apiKeyResponse.accessKey, secretKey: apiKeyResponse.secretKey },
+            data: { id: apiKeyResponse.id, secretKey: apiKeyResponse.secretKey },
         });
     });
 

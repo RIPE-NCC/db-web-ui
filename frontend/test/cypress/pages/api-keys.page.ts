@@ -18,8 +18,8 @@ export class ApiKeysPage {
         return this;
     }
 
-    revokeKey(accessKey: string) {
-        cy.get(`button[data-test-id="${accessKey}"]`).click();
+    revokeKey(id: string) {
+        cy.get(`button[data-test-id="${id}"]`).click();
         return this;
     }
 

@@ -4,7 +4,7 @@
     "statusCode": 200,
     "data": [
         {
-            "accessKey": "my mocked access key",
+            "id": "my mocked access key",
             "details": "MHM-MNT",
             "lastUsed": "2025-01-08T10:21:49.96061Z",
             "expiresAt": "2125-01-22"

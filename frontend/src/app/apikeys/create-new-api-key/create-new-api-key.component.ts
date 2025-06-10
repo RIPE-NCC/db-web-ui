@@ -65,8 +65,8 @@ export class CreateNewApiKeyComponent implements OnInit {
     }
 
     openConfirmDialog(apiKey: ApiKey) {
-        const { accessKey, secretKey } = apiKey;
-        this.dialog.open(ApiKeyConfirmationDialogComponent, { data: { accessKey, secretKey } });
+        const { id, secretKey } = apiKey;
+        this.dialog.open(ApiKeyConfirmationDialogComponent, { data: { id, secretKey } });
     }
 
     private cleanValuesInInputFields() {

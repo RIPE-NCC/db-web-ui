@@ -22,7 +22,7 @@ export class ApiKeysService {
         return this.http.get<ApiKey[]>(this.API_BASE_URL);
     }
 
-    deleteApiKey(accessKey: string) {
-        return this.http.delete(`${this.API_BASE_URL}/${accessKey}`);
+    deleteApiKey(id: string) {
+        return this.http.delete(`${this.API_BASE_URL}/${id}`);
     }
 }
