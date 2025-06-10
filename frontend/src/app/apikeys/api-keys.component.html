@@ -29,9 +29,9 @@
         </ng-container>
 
         <!-- Key Column -->
-        <ng-container matColumnDef="accessKey">
+        <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Key ID</th>
-            <td mat-cell *matCellDef="let element">{{ element.accessKey }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <!-- Last used Column -->
@@ -56,13 +56,7 @@
         <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <button
-                    mat-stroked-button
-                    color="primary"
-                    id="search-maintainer"
-                    attr.data-test-id="{{ element.accessKey }}"
-                    (click)="openRevokeDialog(element.accessKey)"
-                >
+                <button mat-stroked-button color="primary" id="search-maintainer" attr.data-test-id="{{ element.id }}" (click)="openRevokeDialog(element.id)">
                     <span class="fal fa-trash"></span> Revoke
                 </button>
             </td>

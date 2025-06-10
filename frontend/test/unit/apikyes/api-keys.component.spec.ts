@@ -23,7 +23,7 @@ describe('ApiKeysComponent', () => {
             expiresAt: '2124-01-01', // just to ensure that next 100 years this test won't fail
             lastUsed: new Date('2023-12-08T10:21:49.96061Z'),
             label: 'my key name',
-            accessKey: 'accessKey',
+            id: 'accessKey',
             secretKey: 'secretKey',
         },
     ];
@@ -33,7 +33,7 @@ describe('ApiKeysComponent', () => {
             expiresAt: '2024-01-01', // just to ensure that next 100 years this test won't fail
             lastUsed: new Date('2023-12-08T10:21:49.96061Z'),
             label: 'my key name',
-            accessKey: 'accessKey',
+            id: 'accessKey',
             secretKey: 'secretKey',
         },
     ];

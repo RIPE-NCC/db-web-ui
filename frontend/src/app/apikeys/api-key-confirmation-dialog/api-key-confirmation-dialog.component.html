@@ -6,10 +6,10 @@
             <div>In case you use an HTTP Authorization header</div>
             <div class="copy-content">
                 <div>
-                    <strong>{{ getBasicAuthorizationHeader(data.accessKey, data.secretKey) }}</strong>
+                    <strong>{{ getBasicAuthorizationHeader(data.id, data.secretKey) }}</strong>
                 </div>
                 <div class="copy-key-content">
-                    <button mat-flat-button color="primary" [cdkCopyToClipboard]="getBasicAuthorizationHeader(data.accessKey, data.secretKey)">
+                    <button mat-flat-button color="primary" [cdkCopyToClipboard]="getBasicAuthorizationHeader(data.id, data.secretKey)">
                         <span class="fal fa-copy"></span> Copy
                     </button>
                 </div>
@@ -22,10 +22,10 @@
             <div>In case you use a username and password</div>
             <div class="copy-content">
                 <div>
-                    Username: <strong>{{ data.accessKey }}</strong>
+                    Username: <strong>{{ data.id }}</strong>
                 </div>
                 <div class="copy-key-content">
-                    <button mat-flat-button color="primary" [cdkCopyToClipboard]="data.accessKey"><span class="fal fa-copy"></span> Copy</button>
+                    <button mat-flat-button color="primary" [cdkCopyToClipboard]="data.id"><span class="fal fa-copy"></span> Copy</button>
                 </div>
             </div>
             <div class="copy-content">
