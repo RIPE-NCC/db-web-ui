@@ -30,9 +30,7 @@ export class MntnerService {
         private http: HttpClient,
         public properties: PropertiesService,
     ) {
-        this.enableNonAuthUpdates =
-            !properties.isProdEnv() && // Security property, this should never be enabled in PROD
-            properties.NO_PASSWORD_AUTH_POPUP;
+        this.enableNonAuthUpdates = properties.isEnableNonAuthUpdates();
     }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {

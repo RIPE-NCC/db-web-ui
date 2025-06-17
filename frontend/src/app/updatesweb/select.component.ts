@@ -58,8 +58,7 @@ export class SelectComponent implements OnInit {
 
     public filterObjectTypes(unfiltered: string[]): string[] {
         // only on PROD env should be filtered out option to create autnum and as-block
-        //TODO duplicated in mntner.service - move it out to method to properties service
-        if (!this.properties.isProdEnv() && this.properties.NO_PASSWORD_AUTH_POPUP) {
+        if (this.properties.isEnableNonAuthUpdates()) {
             return unfiltered.filter((item: string) => item !== 'poem' && item !== 'poetic-form');
         }
         return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form' && item != 'aut-num');
