@@ -57,9 +57,10 @@ export class SelectComponent implements OnInit {
     }
 
     public filterObjectTypes(unfiltered: string[]): string[] {
-        // in case there is mnt which allowed to create autnum in properties file, autnum shouldn't be filtered out
-        if (Object.keys(this.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM).length > 0) {
-            return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form');
+        // only on PROD env should be filtered out option to create autnum and as-block
+        //TODO duplicated in mntner.service - move it out to method to properties service
+        if (!this.properties.isProdEnv() && this.properties.NO_PASSWORD_AUTH_POPUP) {
+            return unfiltered.filter((item: string) => item !== 'poem' && item !== 'poetic-form');
         }
         return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form' && item != 'aut-num');
     }

@@ -311,6 +311,7 @@ describe('SelectController', () => {
     });
 
     it('should not return as-block, poem, poetic-form, aut-num', () => {
+        spyOn(component.properties, 'isProdEnv').and.returnValue(true);
         const filteredObjectTypes = component.filterObjectTypes(whoisMetaServiceMock.getObjectTypes());
         expect(filteredObjectTypes.includes('as-block')).toBeFalsy();
         expect(filteredObjectTypes.includes('poem')).toBeFalsy();
@@ -318,10 +319,11 @@ describe('SelectController', () => {
         expect(filteredObjectTypes.includes('aut-num')).toBeFalsy();
     });
 
-    it('should not return as-block, poem, poetic-form, but aut-num should be present for TEST environment', () => {
-        component.properties.MNTNER_ALLOWED_TO_CREATE_AUTNUM = { 'TEST-DBM-MNT': 'test' };
+    it('should not return poem, poetic-form, but aut-num and as-block should be present for TEST environment', () => {
+        spyOn(component.properties, 'isProdEnv').and.returnValue(false);
+        component.properties.NO_PASSWORD_AUTH_POPUP = true;
         const filteredObjectTypes = component.filterObjectTypes(whoisMetaServiceMock.getObjectTypes());
-        expect(filteredObjectTypes.includes('as-block')).toBeFalsy();
+        expect(filteredObjectTypes.includes('as-block')).toBeTruthy();
         expect(filteredObjectTypes.includes('poem')).toBeFalsy();
         expect(filteredObjectTypes.includes('poetic-form')).toBeFalsy();
         expect(filteredObjectTypes.includes('aut-num')).toBeTruthy();

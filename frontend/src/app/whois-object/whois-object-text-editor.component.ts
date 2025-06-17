@@ -148,7 +148,7 @@ export class WhoisObjectTextEditorComponent implements OnInit {
                 const objectToModifyResponse = response[1];
                 this.restCallInProgress = false;
                 const attributes = this.handleFetchResponse(objectToModifyResponse);
-                this.deletable = this.whoisResourcesService.canDeleteObject(this.type, attributes);
+                this.deletable = this.whoisResourcesService.canDeleteObject(attributes);
                 // store mntners for SSO account
                 this.mntners.sso = mntnersResponse;
 

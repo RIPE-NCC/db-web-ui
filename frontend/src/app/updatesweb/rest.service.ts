@@ -21,8 +21,8 @@ export class RestService {
     }
 
     private searchWhois(objectType: string, qs: string, flag: string) {
-        if (['inetnum', 'inet6num', 'aut-num'].indexOf(objectType) < 0) {
-            console.error('Only aut-num, inetnum and inet6num supported');
+        if (['inetnum', 'inet6num', 'aut-num', 'as-block'].indexOf(objectType) < 0) {
+            console.error('Only aut-num, as-block, inetnum and inet6num supported');
             return;
         }
         const params = new HttpParams().set('flags', flag).set('ignore404', String(true)).set('query-string', qs).set('type-filter', objectType);
