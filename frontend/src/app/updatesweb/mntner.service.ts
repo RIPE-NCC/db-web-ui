@@ -280,11 +280,13 @@ export class MntnerService {
         });
     }
 
-    public stripNccMntners(mntners: IMntByModel[], allowEmptyResult: boolean) {
+    public stripNccMntners(mntners: IMntByModel[], allowEmptyResult: boolean): IMntByModel[] {
         // remove NCC mntners and dupes
-        const stripped = mntners.filter((mntner: IMntByModel) => {
-            return !this.isAnyNccMntner(mntner.key);
-        });
+        const stripped = this.enableNonAuthUpdates
+            ? mntners
+            : mntners.filter((mntner: IMntByModel) => {
+                  return !this.isAnyNccMntner(mntner.key);
+              });
         // if we are left with no mntners, return mntners array untouched
         if (_.isEmpty(stripped) && !allowEmptyResult) {
             return mntners;
