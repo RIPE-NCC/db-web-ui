@@ -8,18 +8,9 @@ import { CredentialsService } from '../shared/credentials.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
-import { RestService } from './rest.service';
 
-export interface IModalAuthentication {
-    method: any;
-    objectType: string;
-    objectName: string;
-    mntners: any;
-    mntnersWithoutPassword: any;
-    allowForcedDelete: any;
-    isLirObject: any;
-    source: string;
-}
+import { IModalAuthentication } from './modal-authentication.component';
+import { RestService } from './rest.service';
 
 @Component({
     selector: 'modal-authentication-sso-prefilled',

@@ -338,7 +338,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 (this.objectType === ObjectTypesEnum.INETNUM && attribute.name === ObjectTypesEnum.INETNUM) ||
                 (this.objectType === ObjectTypesEnum.INET6NUM && attribute.name === ObjectTypesEnum.INET6NUM)
             ) {
-                this.restService.fetchParentResource(this.objectType, attribute.value).subscribe({
+                const type = this.objectType === ObjectTypesEnum.AUT_NUM ? ObjectTypesEnum.AS_BLOCK : this.objectType;
+                this.restService.fetchParentResource(type, attribute.value).subscribe({
                     next: (result: any) => {
                         let parent;
                         if (result && result.objects && _.isArray(result.objects.object)) {
@@ -445,7 +446,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public isDeletable(): boolean {
-        return this.whoisResourcesService.canDeleteObject(this.objectType, this.attributes, this.maintainers.objectOriginal);
+        return this.whoisResourcesService.canDeleteObject(this.attributes, this.maintainers.objectOriginal);
     }
 
     public deleteObject() {
@@ -829,7 +830,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (modify && this.objectType === ObjectTypesEnum.INETNUM && statusAttr.value === 'ALLOCATED PA') {
             this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
         } else {
-            this.optionList.status = this.resourceStatusService.get(this.objectType, statusAttr.value);
+            this.optionList.status = this.resourceStatusService.get(this.objectType, statusAttr?.value);
         }
     }
 }
