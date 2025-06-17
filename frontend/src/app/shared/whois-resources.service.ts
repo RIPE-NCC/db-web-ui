@@ -562,8 +562,7 @@ export class WhoisResourcesService {
 
     public canDeleteObject(attributes: IAttributeModel[], maintainers?: Array<IMntByModel | IAttributeModel>): boolean {
         // enable delete objects maintained by RIPE NCC mnts on all environments except PROD
-        //TODO duplicated in mntner.service - move it out to method to properties service
-        if (!this.propertiesService.isProdEnv() && this.propertiesService.NO_PASSWORD_AUTH_POPUP) {
+        if (this.propertiesService.isEnableNonAuthUpdates()) {
             return !ObjectUtilService.isLirObject(attributes);
         }
         return !this.isComaintained(attributes, maintainers) && !ObjectUtilService.isLirObject(attributes);

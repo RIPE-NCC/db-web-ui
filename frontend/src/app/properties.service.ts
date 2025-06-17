@@ -158,6 +158,13 @@ export class PropertiesService {
         return this.RIPE_NCC_HM_MNT === mntnerKey.toUpperCase();
     }
 
+    public isEnableNonAuthUpdates(): boolean {
+        return (
+            !this.isProdEnv() && // Security property, this should never be enabled in PROD
+            this.NO_PASSWORD_AUTH_POPUP
+        );
+    }
+
     public static getInnerWidth() {
         return window.innerWidth;
     }
