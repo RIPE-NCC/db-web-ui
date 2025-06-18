@@ -43,7 +43,7 @@ export class ApiKeysComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
             if (result === true) {
-                this.apiKeysService.deleteApiKey(id).subscribe((response) => {
+                this.apiKeysService.deleteApiKey(id).subscribe(() => {
                     this.loadTableData();
                 });
             }
@@ -59,7 +59,7 @@ export class ApiKeysComponent implements OnInit {
         const today = moment.now();
         this.apiKeysService.getApiKeys().subscribe({
             next: (apiKeys: ApiKey[]) => {
-                const filteredOldApiKeys = apiKeys.filter((apiKey) => moment(apiKey.expiresAt).utc().isAfter(today));
+                const filteredOldApiKeys = apiKeys.filter((apiKey) => moment(apiKey.expiresAt).tz('Europe/Amsterdam').isAfter(today));
                 this.dataSource = new MatTableDataSource<ApiKey>(filteredOldApiKeys);
                 this.afterViewInit();
             },
