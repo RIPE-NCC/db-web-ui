@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment/moment';
+import * as moment from 'moment-timezone';
 import { Subject, switchMap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AlertsService } from '../../shared/alert/alerts.service';
@@ -51,8 +51,8 @@ export class CreateNewApiKeyComponent implements OnInit {
 
     saveApiKey() {
         this.alertsService.clearAlertMessages();
-        const expiresAtUtc = moment(this.expiresAt).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z';
-        this.apiKeysService.saveApiKey(this.apiKeyName, expiresAtUtc, this.maintainer).subscribe({
+        const expiresAtFormated = moment(this.expiresAt).tz('Europe/Amsterdam').format('YYYY-MM-DDTHH:mm:ssZ');
+        this.apiKeysService.saveApiKey(this.apiKeyName, expiresAtFormated, this.maintainer || undefined).subscribe({
             next: (response: ApiKey) => {
                 this.openConfirmDialog(response);
                 this.created.emit();
