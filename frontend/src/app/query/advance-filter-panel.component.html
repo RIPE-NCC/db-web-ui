@@ -6,10 +6,11 @@
             <a
                 href="https://docs.db.ripe.net/Types-of-Queries/RIPE-NCC-Global-Resource-Service/"
                 target="_blank"
+                class="link-color"
                 [title]="'query.optionAllDatabases.title' | label"
             >
-                Global Resources Service</a
-            >
+                Global Resources Service <em class="fal fa-external-link"></em
+            ></a>
         </mat-radio-button>
         <mat-radio-button value="RIPE" (click)="$event.stopPropagation()">RIPE Database</mat-radio-button>
     </mat-radio-group>

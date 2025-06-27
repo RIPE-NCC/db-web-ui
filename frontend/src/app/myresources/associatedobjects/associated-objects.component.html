@@ -40,13 +40,19 @@
             <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
                 <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i" class="break-all-word">
                     <td class="w30">
-                        <a [routerLink]="['/lookup']" [queryParams]="{ source, type: 'aut-num', key: associatedObject.origin }" target="_blank">
+                        <a
+                            class="link-color"
+                            [routerLink]="['/lookup']"
+                            [queryParams]="{ source, type: 'aut-num', key: associatedObject.origin }"
+                            target="_blank"
+                        >
                             <name-formatter [name]="associatedObject.origin"></name-formatter>
                         </a>
                     </td>
                     <td class="w20">{{ associatedObject.prefix }}</td>
                     <td class="w50 right">
                         <a
+                            class="link-color"
                             [routerLink]="['/webupdates/modify', source, associatedObject.type, associatedObject.prefix + associatedObject.origin]"
                             target="_blank"
                         >
@@ -74,12 +80,17 @@
         <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
             <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i">
                 <td class="w40">
-                    <a [routerLink]="['/lookup']" [queryParams]="{ source: source, key: associatedObject.domain, type: 'domain' }" target="_blank">
+                    <a
+                        class="link-color"
+                        [routerLink]="['/lookup']"
+                        [queryParams]="{ source: source, key: associatedObject.domain, type: 'domain' }"
+                        target="_blank"
+                    >
                         {{ associatedObject.domain }}</a
                     >
                 </td>
                 <td class="w60 right">
-                    <a [routerLink]="['/webupdates/modify', source, 'domain', associatedObject.domain]" target="_blank">Manage</a>
+                    <a class="link-color" [routerLink]="['/webupdates/modify', source, 'domain', associatedObject.domain]" target="_blank">Manage</a>
                 </td>
             </tr>
         </tbody>

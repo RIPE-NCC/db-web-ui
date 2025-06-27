@@ -1,93 +1,99 @@
-<section id="searchSection">
-    <form name="searchform" (ngSubmit)="submitSearchForm()">
-        <div>
-            <div class="query-field" [ngClass]="{ 'with-results': isFiltersDisplayed() }" [style.fontSize.rem]="1.12">
-                <mat-form-field appearance="fill" [color]="colorControl.value">
-                    <mat-label>Enter a search term</mat-label>
-                    <input
-                        autoFocusDirective
-                        matInput
-                        id="queryStringInput"
-                        type="text"
-                        name="qp.queryText"
-                        autocomplete="on"
-                        [(ngModel)]="qp.queryText"
-                        (ngModelChange)="filterCheckboxes()"
-                    />
-                    <button mat-icon-button matSuffix>
-                        <mat-icon matSuffix class="fal fa-search"></mat-icon>
-                    </button>
-                </mat-form-field>
-                <div class="query-padding-left query-padding-right">
-                    <query-flags [inputTerm]="qp.queryText"></query-flags>
-                </div>
-            </div>
-            <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
-                <div class="dropdown-menus-bar-buttons">
-                    <button mat-button type="button" id="typeMenu" [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">
-                        Types {{ printNumberSelected(this.numberSelectedTypes) }}
-                        <span *ngIf="typesTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                        <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                    </button>
-                    <mat-menu #typesMenu="matMenu" yPosition="below">
-                        <types-panel [(queryParameters)]="qp" [availableTypes]="availableTypes"></types-panel>
-                    </mat-menu>
-                    <button
-                        mat-button
-                        type="button"
-                        id="hierarchyFlagsMenu"
-                        [matMenuTriggerFor]="hierarchyFlagsMenu"
-                        #hierarchyTrigger="matMenuTrigger"
-                        [disabled]="isDisabledHierarchyDropdown()"
-                    >
-                        Hierarchy flags {{ printNumberSelected(this.numberSelectedHierarchyItems) }}
-                        <span *ngIf="hierarchyTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                        <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                    </button>
-                    <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below">
-                        <hierarchy-flags [(queryParameters)]="qp"></hierarchy-flags>
-                    </mat-menu>
-                    <button mat-button type="button" id="inverseLookupMenu" [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">
-                        Inverse lookup {{ printNumberSelected(numberSelectedInverseLookups) }}
-                        <span *ngIf="inverseLookupTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                        <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                    </button>
-                    <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
-                        <inverse-lookup-panel
-                            [(queryParameters)]="qp"
-                            [availableTypes]="availableTypes"
-                            [typeOfSearchedTerm]="typeOfSearchedTerm"
-                        ></inverse-lookup-panel>
-                    </mat-menu>
-                    <button mat-button type="button" id="advanceFilterMenu" [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">
-                        Advanced filter {{ printNumberSelected(this.numberSelectedAdvanceFilterItems) }}
-                        <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                        <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
-                    </button>
-                    <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
-                        <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
-                    </mat-menu>
-                    <button mat-flat-button color="primary" [disableRipple]="true" id="applyFilters">APPLY FILTERS</button>
-                    <button mat-flat-button [disableRipple]="true" id="resetFilters" [disabled]="!isFilteringResults()" (click)="resetFilters()">
-                        RESET FILTERS
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="query-padding-left">
-            <submitting-agreement></submitting-agreement>
-        </div>
-        <br />
-    </form>
-</section>
-
 <div class="query-padding">
     <org-drop-down></org-drop-down>
+    <section id="searchSection">
+        <h1 class="documentFirstHeading">{{ titleDatabaseQueryPage }}</h1>
+        <form name="searchform" (ngSubmit)="submitSearchForm()">
+            <div>
+                <div [ngClass]="{ 'with-results': isFiltersDisplayed() }" [style.fontSize.rem]="1.12">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <input
+                                id="searchInput"
+                                autoFocusDirective
+                                type="text"
+                                placeholder="Enter a search term"
+                                name="qp.queryText"
+                                autocomplete="on"
+                                [(ngModel)]="qp.queryText"
+                                (ngModelChange)="filterCheckboxes()"
+                            />
+                            <button type="button" *ngIf="qp.queryText !== ''" class="clear-btn" id="clearBtn" (click)="clearInput()">
+                                <em class="fal fa-times"></em>
+                            </button>
+                        </div>
+                        <button type="submit" class="search-button">
+                            <em class="fal fa-search"></em>
+                            Search
+                        </button>
+                    </div>
+                    <div class="query-padding-right">
+                        <query-flags [inputTerm]="qp.queryText"></query-flags>
+                    </div>
+                </div>
+                <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
+                    <div class="dropdown-menus-bar-buttons">
+                        <button mat-button type="button" id="typeMenu" [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">
+                            Types {{ printNumberSelected(this.numberSelectedTypes) }}
+                            <span *ngIf="typesTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                            <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                        </button>
+                        <mat-menu #typesMenu="matMenu" yPosition="below">
+                            <types-panel [(queryParameters)]="qp" [availableTypes]="availableTypes"></types-panel>
+                        </mat-menu>
+                        <button
+                            mat-button
+                            type="button"
+                            id="hierarchyFlagsMenu"
+                            [matMenuTriggerFor]="hierarchyFlagsMenu"
+                            #hierarchyTrigger="matMenuTrigger"
+                            [disabled]="isDisabledHierarchyDropdown()"
+                        >
+                            Hierarchy flags {{ printNumberSelected(this.numberSelectedHierarchyItems) }}
+                            <span *ngIf="hierarchyTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                            <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                        </button>
+                        <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below">
+                            <hierarchy-flags [(queryParameters)]="qp"></hierarchy-flags>
+                        </mat-menu>
+                        <button mat-button type="button" id="inverseLookupMenu" [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">
+                            Inverse lookup {{ printNumberSelected(numberSelectedInverseLookups) }}
+                            <span *ngIf="inverseLookupTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                            <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                        </button>
+                        <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
+                            <inverse-lookup-panel
+                                [(queryParameters)]="qp"
+                                [availableTypes]="availableTypes"
+                                [typeOfSearchedTerm]="typeOfSearchedTerm"
+                            ></inverse-lookup-panel>
+                        </mat-menu>
+                        <button mat-button type="button" id="advanceFilterMenu" [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">
+                            Advanced filter {{ printNumberSelected(this.numberSelectedAdvanceFilterItems) }}
+                            <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
+                            <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                        </button>
+                        <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
+                            <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
+                        </mat-menu>
+                    </div>
+                    <div>
+                        <button mat-flat-button color="primary" [disableRipple]="true" id="applyFilters">APPLY FILTERS</button>
+                        <button mat-flat-button [disableRipple]="true" id="resetFilters" [disabled]="!isFilteringResults()" (click)="resetFilters()">
+                            RESET FILTERS
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <submitting-agreement></submitting-agreement>
+            </div>
+            <br />
+        </form>
+    </section>
     <section>
         <a id="anchorTop"></a>
         <div class="visualClear"></div>
         <div class="documentActions"></div>
-        <h1 class="documentFirstHeading" *ngIf="showsDocsLink">{{ titleDatabaseQueryPage }}</h1>
         <h1 class="documentFirstHeading" *ngIf="!showsDocsLink">Search results</h1>
         <div class="documentByLine"><span class="byline"></span></div>
         <div class="documentDescription"></div>
@@ -133,59 +139,59 @@
     </section>
     <section id="informationSection" *ngIf="showsDocsLink">
         <div class="row">
-            <div class="col-sm-6">
-                <div class="border padding margin-bottom">
-                    <p style="font-weight: 600">{{ headDatabaseQueryPage }}</p>
+            <div class="card-info">
+                <div class="padding margin-bottom">
+                    <p>{{ headDatabaseQueryPage }}</p>
                     You can query the RIPE Database via the web interface, the RESTful API or a command line tool. Learn more about each option by clicking the
                     link below.
                     <p>&nbsp;</p>
                     <a *ngIf="!properties.isTestEnv()" href="https://docs.db.ripe.net/How-to-Query-the-RIPE-Database/" target="_blank" class="link-color">
-                        Read documentation <em class="fal fa-external-link"></em>
+                        Go to documentation <em class="fal fa-external-link"></em>
                     </a>
                     <a
                         *ngIf="properties.isTestEnv()"
                         href="https://docs.db.ripe.net/Appendices/Appendix-J--Ripe-Test-Database/"
                         target="_blank"
                         class="link-color"
-                    >
-                        Read documentation <em class="fal fa-external-link"></em>
+                        >Go to documentation <em class="fal fa-external-link"></em>
                     </a>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="border padding margin-bottom">
-                    <p style="font-weight: 600">RESTful API</p>
+            <div class="card-info">
+                <div class="padding margin-bottom">
+                    <p>RESTful API</p>
                     The RESTful API can only process one object at a time. If you want to process several objects simultaneously, you need to write a script on
                     the client side to handle the list of objects and feed them.
 
                     <p>&nbsp;</p>
                     <a href="https://docs.db.ripe.net/Update-Methods/RESTful-API" rel="noopener" target="_blank" class="link-color"
-                        >Read more about RESTful API <em class="fal fa-external-link"></em>
+                        >Go to documentation <em class="fal fa-external-link"></em>
                     </a>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="border padding margin-bottom">
-                    <p style="font-weight: 600">{{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database</p>
-                    <div *ngIf="properties.SOURCE === 'RIPE'">
+            <div class="card-info">
+                <div class="padding margin-bottom">
+                    <p>{{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database</p>
+                    <span *ngIf="properties.SOURCE === 'RIPE'">
                         You can use this environment to learn and experiment with the RIPE Database. It uses a TEST source. Important: All changes are reverted
                         every day at night.
-                    </div>
-                    <div *ngIf="properties.SOURCE !== 'RIPE'">
+                    </span>
+                    <span *ngIf="properties.SOURCE !== 'RIPE'">
                         TEST environment is to learn and experiment with RIPE Database and all changes are reverted in the night. Switch to RIPE Database for
                         live action.
-                    </div>
-                    <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank" class="link-color"
-                        >Take me to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database <em class="fal fa-external-link"></em>
+                    </span>
+                    <br />
+                    <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank" class="inner-link-color"
+                        >Go to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database <em class="fal fa-arrow-right"></em>
                     </a>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="card-info">
                 <certificate-info></certificate-info>
             </div>
+            <typeform-banner *ngIf="showsDocsLink"></typeform-banner>
         </div>
     </section>
-    <typeform-banner *ngIf="showsDocsLink"></typeform-banner>
     <whois-version [version]="whoisVersion"></whois-version>
     <web-app-version></web-app-version>
 </div>

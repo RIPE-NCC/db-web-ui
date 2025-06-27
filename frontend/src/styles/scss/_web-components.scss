@@ -69,7 +69,19 @@ swe-menu {
     background-color: #f7f7fa;
 
     &.with-padding {
-        padding: 24px;
+        padding-top: 24px;
+        padding-left: 79px;
+        padding-right: 79px;
+    }
+}
+
+@media (max-width: 768px) {
+    #app-workspace {
+        &.with-padding {
+            padding-top: 24px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
     }
 }
 

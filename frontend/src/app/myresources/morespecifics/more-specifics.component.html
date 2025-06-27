@@ -42,7 +42,7 @@
                 <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
                     <tr *ngFor="let resource of moreSpecifics.resources" class="break-all-word">
                         <td class="w30">
-                            <a [routerLink]="['/myresources/detail', resource.type, resource.resource, sponsored]">
+                            <a class="link-color" [routerLink]="['/myresources/detail', resource.type, resource.resource, sponsored]">
                                 <name-formatter [name]="resource.resource" [type]="resource.type"></name-formatter>
                             </a>
                         </td>
