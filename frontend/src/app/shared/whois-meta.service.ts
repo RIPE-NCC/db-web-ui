@@ -960,7 +960,7 @@ export class WhoisMetaService {
             description: 'The location coordinates for the resource.',
             syntax: 'Location coordinates of the resource, in decimal degrees notation. Format is latitude followed by longitude, separated by a space. Latitude ranges from [-90,+90] and longitude from [-180,+180]',
         },
-        prefixleng: {
+        prefixlen: {
             description: 'A URL referencing a CSV file containing additional metadata for the resource.',
             syntax: 'Prefixlen is a self-published format for IP additional metadata. A URL referencing a CSV file (described by RFC8805) containing additional metadata about how the prefix is used or subdivided. The URL must be valid and it must specify the HTTPS protocol.',
         },
