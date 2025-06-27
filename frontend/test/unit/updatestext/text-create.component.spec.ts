@@ -3,7 +3,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { EMPTY, of } from 'rxjs';
@@ -177,6 +177,7 @@ describe('TextCreateComponent', () => {
                 'COUNTRY:       \n' +
                 'geofeed:       \n' +
                 'geoloc:        \n' +
+                'prefixlen:     \n' +
                 'language:      \n' +
                 'org:           \n' +
                 'sponsoring-org:\n' +
@@ -212,6 +213,7 @@ describe('TextCreateComponent', () => {
                 'COUNTRY:       \n' +
                 'geofeed:       \n' +
                 'geoloc:        \n' +
+                'prefixlen:     \n' +
                 'language:      \n' +
                 'org:           \n' +
                 'sponsoring-org:\n' +
@@ -258,6 +260,7 @@ describe('TextCreateComponent', () => {
                 'COUNTRY:       \n' +
                 'geofeed:       \n' +
                 'geoloc:        \n' +
+                'prefixlen:     \n' +
                 'language:      \n' +
                 'org:           \n' +
                 'sponsoring-org:\n' +
