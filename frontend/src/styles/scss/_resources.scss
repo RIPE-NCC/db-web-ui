@@ -78,9 +78,10 @@ div.resource-list {
                 weight: bold;
             }
             cursor: pointer;
-            &:hover {
-                color: $link;
-            }
+            //color: $inner-link;
+            //&:hover {
+            //    color: $link;
+            //}
             span {
                 line-height: 1.1em;
             }

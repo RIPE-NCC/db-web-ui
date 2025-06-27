@@ -33,10 +33,9 @@ describe('The syncupdates page', () => {
             .expectSyncupdatesInstructionsText(
                 'To authenticate as a MNTNER, include one or more "password:" attributes on a separate line. If you are logged in to RIPE NCC Access, your credential is submitted automatically.',
             )
-            .expectSyncupdatesInstructionsText('To test an update without making any changes, include a "dry-run:" attribute. More information')
-            .expectSyncupdatesInstructionsText(
-                'For more information about Syncupdates, please refer to the Syncupdates section in the RIPE NCC Database Manual.',
-            );
+            .expectSyncupdatesInstructionsText('To test an update without making any changes, include a "dry-run:" attribute.')
+            .expectSyncupdatesInstructionsText('For more information about Syncupdates, please refer to the')
+            .expectSyncupdatesInstructionsText('section in the RIPE NCC Database Manual.');
     });
 
     it('should show non Latin1 character error', () => {

@@ -1,13 +1,19 @@
 #fullTextAdvanceModeLink {
     margin-top: 10px;
+
+    .mat-mdc-button {
+        font-size: 16px;
+        &:hover,
+        &:active {
+            & > .mat-mdc-button-persistent-ripple::before {
+                opacity: 0;
+            }
+        }
+    }
 }
 
 .link-pointer {
     cursor: pointer;
-}
-
-.link-color {
-    color: $link;
 }
 
 .padding-left {

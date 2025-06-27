@@ -9,7 +9,7 @@
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
             <em *ngIf="!advancedSearch" class="fal fa-plus-square"></em>
             <em *ngIf="advancedSearch" class="fal fa-minus-square"></em>
-            <a class="padding-left link-pointer">{{ (advancedSearch && 'Basic') || 'Advanced' }} Search</a>
+            <a mat-button class="padding-left link-pointer">{{ (advancedSearch && 'Basic') || 'Advanced' }} Search</a>
         </div>
 
         <div *ngIf="advancedSearch">
@@ -50,8 +50,8 @@
                         <option *ngFor="let o of objectTypes" [value]="o">{{ o }}</option>
                     </select>
                     <span class="small link-pointer">
-                        <a class="link-color" (click)="selectAll()">Select all</a> |
-                        <a class="link-color" (click)="selectNone()">Select none</a>
+                        <a class="inner-link-color" (click)="selectAll()">Select all</a> |
+                        <a class="inner-link-color" (click)="selectNone()">Select none</a>
                     </span>
                 </div>
                 <div class="p-4 flex-grow-1">

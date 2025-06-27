@@ -1,7 +1,18 @@
 section {
+    max-width: 990px;
     background-color: white;
+    color: #3d3d3d;
+    border: 1px solid #cfcfcf;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 20px;
+    a:hover {
+        text-decoration: underline;
+    }
 }
 
 .title {
+    color: #080037;
+    font-size: 16px;
     font-weight: 600;
 }

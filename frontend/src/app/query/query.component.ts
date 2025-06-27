@@ -133,6 +133,10 @@ export class QueryComponent implements OnDestroy {
         }
     }
 
+    public clearInput() {
+        this.qp.queryText = '';
+    }
+
     public submitSearchForm() {
         const formQueryParam = this.queryParametersService.asLocationSearchParams(this.qp);
         // when query param doesn't change $location doesn't make search
@@ -303,11 +307,16 @@ export class QueryComponent implements OnDestroy {
     }
 
     public filterCheckboxes() {
+        // this.showClearBtnInSearchField();
         // disable checkboxes according to type of query term
         this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
         this.typeOfSearchedTerm = this.queryService.getTypeOfSearchedTerm(this.qp.queryText);
         this.uncheckAllCheckboxes();
     }
+    //
+    // public showClearBtnInSearchField() {
+    //
+    // }
 
     public isDisabledHierarchyDropdown() {
         const enableHierarchyForTypes: string[] = [

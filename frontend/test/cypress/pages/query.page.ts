@@ -85,7 +85,7 @@ export class QueryPage {
     }
 
     expectPermaLinkToContain(text: string) {
-        cy.get('.perm-xml-json-resultlinks #mat-input-1').should('contain.value', text);
+        cy.get('.perm-xml-json-resultlinks #mat-input-0').should('contain.value', text);
         return this;
     }
 

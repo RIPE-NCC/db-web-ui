@@ -6,6 +6,7 @@
                 [routerLink]="['/lookup']"
                 [queryParams]="{ source: whoisObject['source'].id, key: whoisObject['resource-holder'].key, type: 'organisation' }"
                 target="_blank"
+                class="link-color"
                 >{{ whoisObject['resource-holder'].name }}</a
             >
         </span>
@@ -16,6 +17,7 @@
                 [routerLink]="['/lookup']"
                 [queryParams]="{ source: whoisObject['source'].id, key: whoisObject['abuse-contact'].key, type: 'role' }"
                 target="_blank"
+                class="link-color"
                 >{{ whoisObject['abuse-contact'].email }}</a
             > </span
         ><span *ngIf="!abuseContactFound">
@@ -25,6 +27,7 @@
         <span *ngIf="abuseContactSuspected && !abuseContactSuspectedWithoutOrgid"
             >Abuse-mailbox validation failed. Please refer to
             <a
+                class="link-color"
                 [routerLink]="['/lookup']"
                 [queryParams]="{ source: whoisObject['source'].id, key: whoisObject['abuse-contact']['org-id'], type: 'organisation' }"
                 >{{ whoisObject['abuse-contact']['org-id'] }}</a
