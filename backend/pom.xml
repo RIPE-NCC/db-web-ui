@@ -42,7 +42,7 @@
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>3.4.0</spring-boot.version>
         <!-- whois 1.114 release -->
-        <whois.version>54cb9206</whois.version>
+        <whois.version>a399f383</whois.version>
     </properties>
 
     <dependencyManagement>
