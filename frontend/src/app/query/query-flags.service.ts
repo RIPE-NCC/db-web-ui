@@ -29,7 +29,7 @@ export class QueryFlagsService {
     getFlagsFromTerm(inputTerm: string): string[] {
         const sanitizedString: string = this.addSpaceBehindFlagT(inputTerm);
         const allTerms = sanitizedString.split(' ');
-        return allTerms.filter((term) => term.startsWith('-'));
+        return allTerms.filter((term) => term.startsWith('-') && term.length > 1);
     }
 
     getFlags(flags: string[]): IQueryFlag[] {

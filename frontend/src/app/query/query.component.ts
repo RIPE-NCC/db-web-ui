@@ -58,7 +58,6 @@ export class QueryComponent implements OnDestroy {
     public queriedTemplateObject: ITemplateTerm;
     public subscription: any;
     public link: ShareLink;
-    public showsQueryFlagsContainer: boolean;
     public showsDocsLink: boolean;
     public colorControl = new FormControl('primary');
     // Types in dropdown
@@ -242,12 +241,11 @@ export class QueryComponent implements OnDestroy {
 
     private isShownQueryFlagsContainer(): boolean {
         const queryFlags = this.queryFlagService.getFlagsFromTerm(this.qp.queryText);
-        this.showsQueryFlagsContainer = queryFlags.length > 0;
-        return this.showsQueryFlagsContainer;
+        return queryFlags.length > 0;
     }
 
     public isFiltersDisplayed(): boolean {
-        return !this.showsQueryFlagsContainer && this.showFilters;
+        return !this.isShownQueryFlagsContainer() && this.showFilters;
     }
 
     private countSelectedDropdownItems(list): number {
