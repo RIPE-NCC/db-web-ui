@@ -446,7 +446,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public isDeletable(): boolean {
-        return this.whoisResourcesService.canDeleteObject(this.attributes, this.maintainers.objectOriginal);
+        return this.whoisResourcesService.canDeleteObject(this.attributes, this.maintainers.sso, this.maintainers.objectOriginal);
     }
 
     public deleteObject() {
