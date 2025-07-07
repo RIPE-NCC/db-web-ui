@@ -29,7 +29,7 @@ describe('Modifying an inetnum', () => {
         });
 
         it('which is an end user assignment should NOT show delete btn', () => {
-            webupdatesPage.visit('modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255').expectDeleteButtonToExist(false);
+            webupdatesPage.visit('modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255').expectDisabledDelete(true);
         });
 
         it('should switch to text editor', () => {

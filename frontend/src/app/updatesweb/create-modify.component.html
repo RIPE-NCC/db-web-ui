@@ -170,8 +170,15 @@
             </button>
             <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
         </span>
-        <span *ngIf="operation === MODIFY_OPERATION && isDeletable()">
-            <button id="deleteObject" mat-flat-button color="warn" class="float-start" (click)="deleteObject()" [disabled]="restCallInProgress">
+        <span *ngIf="operation === MODIFY_OPERATION">
+            <button
+                id="deleteObject"
+                mat-flat-button
+                color="warn"
+                class="float-start"
+                (click)="deleteObject()"
+                [disabled]="!isDeletable() || restCallInProgress"
+            >
                 DELETE THIS OBJECT
             </button>
         </span>
