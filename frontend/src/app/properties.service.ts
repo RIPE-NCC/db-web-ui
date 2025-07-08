@@ -172,4 +172,14 @@ export class PropertiesService {
     public static isMobileView() {
         return PropertiesService.getInnerWidth() < PropertiesService.BREAKPOINTS_MOBILE_VIEW;
     }
+
+    public getTitleEnvironment() {
+        if (this.isProdEnv()) {
+            return 'RIPE';
+        } else if (this.isTrainingEnv()) {
+            return 'Training';
+        } else {
+            return `${this.ENV.toUpperCase()}`;
+        }
+    }
 }

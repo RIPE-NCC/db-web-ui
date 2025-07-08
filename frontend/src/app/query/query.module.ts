@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { SharedModule } from '../shared/shared.module';
+import { SearchFieldComponent } from '../shared/sreachfield/search-field.component';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
 import { AdvanceFilterPanelComponent } from './advance-filter-panel.component';
 import { CertificateInfoComponent } from './certificate-info.component';
@@ -53,6 +54,7 @@ import { TypesPanelComponent } from './types-panel.component';
         MatDialogClose,
         TypeformBannerComponent,
         MatDialogTitle,
+        SearchFieldComponent,
     ],
     declarations: [
         LookupComponent,
