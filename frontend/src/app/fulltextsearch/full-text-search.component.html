@@ -1,11 +1,11 @@
 <section>
-    <h1>RIPE Database Text Search</h1>
+    <h1>{{ titleEnvironment }} Database Full Text Search</h1>
     <p>This service allows searches over the full text of the RIPE Database object data.</p>
     <p>The search is done on object text without regard for any relationships. Multiple search terms should be separated with a space.</p>
 </section>
 <section>
     <form class="grey padding margin-bottom" style="overflow: auto" (submit)="searchClicked()">
-        <input autoFocusDirective id="fullTextSearchInput" name="ftquery" type="text" class="form-control" [(ngModel)]="ftquery" placeholder="Search term" />
+        <search-field [(queryText)]="ftquery"></search-field>
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
             <em *ngIf="!advancedSearch" class="fal fa-plus-square"></em>
             <em *ngIf="advancedSearch" class="fal fa-minus-square"></em>
@@ -71,7 +71,6 @@
                 </div>
             </div>
         </div>
-        <button mat-flat-button color="primary" type="submit" id="fullTextSearchButton" class="float-end">SEARCH</button>
         <submitting-agreement></submitting-agreement>
     </form>
 </section>

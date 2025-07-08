@@ -1,0 +1,21 @@
+<div class="search-container">
+    <div class="search-input-wrapper">
+        <input
+            id="searchInput"
+            autoFocusDirective
+            type="text"
+            placeholder="Enter a search term"
+            name="queryText"
+            autocomplete="on"
+            [value]="queryText"
+            (input)="onInputChange($event.target.value)"
+        />
+        <button type="button" *ngIf="queryText !== ''" class="clear-btn" id="clearBtn" (click)="queryText = ''">
+            <em class="fal fa-times"></em>
+        </button>
+    </div>
+    <button type="submit" class="search-button">
+        <em class="fal fa-search"></em>
+        Search
+    </button>
+</div>

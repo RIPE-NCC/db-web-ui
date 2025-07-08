@@ -15,7 +15,7 @@ export class QueryPage {
     }
 
     expectSearchFieldToBeEmpty() {
-        cy.get('input[name="qp.queryText"]').should('be.empty');
+        cy.get('search-field input').should('be.empty');
         return this;
     }
 
@@ -50,17 +50,17 @@ export class QueryPage {
     }
 
     typeSearchTerm(term: string) {
-        cy.get('input[name="qp.queryText"]').clear({ force: true }).type(term, { force: true });
+        cy.get('search-field input').clear({ force: true }).type(term, { force: true });
         return this;
     }
 
     expectSearchTerm(term: string) {
-        cy.get('input[name="qp.queryText"]').should('have.value', term, { force: true });
+        cy.get('search-field input').should('have.value', term, { force: true });
         return this;
     }
 
     expectSearchToHaveFocus() {
-        cy.get('input[name="qp.queryText"]').should('have.focus');
+        cy.get('search-field input').should('have.focus');
         return this;
     }
 
@@ -259,7 +259,7 @@ export class QueryPage {
     }
 
     expectToHaveAutofillOnSearchTermField() {
-        cy.get('form input[name="qp.queryText"][autocomplete="on"]').should('exist');
+        cy.get('form input[autocomplete="on"]').should('exist');
         return this;
     }
 

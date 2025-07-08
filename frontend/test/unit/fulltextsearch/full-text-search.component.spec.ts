@@ -26,7 +26,7 @@ describe('FullTextSearchComponent', () => {
                 { provide: FullTextSearchService, useValue: fullTextSearchService },
                 FullTextResponseService,
                 WhoisMetaService,
-                { provide: PropertiesService, useValue: {} },
+                PropertiesService,
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],

@@ -6,7 +6,7 @@
         &:hover,
         &:active {
             & > .mat-mdc-button-persistent-ripple::before {
-                opacity: 0;
+                opacity: 0 !important;
             }
         }
     }
