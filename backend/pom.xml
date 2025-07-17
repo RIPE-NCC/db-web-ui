@@ -43,8 +43,8 @@
         <snakeyaml.version>2.3</snakeyaml.version>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>3.5.3</spring-boot.version>
-        <!-- whois tag 20th June 2025 -->
-        <whois.version>c3c4ecc1</whois.version>
+        <!-- whois tag 17th July 2025 -->
+        <whois.version>ead8ac3d</whois.version>
     </properties>
 
     <dependencyManagement>
