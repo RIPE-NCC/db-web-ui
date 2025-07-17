@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
-    width: 652px;
+    width: 820px;
     height: 50px;
     max-width: 90%;
     margin-bottom: 8px;
@@ -25,6 +25,9 @@
     border-left: 1px solid #d0d2da;
     border-radius: 8px 0 0 8px;
     background-color: white;
+    padding-right: 30px !important;
+    overflow-x: auto !important;
+    white-space: nowrap;
     &:hover {
         border-color: #0d1b48;
     }
@@ -42,9 +45,8 @@
 
 .clear-btn {
     height: 40px;
-    width: 40px;
     position: absolute;
-    right: 2px;
+    right: 1px;
     top: 50%;
     transform: translateY(-50%);
     background-color: white;
