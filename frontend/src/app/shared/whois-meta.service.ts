@@ -845,7 +845,7 @@ export class WhoisMetaService {
         }, // no documentation available
         country: {
             description: 'Identifies the country.',
-            short: 'Identifies the country as a two-letter ISO 3166 code, e.g. NL',
+            short: 'Officially Assigned two-letter ISO 3166 country code or "EU" (exceptionally reserved), e.g. NL',
             syntax: 'Valid two-letter ISO 3166 country code.',
         },
         created: {
