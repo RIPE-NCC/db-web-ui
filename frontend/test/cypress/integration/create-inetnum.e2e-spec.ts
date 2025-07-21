@@ -170,26 +170,18 @@ describe('The inetnum editor', () => {
         webupdatesPage
             .expectDisabledSubmitCreate(true)
             // should offer all default statuses
-            .expectOptionSizeFromNgSelect('status', 13)
-            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
-            .expectOptionFromNgSelect('status', 'ALLOCATED PA')
-            .expectOptionFromNgSelect('status', 'ALLOCATED PI')
-            .expectOptionFromNgSelect('status', 'ALLOCATED UNSPECIFIED')
-            .expectOptionFromNgSelect('status', 'ASSIGNED ANYCAST')
+            .expectOptionSizeFromNgSelect('status', 6)
+            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
             .expectOptionFromNgSelect('status', 'ASSIGNED PA')
             .expectOptionFromNgSelect('status', 'ASSIGNED PI')
-            .expectOptionFromNgSelect('status', 'EARLY-REGISTRATION')
             .expectOptionFromNgSelect('status', 'LEGACY')
             .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
-            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PI')
-            .expectOptionFromNgSelect('status', 'NOT-SET')
             .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
             // after specifying inetnum statuses depend on parent status
             .typeOnField('inetnum', '5.104.73.0 - 5.104.73.255')
             .blurOnField('inetnum')
             .authenticateWithDisabledAssociate('TEST03-MNT')
-            .expectOptionSizeFromNgSelect('status', 2)
-            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
+            .expectOptionSizeFromNgSelect('status', 1)
             .expectOptionFromNgSelect('status', 'ASSIGNED PA');
     });
 });

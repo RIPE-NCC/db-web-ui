@@ -35,7 +35,7 @@ describe('Modifying an inet6num', () => {
                 .expectDisabledField('netname', false)
                 .expectFieldToExist('assignment-size', true)
                 .expectDisabledField('assignment-size', true)
-                .expectDisabledDelete(true);
+                .expectDisabledDelete(false); //assignment should be deletable by the owner
         });
     });
 

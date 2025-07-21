@@ -128,14 +128,23 @@ describe('Resources, update object', () => {
             resourcesDetailPage = new ResourcesPage().visitDetails('inetnum/80.73.136.0%20-%2080.73.143.255/false');
         });
 
-        it('should have only status ALLOCATED PA', () => {
+        it('should have all with RS status when ALLOCATED-ASSIGNED PA', () => {
             resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TESTMD-MNT').submitModal();
             resourcesDetailPage
                 .expectModalToExist(false)
                 .expectFieldToExist('status', true)
                 .expectDisabledField('status', false)
-                .expectOptionSizeFromNgSelect('status', 1)
-                .expectOptionFromNgSelect('status', 'ALLOCATED PA');
+                .expectOptionSizeFromNgSelect('status', 10)
+                .expectOptionFromNgSelect('status', 'ALLOCATED PA')
+                .expectOptionFromNgSelect('status', 'ALLOCATED UNSPECIFIED')
+                .expectOptionFromNgSelect('status', 'ALLOCATED ASSIGNED PA')
+                .expectOptionFromNgSelect('status', 'ASSIGNED ANYCAST')
+                .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
+                .expectOptionFromNgSelect('status', 'ASSIGNED PA')
+                .expectOptionFromNgSelect('status', 'ASSIGNED PI')
+                .expectOptionFromNgSelect('status', 'LEGACY')
+                .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
+                .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA');
         });
     });
 });

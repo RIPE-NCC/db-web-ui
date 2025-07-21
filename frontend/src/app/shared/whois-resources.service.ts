@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { ResourceStatusService } from '../myresources/resource-status.service';
 import { PropertiesService } from '../properties.service';
 import { ObjectUtilService } from '../updatesweb/object-util.service';
 import { WhoisMetaService } from './whois-meta.service';
@@ -560,21 +561,33 @@ export class WhoisResourcesService {
         return error;
     }
 
-    public canDeleteObject(attributes: IAttributeModel[], ssoMaintainers: IMntByModel[], maintainers?: Array<IMntByModel | IAttributeModel>): boolean {
-        // enable delete objects maintained by RIPE NCC mnts on all environments except PROD
-        if (this.propertiesService.isEnableNonAuthUpdates()) {
-            return !this.isComaintainedAndNotLoggedIn(attributes, ssoMaintainers, maintainers) && !ObjectUtilService.isLirObject(attributes);
+    public canDeleteObject(
+        attributes: IAttributeModel[],
+        ssoMaintainers: IMntByModel[],
+        objectType: string,
+        maintainers?: Array<IMntByModel | IAttributeModel>,
+    ): boolean {
+        if (ObjectUtilService.containsLirOrgType(attributes)) {
+            return false;
         }
-        return !this.isComaintained(attributes, maintainers) && !ObjectUtilService.isLirObject(attributes);
+        // Enable delete objects maintained by owner only if not RS status.
+        // In case RS status, the resource needs a comaintained mntner and sso needs to be logged in (only by RIPE
+        // NCC (RS mntners))
+        let isRsStatus = ResourceStatusService.isRsStatus(attributes, objectType);
+        if (!isRsStatus) {
+            return true;
+        }
+        return this.isComaintainedAndLoggedIn(attributes, ssoMaintainers, maintainers);
     }
 
-    public isComaintainedAndNotLoggedIn(attributes: IAttributeModel[], ssoMaintainers: IMntByModel[], maintainers?: Array<IMntByModel | IAttributeModel>) {
+    public isComaintainedAndLoggedIn(attributes: IAttributeModel[], ssoMaintainers: IMntByModel[], maintainers?: Array<IMntByModel | IAttributeModel>) {
+        // Is comaintained and SSO is logged in that mntner
         maintainers = !!maintainers ? maintainers : WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by');
         return maintainers.some((att: IMntByModel | IAttributeModel) => {
             let value = this.extractValue(att);
             if (this.propertiesService.isAnyNccMntner(value)) {
                 // check if not logged into the NCC Mntner
-                return !ssoMaintainers.some((ssoAtt: IMntByModel) => {
+                return ssoMaintainers.some((ssoAtt: IMntByModel) => {
                     return ssoAtt.key.trim() === value;
                 });
             }
@@ -588,6 +601,10 @@ export class WhoisResourcesService {
         return maintainers.some((att: IMntByModel | IAttributeModel) => {
             return this.propertiesService.isAnyNccMntner(this.extractValue(att));
         });
+    }
+
+    public isSSOComaintained(ssoMntners: IMntByModel[]) {
+        return ssoMntners.some((mnt) => this.propertiesService.isNccHmMntner(mnt.key));
     }
 
     public isComaintainedWithNccHmMntner(attributes: any) {

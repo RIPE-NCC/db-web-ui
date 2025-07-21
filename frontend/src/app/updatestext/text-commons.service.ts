@@ -127,7 +127,7 @@ export class TextCommonsService {
                         objectName,
                         ssoMaintainers,
                         objectMntners,
-                        ObjectUtilService.isLirObject(attributes),
+                        ObjectUtilService.isLirObject(attributes, objectType),
                     );
                 }
             }

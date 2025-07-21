@@ -265,7 +265,7 @@ export class AttributeRendererComponent implements OnInit {
     private getStaticList() {
         const metadata = this.attributeMetadataService.getMetadata(this.objectType, this.attribute.name);
         if (this.attribute.name === 'status') {
-            if (this.attribute.value !== 'NOT-SET' && this.attribute.value !== 'ALLOCATED PA' && this.attribute.value !== 'ALLOCATED-ASSIGNED PA') {
+            if (this.attribute.value !== 'ALLOCATED PA' && this.attribute.value !== 'ALLOCATED-ASSIGNED PA') {
                 this.attribute.$$meta.$$disable = true;
             }
             if (this.objectType === ObjectTypesEnum.INETNUM && this.attribute.value === 'ALLOCATED PA') {
