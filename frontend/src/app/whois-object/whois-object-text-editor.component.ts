@@ -150,7 +150,7 @@ export class WhoisObjectTextEditorComponent implements OnInit {
                 const attributes = this.handleFetchResponse(objectToModifyResponse);
                 // store mntners for SSO account
                 this.mntners.sso = mntnersResponse;
-                this.deletable = this.whoisResourcesService.canDeleteObject(attributes, this.mntners.sso);
+                this.deletable = this.whoisResourcesService.canDeleteObject(attributes, this.mntners.sso, this.type);
                 this.textCommonsService
                     .authenticate('Modify', this.source, this.type, this.objectName, this.mntners.sso, attributes, this.passwords, this.override)
                     .subscribe({

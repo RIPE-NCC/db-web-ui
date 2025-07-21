@@ -94,7 +94,7 @@ describe('ScreenLogicInterceptorService', () => {
         expect(primaryKey.$$meta.$$disable).toBeTruthy();
     });
 
-    it('should disable status attribute on modify if not "ALLOCATED PA", "ALLOCATED-ASSIGNED PA" nor "NOT-SET"', () => {
+    it('should disable status attribute on modify if not "ALLOCATED PA" nor "ALLOCATED-ASSIGNED PA"', () => {
         let inetnumSubject = _wrap('inetnum', inetnumAssigned);
 
         let attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetnumSubject);
