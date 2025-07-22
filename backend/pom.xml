@@ -13,25 +13,27 @@
 
     <properties>
         <assertj-core.version>3.26.3</assertj-core.version>
-        <awaitility.version>4.2.2</awaitility.version>
+        <awaitility.version>4.3.0</awaitility.version>
         <bucket4j.version>0.12.8</bucket4j.version>
         <caffeine.version>3.1.8</caffeine.version>
-        <commons-io.version>2.18.0</commons-io.version>
+        <commons-io.version>2.19.0</commons-io.version>
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <dnsjava.version>3.6.2</dnsjava.version>
         <freemarker.version>2.3.33</freemarker.version>
-        <google-guava.version>33.3.1-jre</google-guava.version>
+        <google-guava.version>33.4.8-jre</google-guava.version>
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
         <httpclient.version>5.4.1</httpclient.version>
-        <jackson.version>2.18.2</jackson.version>
+        <jackson.version>2.19.1</jackson.version>
         <jaxb.api.version>4.0.2</jaxb.api.version>
         <jaxb.impl.version>4.0.5</jaxb.impl.version>
         <javax.inject.version>1</javax.inject.version>
         <jcache.version>1.1.1</jcache.version>
         <!-- align jetty with spring-boot-starter-jetty -->
-        <jetty.version>12.0.15</jetty.version>
+        <jetty.version>12.0.22</jetty.version>
         <json-path.version>2.9.0</json-path.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <reflections.version>0.10.2</reflections.version>
         <sentry.version>7.18.0</sentry.version>
         <selenium.version>4.27.0</selenium.version>
@@ -379,7 +381,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.5.3</version>
                 <configuration>
                     <argLine>${argLine} -Xmx256m</argLine>
                     <!-- Force alphabetical order to have a reproducible build -->
@@ -396,7 +398,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.5.3</version>
                 <executions>
                     <execution>
                         <goals>
@@ -438,7 +440,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
+                <version>0.8.13</version>
                 <executions>
                     <execution>
                         <id>jacoco-initialize</id>

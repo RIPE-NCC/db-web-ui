@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import { isArray } from 'lodash';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -12,6 +12,7 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
 @Component({
     selector: 'full-text-search',
     templateUrl: './full-text-search.component.html',
+    styleUrl: 'full-text-search.component.scss',
     standalone: false,
 })
 export class FullTextSearchComponent implements OnInit, OnDestroy {
@@ -37,6 +38,8 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
     // can share it (via 2-way binding) and will be sync'd.
     public navbarSyncArray: number[] = [];
 
+    public titleEnvironment: string;
+
     private lastHash = '';
 
     // attributes which are skipped in fulltext search on whois side
@@ -55,6 +58,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         this.objectTypes = Object.keys(this.whoisMetaService.objectTypesMap);
         this.objectMetadata = FullTextSearchComponent.parseMetadataToLists(this.whoisMetaService.objectTypesMap);
         this.numResultsPerPage = 10;
+        this.titleEnvironment = this.properties.getTitleEnvironment();
     }
 
     public ngOnDestroy() {
@@ -161,7 +165,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     private refreshAttributeList(): string[] {
         const objects = this.selectedObjectTypes;
-        if (!_.isArray(objects) || objects.length === 0) {
+        if (!isArray(objects) || objects.length === 0) {
             return [];
         }
         const allAttrs: string[] = [];

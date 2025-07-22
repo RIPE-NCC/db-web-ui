@@ -17,7 +17,7 @@ describe('Modifying an inet6num', () => {
                 .expectDisabledField('netname', true)
                 .expectFieldToExist('assignment-size', true)
                 .expectDisabledField('assignment-size', true)
-                .expectDeleteButtonToExist(false);
+                .expectDisabledDelete(true);
         });
     });
 
@@ -35,7 +35,7 @@ describe('Modifying an inet6num', () => {
                 .expectDisabledField('netname', false)
                 .expectFieldToExist('assignment-size', true)
                 .expectDisabledField('assignment-size', true)
-                .expectDeleteButtonToExist(false);
+                .expectDisabledDelete(false); //assignment should be deletable by the owner
         });
     });
 
@@ -45,7 +45,7 @@ describe('Modifying an inet6num', () => {
         });
 
         it('should show delete btn', () => {
-            webupdatesPage.expectMaintainerToContain('TEST11-MNT').expectDeleteButtonToExist(true);
+            webupdatesPage.expectMaintainerToContain('TEST11-MNT').expectDisabledDelete(false);
         });
 
         it('should switch to text editor', () => {

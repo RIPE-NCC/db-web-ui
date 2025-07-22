@@ -45,8 +45,8 @@ export class QueryComponent implements OnDestroy {
     public numberSelectedInverseLookups = 0;
     public numberSelectedAdvanceFilterItems = 0;
     public searched = false;
-    public titleDatabaseQueryPage: string;
-    public headDatabaseQueryPage: string;
+    public titleEnvironment: string;
+    public headEnvironment: string;
 
     public results: IWhoisObjectModel[];
     public showNoResultsMsg = false;
@@ -58,7 +58,6 @@ export class QueryComponent implements OnDestroy {
     public queriedTemplateObject: ITemplateTerm;
     public subscription: any;
     public link: ShareLink;
-    public showsQueryFlagsContainer: boolean;
     public showsDocsLink: boolean;
     public colorControl = new FormControl('primary');
     // Types in dropdown
@@ -103,7 +102,8 @@ export class QueryComponent implements OnDestroy {
     }
 
     public init() {
-        this.setPageTitle();
+        this.titleEnvironment = this.properties.getTitleEnvironment();
+        this.headEnvironment = this.getHeaderEnvironment();
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         this.qp.source = queryParamMap.has('source') ? queryParamMap.getAll('source').join(',') : this.properties.SOURCE;
         this.link = {
@@ -131,10 +131,6 @@ export class QueryComponent implements OnDestroy {
             this.showTemplatePanel = false;
             this.showFilters = false; // by default don't open share button with perma, xml and json links
         }
-    }
-
-    public clearInput() {
-        this.qp.queryText = '';
     }
 
     public submitSearchForm() {
@@ -242,12 +238,11 @@ export class QueryComponent implements OnDestroy {
 
     private isShownQueryFlagsContainer(): boolean {
         const queryFlags = this.queryFlagService.getFlagsFromTerm(this.qp.queryText);
-        this.showsQueryFlagsContainer = queryFlags.length > 0;
-        return this.showsQueryFlagsContainer;
+        return queryFlags.length > 0;
     }
 
     public isFiltersDisplayed(): boolean {
-        return !this.showsQueryFlagsContainer && this.showFilters;
+        return !this.isShownQueryFlagsContainer() && this.showFilters;
     }
 
     private countSelectedDropdownItems(list): number {
@@ -424,16 +419,13 @@ export class QueryComponent implements OnDestroy {
         this.viewportScroller.scrollToAnchor(id);
     }
 
-    private setPageTitle() {
+    private getHeaderEnvironment() {
         if (this.properties.isProdEnv()) {
-            this.headDatabaseQueryPage = 'Querying the RIPE Database';
-            this.titleDatabaseQueryPage = 'RIPE Database Query';
+            return 'RIPE';
         } else if (this.properties.isTrainingEnv()) {
-            this.headDatabaseQueryPage = 'Querying the TEST Database';
-            this.titleDatabaseQueryPage = 'Training Database Query';
+            return 'TEST';
         } else {
-            this.headDatabaseQueryPage = `Querying the ${this.properties.ENV.toUpperCase()} Database`;
-            this.titleDatabaseQueryPage = `${this.properties.ENV.toUpperCase()} Database Query`;
+            return `${this.properties.ENV.toUpperCase()}`;
         }
     }
 }

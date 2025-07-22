@@ -5,17 +5,17 @@ export class FullTextSearchPage {
     }
 
     typeSearchTerm(term: string) {
-        cy.get('#fullTextSearchInput').clear({ force: true }).type(term, { force: true });
+        cy.get('search-field input').type(term, { force: true });
         return this;
     }
 
     clickOnSearchButton() {
-        cy.get('#fullTextSearchButton').click({ force: true });
+        cy.get('search-field button .fa-search').click({ force: true });
         return this;
     }
 
     expectValueInSearchField(text: string) {
-        cy.get('#fullTextSearchInput').should('have.value', text);
+        cy.get('search-field input').should('have.value', text);
         return this;
     }
 

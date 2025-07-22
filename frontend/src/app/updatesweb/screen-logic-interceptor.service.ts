@@ -542,7 +542,7 @@ export class ScreenLogicInterceptorService {
         if (method === 'Modify') {
             const statusAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
 
-            if (statusAttr.value !== 'NOT-SET' && statusAttr.value !== 'ALLOCATED PA' && statusAttr.value !== 'ALLOCATED-ASSIGNED PA') {
+            if (statusAttr.value !== 'ALLOCATED PA' && statusAttr.value !== 'ALLOCATED-ASSIGNED PA') {
                 statusAttr.$$meta.$$disable = true;
             }
         }

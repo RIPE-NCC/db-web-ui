@@ -1,31 +1,11 @@
 <div class="query-padding">
     <org-drop-down></org-drop-down>
     <section id="searchSection">
-        <h1 class="documentFirstHeading">{{ titleDatabaseQueryPage }}</h1>
+        <h1 class="documentFirstHeading">{{ titleEnvironment }} Database Query</h1>
         <form name="searchform" (ngSubmit)="submitSearchForm()">
             <div>
                 <div [ngClass]="{ 'with-results': isFiltersDisplayed() }" [style.fontSize.rem]="1.12">
-                    <div class="search-container">
-                        <div class="search-input-wrapper">
-                            <input
-                                id="searchInput"
-                                autoFocusDirective
-                                type="text"
-                                placeholder="Enter a search term"
-                                name="qp.queryText"
-                                autocomplete="on"
-                                [(ngModel)]="qp.queryText"
-                                (ngModelChange)="filterCheckboxes()"
-                            />
-                            <button type="button" *ngIf="qp.queryText !== ''" class="clear-btn" id="clearBtn" (click)="clearInput()">
-                                <em class="fal fa-times"></em>
-                            </button>
-                        </div>
-                        <button type="submit" class="search-button">
-                            <em class="fal fa-search"></em>
-                            Search
-                        </button>
-                    </div>
+                    <search-field [(queryText)]="qp.queryText" (queryTextChange)="filterCheckboxes()"></search-field>
                     <div class="query-padding-right">
                         <query-flags [inputTerm]="qp.queryText"></query-flags>
                     </div>
@@ -141,7 +121,7 @@
         <div class="row">
             <div class="card-info">
                 <div class="padding margin-bottom">
-                    <p>{{ headDatabaseQueryPage }}</p>
+                    <p>Querying the {{ headEnvironment }} Database</p>
                     You can query the RIPE Database via the web interface, the RESTful API or a command line tool. Learn more about each option by clicking the
                     link below.
                     <p>&nbsp;</p>
@@ -181,6 +161,7 @@
                         live action.
                     </span>
                     <br />
+                    <!-- Decided different color by design. This link will open same application while other not -->
                     <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank" class="inner-link-color"
                         >Go to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database <em class="fal fa-arrow-right"></em>
                     </a>

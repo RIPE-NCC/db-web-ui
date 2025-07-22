@@ -165,8 +165,8 @@ export class WebupdatesPage {
         return new ModalDeleteObject();
     }
 
-    expectDeleteButtonToExist(exist: boolean) {
-        cy.get('#deleteObject').should(exist ? 'exist' : 'not.exist');
+    expectDisabledDelete(disabled: boolean) {
+        cy.get('#deleteObject').should(disabled ? 'be.disabled' : 'not.be.disabled');
         return this;
     }
 

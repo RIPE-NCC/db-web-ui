@@ -847,7 +847,7 @@ export class WhoisMetaService {
         }, // no documentation available
         country: {
             description: 'Identifies the country.',
-            short: 'Identifies the country as a two-letter ISO 3166 code, e.g. NL',
+            short: 'Officially Assigned two-letter ISO 3166 country code or "EU" (exceptionally reserved), e.g. NL',
             syntax: 'Valid two-letter ISO 3166 country code.',
         },
         created: {
@@ -1447,17 +1447,15 @@ export class WhoisMetaService {
                 'Status can have one of these values:' +
                 '<br>' +
                 '<ul>' +
+                '<li>AGGREGATED-BY-LIR</li>' +
                 '<li>ALLOCATED PA</li>' +
-                '<li>ALLOCATED PI</li>' +
+                '<li>ALLOCATED ASSIGNED PA</li>' +
                 '<li>ALLOCATED UNSPECIFIED</li>' +
                 '<li>LIR-PARTITIONED PA</li>' +
-                '<li>LIR-PARTITIONED PI</li>' +
                 '<li>SUB-ALLOCATED PA</li>' +
                 '<li>ASSIGNED PA</li>' +
                 '<li>ASSIGNED PI</li>' +
                 '<li>ASSIGNED ANYCAST</li>' +
-                '<li>EARLY-REGISTRATION</li>' +
-                '<li>NOT-SET</li>' +
                 '<li>LEGACY</li>' +
                 '</ul>',
         },

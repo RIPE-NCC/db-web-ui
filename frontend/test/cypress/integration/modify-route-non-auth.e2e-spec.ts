@@ -15,7 +15,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', () => {
             .expectDisabledField('origin', true)
             .expectDisabledField('source', true)
             .expectValueInField('source', 'RIPE-NONAUTH')
-            .expectDeleteButtonToExist(true)
+            .expectDisabledDelete(false)
             .expectModifyButtonToExist(true);
     });
 

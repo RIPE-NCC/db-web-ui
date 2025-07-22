@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
-import { Subject, concat, of } from 'rxjs';
+import { concat, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { JsUtilService } from '../core/js-utils.service';
@@ -10,7 +10,6 @@ import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { IAttributeModel, IMntByModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
-import { MessageStoreService } from '../updatesweb/message-store.service';
 import { MntnerService } from '../updatesweb/mntner.service';
 import { ObjectUtilService } from '../updatesweb/object-util.service';
 import { RestService } from '../updatesweb/rest.service';
@@ -65,7 +64,6 @@ export class MaintainersEditorComponent implements OnInit {
 
     constructor(
         private attributeMetadataService: AttributeMetadataService,
-        private messageStore: MessageStoreService,
         public mntnerService: MntnerService,
         public restService: RestService,
         private webUpdatesCommonsService: WebUpdatesCommonsService,
@@ -133,7 +131,7 @@ export class MaintainersEditorComponent implements OnInit {
     }
 
     public isLirObject() {
-        return ObjectUtilService.isLirObject(this.attributes);
+        return ObjectUtilService.isLirObject(this.attributes, this.objectType);
     }
 
     public isModifyWithSingleMntnerRemaining() {

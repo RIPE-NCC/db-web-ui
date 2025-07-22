@@ -113,13 +113,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (paramMap.has('objectName')) {
             this.name = decodeURIComponent(paramMap.get('objectName'));
         }
-        // set the statuses which apply to the objectType (if any)
-        this.optionList.status = this.resourceStatusService.get(this.objectType);
 
         const redirect = !queryMap.has('noRedirect');
 
         console.debug('Url params: source:' + this.source + '. type:' + this.objectType + ', uid:' + this.name + ', redirect:' + redirect);
-
         // switch to text-screen if cookie says so and cookie is not to be ignored
         if (this.preferenceService.isTextMode() && redirect) {
             this.switchToTextMode();
@@ -446,7 +443,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public isDeletable(): boolean {
-        return this.whoisResourcesService.canDeleteObject(this.attributes, this.maintainers.objectOriginal);
+        return this.whoisResourcesService.canDeleteObject(this.attributes, this.maintainers.sso, this.objectType, this.maintainers.objectOriginal);
     }
 
     public deleteObject() {
@@ -600,6 +597,17 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     private fetchDataForCreate() {
+        this.restService.fetchMntnersForSSOAccount().subscribe({
+            next: (results: any) => {
+                this.maintainers.sso = results;
+                // set the statuses which apply to the objectType (if any)
+                this.setStatusOptions();
+            },
+            error: () => {
+                this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
+            },
+        });
+
         let attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
         // Post-process attributes before showing using screen-logic-interceptor
         this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
@@ -693,7 +701,16 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
                 // status options are editable just in inetnum
                 if (this.objectType === ObjectTypesEnum.INETNUM) {
-                    this.setStatusOptions(this.attributes, true);
+                    this.restService.fetchMntnersForSSOAccount().subscribe({
+                        next: (results: any) => {
+                            this.maintainers.sso = results;
+                            // set the statuses which apply to the objectType (if any)
+                            this.setStatusOptions(this.attributes);
+                        },
+                        error: () => {
+                            this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
+                        },
+                    });
                 }
 
                 // show description under fields
@@ -807,7 +824,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     private performAuthentication() {
         const authParams = {
             failureClbk: this.navigateAway,
-            isLirObject: ObjectUtilService.isLirObject(this.attributes),
+            isLirObject: ObjectUtilService.isLirObject(this.attributes, this.objectType),
             maintainers: this.maintainers,
             object: {
                 name: this.name,
@@ -824,13 +841,13 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         this.refreshObjectIfNeeded(associationResp);
     };
 
-    // set the list of available statuses for the parent
-    private setStatusOptions(attributes: IAttributeModel[], modify?: boolean) {
-        const statusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status');
-        if (modify && this.objectType === ObjectTypesEnum.INETNUM && statusAttr.value === 'ALLOCATED PA') {
-            this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
-        } else {
+    private setStatusOptions(attributes?: IAttributeModel[]) {
+        const statusAttr: IAttributeModel = attributes ? this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status') : undefined;
+        // Display all the statuses in case it is RS comaintainer, in that case all the statuses should appear
+        if (this.whoisResourcesService.isSSOComaintained(this.maintainers.sso)) {
             this.optionList.status = this.resourceStatusService.get(this.objectType, statusAttr?.value);
+        } else {
+            this.optionList.status = this.resourceStatusService.filterNonRsStatuses(this.objectType, statusAttr?.value);
         }
     }
 }
