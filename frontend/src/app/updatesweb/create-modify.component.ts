@@ -746,6 +746,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
             return;
         }
+
+        if (statusAttr.value === 'ALLOCATED-ASSIGNED PA') {
+            this.optionList.status = [{ key: 'ALLOCATED PA', value: 'ALLOCATED PA' }];
+            return;
+        }
+
         this.restService.fetchMntnersForSSOAccount().subscribe({
             next: (results: any) => {
                 this.maintainers.sso = results;
