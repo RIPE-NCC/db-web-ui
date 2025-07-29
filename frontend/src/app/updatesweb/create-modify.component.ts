@@ -701,16 +701,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
                 // status options are editable just in inetnum
                 if (this.objectType === ObjectTypesEnum.INETNUM) {
-                    this.restService.fetchMntnersForSSOAccount().subscribe({
-                        next: (results: any) => {
-                            this.maintainers.sso = results;
-                            // set the statuses which apply to the objectType (if any)
-                            this.setStatusOptions(this.attributes);
-                        },
-                        error: () => {
-                            this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
-                        },
-                    });
+                    this.calculateStatusForInetnumInUpdate();
                 }
 
                 // show description under fields
@@ -745,6 +736,42 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     console.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
                     this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
                 }
+            },
+        });
+    }
+
+    private calculateStatusForInetnumInUpdate() {
+        const statusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(this.attributes, 'status');
+        if (statusAttr.value === 'ALLOCATED PA') {
+            this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
+            return;
+        }
+
+        if (statusAttr.value === 'ALLOCATED-ASSIGNED PA') {
+            this.optionList.status = [{ key: 'ALLOCATED PA', value: 'ALLOCATED PA' }];
+            return;
+        }
+
+        this.restService.fetchMntnersForSSOAccount().subscribe({
+            next: (results: any) => {
+                this.maintainers.sso = results;
+                const inetnumAttr = _.find(this.attributes, (attr: any) => {
+                    return this.objectType === attr.name && attr.value;
+                });
+                this.restService.fetchParentResource(this.objectType, inetnumAttr.value).subscribe({
+                    next: (result: any) => {
+                        if (result && result.objects && _.isArray(result.objects.object)) {
+                            let parent = result.objects.object[0];
+                            this.setStatusOptions(parent.attributes.attribute);
+                        }
+                    },
+                    error: () => {
+                        this.setStatusOptions();
+                    },
+                });
+            },
+            error: () => {
+                this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
             },
         });
     }
@@ -841,8 +868,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         this.refreshObjectIfNeeded(associationResp);
     };
 
-    private setStatusOptions(attributes?: IAttributeModel[]) {
-        const statusAttr: IAttributeModel = attributes ? this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status') : undefined;
+    private setStatusOptions(parentAttributes?: IAttributeModel[]) {
+        const statusAttr: IAttributeModel = parentAttributes ? this.whoisResourcesService.getSingleAttributeOnName(parentAttributes, 'status') : undefined;
         // Display all the statuses in case it is RS comaintainer, in that case all the statuses should appear
         if (this.whoisResourcesService.isSSOComaintained(this.maintainers.sso)) {
             this.optionList.status = this.resourceStatusService.get(this.objectType, statusAttr?.value);

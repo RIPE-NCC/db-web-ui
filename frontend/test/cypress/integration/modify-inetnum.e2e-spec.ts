@@ -48,29 +48,21 @@ describe('Modifying an inetnum', () => {
                 .expectModalToExist(false)
                 .expectFieldToExist('status', true)
                 .expectDisabledField('status', false)
-                .expectOptionSizeFromNgSelect('status', 4)
-                .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
-                .expectOptionFromNgSelect('status', 'ASSIGNED PA')
-                .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
-                .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA');
+                .expectOptionSizeFromNgSelect('status', 1)
+                .expectOptionFromNgSelect('status', 'ALLOCATED-ASSIGNED PA');
         });
     });
 
     describe('which has ALLOCATED-ASSIGNED PA status', () => {
-        it('should have all non RS option for statuses', () => {
+        it('should have only status ALLOCATED PA', () => {
             webupdatesPage.visit('modify/RIPE/inetnum/80.73.136.0%20-%2080.73.143.255');
             webupdatesPage.getModalAuthentication().typePassword('TESTMD-MNT').disableAssociateCheckbox().submitModal();
             webupdatesPage
                 .expectModalToExist(false)
                 .expectFieldToExist('status', true)
                 .expectDisabledField('status', false)
-                .expectOptionSizeFromNgSelect('status', 6)
-                .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
-                .expectOptionFromNgSelect('status', 'ASSIGNED PA')
-                .expectOptionFromNgSelect('status', 'ASSIGNED PI')
-                .expectOptionFromNgSelect('status', 'LEGACY')
-                .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
-                .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA');
+                .expectOptionSizeFromNgSelect('status', 1)
+                .expectOptionFromNgSelect('status', 'ALLOCATED PA');
         });
     });
 });
