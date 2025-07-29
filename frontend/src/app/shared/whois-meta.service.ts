@@ -139,6 +139,7 @@ export class WhoisMetaService {
                 { name: 'country', mandatory: true, multiple: true, refs: this.refs, isEnum: true },
                 { name: 'geofeed', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'geoloc', mandatory: false, multiple: false, refs: this.refs },
+                { name: 'prefixlen', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'language', mandatory: false, multiple: true, refs: this.refs, isEnum: true },
                 { name: 'org', mandatory: false, multiple: false, refs: ['ORGANISATION'] },
                 { name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION'] },
@@ -168,6 +169,7 @@ export class WhoisMetaService {
                 { name: 'country', mandatory: true, multiple: true, refs: this.refs, isEnum: true },
                 { name: 'geofeed', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'geoloc', mandatory: false, multiple: false, refs: this.refs },
+                { name: 'prefixlen', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'language', mandatory: false, multiple: true, refs: this.refs, isEnum: true },
                 { name: 'org', mandatory: false, multiple: false, refs: ['ORGANISATION'] },
                 { name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION'] },
@@ -957,6 +959,10 @@ export class WhoisMetaService {
         geoloc: {
             description: 'The location coordinates for the resource.',
             syntax: 'Location coordinates of the resource, in decimal degrees notation. Format is latitude followed by longitude, separated by a space. Latitude ranges from [-90,+90] and longitude from [-180,+180]',
+        },
+        prefixlen: {
+            description: 'A URL referencing a CSV file containing prefix length data for the resource.',
+            syntax: 'A URL referencing a CSV file (described by draft-ietf-opsawg-prefix-lengths) containing additional metadata about how the prefix is used or subdivided. The URL must be valid and it must specify the HTTPS protocol.',
         },
         holes: {
             description:

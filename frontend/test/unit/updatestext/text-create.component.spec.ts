@@ -177,6 +177,7 @@ describe('TextCreateComponent', () => {
                 'COUNTRY:       \n' +
                 'geofeed:       \n' +
                 'geoloc:        \n' +
+                'prefixlen:     \n' +
                 'language:      \n' +
                 'org:           \n' +
                 'sponsoring-org:\n' +
@@ -212,6 +213,7 @@ describe('TextCreateComponent', () => {
                 'COUNTRY:       \n' +
                 'geofeed:       \n' +
                 'geoloc:        \n' +
+                'prefixlen:     \n' +
                 'language:      \n' +
                 'org:           \n' +
                 'sponsoring-org:\n' +
@@ -258,6 +260,7 @@ describe('TextCreateComponent', () => {
                 'COUNTRY:       \n' +
                 'geofeed:       \n' +
                 'geoloc:        \n' +
+                'prefixlen:     \n' +
                 'language:      \n' +
                 'org:           \n' +
                 'sponsoring-org:\n' +
