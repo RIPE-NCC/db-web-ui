@@ -8,13 +8,12 @@ describe('PromoBannerComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [PromoBannerComponent], // standalone component
+            imports: [PromoBannerComponent],
         }).compileComponents();
 
         fixture = TestBed.createComponent(PromoBannerComponent);
         component = fixture.componentInstance;
 
-        // Default test data
         component.id = 'test-banner';
         component.title = 'Test Title';
         component.textContent = 'Test content';
