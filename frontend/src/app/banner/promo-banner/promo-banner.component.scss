@@ -1,0 +1,19 @@
+.promo-banner {
+    background-color: #fff5d2;
+    padding: 12px 16px 16px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1em 0;
+
+    .content {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+}
+
+.no-shrink {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
