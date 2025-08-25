@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { PreferenceService } from '../updatesweb/preference.service';
+import { AlertsService } from '../shared/alert/alerts.service';
 import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { SyncupdatesService } from './syncupdates.service';
 
@@ -17,7 +16,7 @@ export class SyncupdatesComponent {
     public isUpdating: boolean = false;
     public haveNonLatin1: boolean;
 
-    constructor(private router: Router, private preferenceService: PreferenceService, private syncupdatesService: SyncupdatesService) {}
+    constructor(private syncupdatesService: SyncupdatesService, private alertService: AlertsService) {}
 
     public update() {
         if (!this.rpslObject) {
@@ -30,7 +29,9 @@ export class SyncupdatesComponent {
                 document.querySelector(`#anchorScroll`).scrollIntoView();
             },
             error: (error: any) => {
+                this.isUpdating = false;
                 this.errorMessages = error;
+                this.alertService.addGlobalError(error);
             },
             complete: () => (this.isUpdating = false),
         });
