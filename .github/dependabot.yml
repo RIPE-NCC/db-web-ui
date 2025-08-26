@@ -18,7 +18,7 @@ updates:
       schedule:
           interval: "daily"
       ignore:
-          - dependency-name: "@technical-design/ripe-app-webcomponents"
+          - dependency-name: "@technical-design/*"
     - package-ecosystem: "docker"
       directory: "/"
       schedule:
