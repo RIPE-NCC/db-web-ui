@@ -134,6 +134,10 @@ export class ErrorInterceptor implements HttpInterceptor {
             toBeSwallowed = true;
         }
 
+        if (_.includes(this.router.url, '/syncupdates')) {
+            toBeSwallowed = true;
+        }
+
         console.debug('Must be swallowed? ' + toBeSwallowed);
 
         return toBeSwallowed;
