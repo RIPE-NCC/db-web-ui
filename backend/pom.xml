@@ -40,7 +40,7 @@
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <sonar.sources>src/main</sonar.sources>
         <sonar.tests>src/test</sonar.tests>
-        <snakeyaml.version>2.3</snakeyaml.version>
+        <snakeyaml.version>2.4</snakeyaml.version>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>3.5.3</spring-boot.version>
         <!-- whois 1.118 release -->
