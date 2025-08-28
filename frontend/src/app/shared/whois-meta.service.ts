@@ -789,7 +789,7 @@ export class WhoisMetaService {
         'as-set': {
             description: 'Defines the name of the set.',
             syntax:
-                `An <strong>as-set</strong> name is made up of letters, digits, the underscore "_" and minus "-" characters; it must start with \"as-\", and the last character of a name must be a letter or a digit.<br>` +
+                `An <strong>as-set</strong> name is made up of letters, digits, the character underscore "_" and the character hyphen "-"; it must start with \"as-\", and the last character of a name must be a letter or a digit.<br>` +
                 `An <strong>as-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons ":". The first element of the name must be an AS number followed by a colon and ending with a name (example: AS3333:AS-TEST). At least one component of such a name must be an actual set name (i.e. start with \"as-\"). All the set name components of a hierarchical <strong>as-name</strong> have to be <strong>as-set</strong> names. The total length should not exceed 80 characters (octets). Only as-sets with a hierarchical name can be created.`,
         },
         auth: {
@@ -891,9 +891,6 @@ export class WhoisMetaService {
                 'Digest is a digest in hexadecimal representation (case insensitive). Its length varies for various' +
                 ' digest types.' +
                 '<br>' +
-                'For digest type SHA-1 digest is represented by 20 octets (40 characters,' +
-                ' plus possible spaces).' +
-                '<br>' +
                 '<br>' +
                 'For more details, see RFC4034.',
         },
@@ -943,7 +940,7 @@ export class WhoisMetaService {
         'filter-set': {
             description: 'Defines the name of the filter.',
             syntax:
-                `A <strong>filter-set</strong> name is made up of letters, digits, the underscore "_" and minus "-" characters; it must start with \"fltr-\", and the last character of a name must be a letter or a digit.` +
+                `A <strong>filter-set</strong> name is made up of letters, digits, the character underscore "_" and the character hyphen "-"; it must start with \"fltr-\", and the last character of a name must be a letter or a digit.` +
                 `<br>` +
                 `A <strong>filter-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\". At least one component of such a name must be an actual set name (i.e. start with \"fltr-\"). All the set name components of a hierarchical <strong>filter-name</strong> have to be <strong>filter-set</strong> names. The total length should not exceed 80 characters (octets).`,
         },
@@ -957,7 +954,7 @@ export class WhoisMetaService {
         },
         geofeed: {
             description: 'A URL referencing a CSV file containing geolocation data for the resource.',
-            syntax: 'Geofeed is a self-published format for IP geolocation data. A URL referencing a CSV file containing geolocation data for the resource. The URL must be valid and it must specify the HTTPS protocol.',
+            syntax: 'Geofeed is a self-published format for IP geolocation data. A URL referencing a CSV file (described by RFC8805) containing geolocation data for the resource. The URL must be valid and it must specify the HTTPS protocol.',
         },
         geoloc: {
             description: 'The location coordinates for the resource.',
@@ -971,7 +968,7 @@ export class WhoisMetaService {
             description:
                 'Lists the component address prefixes that are not reachable through the aggregate route (perhaps that part of the address space is unallocated).',
             short: 'Lists the component address prefixes that are not reachable through the aggregate route.',
-            syntax: 'An address prefix is represented as an IPv4 address followed by the character slash "/" followed by an integer in the range from 0 to 32. The following are valid address prefixes: 128.9.128.5/32, 128.9.0.0/16, 0.0.0.0/0; and the following address prefixes are invalid: 0/0, 128.9/16 since 0 or 128.9 are not strings containing four integers.',
+            syntax: 'An address prefix is represented as an IPv4 address followed by the character slash "/" followed by an integer in the range from 0 to 32. The following are valid address prefixes: 192.0.2.5/32, 192.0.2.0/24, 0.0.0.0/0; and the following address prefixes are invalid: 0/0, 192.0.2/24 since 0 or 192.0.2 are not strings containing four integers.',
         },
         ifaddr: {
             description: 'Specifies an interface address within an Internet router.',
@@ -1218,7 +1215,7 @@ export class WhoisMetaService {
         },
         netname: {
             description: 'The name of a range of IP address space.',
-            syntax: `Made up of letters, digits, the underscore \"_\" and minus \"-\" characters; the first character of a name must be a letter, and the last character of a name must be a letter or a digit.`,
+            syntax: `Made up of letters, digits, the character underscore \"_\" and the character hyphen \"-\"; the first character of a name must be a letter, and the last character of a name must be a letter or a digit.`,
         },
         'nic-hdl': {
             description: `Specifies the NIC handle of a <strong>role</strong> or <strong>person</strong> object. When creating an object, one can also specify an \"AUTO\" NIC handle by setting the value of the attribute to \"AUTO-1\" or AUTO-1&lt;Initials&gt;. In such case the database will assign the NIC handle automatically.`,
@@ -1287,14 +1284,14 @@ export class WhoisMetaService {
         'peering-set': {
             description: 'Specifies the name of the peering-set.',
             syntax:
-                'A <strong>peering-set</strong> name is made up of letters, digits, the underscore "_" and minus "-"' +
-                ' characters; it must start with "prng-", and the last character of a name must be a letter or a' +
+                'A <strong>peering-set</strong> name is made up of letters, digits, the character underscore "_" and the character hyphen "-";' +
+                ' it must start with "prng-", and the last character of a name must be a letter or a' +
                 ' digit.' +
                 '<br>' +
-                'A <strong>peering-set</strong> name can also be hierarchical.  A hierarchical set name is a' +
+                'A <strong>peering-set</strong> name can also be hierarchical. A hierarchical set name is a' +
                 ' sequence of set names' +
-                ' and AS numbers separated by colons ":".  At least one component of such a name must be an actual set' +
-                ' name (i.e. start with "prng-").  All the set name components of a hierarchical' +
+                ' and AS numbers separated by colons ":". At least one component of such a name must be an actual set' +
+                ' name (i.e. start with "prng-"). All the set name components of a hierarchical' +
                 ' <strong>peering-set</strong> name' +
                 ' have to be <strong>peering-set</strong> names. The total length should not exceed 80 characters' +
                 ' (octets).',
@@ -1374,7 +1371,7 @@ export class WhoisMetaService {
             description: 'Specifies the name of the route set. It is a primary key for the <strong>route-set</strong> object.',
             short: `Specifies the name of the route set, must start with \"rs-\"`,
             syntax:
-                `An <strong>route-set</strong> name is made up of letters, digits, the underscore "_" and minus "-" characters. It must start with \"rs-\", and the last character of a name must be a letter or a digit.` +
+                `An <strong>route-set</strong> name is made up of letters, digits, the character underscore "_" and the character hyphen "-". It must start with \"rs-\", and the last character of a name must be a letter or a digit.` +
                 `<br>` +
                 `A <strong>route-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must be an actual set name (i.e. start with \"rs-\"). All the set name components of a hierarchical <strong>route-name</strong> have to be <strong>route-set</strong> names. The total length should not exceed 80 characters (octets).`,
         },
@@ -1382,7 +1379,7 @@ export class WhoisMetaService {
             description: 'Defines the name of the rtr-set.',
             short: `Defines the name of the rtr-set.`,
             syntax:
-                `A <strong>router-set</strong> name is made up of letters, digits, the underscore \"_\" and minus \"-\" characters. It must start with \"rtrs-\", and the last character of a name must be a letter or a digit.
+                `A <strong>router-set</strong> name is made up of letters, digits, the character underscore \"_\" and the character hyphen \"-\". It must start with \"rtrs-\", and the last character of a name must be a letter or a digit.
                 A <strong>router-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must` +
                 `be an actual set name (i.e. start with \"rtrs-\").  All the set name components of a hierarchical <strong>router-set</strong> name have to be <strong>router-set</strong> names. The total length should not exceed 80 characters (octets).`,
         },
@@ -1394,7 +1391,7 @@ export class WhoisMetaService {
         source: {
             description: 'Specifies the registry where the object is registered. Should be "RIPE" for the RIPE Database.',
             short: `Should be \"RIPE\" for the RIPE Database.`,
-            syntax: `Made up of letters, digits, the underscore \"_\" and minus \"-\" characters; The first character of a registry name must be a letter, and the last character of a registry name must be a letter or a digit.`,
+            syntax: `Made up of letters, digits, the character underscore \"_\" and the character hyphen \"-\"; The first character of a registry name must be a letter, and the last character of a registry name must be a letter or a digit.`,
         },
         'sponsoring-org': {
             description: 'Points to an existing <strong>organisation</strong> object representing the sponsoring organisation responsible for the resource.',
