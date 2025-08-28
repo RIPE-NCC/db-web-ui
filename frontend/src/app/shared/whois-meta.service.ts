@@ -667,8 +667,8 @@ export class WhoisMetaService {
         },
         irt: {
             syntax:
-                'An <strong>irt</strong> name is made up of letters, digits, the underscore "_" and minus "-"' +
-                ' characters; it must start with "irt-", and the last character of a name must be a letter or a digit.',
+                'An <strong>irt</strong> name is made up of letters, digits, the character underscore "_", and the character hyphen "-";' +
+                ' it must start with "irt-", and the last character of a name must be a letter or a digit.',
         },
         keyCert: {
             syntax: `PGPKEY-&lt;id&gt;<br>` + `&lt;id&gt; is the PGP key ID of the public key in 8-digit hexadecimal format without the 0x prefix.`,
@@ -698,7 +698,7 @@ export class WhoisMetaService {
         },
         objectName: {
             syntax:
-                'Made up of letters, digits, the underscore "_" and minus "-" characters; the first' +
+                'Made up of letters, digits, the character underscore "_" and the character hyphen "-"; the first' +
                 ' character of a name must be a letter, and the last character of a name must be a letter or a digit.' +
                 '  The following words are reserved by RPSL, and they can not be used as names:<br>' +
                 '&emsp;"any as-any rs-any peeras and or not atomic from to at action accept announce except refine' +
@@ -771,7 +771,10 @@ export class WhoisMetaService {
             syntax: this._shared.alias.syntax,
         },
         'assignment-size': {
-            description: 'Specifies the size of blocks assigned to end users from this aggregated' + ' <strong>inet(6)num</strong>' + ' assignment.',
+            description:
+                'Specifies the size of blocks assigned to end users from this aggregated' +
+                ' <strong>inet(6)num</strong>' +
+                ' assignment. The maximum assignment size for inetnum is 32 and for inet6num is 128',
             short: 'Specifies the size of blocks assigned to end users from this aggregated inet(6)num assignment.',
             syntax: 'Specifies a numeric value.',
         },
@@ -790,7 +793,7 @@ export class WhoisMetaService {
                 `An <strong>as-set</strong> name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons ":". The first element of the name must be an AS number followed by a colon and ending with a name (example: AS3333:AS-TEST). At least one component of such a name must be an actual set name (i.e. start with \"as-\"). All the set name components of a hierarchical <strong>as-name</strong> have to be <strong>as-set</strong> names. The total length should not exceed 80 characters (octets). Only as-sets with a hierarchical name can be created.`,
         },
         auth: {
-            description: 'Defines the authentication scheme to be used.',
+            description: 'Defines an authentication scheme to be used.',
             short: 'Defines the authentication scheme, e.g. SSO user@example.net',
             syntax: `<table>
                     <tr>
@@ -992,7 +995,7 @@ export class WhoisMetaService {
                 'accept &lt;filter&gt;',
         },
         inet6num: {
-            description: 'Specifies the range of IPv6 addresses in prefix notation.',
+            description: 'Specifies a range of IPv6 addresses in prefix notation.',
             syntax: '&lt;ipv6-address&gt;/&lt;prefix&gt;',
         },
         inetnum: {
@@ -1021,12 +1024,12 @@ export class WhoisMetaService {
                 '[tunnel &lt;remote-endpoint-address&gt;,&lt;encapsulation&gt;]',
         },
         irt: {
-            description: `Specifies the name of the <strong>irt</strong> object. The name should start with the prefix \"IRT-\" reserved for this type of object.`,
+            description: `Specifies the name of the <strong>irt</strong> object. The name should start with the prefix \"IRT-\", reserved for this type of object.`,
             short: `Specifies the name of the irt object, must start with \"IRT-\"`,
             syntax: this._shared.irt.syntax,
         },
         'irt-nfy': {
-            description: 'Specifies the e-mail address to be notified when a reference to the <strong>irt</strong> object is added or' + ' removed.',
+            description: 'Specifies the e-mail address to be notified when a reference to the <strong>irt</strong> object is added or removed.',
             short: 'Notification e-mail address when a reference to the irt object is added or' + ' removed.',
             syntax: this._shared.email.syntax,
         },
@@ -1106,7 +1109,7 @@ export class WhoisMetaService {
             syntax: this._shared.email.syntax,
         },
         'mnt-ref': {
-            description: 'Specifies the <strong>mntner</strong> objects that are entitled to add references to this object' + ' from other objects.',
+            description: 'Specifies the <strong>mntner</strong> objects that are entitled to add references to the organisation object from other objects.',
             short: 'Specifies a mntner that may add references to this object from other objects.',
             syntax: this._shared.objectName.syntax,
         },
@@ -1214,7 +1217,7 @@ export class WhoisMetaService {
             syntax: '&lt;as-expression&gt; [&lt;mp-router-expression-1&gt;] [at &lt;mp-router-expression-2&gt;] | &lt;peering-set-name&gt;',
         },
         netname: {
-            description: 'The name of the range of IP address space.',
+            description: 'The name of a range of IP address space.',
             syntax: `Made up of letters, digits, the underscore \"_\" and minus \"-\" characters; the first character of a name must be a letter, and the last character of a name must be a letter or a digit.`,
         },
         'nic-hdl': {
@@ -1423,8 +1426,8 @@ export class WhoisMetaService {
 
     private _statusDoc = {
         'aut-num': {
-            short: 'Value will be generated by the server',
             description: 'Specifies the status of the resource.',
+            short: 'Value will be generated by the server',
             syntax: 'Status can have one of these values:' + '<br>' + '<ul>' + '<li>ASSIGNED</li>' + '<li>LEGACY</li>' + '<li>OTHER</li>' + '</ul>',
         },
         inet6num: {
@@ -1506,7 +1509,7 @@ export class WhoisMetaService {
             syntax: this._shared.inet.syntax,
         },
         'peering-set': {
-            description: 'Defines a multiprotocol peering used for importing or exporting routes.',
+            description: 'Defines a multiprotocol peering that can be used for importing or exporting routes.',
             syntax: 'afi &lt;afi&gt; &lt;peering&gt;',
         },
     };
