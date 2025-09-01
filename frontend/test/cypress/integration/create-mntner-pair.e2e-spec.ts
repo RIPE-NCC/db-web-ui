@@ -64,7 +64,7 @@ describe('The CreateMntnerPairComponent', () => {
             .expectHelpToContain('mntner', 'Syntax')
             .expectHelpToContain(
                 'mntner',
-                'Made up of letters, digits, the underscore "_" and minus "-" characters; the first' +
+                'Made up of letters, digits, the character underscore "_" and the character hyphen "-"; the first' +
                     ' character' +
                     ' of a name must be a letter, and the last character of a name must be a letter or a digit.  The following' +
                     ' words are reserved by RPSL, and they can not be used as names:',
