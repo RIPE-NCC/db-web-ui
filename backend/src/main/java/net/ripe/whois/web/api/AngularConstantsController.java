@@ -77,6 +77,8 @@ public class AngularConstantsController {
     private String whoisOverride;
     @Value("${nopassword.auth.popup:false}")
     private boolean noPasswordAuthPopup;
+    @Value("${show.menu.id}")
+    private String[] showMenuIds;
 
     private AppConstants appConstants;
 
@@ -132,6 +134,7 @@ public class AngularConstantsController {
         constants.setShowApiKeyMenu(showApiKeyMenu);
         constants.setWhoisOverride(whoisOverride);
         constants.setNoPasswordAuthPopup(noPasswordAuthPopup);
+        constants.setShowMenuIds(showMenuIds);
         return constants;
     }
 
@@ -192,6 +195,8 @@ public class AngularConstantsController {
         private String whoisOverride;
         @JsonProperty("NO_PASSWORD_AUTH_POPUP")
         private boolean noPasswordAuthPopup;
+        @JsonProperty("SHOW_MENU_IDS")
+        private String[] showMenuIds;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -303,6 +308,10 @@ public class AngularConstantsController {
 
         public void setNoPasswordAuthPopup(boolean noPasswordAuthPopup) {
             this.noPasswordAuthPopup = noPasswordAuthPopup;
+        }
+
+        public void setShowMenuIds(String[] showMenuIds) {
+            this.showMenuIds = showMenuIds;
         }
     }
 }

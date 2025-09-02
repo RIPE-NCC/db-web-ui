@@ -32,6 +32,7 @@ export interface IProperties {
     SHOW_API_KEY_MENU: boolean;
     WHOIS_OVERRIDE: string;
     NO_PASSWORD_AUTH_POPUP: boolean;
+    SHOW_MENU_IDS: string[];
 }
 
 @Injectable()
@@ -78,6 +79,7 @@ export class PropertiesService {
     public SHOW_API_KEY_MENU = false;
     public WHOIS_OVERRIDE = 'whois,test';
     public NO_PASSWORD_AUTH_POPUP = false;
+    public SHOW_MENU_IDS = [];
 
     constructor(private httpClient: HttpClient) {}
 
@@ -116,6 +118,7 @@ export class PropertiesService {
                     this.SHOW_API_KEY_MENU = response.SHOW_API_KEY_MENU;
                     this.WHOIS_OVERRIDE = response.WHOIS_OVERRIDE;
                     this.NO_PASSWORD_AUTH_POPUP = response.NO_PASSWORD_AUTH_POPUP;
+                    this.SHOW_MENU_IDS = response.SHOW_MENU_IDS;
                     // once we deploy the db-operational
 
                     this.injectProperties();
