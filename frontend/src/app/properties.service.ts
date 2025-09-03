@@ -29,7 +29,6 @@ export interface IProperties {
     RIPE_NCC_HM_MNT: string;
     SESSION_TTL: number;
     RELEASE_NOTIFICATION_POLLING: number;
-    SHOW_API_KEY_MENU: boolean;
     WHOIS_OVERRIDE: string;
     NO_PASSWORD_AUTH_POPUP: boolean;
     SHOW_MENU_IDS: string[];
@@ -76,7 +75,6 @@ export class PropertiesService {
     public RIPE_NCC_HM_MNT = 'RIPE-NCC-HM-MNT';
     public SESSION_TTL = 30000;
     public RELEASE_NOTIFICATION_POLLING = 30000;
-    public SHOW_API_KEY_MENU = false;
     public WHOIS_OVERRIDE = 'whois,test';
     public NO_PASSWORD_AUTH_POPUP = false;
     public SHOW_MENU_IDS = [];
@@ -115,7 +113,6 @@ export class PropertiesService {
                     this.RIPE_NCC_HM_MNT = response.RIPE_NCC_HM_MNT;
                     this.SESSION_TTL = response.SESSION_TTL;
                     this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
-                    this.SHOW_API_KEY_MENU = response.SHOW_API_KEY_MENU;
                     this.WHOIS_OVERRIDE = response.WHOIS_OVERRIDE;
                     this.NO_PASSWORD_AUTH_POPUP = response.NO_PASSWORD_AUTH_POPUP;
                     this.SHOW_MENU_IDS = response.SHOW_MENU_IDS;
