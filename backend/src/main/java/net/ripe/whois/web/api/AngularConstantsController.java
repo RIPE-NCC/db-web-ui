@@ -77,7 +77,7 @@ public class AngularConstantsController {
     private String whoisOverride;
     @Value("${nopassword.auth.popup:false}")
     private boolean noPasswordAuthPopup;
-    @Value("${show.menu.id}")
+    @Value("${show.menu.id:}")
     private String[] showMenuIds;
 
     private AppConstants appConstants;
