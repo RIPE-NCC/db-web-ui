@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PropertiesService } from '../properties.service';
-import { menuTestRcEnvObject } from './menu-test-rc-env.json';
-import { menuTrainingObject } from './menu-training-env.json';
 import { menuObject } from './menu.json';
 
 export interface IMenu {
@@ -43,12 +41,14 @@ export class MenuService {
                 } else {
                     return item;
                 }
+            })
+            .map((menuItem) => {
+                return {
+                    ...menuItem,
+                    url: this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url,
+                    title: this.properties.isProdEnv() ? menuItem.title : menuItem.title.replace('RIPE', this.properties.ENV.toUpperCase()),
+                };
             });
-        // @ts-ignore
-        this.menu.main.forEach((menuItem) => {
-            menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url;
-            menuItem.title = this.properties.isProdEnv() ? menuItem.title : menuItem.title.replace('RIPE', this.properties.ENV.toUpperCase());
-        });
         this.menu.footer.forEach((menuItem) => (menuItem.url = this.properties[menuItem.url] ? this.properties[menuItem.url] : menuItem.url));
         return {
             main: filteredItemsByRoles,
@@ -57,16 +57,12 @@ export class MenuService {
     }
 
     private getMenuByEnvironment(): IMenu {
-        let menu: IMenu;
-        if (this.properties.isTestEnv() || this.properties.isRcEnv()) {
-            menu = menuTestRcEnvObject;
-        } else if (this.properties.isTrainingEnv()) {
-            menu = menuTrainingObject;
-        } else {
-            menu = menuObject;
-        }
-        if (!this.properties.SHOW_API_KEY_MENU) {
-            return { main: menu.main.filter((menu) => menu.id !== 'api_keys'), footer: menu.footer };
+        let menu: IMenu = menuObject;
+        if (this.properties.SHOW_MENU_IDS?.length > 0) {
+            return {
+                main: menu.main.filter((menu) => this.properties.SHOW_MENU_IDS.includes(menu.id)),
+                footer: menu.footer,
+            };
         }
         return menu;
     }

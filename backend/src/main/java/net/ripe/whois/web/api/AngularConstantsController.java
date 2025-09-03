@@ -71,12 +71,12 @@ public class AngularConstantsController {
     private int releaseNotificationPolling;
     @Value("${git.commit.id.abbrev:}")
     private String dbWebUiCommitId;
-    @Value("${show.api.key.menu}")
-    private boolean showApiKeyMenu;
     @Value("${whois.override:}")
     private String whoisOverride;
     @Value("${nopassword.auth.popup:false}")
     private boolean noPasswordAuthPopup;
+    @Value("${show.menu.id:}")
+    private String[] showMenuIds;
 
     private AppConstants appConstants;
 
@@ -129,9 +129,9 @@ public class AngularConstantsController {
         constants.setRipeNccHmMnt(ripeNccHmMnt);
         constants.setSessionTtl(sessionTtl);
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
-        constants.setShowApiKeyMenu(showApiKeyMenu);
         constants.setWhoisOverride(whoisOverride);
         constants.setNoPasswordAuthPopup(noPasswordAuthPopup);
+        constants.setShowMenuIds(showMenuIds);
         return constants;
     }
 
@@ -186,12 +186,12 @@ public class AngularConstantsController {
         private int sessionTtl;
         @JsonProperty("RELEASE_NOTIFICATION_POLLING")
         private int releaseNotificationPolling;
-        @JsonProperty("SHOW_API_KEY_MENU")
-        private boolean showApiKeyMenu;
         @JsonProperty("WHOIS_OVERRIDE")
         private String whoisOverride;
         @JsonProperty("NO_PASSWORD_AUTH_POPUP")
         private boolean noPasswordAuthPopup;
+        @JsonProperty("SHOW_MENU_IDS")
+        private String[] showMenuIds;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -293,16 +293,16 @@ public class AngularConstantsController {
             this.releaseNotificationPolling = releaseNotificationPolling;
         }
 
-        public void setShowApiKeyMenu(boolean showApiKeyMenu) {
-            this.showApiKeyMenu = showApiKeyMenu;
-        }
-
         public void setWhoisOverride(String whoisOverride) {
             this.whoisOverride = whoisOverride;
         }
 
         public void setNoPasswordAuthPopup(boolean noPasswordAuthPopup) {
             this.noPasswordAuthPopup = noPasswordAuthPopup;
+        }
+
+        public void setShowMenuIds(String[] showMenuIds) {
+            this.showMenuIds = showMenuIds;
         }
     }
 }

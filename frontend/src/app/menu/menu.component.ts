@@ -2,7 +2,6 @@ import { Location } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
@@ -33,7 +32,6 @@ export class MenuComponent implements OnInit, OnDestroy {
         public properties: PropertiesService,
         public orgDropDownSharedService: OrgDropDownSharedService,
         private menuService: MenuService,
-        public modalService: NgbModal,
         public dialog: MatDialog,
         private location: Location,
         private router: Router,

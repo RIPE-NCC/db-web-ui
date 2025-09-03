@@ -13,7 +13,6 @@ import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
 describe('LeftHandMenuComponent', () => {
     let component: MenuComponent;
-    let menuService: MenuService;
     let fixture: ComponentFixture<MenuComponent>;
 
     beforeEach(() => {
@@ -36,7 +35,6 @@ describe('LeftHandMenuComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(MenuComponent);
         component = fixture.componentInstance;
-        menuService = TestBed.inject(MenuService);
     });
 
     it('should create', () => {
@@ -44,9 +42,7 @@ describe('LeftHandMenuComponent', () => {
     });
 
     it('should show all menu items for a user with all roles', () => {
-        spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
-        spyOn(component.properties, 'isTestEnv').and.returnValue(false);
-        spyOn(component.properties, 'isRcEnv').and.returnValue(false);
+        component.properties.SHOW_MENU_IDS = [];
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -68,9 +64,11 @@ describe('LeftHandMenuComponent', () => {
     });
 
     it('should show just RIPE Database for Training environment', () => {
+        component.properties.ENV = 'TRAINING';
         spyOn(component.properties, 'isTrainingEnv').and.returnValue(true);
+        spyOn(component.properties, 'isProdEnv').and.returnValue(false);
         spyOn(component.properties, 'isTestEnv').and.returnValue(false);
-        spyOn(component.properties, 'isRcEnv').and.returnValue(false);
+        component.properties.SHOW_MENU_IDS = ['database', 'query', 'fulltextsearch', 'syncupdates', 'create', 'api_keys'];
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -85,7 +83,7 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).not.toContain('IPv4 Transfer Listing Service');
         expect(component.menu).not.toContain('RPKI Dashboard');
         // RIPE Database
-        expect(component.menu).toContain('Training Database');
+        expect(component.menu).toContain('TRAINING Database');
         expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
@@ -93,9 +91,23 @@ describe('LeftHandMenuComponent', () => {
     });
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', () => {
-        spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
+        component.properties.ENV = 'TEST';
         spyOn(component.properties, 'isTestEnv').and.returnValue(true);
-        spyOn(component.properties, 'isRcEnv').and.returnValue(true);
+        spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
+        spyOn(component.properties, 'isProdEnv').and.returnValue(false);
+
+        component.properties.SHOW_MENU_IDS = [
+            'resources',
+            'myresources',
+            'sponsored',
+            'database',
+            'query',
+            'fulltextsearch',
+            'syncupdates',
+            'create',
+            'api_keys',
+        ];
+
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -110,17 +122,17 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).not.toContain('IPv4 Transfer Listing Service');
         expect(component.menu).not.toContain('RPKI Dashboard');
         // RIPE Database
-        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('TEST Database');
         expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
         expect(component.menu).toContain('Create an Object');
     });
 
-    it('should show just Resource/My Resources and RIPE Database for Production Test environment', () => {
-        spyOn(component.properties, 'isTrainingEnv').and.returnValue(false);
-        spyOn(component.properties, 'isTestEnv').and.returnValue(true);
-        spyOn(component.properties, 'isRcEnv').and.returnValue(true);
+    it('should show just Resource/My Resources and RIPE Database for Production environment', () => {
+        component.properties.ENV = 'PROD';
+        spyOn(component.properties, 'isProdEnv').and.returnValue(true);
+        component.properties.SHOW_MENU_IDS = [];
         component.orgDropDownSharedService.setSelectedOrg({
             membershipId: 7347,
             regId: 'zz.example',
@@ -133,9 +145,9 @@ describe('LeftHandMenuComponent', () => {
         expect(component.menu).not.toContain('Request Resources');
         expect(component.menu).not.toContain('Request Transfer');
         expect(component.menu).not.toContain('IPv4 Transfer Listing Service');
-        expect(component.menu).not.toContain('RPKI Dashboard');
+        expect(component.menu).toContain('RPKI Dashboard');
         // RIPE Database
-        expect(component.menu).toContain('LOCAL Database');
+        expect(component.menu).toContain('RIPE Database');
         expect(component.menu).toContain('Query Database');
         expect(component.menu).toContain('Full Text Search');
         expect(component.menu).toContain('Syncupdates');
