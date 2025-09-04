@@ -11,13 +11,15 @@
     </div>
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-    <a
+    <button
         mat-flat-button
+        color="primary"
         class="link-color float-end margin-left uppercase"
         *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'"
         (click)="navigateToCreateAssignments()"
-        >{{ 'resource.createAssignment.text' | label }}</a
     >
+        {{ 'resource.createAssignment.text' | label }}
+    </button>
     <transfer-drop-down *ngIf="isMemberOrg()" [sponsoredMenu]="isShowingSponsored"></transfer-drop-down>
     <alerts-drop-down *ngIf="showAlerts" [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
     <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
