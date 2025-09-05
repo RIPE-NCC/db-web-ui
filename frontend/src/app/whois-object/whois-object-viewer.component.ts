@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
+import { WhoisMetaService } from '../shared/whois-meta.service';
 import { IAttributeModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
 
@@ -40,7 +41,12 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     private readonly MAX_ATTR_NAME_MASK = '                ';
     private readonly HAS_RIPE_STAT_LINK = ['aut-num', 'route', 'route6', 'inetnum', 'inet6num'];
 
-    constructor(private userInfoService: UserInfoService, private sessionInfoService: SessionInfoService, private properties: PropertiesService) {
+    constructor(
+        private userInfoService: UserInfoService,
+        private sessionInfoService: SessionInfoService,
+        private properties: PropertiesService,
+        private whoisMetaService: WhoisMetaService,
+    ) {
         this.subscription = this.sessionInfoService.expiredSession$.subscribe(
             (expired: boolean) => {
                 this.setButtonText(!expired);
@@ -100,6 +106,10 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
             key: attr.value,
             type: attr['referenced-type'],
         };
+    }
+
+    public getDescription(attributeName: string) {
+        return this.whoisMetaService.getAttributeShortDescription(this.model.type, attributeName);
     }
 
     private setButtonText(isLoggedIn: boolean) {

@@ -31,13 +31,22 @@
         {{ 'lookup.ripestatLink.text' | label }} <em class="fal fa-external-link"></em>
     </a>
 </div>
-<pre><ul [ngClass]="{showripemanaged: showRipeManagedAttrs}"><li
-        *ngFor="let attr of model.attributes.attribute | slice:0:nrLinesToShow; index as i;"
-        [ngClass]="{ ripemanaged: attr.managed }">{{ attr.name }}:{{ padding(attr) }}<a
-        *ngIf="attr.link?.type === 'locator'" [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{ attr.value }}</a><a class="link-color"
-        *ngIf="attr.name === pkLink" [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()">{{ attr.value }}</a><span
-        *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : ''}}</span><span
-        *ngIf="attr.comment && attr.comment !== 'Filtered'">{{(!attr.value || attr.value === '')? '' :' '}}# {{attr.comment}}</span></li></ul></pre>
+<ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
+    <li *ngFor="let attr of model.attributes.attribute | slice : 0 : nrLinesToShow; index as i" [ngClass]="{ ripemanaged: attr.managed }">
+        <span [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
+        >:{{ padding(attr) }}
+
+        <a *ngIf="attr.link?.type === 'locator'" [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{
+            attr.value
+        }}</a>
+
+        <a *ngIf="attr.name === pkLink" [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color">{{ attr.value }}</a>
+
+        <span *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
+
+        <span *ngIf="attr.comment && attr.comment !== 'Filtered'">{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
+    </li>
+</ul>
 <div class="float-end">
     <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">
         {{ 'lookup.showAllObjectButton.text' | label }}
