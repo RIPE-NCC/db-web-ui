@@ -22,6 +22,11 @@ whois-object-viewer {
     }
 }
 
+.tooltip-hint {
+    border-bottom: 1px dotted #666;
+    cursor: help;
+}
+
 .resultpane {
     padding: 10px;
     margin: 5px 0;

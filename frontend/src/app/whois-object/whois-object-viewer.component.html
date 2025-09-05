@@ -33,7 +33,7 @@
 </div>
 <ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
     <li *ngFor="let attr of model.attributes.attribute | slice : 0 : nrLinesToShow; index as i" [ngClass]="{ ripemanaged: attr.managed }">
-        <span [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
+        <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
         >:{{ padding(attr) }}
 
         <a *ngIf="attr.link?.type === 'locator'" [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{
