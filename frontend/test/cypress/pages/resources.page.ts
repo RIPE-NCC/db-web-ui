@@ -192,7 +192,7 @@ export class ResourcesOverViewPage {
     }
 
     clickOnCreateAssignmentButton() {
-        cy.get('.my-resources a:contains("Create assignment")').click({ force: true });
+        cy.get('.my-resources #button-create-assignment').click({ force: true });
         return this;
     }
 
@@ -212,7 +212,7 @@ export class ResourcesOverViewPage {
     }
 
     expectCreateAssignmentButtonToExist(exist: boolean) {
-        cy.get('.my-resources a:contains("Create assignment")').should(exist ? 'exist' : 'not.exist');
+        cy.get('.my-resources #button-create-assignment').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
