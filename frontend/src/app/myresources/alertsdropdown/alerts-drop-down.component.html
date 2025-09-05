@@ -1,16 +1,17 @@
 <div class="btn-group float-end" ngbDropdown *ngIf="hasAllocations" placement="bottom-right">
     <button
         *ngIf="!hasAlerts"
+        mat-stroked-button
         id="grey-bell-button"
-        type="button"
         class="grey-button"
+        type="button"
         [ngbPopover]="'No alerts'"
         placement="bottom"
         triggers="mouseenter:mouseleave"
     >
         <em class="fal fa-bell"></em>
     </button>
-    <button *ngIf="hasAlerts" id="red-bell-button" type="button" class="red-button" ngbDropdownToggle>
+    <button *ngIf="hasAlerts" mat-stroked-button id="red-bell-button" type="button" class="red-button" ngbDropdownToggle>
         <em class="fal fa-bell"></em>
     </button>
 
@@ -28,7 +29,7 @@
             <span>Not present</span>
         </li>
         <li role="menuitem" *ngFor="let overlapz of overlaps">
-            <a class="overlap-link" *ngFor="let overlap of overlapz" (click)="showDetail(getRange(overlap.range))" style="border: 0px !important">
+            <a class="overlap-link" *ngFor="let overlap of overlapz" (click)="showDetail(getRange(overlap.range))" style="border: 0 !important">
                 {{ getRange(overlap.range) }} <br />
             </a>
             <div style="border-bottom: 1px solid #eaeaea !important"></div>
