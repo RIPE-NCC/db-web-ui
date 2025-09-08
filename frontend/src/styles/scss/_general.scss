@@ -348,7 +348,7 @@ div.portlet.navigation {
 }
 
 .lookupheader {
-    background-color: #f5e075;
+    background-color: #fdf2ca;
     margin-bottom: 10px;
     padding: 15px;
     vertical-align: top;
@@ -360,9 +360,18 @@ div.portlet.navigation {
     justify-content: center;
 }
 
+#resultsSection {
+    max-width: 1125px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 section .resultlinks {
+    margin-left: auto;
     line-height: 1.8rem;
 }
+
 .generic-drop-down {
     ul.dropdown-menu {
         width: fit-content;

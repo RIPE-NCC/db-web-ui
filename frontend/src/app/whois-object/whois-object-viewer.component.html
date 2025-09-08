@@ -1,8 +1,28 @@
-<div class="checkbox" *ngIf="show.ripeManagedToggleControl">
-    <label>
-        <input name="showRipeManagedAttrs" type="checkbox" [checked]="showRipeManagedAttrs" (change)="showRipeManagedAttrs = !showRipeManagedAttrs" />
+<div *ngIf="show.ripeManagedToggleControl">
+    <mat-checkbox [checked]="showRipeManagedAttrs" (change)="showRipeManagedAttrs = !showRipeManagedAttrs">
         {{ 'lookup.ripeManagedValuesCheckbox.text' | label }}
-    </label>
+    </mat-checkbox>
+</div>
+<ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
+    <li *ngFor="let attr of model.attributes.attribute | slice : 0 : nrLinesToShow; index as i" [ngClass]="{ ripemanaged: attr.managed }">
+        <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
+        >:{{ padding(attr) }}
+
+        <a *ngIf="attr.link?.type === 'locator'" [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{
+            attr.value
+        }}</a>
+
+        <a *ngIf="attr.name === pkLink" [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color">{{ attr.value }}</a>
+
+        <span *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
+
+        <span *ngIf="attr.comment && attr.comment !== 'Filtered'">{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
+    </li>
+</ul>
+<div class="float-end">
+    <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">
+        {{ 'lookup.showAllObjectButton.text' | label }}
+    </div>
 </div>
 <div class="viewerbuttons">
     <a mat-flat-button color="primary" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]" *ngIf="show.loginLink">
@@ -30,25 +50,4 @@
     >
         {{ 'lookup.ripestatLink.text' | label }} <em class="fal fa-external-link"></em>
     </a>
-</div>
-<ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
-    <li *ngFor="let attr of model.attributes.attribute | slice : 0 : nrLinesToShow; index as i" [ngClass]="{ ripemanaged: attr.managed }">
-        <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
-        >:{{ padding(attr) }}
-
-        <a *ngIf="attr.link?.type === 'locator'" [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{
-            attr.value
-        }}</a>
-
-        <a *ngIf="attr.name === pkLink" [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color">{{ attr.value }}</a>
-
-        <span *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
-
-        <span *ngIf="attr.comment && attr.comment !== 'Filtered'">{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
-    </li>
-</ul>
-<div class="float-end">
-    <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">
-        {{ 'lookup.showAllObjectButton.text' | label }}
-    </div>
 </div>

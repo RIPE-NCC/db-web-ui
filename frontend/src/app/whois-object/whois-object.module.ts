@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -14,7 +15,7 @@ import { WhoisObjectTextEditorComponent } from './whois-object-text-editor.compo
 import { WhoisObjectViewerComponent } from './whois-object-viewer.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, SharedModule, AttributeModule, NgSelectModule, RouterModule, MatTooltip],
+    imports: [CommonModule, FormsModule, SharedModule, AttributeModule, NgSelectModule, RouterModule, MatTooltip, MatCheckbox],
     declarations: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent, WhoisObjectTextEditorComponent],
     providers: [WebUpdatesCommonsService, UserInfoService],
     exports: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent, WhoisObjectTextEditorComponent],

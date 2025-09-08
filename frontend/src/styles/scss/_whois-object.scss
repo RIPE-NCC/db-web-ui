@@ -1,6 +1,9 @@
 whois-object-viewer {
-    display: block;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* content left, buttons right */
+    height: 100%;
+
     span.blue-button {
         float: right;
     }
@@ -13,6 +16,7 @@ whois-object-viewer {
             white-space: pre;
             font-family: monospace;
             font-size: 0.875em;
+            line-height: 32px;
         }
     }
 
@@ -28,14 +32,15 @@ whois-object-viewer {
 }
 
 .resultpane {
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px #ccc solid;
-    border-radius: 4px;
+    max-width: 1125px;
+    padding: 16px;
+    margin: 10px 0;
+    border-radius: 8px;
     background-color: #ffffff;
 }
 
 .no-result-msg {
+    @extend .resultpane;
     display: flex;
     height: 200px;
     justify-content: center;
@@ -43,16 +48,19 @@ whois-object-viewer {
 }
 
 .viewerbuttons {
-    position: absolute;
-    right: 90px;
-    border-color: #ffffff03;
-    border-width: 0 0 6px 2px;
-    border-style: solid;
+    //position: absolute;
+    //right: 90px;
+    //border-color: #ffffff03;
+    //border-width: 0 0 6px 2px;
+    //border-style: solid;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
 .showripemanaged {
     & > .ripemanaged {
-        background: #d1effe;
+        background: #ebeffc;
     }
 
     li {
