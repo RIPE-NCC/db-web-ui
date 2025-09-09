@@ -4,25 +4,27 @@ whois-object-viewer {
     span.blue-button {
         float: right;
     }
-    pre {
-        border: 0;
-        background: inherit;
+
+    ul {
+        list-style: none;
         padding: 0;
         margin: 0;
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-
-            li span {
-                word-break: break-all;
-            }
+        li {
+            white-space: pre;
+            font-family: monospace;
+            font-size: 0.875em;
         }
     }
+
     .show-more {
         margin-left: auto;
         margin-right: auto;
     }
+}
+
+.tooltip-hint {
+    border-bottom: 1px dotted #666;
+    cursor: help;
 }
 
 .resultpane {
