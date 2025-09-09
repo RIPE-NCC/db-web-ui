@@ -30,3 +30,10 @@ th {
 mat-paginator {
     padding: 0 24px;
 }
+
+.revoke-button {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
