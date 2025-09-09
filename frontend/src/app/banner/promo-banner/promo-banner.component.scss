@@ -5,11 +5,21 @@
     align-items: center;
     justify-content: space-between;
     margin: 1em 0;
+    border-radius: 10px;
 
     .content {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 16px;
+        .fa-lg {
+            line-height: normal;
+        }
+        strong {
+            line-height: 16px;
+            font-weight: 700;
+            display: block;
+            padding-bottom: 5px;
+        }
     }
 }
 
