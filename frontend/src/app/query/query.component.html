@@ -79,34 +79,34 @@
         <a id="anchorTop"></a>
         <div class="visualClear"></div>
         <div class="documentActions"></div>
-        <h1 class="documentFirstHeading" *ngIf="!showsDocsLink">Search results</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 975px">
+            <h1 class="documentFirstHeading" *ngIf="!showsDocsLink">Search results</h1>
+            <div>
+                <button
+                    *ngIf="link.perma"
+                    class="perma-link"
+                    id="sharePermaLink"
+                    [matMenuTriggerFor]="sharePermaLink"
+                    #sharePermaLinkTrigger="matMenuTrigger"
+                    mat-icon-button
+                    matSuffix
+                    matTooltip="Share Panel"
+                    matTooltipPosition="left"
+                >
+                    <mat-icon *ngIf="!sharePermaLinkTrigger.menuOpen" matSuffix class="fal fa-share-alt"></mat-icon>
+                    <mat-icon *ngIf="sharePermaLinkTrigger.menuOpen" matSuffix class="fas fa-share-alt"></mat-icon>
+                </button>
+                <mat-menu #sharePermaLink="matMenu" yPosition="below">
+                    <share-panel [link]="link"></share-panel>
+                </mat-menu>
+            </div>
+        </div>
         <div class="documentByLine"><span class="byline"></span></div>
         <div class="documentDescription"></div>
     </section>
     <section id="resultsSection">
         <div *ngIf="results?.length > 0">
-            <div style="display: flex; justify-content: space-between; align-items: center">
-                <p style="margin: 0" [innerHTML]="'msg.searchResults.text' | label"></p>
-                <div>
-                    <button
-                        *ngIf="link.perma"
-                        class="perma-link"
-                        id="sharePermaLink"
-                        [matMenuTriggerFor]="sharePermaLink"
-                        #sharePermaLinkTrigger="matMenuTrigger"
-                        mat-icon-button
-                        matSuffix
-                        matTooltip="Share Panel"
-                        matTooltipPosition="left"
-                    >
-                        <mat-icon *ngIf="!sharePermaLinkTrigger.menuOpen" matSuffix class="fal fa-share-alt"></mat-icon>
-                        <mat-icon *ngIf="sharePermaLinkTrigger.menuOpen" matSuffix class="fas fa-share-alt"></mat-icon>
-                    </button>
-                    <mat-menu #sharePermaLink="matMenu" yPosition="below">
-                        <share-panel [link]="link"></share-panel>
-                    </mat-menu>
-                </div>
-            </div>
+            <p style="margin: 0" [innerHTML]="'msg.searchResults.text' | label"></p>
             <div class="clearfix" *ngFor="let whoisObject of results">
                 <div class="resultpane">
                     <lookup [whoisObject]="whoisObject"></lookup>
