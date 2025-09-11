@@ -121,8 +121,6 @@ $padding: 24px;
 
 .query-padding {
     padding-top: $padding;
-    padding-left: 79px;
-    padding-right: 79px;
 }
 
 @media (max-width: 768px) {
@@ -131,10 +129,6 @@ $padding: 24px;
         padding-left: 10px;
         padding-right: 10px;
     }
-}
-
-.query-padding-left {
-    padding-left: 79px;
 }
 
 .mat-mdc-menu-content {
@@ -151,8 +145,4 @@ $padding: 24px;
         right: 10px;
         top: 10px;
     }
-}
-
-.query-padding-right {
-    padding-right: $padding;
 }

@@ -360,8 +360,7 @@ div.portlet.navigation {
     justify-content: center;
 }
 
-#resultsSection {
-    max-width: 1125px;
+.resultsSection {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -495,4 +494,8 @@ a.inner-link-color {
         color: $link;
         text-decoration: underline;
     }
+}
+
+.full-width {
+    width: 100%;
 }

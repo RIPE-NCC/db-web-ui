@@ -33,8 +33,8 @@
 #app-grid {
     display: grid;
     width: 100%;
-    grid-template-rows: repeat(1, minmax(0, 1fr));
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
+    background: #f7f7fa;
 }
 
 swe-menu {
@@ -56,6 +56,7 @@ swe-menu {
     grid-column: span 2 / span 2;
     grid-row: 1/-1;
     background-color: #f7f7fa;
+    width: 60%;
 }
 
 #app-banners-container {
@@ -70,7 +71,6 @@ swe-menu {
 
     &.with-padding {
         padding-top: 24px;
-        padding-left: 79px;
         padding-right: 79px;
     }
 }

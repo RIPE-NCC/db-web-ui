@@ -11,7 +11,7 @@
             <div>
                 <div [ngClass]="{ 'with-results': isFiltersDisplayed() }" [style.fontSize.rem]="1.12">
                     <search-field [(queryText)]="qp.queryText" (queryTextChange)="filterCheckboxes()"></search-field>
-                    <div class="query-padding-right">
+                    <div>
                         <query-flags [inputTerm]="qp.queryText"></query-flags>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
         <a id="anchorTop"></a>
         <div class="visualClear"></div>
         <div class="documentActions"></div>
-        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 975px">
+        <div class="resultsSection">
             <h1 class="documentFirstHeading" *ngIf="!showsDocsLink">Search results</h1>
             <div>
                 <button
@@ -104,8 +104,8 @@
         <div class="documentByLine"><span class="byline"></span></div>
         <div class="documentDescription"></div>
     </section>
-    <section id="resultsSection">
-        <div *ngIf="results?.length > 0">
+    <section class="resultsSection" id="resultsSection">
+        <div *ngIf="results?.length > 0" class="full-width">
             <p style="margin: 0" [innerHTML]="'msg.searchResults.text' | label"></p>
             <div class="clearfix" *ngFor="let whoisObject of results">
                 <div class="resultpane">
