@@ -734,18 +734,20 @@
             ></app-banner>
             <alert-banners></alert-banners>
         </section>
-        <app-cookie-consent></app-cookie-consent>
-        <section id="app-workspace" [ngClass]="{ 'with-padding': !isQueryPage() }">
-            <div id="org-drop-down" *ngIf="!isQueryPage()">
-                <org-drop-down></org-drop-down>
-            </div>
-            <div>
-                <router-outlet></router-outlet>
-                <ngx-loading-bar></ngx-loading-bar>
-                <web-app-version *ngIf="!isQueryPage()"></web-app-version>
-            </div>
-            <div class="space-bottom-for-livechat"></div>
-            <live-chat style="right: 20px; bottom: 20px" chatkey="{{ properties.LIVE_CHAT_KEY }}" accessurl="{{ properties.LOGIN_URL }}"></live-chat>
-        </section>
+        <div class="main-content">
+            <app-cookie-consent></app-cookie-consent>
+            <section id="app-workspace" [ngClass]="{ 'with-padding': !isQueryPage() }">
+                <div id="org-drop-down" *ngIf="!isQueryPage()">
+                    <org-drop-down></org-drop-down>
+                </div>
+                <div>
+                    <router-outlet></router-outlet>
+                    <ngx-loading-bar></ngx-loading-bar>
+                    <web-app-version *ngIf="!isQueryPage()"></web-app-version>
+                </div>
+                <div class="space-bottom-for-livechat"></div>
+                <live-chat style="right: 20px; bottom: 20px" chatkey="{{ properties.LIVE_CHAT_KEY }}" accessurl="{{ properties.LOGIN_URL }}"></live-chat>
+            </section>
+        </div>
     </div>
 </main>

@@ -56,7 +56,12 @@ swe-menu {
     grid-column: span 2 / span 2;
     grid-row: 1/-1;
     background-color: #f7f7fa;
-    width: 60%;
+    width: 100%;
+}
+
+.main-content {
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 #app-banners-container {
