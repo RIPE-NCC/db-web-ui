@@ -3,15 +3,6 @@
     --mdc-checkbox-state-layer-size: 20px;
 }
 
-@media only screen and (max-width: 900px) {
-    #app-grid {
-        #main-wrapper,
-        swe-menu app-nav-bar {
-            grid-column: 1 / span 2;
-        }
-    }
-}
-
 @media only screen and (min-width: 901px) {
     #app-grid {
         grid-template-columns: [left] max-content [right] 0 !important;
