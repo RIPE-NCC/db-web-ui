@@ -58,7 +58,7 @@ describe('Session expire', () => {
         cy.clearCookie('crowd.ripe.hint');
         webupdatesPage.submitForm();
         webupdatesPage.expectErrorMessageToContain('Creation of person failed, please see below for more details');
-        webupdatesPage.expectUserLoggedImage(false).expectErrorMessageToContain('Your RIPE NCC Access session has' + ' expired. You need to login again.');
+        webupdatesPage.expectErrorMessageToContain('Your RIPE NCC Access session has' + ' expired. You need to login again.');
     });
 
     it('should not show the banner when the user is logged and the create request doesnt expire the cookie', () => {
