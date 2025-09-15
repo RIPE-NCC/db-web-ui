@@ -83,7 +83,7 @@
             <h1 class="documentFirstHeading" *ngIf="!showsDocsLink">Search results</h1>
             <div>
                 <button
-                    *ngIf="link.perma"
+                    *ngIf="link.perma && results?.length > 0"
                     class="perma-link"
                     id="sharePermaLink"
                     [matMenuTriggerFor]="sharePermaLink"
