@@ -119,19 +119,6 @@ $padding: 24px;
     }
 }
 
-.query-padding {
-    padding-top: $padding;
-    padding-right: 79px;
-}
-
-@media (max-width: 768px) {
-    .query-padding {
-        padding-top: $padding;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-}
-
 .mat-mdc-menu-content {
     .row {
         white-space: nowrap;

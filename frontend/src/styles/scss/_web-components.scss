@@ -3,37 +3,15 @@
     --mdc-checkbox-state-layer-size: 20px;
 }
 
-@media only screen and (min-width: 901px) {
-    #app-grid {
-        grid-template-columns: [left] max-content [right] 0 !important;
-    }
-
-    swe-menu {
-        app-nav-bar {
-            grid-column: left;
-            grid-column-start: 1;
-            grid-column: span 2 / span 2;
-        }
-    }
-
-    #main-wrapper {
-        grid-column: right;
-    }
-}
-
 #app-grid {
     display: grid;
-    width: 100%;
-    justify-items: center;
+    grid-template-columns: [navbar] max-content [workspace] auto;
     background: #f7f7fa;
 }
 
 swe-menu {
-    display: contents; //app-nav-bar must be first children of grid-layout, use `contents` to ignore it, this doesn't work on IE11
+    grid-area: navbar;
     app-nav-bar {
-        grid-column-start: 1;
-        grid-column: span 2 / span 2;
-        grid-row: 1/-1;
         top: 70px;
         nav {
             z-index: 9999999;
@@ -42,15 +20,13 @@ swe-menu {
 }
 
 #main-wrapper {
-    position: relative;
-    grid-column-start: 1;
-    grid-column: span 2 / span 2;
-    grid-row: 1/-1;
+    grid-area: workspace;
     background-color: #f7f7fa;
-    width: 100%;
 }
 
 .main-content {
+    --pad: 2rem;
+    padding: var(--pad) calc(2 * var(--pad)) calc(2 * var(--pad));
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -64,21 +40,6 @@ swe-menu {
 
 #app-workspace {
     background-color: #f7f7fa;
-
-    &.with-padding {
-        padding-top: 24px;
-        padding-right: 79px;
-    }
-}
-
-@media (max-width: 768px) {
-    #app-workspace {
-        &.with-padding {
-            padding-top: 24px;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-    }
 }
 
 #visual-portal-wrapper > div {
