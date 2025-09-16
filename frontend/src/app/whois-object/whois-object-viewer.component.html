@@ -17,6 +17,8 @@
         <span *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
 
         <span *ngIf="attr.comment && attr.comment !== 'Filtered'">{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
+
+        <span *ngIf="attr.name === 'address'"><i> (Not Managed by RIPE NCC)</i></span>
     </li>
 </ul>
 <div class="float-end">
