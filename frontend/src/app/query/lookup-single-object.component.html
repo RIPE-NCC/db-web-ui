@@ -1,5 +1,6 @@
-<section id="resultsSection">
-    <div *ngIf="!error" class="float-end resultlinks">
+<section class="resultsSection">
+    <h1>Lookup results</h1>
+    <div *ngIf="!error" class="resultlinks">
         <a href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}.xml" rel="noopener" target="_blank">
             <em class="fal fa-file-code"></em>
             XML </a
@@ -13,11 +14,10 @@
             PLAIN TEXT
         </a>
     </div>
-    <h2 class="documentFirstHeading">Lookup results</h2>
 </section>
 
 <div *ngIf="whoisResponse" class="resultpane">
     <lookup [whoisObject]="whoisResponse"></lookup>
 </div>
-<div *ngIf="!whoisResponse" class="resultpane no-result-msg">No results found.</div>
+<div *ngIf="!whoisResponse" class="no-result-msg">No results found.</div>
 <whois-version [version]="whoisVersion"></whois-version>

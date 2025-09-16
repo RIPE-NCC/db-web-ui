@@ -23,7 +23,9 @@
     </div>
     <loading-indicator class="resource-page-message" *ngIf="loadingResource"></loading-indicator>
     <div *ngIf="whoisObject && !showRefreshButton && !loadingResource">
-        <whois-object-viewer *ngIf="!isEditing" [model]="whoisObject" (updateClicked)="showObjectEditor()"></whois-object-viewer>
+        <div class="resultpane" *ngIf="!isEditing">
+            <whois-object-viewer [model]="whoisObject" (updateClicked)="showObjectEditor()"></whois-object-viewer>
+        </div>
         <div *ngIf="isEditing && isWebEditingMode">
             <maintainers-editor [whoisObject]="whoisObject" (authenticationFailedClbk)="hideObjectEditor()"></maintainers-editor>
             <whois-object-editor

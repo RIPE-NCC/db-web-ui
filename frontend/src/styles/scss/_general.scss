@@ -348,21 +348,29 @@ div.portlet.navigation {
 }
 
 .lookupheader {
-    background-color: #f5e075;
+    background-color: #fdf2ca;
+    border-radius: 10px;
     margin-bottom: 10px;
     padding: 15px;
     vertical-align: top;
     white-space: normal;
     width: 100%;
-
     display: block;
     flex-direction: column;
     justify-content: center;
 }
 
+.resultsSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 section .resultlinks {
+    margin-left: auto;
     line-height: 1.8rem;
 }
+
 .generic-drop-down {
     ul.dropdown-menu {
         width: fit-content;
@@ -486,4 +494,8 @@ a.inner-link-color {
         color: $link;
         text-decoration: underline;
     }
+}
+
+.full-width {
+    width: 100%;
 }
