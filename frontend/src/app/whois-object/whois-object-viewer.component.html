@@ -5,6 +5,7 @@
 </div>
 <ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
     <li *ngFor="let attr of model.attributes.attribute | slice : 0 : nrLinesToShow; index as i" [ngClass]="{ ripemanaged: attr.managed }">
+        <i *ngIf="attr.name === 'address'" class="fas fa-info-circle" [matTooltip]="'Not Managed by RIPE NCC'"></i>
         <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
         >:{{ padding(attr) }}
 
@@ -17,8 +18,6 @@
         <span *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
 
         <span *ngIf="attr.comment && attr.comment !== 'Filtered'">{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
-
-        <span *ngIf="attr.name === 'address'"><i> (Not Managed by RIPE NCC)</i></span>
     </li>
 </ul>
 <div class="float-end">

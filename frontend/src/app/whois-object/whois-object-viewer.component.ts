@@ -77,7 +77,10 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     public padding(attr: IAttributeModel): string {
-        const numLeftPads = attr.name.length - this.MAX_ATTR_NAME_MASK.length;
+        let numLeftPads = attr.name.length - this.MAX_ATTR_NAME_MASK.length;
+        if (attr.name === 'address') {
+            numLeftPads = numLeftPads + 2; // added icon space
+        }
         return this.MAX_ATTR_NAME_MASK.slice(numLeftPads);
     }
 
