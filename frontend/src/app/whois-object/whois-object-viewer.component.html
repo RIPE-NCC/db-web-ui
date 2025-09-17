@@ -5,7 +5,6 @@
 </div>
 <ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
     <li *ngFor="let attr of model.attributes.attribute | slice : 0 : nrLinesToShow; index as i" [ngClass]="{ ripemanaged: attr.managed }">
-        <i *ngIf="attr.name === 'address'" class="fas fa-info-circle" [matTooltip]="'Not Managed by RIPE NCC'"></i>
         <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
         >:{{ padding(attr) }}
 

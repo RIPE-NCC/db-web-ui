@@ -77,10 +77,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     public padding(attr: IAttributeModel): string {
-        let numLeftPads = attr.name.length - this.MAX_ATTR_NAME_MASK.length;
-        if (attr.name === 'address') {
-            numLeftPads = numLeftPads + 2; // added icon space
-        }
+        const numLeftPads = attr.name.length - this.MAX_ATTR_NAME_MASK.length;
         return this.MAX_ATTR_NAME_MASK.slice(numLeftPads);
     }
 
@@ -112,7 +109,11 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     public getDescription(attributeName: string) {
-        return this.whoisMetaService.getAttributeShortDescription(this.model.type, attributeName);
+        let description = this.whoisMetaService.getAttributeShortDescription(this.model.type, attributeName);
+        if (attributeName === 'address') {
+            description = `${description} Not Managed by RIPE NCC`;
+        }
+        return description;
     }
 
     private setButtonText(isLoggedIn: boolean) {
