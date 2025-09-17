@@ -3,7 +3,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { BannerTypes } from '../banner/banner.component';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { IObjectMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel } from '../shared/whois-response-type.model';
@@ -429,6 +428,4 @@ export class QueryComponent implements OnDestroy {
             return `${this.properties.ENV.toUpperCase()}`;
         }
     }
-
-    protected readonly BannerTypes = BannerTypes;
 }

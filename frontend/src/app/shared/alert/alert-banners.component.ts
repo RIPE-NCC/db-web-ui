@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BannerTypes } from '../../banner/banner.component';
 import { AlertsService, IAlerts } from './alerts.service';
 
 @Component({
@@ -25,6 +24,4 @@ export class AlertBannersComponent implements OnInit, OnDestroy {
             this.subscription.unsubscribe();
         }
     }
-
-    protected readonly BannerTypes = BannerTypes;
 }

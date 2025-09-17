@@ -47,17 +47,6 @@ export class AlertsService {
         this.alertsChanged.emit(this.alerts);
     }
 
-    public clearSpecificAlertMessage(msg: string) {
-        this.alerts = {
-            errors: [],
-            warnings: [],
-            infos: [],
-            successes: [],
-        };
-
-        this.alertsChanged.emit(this.alerts);
-    }
-
     public hasErrors(): boolean {
         return this.alerts.errors.length > 0;
     }
