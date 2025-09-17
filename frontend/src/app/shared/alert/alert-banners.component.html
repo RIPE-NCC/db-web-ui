@@ -1,53 +1,12 @@
 <div *ngFor="let error of alerts.errors; index as i">
-    <app-banner
-        *ngIf="error.linkurl; else bannerErrorWithoutLink"
-        id="notification-error-{{ i }}"
-        level="alarm"
-        [linkurl]="error.linkurl"
-        [linktext]="error.linktext"
-        unsafehtml="{{ error.plainText | sanitizeHtml }}"
-    ></app-banner>
-    <ng-template #bannerErrorWithoutLink>
-        <app-banner id="notification-error-{{ i }}" level="alarm" unsafehtml="{{ error.plainText | sanitizeHtml }}"></app-banner>
-    </ng-template>
+    <banner [type]="BannerTypes.error" [id]="'notification-error-' + i" textContent="{{ error.plainText | sanitizeHtml }}"></banner>
 </div>
 <div *ngFor="let warning of alerts.warnings; index as i">
-    <app-banner
-        *ngIf="warning.linkurl; else bannerWarningWithoutLink"
-        id="notification-warning-{{ i }}"
-        level="warning"
-        [linkurl]="warning.linkurl"
-        [linktext]="warning.linktext"
-        [permanent]="warning.permanent"
-        unsafehtml="{{ warning.plainText | sanitizeHtml }}"
-    ></app-banner>
-    <ng-template #bannerWarningWithoutLink>
-        <app-banner id="notification-warning-{{ i }}" level="warning" unsafehtml="{{ warning.plainText | sanitizeHtml }}"></app-banner>
-    </ng-template>
+    <banner [type]="BannerTypes.warning" [id]="'notification-warning-' + i" textContent="{{ warning.plainText | sanitizeHtml }}"></banner>
 </div>
 <div *ngFor="let info of alerts.infos; index as i">
-    <app-banner
-        *ngIf="info.linkurl; else bannerInfoWithoutLink"
-        id="notification-info-{{ i }}"
-        level="info"
-        [linkurl]="info.linkurl"
-        [linktext]="info.linktext"
-        unsafehtml="{{ info.plainText | sanitizeHtml }}"
-    ></app-banner>
-    <ng-template #bannerInfoWithoutLink>
-        <app-banner id="notification-info-{{ i }}" level="info" unsafehtml="{{ info.plainText | sanitizeHtml }}"></app-banner>
-    </ng-template>
+    <banner [type]="BannerTypes.informational" [id]="'notification-informational-' + i" textContent="{{ info.plainText | sanitizeHtml }}"></banner>
 </div>
 <div *ngFor="let success of alerts.successes; index as i">
-    <app-banner
-        *ngIf="success.linkurl; else bannerSuccessWithoutLink"
-        id="notification-success-{{ i }}"
-        level="positive"
-        [linkurl]="success.linkurl"
-        [linktext]="success.linktext"
-        unsafehtml="{{ success.plainText | sanitizeHtml }}"
-    ></app-banner>
-    <ng-template #bannerSuccessWithoutLink>
-        <app-banner id="notification-success-{{ i }}" level="positive" unsafehtml="{{ success.plainText | sanitizeHtml }}"></app-banner>
-    </ng-template>
+    <banner [type]="BannerTypes.success" [id]="'notification-success-' + i" textContent="{{ success.plainText | sanitizeHtml }}"></banner>
 </div>
