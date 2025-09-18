@@ -12,35 +12,31 @@ describe('Release notification', () => {
 
     it('should show the banner when new build is released', () => {
         queryPage.visit();
-        cy.get('app-banner[level="warning"]').should('have.length', 1);
+        cy.get('banner').should('have.length', 1);
         cy.changeJsonResponseFile(newReleaseProperties, targetProperties);
-        cy.get('app-banner[level="warning"]').should('have.length', 2);
-        cy.get('app-banner[level="warning"]')
-            .eq(1)
-            .shadow()
-            .find('.app-banner.level-warning')
-            .should('contain.text', 'There is a new release available. Click reload to start using it.');
+        cy.get('banner').should('have.length', 2);
+        cy.get('banner').should('contain.text', 'There is a new release available. Click reload to start using it.');
     });
 
     it('should show only 1 banner', () => {
         queryPage.visit();
-        cy.get('app-banner[level="warning"]').should('have.length', 1);
+        cy.get('banner').should('have.length', 1);
         cy.changeJsonResponseFile(newReleaseProperties, targetProperties);
-        cy.get('app-banner[level="warning"]').should('have.length', 2);
+        cy.get('banner').should('have.length', 2);
         cy.changeJsonResponseFile(defaultProperties, targetProperties);
         // here we wait until the next tick of RELEASE_NOTIFICATION_POLLING
         cy.wait(5000);
-        cy.get('app-banner[level="warning"]').should('have.length', 2);
+        cy.get('banner').should('have.length', 2);
     });
 
     it('should show the banner after reloading', () => {
         queryPage.visit();
-        cy.get('app-banner[level="warning"]').should('have.length', 1);
+        cy.get('banner .warning-banner').should('have.length', 1);
         cy.changeJsonResponseFile(newReleaseProperties, targetProperties);
-        cy.get('app-banner[level="warning"]').should('have.length', 2);
-        cy.get('app-banner[level="warning"]').eq(1).shadow().find('.app-banner.level-warning a').click();
-        cy.get('app-banner[level="warning"]').should('have.length', 1);
+        cy.get('banner .warning-banner').should('have.length', 2);
+        cy.get('banner .warning-banner').eq(1).shadow().find('.app-banner.level-warning a').click();
+        cy.get('banner .warning-banner').should('have.length', 1);
         cy.changeJsonResponseFile(defaultProperties, targetProperties);
-        cy.get('app-banner[level="warning"]').should('have.length', 2);
+        cy.get('banner .warning-banner').should('have.length', 2);
     });
 });

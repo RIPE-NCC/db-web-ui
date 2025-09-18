@@ -2,6 +2,8 @@ import { NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
 
 /*  Usage
     promo:
@@ -39,7 +41,7 @@ export enum BannerTypes {
     selector: 'banner',
     templateUrl: './banner.component.html',
     styleUrl: 'banner.component.scss',
-    imports: [NgIf, MatButton, MatDialogClose],
+    imports: [NgIf, MatButton, MatDialogClose, SanitizeHtmlPipe],
     standalone: true,
 })
 export class BannerComponent implements OnInit {
@@ -53,8 +55,12 @@ export class BannerComponent implements OnInit {
     id: string;
     @Input() // dismiss once and for all
     persistDismiss: boolean = false;
+    @Input() // provide when login button should be shown
+    loginUrl?: string;
 
     closed: boolean;
+
+    constructor(private router: Router) {}
 
     ngOnInit() {
         if (this.persistDismiss) {
@@ -67,6 +73,10 @@ export class BannerComponent implements OnInit {
         if (this.persistDismiss) {
             localStorage.setItem(this.id, 'closed');
         }
+    }
+
+    navigateToLogin() {
+        void this.router.navigate([this.loginUrl]);
     }
 
     protected readonly BannerTypes = BannerTypes;

@@ -177,11 +177,11 @@ export class QueryPage {
     }
 
     expectNoErrorMessage() {
-        cy.get('.banner-text', { includeShadowDom: true }).should('not.contain', 'ERROR:');
+        cy.get('.error-banner').should('not.exist');
     }
 
     expectErrorMessageToContain(text: string) {
-        cy.get('.banner-text', { includeShadowDom: true }).should('contain', text);
+        cy.get('.error-banner').should('contain', text);
     }
 
     expectNumberOfResults(count: number) {
@@ -249,12 +249,12 @@ export class QueryPage {
     }
 
     expectNoXSSBanner() {
-        cy.get('.app-banner.level-alarm .banner-text', { includeShadowDom: true }).find('img').should('not.exist');
+        cy.get('.error-banner').find('img').should('not.exist');
         return this;
     }
 
     expectNoLinksXSSinBanner() {
-        cy.get('.app-banner.level-alarm .banner-text', { includeShadowDom: true }).find('a').should('not.exist');
+        cy.get('.error-banner').find('a').should('not.exist');
         return this;
     }
 

@@ -9,10 +9,11 @@
             <div *ngIf="title">
                 <strong>{{ title }}</strong>
             </div>
-            <div>{{ textContent }}</div>
+            <div [innerHTML]="textContent"></div>
         </div>
     </div>
     <div class="content">
         <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="closeBanner()">Dismiss</button>
+        <button *ngIf="loginUrl" mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="navigateToLogin()">LOGIN</button>
     </div>
 </div>

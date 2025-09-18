@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import supportedBrowsers from '../../src/assets/supportedBrowsers.js';
+import { BannerTypes } from './banner/banner.component';
 import { PropertiesService } from './properties.service';
 import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     public showSessionExpireBanner: boolean = false;
     public loginUrl: string;
     public isBrowserSupported: boolean = true;
+    browserUnsuportedText = `Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.`;
 
     @ViewChild('switcher', { static: false }) switcher!: ElementRef;
 
@@ -88,4 +90,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     public isLegalPage(): boolean {
         return this.location.path().startsWith('/legal');
     }
+
+    protected readonly BannerTypes = BannerTypes;
 }
