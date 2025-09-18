@@ -3,7 +3,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
 
 /*  Usage
     promo:
@@ -41,7 +40,7 @@ export enum BannerTypes {
     selector: 'banner',
     templateUrl: './banner.component.html',
     styleUrl: 'banner.component.scss',
-    imports: [NgIf, MatButton, MatDialogClose, SanitizeHtmlPipe],
+    imports: [NgIf, MatButton, MatDialogClose],
     standalone: true,
 })
 export class BannerComponent implements OnInit {
