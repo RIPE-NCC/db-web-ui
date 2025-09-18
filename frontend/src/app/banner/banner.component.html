@@ -13,7 +13,9 @@
         </div>
     </div>
     <div class="content">
+        <button *ngIf="buttonText" mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="navigateToButtonUrl()">
+            {{ buttonText }}
+        </button>
         <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="closeBanner()">Dismiss</button>
-        <button *ngIf="loginUrl" mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="navigateToLogin()">LOGIN</button>
     </div>
 </div>

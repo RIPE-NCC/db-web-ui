@@ -1,12 +1,36 @@
 <div *ngFor="let error of alerts.errors; index as i">
-    <banner [type]="BannerTypes.error" [id]="'notification-error-' + i" textContent="{{ error.plainText | sanitizeHtml }}"></banner>
+    <banner
+        [type]="BannerTypes.error"
+        [id]="'notification-error-' + i"
+        textContent="{{ error.plainText | sanitizeHtml }}"
+        [buttonText]="error.linktext !== undefined ? error.linktext : null"
+        [buttonUrl]="error.linkurl !== undefined ? error.linkurl : null"
+    ></banner>
 </div>
 <div *ngFor="let warning of alerts.warnings; index as i">
-    <banner [type]="BannerTypes.warning" [id]="'notification-warning-' + i" textContent="{{ warning.plainText | sanitizeHtml }}"></banner>
+    <banner
+        [type]="BannerTypes.warning"
+        [id]="'notification-warning-' + i"
+        textContent="{{ warning.plainText | sanitizeHtml }}"
+        [buttonText]="warning.linktext !== undefined ? warning.linktext : null"
+        [buttonUrl]="warning.linkurl !== undefined ? warning.linkurl : null"
+    ></banner>
 </div>
 <div *ngFor="let info of alerts.infos; index as i">
-    <banner [type]="BannerTypes.informational" [id]="'notification-informational-' + i" textContent="{{ info.plainText | sanitizeHtml }}"></banner>
+    <banner
+        [type]="BannerTypes.informational"
+        [id]="'notification-informational-' + i"
+        textContent="{{ info.plainText | sanitizeHtml }}"
+        [buttonText]="info.linktext !== undefined ? info.linktext : null"
+        [buttonUrl]="info.linkurl !== undefined ? info.linkurl : null"
+    ></banner>
 </div>
 <div *ngFor="let success of alerts.successes; index as i">
-    <banner [type]="BannerTypes.success" [id]="'notification-success-' + i" textContent="{{ success.plainText | sanitizeHtml }}"></banner>
+    <banner
+        [type]="BannerTypes.success"
+        [id]="'notification-success-' + i"
+        textContent="{{ success.plainText | sanitizeHtml }}"
+        [buttonText]="success.linktext !== undefined ? success.linktext : null"
+        [buttonUrl]="success.linkurl !== undefined ? success.linkurl : null"
+    ></banner>
 </div>

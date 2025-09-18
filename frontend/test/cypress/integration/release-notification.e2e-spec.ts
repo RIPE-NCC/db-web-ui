@@ -31,12 +31,12 @@ describe('Release notification', () => {
 
     it('should show the banner after reloading', () => {
         queryPage.visit();
-        cy.get('banner .warning-banner').should('have.length', 1);
+        cy.get('banner').should('have.length', 1);
         cy.changeJsonResponseFile(newReleaseProperties, targetProperties);
-        cy.get('banner .warning-banner').should('have.length', 2);
-        cy.get('banner .warning-banner').eq(1).shadow().find('.app-banner.level-warning a').click();
-        cy.get('banner .warning-banner').should('have.length', 1);
+        cy.get('banner').should('have.length', 2);
+        cy.get('banner .warning-banner button:contains("Dismiss")').click();
+        cy.get('banner').should('have.length', 1);
         cy.changeJsonResponseFile(defaultProperties, targetProperties);
-        cy.get('banner .warning-banner').should('have.length', 2);
+        cy.get('banner').should('have.length', 2);
     });
 });

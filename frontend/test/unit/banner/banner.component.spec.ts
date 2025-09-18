@@ -1,19 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
 
 describe('BannerComponent', () => {
     let component: BannerComponent;
     let fixture: ComponentFixture<BannerComponent>;
+    let router: Router;
 
     beforeEach(async () => {
+        const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
         await TestBed.configureTestingModule({
-            imports: [BannerComponent], // standalone component
+            imports: [BannerComponent],
+            providers: [{ provide: Router, useValue: routerSpy }],
         }).compileComponents();
 
         fixture = TestBed.createComponent(BannerComponent);
         component = fixture.componentInstance;
+        router = TestBed.inject(Router);
 
-        // set required inputs
         component.id = 'banner-1';
         component.type = BannerTypes.promo;
         component.textContent = 'Test banner message';
@@ -21,6 +26,7 @@ describe('BannerComponent', () => {
 
     afterEach(() => {
         localStorage.clear();
+        jasmine.clock().uninstall?.();
     });
 
     it('should create', () => {
@@ -77,6 +83,39 @@ describe('BannerComponent', () => {
             component.closeBanner();
 
             expect(localStorage.getItem('banner-1')).toBeNull();
+        });
+    });
+
+    describe('navigateToButtonUrl', () => {
+        beforeEach(() => {
+            spyOn(window, 'open');
+        });
+
+        it('should do nothing if buttonUrl is not set', () => {
+            component.buttonUrl = undefined;
+
+            component.navigateToButtonUrl();
+
+            expect(window.open).not.toHaveBeenCalled();
+            expect(router.navigate).not.toHaveBeenCalled();
+        });
+
+        it('should open external URLs in new tab', () => {
+            component.buttonUrl = 'https://example.com';
+
+            component.navigateToButtonUrl();
+
+            expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank');
+            expect(router.navigate).not.toHaveBeenCalled();
+        });
+
+        it('should navigate internal URLs using router', () => {
+            component.buttonUrl = '/internal-route';
+
+            component.navigateToButtonUrl();
+
+            expect(router.navigate).toHaveBeenCalledWith(['/internal-route']);
+            expect(window.open).not.toHaveBeenCalled();
         });
     });
 });

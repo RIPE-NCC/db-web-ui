@@ -54,8 +54,10 @@ export class BannerComponent implements OnInit {
     id: string;
     @Input() // dismiss once and for all
     persistDismiss: boolean = false;
-    @Input() // provide when login button should be shown
-    loginUrl?: string;
+    @Input() // 2nd button url
+    buttonUrl?: string;
+    @Input() // 2nd button text
+    buttonText?: string;
 
     closed: boolean;
 
@@ -74,8 +76,14 @@ export class BannerComponent implements OnInit {
         }
     }
 
-    navigateToLogin() {
-        void this.router.navigate([this.loginUrl]);
+    navigateToButtonUrl() {
+        if (!this.buttonUrl) return;
+        const isExternal = /^(http|https):\/\//.test(this.buttonUrl);
+        if (isExternal) {
+            window.open(this.buttonUrl, '_blank');
+        } else {
+            void this.router.navigate([this.buttonUrl]);
+        }
     }
 
     protected readonly BannerTypes = BannerTypes;
