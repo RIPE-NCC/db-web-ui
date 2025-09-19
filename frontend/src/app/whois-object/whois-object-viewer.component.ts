@@ -109,11 +109,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     }
 
     public getDescription(attributeName: string) {
-        let description = this.whoisMetaService.getAttributeShortDescription(this.model.type, attributeName);
-        if (attributeName === 'address') {
-            description = `${description} Not Managed by RIPE NCC`;
-        }
-        return description;
+        return this.whoisMetaService.getAttributeShortDescription(this.model.type, attributeName);
     }
 
     private setButtonText(isLoggedIn: boolean) {
