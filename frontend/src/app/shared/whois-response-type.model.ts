@@ -20,6 +20,7 @@ export interface IAttributeModel {
     value?: string | any;
     link?: IWhoisLinkModel;
     'referenced-type'?: string;
+    managed?: boolean; // value managed by RIPE NCC
     $$error?: string;
     $$info?: string;
     $$invalid?: boolean;
