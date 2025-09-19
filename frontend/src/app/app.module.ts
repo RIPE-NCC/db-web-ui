@@ -12,6 +12,7 @@ import { ApiKeysModule } from './apikeys/api-keys.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationGuard } from './authentication-guard.service';
+import { BannerComponent } from './banner/banner.component';
 import { IeBannerComponent } from './banner/ie-banner.component';
 import { DomainObjectModule } from './domainobject/domain-object.module';
 import { EmailConfirmationComponent } from './emailconfirmation/email-confirmation.component';
@@ -83,6 +84,7 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         SessionInfoModule,
         ApiKeysModule,
         CustomDateAdapterModule,
+        BannerComponent,
     ],
     providers: [
         CookieService,

@@ -70,7 +70,7 @@ class FindMaintainerForm {
     }
 
     expectErrorAlert(shown: boolean) {
-        cy.get('app-banner[level="alarm"]').should(shown ? 'exist' : 'not.exist');
+        cy.get('banner .error-banner').should(shown ? 'exist' : 'not.exist');
         return this;
     }
 }

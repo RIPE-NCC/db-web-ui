@@ -25,12 +25,12 @@ export class FullTextSearchPage {
     }
 
     expectWarningMessage(text: string) {
-        cy.get('app-banner[level="warning"]').shadow().find('.app-banner.level-warning').should('contain.text', text);
+        cy.get('banner .warning-banner').should('contain.text', text);
         return this;
     }
 
     expectErrorMessage(text: string) {
-        cy.get('app-banner[level="alarm"]').shadow().find('.app-banner.level-alarm').should('contain.text', text);
+        cy.get('banner .error-banner').should('contain.text', text);
         return this;
     }
 

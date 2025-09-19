@@ -74,7 +74,6 @@ describe('ErrorInterceptor', () => {
                     'Blocked user',
                     'https://apps.db.ripe.net/docs/FAQ/#why-did-i-receive-an-error-201-access-denied',
                     'More information',
-                    false,
                 );
                 done();
             },

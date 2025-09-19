@@ -1,4 +1,4 @@
-.promo-banner {
+.banner {
     background-color: #fff5d2;
     padding: 12px 16px 16px 16px;
     display: flex;
@@ -21,6 +21,31 @@
             padding-bottom: 5px;
         }
     }
+}
+
+.promo-banner {
+    @extend .banner;
+    background-color: #fff5d2;
+}
+
+.informational-banner {
+    @extend .banner;
+    background-color: #cae9fd;
+}
+
+.error-banner {
+    @extend .banner;
+    background-color: #f8c9ce;
+}
+
+.warning-banner {
+    @extend .banner;
+    background-color: #ffc7a6;
+}
+
+.success-banner {
+    @extend .banner;
+    background-color: #c5e7d7;
 }
 
 .no-shrink {

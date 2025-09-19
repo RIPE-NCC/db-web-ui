@@ -120,12 +120,12 @@ export class ResourcesDetailPage {
     }
 
     expectSuccessMessage(text: string) {
-        cy.get('app-banner[level="positive"]').shadow().find('.app-banner.level-positive').should('contain.text', text);
+        cy.get('banner .success-banner').should('contain.text', text);
         return this;
     }
 
     expectInfoMessage(text: string) {
-        cy.get('app-banner[level="info"]').shadow().find('.app-banner.level-info').should('contain.text', text);
+        cy.get('banner .informational-banner').should('contain.text', text);
         return this;
     }
 

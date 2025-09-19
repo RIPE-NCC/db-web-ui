@@ -12,7 +12,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { PromoBannerComponent } from '../banner/promo-banner/promo-banner.component';
+import { BannerComponent } from '../banner/banner.component';
 import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { SharedModule } from '../shared/shared.module';
 import { SearchFieldComponent } from '../shared/sreachfield/search-field.component';
@@ -56,7 +56,7 @@ import { TypesPanelComponent } from './types-panel.component';
         TypeformBannerComponent,
         MatDialogTitle,
         SearchFieldComponent,
-        PromoBannerComponent,
+        BannerComponent,
     ],
     declarations: [
         LookupComponent,

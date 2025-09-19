@@ -717,24 +717,19 @@
     <div id="main-wrapper">
         <section id="app-banners-container">
             <ngx-loading-bar></ngx-loading-bar>
-            <app-banner
-                *ngIf="!isBrowserSupported"
-                id="notification-browser"
-                level="warning"
-                unsafehtml="Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>."
-            ></app-banner>
             <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning" unsafehtml="{{ properties.BANNER }}" permanent="true"></app-banner>
-            <app-banner
-                *ngIf="showSessionExpireBanner"
-                id="notification-warning-session"
-                level="warning"
-                [linkurl]="loginUrl"
-                [linktext]="'link.loginUrl.text' | label"
-                [unsafehtml]="'msg.sessionTimeout.text' | label"
-            ></app-banner>
-            <alert-banners></alert-banners>
         </section>
         <div class="main-content">
+            <banner *ngIf="!isBrowserSupported" [type]="BannerTypes.warning" [id]="'notification-browser'" [textContent]="browserUnsuportedText"> </banner>
+            <banner
+                *ngIf="showSessionExpireBanner"
+                [type]="BannerTypes.warning"
+                [id]="'notification-warning-session'"
+                [textContent]="'msg.sessionTimeout.text' | label"
+                [buttonUrl]="loginUrl"
+                [buttonText]="'LOGIN'"
+            ></banner>
+            <alert-banners></alert-banners>
             <app-cookie-consent></app-cookie-consent>
             <section id="app-workspace">
                 <div id="org-drop-down" *ngIf="!isQueryPage()">
