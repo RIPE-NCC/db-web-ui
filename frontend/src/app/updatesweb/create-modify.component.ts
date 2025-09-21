@@ -21,6 +21,7 @@ import { ModalAddAttributeComponent } from './modal-add-attribute.component';
 import { ModalCreateRoleForAbuseCComponent } from './modal-create-role-for-abusec.component';
 import { ModalEditAttributeComponent } from './modal-edit-attribute.component';
 import { ModalMd5PasswordComponent } from './modal-md5-password.component';
+import { ModalPGPKeyComponent } from './modal-pgp-key.component';
 import { ObjectUtilService } from './object-util.service';
 import { OrganisationHelperService } from './organisation-helper.service';
 import { PreferenceService } from './preference.service';
@@ -432,13 +433,35 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public displayMd5DialogDialog(attr: IAttributeModel) {
         const modalRef = this.modalService.open(ModalMd5PasswordComponent, { size: 'lg' });
-        console.debug('openMd5Modal');
         modalRef.closed.subscribe((md5Value: any) => {
-            console.debug('openMd5Modal completed with:', md5Value);
             attr.value = md5Value;
         });
         modalRef.dismissed.subscribe((reason: any) => {
             console.debug('openMd5Modal cancelled because: ' + reason);
+        });
+    }
+
+    public displayPGPKeyDialogDialog(attr: IAttributeModel) {
+        const modalRef = this.modalService.open(ModalPGPKeyComponent, { size: 'lg' });
+        modalRef.closed.subscribe((pgp: string) => {
+            // get index of first attribute above current - editing certif
+            let foundIdx =
+                _.findIndex(this.attributes, (attribute: IAttributeModel) => {
+                    return attr.$$id === attribute.$$id;
+                }) - 1;
+            // remove all existing certif attributes from object
+            this.whoisResourcesService.removeAttributeWithName(this.attributes, 'certif');
+
+            // add pgp line by line starting from edited position in object
+            const pgpByLines = pgp.split('\n');
+            for (let line of pgpByLines) {
+                const attrPrevious = this.attributes[foundIdx++];
+                this.addSelectedAttribute({ name: 'certif' }, attrPrevious);
+                this.attributes[foundIdx].value = line;
+            }
+        });
+        modalRef.dismissed.subscribe((reason: any) => {
+            console.debug('modal-pgp-key cancelled because: ' + reason);
         });
     }
 
