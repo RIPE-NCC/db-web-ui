@@ -224,11 +224,6 @@ export class WebupdatesPage {
         return this;
     }
 
-    clickRemoveOnField(fieldName: string) {
-        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-trash`).click({ force: true });
-        return this;
-    }
-
     clickEditOnField(fieldName: string) {
         cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-pencil`).eq(0).click({ force: true });
         return new ModalEditAttribute();
@@ -268,11 +263,6 @@ export class WebupdatesPage {
 
     expectError(text: string) {
         cy.get('#anchor-certif ~ .text-error').should('contain.text', text);
-        return this;
-    }
-
-    expectedModalError(text: string) {
-        cy.get('modal-content').shadow().find('.modal-banner alarm').should('contain.text', text);
         return this;
     }
 
