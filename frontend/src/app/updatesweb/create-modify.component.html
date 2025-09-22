@@ -71,12 +71,7 @@
                 ></description-syntax>
                 <ul class="input-group-btn">
                     <li *ngIf="attribute.name === 'certif'">
-                        <a
-                            id="addCertificate"
-                            class="btn btn-default ga-pgp-attr"
-                            title="Add PGP key (opens dialog)"
-                            (click)="displayPGPKeyDialogDialog(attribute)"
-                        >
+                        <a id="addCertificate" class="btn btn-default ga-pgp-attr" title="Add PGP key (opens dialog)" (click)="displayPGPKeyDialogDialog()">
                             <span class="fal fa-file-certificate"></span>
                         </a>
                     </li>
