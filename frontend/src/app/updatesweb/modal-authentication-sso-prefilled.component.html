@@ -4,10 +4,13 @@
             <h2 class="modal-title">Authentication</h2>
             <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
         </div>
-        <div *ngIf="selected.message?.length > 0" class="modal-banner alarm">
-            <p>{{ selected.message }}</p>
-        </div>
         <div class="modal-body">
+            <banner
+                *ngIf="selected.message?.length > 0"
+                [type]="BannerTypes.error"
+                [id]="'notification-error-authentication'"
+                [textContent]="selected.message"
+            ></banner>
             <div *ngIf="resolve.mntners && resolve.mntners.length > 0">
                 <ul>
                     <li>
