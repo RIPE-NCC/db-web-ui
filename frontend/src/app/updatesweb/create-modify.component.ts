@@ -441,13 +441,13 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         });
     }
 
-    public displayPGPKeyDialogDialog(attr: IAttributeModel) {
+    public displayPGPKeyDialogDialog() {
         const modalRef = this.modalService.open(ModalPGPKeyComponent, { size: 'lg' });
         modalRef.closed.subscribe((pgp: string) => {
             // get index of first attribute above current - editing certif
             let foundIdx =
                 _.findIndex(this.attributes, (attribute: IAttributeModel) => {
-                    return attr.$$id === attribute.$$id;
+                    return attribute.name === 'certif';
                 }) - 1;
             // remove all existing certif attributes from object
             this.whoisResourcesService.removeAttributeWithName(this.attributes, 'certif');

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NgModel } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoreModule } from '../core/core.module';
@@ -14,12 +15,23 @@ export class ModalPGPKeyComponent {
     private readonly PGP_FOOTER: string = '-----END PGP PUBLIC KEY BLOCK-----';
 
     pgpKey: string = '';
+    validPgp: boolean = true;
+
+    @ViewChild('pgpCtrl') pgpCtrl!: NgModel;
 
     constructor(private activeModal: NgbActiveModal) {}
+
+    ngAfterViewInit() {
+        this.pgpCtrl.valueChanges?.subscribe(() => {
+            this.validPgp = true;
+        });
+    }
 
     ok() {
         if (this.verifyPGP()) {
             this.activeModal.close(this.pgpKey);
+        } else {
+            this.validPgp = false;
         }
     }
 
