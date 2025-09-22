@@ -4,13 +4,9 @@ import { WhoisResourcesService } from '../whois-resources.service';
 import { IAttributeModel, IObjectMessageModel, IWhoisResponseModel } from '../whois-response-type.model';
 
 export interface IAlertMessageModel extends IObjectMessageModel {
-    level?: string;
     text?: string;
     linkurl?: string;
     linktext?: string;
-    dismissed?: boolean;
-    menuexpanded?: boolean;
-    permanent?: boolean;
 }
 
 export interface IAlerts {
@@ -85,15 +81,15 @@ export class AlertsService {
         }
     }
 
-    public setGlobalError(errorMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
+    public setGlobalError(errorMsg: string, buttonUrl?: string, buttonText?: string) {
         this.clearAlertMessages();
-        const error = linkurl ? { plainText: errorMsg, linkurl: linkurl, linktext: linktext, permanent: permanent } : { plainText: errorMsg };
+        const error = buttonUrl ? { plainText: errorMsg, linkurl: buttonUrl, linktext: buttonText } : { plainText: errorMsg };
         this.alerts.errors.push(error);
         this.alertsChanged.emit(this.alerts);
     }
 
-    public setGlobalWarning(warningMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
-        const warning = linkurl ? { plainText: warningMsg, linkurl: linkurl, linktext: linktext, permanent: permanent } : { plainText: warningMsg };
+    public setGlobalWarning(warningMsg: string, buttonUrl?: string, buttonText?: string) {
+        const warning = buttonUrl ? { plainText: warningMsg, linkurl: buttonUrl, linktext: buttonText } : { plainText: warningMsg };
         this.alerts.warnings.push(warning);
         this.alertsChanged.emit(this.alerts);
     }
@@ -103,9 +99,9 @@ export class AlertsService {
         this.alertsChanged.emit(this.alerts);
     }
 
-    public setGlobalSuccess(successMsg: string, linkurl?: string, linktext?: string, permanent?: boolean) {
+    public setGlobalSuccess(successMsg: string, buttonUrl?: string, buttonText?: string) {
         this.clearAlertMessages();
-        const success = linkurl ? { plainText: successMsg, linkurl: linkurl, linktext: linktext, permanent: permanent } : { plainText: successMsg };
+        const success = buttonUrl ? { plainText: successMsg, linkurl: buttonUrl, linktext: buttonText } : { plainText: successMsg };
         this.alerts.successes.push(success);
         this.alertsChanged.emit(this.alerts);
     }
@@ -115,14 +111,14 @@ export class AlertsService {
         this.alertsChanged.emit(this.alerts);
     }
 
-    public addGlobalWarning(warningMsg: string, linkurl?: string, linktext?: string) {
-        const warning = linkurl ? { plainText: warningMsg, linkurl: linkurl, linktext: linktext } : { plainText: warningMsg };
+    public addGlobalWarning(warningMsg: string, buttonUrl?: string, buttonText?: string) {
+        const warning = buttonUrl ? { plainText: warningMsg, linkurl: buttonUrl, linktext: buttonText } : { plainText: warningMsg };
         this.alerts.warnings.push(warning);
         this.alertsChanged.emit(this.alerts);
     }
 
-    public addGlobalInfo(infoMsg: string, linkurl?: string, linktext?: string) {
-        const info = linkurl ? { plainText: infoMsg, linkurl: linkurl, linktext: linktext } : { plainText: infoMsg };
+    public addGlobalInfo(infoMsg: string, buttonUrl?: string, buttonText?: string) {
+        const info = buttonUrl ? { plainText: infoMsg, linkurl: buttonUrl, linktext: buttonText } : { plainText: infoMsg };
         this.alerts.infos.push(info);
         this.alertsChanged.emit(this.alerts);
     }
