@@ -111,6 +111,28 @@ export class ModalEditAttribute {
     }
 }
 
+export class ModalPgpKey {
+    expectModalToExist(exist: boolean) {
+        cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectErrorOnTextArea(text: string) {
+        cy.get(`.modal-content .text-error`).should('contain.text', text);
+        return this;
+    }
+
+    typePgpKey(pgpKey: string) {
+        cy.get(".modal-content textarea[name='pgp']").type(pgpKey);
+        return this;
+    }
+
+    submitModal() {
+        cy.get('.modal-content button[type=submit]').click();
+        return this;
+    }
+}
+
 export class ModalCreateDomain {
     expectModalToExist(exist: boolean) {
         cy.get('.modal-content').should(exist ? 'exist' : 'not.exist');
