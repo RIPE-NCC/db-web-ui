@@ -50,7 +50,6 @@ export class ModalAuthenticationComponent implements OnInit {
     ) {
         this.SOURCE = properties.SOURCE;
         this.PORTAL_URL = properties.PORTAL_URL;
-        this.errorMsg = `The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="${this.PORTAL_URL}#/account-details">here</a>.`;
     }
 
     public ngOnInit() {
@@ -62,6 +61,7 @@ export class ModalAuthenticationComponent implements OnInit {
         };
         this.setFmpPathQueryParam();
         this.allowForceDelete();
+        this.errorMsg = `The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="${this.PORTAL_URL}#/account-details">here</a>.`;
     }
 
     public allowForceDelete() {

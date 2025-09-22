@@ -45,7 +45,7 @@ export class ModalAuthentication {
     }
 
     expectBannerToContain(text: string) {
-        cy.get('.modal-content .modal-banner').should('contain.text', text);
+        cy.get('.modal-content banner').should('contain.text', text);
         return this;
     }
 
@@ -166,7 +166,7 @@ export class ModalSSOPrefilledAuthentication {
     }
 
     expectBannerToContain(text: string) {
-        cy.get('.modal-content .modal-banner').should('contain.text', text);
+        cy.get('.modal-content banner').should('contain.text', text);
         return this;
     }
 

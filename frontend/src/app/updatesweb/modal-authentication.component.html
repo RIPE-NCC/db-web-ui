@@ -30,7 +30,7 @@
                         "
                     ></banner>
                     <banner
-                        *ngIf="resolve.mntnersWithoutPassword.length > 0"
+                        *ngIf="resolve.mntnersWithoutPassword.length === 0"
                         [type]="BannerTypes.error"
                         [id]="'notification-error-authentication'"
                         [textContent]="errorMsg"
