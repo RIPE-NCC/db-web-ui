@@ -1,10 +1,12 @@
 <div>
-    <org-drop-down></org-drop-down>
-    <promo-banner
+    <banner
+        [type]="BannerTypes.promo"
         [id]="'md5-banner'"
         [title]="'MD5 hashed passwords are deprecated and will be removed by the end of 2025.'"
         [textContent]="'Please check if your maintainer contains any passwords and replace them with an alternative authentication method.'"
-    ></promo-banner>
+        [persistDismiss]="true"
+    ></banner>
+    <org-drop-down></org-drop-down>
     <section id="searchSection">
         <h1 class="documentFirstHeading">{{ titleEnvironment }} Database Query</h1>
         <form name="searchform" (ngSubmit)="submitSearchForm()">
