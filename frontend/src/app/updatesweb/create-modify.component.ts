@@ -442,7 +442,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public displayPGPKeyDialogDialog() {
-        const modalRef = this.modalService.open(ModalPGPKeyComponent, { size: 'lg' });
+        const modalRef = this.modalService.open(ModalPGPKeyComponent, { windowClass: 'resizable-modal' });
         modalRef.closed.subscribe((pgp: string) => {
             // get index of first attribute above current - editing certif
             let foundIdx =
