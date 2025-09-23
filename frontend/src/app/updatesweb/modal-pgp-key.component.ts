@@ -13,6 +13,8 @@ import { CoreModule } from '../core/core.module';
 export class ModalPGPKeyComponent {
     private readonly PGP_HEADER: string = '-----BEGIN PGP PUBLIC KEY BLOCK-----';
     private readonly PGP_FOOTER: string = '-----END PGP PUBLIC KEY BLOCK-----';
+    private readonly X509_HEADER: string = '----BEGIN CERTIFICATE----';
+    private readonly X509_FOOTER: string = '----END CERTIFICATE----';
 
     pgpKey: string = '';
     validPgp: boolean = true;
@@ -40,6 +42,9 @@ export class ModalPGPKeyComponent {
     }
 
     private verifyPGP(): boolean {
-        return this.pgpKey.startsWith(this.PGP_HEADER) && this.pgpKey.endsWith(this.PGP_FOOTER);
+        return (
+            (this.pgpKey.startsWith(this.PGP_HEADER) && this.pgpKey.endsWith(this.PGP_FOOTER)) ||
+            (this.pgpKey.startsWith(this.X509_HEADER) && this.pgpKey.endsWith(this.X509_FOOTER))
+        );
     }
 }

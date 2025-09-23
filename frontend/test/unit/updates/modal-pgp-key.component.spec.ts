@@ -52,7 +52,7 @@ describe('ModalPGPKeyComponent', () => {
         });
 
         it('should return false for invalid PGP key', () => {
-            component.pgpKey = 'invalid key';
+            component.pgpKey = 'invalid key - without header and footer';
             expect(component['verifyPGP']()).toBeFalse();
         });
     });
@@ -66,7 +66,21 @@ describe('ModalPGPKeyComponent', () => {
         });
 
         it('should set validPgp to false if PGP is invalid', () => {
-            component.pgpKey = 'invalid key';
+            component.pgpKey = 'invalid key - without header and footer';
+            component.ok();
+            expect(mockActiveModal.close).not.toHaveBeenCalled();
+            expect(component.validPgp).toBeFalse();
+        });
+
+        it('should close modal if X509 is valid', () => {
+            component.pgpKey = `${component['X509_HEADER']}abc${component['X509_FOOTER']}`;
+            component.ok();
+            expect(mockActiveModal.close).toHaveBeenCalledWith(component.pgpKey);
+            expect(component.validPgp).toBeTrue();
+        });
+
+        it('should set validPgp to false if X509 is invalid', () => {
+            component.pgpKey = 'invalid key - without header and footer';
             component.ok();
             expect(mockActiveModal.close).not.toHaveBeenCalled();
             expect(component.validPgp).toBeFalse();
