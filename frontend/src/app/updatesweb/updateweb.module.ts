@@ -6,6 +6,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
+import { BannerComponent } from '../banner/banner.component';
 import { SharedModule } from '../shared/shared.module';
 import { WhoisObjectModule } from '../whois-object/whois-object.module';
 import { CharsetToolsService } from './charset-tools.service';
@@ -59,7 +60,7 @@ import { TypeaheadComponent } from './typeahead.component';
         ModalEditAttributeComponent,
         TypeaheadComponent,
     ],
-    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule, WhoisObjectModule, RouterModule, MatTooltip],
+    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule, WhoisObjectModule, RouterModule, MatTooltip, BannerComponent],
     providers: [
         PreferenceService,
         CookieService,

@@ -9,6 +9,7 @@ import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
 
+import { BannerTypes } from '../banner/banner.component';
 import { IModalAuthentication } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
@@ -138,4 +139,6 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
             this.selected.item.auth.push('SSO');
         }
     }
+
+    protected readonly BannerTypes = BannerTypes;
 }
