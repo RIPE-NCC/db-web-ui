@@ -4,28 +4,39 @@
             <h2 class="modal-title">Password authentication</h2>
             <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
         </div>
-        <div *ngIf="selected.message?.length > 0" class="modal-banner alarm">
-            <p>{{ selected.message }}</p>
-        </div>
-        <div *ngIf="resolve.mntners.length === 0" class="modal-banner alarm">
-            <span *ngIf="!resolve.isLirObject">
-                You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are
-                protected with an MD5 password.
-            </span>
-
-            <span *ngIf="resolve.isLirObject">
-                <span *ngIf="resolve.mntnersWithoutPassword.length > 0">
-                    You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are
-                    protected with an MD5 password.
-                </span>
-
-                <span *ngIf="resolve.mntnersWithoutPassword.length === 0">
-                    The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default
-                    maintainer <a href="{{ PORTAL_URL }}#/account-details">here</a>.
-                </span>
-            </span>
-        </div>
         <div class="modal-body">
+            <banner
+                *ngIf="selected.message?.length > 0"
+                [type]="BannerTypes.error"
+                [id]="'notification-error-authentication'"
+                [textContent]="selected.message"
+            ></banner>
+            <div *ngIf="resolve.mntners.length === 0">
+                <banner
+                    *ngIf="!resolve.isLirObject"
+                    [type]="BannerTypes.error"
+                    [id]="'notification-error-authentication'"
+                    [textContent]="
+                        'You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password.'
+                    "
+                ></banner>
+                <span *ngIf="resolve.isLirObject">
+                    <banner
+                        *ngIf="resolve.mntnersWithoutPassword.length > 0"
+                        [type]="BannerTypes.error"
+                        [id]="'notification-error-authentication'"
+                        [textContent]="
+                            'You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password.'
+                        "
+                    ></banner>
+                    <banner
+                        *ngIf="resolve.mntnersWithoutPassword.length === 0"
+                        [type]="BannerTypes.error"
+                        [id]="'notification-error-authentication'"
+                        [textContent]="errorMsg"
+                    ></banner>
+                </span>
+            </div>
             <div *ngIf="resolve.mntners && resolve.mntners.length > 0">
                 <ul>
                     <li>

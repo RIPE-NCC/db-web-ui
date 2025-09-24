@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
+import { BannerTypes } from '../banner/banner.component';
 import { IUserInfoResponseData } from '../dropdown/org-data-type.model';
 import { PropertiesService } from '../properties.service';
 import { CredentialsService } from '../shared/credentials.service';
@@ -37,6 +38,7 @@ export class ModalAuthenticationComponent implements OnInit {
     public selected: any;
     public allowedObjectTypes: string[] = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
     public fmpPath: string;
+    errorMsg: string;
 
     constructor(
         private activeModal: NgbActiveModal,
@@ -59,6 +61,7 @@ export class ModalAuthenticationComponent implements OnInit {
         };
         this.setFmpPathQueryParam();
         this.allowForceDelete();
+        this.errorMsg = `The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="${this.PORTAL_URL}#/account-details">here</a>.`;
     }
 
     public allowForceDelete() {
@@ -169,4 +172,6 @@ export class ModalAuthenticationComponent implements OnInit {
             this.fmpPath = `/db-web-ui/fmp?mntnerKey=${this.selected.item.key}`;
         }
     }
+
+    protected readonly BannerTypes = BannerTypes;
 }
