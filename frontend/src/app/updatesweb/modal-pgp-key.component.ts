@@ -30,8 +30,9 @@ export class ModalPGPKeyComponent {
     }
 
     ok() {
-        if (this.verifyPGP()) {
-            this.activeModal.close(this.pgpKey);
+        const pgpKeyTrimmed = this.pgpKey.trim();
+        if (this.verifyPGP(pgpKeyTrimmed)) {
+            this.activeModal.close(pgpKeyTrimmed);
         } else {
             this.validPgp = false;
         }
@@ -41,10 +42,10 @@ export class ModalPGPKeyComponent {
         this.activeModal.dismiss();
     }
 
-    private verifyPGP(): boolean {
+    private verifyPGP(pgpKey: string): boolean {
         return (
-            (this.pgpKey.startsWith(this.PGP_HEADER) && this.pgpKey.endsWith(this.PGP_FOOTER)) ||
-            (this.pgpKey.startsWith(this.X509_HEADER) && this.pgpKey.endsWith(this.X509_FOOTER))
+            (pgpKey.startsWith(this.PGP_HEADER) && pgpKey.endsWith(this.PGP_FOOTER)) ||
+            (pgpKey.startsWith(this.X509_HEADER) && pgpKey.endsWith(this.X509_FOOTER))
         );
     }
 }
