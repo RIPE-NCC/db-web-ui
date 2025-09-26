@@ -29,7 +29,7 @@ export class ModalPGPKeyComponent {
         });
     }
 
-    ok() {
+    submit() {
         const pgpKeyTrimmed = this.pgpKey.trim();
         if (this.verifyPGP(pgpKeyTrimmed)) {
             this.activeModal.close(pgpKeyTrimmed);

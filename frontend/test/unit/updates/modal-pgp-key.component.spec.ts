@@ -48,40 +48,40 @@ describe('ModalPGPKeyComponent', () => {
     describe('verifyPGP', () => {
         it('should return true for valid PGP key', () => {
             component.pgpKey = `${component['PGP_HEADER']}abc${component['PGP_FOOTER']}`;
-            expect(component['verifyPGP']()).toBeTrue();
+            expect(component['verifyPGP'](component.pgpKey.trim())).toBeTrue();
         });
 
         it('should return false for invalid PGP key', () => {
             component.pgpKey = 'invalid key - without header and footer';
-            expect(component['verifyPGP']()).toBeFalse();
+            expect(component['verifyPGP'](component.pgpKey.trim())).toBeFalse();
         });
     });
 
-    describe('ok()', () => {
+    describe('submit()', () => {
         it('should close modal if PGP is valid', () => {
             component.pgpKey = `${component['PGP_HEADER']}abc${component['PGP_FOOTER']}`;
-            component.ok();
+            component.submit();
             expect(mockActiveModal.close).toHaveBeenCalledWith(component.pgpKey);
             expect(component.validPgp).toBeTrue();
         });
 
         it('should set validPgp to false if PGP is invalid', () => {
             component.pgpKey = 'invalid key - without header and footer';
-            component.ok();
+            component.submit();
             expect(mockActiveModal.close).not.toHaveBeenCalled();
             expect(component.validPgp).toBeFalse();
         });
 
         it('should close modal if X509 is valid', () => {
             component.pgpKey = `${component['X509_HEADER']}abc${component['X509_FOOTER']}`;
-            component.ok();
+            component.submit();
             expect(mockActiveModal.close).toHaveBeenCalledWith(component.pgpKey);
             expect(component.validPgp).toBeTrue();
         });
 
         it('should set validPgp to false if X509 is invalid', () => {
             component.pgpKey = 'invalid key - without header and footer';
-            component.ok();
+            component.submit();
             expect(mockActiveModal.close).not.toHaveBeenCalled();
             expect(component.validPgp).toBeFalse();
         });
