@@ -70,6 +70,11 @@
                     [attrName]="attribute.name"
                 ></description-syntax>
                 <ul class="input-group-btn">
+                    <li *ngIf="attribute.name === 'certif'">
+                        <a id="addCertificate" class="btn btn-default ga-pgp-attr" title="Add PGP key (opens dialog)" (click)="displayPGPKeyDialogDialog()">
+                            <span class="fal fa-file-certificate"></span>
+                        </a>
+                    </li>
                     <li *ngIf="canAttributeBeDuplicated(attribute)">
                         <a
                             id="duplicateAttribute"
@@ -130,11 +135,6 @@
                     <li>
                         <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name + '$' + idx)">
                             <span class="fal fa-question"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="addCertificate" class="btn btn-default d-none ga-pgp-attr" title="Add PGP key (opens dialog)">
-                            <span class="fal fa-certificate"></span>
                         </a>
                     </li>
                 </ul>

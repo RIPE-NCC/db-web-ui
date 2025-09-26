@@ -197,9 +197,16 @@ ul.success-fields {
     padding: 6px 17px;
 }
 
+.resizable-modal .modal-content {
+    resize: horizontal;
+    overflow: auto;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
 .modal-content {
     @media only screen and (min-width: 1025px) {
-        width: 650px;
+        min-width: 750px;
     }
     div.modal-body {
         ul {

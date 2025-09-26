@@ -1,0 +1,21 @@
+<div class="modal-content no-rounded">
+    <div class="modal-header">
+        <h2 class="modal-title">Enter PGP public key OR X509 certificate</h2>
+        <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+    </div>
+    <form #pgpForm="ngForm" (submit)="submit()">
+        <div class="modal-body">
+            <label for="pgp">PGP public key or X509 certificate:</label>
+            <textarea id="pgp" name="pgp" [(ngModel)]="pgpKey" class="form-control" rows="20" #pgpCtrl="ngModel" style="font-family: monospace"></textarea>
+            <div [hidden]="validPgp" class="text-error">Not valid</div>
+        </div>
+        <div class="modal-footer">
+            <div>
+                <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
+            </div>
+            <div>
+                <button mat-flat-button type="submit" color="primary" class="float-end">SUBMIT</button>
+            </div>
+        </div>
+    </form>
+</div>

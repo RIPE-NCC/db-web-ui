@@ -4,6 +4,7 @@ import {
     ModalCreateDomain,
     ModalDeleteObject,
     ModalEditAttribute,
+    ModalPgpKey,
     ModalProcessing,
     ModalSSOPrefilledAuthentication,
 } from './components/modals.component';
@@ -98,6 +99,11 @@ export class WebupdatesPage {
     clickOnCreateButton() {
         cy.get('#btnNavigateToCreate').click();
         return this;
+    }
+
+    clickOnCertifButton() {
+        cy.get('#addCertificate').click();
+        return new ModalPgpKey();
     }
 
     clickOnCreatePair() {
