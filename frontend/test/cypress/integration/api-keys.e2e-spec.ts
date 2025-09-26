@@ -8,10 +8,14 @@ describe('api keys', () => {
     });
 
     it('should create new api key', () => {
-        apiKeysPage.visit().createApiKey('my name', '01/01/2024', 'MHM-MNT').expectCreatedKeyDialogToBePresent();
+        apiKeysPage.visit().createApiKey('my name', '01/01/2024', ['MHM-MNT']).expectCreatedKeyDialogToBePresent();
     });
 
     it('should revoke key', () => {
         apiKeysPage.visit().revokeKey('my mocked access key').expectRevokeKeyDialogToBePresent();
+    });
+
+    it('should add/remove maintainer field on click on +/- button', () => {
+        apiKeysPage.visit().addedMultipleMaintainerField().removedMultipleMaintainerField();
     });
 });

@@ -9,3 +9,24 @@
         align-self: flex-end;
     }
 }
+
+.rounded-buttons {
+    font-size: 28px;
+    color: #131f48;
+
+    &:hover {
+        background-color: #e8edfe;
+        border-radius: 35px;
+        color: #2b46a1;
+    }
+}
+
+.multiple-field-wrapper {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+.multiple-field {
+    flex: 1;
+}
