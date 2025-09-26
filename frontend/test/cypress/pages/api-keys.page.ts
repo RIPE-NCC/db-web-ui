@@ -9,11 +9,11 @@ export class ApiKeysPage {
         return this;
     }
 
-    createApiKey(label: string, expiresAt: string, maintainer: string) {
+    createApiKey(label: string, expiresAt: string, maintainers: string[]) {
         this.toggleAccordion();
         this.getInput('Key name').clear().type(label);
         this.getInput('Expiration date').clear().type(expiresAt);
-        this.getInput('Maintainer').clear().type(maintainer);
+        this.getInput('Maintainer').clear().type(maintainers[0]);
         cy.get('button:contains("Create a key")').click();
         return this;
     }
@@ -35,7 +35,29 @@ export class ApiKeysPage {
         return this;
     }
 
-    private toggleAccordion() {
+    addedMultipleMaintainerField() {
+        this.toggleAccordion();
+        this.clickAddMaintainerButton();
+        cy.get(`label:contains("Maintainer")`).should('have.length', 2);
+        return this;
+    }
+
+    removedMultipleMaintainerField() {
+        this.toggleAccordion();
+        this.clickRemoveMaintainerButton();
+        cy.get(`label:contains("Maintainer")`).should('have.length', 1);
+        return this;
+    }
+
+    clickAddMaintainerButton() {
+        return cy.get(`.fa-plus-circle`).click();
+    }
+
+    clickRemoveMaintainerButton() {
+        return cy.get(`.fa-minus-circle`).first().click();
+    }
+
+    toggleAccordion() {
         cy.get('mat-accordion:contains("Create a new Database key")').click();
         return this;
     }
