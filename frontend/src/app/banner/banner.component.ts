@@ -79,7 +79,10 @@ export class BannerComponent implements OnInit {
     navigateToButtonUrl() {
         if (!this.buttonUrl) return;
         const isExternal = /^(http|https):\/\//.test(this.buttonUrl);
-        if (isExternal) {
+        const isReload = this.router.url === this.buttonUrl;
+        if (isReload) {
+            window.location.reload();
+        } else if (isExternal) {
             window.open(this.buttonUrl, '_blank');
         } else {
             void this.router.navigate([this.buttonUrl]);
