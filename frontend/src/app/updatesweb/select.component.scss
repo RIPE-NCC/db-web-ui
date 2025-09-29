@@ -1,0 +1,18 @@
+.select-component {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 50%;
+
+    button {
+        width: max-content;
+        align-self: flex-end;
+    }
+}
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #1a1a1a;
+}
