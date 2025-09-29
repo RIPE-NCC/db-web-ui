@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { PropertiesService } from '../properties.service';
 
 /*  Usage
     promo:
@@ -61,7 +62,7 @@ export class BannerComponent implements OnInit {
 
     closed: boolean;
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private properties: PropertiesService) {}
 
     ngOnInit() {
         if (this.persistDismiss) {
@@ -80,8 +81,11 @@ export class BannerComponent implements OnInit {
         if (!this.buttonUrl) return;
         const isExternal = /^(http|https):\/\//.test(this.buttonUrl);
         const isReload = this.router.url === this.buttonUrl;
+        const isLogin = this.properties.LOGIN_URL === this.buttonUrl;
         if (isReload) {
             window.location.reload();
+        } else if (isLogin) {
+            window.open(this.buttonUrl, '_self');
         } else if (isExternal) {
             window.open(this.buttonUrl, '_blank');
         } else {
