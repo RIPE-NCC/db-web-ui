@@ -52,11 +52,7 @@ describe('ReleaseNotificationService', () => {
             const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
             req.flush({ DB_WEB_UI_BUILD_TIME: '1' });
 
-            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith(
-                'There is a new release available. Click reload to start using it.',
-                document.location.href,
-                'RELOAD',
-            );
+            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith('There is a new release available. Click reload to start using it.', '/', 'RELOAD');
 
             discardPeriodicTasks();
         },
@@ -83,11 +79,7 @@ describe('ReleaseNotificationService', () => {
             tick(pollInterval);
             httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '1' });
 
-            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith(
-                'There is a new release available. Click reload to start using it.',
-                document.location.href,
-                'RELOAD',
-            );
+            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith('There is a new release available. Click reload to start using it.', '/', 'RELOAD');
 
             alertServiceSpy.addGlobalWarning.calls.reset();
 
