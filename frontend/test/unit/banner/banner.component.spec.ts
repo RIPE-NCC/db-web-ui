@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
+import { PropertiesService } from '../../../src/app/properties.service';
 
 describe('BannerComponent', () => {
     let component: BannerComponent;
@@ -12,7 +13,13 @@ describe('BannerComponent', () => {
 
         await TestBed.configureTestingModule({
             imports: [BannerComponent],
-            providers: [{ provide: Router, useValue: routerSpy }],
+            providers: [
+                { provide: Router, useValue: routerSpy },
+                {
+                    provide: PropertiesService,
+                    useValue: { LOGIN_URL: 'https://access.prepdev.ripe.net/' },
+                },
+            ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(BannerComponent);
