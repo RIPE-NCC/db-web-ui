@@ -47,12 +47,12 @@ describe('CreateNewApiKeyComponent', () => {
         const autocompleteResponse: IMntByModel[] = [{ key: 'maint-m', type: 'a' }];
         restServiceMock.autocomplete.and.returnValue(of(autocompleteResponse));
 
-        component.maintainer = 'search me';
-        component.onInputChange();
+        component.maintainers = [{ key: 'search me' }];
+        component.onInputChange(0, 'search me');
         tick(500);
 
         expect(restServiceMock.autocomplete).toHaveBeenCalledWith('mnt-by', 'search me', true, ['auth']);
-        expect(component.maintainers).toEqual(autocompleteResponse);
+        expect(component.maintainersOptions).toEqual(autocompleteResponse);
     }));
 
     it('should save the new apikey', () => {
@@ -67,7 +67,7 @@ describe('CreateNewApiKeyComponent', () => {
 
         component.apiKeyName = 'fake api key name';
         component.expiresAt = new Date();
-        component.maintainer = 'fake maintainer';
+        component.maintainers = [{ key: 'fake maintainer' }];
         component.saveApiKey();
 
         //should clear previous error messages
@@ -75,7 +75,7 @@ describe('CreateNewApiKeyComponent', () => {
 
         expect(component.apiKeyName).toBeUndefined();
         expect(component.expiresAt).toBeUndefined();
-        expect(component.maintainer).toBeUndefined();
+        expect(component.maintainers).toEqual([{ key: '' }]);
         expect(matDialogMock.open).toHaveBeenCalledWith(ApiKeyConfirmationDialogComponent, {
             data: { id: apiKeyResponse.id, secretKey: apiKeyResponse.secretKey },
         });
@@ -93,7 +93,7 @@ describe('CreateNewApiKeyComponent', () => {
 
         component.apiKeyName = 'fake api key name';
         component.expiresAt = new Date();
-        component.maintainer = 'fake maintainer';
+        component.maintainers = [{ key: 'fake maintainer' }];
         component.saveApiKey();
 
         //should clear previous error messages
