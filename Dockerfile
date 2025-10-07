@@ -17,7 +17,7 @@ ARG CI_COMMIT_SHA
 RUN mvn clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
 
 # Release
-FROM amazoncorretto:21-alpine
+FROM amazoncorretto:25-alpine
 
 ENV PROFILE local
 ENV START_HEAP_SIZE 256m
