@@ -81,6 +81,28 @@ describe('CreateNewApiKeyComponent', () => {
         });
     });
 
+    it('should save the new apikey when maintainer is undefined', () => {
+        const apiKeyResponse: ApiKey = {
+            expiresAt: '2025-11-26',
+            lastUsed: new Date('2025-11-26T23:00:00Z'),
+            label: 'my key name',
+            id: 'accessKey',
+            secretKey: 'secretKey',
+        };
+        apiKeysServiceMock.saveApiKey.and.returnValue(of(apiKeyResponse));
+
+        component.apiKeyName = 'fake api key name';
+        component.expiresAt = new Date('2025-11-26T23:00:00Z');
+        component.maintainers = [{ key: '' }];
+        component.saveApiKey();
+
+        expect(apiKeysServiceMock.saveApiKey).toHaveBeenCalledWith('fake api key name', '2025-11-27T00:00:00+01:00', undefined);
+
+        expect(matDialogMock.open).toHaveBeenCalledWith(ApiKeyConfirmationDialogComponent, {
+            data: { id: apiKeyResponse.id, secretKey: apiKeyResponse.secretKey },
+        });
+    });
+
     it('should handle errors when saving new api aki', () => {
         const akiKeyErrorResponse = {
             error: {
