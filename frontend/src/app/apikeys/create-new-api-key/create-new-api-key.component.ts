@@ -67,7 +67,7 @@ export class CreateNewApiKeyComponent implements OnInit {
             .saveApiKey(
                 this.apiKeyName,
                 expiresAtFormated,
-                this.maintainers.map((item) => item.key),
+                !(this.maintainers.length === 1 && this.maintainers[0].key === '') ? this.maintainers.map((item) => item.key) : undefined,
             )
             .subscribe({
                 next: (response: ApiKey) => {
