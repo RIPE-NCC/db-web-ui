@@ -16,9 +16,12 @@
         <li ngbDropdownItem>
             <a
                 class="extra-menu-item"
-                href="{{ properties.PORTAL_URL }}#/update-registry/provide-details?onBehalfOfEndUser=true&updateRegistryRequestType=sponsorship_request"
-                >Start/stop sponsoring PI resources</a
+                href="{{ properties.PORTAL_URL }}#/update-registry/provide-details?onBehalfOfEndUser=true&updateRegistryRequestType=start_sponsorship_request"
+                >Start sponsoring PI resources</a
             >
+        </li>
+        <li ngbDropdownItem>
+            <a class="extra-menu-item" href="{{ properties.NEWEST_PORTAL_URL }}#/stop-sponsorship">Stop sponsoring PI resources</a>
         </li>
         <li ngbDropdownItem><a class="extra-menu-item" href="{{ properties.PORTAL_URL }}#/transfers/userIdentification">Transfer customer's resources</a></li>
     </ul>

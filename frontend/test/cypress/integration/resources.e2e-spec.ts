@@ -57,8 +57,9 @@ describe('Resources', () => {
             .expectTransferOptionToContain(1, 'Request resources')
             .clickOnSponsoredResources()
             .clickOnTransferButton()
-            .expectTransferOptionToContain(0, 'Start/stop sponsoring PI resources')
-            .expectTransferOptionToContain(1, "Transfer customer's resources");
+            .expectTransferOptionToContain(0, 'Start sponsoring PI resources')
+            .expectTransferOptionToContain(1, 'Stop sponsoring PI resources')
+            .expectTransferOptionToContain(2, "Transfer customer's resources");
     });
 
     it('should hide ... button for selected not LIR organisation', () => {

@@ -48,6 +48,8 @@ public class AngularConstantsController {
     private String portalUrlAccount;
     @Value("${portal.url.request}")
     private String portalUrlRequest;
+    @Value("${newest.portal.url}")
+    private String newestPortalUrl;
     @Value("${frontend.banner:}")
     private String frontendBanner;
     @Value("${rest.search.url}")
@@ -112,6 +114,7 @@ public class AngularConstantsController {
         constants.setPortalUrl(portalUrl);
         constants.setPortalUrlAccount(portalUrlAccount);
         constants.setPortalUrlRequest(portalUrlRequest);
+        constants.setNewestPortalUrl(newestPortalUrl);
         constants.setBanner(frontendBanner);
         constants.setMatomoId(frontendMatomoId);
         constants.setRequestResourcesUrl(leftMenuConfiguration.getRequestResourcesUrl());
@@ -152,6 +155,8 @@ public class AngularConstantsController {
         private String portalUrlAccount;
         @JsonProperty("PORTAL_URL_REQUEST")
         private String portalUrlRequest;
+        @JsonProperty("NEWEST_PORTAL_URL")
+        private String newestPortalUrl;
         @JsonProperty("BANNER")
         private String banner;
         @JsonProperty("MATOMO_ID")
@@ -223,6 +228,10 @@ public class AngularConstantsController {
 
         public void setPortalUrlRequest(String portalUrlRequest) {
             this.portalUrlRequest = portalUrlRequest;
+        }
+
+        public void setNewestPortalUrl(String newestPortalUrl) {
+            this.newestPortalUrl = newestPortalUrl;
         }
 
         public void setBanner(String banner) {

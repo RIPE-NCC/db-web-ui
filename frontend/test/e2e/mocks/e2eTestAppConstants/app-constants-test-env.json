@@ -12,6 +12,7 @@
         "PORTAL_URL": "https://my.prepdev.ripe.net/",
         "PORTAL_URL_ACCOUNT": "https://my.prepdev.ripe.net/#/account-details",
         "PORTAL_URL_REQUEST": "https://my.prepdev.ripe.net/#/tickets",
+        "NEWEST_PORTAL_URL": "https://requests.ba.prepdev.ripe.net/",
         "BANNER": "Welcome to the localhost version of the RIPE Database.",
         "MATOMO_ID": "matomo-id",
         "REQUEST_RESOURCES_URL": "https://my.prepdev.ripe.net/#/request",
