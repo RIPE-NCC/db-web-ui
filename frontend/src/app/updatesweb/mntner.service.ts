@@ -284,8 +284,10 @@ export class MntnerService {
         // Do not strip mntner when MD5 pw popup is not displayed
         // Applies to DEV, PREPDEV, RC, TEST and not TRAINING or PROD
         if (this.allowNCCMntnerAutocomplete) {
+            console.log('Allow all mntners');
             return mntners;
         }
+        console.log('Remove NCC mntners');
         // remove NCC mntners and dupes
         const stripped = this.enableNonAuthUpdates
             ? mntners
