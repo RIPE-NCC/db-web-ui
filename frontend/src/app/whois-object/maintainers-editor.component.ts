@@ -155,11 +155,9 @@ export class MaintainersEditorComponent implements OnInit {
                         tap(() => (this.loading = false)),
                     ),
                 ),
-                map((data: IMntByModel[]) => {
-                    console.log('Original mntner ', data);
-                    console.log('Filtered mntners mntner ', this.filterAutocompleteMntners(this.enrichWithMine(data)));
-                    this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data)));
-                }),
+                map((data: IMntByModel[]) =>
+                    this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data))),
+                ),
             ),
         );
     }
@@ -418,8 +416,11 @@ export class MaintainersEditorComponent implements OnInit {
     }
 
     private filterAutocompleteMntners(mntners: IMntByModel[]) {
-        return mntners.filter((mntner) => {
+        console.log('Original mntner ', mntners);
+        const a = mntners.filter((mntner) => {
             return !this.mntnerService.isAnyNccMntner(mntner.key) && !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner);
         });
+        console.log('Filtered mntners mntner ', a);
+        return a;
     }
 }
