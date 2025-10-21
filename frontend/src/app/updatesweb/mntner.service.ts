@@ -165,6 +165,8 @@ export class MntnerService {
     }
 
     public enrichWithNewStatus(originalMntners: IMntByModel[], actualMntners: IMntByModel[]): IMntByModel[] {
+        console.log('Original mntner ', originalMntners);
+        console.log('Filtered mntners mntner ', actualMntners);
         return actualMntners.map((mntner: IMntByModel) => {
             mntner.isNew = !this.isMntnerOnlist(originalMntners, mntner);
             return mntner;
