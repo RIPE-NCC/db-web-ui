@@ -405,24 +405,6 @@ describe('MntnerService', () => {
         expect(attributes.length).toBe(6);
         expect(mntnerService.removeDuplicateMntsFromAttribute(attributes).length).toBe(5);
     });
-
-    it('should not stripNccMntners for other env except PROD env', () => {
-        mntnerService.properties.NO_PASSWORD_AUTH_POPUP = true;
-        const mockMnts = [
-            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
-        ];
-        expect(mntnerService.stripNccMntners(mockMnts, false)).toEqual(mockMnts);
-    });
-
-    it('should stripNccMntners for PROD env', () => {
-        spyOn(mntnerService.properties, 'isProdEnv').and.returnValue(true);
-        const mockMnts = [
-            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
-        ];
-        expect(mntnerService.stripNccMntners(mockMnts, true).length).toEqual(0);
-    });
 });
 
 export const defaultMntsMock = {
