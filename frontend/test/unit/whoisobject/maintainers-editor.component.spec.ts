@@ -308,12 +308,19 @@ describe('MaintainersEditorComponent', () => {
             expect(component.mntners.object.length).toBe(1);
         });
 
-        it('should not remove NCC mntners for other env except PROD env', () => {
+        it('should not remove NCC mntners for other env except PROD env', async () => {
             component.properties.NO_PASSWORD_AUTH_POPUP = true;
             component.properties.ENV = 'TEST';
             fixture.detectChanges();
             // get SSO maintainers
-            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true }]);
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
+                {
+                    key: 'TESTSSO-MNT',
+                    type: 'mntner',
+                    auth: ['MD5-PW'],
+                    mine: true,
+                },
+            ]);
             // fail to get maintainer details
             httpMock
                 .expectOne({
@@ -334,7 +341,7 @@ describe('MaintainersEditorComponent', () => {
             expect(component.mntners.object.length).toBe(2);
         });
 
-        it('should remove NCC mntners for PROD env', () => {
+        it('should remove NCC mntners for PROD env', async () => {
             component.properties.NO_PASSWORD_AUTH_POPUP = true;
             spyOn(component.properties, 'isProdEnv').and.returnValue(true);
             fixture.detectChanges();
