@@ -48,7 +48,7 @@ export class MaintainersEditorComponent implements OnInit {
     // ng-select
     public loading = false;
     public alternativesInput$ = new Subject<string>();
-
+    public allowNCCMntnerAutocomplete: boolean;
     // Interface control
     public restCallInProgress = false;
 
@@ -70,11 +70,12 @@ export class MaintainersEditorComponent implements OnInit {
         public alertsService: AlertsService,
         private jsUtilsService: JsUtilService,
         public orgDropDownSharedService: OrgDropDownSharedService,
-        private properties: PropertiesService,
+        public properties: PropertiesService,
     ) {
         this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             this.ngOnInit();
         });
+        this.allowNCCMntnerAutocomplete = properties.isEnableNonAuthUpdates();
     }
 
     ngOnDestroy() {
@@ -155,10 +156,7 @@ export class MaintainersEditorComponent implements OnInit {
                     ),
                 ),
                 map((data: IMntByModel[]) =>
-                    this.mntnerService.stripNccMntners(
-                        this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data))),
-                        true,
-                    ),
+                    this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data))),
                 ),
             ),
         );
@@ -418,8 +416,12 @@ export class MaintainersEditorComponent implements OnInit {
     }
 
     private filterAutocompleteMntners(mntners: IMntByModel[]) {
+        //Return if not in the list, or if NCC mntner are allowed or is not an NCC mntner
         return mntners.filter((mntner) => {
-            return !this.mntnerService.isAnyNccMntner(mntner.key) && !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner);
+            return (
+                (this.allowNCCMntnerAutocomplete || !this.mntnerService.isAnyNccMntner(mntner.key)) &&
+                !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner)
+            );
         });
     }
 }

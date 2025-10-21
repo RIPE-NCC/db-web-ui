@@ -308,6 +308,61 @@ describe('MaintainersEditorComponent', () => {
             expect(component.mntners.object.length).toBe(1);
         });
 
+        it('should not remove NCC mntners for other env except PROD env', () => {
+            component.properties.NO_PASSWORD_AUTH_POPUP = true;
+            component.properties.ENV = 'TEST';
+            fixture.detectChanges();
+            // get SSO maintainers
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true }]);
+            // fail to get maintainer details
+            httpMock
+                .expectOne({
+                    method: 'GET',
+                    url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=RIPE-NCC-HM-MNT',
+                })
+                .flush(
+                    [
+                        {
+                            key: 'RIPE-NCC-HM-MNT',
+                            type: 'mntner',
+                            auth: ['SSO'],
+                        },
+                    ],
+                    { status: 200, statusText: 'OK' },
+                );
+            await fixture.whenStable();
+            expect(component.mntners.object.length).toBe(2);
+        });
+
+        it('should remove NCC mntners for PROD env', () => {
+            component.properties.NO_PASSWORD_AUTH_POPUP = true;
+            spyOn(component.properties, 'isProdEnv').and.returnValue(true);
+            fixture.detectChanges();
+            // get SSO maintainers
+            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
+                { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
+                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true },
+            ]);
+            // fail to get maintainer details
+            httpMock
+                .expectOne({
+                    method: 'GET',
+                    url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=RIPE-NCC-HM-MNT',
+                })
+                .flush(
+                    [
+                        {
+                            key: 'RIPE-NCC-HM-MNT',
+                            type: 'mntner',
+                            auth: ['SSO'],
+                        },
+                    ],
+                    { status: 200, statusText: 'OK' },
+                );
+            await fixture.whenStable();
+            expect(component.mntners.object.length).toBe(1);
+        });
+
         it('should report error when fetching maintainer details fails', async () => {
             fixture.detectChanges();
             // get SSO maintainers
