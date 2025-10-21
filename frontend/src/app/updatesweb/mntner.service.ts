@@ -19,6 +19,7 @@ import { RestService } from './rest.service';
 @Injectable()
 export class MntnerService {
     public enableNonAuthUpdates: boolean;
+    private nonPwPopup: boolean;
 
     constructor(
         private credentialsService: CredentialsService,
@@ -31,6 +32,7 @@ export class MntnerService {
         public properties: PropertiesService,
     ) {
         this.enableNonAuthUpdates = properties.isEnableNonAuthUpdates();
+        this.nonPwPopup = properties.NO_PASSWORD_AUTH_POPUP;
     }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
@@ -279,6 +281,11 @@ export class MntnerService {
     }
 
     public stripNccMntners(mntners: IMntByModel[], allowEmptyResult: boolean): IMntByModel[] {
+        // Do not strip mntner when MD5 pw popup is not displayed
+        // Applies to DEV, PREPDEV, RC, TEST and not TRAINING or PROD
+        if (this.nonPwPopup) {
+            return mntners;
+        }
         // remove NCC mntners and dupes
         const stripped = this.enableNonAuthUpdates
             ? mntners
