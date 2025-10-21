@@ -314,12 +314,8 @@ describe('MaintainersEditorComponent', () => {
             fixture.detectChanges();
             // get SSO maintainers
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
-                {
-                    key: 'TESTSSO-MNT',
-                    type: 'mntner',
-                    auth: ['MD5-PW'],
-                    mine: true,
-                },
+                { key: 'RIPE-NCC-HM-MNT', type: 'mntner', auth: ['SSO'], mine: true },
+                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true },
             ]);
             // fail to get maintainer details
             httpMock
@@ -347,7 +343,7 @@ describe('MaintainersEditorComponent', () => {
             fixture.detectChanges();
             // get SSO maintainers
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
-                { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
+                { key: 'RIPE-NCC-HM-MNT', type: 'mntner', auth: ['SSO'], mine: true },
                 { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true },
             ]);
             // fail to get maintainer details

@@ -416,9 +416,13 @@ export class MaintainersEditorComponent implements OnInit {
     }
 
     private filterAutocompleteMntners(mntners: IMntByModel[]) {
+        console.log('allow ncc mntner ', this.allowNCCMntnerAutocomplete);
         console.log('Original mntner ', mntners);
         const a = mntners.filter((mntner) => {
-            return !this.mntnerService.isAnyNccMntner(mntner.key) && !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner);
+            return (
+                (!this.mntnerService.isAnyNccMntner(mntner.key) || this.allowNCCMntnerAutocomplete) &&
+                !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner)
+            );
         });
         console.log('Filtered mntners mntner ', a);
         return a;
