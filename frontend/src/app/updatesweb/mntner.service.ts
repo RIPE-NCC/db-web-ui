@@ -170,6 +170,20 @@ export class MntnerService {
         });
     }
 
+    public stripNccMntners(mntners: IMntByModel[]): IMntByModel[] {
+        return this.enableNonAuthUpdates
+            ? mntners
+            : mntners.filter((mntner: IMntByModel) => {
+                  return !this.isAnyNccMntner(mntner.key);
+              });
+    }
+
+    public filterAutocompleteMntners(listedMntners: IMntByModel[], mntners: IMntByModel[]) {
+        return mntners.filter((mntner) => {
+            return (!this.isAnyNccMntner(mntner.key) || this.enableNonAuthUpdates) && !this.isMntnerOnlist(listedMntners, mntner);
+        });
+    }
+
     public enrichWithMine = (ssoMntners: IMntByModel[], mntners: IMntByModel[]) => this.enrichWithSsoStatus(ssoMntners, mntners);
 
     public needsPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
@@ -332,11 +346,5 @@ export class MntnerService {
             return originalObjectMntners.some((mntner: IMntByModel) => credentialsUpperCase.includes(mntner.key.toUpperCase()));
         }
         return false;
-    }
-
-    public filterAutocompleteMntners(listedMntners: IMntByModel[], mntners: IMntByModel[]) {
-        return mntners.filter((mntner) => {
-            return (!this.isAnyNccMntner(mntner.key) || this.enableNonAuthUpdates) && !this.isMntnerOnlist(listedMntners, mntner);
-        });
     }
 }

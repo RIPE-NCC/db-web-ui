@@ -154,9 +154,12 @@ export class MaintainersEditorComponent implements OnInit {
                     ),
                 ),
                 map((data: IMntByModel[]) =>
-                    this.mntnerService.enrichWithNewStatus(
-                        this.mntners.objectOriginal,
-                        this.mntnerService.filterAutocompleteMntners(this.mntners.object, this.enrichWithMine(data)),
+                    this.mntnerService.stripNccMntners(
+                        // Filter mntner set in mntners search bar
+                        this.mntnerService.enrichWithNewStatus(
+                            this.mntners.objectOriginal,
+                            this.mntnerService.filterAutocompleteMntners(this.mntners.object, this.enrichWithMine(data)), //Filter autocomplete search
+                        ),
                     ),
                 ),
             ),
