@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { Subject, switchMap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AlertsService } from '../../shared/alert/alerts.service';
