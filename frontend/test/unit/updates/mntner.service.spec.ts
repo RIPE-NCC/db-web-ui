@@ -30,7 +30,7 @@ describe('MntnerService', () => {
     };
 
     beforeEach(() => {
-        const propertiesService = new PropertiesService(null);
+        const propertiesService: PropertiesService = new PropertiesService(null);
         propertiesService.RIPE_NCC_MNTNERS = [
             'RIPE-NCC-HM-MNT',
             'RIPE-NCC-END-MNT',
@@ -47,6 +47,7 @@ describe('MntnerService', () => {
         TestBed.configureTestingModule({
             imports: [UpdatesWebModule],
             providers: [
+                MntnerService,
                 RestService,
                 PrefixService,
                 WhoisResourcesService,
@@ -66,7 +67,6 @@ describe('MntnerService', () => {
                 },
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
-                MntnerService,
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
