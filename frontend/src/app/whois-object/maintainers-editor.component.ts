@@ -48,7 +48,6 @@ export class MaintainersEditorComponent implements OnInit {
     // ng-select
     public loading = false;
     public alternativesInput$ = new Subject<string>();
-    public allowNCCMntnerAutocomplete: boolean;
     // Interface control
     public restCallInProgress = false;
 
@@ -70,12 +69,11 @@ export class MaintainersEditorComponent implements OnInit {
         public alertsService: AlertsService,
         private jsUtilsService: JsUtilService,
         public orgDropDownSharedService: OrgDropDownSharedService,
-        public properties: PropertiesService,
+        private properties: PropertiesService,
     ) {
         this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             this.ngOnInit();
         });
-        this.allowNCCMntnerAutocomplete = properties.isEnableNonAuthUpdates();
     }
 
     ngOnDestroy() {
@@ -156,7 +154,10 @@ export class MaintainersEditorComponent implements OnInit {
                     ),
                 ),
                 map((data: IMntByModel[]) =>
-                    this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data))),
+                    this.mntnerService.enrichWithNewStatus(
+                        this.mntners.objectOriginal,
+                        this.mntnerService.filterAutocompleteMntners(this.mntners.object, this.enrichWithMine(data)),
+                    ),
                 ),
             ),
         );
@@ -413,18 +414,5 @@ export class MaintainersEditorComponent implements OnInit {
             mntner.mine = !!this.mntnerService.isMntnerOnlist(this.mntners.sso, mntner);
             return mntner;
         });
-    }
-
-    private filterAutocompleteMntners(mntners: IMntByModel[]) {
-        console.log('allow ncc mntner ', this.allowNCCMntnerAutocomplete);
-        console.log('Original mntner ', mntners);
-        const a = mntners.filter((mntner) => {
-            return (
-                (!this.mntnerService.isAnyNccMntner(mntner.key) || this.allowNCCMntnerAutocomplete) &&
-                !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner)
-            );
-        });
-        console.log('Filtered mntners mntner ', a);
-        return a;
     }
 }

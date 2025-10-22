@@ -28,9 +28,8 @@ export class MntnerService {
         private restService: RestService,
         private propertiesService: PropertiesService,
         private http: HttpClient,
-        public properties: PropertiesService,
     ) {
-        this.enableNonAuthUpdates = properties.isEnableNonAuthUpdates();
+        this.enableNonAuthUpdates = propertiesService.isEnableNonAuthUpdates();
     }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
@@ -333,5 +332,11 @@ export class MntnerService {
             return originalObjectMntners.some((mntner: IMntByModel) => credentialsUpperCase.includes(mntner.key.toUpperCase()));
         }
         return false;
+    }
+
+    public filterAutocompleteMntners(listedMntners: IMntByModel[], mntners: IMntByModel[]) {
+        return mntners.filter((mntner) => {
+            return (!this.isAnyNccMntner(mntner.key) || this.enableNonAuthUpdates) && !this.isMntnerOnlist(listedMntners, mntner);
+        });
     }
 }

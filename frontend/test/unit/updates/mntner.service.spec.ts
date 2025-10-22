@@ -17,6 +17,7 @@ import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 describe('MntnerService', () => {
     let mntnerService: MntnerService;
     let httpMock: HttpTestingController;
+    let propertiesService: PropertiesService;
     const credentialServiceMock = {
         getCredentials: () => {
             return [{ mntner: 'B-MNT', successfulPassword: 'secret' }];
@@ -30,7 +31,7 @@ describe('MntnerService', () => {
     };
 
     beforeEach(() => {
-        const propertiesService: PropertiesService = new PropertiesService(null);
+        propertiesService = new PropertiesService(null);
         propertiesService.RIPE_NCC_MNTNERS = [
             'RIPE-NCC-HM-MNT',
             'RIPE-NCC-END-MNT',
@@ -47,15 +48,11 @@ describe('MntnerService', () => {
         TestBed.configureTestingModule({
             imports: [UpdatesWebModule],
             providers: [
-                MntnerService,
                 RestService,
                 PrefixService,
                 WhoisResourcesService,
                 WhoisMetaService,
-                {
-                    provide: PropertiesService,
-                    useFactory: () => propertiesService,
-                },
+                { provide: PropertiesService, useValue: propertiesService },
                 { provide: CredentialsService, useValue: credentialServiceMock },
                 { provide: 'ModalService', useValue: {} },
                 { provide: 'PrefixService', useValue: {} },
@@ -70,10 +67,12 @@ describe('MntnerService', () => {
                 },
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
+                MntnerService,
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
         mntnerService = TestBed.inject(MntnerService);
+        propertiesService = TestBed.inject(PropertiesService);
     });
 
     it('should be loaded', () => {
@@ -404,6 +403,33 @@ describe('MntnerService', () => {
         ];
         expect(attributes.length).toBe(6);
         expect(mntnerService.removeDuplicateMntsFromAttribute(attributes).length).toBe(5);
+    });
+
+    it('should strip already listed mntners', () => {
+        const mockMnts = [
+            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+        ];
+        expect(mntnerService.filterAutocompleteMntners(mockMnts, mockMnts).length).toEqual(0);
+    });
+
+    it('should not stripNccMntners for other env except PROD env', () => {
+        mntnerService = TestBed.inject(MntnerService);
+        mntnerService.enableNonAuthUpdates = true;
+
+        const mockMnts = [
+            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+        ];
+        expect(mntnerService.filterAutocompleteMntners([], mockMnts)).toEqual(mockMnts);
+    });
+
+    it('should stripNccMntners for PROD env', () => {
+        const mockMnts = [
+            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+        ];
+        expect(mntnerService.filterAutocompleteMntners([], mockMnts).length).toEqual(0);
     });
 });
 
