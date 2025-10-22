@@ -17,7 +17,6 @@ import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 describe('MntnerService', () => {
     let mntnerService: MntnerService;
     let httpMock: HttpTestingController;
-    let propertiesService: PropertiesService;
     const credentialServiceMock = {
         getCredentials: () => {
             return [{ mntner: 'B-MNT', successfulPassword: 'secret' }];
@@ -31,7 +30,7 @@ describe('MntnerService', () => {
     };
 
     beforeEach(() => {
-        propertiesService = new PropertiesService(null);
+        const propertiesService = new PropertiesService(null);
         propertiesService.RIPE_NCC_MNTNERS = [
             'RIPE-NCC-HM-MNT',
             'RIPE-NCC-END-MNT',
@@ -72,7 +71,6 @@ describe('MntnerService', () => {
         });
         httpMock = TestBed.inject(HttpTestingController);
         mntnerService = TestBed.inject(MntnerService);
-        propertiesService = TestBed.inject(PropertiesService);
     });
 
     it('should be loaded', () => {
