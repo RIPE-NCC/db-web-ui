@@ -5,7 +5,7 @@ FROM maven:3.9-amazoncorretto-21-al2023 AS build
 
 WORKDIR /src
 
-# INSTALL: node 18
+# INSTALL: node 22
 RUN curl -sL https://rpm.nodesource.com/setup_22.x | bash - && \
     dnf install -y nodejs && \
     dnf clean all && \
