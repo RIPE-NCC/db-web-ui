@@ -240,6 +240,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public updateMaintainers(maintainers: IMaintainers) {
+        console.log('Update mntners');
         this.maintainers = maintainers;
         // delete from attributes all maintainers which doesn't exist in maintainers
         _.remove(this.attributes, (attr: any) => {

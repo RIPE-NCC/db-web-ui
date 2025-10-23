@@ -53,6 +53,7 @@ export class MntnerService {
             if (alreadyAuthed > -1) {
                 return of(true);
             }
+            console.log('mnter service');
             // pop up an auth box
             return this.restService.detailsForMntners(parentMntners).pipe(
                 mergeMap((enrichedMntners: IMntByModel[]) => {
