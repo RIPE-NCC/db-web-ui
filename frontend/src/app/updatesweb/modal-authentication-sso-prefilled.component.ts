@@ -99,6 +99,7 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
                     )
                     .subscribe({
                         next: (resp: any) => {
+                            console.log('associated mntner');
                             this.selected.item.mine = true;
                             this.addSSOAsAuthMethod();
                             this.credentialsService.removeCredentials(); // because it's now an sso mntner
