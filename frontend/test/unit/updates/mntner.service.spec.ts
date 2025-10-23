@@ -403,7 +403,7 @@ describe('MntnerService', () => {
         expect(mntnerService.removeDuplicateMntsFromAttribute(attributes).length).toBe(5);
     });
 
-    it('should strip already listed autocomplete mntners', () => {
+    it('should filter already listed mntners in autocomplete', () => {
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
             { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
@@ -411,7 +411,7 @@ describe('MntnerService', () => {
         expect(mntnerService.filterAutocompleteMntners(mockMnts, mockMnts).length).toEqual(0);
     });
 
-    it('should not stripNccMntners for autocomplete other env except PROD env', () => {
+    it('should not filter NCC Mntner other env except PROD env in autocomplete', () => {
         mntnerService = TestBed.inject(MntnerService);
         mntnerService.enableNonAuthUpdates = true;
 
@@ -422,7 +422,7 @@ describe('MntnerService', () => {
         expect(mntnerService.filterAutocompleteMntners([], mockMnts)).toEqual(mockMnts);
     });
 
-    it('should stripNccMntners for autocomplete PROD env', () => {
+    it('should filter NCC Mntner for PROD env in autocomplete', () => {
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
             { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
