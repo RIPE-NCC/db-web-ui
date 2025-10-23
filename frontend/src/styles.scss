@@ -1,37 +1,37 @@
 /* Extended CSS */
-@import 'src/styles/scss/extend.scss';
+@import './styles/scss/extend.scss';
 /* Generic CSS */
-@import 'src/styles/scss/web-components.scss';
-@import 'src/styles/scss/general.scss';
-@import 'src/styles/scss/paginator.scss';
-@import 'src/styles/scss/query.scss';
-@import 'src/styles/scss/hierarchy-flags-panel.scss';
-@import 'src/styles/scss/advance-filter-panel.scss';
+@import './styles/scss/web-components.scss';
+@import './styles/scss/general.scss';
+@import './styles/scss/paginator.scss';
+@import './styles/scss/query.scss';
+@import './styles/scss/hierarchy-flags-panel.scss';
+@import './styles/scss/advance-filter-panel.scss';
 /* View based CSS */
-@import 'src/styles/scss/create-obj.scss';
-@import 'src/styles/scss/datatables.scss';
-@import 'src/styles/scss/display.scss';
-@import 'src/styles/scss/multisync.scss';
-@import 'src/styles/scss/resources.scss';
-@import 'src/styles/scss/ip-usage-of-all-resources.scss';
-@import 'src/styles/scss/ip-usage.scss';
-@import 'src/styles/scss/whois-object.scss';
+@import './styles/scss/create-obj.scss';
+@import './styles/scss/datatables.scss';
+@import './styles/scss/display.scss';
+@import './styles/scss/multisync.scss';
+@import './styles/scss/resources.scss';
+@import './styles/scss/ip-usage-of-all-resources.scss';
+@import './styles/scss/ip-usage.scss';
+@import './styles/scss/whois-object.scss';
 /* Module based CSS */
-@import 'src/styles/scss/uiselect-custom.scss';
-@import 'src/styles/scss/bootstrap-custom.scss';
-@import 'src/styles/scss/material-custom.scss';
+@import './styles/scss/uiselect-custom.scss';
+@import './styles/scss/bootstrap-custom.scss';
+@import './styles/scss/material-custom.scss';
 /* Custom directives */
-@import 'src/styles/scss/flag.scss';
-@import 'src/styles/scss/forgot-maintainer-password.scss';
-@import 'src/styles/scss/font.scss';
-@import 'src/styles/scss/live-chat.scss';
-@import 'src/styles/scss/alerts-drop-down.scss';
-@import 'src/styles/scss/transfer-drop-down.scss';
-@import 'src/styles/scss/org-drop-down.scss';
-@import 'src/styles/scss/query-flags.scss';
-@import 'src/styles/scss/hierarchy-selector.scss';
-@import 'src/styles/scss/feedback-support-dialog.scss';
-@import 'src/styles/scss/syncupdates.scss';
+@import './styles/scss/flag.scss';
+@import './styles/scss/forgot-maintainer-password.scss';
+@import './styles/scss/font.scss';
+@import './styles/scss/live-chat.scss';
+@import './styles/scss/alerts-drop-down.scss';
+@import './styles/scss/transfer-drop-down.scss';
+@import './styles/scss/org-drop-down.scss';
+@import './styles/scss/query-flags.scss';
+@import './styles/scss/hierarchy-selector.scss';
+@import './styles/scss/feedback-support-dialog.scss';
+@import './styles/scss/syncupdates.scss';
 @import '@ng-select/ng-select/themes/default.theme.css';
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import '@typeform/embed/build/css/widget.css';
