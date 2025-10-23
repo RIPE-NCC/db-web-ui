@@ -1,9 +1,16 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import * as _ from 'lodash';
 import { IUserInfoResponseData } from '../../dropdown/org-data-type.model';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
+import { DescriptionSyntaxComponent } from '../../shared/descriptionsyntax/description-syntax.component';
+import { FilteroutAttributeByNamePipe } from '../../shared/filterout-attribute-by-name.pipe';
+import { SanitizeImgHtmlPipe } from '../../shared/sanitize-img-html.pipe';
+import { SubmittingAgreementComponent } from '../../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../../shared/whois-meta.service';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
 import { IAttributeModel } from '../../shared/whois-response-type.model';
@@ -18,7 +25,17 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
 @Component({
     selector: 'create-mntner-pair',
     templateUrl: './create-mntner-pair.component.html',
-    standalone: false,
+    imports: [
+        NgFor,
+        NgIf,
+        FormsModule,
+        DescriptionSyntaxComponent,
+        RouterLink,
+        SubmittingAgreementComponent,
+        MatButton,
+        FilteroutAttributeByNamePipe,
+        SanitizeImgHtmlPipe,
+    ],
 })
 export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     public submitInProgress: boolean;

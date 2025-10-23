@@ -31,8 +31,7 @@ describe('primitives of modalDeleteObject', () => {
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
         restServiceMock.getReferences.and.returnValue(of({ objectType: 'mntner', primaryKey: 'TEST-MNT' }));
         TestBed.configureTestingModule({
-            declarations: [ModalDeleteObjectComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, ModalDeleteObjectComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
@@ -148,8 +147,7 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
         restServiceMock.deleteObject.and.returnValue(of({}).toPromise());
         restServiceMock.getReferences.and.returnValue(of(REFS_FOR_UNDELETEABLE_OBJECTS));
         TestBed.configureTestingModule({
-            declarations: [ModalDeleteObjectComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, ModalDeleteObjectComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
@@ -231,8 +229,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
-            declarations: [ModalDeleteObjectComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, ModalDeleteObjectComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
@@ -401,8 +398,7 @@ describe('ModalDeleteObjectComponent loading references failures ', () => {
         restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
         restServiceMock.getReferences.and.returnValue(throwError(() => ({ data: 'error' })));
         TestBed.configureTestingModule({
-            declarations: [ModalDeleteObjectComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, ModalDeleteObjectComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },

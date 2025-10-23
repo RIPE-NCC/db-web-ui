@@ -24,8 +24,13 @@ import { ResourcesComponent } from './resources.component';
 import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, SharedModule, WhoisObjectModule, RouterModule, UpdatesTextModule],
-    declarations: [
+    imports: [
+        CommonModule,
+        FormsModule,
+        SharedModule,
+        WhoisObjectModule,
+        RouterModule,
+        UpdatesTextModule,
         AlertsDropDownComponent,
         TransferDropDownComponent,
         HierarchySelectorComponent,

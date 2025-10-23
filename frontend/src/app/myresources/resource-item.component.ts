@@ -1,13 +1,16 @@
+import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { NgbProgressbar, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Labels } from '../label.constants';
-import { IFlag } from '../shared/flag/flag.component';
+import { FlagComponent, IFlag } from '../shared/flag/flag.component';
+import { NameFormatterComponent } from '../shared/name-formatter.component';
 import { ResourceStatusService } from './resource-status.service';
 
 @Component({
     selector: 'resource-item',
     templateUrl: './resource-item.component.html',
-    standalone: false,
+    imports: [RouterLink, NameFormatterComponent, NgIf, NgFor, FlagComponent, NgClass, NgbTooltip, NgbProgressbar, DecimalPipe],
 })
 export class ResourceItemComponent implements OnInit {
     @Input()

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { CoreModule } from '../../../src/app/core/core.module';
+import { IpUsageService } from '../../../src/app/myresources/ip-usage.service';
+import { ResourceStatusService } from '../../../src/app/myresources/resource-status.service';
 import { ResourcesDataService } from '../../../src/app/myresources/resources-data.service';
 import { ResourcesComponent } from '../../../src/app/myresources/resources.component';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -22,9 +24,16 @@ describe('ResourcesComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, RouterTestingModule],
-            declarations: [ResourcesComponent],
-            providers: [ResourcesDataService, { provide: UserInfoService, useValue: userInfoService }, AlertsService, WhoisResourcesService, PropertiesService],
+            imports: [SharedModule, CoreModule, RouterTestingModule, ResourcesComponent],
+            providers: [
+                ResourcesDataService,
+                { provide: UserInfoService, useValue: userInfoService },
+                AlertsService,
+                WhoisResourcesService,
+                PropertiesService,
+                ResourceStatusService,
+                IpUsageService,
+            ],
         });
     });
 

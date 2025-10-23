@@ -31,11 +31,14 @@ describe('DeleteController', () => {
     beforeEach(() => {
         paramMapMock = convertToParamMap({ source: SOURCE, objectType: OBJECT_TYPE, objectName: 'AS1 - AS2' });
         queryParamMock = convertToParamMap({ onCancel: ON_CANCEL });
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        routerMock = jasmine.createSpyObj('Router', ['createUrlTree', 'serializeUrl', 'navigate', 'navigateByUrl', 'events']);
+        routerMock.events = {
+            subscribe: () => of(),
+        };
+
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         TestBed.configureTestingModule({
-            declarations: [DeleteComponent],
-            imports: [],
+            imports: [DeleteComponent],
             providers: [
                 WhoisResourcesService,
                 AlertsService,
@@ -155,7 +158,12 @@ describe('DeleteController', () => {
         await fixture.whenStable();
 
         expect(modalMock.open).toHaveBeenCalled();
-        expect(modalMock.open().componentInstance.inputData).toEqual({ name: 'AS1 - AS2', objectType: OBJECT_TYPE, onCancelPath: ON_CANCEL, source: SOURCE });
+        expect(modalMock.open().componentInstance.inputData).toEqual({
+            name: 'AS1 - AS2',
+            objectType: OBJECT_TYPE,
+            onCancelPath: ON_CANCEL,
+            source: SOURCE,
+        });
     });
 
     it('should display errors if delete object fail', async () => {
@@ -163,7 +171,11 @@ describe('DeleteController', () => {
             data: whoisObjectWithErrors,
         };
 
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(whoisResourcesService.wrapError(error)) });
+        modalMock.open.and.returnValue({
+            componentInstance: {},
+            closed: EMPTY,
+            dismissed: of(whoisResourcesService.wrapError(error)),
+        });
         fixture.detectChanges();
 
         await fixture.whenStable();
@@ -185,7 +197,11 @@ describe('DeleteController', () => {
             data: 'just text',
         };
 
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(whoisResourcesService.wrapError(error)) });
+        modalMock.open.and.returnValue({
+            componentInstance: {},
+            closed: EMPTY,
+            dismissed: of(whoisResourcesService.wrapError(error)),
+        });
         fixture.detectChanges();
         await fixture.whenStable();
 
@@ -238,7 +254,11 @@ describe('DeleteController', () => {
         const error = {
             data: whoisObjectWithErrors,
         };
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(whoisResourcesService.wrapError(error)) });
+        modalMock.open.and.returnValue({
+            componentInstance: {},
+            closed: EMPTY,
+            dismissed: of(whoisResourcesService.wrapError(error)),
+        });
         fixture.detectChanges();
         await fixture.whenStable();
         expect(component.skipClearError).toBeTrue();

@@ -36,8 +36,7 @@ describe('DisplayComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
         TestBed.configureTestingModule({
-            declarations: [DisplayComponent],
-            imports: [SharedModule],
+            imports: [SharedModule, DisplayComponent],
             providers: [
                 CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
@@ -250,8 +249,7 @@ describe('DisplayComponent with object containing slash', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
         TestBed.configureTestingModule({
-            declarations: [DisplayComponent],
-            imports: [SharedModule],
+            imports: [SharedModule, DisplayComponent],
             providers: [
                 CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
@@ -389,8 +387,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
         TestBed.configureTestingModule({
-            declarations: [DisplayComponent],
-            imports: [SharedModule],
+            imports: [SharedModule, DisplayComponent],
             providers: [
                 CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },

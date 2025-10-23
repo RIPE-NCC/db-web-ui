@@ -26,8 +26,7 @@ describe('CreateNewApiKeyComponent', () => {
         matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
         alertsServiceMock = jasmine.createSpyObj<AlertsService>('AlertsService', ['addGlobalError', 'clearAlertMessages']);
         void TestBed.configureTestingModule({
-            imports: [ApiKeysModule, MatDialogModule, NoopAnimationsModule],
-            declarations: [CreateNewApiKeyComponent],
+            imports: [ApiKeysModule, MatDialogModule, NoopAnimationsModule, CreateNewApiKeyComponent],
             providers: [
                 { provide: RestService, useValue: restServiceMock },
                 { provide: ApiKeysService, useValue: apiKeysServiceMock },

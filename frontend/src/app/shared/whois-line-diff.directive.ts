@@ -1,10 +1,7 @@
 import { Directive, ElementRef, Input, OnChanges, OnInit } from '@angular/core';
 import DiffMatchPatch, { Diff } from 'diff-match-patch';
 
-@Directive({
-    selector: '[whoisLineDiff]',
-    standalone: false,
-})
+@Directive({ selector: '[whoisLineDiff]' })
 export class WhoisLineDiffDirective implements OnInit, OnChanges {
     @Input()
     left: string | number | boolean;

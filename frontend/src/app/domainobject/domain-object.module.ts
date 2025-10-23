@@ -11,8 +11,17 @@ import { ModalDomainObjectSplashComponent } from './modal-domain-object-splash.c
 import { PrefixService } from './prefix.service';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, SharedModule, WhoisObjectModule, UpdatesWebModule],
-    declarations: [DisplayDomainObjectsComponent, DomainObjectWizardComponent, ModalDomainObjectSplashComponent, ModalDomainCreationWaitComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SharedModule,
+        WhoisObjectModule,
+        UpdatesWebModule,
+        DisplayDomainObjectsComponent,
+        DomainObjectWizardComponent,
+        ModalDomainObjectSplashComponent,
+        ModalDomainCreationWaitComponent,
+    ],
     providers: [PrefixService],
     exports: [DisplayDomainObjectsComponent, DomainObjectWizardComponent, ModalDomainObjectSplashComponent, ModalDomainCreationWaitComponent],
 })

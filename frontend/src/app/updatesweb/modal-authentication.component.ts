@@ -1,8 +1,12 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
-import { BannerTypes } from '../banner/banner.component';
+import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { IUserInfoResponseData } from '../dropdown/org-data-type.model';
 import { PropertiesService } from '../properties.service';
 import { CredentialsService } from '../shared/credentials.service';
@@ -26,7 +30,7 @@ export interface IModalAuthentication {
 @Component({
     selector: 'modal-authentication',
     templateUrl: './modal-authentication.component.html',
-    standalone: false,
+    imports: [FormsModule, NgIf, BannerComponent, NgFor, RouterLink, MatButton],
 })
 export class ModalAuthenticationComponent implements OnInit {
     public close: any;

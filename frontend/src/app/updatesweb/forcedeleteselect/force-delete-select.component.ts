@@ -1,4 +1,7 @@
+import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
@@ -6,7 +9,7 @@ import { AlertsService } from '../../shared/alert/alerts.service';
 @Component({
     selector: 'force-delete-select',
     templateUrl: './force-delete-select.component.html',
-    standalone: false,
+    imports: [FormsModule, NgFor, MatButton],
 })
 export class ForceDeleteSelectComponent implements OnInit {
     public objectTypes: string[] = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];

@@ -1,17 +1,40 @@
-import { ViewportScroller } from '@angular/common';
+import { NgClass, NgFor, NgIf, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatSuffix } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { BannerTypes } from '../banner/banner.component';
+import { BannerComponent, BannerTypes } from '../banner/banner.component';
+import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
+import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { LabelPipe } from '../shared/label.pipe';
+import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
+import { ScrollerDirective } from '../shared/scroller.directive';
+import { SearchFieldComponent } from '../shared/sreachfield/search-field.component';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { IObjectMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel } from '../shared/whois-response-type.model';
+import { WebAppVersionComponent } from '../version/web-app-version.component';
+import { WhoisVersionComponent } from '../version/whois-version.component';
+import { AdvanceFilterPanelComponent } from './advance-filter-panel.component';
+import { CertificateInfoComponent } from './certificate-info.component';
+import { HierarchyFlagsPanelComponent } from './hierarchy-flags-panel.component';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
+import { InverseLookupPanelComponent } from './inverse-lookup-panel.component';
+import { LookupComponent } from './lookup.component';
 import { ObjectTypesEnum } from './object-types.enum';
+import { QueryFlagsComponent } from './query-flags.component';
 import { QueryFlagsService } from './query-flags.service';
 import { IQueryParameters, ITemplateTerm, QueryParametersService } from './query-parameters.service';
 import { QueryService } from './query.service';
+import { SharePanelComponent } from './share-panel.component';
+import { TemplateComponent } from './templatecomponent/template.component';
+import { TypesPanelComponent } from './types-panel.component';
 
 export interface IQueryState {
     source: string;
@@ -34,7 +57,38 @@ export type ShareLink = {
 @Component({
     selector: 'query',
     templateUrl: './query.component.html',
-    standalone: false,
+    imports: [
+        BannerComponent,
+        OrgDropDownComponent,
+        FormsModule,
+        NgClass,
+        SearchFieldComponent,
+        QueryFlagsComponent,
+        NgIf,
+        MatButton,
+        MatMenuTrigger,
+        MatMenu,
+        TypesPanelComponent,
+        HierarchyFlagsPanelComponent,
+        InverseLookupPanelComponent,
+        AdvanceFilterPanelComponent,
+        SubmittingAgreementComponent,
+        MatIconButton,
+        MatSuffix,
+        MatTooltip,
+        MatIcon,
+        SharePanelComponent,
+        NgFor,
+        LookupComponent,
+        ScrollerDirective,
+        LoadingIndicatorComponent,
+        TemplateComponent,
+        CertificateInfoComponent,
+        TypeformBannerComponent,
+        WhoisVersionComponent,
+        WebAppVersionComponent,
+        LabelPipe,
+    ],
 })
 export class QueryComponent implements OnDestroy {
     public offset = 0;

@@ -17,8 +17,7 @@ describe('ModalEditAttributeController', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            declarations: [ModalEditAttributeComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, ModalEditAttributeComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 PropertiesService,

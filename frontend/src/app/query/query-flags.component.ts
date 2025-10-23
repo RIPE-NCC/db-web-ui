@@ -1,10 +1,13 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { FlagComponent } from '../shared/flag/flag.component';
+import { LabelPipe } from '../shared/label.pipe';
 import { IQueryFlag, QueryFlagsService } from './query-flags.service';
 
 @Component({
     selector: 'query-flags',
     templateUrl: './query-flags.component.html',
-    standalone: false,
+    imports: [NgIf, NgFor, FlagComponent, LabelPipe],
 })
 export class QueryFlagsComponent implements OnChanges {
     // whole string entered in search field

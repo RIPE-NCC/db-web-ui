@@ -6,7 +6,6 @@ import { QueryService } from '../query.service';
 @Component({
     selector: 'lookup-template',
     template: `<pre>{{ response }}</pre>`,
-    standalone: false,
 })
 export class TemplateComponent implements OnChanges {
     @Input()

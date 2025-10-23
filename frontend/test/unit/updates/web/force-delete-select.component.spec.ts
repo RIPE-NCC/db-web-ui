@@ -18,8 +18,7 @@ describe('ForceDeleteSelectComponent', () => {
     beforeEach(() => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
-            declarations: [ForceDeleteSelectComponent],
-            imports: [FormsModule],
+            imports: [FormsModule, ForceDeleteSelectComponent],
             providers: [
                 PropertiesService,
                 AlertsService,

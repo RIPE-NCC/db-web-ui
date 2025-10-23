@@ -159,8 +159,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
-            declarations: [CreateModifyComponent],
-            imports: [SharedModule, CoreModule, NgSelectModule],
+            imports: [SharedModule, CoreModule, NgSelectModule, CreateModifyComponent],
             providers: [
                 PrefixService,
                 ResourceStatusService,
@@ -290,7 +289,6 @@ describe('CreateModifyComponent with modifying test cases', () => {
         it('should handle success put upon submit click when form is complete', () => {
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'changed', 'dummy@ripe.net');
             component.submit();
-            fixture.detectChanges();
             httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123' }).flush({
                 objects: {
                     object: [

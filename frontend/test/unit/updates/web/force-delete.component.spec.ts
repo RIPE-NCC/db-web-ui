@@ -71,8 +71,7 @@ describe('ForceDeleteController', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
 
         TestBed.configureTestingModule({
-            declarations: [ForceDeleteComponent],
-            imports: [FormsModule],
+            imports: [FormsModule, ForceDeleteComponent],
             providers: [
                 {
                     provide: ActivatedRoute,
@@ -246,8 +245,7 @@ describe('ForceDeleteController should be able to handle escape objected with sl
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
-            declarations: [ForceDeleteComponent],
-            imports: [FormsModule],
+            imports: [FormsModule, ForceDeleteComponent],
             providers: [
                 {
                     provide: ActivatedRoute,

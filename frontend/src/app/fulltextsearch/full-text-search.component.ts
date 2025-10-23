@@ -1,11 +1,23 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 import { isArray } from 'lodash';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { HelpMarkerComponent } from '../shared/help-marker.component';
+import { LabelPipe } from '../shared/label.pipe';
+import { PaginationComponent } from '../shared/paginator/pagination.component';
+import { SanitizeImgHtmlPipe } from '../shared/sanitize-img-html.pipe';
+import { SearchFieldComponent } from '../shared/sreachfield/search-field.component';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { IAttributeModel, IVersion } from '../shared/whois-response-type.model';
+import { WhoisVersionComponent } from '../version/whois-version.component';
 import { FullTextResponseService } from './full-text-response.service';
+import { FullTextResultSummaryComponent } from './full-text-result-summary.component';
 import { FullTextSearchService } from './full-text-search.service';
 import { IResultSummary, ISearchResponseModel } from './types.model';
 
@@ -13,7 +25,21 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
     selector: 'full-text-search',
     templateUrl: './full-text-search.component.html',
     styleUrl: 'full-text-search.component.scss',
-    standalone: false,
+    imports: [
+        FormsModule,
+        SearchFieldComponent,
+        NgIf,
+        MatButton,
+        NgFor,
+        HelpMarkerComponent,
+        SubmittingAgreementComponent,
+        FullTextResultSummaryComponent,
+        PaginationComponent,
+        RouterLink,
+        WhoisVersionComponent,
+        LabelPipe,
+        SanitizeImgHtmlPipe,
+    ],
 })
 export class FullTextSearchComponent implements OnInit, OnDestroy {
     // In

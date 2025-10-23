@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
@@ -24,7 +26,7 @@ import { RestService } from './rest.service';
         [resultFormatter]="autocompleteAttributeRFormatter"
         [inputFormatter]="autocompleteAttributeIFormatter"
     />`,
-    standalone: false,
+    imports: [FormsModule, NgbTypeahead],
 })
 export class TypeaheadComponent {
     @Input()

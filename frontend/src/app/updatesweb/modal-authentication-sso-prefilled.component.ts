@@ -9,14 +9,17 @@ import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
 
-import { BannerTypes } from '../banner/banner.component';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { IModalAuthentication } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
 @Component({
     selector: 'modal-authentication-sso-prefilled',
     templateUrl: './modal-authentication-sso-prefilled.component.html',
-    standalone: false,
+    imports: [FormsModule, NgIf, BannerComponent, NgFor, MatButton],
 })
 export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     public close: any;

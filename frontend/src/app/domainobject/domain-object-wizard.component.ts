@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,8 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 import { MntnerService } from '../updatesweb/mntner.service';
 import { RestService } from '../updatesweb/rest.service';
 import { IAuthParams, WebUpdatesCommonsService } from '../updatesweb/web-updates-commons.service';
+import { MaintainersEditorComponent } from '../whois-object/maintainers-editor.component';
+import { WhoisObjectEditorComponent } from '../whois-object/whois-object-editor.component';
 import { ModalDomainCreationWaitComponent } from './modal-domain-creation-wait.component';
 import { ModalDomainObjectSplashComponent } from './modal-domain-object-splash.component';
 import { PrefixServiceUtils } from './prefix.service.utils';
@@ -32,7 +34,7 @@ interface IDomainObject {
 @Component({
     selector: 'domain-object-wizard',
     templateUrl: './domain-object-wizard.component.html',
-    standalone: false,
+    imports: [NgIf, MaintainersEditorComponent, WhoisObjectEditorComponent],
 })
 export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public objectType: string;

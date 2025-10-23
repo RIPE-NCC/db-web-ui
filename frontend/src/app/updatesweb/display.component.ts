@@ -1,8 +1,12 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Subscription, combineLatest } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
+import { WhoisLineDiffDirective } from '../shared/whois-line-diff.directive';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { MessageStoreService } from './message-store.service';
@@ -12,7 +16,7 @@ import { WebUpdatesCommonsService } from './web-updates-commons.service';
 @Component({
     selector: 'display',
     templateUrl: './display.component.html',
-    standalone: false,
+    imports: [NgIf, NgFor, WhoisLineDiffDirective, MatButton, SanitizeHtmlPipe],
 })
 export class DisplayComponent implements OnInit, OnDestroy {
     public objectSource: string;

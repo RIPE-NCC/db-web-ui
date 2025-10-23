@@ -15,8 +15,10 @@ import { RequireLoginComponent } from './require-login.component';
 import { SsoAddedComponent } from './sso-added.component';
 
 @NgModule({
-    imports: [CommonModule, CoreModule, SharedModule],
-    declarations: [
+    imports: [
+        CommonModule,
+        CoreModule,
+        SharedModule,
         FindMaintainerComponent,
         ConfirmMaintainerComponent,
         ForgotMaintainerPasswordComponent,

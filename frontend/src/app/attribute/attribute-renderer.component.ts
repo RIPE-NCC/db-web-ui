@@ -1,10 +1,14 @@
+import { NgClass, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { CredentialsService } from '../shared/credentials.service';
+import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -14,11 +18,21 @@ import { ModalAddAttributeComponent } from '../updatesweb/modal-add-attribute.co
 import { ModalCreateRoleForAbuseCComponent } from '../updatesweb/modal-create-role-for-abusec.component';
 import { RestService } from '../updatesweb/rest.service';
 import { AttributeMetadataService } from './attribute-metadata.service';
+import { AttributeReverseZonesComponent } from './attribute-reverse-zones.component';
 
 @Component({
     selector: 'attribute-renderer',
     templateUrl: './attribute-renderer.component.html',
-    standalone: false,
+    imports: [
+        NgClass,
+        NgIf,
+        AttributeReverseZonesComponent,
+        DescriptionSyntaxComponent,
+        FormsModule,
+        NgbTypeahead,
+        NgSelectComponent,
+        NgOptionTemplateDirective,
+    ],
 })
 export class AttributeRendererComponent implements OnInit {
     @Input()

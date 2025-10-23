@@ -1,10 +1,14 @@
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { ErrorReporterService } from '../updatesweb/error-reporter.service';
@@ -27,7 +31,7 @@ export interface ITextObject {
 @Component({
     selector: 'text-create',
     templateUrl: './text-create.component.html',
-    standalone: false,
+    imports: [MatButton, FormsModule, NgIf, SubmittingAgreementComponent],
 })
 export class TextCreateComponent implements OnInit {
     public restCallInProgress: boolean = false;

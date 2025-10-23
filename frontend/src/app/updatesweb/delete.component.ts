@@ -1,5 +1,7 @@
+import { NgFor } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatButton } from '@angular/material/button';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { ModalDeleteObjectComponent } from './modal-delete-object.component';
@@ -7,7 +9,7 @@ import { ModalDeleteObjectComponent } from './modal-delete-object.component';
 @Component({
     selector: 'delete-component',
     templateUrl: './delete.component.html',
-    standalone: false,
+    imports: [NgFor, MatButton, RouterLink],
 })
 export class DeleteComponent implements OnInit, OnDestroy {
     public modalInProgress: boolean;

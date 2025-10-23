@@ -1,4 +1,6 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -9,7 +11,7 @@ import { RestService } from './rest.service';
 @Component({
     selector: 'display-mntner-pair',
     templateUrl: './display-mntner-pair.component.html',
-    standalone: false,
+    imports: [NgFor, NgIf, MatButton],
 })
 export class DisplayMntnerPairComponent implements OnInit, OnDestroy {
     public objectSource: string;

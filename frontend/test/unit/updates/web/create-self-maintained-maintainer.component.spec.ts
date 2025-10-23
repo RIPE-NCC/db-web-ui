@@ -28,8 +28,7 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
         TestBed.configureTestingModule({
-            declarations: [CreateSelfMaintainedMaintainerComponent],
-            imports: [SharedModule, CoreModule, NgSelectModule],
+            imports: [SharedModule, CoreModule, NgSelectModule, CreateSelfMaintainedMaintainerComponent],
             providers: [
                 PropertiesService,
                 MessageStoreService,

@@ -20,8 +20,7 @@ describe('FullTextSearchComponent', () => {
     beforeEach(() => {
         fullTextSearchService = jasmine.createSpyObj('FullTextSearchService', ['doSearch']);
         TestBed.configureTestingModule({
-            declarations: [FullTextSearchComponent, FullTextResultSummaryComponent],
-            imports: [SharedModule, CoreModule, RouterTestingModule],
+            imports: [SharedModule, CoreModule, RouterTestingModule, FullTextSearchComponent, FullTextResultSummaryComponent],
             providers: [
                 { provide: FullTextSearchService, useValue: fullTextSearchService },
                 FullTextResponseService,

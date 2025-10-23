@@ -11,8 +11,7 @@ describe('MailSentComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule],
-            declarations: [MailSentComponent],
+            imports: [SharedModule, CoreModule, MailSentComponent],
             providers: [{ provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (email: string) => 'test@work.net' } } } }, PropertiesService],
         });
         fixture = TestBed.createComponent(MailSentComponent);

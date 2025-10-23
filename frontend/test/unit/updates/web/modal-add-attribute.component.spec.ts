@@ -13,8 +13,7 @@ describe('ModalAddAttributeComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            declarations: [ModalAddAttributeComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, ModalAddAttributeComponent],
             providers: [{ provide: NgbActiveModal, useValue: modalMock }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         componentFixture = TestBed.createComponent(ModalAddAttributeComponent);

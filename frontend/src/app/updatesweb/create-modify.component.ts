@@ -1,6 +1,11 @@
+import { NgFor, NgIf, SlicePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
@@ -9,9 +14,16 @@ import { ResourceStatusService } from '../myresources/resource-status.service';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
+import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
+import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-name.pipe';
+import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
+import { SanitizeImgHtmlPipe } from '../shared/sanitize-img-html.pipe';
+import { ScrollerDirective } from '../shared/scroller.directive';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel, IStatusOption } from '../shared/whois-response-type.model';
+import { MaintainersEditorComponent } from '../whois-object/maintainers-editor.component';
 import { EnumService } from './enum.service';
 import { ErrorReporterService } from './error-reporter.service';
 import { LinkService } from './link.service';
@@ -27,6 +39,7 @@ import { OrganisationHelperService } from './organisation-helper.service';
 import { PreferenceService } from './preference.service';
 import { RestService } from './rest.service';
 import { ScreenLogicInterceptorService } from './screen-logic-interceptor.service';
+import { TypeaheadComponent } from './typeahead.component';
 import { WebUpdatesCommonsService } from './web-updates-commons.service';
 import { STATE } from './web-updates-state.constants';
 
@@ -45,7 +58,24 @@ export interface IMaintainers {
 @Component({
     selector: 'create-modify',
     templateUrl: './create-modify.component.html',
-    standalone: false,
+    imports: [
+        NgIf,
+        MatButton,
+        MaintainersEditorComponent,
+        NgFor,
+        MatTooltip,
+        FormsModule,
+        TypeaheadComponent,
+        NgSelectComponent,
+        NgOptionTemplateDirective,
+        DescriptionSyntaxComponent,
+        SubmittingAgreementComponent,
+        ScrollerDirective,
+        SlicePipe,
+        FilteroutAttributeByNamePipe,
+        SanitizeHtmlPipe,
+        SanitizeImgHtmlPipe,
+    ],
 })
 export class CreateModifyComponent implements OnInit, OnDestroy {
     public optionList: IOptionList = { status: [] };

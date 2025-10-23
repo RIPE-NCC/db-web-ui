@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
@@ -7,13 +8,14 @@ import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { ErrorReporterService } from '../updatesweb/error-reporter.service';
 import { MessageStoreService } from '../updatesweb/message-store.service';
 import { PreferenceService } from '../updatesweb/preference.service';
+import { WhoisObjectTextEditorComponent } from '../whois-object/whois-object-text-editor.component';
 import { TextCommonsService } from './text-commons.service';
 import { ITextObject } from './text-create.component';
 
 @Component({
     selector: 'text-modify',
     templateUrl: './text-modify.component.html',
-    standalone: false,
+    imports: [MatButton, WhoisObjectTextEditorComponent],
 })
 export class TextModifyComponent implements OnInit {
     public restCallInProgress: boolean = false;

@@ -1,12 +1,16 @@
+import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { PropertiesService } from '../properties.service';
+import { LabelPipe } from '../shared/label.pipe';
 import { ObjectTypesEnum } from './object-types.enum';
 import { IQueryParameters, QueryParametersService } from './query-parameters.service';
 
 @Component({
     selector: 'types-panel',
     templateUrl: './types-panel.component.html',
-    standalone: false,
+    imports: [NgIf, MatCheckbox, FormsModule, LabelPipe],
 })
 export class TypesPanelComponent {
     @Input()

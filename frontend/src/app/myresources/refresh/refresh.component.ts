@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatMiniFabButton } from '@angular/material/button';
 
 @Component({
     selector: 'refresh',
@@ -8,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
             <em class="fal fa-redo"></em>
         </button>
     </p>`,
-    standalone: false,
+    imports: [MatMiniFabButton],
 })
 export class RefreshComponent {
     @Input()

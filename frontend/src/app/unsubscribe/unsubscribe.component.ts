@@ -1,10 +1,12 @@
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { UnsubscribeService } from './unsubscribe.service';
 
 @Component({
     templateUrl: './unsubscribe.component.html',
-    standalone: false,
+    imports: [NgIf, LoadingIndicatorComponent],
 })
 export class UnsubscribeComponent implements OnInit {
     public messageId: string;

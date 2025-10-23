@@ -35,8 +35,14 @@ import { WhoisResourcesService } from './whois-resources.service';
 
 @NgModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [CommonModule, FormsModule, NgbModule, NgbNavModule, NgSelectModule, MatButtonModule, BannerComponent],
-    declarations: [
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgbModule,
+        NgbNavModule,
+        NgSelectModule,
+        MatButtonModule,
+        BannerComponent,
         AlertBannersComponent,
         AutoFocusDirective,
         PaginationComponent,

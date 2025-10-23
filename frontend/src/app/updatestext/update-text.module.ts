@@ -13,8 +13,7 @@ import { TextCreateComponent } from './text-create.component';
 import { TextModifyComponent } from './text-modify.component';
 
 @NgModule({
-    declarations: [TextCreateComponent, TextModifyComponent],
-    imports: [CoreModule, CommonModule, FormsModule, SharedModule, UpdatesWebModule, WhoisObjectModule],
+    imports: [CoreModule, CommonModule, FormsModule, SharedModule, UpdatesWebModule, WhoisObjectModule, TextCreateComponent, TextModifyComponent],
     providers: [RpslService, SerialExecutorService, TextCommonsService, provideHttpClient(withInterceptorsFromDi())],
 })
 export class UpdatesTextModule {}

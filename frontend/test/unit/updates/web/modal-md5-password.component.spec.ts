@@ -16,8 +16,7 @@ describe('ModalMd5PasswordComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            declarations: [ModalMd5PasswordComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, ModalMd5PasswordComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 CryptService,

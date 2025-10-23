@@ -43,8 +43,7 @@ describe('CreateModifyComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
-            declarations: [CreateModifyComponent],
-            imports: [SharedModule, CoreModule, NgSelectModule, WhoisObjectModule],
+            imports: [SharedModule, CoreModule, NgSelectModule, WhoisObjectModule, CreateModifyComponent],
             providers: [
                 PrefixService,
                 ResourceStatusService,

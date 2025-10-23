@@ -43,8 +43,7 @@ describe('CreateModifyComponent for organisation', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ) });
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
-            declarations: [CreateModifyComponent],
-            imports: [SharedModule, CoreModule, NgSelectModule],
+            imports: [SharedModule, CoreModule, NgSelectModule, CreateModifyComponent],
             providers: [
                 PrefixService,
                 ResourceStatusService,
@@ -130,7 +129,7 @@ describe('CreateModifyComponent for organisation', () => {
         spyOn(component.organisationHelperService, 'updateAbuseC');
         component.submit();
         httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-TEST70-RIPE' }).flush(DEFAULT_RESPONSE);
-        fixture.detectChanges();
+        // fixture.detectChanges();
         expect(component.organisationHelperService.updateAbuseC).toHaveBeenCalled();
     });
 
@@ -148,7 +147,6 @@ describe('CreateModifyComponent for organisation', () => {
         httpMock
             .expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-TEST70-RIPE' })
             .flush(ERROR_RESPONSE, { status: 400, statusText: 'Bad request' });
-        fixture.detectChanges();
         await fixture.whenStable();
         expect(component.alertsService.alerts.errors).toHaveSize(1);
         expect(component.alertsService.alerts.errors[0].plainText).toEqual('Update of organisation failed, please see below for more details');

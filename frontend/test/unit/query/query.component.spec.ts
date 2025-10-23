@@ -170,8 +170,17 @@ describe('QueryComponent', () => {
             'getTypeOfSearchedTerm',
         ]);
         TestBed.configureTestingModule({
-            declarations: [QueryComponent, CertificateInfoComponent, LookupComponent, TemplateComponent, WhoisObjectViewerComponent],
-            imports: [SharedModule, CoreModule, RouterTestingModule.withRoutes([]), MatMenuModule],
+            imports: [
+                SharedModule,
+                CoreModule,
+                RouterTestingModule.withRoutes([]),
+                MatMenuModule,
+                QueryComponent,
+                CertificateInfoComponent,
+                LookupComponent,
+                TemplateComponent,
+                WhoisObjectViewerComponent,
+            ],
             providers: [
                 { provide: QueryService, useValue: queryServiceSpy },
                 WhoisMetaService,
@@ -739,7 +748,6 @@ describe('QueryComponent', () => {
                 }),
             };
             component.init();
-            fixture.detectChanges();
             expect(component.offset).toEqual(0);
             expect(component.qp.showFullObjectDetails).toEqual(false);
             expect(component.qp.reverseDomain).toEqual(false);

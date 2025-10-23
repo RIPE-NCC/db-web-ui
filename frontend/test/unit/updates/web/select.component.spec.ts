@@ -206,8 +206,7 @@ describe('SelectController', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}) });
 
         TestBed.configureTestingModule({
-            declarations: [SelectComponent],
-            imports: [FormsModule],
+            imports: [FormsModule, SelectComponent],
             providers: [
                 { provide: WhoisMetaService, useValue: whoisMetaServiceMock },
                 UserInfoService,

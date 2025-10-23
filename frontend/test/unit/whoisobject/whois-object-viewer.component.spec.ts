@@ -19,8 +19,7 @@ describe('WhoisObjectViewerComponent', () => {
     describe('with logged in user', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule, RouterTestingModule],
-                declarations: [WhoisObjectViewerComponent],
+                imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule, RouterTestingModule, WhoisObjectViewerComponent],
                 providers: [
                     { provide: UserInfoService, useValue: { isLogedIn: () => true, userLoggedIn$: of() } },
                     SessionInfoService,
@@ -56,8 +55,7 @@ describe('WhoisObjectViewerComponent', () => {
     describe('without logged in user', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule, RouterTestingModule],
-                declarations: [WhoisObjectViewerComponent],
+                imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule, RouterTestingModule, WhoisObjectViewerComponent],
                 providers: [
                     {
                         provide: UserInfoService,

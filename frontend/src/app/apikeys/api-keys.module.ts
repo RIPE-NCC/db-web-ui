@@ -72,8 +72,11 @@ import { RevokeKeyDialogComponent } from './revoke-key-dialog/revoke-key-dialog.
         CdkCopyToClipboard,
         MatAnchor,
         MatCardHeader,
+        ApiKeysComponent,
+        CreateNewApiKeyComponent,
+        RevokeKeyDialogComponent,
+        ApiKeyConfirmationDialogComponent,
     ],
-    declarations: [ApiKeysComponent, CreateNewApiKeyComponent, RevokeKeyDialogComponent, ApiKeyConfirmationDialogComponent],
     providers: [provideNativeDateAdapter(), ApiKeysService],
 })
 export class ApiKeysModule {}

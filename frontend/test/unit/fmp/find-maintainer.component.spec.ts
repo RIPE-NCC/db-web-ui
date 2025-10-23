@@ -21,8 +21,7 @@ describe('FindMaintainerComponent', () => {
         userInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
         mockFmpErrorService = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule],
-            declarations: [FindMaintainerComponent],
+            imports: [SharedModule, CoreModule, FindMaintainerComponent],
             providers: [
                 { provide: FindMaintainerService, useValue: findMaintainerService },
                 { provide: UserInfoService, useValue: userInfoService },

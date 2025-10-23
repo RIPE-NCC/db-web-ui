@@ -41,7 +41,15 @@ import { SelectComponent } from './select.component';
 import { TypeaheadComponent } from './typeahead.component';
 
 @NgModule({
-    declarations: [
+    imports: [
+        CommonModule,
+        FormsModule,
+        SharedModule,
+        NgSelectModule,
+        WhoisObjectModule,
+        RouterModule,
+        MatTooltip,
+        BannerComponent,
         DisplayComponent,
         DisplayMntnerPairComponent,
         SelectComponent,
@@ -60,7 +68,6 @@ import { TypeaheadComponent } from './typeahead.component';
         ModalEditAttributeComponent,
         TypeaheadComponent,
     ],
-    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule, WhoisObjectModule, RouterModule, MatTooltip, BannerComponent],
     providers: [
         PreferenceService,
         CookieService,

@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -14,7 +16,7 @@ interface IModalCreateRoleForAbuceC {
 @Component({
     selector: 'modal-create-role-for-abusec',
     templateUrl: './modal-create-role-for-abusec.component.html',
-    standalone: false,
+    imports: [FormsModule, MatButton],
 })
 export class ModalCreateRoleForAbuseCComponent {
     private static NEW_ROLE_TEMPLATE: IAttributeModel[] = [

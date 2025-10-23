@@ -7,7 +7,7 @@ describe('RefreshComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [RefreshComponent],
+            imports: [RefreshComponent],
         });
     });
 

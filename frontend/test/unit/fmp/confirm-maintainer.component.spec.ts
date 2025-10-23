@@ -21,8 +21,7 @@ describe('ConfirmMaintainerComponent', () => {
         mockEmailLinkService = jasmine.createSpyObj('EmailLinkService', ['get', 'update']);
         mockFmpErrorService = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
         TestBed.configureTestingModule({
-            declarations: [ConfirmMaintainerComponent],
-            imports: [],
+            imports: [ConfirmMaintainerComponent],
             providers: [
                 AlertsService,
                 WhoisMetaService,

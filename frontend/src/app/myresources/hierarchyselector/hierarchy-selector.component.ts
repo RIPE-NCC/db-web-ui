@@ -1,5 +1,8 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap';
+import { NameFormatterComponent } from '../../shared/name-formatter.component';
 import { UserInfoService } from '../../userinfo/user-info.service';
 import { IResourceModel } from '../resource-type.model';
 import { HierarchySelectorService } from './hierarchy-selector.service';
@@ -7,7 +10,7 @@ import { HierarchySelectorService } from './hierarchy-selector.service';
 @Component({
     selector: 'hierarchy-selector',
     templateUrl: './hierarchy-selector.component.html',
-    standalone: false,
+    imports: [NgbDropdown, NgbDropdownToggle, NgIf, NgbDropdownMenu, NgFor, NameFormatterComponent],
 })
 export class HierarchySelectorComponent implements OnChanges {
     public parents: string[];

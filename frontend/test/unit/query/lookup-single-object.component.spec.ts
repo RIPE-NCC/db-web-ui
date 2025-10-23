@@ -21,8 +21,7 @@ describe('LookupSingleObjectComponent', () => {
     beforeEach(() => {
         lookupServiceSpy = jasmine.createSpyObj('LookupService', ['lookupWhoisObject']);
         TestBed.configureTestingModule({
-            declarations: [LookupSingleObjectComponent, LookupComponent, WhoisObjectViewerComponent],
-            imports: [SharedModule, RouterTestingModule],
+            imports: [SharedModule, RouterTestingModule, LookupSingleObjectComponent, LookupComponent, WhoisObjectViewerComponent],
             providers: [
                 PropertiesService,
                 UserInfoService,

@@ -8,7 +8,7 @@ describe('WebAppVersionComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [WebAppVersionComponent],
+            imports: [WebAppVersionComponent],
             providers: [{ provide: PropertiesService, useValue: { DB_WEB_UI_BUILD_TIME: '2020-01-22T18:22:13Z', isTrainingEnv: () => {} } }],
         }).compileComponents();
     }));

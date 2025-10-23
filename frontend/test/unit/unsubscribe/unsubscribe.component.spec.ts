@@ -18,8 +18,7 @@ describe('UnsubscribeComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [UnsubscribeComponent, LoadingIndicatorComponent],
-            imports: [],
+            imports: [UnsubscribeComponent, LoadingIndicatorComponent],
             providers: [
                 UnsubscribeService,
                 { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (messageId: string) => '123456789012345678' } } } },

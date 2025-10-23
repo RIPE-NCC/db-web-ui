@@ -40,8 +40,7 @@ describe('WhoisObjectEditorComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule],
-            declarations: [WhoisObjectEditorComponent],
+            imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule, WhoisObjectEditorComponent],
             providers: [
                 AttributeMetadataService,
                 MntnerService,

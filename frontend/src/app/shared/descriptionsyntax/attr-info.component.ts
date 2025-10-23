@@ -4,7 +4,6 @@ import { WhoisMetaService } from '../whois-meta.service';
 @Component({
     selector: 'attr-info',
     template: `<span [innerHTML]="text"></span>`,
-    standalone: false,
 })
 export class AttributeInfoComponent implements OnInit {
     @Input()

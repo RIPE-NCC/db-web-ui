@@ -1,4 +1,7 @@
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
@@ -9,7 +12,7 @@ import { OrgDropDownSharedService } from './org-drop-down-shared.service';
 @Component({
     selector: 'org-drop-down',
     templateUrl: './org-drop-down.component.html',
-    standalone: false,
+    imports: [NgIf, NgSelectComponent, FormsModule, NgOptionTemplateDirective],
 })
 export class OrgDropDownComponent implements OnInit {
     public selectedOrg: IUserInfoOrganisation;

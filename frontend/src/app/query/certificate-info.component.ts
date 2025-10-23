@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
@@ -6,7 +7,7 @@ import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.servi
 @Component({
     selector: 'certificate-info',
     templateUrl: './certificate-info.component.html',
-    standalone: false,
+    imports: [NgIf],
 })
 export class CertificateInfoComponent implements OnDestroy {
     public member: boolean;

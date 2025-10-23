@@ -86,8 +86,7 @@ describe('WhoisObjectTextEditorComponent', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
-            declarations: [TextModifyComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, TextModifyComponent],
             providers: [
                 WhoisResourcesService,
                 WhoisMetaService,

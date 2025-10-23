@@ -19,8 +19,7 @@ describe('FeedbackSupportDialogComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, MatDialogModule],
-            declarations: [FeedbackSupportDialogComponent],
+            imports: [SharedModule, CoreModule, MatDialogModule, FeedbackSupportDialogComponent],
             providers: [PropertiesService, UserInfoService, { provide: MatDialogRef, useValue: dialogRef }],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         });

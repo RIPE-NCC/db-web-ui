@@ -17,8 +17,7 @@ describe('MoreSpecificsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [MoreSpecificsComponent, RefreshComponent],
-            imports: [SharedModule, CoreModule, RouterTestingModule],
+            imports: [SharedModule, CoreModule, RouterTestingModule, MoreSpecificsComponent, RefreshComponent],
             providers: [
                 MoreSpecificsService,
                 PropertiesService,

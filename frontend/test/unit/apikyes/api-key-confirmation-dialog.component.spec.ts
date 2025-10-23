@@ -9,8 +9,7 @@ describe('ApiKeyConfirmationDialogComponent', () => {
 
     beforeEach(waitForAsync(() => {
         void TestBed.configureTestingModule({
-            imports: [ApiKeysModule, MatDialogModule],
-            declarations: [ApiKeyConfirmationDialogComponent],
+            imports: [ApiKeysModule, MatDialogModule, ApiKeyConfirmationDialogComponent],
             providers: [{ provide: MAT_DIALOG_DATA, useValue: { data: {} } }],
         }).compileComponents();
     }));

@@ -57,8 +57,6 @@ import { TypesPanelComponent } from './types-panel.component';
         MatDialogTitle,
         SearchFieldComponent,
         BannerComponent,
-    ],
-    declarations: [
         LookupComponent,
         LookupSingleObjectComponent,
         CertificateInfoComponent,

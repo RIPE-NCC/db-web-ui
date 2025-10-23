@@ -47,19 +47,7 @@ import { UserInfoModule } from './userinfo/user-info.module';
 import { WhoisObjectModule } from './whois-object/whois-object.module';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        SyncupdatesComponent,
-        EmailConfirmationComponent,
-        UnsubscribeComponent,
-        UnsubscribeConfirmComponent,
-        IeBannerComponent,
-        MenuComponent,
-        ErrorPageComponent,
-        NotFoundPageComponent,
-        LegalComponent,
-        FeedbackSupportDialogComponent,
-    ],
+    declarations: [AppComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
     imports: [
@@ -85,6 +73,16 @@ import { WhoisObjectModule } from './whois-object/whois-object.module';
         ApiKeysModule,
         CustomDateAdapterModule,
         BannerComponent,
+        SyncupdatesComponent,
+        EmailConfirmationComponent,
+        UnsubscribeComponent,
+        UnsubscribeConfirmComponent,
+        IeBannerComponent,
+        MenuComponent,
+        ErrorPageComponent,
+        NotFoundPageComponent,
+        LegalComponent,
+        FeedbackSupportDialogComponent,
     ],
     providers: [
         CookieService,

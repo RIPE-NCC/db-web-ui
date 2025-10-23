@@ -1,4 +1,6 @@
+import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { forkJoin, of, throwError } from 'rxjs';
@@ -22,7 +24,7 @@ interface IObjectFromParameters {
 @Component({
     selector: 'force-delete',
     templateUrl: './force-delete.component.html',
-    standalone: false,
+    imports: [NgFor, MatButton],
 })
 export class ForceDeleteComponent implements OnInit {
     public object: IObjectFromParameters = {

@@ -5,7 +5,6 @@ import { ObjectTypesEnum } from '../query/object-types.enum';
 @Component({
     selector: 'name-formatter',
     template: `{{ formatted }}`,
-    standalone: false,
 })
 export class NameFormatterComponent implements OnInit, OnChanges {
     @Input()

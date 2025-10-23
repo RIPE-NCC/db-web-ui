@@ -33,8 +33,7 @@ describe('MaintainersEditorComponent', () => {
         beforeEach(() => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
             TestBed.configureTestingModule({
-                declarations: [MaintainersEditorComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule],
+                imports: [SharedModule, CoreModule, NgSelectModule, MaintainersEditorComponent],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,
@@ -248,8 +247,7 @@ describe('MaintainersEditorComponent', () => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
             webUpdatesCommonsServiceMock = jasmine.createSpyObj('WebUpdatesCommonsService', ['performAuthentication']);
             TestBed.configureTestingModule({
-                declarations: [MaintainersEditorComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule],
+                imports: [SharedModule, CoreModule, NgSelectModule, MaintainersEditorComponent],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,

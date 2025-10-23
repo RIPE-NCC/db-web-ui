@@ -1,13 +1,18 @@
+import { NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { AutoFocusDirective } from '../shared/autofocus.directive';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { SyncupdatesService } from './syncupdates.service';
 
 @Component({
     selector: 'syncupdates',
     templateUrl: './syncupdates.component.html',
-    standalone: false,
+    imports: [NgIf, FormsModule, AutoFocusDirective, SubmittingAgreementComponent, MatButton],
 })
 export class SyncupdatesComponent {
     public rpslObject: string;

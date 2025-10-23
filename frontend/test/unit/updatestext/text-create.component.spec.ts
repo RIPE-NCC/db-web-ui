@@ -46,8 +46,7 @@ describe('TextCreateComponent', () => {
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}), dismissed: EMPTY });
         TestBed.configureTestingModule({
-            declarations: [TextCreateComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, SharedModule, TextCreateComponent],
             providers: [
                 { provide: PreferenceService, useValue: preferencesServiceMock },
                 WhoisResourcesService,

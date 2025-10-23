@@ -1,4 +1,6 @@
+import { NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 export interface IFlag {
     colour?: string;
@@ -9,7 +11,7 @@ export interface IFlag {
 @Component({
     selector: 'flag',
     templateUrl: './flag.component.html',
-    standalone: false,
+    imports: [NgIf, NgbPopover],
 })
 export class FlagComponent implements OnInit {
     @Input()

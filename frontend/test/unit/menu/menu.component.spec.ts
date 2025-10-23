@@ -17,8 +17,7 @@ describe('LeftHandMenuComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [MenuComponent],
-            imports: [RouterTestingModule, MatDialogModule],
+            imports: [RouterTestingModule, MatDialogModule, MenuComponent],
             providers: [
                 MenuService,
                 IpUsageService,

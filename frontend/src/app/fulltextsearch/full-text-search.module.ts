@@ -10,8 +10,7 @@ import { FullTextSearchComponent } from './full-text-search.component';
 import { FullTextSearchService } from './full-text-search.service';
 
 @NgModule({
-    imports: [CommonModule, CoreModule, SharedModule, RouterModule, SearchFieldComponent],
-    declarations: [FullTextSearchComponent, FullTextResultSummaryComponent],
+    imports: [CommonModule, CoreModule, SharedModule, RouterModule, SearchFieldComponent, FullTextSearchComponent, FullTextResultSummaryComponent],
     providers: [FullTextResponseService, FullTextSearchService],
 })
 export class FullTextSearchModule {}

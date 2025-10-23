@@ -1,4 +1,6 @@
+import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PropertiesService } from '../properties.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -6,7 +8,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 @Component({
     selector: 'modal-edit-attribute',
     templateUrl: './modal-edit-attribute.component.html',
-    standalone: false,
+    imports: [NgIf, MatButton],
 })
 export class ModalEditAttributeComponent {
     @Input()

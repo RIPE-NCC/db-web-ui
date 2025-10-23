@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbProgressbar } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { interval } from 'rxjs';
 import { PrefixService } from './prefix.service';
@@ -7,7 +7,7 @@ import { PrefixService } from './prefix.service';
 @Component({
     selector: 'modal-domain-creation-wait',
     templateUrl: './modal-domain-creation-wait.component.html',
-    standalone: false,
+    imports: [NgbProgressbar],
 })
 export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
     public close: any;

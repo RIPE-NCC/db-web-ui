@@ -1,4 +1,6 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
@@ -9,7 +11,9 @@ import { Labels } from '../../label.constants';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
 import { CredentialsService } from '../../shared/credentials.service';
-import { IFlag } from '../../shared/flag/flag.component';
+import { FlagComponent, IFlag } from '../../shared/flag/flag.component';
+import { LoadingIndicatorComponent } from '../../shared/loadingindicator/loading-indicator.component';
+import { NameFormatterComponent } from '../../shared/name-formatter.component';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
 import { IAttributeModel, IWhoisObjectModel, IWhoisResponseModel } from '../../shared/whois-response-type.model';
 import { ITextObject } from '../../updatestext/text-create.component';
@@ -17,7 +21,16 @@ import { MntnerService } from '../../updatesweb/mntner.service';
 import { ModalDeleteObjectComponent } from '../../updatesweb/modal-delete-object.component';
 import { PreferenceService } from '../../updatesweb/preference.service';
 import { RestService } from '../../updatesweb/rest.service';
+import { MaintainersEditorComponent } from '../../whois-object/maintainers-editor.component';
+import { WhoisObjectEditorComponent } from '../../whois-object/whois-object-editor.component';
+import { WhoisObjectTextEditorComponent } from '../../whois-object/whois-object-text-editor.component';
+import { WhoisObjectViewerComponent } from '../../whois-object/whois-object-viewer.component';
+import { AssociatedObjectsComponent } from '../associatedobjects/associated-objects.component';
+import { HierarchySelectorComponent } from '../hierarchyselector/hierarchy-selector.component';
 import { HierarchySelectorService } from '../hierarchyselector/hierarchy-selector.service';
+import { IpUsageComponent } from '../ip-usage.component';
+import { MoreSpecificsComponent } from '../morespecifics/more-specifics.component';
+import { RefreshComponent } from '../refresh/refresh.component';
 import { ResourceStatusService } from '../resource-status.service';
 import { IResourceDetailsResponseModel, IResourceTickets } from '../resource-type.model';
 import { ResourcesDataService } from '../resources-data.service';
@@ -25,7 +38,24 @@ import { ResourcesDataService } from '../resources-data.service';
 @Component({
     selector: 'resource-details',
     templateUrl: './resource-details.component.html',
-    standalone: false,
+    imports: [
+        NameFormatterComponent,
+        NgFor,
+        FlagComponent,
+        NgClass,
+        NgIf,
+        HierarchySelectorComponent,
+        IpUsageComponent,
+        MatButton,
+        LoadingIndicatorComponent,
+        WhoisObjectViewerComponent,
+        MaintainersEditorComponent,
+        WhoisObjectEditorComponent,
+        WhoisObjectTextEditorComponent,
+        RefreshComponent,
+        MoreSpecificsComponent,
+        AssociatedObjectsComponent,
+    ],
 })
 export class ResourceDetailsComponent implements OnDestroy {
     public whoisObject: IWhoisObjectModel;

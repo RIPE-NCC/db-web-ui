@@ -14,8 +14,7 @@ describe('QueryFlagsComponent', () => {
     beforeEach(() => {
         queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlagsFromTerm', 'getFlags', 'addSpaceBehindFlagT']);
         TestBed.configureTestingModule({
-            declarations: [QueryFlagsComponent],
-            imports: [SharedModule, CoreModule],
+            imports: [SharedModule, CoreModule, QueryFlagsComponent],
             providers: [
                 { provide: QueryFlagsService, useValue: queryFlagsServiceSpy },
                 provideHttpClient(withInterceptorsFromDi()),

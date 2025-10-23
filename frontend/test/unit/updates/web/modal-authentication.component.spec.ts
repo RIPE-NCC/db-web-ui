@@ -32,8 +32,7 @@ describe('ModalAuthenticationComponent', () => {
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'removeCredentials', 'setCredentials']);
         TestBed.configureTestingModule({
-            declarations: [ModalAuthenticationComponent],
-            imports: [FormsModule, SharedModule, RouterModule],
+            imports: [FormsModule, SharedModule, RouterModule, ModalAuthenticationComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 WhoisResourcesService,

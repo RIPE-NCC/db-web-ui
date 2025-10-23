@@ -1,21 +1,19 @@
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLine } from '@angular/material/core';
+import { MatDialogActions, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MatActionList, MatListItem } from '@angular/material/list';
 import { PropertiesService } from '../properties.service';
-import { UserInfoService } from '../userinfo/user-info.service';
 
 @Component({
     selector: 'feedback-support-dialog',
     templateUrl: './feedback-support-dialog.component.html',
-    standalone: false,
+    imports: [MatDialogTitle, MatDialogActions, MatActionList, MatListItem, MatLine, NgIf],
 })
 export class FeedbackSupportDialogComponent implements OnInit {
     public showChatMenuItem: boolean;
 
-    constructor(
-        private properties: PropertiesService,
-        private dialogRef: MatDialogRef<FeedbackSupportDialogComponent>,
-        private userInfoService: UserInfoService,
-    ) {}
+    constructor(private properties: PropertiesService, private dialogRef: MatDialogRef<FeedbackSupportDialogComponent>) {}
 
     public ngOnInit() {
         this.showChatMenuItem = this.properties.LIVE_CHAT_KEY !== '';

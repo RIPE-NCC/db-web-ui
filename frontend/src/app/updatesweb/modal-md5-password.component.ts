@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CryptService } from './crypt.service';
 
 @Component({
     selector: 'modal-md5-password',
     templateUrl: './modal-md5-password.component.html',
-    standalone: false,
+    imports: [FormsModule, MatButton],
 })
 export class ModalMd5PasswordComponent {
     public password: string = '';

@@ -90,8 +90,7 @@ describe('TextModifyComponent', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
-            declarations: [TextModifyComponent],
-            imports: [FormsModule, SharedModule, WhoisObjectModule],
+            imports: [FormsModule, SharedModule, WhoisObjectModule, TextModifyComponent],
             providers: [
                 { provide: PreferenceService, useValue: preferencesServiceMock },
                 WhoisResourcesService,

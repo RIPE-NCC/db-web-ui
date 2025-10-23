@@ -49,7 +49,11 @@ describe('ResourceDetailsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [
+            imports: [
+                SharedModule,
+                CoreModule,
+                NgSelectModule,
+                RouterTestingModule,
                 ResourceDetailsComponent,
                 FlagComponent,
                 HierarchySelectorComponent,
@@ -64,7 +68,6 @@ describe('ResourceDetailsComponent', () => {
                 AttributeReverseZonesComponent,
                 RefreshComponent,
             ],
-            imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
             providers: [
                 IpAddressService,
                 ResourceStatusService,

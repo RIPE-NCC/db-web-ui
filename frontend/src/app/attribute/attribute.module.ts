@@ -9,8 +9,7 @@ import { AttributeReverseZonesComponent } from './attribute-reverse-zones.compon
 import { AttributeSharedService } from './attribute-shared.service';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule],
-    declarations: [AttributeReverseZonesComponent, AttributeRendererComponent],
+    imports: [CommonModule, FormsModule, SharedModule, NgSelectModule, AttributeReverseZonesComponent, AttributeRendererComponent],
     providers: [AttributeMetadataService, AttributeSharedService],
     exports: [AttributeRendererComponent],
 })

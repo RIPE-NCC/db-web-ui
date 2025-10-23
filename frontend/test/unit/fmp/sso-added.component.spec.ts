@@ -10,8 +10,7 @@ describe('SsoAddedComponent', () => {
     let fixture: ComponentFixture<SsoAddedComponent>;
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule],
-            declarations: [SsoAddedComponent],
+            imports: [SharedModule, CoreModule, SsoAddedComponent],
             providers: [
                 PropertiesService,
                 { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (param: string) => (param === 'user' ? 'userX' : 'test@work.net') } } } },

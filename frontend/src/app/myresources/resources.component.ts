@@ -1,20 +1,46 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNav, NgbNavChangeEvent, NgbNavContent, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkBase, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { LabelPipe } from '../shared/label.pipe';
+import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { AlertsDropDownComponent } from './alertsdropdown/alerts-drop-down.component';
+import { IpUsageOfAllResourcesComponent } from './ip-usage-of-all-resources.component';
+import { RefreshComponent } from './refresh/refresh.component';
+import { ResourceItemComponent } from './resource-item.component';
 import { IAsnResourceDetails, IIPv4ResourceDetails, IIPv6ResourceDetails, IResourceOverviewResponseModel } from './resource-type.model';
 import { ResourcesDataService } from './resources-data.service';
+import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down.component';
 
 @Component({
     selector: 'resource-component',
     templateUrl: './resources.component.html',
-    standalone: false,
+    imports: [
+        NgbNav,
+        NgbNavItem,
+        NgbNavItemRole,
+        NgbNavLink,
+        NgbNavLinkBase,
+        NgIf,
+        NgbNavOutlet,
+        MatButton,
+        TransferDropDownComponent,
+        AlertsDropDownComponent,
+        IpUsageOfAllResourcesComponent,
+        NgbNavContent,
+        LoadingIndicatorComponent,
+        NgFor,
+        ResourceItemComponent,
+        RefreshComponent,
+        LabelPipe,
+    ],
 })
 export class ResourcesComponent implements OnDestroy {
     public ipv4Resources: IIPv4ResourceDetails[] = [];
@@ -58,7 +84,7 @@ export class ResourcesComponent implements OnDestroy {
                 }
             }
         });
-        const queryParamSub = this.activatedRoute.queryParams.subscribe((params) => {
+        const queryParamSub = this.activatedRoute.queryParams.subscribe(() => {
             this.init();
         });
         this.subscriptions.push(orgSub);
@@ -73,7 +99,7 @@ export class ResourcesComponent implements OnDestroy {
         this.isShowingSponsored = this.activatedRoute.snapshot.queryParamMap.get('sponsored') === 'true';
         this.activeSponsoredTab = this.isShowingSponsored ? 1 : 0;
 
-        this.showTheIpAnalyserBanner(this.activatedRoute.snapshot.queryParamMap.get('ipanalyserRedirect') === 'true');
+        this.showTheIpAnalyserBanner();
 
         this.lastTab = this.activatedRoute.snapshot.queryParamMap.get('type');
         // default show inetnum if lastTab have value different then 'inetnum', 'inet6num', 'aut-num'
@@ -135,7 +161,7 @@ export class ResourcesComponent implements OnDestroy {
         return !!arg && !!arg.membershipId;
     }
 
-    private showTheIpAnalyserBanner(ipanalyserRedirect: boolean) {
+    private showTheIpAnalyserBanner() {
         const redirect: boolean = this.activatedRoute.snapshot.queryParamMap.get('ipanalyserRedirect') === 'true';
 
         this.isRedirectedFromIpAnalyser = redirect;

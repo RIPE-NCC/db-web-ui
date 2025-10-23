@@ -1,4 +1,6 @@
+import { NgFor, NgIf, SlicePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -7,7 +9,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 @Component({
     selector: 'display-domain-objects',
     templateUrl: './display-domain-objects.component.html',
-    standalone: false,
+    imports: [NgFor, NgIf, MatButton, SlicePipe],
 })
 export class DisplayDomainObjectsComponent implements OnInit {
     public source: string;

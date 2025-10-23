@@ -1,4 +1,7 @@
+import { NgFor, NgIf, SlicePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -17,7 +20,7 @@ interface IModalDelete {
 @Component({
     selector: 'modal-delete-object',
     templateUrl: './modal-delete-object.component.html',
-    standalone: false,
+    imports: [NgIf, FormsModule, NgFor, MatButton, SlicePipe],
 })
 export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     public MAX_REFS_TO_SHOW: number = 5;

@@ -1,9 +1,13 @@
+import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import * as _ from 'lodash';
 import { union } from 'lodash';
 import { forkJoin } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { CredentialsService } from '../shared/credentials.service';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { RpslService } from '../updatestext/rpsl.service';
 import { TextCommonsService } from '../updatestext/text-commons.service';
@@ -15,7 +19,7 @@ import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interc
 @Component({
     selector: 'whois-object-text-editor',
     templateUrl: './whois-object-text-editor.component.html',
-    standalone: false,
+    imports: [FormsModule, NgIf, SubmittingAgreementComponent, MatButton],
 })
 export class WhoisObjectTextEditorComponent implements OnInit {
     @Input()

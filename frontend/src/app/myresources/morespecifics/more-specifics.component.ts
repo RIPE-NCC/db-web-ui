@@ -1,11 +1,16 @@
-import { Location } from '@angular/common';
+import { Location, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { NameFormatterComponent } from '../../shared/name-formatter.component';
+import { TableScrollerDirective } from '../../shared/table-scroller.directive';
+import { RefreshComponent } from '../refresh/refresh.component';
 import { IMoreSpecificsApiResult, MoreSpecificsService } from './more-specifics.service';
 
 @Component({
     selector: 'more-specifics',
     templateUrl: './more-specifics.component.html',
-    standalone: false,
+    imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, RefreshComponent],
 })
 export class MoreSpecificsComponent implements OnChanges {
     @Input()

@@ -1,5 +1,13 @@
+import { NgFor } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatButton } from '@angular/material/button';
+import { MatOption } from '@angular/material/core';
+import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
+import { MatFormField, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import moment from 'moment-timezone';
 import { Subject, switchMap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -14,7 +22,22 @@ import { ApiKey } from '../types';
     selector: 'create-new-api-key',
     templateUrl: './create-new-api-key.component.html',
     styleUrl: './create-new-api-key.component.scss',
-    standalone: false,
+    imports: [
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FormsModule,
+        MatHint,
+        MatDatepickerInput,
+        MatDatepickerToggle,
+        MatSuffix,
+        MatDatepicker,
+        NgFor,
+        MatAutocompleteTrigger,
+        MatAutocomplete,
+        MatOption,
+        MatButton,
+    ],
 })
 export class CreateNewApiKeyComponent implements OnInit {
     @Output()

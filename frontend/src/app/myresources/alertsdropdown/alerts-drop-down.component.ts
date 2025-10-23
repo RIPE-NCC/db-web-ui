@@ -1,5 +1,8 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { IUserInfoOrganisation } from '../../dropdown/org-data-type.model';
 import { UserInfoService } from '../../userinfo/user-info.service';
 import { IpAddressService } from '../ip-address.service';
@@ -9,7 +12,7 @@ import { ResourcesDataService } from '../resources-data.service';
 @Component({
     selector: 'alerts-drop-down',
     templateUrl: './alerts-drop-down.component.html',
-    standalone: false,
+    imports: [NgIf, NgbDropdown, MatButton, NgbPopover, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgFor],
 })
 export class AlertsDropDownComponent implements OnChanges {
     @Input()

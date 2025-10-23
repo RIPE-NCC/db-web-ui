@@ -1,4 +1,7 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -9,7 +12,7 @@ import { FmpErrorService } from './fmp-error.service';
 @Component({
     selector: 'find-maintainer',
     templateUrl: './find-maintainer.component.html',
-    standalone: false,
+    imports: [FormsModule, MatButton, NgIf, NgFor],
 })
 export class FindMaintainerComponent implements OnInit {
     public foundMaintainer: IFindMaintainer;

@@ -1,9 +1,17 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { Subject, concat, of } from 'rxjs';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
+import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-name.pipe';
+import { SanitizeImgHtmlPipe } from '../shared/sanitize-img-html.pipe';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -16,7 +24,20 @@ import { RestService } from './rest.service';
 @Component({
     selector: 'create-self-maintained-maintainer',
     templateUrl: './create-self-maintained-maintainer.component.html',
-    standalone: false,
+    imports: [
+        NgSelectComponent,
+        FormsModule,
+        NgLabelTemplateDirective,
+        NgOptionTemplateDirective,
+        DescriptionSyntaxComponent,
+        NgIf,
+        NgFor,
+        SubmittingAgreementComponent,
+        MatButton,
+        AsyncPipe,
+        FilteroutAttributeByNamePipe,
+        SanitizeImgHtmlPipe,
+    ],
 })
 export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     public submitInProgress = false;

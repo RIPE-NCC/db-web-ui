@@ -15,8 +15,7 @@ describe('LookupComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [LookupComponent, WhoisObjectViewerComponent],
-            imports: [SharedModule, RouterTestingModule],
+            imports: [SharedModule, RouterTestingModule, LookupComponent, WhoisObjectViewerComponent],
             providers: [
                 PropertiesService,
                 {

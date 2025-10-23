@@ -15,8 +15,20 @@ import { WhoisObjectTextEditorComponent } from './whois-object-text-editor.compo
 import { WhoisObjectViewerComponent } from './whois-object-viewer.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, SharedModule, AttributeModule, NgSelectModule, RouterModule, MatTooltip, MatCheckbox],
-    declarations: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent, WhoisObjectTextEditorComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SharedModule,
+        AttributeModule,
+        NgSelectModule,
+        RouterModule,
+        MatTooltip,
+        MatCheckbox,
+        WhoisObjectViewerComponent,
+        WhoisObjectEditorComponent,
+        MaintainersEditorComponent,
+        WhoisObjectTextEditorComponent,
+    ],
     providers: [WebUpdatesCommonsService, UserInfoService],
     exports: [WhoisObjectViewerComponent, WhoisObjectEditorComponent, MaintainersEditorComponent, WhoisObjectTextEditorComponent],
 })

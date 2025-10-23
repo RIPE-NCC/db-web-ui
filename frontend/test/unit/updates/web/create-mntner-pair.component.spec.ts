@@ -39,8 +39,7 @@ describe('CreateMntnerPairComponent', () => {
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
             TestBed.configureTestingModule({
-                declarations: [CreateMntnerPairComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
+                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule, CreateMntnerPairComponent],
                 providers: [
                     PropertiesService,
                     CreateService,
@@ -214,8 +213,7 @@ describe('CreateMntnerPairComponent', () => {
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
             TestBed.configureTestingModule({
-                declarations: [CreateMntnerPairComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
+                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule, CreateMntnerPairComponent],
                 providers: [
                     PropertiesService,
                     CreateService,

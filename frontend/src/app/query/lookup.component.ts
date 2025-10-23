@@ -1,12 +1,16 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../properties.service';
+import { LabelPipe } from '../shared/label.pipe';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisObjectModel } from '../shared/whois-response-type.model';
+import { WhoisObjectViewerComponent } from '../whois-object/whois-object-viewer.component';
 
 @Component({
     selector: 'lookup',
     templateUrl: './lookup.component.html',
-    standalone: false,
+    imports: [NgIf, RouterLink, NgFor, WhoisObjectViewerComponent, LabelPipe],
 })
 export class LookupComponent implements OnChanges {
     @Input()

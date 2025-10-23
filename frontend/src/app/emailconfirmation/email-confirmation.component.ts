@@ -1,11 +1,13 @@
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { EmailConfirmationService } from './email-confirmation.service';
 
 @Component({
     selector: 'email-confirmation',
     templateUrl: './email-confirm.component.html',
-    standalone: false,
+    imports: [NgIf, LoadingIndicatorComponent],
 })
 export class EmailConfirmationComponent implements OnInit {
     public token: string;

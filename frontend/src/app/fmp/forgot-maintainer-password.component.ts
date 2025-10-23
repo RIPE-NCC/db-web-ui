@@ -1,4 +1,7 @@
+import { NgIf, UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { UserInfoService } from '../userinfo/user-info.service';
@@ -8,7 +11,7 @@ import { ForgotMaintainerPasswordService, IForgotMaintainerPassword } from './fo
 @Component({
     selector: 'fmp',
     templateUrl: './forgot-maintainer-password.component.html',
-    standalone: false,
+    imports: [NgIf, FormsModule, MatButton, UpperCasePipe],
 })
 export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
     public generatedPDFUrl: string;

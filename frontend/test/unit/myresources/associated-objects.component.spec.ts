@@ -19,8 +19,7 @@ describe('AssociatedObjectsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [AssociatedObjectsComponent],
-            imports: [SharedModule, CoreModule, RouterTestingModule],
+            imports: [SharedModule, CoreModule, RouterTestingModule, AssociatedObjectsComponent],
             providers: [AssociatedObjectsService, PropertiesService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);

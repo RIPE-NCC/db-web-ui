@@ -41,8 +41,7 @@ describe('ApiKeysComponent', () => {
         matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
 
         void TestBed.configureTestingModule({
-            imports: [ApiKeysModule, MatDialogModule, NoopAnimationsModule],
-            declarations: [ApiKeysComponent],
+            imports: [ApiKeysModule, MatDialogModule, NoopAnimationsModule, ApiKeysComponent],
             providers: [
                 { provide: ApiKeysService, useValue: apiKeysServiceMock },
                 { provide: RestService, useValue: {} },

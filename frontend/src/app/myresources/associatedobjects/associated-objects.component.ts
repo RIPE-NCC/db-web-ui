@@ -1,11 +1,16 @@
+import { NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../../properties.service';
+import { NameFormatterComponent } from '../../shared/name-formatter.component';
+import { TableScrollerDirective } from '../../shared/table-scroller.directive';
 import { AssociatedObjectType, AssociatedObjectsService, IAssociatedObjectApiResult } from './associated-objects.service';
 
 @Component({
     selector: 'associated-objects',
     templateUrl: './associated-objects.component.html',
-    standalone: false,
+    imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, SlicePipe],
 })
 export class AssociatedObjectsComponent implements OnChanges {
     @Input()

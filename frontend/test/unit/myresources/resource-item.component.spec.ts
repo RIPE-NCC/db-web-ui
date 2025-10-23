@@ -12,8 +12,7 @@ describe('ResourceItemComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, RouterTestingModule],
-            declarations: [ResourceItemComponent, FlagComponent],
+            imports: [SharedModule, RouterTestingModule, ResourceItemComponent, FlagComponent],
             providers: [IpAddressService, ResourceStatusService],
         });
     });

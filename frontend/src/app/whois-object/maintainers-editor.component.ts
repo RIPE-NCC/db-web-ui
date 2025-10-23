@@ -1,4 +1,7 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { concat, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
@@ -8,6 +11,7 @@ import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { IAttributeModel, IMntByModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
 import { MntnerService } from '../updatesweb/mntner.service';
@@ -19,7 +23,7 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
 @Component({
     selector: 'maintainers-editor',
     templateUrl: './maintainers-editor.component.html',
-    standalone: false,
+    imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgIf, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
 })
 export class MaintainersEditorComponent implements OnInit {
     @Input()
@@ -71,7 +75,7 @@ export class MaintainersEditorComponent implements OnInit {
         public orgDropDownSharedService: OrgDropDownSharedService,
         private properties: PropertiesService,
     ) {
-        this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
+        this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe(() => {
             this.ngOnInit();
         });
     }
@@ -247,7 +251,7 @@ export class MaintainersEditorComponent implements OnInit {
                     this.intersectionDefaultMntAndSsoMnt(result);
                     this.populateNgSelectFieldWithMnt();
                 },
-                error: (error: any) => {
+                error: () => {
                     this.populateNgSelectFieldWithMnt();
                 },
             });

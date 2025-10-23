@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { MenuService } from './menu.service';
         <app-nav-bar *ngIf="isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
         <app-nav-bar *ngIf="!isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
     `,
-    standalone: false,
+    imports: [NgIf],
 })
 export class MenuComponent implements OnInit, OnDestroy {
     @Input()

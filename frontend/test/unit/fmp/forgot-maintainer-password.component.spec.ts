@@ -25,8 +25,7 @@ describe('ForgotMaintainerPasswordComponent', () => {
         forgotMaintainerPasswordService = jasmine.createSpyObj('ForgotMaintainerPasswordService', ['generatePdfAndEmail']);
         userInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule],
-            declarations: [ForgotMaintainerPasswordComponent],
+            imports: [SharedModule, CoreModule, ForgotMaintainerPasswordComponent],
             providers: [
                 { provide: ForgotMaintainerPasswordService, useValue: forgotMaintainerPasswordService },
                 { provide: UserInfoService, useValue: userInfoService },

@@ -1,10 +1,13 @@
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 
 @Component({
     templateUrl: './unsubscribe-confirm.component.html',
-    standalone: false,
+    imports: [NgIf, LoadingIndicatorComponent, MatButton],
 })
 export class UnsubscribeConfirmComponent implements OnInit {
     public messageId: string;

@@ -1,4 +1,7 @@
+import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { PropertiesService } from '../properties.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -12,7 +15,7 @@ interface ISelectedObjectType {
 @Component({
     selector: 'select-component',
     templateUrl: './select.component.html',
-    standalone: false,
+    imports: [FormsModule, NgFor, MatButton],
 })
 export class SelectComponent implements OnInit {
     public selected: ISelectedObjectType;
