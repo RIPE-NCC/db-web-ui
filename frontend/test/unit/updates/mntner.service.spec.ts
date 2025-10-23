@@ -52,10 +52,7 @@ describe('MntnerService', () => {
                 PrefixService,
                 WhoisResourcesService,
                 WhoisMetaService,
-                {
-                    provide: PropertiesService,
-                    useFactory: () => propertiesService,
-                },
+                { provide: PropertiesService, useValue: propertiesService },
                 { provide: CredentialsService, useValue: credentialServiceMock },
                 { provide: 'ModalService', useValue: {} },
                 { provide: 'PrefixService', useValue: {} },
@@ -406,22 +403,50 @@ describe('MntnerService', () => {
         expect(mntnerService.removeDuplicateMntsFromAttribute(attributes).length).toBe(5);
     });
 
-    it('should not stripNccMntners for other env except PROD env', () => {
-        mntnerService.properties.NO_PASSWORD_AUTH_POPUP = true;
+    it('should filter already listed mntners in autocomplete', () => {
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
             { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
         ];
-        expect(mntnerService.stripNccMntners(mockMnts, false)).toEqual(mockMnts);
+        expect(mntnerService.filterAutocompleteMntners(mockMnts, mockMnts).length).toEqual(0);
+    });
+
+    it('should not filter NCC Mntner other env except PROD env in autocomplete', () => {
+        mntnerService = TestBed.inject(MntnerService);
+        mntnerService.enableNonAuthUpdates = true;
+
+        const mockMnts = [
+            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+        ];
+        expect(mntnerService.filterAutocompleteMntners([], mockMnts)).toEqual(mockMnts);
+    });
+
+    it('should filter NCC Mntner for PROD env in autocomplete', () => {
+        const mockMnts = [
+            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+        ];
+        expect(mntnerService.filterAutocompleteMntners([], mockMnts).length).toEqual(0);
     });
 
     it('should stripNccMntners for PROD env', () => {
-        spyOn(mntnerService.properties, 'isProdEnv').and.returnValue(true);
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
             { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
         ];
-        expect(mntnerService.stripNccMntners(mockMnts, true).length).toEqual(0);
+        expect(mntnerService.stripNccMntners(mockMnts).length).toEqual(0);
+    });
+
+    it('should not stripNccMntners for other env except PROD env', () => {
+        mntnerService = TestBed.inject(MntnerService);
+        mntnerService.enableNonAuthUpdates = true;
+
+        const mockMnts = [
+            { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+        ];
+        expect(mntnerService.stripNccMntners(mockMnts)).toEqual(mockMnts);
     });
 });
 

@@ -48,7 +48,6 @@ export class MaintainersEditorComponent implements OnInit {
     // ng-select
     public loading = false;
     public alternativesInput$ = new Subject<string>();
-
     // Interface control
     public restCallInProgress = false;
 
@@ -156,8 +155,11 @@ export class MaintainersEditorComponent implements OnInit {
                 ),
                 map((data: IMntByModel[]) =>
                     this.mntnerService.stripNccMntners(
-                        this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.filterAutocompleteMntners(this.enrichWithMine(data))),
-                        true,
+                        // Filter mntner set in mntners search bar
+                        this.mntnerService.enrichWithNewStatus(
+                            this.mntners.objectOriginal,
+                            this.mntnerService.filterAutocompleteMntners(this.mntners.object, this.enrichWithMine(data)), //Filter autocomplete dropdown
+                        ),
                     ),
                 ),
             ),
@@ -414,12 +416,6 @@ export class MaintainersEditorComponent implements OnInit {
             // search in selected list
             mntner.mine = !!this.mntnerService.isMntnerOnlist(this.mntners.sso, mntner);
             return mntner;
-        });
-    }
-
-    private filterAutocompleteMntners(mntners: IMntByModel[]) {
-        return mntners.filter((mntner) => {
-            return !this.mntnerService.isAnyNccMntner(mntner.key) && !this.mntnerService.isMntnerOnlist(this.mntners.object, mntner);
         });
     }
 }

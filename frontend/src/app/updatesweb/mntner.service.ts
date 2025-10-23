@@ -28,9 +28,8 @@ export class MntnerService {
         private restService: RestService,
         private propertiesService: PropertiesService,
         private http: HttpClient,
-        public properties: PropertiesService,
     ) {
-        this.enableNonAuthUpdates = properties.isEnableNonAuthUpdates();
+        this.enableNonAuthUpdates = propertiesService.isEnableNonAuthUpdates();
     }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
@@ -171,6 +170,20 @@ export class MntnerService {
         });
     }
 
+    public stripNccMntners(mntners: IMntByModel[]): IMntByModel[] {
+        return this.enableNonAuthUpdates
+            ? mntners
+            : mntners.filter((mntner: IMntByModel) => {
+                  return !this.isAnyNccMntner(mntner.key);
+              });
+    }
+
+    public filterAutocompleteMntners(listedMntners: IMntByModel[], mntners: IMntByModel[]) {
+        return mntners.filter((mntner) => {
+            return (!this.isAnyNccMntner(mntner.key) || this.enableNonAuthUpdates) && !this.isMntnerOnlist(listedMntners, mntner);
+        });
+    }
+
     public enrichWithMine = (ssoMntners: IMntByModel[], mntners: IMntByModel[]) => this.enrichWithSsoStatus(ssoMntners, mntners);
 
     public needsPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
@@ -276,21 +289,6 @@ export class MntnerService {
             }
             return true;
         });
-    }
-
-    public stripNccMntners(mntners: IMntByModel[], allowEmptyResult: boolean): IMntByModel[] {
-        // remove NCC mntners and dupes
-        const stripped = this.enableNonAuthUpdates
-            ? mntners
-            : mntners.filter((mntner: IMntByModel) => {
-                  return !this.isAnyNccMntner(mntner.key);
-              });
-        // if we are left with no mntners, return mntners array untouched
-        if (_.isEmpty(stripped) && !allowEmptyResult) {
-            return mntners;
-        } else {
-            return stripped;
-        }
     }
 
     public getMntsToAuthenticateUsingParent(prefix: any, mntHandler: any) {
