@@ -157,8 +157,14 @@ ngb-popover-window.popover {
     }
 }
 
+.ng-select.ng-select-opened .ng-select-container {
+    z-index: 1 !important;
+}
 .ng-select.ng-select-disabled > .ng-select-container {
     background-color: #eee;
+}
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+    background: none !important;
 }
 
 // bootstrap modal
