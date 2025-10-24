@@ -345,6 +345,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         if (result && result.objects && _.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
                         }
+                        console.log('Featch mntner with SSO');
+                        this.fetchDataForCreate(); //Need to be fetches again to update SSO mntner in case logged in
                         this.resourceParentFound(parent);
                     },
                     error: () => {
