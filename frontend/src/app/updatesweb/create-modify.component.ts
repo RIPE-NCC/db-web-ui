@@ -190,7 +190,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
                     if (result.$value) {
-                        this.maintainers.sso.push(result.$value.selectedItem);
+                        this.maintainers.sso.push(result.$value.selectedItem); //The sso is automatically added to the mntner when succeed
                     }
                 },
                 error: (error: any) => {

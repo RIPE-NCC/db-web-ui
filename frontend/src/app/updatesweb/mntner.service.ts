@@ -33,7 +33,6 @@ export class MntnerService {
     }
 
     public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): Observable<any> {
-        console.log('getAuthForObjectIfNeeded, trying to figure out the authentiation');
         const object = {
             name,
             source,

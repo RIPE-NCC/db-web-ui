@@ -50,6 +50,24 @@ describe('The inetnum editor', () => {
             .expectDisabledSubmitCreate(true);
     });
 
+    it('should not ask for authentication two times if first succeeded', () => {
+        webupdatesPage
+            .expectDisabledSubmitCreate(true)
+            .typeOnField('inetnum', '5.254.68.40/29')
+            .blurOnField('inetnum')
+            .expectModalToExist(true)
+            .authenticateWithDisabledAssociate('TEST02-MNT')
+            .typeOnField('netname', 'SOMETHING')
+            .selectFromNgSelect('country', 'Afghanistan [AF]')
+            .typeOnField('admin-c', 'TSTADMINC-RIPE')
+            .typeOnField('tech-c', 'TSTADMINC-RIPE')
+            .expectOptionSizeFromNgSelect('status', 4)
+            .selectFromNgSelect('status', 'ASSIGNED PA')
+            .expectDisabledSubmitCreate(false);
+
+        webupdatesPage.typeOnField('inetnum', '5.254.68.40/29').blurOnField('inetnum').expectModalToExist(false);
+    });
+
     it('should show an editor for inet6num', () => {
         webupdatesPage
             .visit('select')
