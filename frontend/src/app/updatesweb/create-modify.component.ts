@@ -192,9 +192,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     console.log('Got value2:', result.$value.selectedItem);
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    if (!result.$value) {
-                        this.maintainers.sso.push(result.$value.selectedItem);
-                    }
+                    this.maintainers.sso.push(result.$value.selectedItem);
+                    console.log('total mntners:', this.maintainers.sso);
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
