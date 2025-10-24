@@ -188,12 +188,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
                 next: (result: any) => {
                     console.log('Got value:', result);
-                    console.log('Got value1:', result.value);
-                    console.log('Got value3:', result.value.selectedItem);
+                    console.log('Got value1:', result.$value);
+                    console.log('Got value2:', result.$value.selectedItem);
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    if (!result.value) {
-                        this.maintainers.sso.push(result.value.selectedItem);
+                    if (!result.$value) {
+                        this.maintainers.sso.push(result.$value.selectedItem);
                     }
                 },
                 error: (error: any) => {
