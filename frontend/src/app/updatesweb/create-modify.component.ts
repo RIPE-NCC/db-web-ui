@@ -185,6 +185,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (parent && parent.attributes) {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
+            console.log('Parent object is: ', parentObject);
+            console.log('Mntner SSOs are: ', this.maintainers.sso);
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
                 next: () => {
                     this.restCallInProgress = false;
