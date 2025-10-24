@@ -83,8 +83,6 @@ export class MntnerService {
     public isSsoAuthorisedForMntByOrLower(object: any, maintainers: IMntByModel[]) {
         const mntBys = WhoisResourcesService.getAllAttributesOnName(object, 'mnt-by');
         const mntLowers = WhoisResourcesService.getAllAttributesOnName(object, 'mnt-lower');
-        console.log('authenticated by mntBys: ', mntBys);
-        console.log('authenticated by mntLowers: ', mntLowers);
         const ssoAccts = maintainers.filter((mntner: IMntByModel) => {
             return mntner.auth.find((auth) => {
                 return auth === 'SSO';

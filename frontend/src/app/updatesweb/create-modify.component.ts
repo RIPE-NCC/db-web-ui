@@ -186,7 +186,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
-                next: () => {
+                next: (result: any) => {
+                    console.log('Got value:', result);
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
                 },
@@ -343,8 +344,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         if (result && result.objects && _.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
                         }
-                        console.log('fetch mntner with SSO');
-                        this.updateSSOMntnersAndProcessParent(parent);
+                        this.resourceParentFound(parent);
+                        //this.updateSSOMntnersAndProcessParent(parent);
                     },
                     error: () => {
                         this.resourceParentFound(null);
