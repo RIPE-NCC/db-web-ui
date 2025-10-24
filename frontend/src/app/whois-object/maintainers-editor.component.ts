@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
@@ -25,7 +25,7 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
     templateUrl: './maintainers-editor.component.html',
     imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgIf, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
 })
-export class MaintainersEditorComponent implements OnInit {
+export class MaintainersEditorComponent implements OnInit, OnDestroy {
     @Input()
     public whoisObject: IWhoisObjectModel;
     @Output()

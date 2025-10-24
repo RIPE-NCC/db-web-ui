@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { CoreModule } from '../core/core.module';
     standalone: true,
     imports: [CoreModule, MatButton],
 })
-export class ModalPGPKeyComponent {
+export class ModalPGPKeyComponent implements AfterViewInit {
     private readonly PGP_HEADER: string = '-----BEGIN PGP PUBLIC KEY BLOCK-----';
     private readonly PGP_FOOTER: string = '-----END PGP PUBLIC KEY BLOCK-----';
     private readonly X509_HEADER: string = '-----BEGIN CERTIFICATE-----';
