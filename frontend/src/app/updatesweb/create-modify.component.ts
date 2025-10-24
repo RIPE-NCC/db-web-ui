@@ -345,8 +345,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         if (result && result.objects && _.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
                         }
-                        console.log('Featch mntner with SSO');
-                        this.fetchDataForCreate(); //Need to be fetches again to update SSO mntner in case logged in
+                        console.log('fetch mntner with SSO');
+                        this.updateSSOMntners(); //Need to be fetches again to update SSO mntner in case logged in
                         this.resourceParentFound(parent);
                     },
                     error: () => {
@@ -639,6 +639,18 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         // Post-process attributes before showing using screen-logic-interceptor
         this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
         this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
+    }
+
+    private updateSSOMntners() {
+        this.restService.fetchMntnersForSSOAccount().subscribe({
+            next: (results: any) => {
+                this.maintainers.sso = results;
+                console.log('featched SSO mntners: ' + results);
+            },
+            error: () => {
+                this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
+            },
+        });
     }
 
     private loadAlerts(errorMessages: string[], warningMessages: string[], infoMessages: string[]) {
