@@ -347,7 +347,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                             parent = result.objects.object[0];
                         }
                         this.resourceParentFound(parent);
-                        //this.updateSSOMntnersAndProcessParent(parent);
                     },
                     error: () => {
                         this.resourceParentFound(null);
@@ -639,19 +638,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         // Post-process attributes before showing using screen-logic-interceptor
         this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
         this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
-    }
-
-    private updateSSOMntnersAndProcessParent(parent: any) {
-        //Need to be fetches again to update SSO mntner in case logged in
-        this.restService.fetchMntnersForSSOAccount().subscribe({
-            next: (results: any) => {
-                this.maintainers.sso = results;
-                this.resourceParentFound(parent);
-            },
-            error: () => {
-                this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
-            },
-        });
     }
 
     private loadAlerts(errorMessages: string[], warningMessages: string[], infoMessages: string[]) {
