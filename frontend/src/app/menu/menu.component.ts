@@ -1,5 +1,5 @@
 import { Location, NgIf } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -18,6 +18,7 @@ import { MenuService } from './menu.service';
         <app-nav-bar *ngIf="!isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
     `,
     imports: [NgIf],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA], // web component
 })
 export class MenuComponent implements OnInit, OnDestroy {
     @Input()
