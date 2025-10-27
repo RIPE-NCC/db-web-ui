@@ -10,7 +10,6 @@ import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { WebAppVersionComponent } from '../version/web-app-version.component';
 import { WhoisVersionComponent } from '../version/whois-version.component';
 import { AlertBannersComponent } from './alert/alert-banners.component';
-import { AlertsService } from './alert/alerts.service';
 import { AutoFocusDirective } from './autofocus.directive';
 import { CredentialsService } from './credentials.service';
 import { AttributeInfoComponent } from './descriptionsyntax/attr-info.component';
@@ -65,7 +64,7 @@ import { WhoisResourcesService } from './whois-resources.service';
         WhoisLineDiffDirective,
         OrgDropDownComponent,
     ],
-    providers: [CredentialsService, WhoisMetaService, WhoisResourcesService, AlertsService, OrgDropDownSharedService, ReleaseNotificationService],
+    providers: [CredentialsService, WhoisMetaService, WhoisResourcesService, OrgDropDownSharedService, ReleaseNotificationService],
     exports: [
         AlertBannersComponent,
         AutoFocusDirective,
