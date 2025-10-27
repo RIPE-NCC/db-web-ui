@@ -12,6 +12,7 @@ import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel, IStatusOption } from '../shared/whois-response-type.model';
+import { MaintainersEditorComponent } from '../whois-object/maintainers-editor.component';
 import { EnumService } from './enum.service';
 import { ErrorReporterService } from './error-reporter.service';
 import { LinkService } from './link.service';
@@ -69,6 +70,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public inetnumParentAuthError: boolean = false;
     public attributes: any;
     public roleForAbuseC: any;
+
     public personRe: RegExp = new RegExp(/^[A-Z][A-Z0-9\\.`'_-]{0,63}(?: [A-Z0-9\\.`'_-]{1,64}){0,9}$/i);
 
     public CREATE_OPERATION = 'Create';
@@ -97,11 +99,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         public alertsService: AlertsService,
         public activatedRoute: ActivatedRoute,
         public router: Router,
+        public maintainersEditorComponent: MaintainersEditorComponent,
     ) {}
 
     public ngOnInit() {
         this.optionList = { status: [] };
-        console.log('print mntners 1 ', this.maintainers);
+
         this.inetnumParentAuthError = false;
         this.restCallInProgress = false;
 
@@ -148,7 +151,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             this.fetchDataForModify();
         }
-        console.log('print mntners 2 ', this.maintainers);
     }
 
     public ngOnDestroy() {
@@ -190,8 +192,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    this.ngOnInit();
-                    console.log('print mntners 3 ', this.maintainers);
+                    this.maintainersEditorComponent.ngOnInit();
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
