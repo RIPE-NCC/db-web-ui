@@ -1,4 +1,5 @@
 import { HttpErrorResponse, HttpHandler, HttpRequest } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { ErrorInterceptor } from 'src/app/interceptor/error.interceptor';
@@ -18,7 +19,15 @@ describe('ErrorInterceptor', () => {
         mockAlertsService = jasmine.createSpyObj('AlertsService', ['setGlobalError']);
         mockHandler = jasmine.createSpyObj('HttpHandler', ['handle']);
 
-        interceptor = new ErrorInterceptor(mockRouter, mockProperties, mockAlertsService);
+        TestBed.configureTestingModule({
+            providers: [
+                ErrorInterceptor,
+                { provide: Router, useValue: mockRouter },
+                { provide: PropertiesService, useValue: mockProperties },
+                { provide: AlertsService, useValue: mockAlertsService },
+            ],
+        });
+        interceptor = TestBed.inject(ErrorInterceptor);
     });
 
     function makeError(status: number, url: string = 'http://localhost/api/test', body: any = {}) {

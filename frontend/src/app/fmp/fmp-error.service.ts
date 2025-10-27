@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AlertsService } from '../shared/alert/alerts.service';
 
 @Injectable()
 export class FmpErrorService {
-    constructor(private alertsService: AlertsService) {}
+    private alertsService = inject(AlertsService);
 
     public isYourAccountBlockedError(error: HttpErrorResponse) {
         return (

@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Observable, throwError } from 'rxjs';
@@ -9,7 +9,9 @@ import { AlertsService } from '../shared/alert/alerts.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private router: Router, private properties: PropertiesService, private alertService: AlertsService) {}
+    private router = inject(Router);
+    private properties = inject(PropertiesService);
+    private alertService = inject(AlertsService);
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(

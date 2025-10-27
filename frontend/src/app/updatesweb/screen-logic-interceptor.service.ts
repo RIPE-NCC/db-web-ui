@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -9,16 +9,16 @@ import { OrganisationHelperService } from './organisation-helper.service';
 
 @Injectable()
 export class ScreenLogicInterceptorService {
+    private organisationHelperService = inject(OrganisationHelperService);
+    private messageStore = inject(MessageStoreService);
+    private mntnerService = inject(MntnerService);
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private linkService = inject(LinkService);
+
     public globalInterceptor: any;
     public objectInterceptors: any;
 
-    constructor(
-        private organisationHelperService: OrganisationHelperService,
-        private messageStore: MessageStoreService,
-        private mntnerService: MntnerService,
-        private whoisResourcesService: WhoisResourcesService,
-        private linkService: LinkService,
-    ) {
+    constructor() {
         // TODO: start
         // Move the following stuff from Create-modify-controller:
         // - strip nulls

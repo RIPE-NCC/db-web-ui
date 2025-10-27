@@ -1,5 +1,5 @@
 import { NgFor, NgIf, SlicePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -78,6 +78,26 @@ export interface IMaintainers {
     ],
 })
 export class CreateModifyComponent implements OnInit, OnDestroy {
+    whoisResourcesService = inject(WhoisResourcesService);
+    attributeMetadataService = inject(AttributeMetadataService);
+    whoisMetaService = inject(WhoisMetaService);
+    messageStoreService = inject(MessageStoreService);
+    credentialsService = inject(CredentialsService);
+    restService = inject(RestService);
+    modalService = inject(NgbModal);
+    mntnerService = inject(MntnerService);
+    errorReporterService = inject(ErrorReporterService);
+    linkService = inject(LinkService);
+    resourceStatusService = inject(ResourceStatusService);
+    webUpdatesCommonsService = inject(WebUpdatesCommonsService);
+    organisationHelperService = inject(OrganisationHelperService);
+    preferenceService = inject(PreferenceService);
+    enumService = inject(EnumService);
+    screenLogicInterceptorService = inject(ScreenLogicInterceptorService);
+    alertsService = inject(AlertsService);
+    activatedRoute = inject(ActivatedRoute);
+    router = inject(Router);
+
     public optionList: IOptionList = { status: [] };
     public name: string;
     public source: string;
@@ -106,28 +126,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public PENDING_OPERATION = 'Pending';
 
     public showAttrsHelp: [];
-
-    constructor(
-        public whoisResourcesService: WhoisResourcesService,
-        public attributeMetadataService: AttributeMetadataService,
-        public whoisMetaService: WhoisMetaService,
-        public messageStoreService: MessageStoreService,
-        public credentialsService: CredentialsService,
-        public restService: RestService,
-        public modalService: NgbModal,
-        public mntnerService: MntnerService,
-        public errorReporterService: ErrorReporterService,
-        public linkService: LinkService,
-        public resourceStatusService: ResourceStatusService,
-        public webUpdatesCommonsService: WebUpdatesCommonsService,
-        public organisationHelperService: OrganisationHelperService,
-        public preferenceService: PreferenceService,
-        public enumService: EnumService,
-        public screenLogicInterceptorService: ScreenLogicInterceptorService,
-        public alertsService: AlertsService,
-        public activatedRoute: ActivatedRoute,
-        public router: Router,
-    ) {}
 
     public ngOnInit() {
         this.optionList = { status: [] };

@@ -1,5 +1,5 @@
 import { NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../../properties.service';
@@ -13,6 +13,9 @@ import { AssociatedObjectType, AssociatedObjectsService, IAssociatedObjectApiRes
     imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, SlicePipe],
 })
 export class AssociatedObjectsComponent implements OnChanges {
+    private associatedObjectService = inject(AssociatedObjectsService);
+    private properties = inject(PropertiesService);
+
     @Input()
     public associatedType: string;
     @Input()
@@ -35,8 +38,6 @@ export class AssociatedObjectsComponent implements OnChanges {
     private lastPage: number;
     private MAGIC = 100; // number of items per page on server
     private filterDebouncer: any = null;
-
-    constructor(private associatedObjectService: AssociatedObjectsService, private properties: PropertiesService) {}
 
     public ngOnChanges() {
         this.isShowingAssociatedRouteObjects = this.associatedType === AssociatedObjectType.ASSOCIATED_ROUTE;

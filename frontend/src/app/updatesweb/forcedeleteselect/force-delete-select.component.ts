@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
@@ -12,10 +12,12 @@ import { AlertsService } from '../../shared/alert/alerts.service';
     imports: [FormsModule, NgFor, MatButton],
 })
 export class ForceDeleteSelectComponent implements OnInit {
+    private properties = inject(PropertiesService);
+    private alertsService = inject(AlertsService);
+    private router = inject(Router);
+
     public objectTypes: string[] = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
     public selected: any;
-
-    constructor(private properties: PropertiesService, private alertsService: AlertsService, private router: Router) {}
 
     public ngOnInit() {
         this.alertsService.clearAlertMessages();

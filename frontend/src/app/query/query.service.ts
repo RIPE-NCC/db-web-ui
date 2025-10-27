@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap, reduce } from 'rxjs/operators';
@@ -18,6 +18,9 @@ const EMPTY_MODEL: IWhoisResponseModel = {
 
 @Injectable()
 export class QueryService {
+    private http = inject(HttpClient);
+    private propertiesService = inject(PropertiesService);
+
     private accumulate(resp: IWhoisResponseModel, acc: IWhoisResponseModel): IWhoisResponseModel {
         if (resp.objects) {
             acc.objects.object = acc.objects.object.concat(resp.objects.object);
@@ -33,8 +36,6 @@ export class QueryService {
     }
 
     public PAGE_SIZE: number = 20;
-
-    constructor(private http: HttpClient, private propertiesService: PropertiesService) {}
 
     // this is request to whois library and response is not json that's why {responseType: "text" as "json"}
     public searchTemplate(objectType: string): Observable<string> {

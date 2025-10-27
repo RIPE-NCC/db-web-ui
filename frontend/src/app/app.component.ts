@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import supportedBrowsers from '../../src/assets/supportedBrowsers.js';
 import { BannerTypes } from './banner/banner.component';
@@ -13,6 +13,12 @@ import { ReleaseNotificationService } from './shared/release-notification.servic
     standalone: false,
 })
 export class AppComponent implements OnInit, AfterViewInit {
+    properties = inject(PropertiesService);
+    private releaseNotificationService = inject(ReleaseNotificationService);
+    private router = inject(Router);
+    private location = inject(Location);
+    private sessionInfoService = inject(SessionInfoService);
+
     // for mobileView breaking point is 1025 properties.BREAKPOINTS_MOBILE_VIEW
     public isDesktopView: boolean;
     public isOpenMenu: boolean = true;
@@ -24,13 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @ViewChild('switcher', { static: false }) switcher!: ElementRef;
 
-    constructor(
-        public properties: PropertiesService,
-        private releaseNotificationService: ReleaseNotificationService,
-        private router: Router,
-        private location: Location,
-        private sessionInfoService: SessionInfoService,
-    ) {
+    constructor() {
         this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner: boolean) => {
             this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
             this.showSessionExpireBanner = raiseSessionExpireBanner;

@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { EventEmitter, Injectable, Output, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { WhoisResourcesService } from '../whois-resources.service';
 import { IAttributeModel, IObjectMessageModel, IWhoisResponseModel } from '../whois-response-type.model';
@@ -18,6 +18,8 @@ export interface IAlerts {
 
 @Injectable()
 export class AlertsService {
+    whoisResourcesService = inject(WhoisResourcesService);
+
     @Output()
     public alertsChanged = new EventEmitter();
 
@@ -28,7 +30,7 @@ export class AlertsService {
         successes: [],
     };
 
-    constructor(public whoisResourcesService: WhoisResourcesService) {
+    constructor() {
         this.hasErrors();
         this.hasWarnings();
     }

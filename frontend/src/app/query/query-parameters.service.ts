@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import includes from 'lodash/includes';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
@@ -31,7 +31,8 @@ const allowedTemplateQueries = templateQueries.concat(verboseQueries);
 
 @Injectable()
 export class QueryParametersService {
-    constructor(private metaService: WhoisMetaService, private queryFlagsService: QueryFlagsService) {}
+    private metaService = inject(WhoisMetaService);
+    private queryFlagsService = inject(QueryFlagsService);
 
     public validate(queryParams: IQueryParameters): { errors: string[]; warnings: string[] } {
         if (!queryParams.queryText.trim()) {

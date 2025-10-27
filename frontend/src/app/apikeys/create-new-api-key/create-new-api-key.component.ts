@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
@@ -40,6 +40,11 @@ import { ApiKey } from '../types';
     ],
 })
 export class CreateNewApiKeyComponent implements OnInit {
+    private restService = inject(RestService);
+    private apiKeysService = inject(ApiKeysService);
+    dialog = inject(MatDialog);
+    private alertsService = inject(AlertsService);
+
     @Output()
     created = new EventEmitter();
 
@@ -51,8 +56,6 @@ export class CreateNewApiKeyComponent implements OnInit {
     maxDate: Date = new Date();
 
     private searchMaintainers = new Subject<string>();
-
-    constructor(private restService: RestService, private apiKeysService: ApiKeysService, public dialog: MatDialog, private alertsService: AlertsService) {}
 
     ngOnInit(): void {
         this.minDate.setDate(this.minDate.getDate() + 1);

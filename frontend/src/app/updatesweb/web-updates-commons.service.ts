@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -25,15 +25,17 @@ export interface IAuthParams {
 
 @Injectable()
 export class WebUpdatesCommonsService {
+    private router = inject(Router);
+    private alertService = inject(AlertsService);
+    private mntnerService = inject(MntnerService);
+    private modalService = inject(NgbModal);
+    properties = inject(PropertiesService);
+
     public enableNonAuthUpdates: boolean;
 
-    constructor(
-        private router: Router,
-        private alertService: AlertsService,
-        private mntnerService: MntnerService,
-        private modalService: NgbModal,
-        public properties: PropertiesService,
-    ) {
+    constructor() {
+        const properties = this.properties;
+
         this.enableNonAuthUpdates =
             !properties.isProdEnv() && // Security property, this should never be enabled in PROD
             properties.NO_PASSWORD_AUTH_POPUP;

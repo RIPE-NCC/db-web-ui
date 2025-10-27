@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { IUsage } from '../resource-type.model';
 
@@ -19,7 +19,7 @@ export interface IMoreSpecificResource {
 
 @Injectable()
 export class MoreSpecificsService {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient);
 
     public getSpecifics(objectName: string, objectType: string, page: number, filter: string): Observable<IMoreSpecificsApiResult> {
         if (!objectType) {

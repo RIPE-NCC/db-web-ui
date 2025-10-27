@@ -1,5 +1,5 @@
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
@@ -12,7 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
     imports: [MatDialogTitle, MatDialogContent, MatCard, MatCardContent, MatButton, CdkCopyToClipboard, MatDialogActions, MatDialogClose],
 })
 export class ApiKeyConfirmationDialogComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+    data = inject(MAT_DIALOG_DATA);
 
     protected readonly btoa = btoa;
 

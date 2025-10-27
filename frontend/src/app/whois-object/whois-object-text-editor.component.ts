@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import * as _ from 'lodash';
@@ -22,6 +22,14 @@ import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interc
     imports: [FormsModule, NgIf, SubmittingAgreementComponent, MatButton],
 })
 export class WhoisObjectTextEditorComponent implements OnInit {
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private restService = inject(RestService);
+    private messageStoreService = inject(MessageStoreService);
+    private rpslService = inject(RpslService);
+    private textCommonsService = inject(TextCommonsService);
+    private credentialsService = inject(CredentialsService);
+    alertsServices = inject(AlertsService);
+
     @Input()
     type: string;
     @Input()
@@ -50,16 +58,6 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     public deletable: boolean;
     public passwords: string[] = [];
     public haveNonLatin1: boolean;
-
-    constructor(
-        private whoisResourcesService: WhoisResourcesService,
-        private restService: RestService,
-        private messageStoreService: MessageStoreService,
-        private rpslService: RpslService,
-        private textCommonsService: TextCommonsService,
-        private credentialsService: CredentialsService,
-        public alertsServices: AlertsService,
-    ) {}
 
     public ngOnInit() {
         if (_.isUndefined(this.rpsl)) {

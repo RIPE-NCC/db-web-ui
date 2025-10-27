@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatLine } from '@angular/material/core';
 import { MatDialogActions, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatActionList, MatListItem } from '@angular/material/list';
@@ -11,9 +11,10 @@ import { PropertiesService } from '../properties.service';
     imports: [MatDialogTitle, MatDialogActions, MatActionList, MatListItem, MatLine, NgIf],
 })
 export class FeedbackSupportDialogComponent implements OnInit {
-    public showChatMenuItem: boolean;
+    private properties = inject(PropertiesService);
+    private dialogRef = inject<MatDialogRef<FeedbackSupportDialogComponent>>(MatDialogRef);
 
-    constructor(private properties: PropertiesService, private dialogRef: MatDialogRef<FeedbackSupportDialogComponent>) {}
+    public showChatMenuItem: boolean;
 
     public ngOnInit() {
         this.showChatMenuItem = this.properties.LIVE_CHAT_KEY !== '';

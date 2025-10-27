@@ -1,14 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { tap, timeout } from 'rxjs/operators';
 import { IResourceModel } from '../resource-type.model';
 
 @Injectable()
 export class HierarchySelectorService {
-    private cashHierarchy: string[];
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) {}
+    private cashHierarchy: string[];
 
     public fetchParentResources(resource: IResourceModel, org: string): Observable<string[]> {
         if (!resource || !resource.resource || !resource.type) {

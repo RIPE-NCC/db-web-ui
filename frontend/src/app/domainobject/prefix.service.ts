@@ -1,11 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { of, zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class PrefixService {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient);
 
     public findExistingDomainsForPrefix(prefixStr: string) {
         const createRequest = (flag: string) => {

@@ -1,11 +1,11 @@
 import { Location } from '@angular/common';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 
 @Injectable()
 export class ErrorReporterService {
-    constructor(private location: Location) {}
+    private location = inject(Location);
 
     public log(operation: string, objectType: string, globalErrors: any, attributes?: IAttributeModel[]) {
         _.each(globalErrors, (item: any) => {

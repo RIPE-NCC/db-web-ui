@@ -1,12 +1,12 @@
 import { HttpClient, HttpParams, HttpUrlEncodingCodec } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class EmailConfirmationService {
-    private readonly API_BASE_URL: string = 'api/whois-internal/api/abuse-validation/validate-token';
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) {}
+    private readonly API_BASE_URL: string = 'api/whois-internal/api/abuse-validation/validate-token';
 
     public confirmEmail(token: string): Observable<any> {
         if (!token) {

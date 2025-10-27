@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PropertiesService } from '../properties.service';
@@ -11,6 +11,9 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
     imports: [NgIf, MatButton],
 })
 export class ModalEditAttributeComponent {
+    private activeModal = inject(NgbActiveModal);
+    private properties = inject(PropertiesService);
+
     @Input()
     public attr: IAttributeModel;
 
@@ -19,7 +22,9 @@ export class ModalEditAttributeComponent {
     private readonly ORG_DETAILS_URL: string;
     private readonly ACCOUNT_DETAILS_URL: string;
 
-    constructor(private activeModal: NgbActiveModal, private properties: PropertiesService) {
+    constructor() {
+        const properties = this.properties;
+
         this.ORG_DETAILS_URL = properties.PORTAL_URL + '#/org-details-change';
         this.ACCOUNT_DETAILS_URL = properties.PORTAL_URL + '#/account-details';
     }
