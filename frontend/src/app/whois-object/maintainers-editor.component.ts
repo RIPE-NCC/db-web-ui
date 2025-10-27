@@ -96,6 +96,15 @@ export class MaintainersEditorComponent implements OnInit {
         }
     }
 
+    public refreshMntners() {
+        this.mntnerAutocomplete();
+        if (this.isModifyMode()) {
+            this.initModifyMode();
+        } else {
+            this.initCreateMode();
+        }
+    }
+
     public onMntnerAdded(item: IMntByModel): void {
         this.justAddedMnt = item;
         // enrich with new-flag

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -62,6 +62,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public mntbySyntax: string;
     public operation: string;
     public restCallInProgress: boolean;
+
     /*
      * Lazy rendering of attributes with scrollmarker directive
      */
@@ -70,7 +71,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public inetnumParentAuthError: boolean = false;
     public attributes: any;
     public roleForAbuseC: any;
-
     public personRe: RegExp = new RegExp(/^[A-Z][A-Z0-9\\.`'_-]{0,63}(?: [A-Z0-9\\.`'_-]{1,64}){0,9}$/i);
 
     public CREATE_OPERATION = 'Create';
@@ -78,6 +78,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public PENDING_OPERATION = 'Pending';
 
     public showAttrsHelp: [];
+
+    @ViewChild(MaintainersEditorComponent) maintainersEditorComponent!: MaintainersEditorComponent;
 
     constructor(
         public whoisResourcesService: WhoisResourcesService,
@@ -99,7 +101,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         public alertsService: AlertsService,
         public activatedRoute: ActivatedRoute,
         public router: Router,
-        public maintainersEditorComponent: MaintainersEditorComponent,
     ) {}
 
     public ngOnInit() {
@@ -192,7 +193,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    this.maintainersEditorComponent.ngOnInit();
+                    this.maintainersEditorComponent.refreshMntners();
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
