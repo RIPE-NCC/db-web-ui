@@ -189,11 +189,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 next: (result: any) => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    if (result.$value) {
-                        console.log('before added ', this.maintainers);
-                        this.maintainers.sso.push(result.$value.selectedItem); //The sso is automatically added to the mntner when succeed
-                        console.log('after added ', this.maintainers);
-                    }
+                    this.updateMntners(result);
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
@@ -903,6 +899,14 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.optionList.status = this.resourceStatusService.get(this.objectType, statusAttr?.value);
         } else {
             this.optionList.status = this.resourceStatusService.filterNonRsStatuses(this.objectType, statusAttr?.value);
+        }
+    }
+
+    private updateMntners(result: any) {
+        // The sso that is automatically added to the mntner when succeeded, it is added as mnt-by.
+        if (result.$value) {
+            this.maintainers.object.push(result.$value.selectedItem); //added as mnt-by
+            this.maintainers.sso.push(result.$value.selectedItem);
         }
     }
 }
