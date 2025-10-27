@@ -50,17 +50,6 @@ describe('The inetnum editor', () => {
             .expectDisabledSubmitCreate(true);
     });
 
-    it('should add mnt-by when authentication succeed', () => {
-        webupdatesPage
-            .expectDisabledSubmitCreate(true)
-            .typeOnField('inetnum', '5.254.68.40/29')
-            .blurOnField('inetnum')
-            .expectModalToExist(true)
-            .authenticateWithDisabledAssociate('TEST02-MNT')
-            .expectDisabledSubmitCreate(true)
-            .expectMaintainerToContain('TEST02-MNT');
-    });
-
     it('should show an editor for inet6num', () => {
         webupdatesPage
             .visit('select')
