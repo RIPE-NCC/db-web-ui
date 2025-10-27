@@ -190,10 +190,13 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
-                next: () => {
+                next: (result: any) => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    this.maintainersEditorComponent.refreshMntners();
+                    if (result.$value && result.$value.selectedItem) {
+                        //Refresh just if sso added to a selected mntner
+                        this.maintainersEditorComponent.refreshMntners();
+                    }
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
