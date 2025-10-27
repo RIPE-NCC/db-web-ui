@@ -11,7 +11,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { AttributeSharedService } from './attribute-shared.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AttributeMetadataService {
     private jsUtils = inject(JsUtilService);
     private prefixService = inject(PrefixService);

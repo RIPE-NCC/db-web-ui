@@ -5,7 +5,7 @@ import { catchError, timeout } from 'rxjs/operators';
 import { IMoreSpecificsApiResult } from './morespecifics/more-specifics.service';
 import { IIPv4ResourcesResponse, IIPv6ResourcesResponse, IIpv4Analysis, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ResourcesDataService {
     private http = inject(HttpClient);
 

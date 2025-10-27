@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export const SKIP_HEADER = 'X-skip-header';
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class HeaderInterceptor implements HttpInterceptor {
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.headers.has(SKIP_HEADER)) {

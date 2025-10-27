@@ -29,7 +29,7 @@ export enum AssociatedObjectType {
     ASSOCIATED_DOMAIN = 'domain',
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AssociatedObjectsService {
     private http = inject(HttpClient);
 

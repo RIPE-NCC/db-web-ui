@@ -7,7 +7,7 @@ const localStorageSessionCheckStarted = 'sessionCheck';
 const localStorageSessionExpiredKey = 'sessionExpired';
 const hasCookie = 'hasCookie';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SessionInfoService {
     private properties = inject(PropertiesService);
     private userInfoService = inject(UserInfoService);

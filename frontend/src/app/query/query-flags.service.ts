@@ -11,7 +11,7 @@ export interface IQueryFlag {
     description: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class QueryFlagsService {
     private http = inject(HttpClient);
 

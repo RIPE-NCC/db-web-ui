@@ -5,7 +5,7 @@ import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { RestService } from './rest.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class OrganisationHelperService {
     private whoisResourcesService = inject(WhoisResourcesService);
     private restService = inject(RestService);

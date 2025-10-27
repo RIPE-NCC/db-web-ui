@@ -7,7 +7,7 @@ import { catchError, debounceTime, distinctUntilChanged, map, switchMap, tap } f
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IMntByModel } from '../shared/whois-response-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RestService {
     private http = inject(HttpClient);
     private router = inject(Router);

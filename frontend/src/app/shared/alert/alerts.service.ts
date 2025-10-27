@@ -16,7 +16,7 @@ export interface IAlerts {
     successes: IAlertMessageModel[];
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AlertsService {
     whoisResourcesService = inject(WhoisResourcesService);
 

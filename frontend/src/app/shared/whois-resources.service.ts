@@ -6,7 +6,7 @@ import { ObjectUtilService } from '../updatesweb/object-util.service';
 import { WhoisMetaService } from './whois-meta.service';
 import { IAttributeModel, IMntByModel, IObjectMessageModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WhoisResourcesService {
     private whoisMetaService = inject(WhoisMetaService);
     private propertiesService = inject(PropertiesService);

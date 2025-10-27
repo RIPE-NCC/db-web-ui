@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { tap, timeout } from 'rxjs/operators';
 import { IResourceModel } from '../resource-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class HierarchySelectorService {
     private http = inject(HttpClient);
 

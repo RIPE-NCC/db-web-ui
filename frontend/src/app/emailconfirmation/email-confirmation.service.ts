@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpUrlEncodingCodec } from '@angular/common/ht
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EmailConfirmationService {
     private http = inject(HttpClient);
 

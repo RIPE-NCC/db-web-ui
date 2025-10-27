@@ -7,7 +7,7 @@ import { MessageStoreService } from './message-store.service';
 import { MntnerService } from './mntner.service';
 import { OrganisationHelperService } from './organisation-helper.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ScreenLogicInterceptorService {
     private organisationHelperService = inject(OrganisationHelperService);
     private messageStore = inject(MessageStoreService);

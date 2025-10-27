@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { SessionInfoService } from './session-info.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SessionInterceptor implements HttpInterceptor {
     private sessionInfoService = inject(SessionInfoService);
 

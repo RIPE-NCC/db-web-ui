@@ -4,7 +4,7 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CreateService {
     private http = inject(HttpClient);
     private whoisResourcesService = inject(WhoisResourcesService);

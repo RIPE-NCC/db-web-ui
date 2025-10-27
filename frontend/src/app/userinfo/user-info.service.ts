@@ -6,7 +6,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, share, timeout } from 'rxjs/operators';
 import { IUserInfoOrganisation, IUserInfoResponseData } from '../dropdown/org-data-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserInfoService {
     private http = inject(HttpClient);
     private cookies = inject(CookieService);

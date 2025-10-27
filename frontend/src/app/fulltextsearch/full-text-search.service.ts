@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ISearchResponseModel } from './types.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FullTextSearchService {
     private http = inject(HttpClient);
 

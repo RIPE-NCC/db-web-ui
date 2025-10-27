@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AlertsService } from '../shared/alert/alerts.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FmpErrorService {
     private alertsService = inject(AlertsService);
 

@@ -34,7 +34,7 @@ export interface IProperties {
     SHOW_MENU_IDS: string[];
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PropertiesService {
     private httpClient = inject(HttpClient);
 

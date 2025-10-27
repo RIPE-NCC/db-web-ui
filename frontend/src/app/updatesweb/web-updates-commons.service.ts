@@ -23,7 +23,7 @@ export interface IAuthParams {
     operation: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WebUpdatesCommonsService {
     private router = inject(Router);
     private alertService = inject(AlertsService);

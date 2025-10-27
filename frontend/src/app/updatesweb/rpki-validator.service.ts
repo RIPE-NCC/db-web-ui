@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RpkiValidatorService {
     private http = inject(HttpClient);
 

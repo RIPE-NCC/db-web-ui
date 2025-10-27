@@ -16,7 +16,7 @@ const EMPTY_MODEL: IWhoisResponseModel = {
     objects: { object: [] },
 };
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class QueryService {
     private http = inject(HttpClient);
     private propertiesService = inject(PropertiesService);

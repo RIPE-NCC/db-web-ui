@@ -14,7 +14,7 @@ import { ModalAuthenticationSSOPrefilledComponent } from '../updatesweb/modal-au
 import { ModalAuthenticationComponent } from '../updatesweb/modal-authentication.component';
 import { ObjectUtilService } from '../updatesweb/object-util.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class TextCommonsService {
     private router = inject(Router);
     private whoisResourcesService = inject(WhoisResourcesService);

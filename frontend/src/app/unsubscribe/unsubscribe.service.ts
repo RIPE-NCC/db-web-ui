@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SKIP_HEADER } from '../interceptor/header.interceptor';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UnsubscribeService {
     private http = inject(HttpClient);
 

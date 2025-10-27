@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { ResourceStatusService } from '../myresources/resource-status.service';
 import { IStatusOption } from '../shared/whois-response-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EnumService {
     private resourceStatus = inject(ResourceStatusService);
 

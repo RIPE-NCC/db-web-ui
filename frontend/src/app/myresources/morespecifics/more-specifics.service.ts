@@ -17,7 +17,7 @@ export interface IMoreSpecificResource {
     usage: IUsage;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MoreSpecificsService {
     private http = inject(HttpClient);
 

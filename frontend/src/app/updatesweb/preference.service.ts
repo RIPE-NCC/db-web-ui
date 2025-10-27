@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PreferenceService {
     private cookies = inject(CookieService);
 

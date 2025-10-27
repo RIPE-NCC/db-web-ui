@@ -29,7 +29,7 @@ const templateQueries = ['-t', '--template'];
 const verboseQueries = ['-v', '--verbose'];
 const allowedTemplateQueries = templateQueries.concat(verboseQueries);
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class QueryParametersService {
     private metaService = inject(WhoisMetaService);
     private queryFlagsService = inject(QueryFlagsService);

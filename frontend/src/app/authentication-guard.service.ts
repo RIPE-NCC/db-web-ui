@@ -6,7 +6,7 @@ import { IUserInfoResponseData } from './dropdown/org-data-type.model';
 import { PropertiesService } from './properties.service';
 import { UserInfoService } from './userinfo/user-info.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthenticationGuard {
     private userInfoService = inject(UserInfoService);
     private properties = inject(PropertiesService);

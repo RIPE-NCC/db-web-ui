@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ErrorInterceptor implements HttpInterceptor {
     private router = inject(Router);
     private properties = inject(PropertiesService);

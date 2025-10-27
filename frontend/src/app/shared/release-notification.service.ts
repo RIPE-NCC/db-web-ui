@@ -5,7 +5,7 @@ import { timer } from 'rxjs';
 import { IProperties, PropertiesService } from '../properties.service';
 import { AlertsService } from './alert/alerts.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ReleaseNotificationService {
     private httpClient = inject(HttpClient);
     private alertsService = inject(AlertsService);

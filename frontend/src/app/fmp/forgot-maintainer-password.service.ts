@@ -9,7 +9,7 @@ export interface IForgotMaintainerPassword {
     voluntary: boolean;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ForgotMaintainerPasswordService {
     private http = inject(HttpClient);
 

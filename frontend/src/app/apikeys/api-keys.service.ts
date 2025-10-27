@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiKey } from './types';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ApiKeysService {
     private http = inject(HttpClient);
 

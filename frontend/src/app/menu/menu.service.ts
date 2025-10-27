@@ -25,7 +25,7 @@ export interface IFooterMenuItem {
     url?: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MenuService {
     properties = inject(PropertiesService);
 

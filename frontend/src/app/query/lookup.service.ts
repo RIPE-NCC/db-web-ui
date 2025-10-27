@@ -13,7 +13,7 @@ interface ILookupService {
     lookupWhoisObject(params: ILookupState): Observable<IWhoisResponseModel>;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LookupService implements ILookupService {
     private http = inject(HttpClient);
 

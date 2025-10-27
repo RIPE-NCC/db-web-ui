@@ -13,7 +13,7 @@ export interface IFindMaintainer {
     expired?: boolean;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FindMaintainerService {
     private http = inject(HttpClient);
     private fmpErrorService = inject(FmpErrorService);

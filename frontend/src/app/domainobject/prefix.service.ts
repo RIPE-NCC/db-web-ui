@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { of, zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PrefixService {
     private http = inject(HttpClient);
 

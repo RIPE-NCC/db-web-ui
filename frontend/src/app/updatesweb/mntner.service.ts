@@ -16,7 +16,7 @@ import { ModalAuthenticationSSOPrefilledComponent } from './modal-authentication
 import { ModalAuthenticationComponent } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MntnerService {
     private credentialsService = inject(CredentialsService);
     private whoisResourcesService = inject(WhoisResourcesService);
