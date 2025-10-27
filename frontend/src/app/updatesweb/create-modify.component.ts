@@ -101,7 +101,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         this.optionList = { status: [] };
-
+        console.log('print mntners 1 ', this.maintainers);
         this.inetnumParentAuthError = false;
         this.restCallInProgress = false;
 
@@ -148,6 +148,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             this.fetchDataForModify();
         }
+        console.log('print mntners 2 ', this.maintainers);
     }
 
     public ngOnDestroy() {
@@ -186,10 +187,11 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
-                next: (result: any) => {
+                next: () => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    this.updateMntners(result);
+                    this.ngOnInit();
+                    console.log('print mntners 3 ', this.maintainers);
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
@@ -899,14 +901,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.optionList.status = this.resourceStatusService.get(this.objectType, statusAttr?.value);
         } else {
             this.optionList.status = this.resourceStatusService.filterNonRsStatuses(this.objectType, statusAttr?.value);
-        }
-    }
-
-    private updateMntners(result: any) {
-        // The sso that is automatically added to the mntner when succeeded, it is added as mnt-by.
-        if (result.$value) {
-            this.maintainers.object.push(result.$value.selectedItem); //added as mnt-by
-            this.maintainers.sso.push(result.$value.selectedItem);
         }
     }
 }
