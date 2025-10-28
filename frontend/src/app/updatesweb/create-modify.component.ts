@@ -192,7 +192,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.inetnumParentAuthError = false;
                     if (result.$value && result.$value.selectedItem) {
                         console.log('attribute value ', result.$value.selectedItem);
-                        this.addSelectedAttribute({ name: 'mnt-by' }, { name: 'mnt-by', value: result.$value.selectedItem.key });
+                        this.mntnerService.mergeMaintainers(this.attributes, { name: 'mnt-by', value: result.$value.selectedItem.key });
                         console.log('attributes ', this.attributes);
                     }
                 },
@@ -388,6 +388,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             });
         }
         if (foundIdx > -1) {
+            console.log('attribute to add');
             attributes.splice(foundIdx + 1, 0, { name: attributeName, value: undefined });
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, attributes);
         }
