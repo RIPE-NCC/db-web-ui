@@ -12,6 +12,7 @@ import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel, IStatusOption } from '../shared/whois-response-type.model';
+import { MaintainersEditorComponent } from '../whois-object/maintainers-editor.component';
 import { EnumService } from './enum.service';
 import { ErrorReporterService } from './error-reporter.service';
 import { LinkService } from './link.service';
@@ -97,6 +98,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         public alertsService: AlertsService,
         public activatedRoute: ActivatedRoute,
         public router: Router,
+        public maintainerEditor: MaintainersEditorComponent,
     ) {}
 
     public ngOnInit() {
@@ -191,10 +193,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
                     if (result.$value && result.$value.selectedItem) {
-                        console.log('attribute value ', result.$value.selectedItem);
-                        this.mntnerService.mergeMaintainers(this.attributes, { name: 'mnt-by', value: result.$value.selectedItem.key });
-                        this.attributeMetadataService.enrich(this.objectType, this.attributes);
-                        console.log('attributes ', this.attributes);
+                        this.maintainerEditor.initCreateMode(); //Refresh maintainers editor
                     }
                 },
                 error: (error: any) => {

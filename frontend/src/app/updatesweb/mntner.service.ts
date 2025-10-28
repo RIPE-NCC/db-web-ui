@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address4 } from 'ip-address';
 import * as _ from 'lodash';
 import { from, mergeMap, Observable, of } from 'rxjs';
-import { JsUtilService } from '../core/js-utils.service';
 import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
 import { IpAddressService } from '../myresources/ip-address.service';
 import { PropertiesService } from '../properties.service';
@@ -29,7 +28,6 @@ export class MntnerService {
         private restService: RestService,
         private propertiesService: PropertiesService,
         private http: HttpClient,
-        private jsUtilsService: JsUtilService,
     ) {
         this.enableNonAuthUpdates = propertiesService.isEnableNonAuthUpdates();
     }
@@ -78,28 +76,6 @@ export class MntnerService {
             );
         } else {
             return of(true);
-        }
-    }
-
-    public mergeMaintainers(attrs: IAttributeModel[], maintainers: any): void {
-        if (this.jsUtilsService.typeOf(attrs) !== 'array') {
-            throw new TypeError('attrs must be an array in mergeMaintainers');
-        }
-        let i;
-        let lastIdxOfType = _.findLastIndex(attrs, (item) => {
-            return item.name === 'mnt-by';
-        });
-        if (lastIdxOfType < 0) {
-            lastIdxOfType = attrs.length;
-        } else if (!attrs[lastIdxOfType].value) {
-            attrs.splice(lastIdxOfType, 1);
-        }
-        if (this.jsUtilsService.typeOf(maintainers) === 'object') {
-            attrs.splice(lastIdxOfType, 0, maintainers);
-        } else {
-            for (i = 0; i < maintainers.length; i++) {
-                attrs.splice(lastIdxOfType + i, 0, maintainers[i]);
-            }
         }
     }
 

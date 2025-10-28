@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { concat, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
+import { JsUtilService } from '../core/js-utils.service';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
@@ -66,6 +67,7 @@ export class MaintainersEditorComponent implements OnInit {
         public restService: RestService,
         private webUpdatesCommonsService: WebUpdatesCommonsService,
         public alertsService: AlertsService,
+        private jsUtilsService: JsUtilService,
         public orgDropDownSharedService: OrgDropDownSharedService,
         private properties: PropertiesService,
     ) {
@@ -108,7 +110,7 @@ export class MaintainersEditorComponent implements OnInit {
         // enrich with new-flag
         this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, this.mntners.object);
 
-        this.mntnerService.mergeMaintainers(this.attributes, { name: 'mnt-by', value: item.key });
+        this.mergeMaintainers(this.attributes, { name: 'mnt-by', value: item.key });
 
         if (this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
             this.performAuthentication();
@@ -229,7 +231,7 @@ export class MaintainersEditorComponent implements OnInit {
                     value: i.key,
                 };
             });
-            this.mntnerService.mergeMaintainers(this.attributes, mntnerAttrs);
+            this.mergeMaintainers(this.attributes, mntnerAttrs);
             this.attributeMetadataService.enrich(this.objectType, this.attributes);
             this.filterPrefilledSsoMntsToDefaultMnts();
         }
@@ -294,6 +296,28 @@ export class MaintainersEditorComponent implements OnInit {
         this.updateMntnersClbk.emit(this.mntners);
     }
 
+    private mergeMaintainers(attrs: IAttributeModel[], maintainers: any): void {
+        if (this.jsUtilsService.typeOf(attrs) !== 'array') {
+            throw new TypeError('attrs must be an array in mergeMaintainers');
+        }
+        let i;
+        let lastIdxOfType = _.findLastIndex(attrs, (item) => {
+            return item.name === 'mnt-by';
+        });
+        if (lastIdxOfType < 0) {
+            lastIdxOfType = attrs.length;
+        } else if (!attrs[lastIdxOfType].value) {
+            attrs.splice(lastIdxOfType, 1);
+        }
+        if (this.jsUtilsService.typeOf(maintainers) === 'object') {
+            attrs.splice(lastIdxOfType, 0, maintainers);
+        } else {
+            for (i = 0; i < maintainers.length; i++) {
+                attrs.splice(lastIdxOfType + i, 0, maintainers[i]);
+            }
+        }
+    }
+
     private isModifyMode(): boolean {
         const createdAttr = this.attributes.find((attr: IAttributeModel) => {
             return attr.name.toUpperCase() === 'CREATED';
@@ -301,7 +325,7 @@ export class MaintainersEditorComponent implements OnInit {
         return createdAttr && typeof createdAttr.value === 'string' && createdAttr.value.length > 0;
     }
 
-    private initCreateMode() {
+    public initCreateMode() {
         this.restService.fetchMntnersForSSOAccount().subscribe({
             next: (results: IMntByModel[]) => {
                 this.handleSsoResponse(results);
