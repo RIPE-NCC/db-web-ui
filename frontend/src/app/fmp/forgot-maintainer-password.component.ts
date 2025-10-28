@@ -1,5 +1,5 @@
 import { NgIf, UpperCasePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,17 +14,15 @@ import { ForgotMaintainerPasswordService, IForgotMaintainerPassword } from './fo
     imports: [NgIf, FormsModule, MatButton, UpperCasePipe],
 })
 export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
+    private forgotMaintainerPasswordService = inject(ForgotMaintainerPasswordService);
+    private userInfoService = inject(UserInfoService);
+    private alertsService = inject(AlertsService);
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+    private fmpErrorService = inject(FmpErrorService);
+
     public generatedPDFUrl: string;
     public fmpModel: IForgotMaintainerPassword;
-
-    constructor(
-        private forgotMaintainerPasswordService: ForgotMaintainerPasswordService,
-        private userInfoService: UserInfoService,
-        private alertsService: AlertsService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private fmpErrorService: FmpErrorService,
-    ) {}
 
     public ngOnInit() {
         this.generatedPDFUrl = '';

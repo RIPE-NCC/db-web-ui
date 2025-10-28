@@ -1,9 +1,9 @@
-import { Pipe, PipeTransform, SecurityContext } from '@angular/core';
+import { Pipe, PipeTransform, SecurityContext, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Pipe({ name: 'sanitizeImgHtml' })
 export class SanitizeImgHtmlPipe implements PipeTransform {
-    constructor(public sanitizer: DomSanitizer) {}
+    sanitizer = inject(DomSanitizer);
 
     public transform(value: string): string {
         // sanitizer removing \n from string because of that we are sanitizer row by row

@@ -1,14 +1,12 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
-import { AttributeModule } from '../../../src/app/attribute/attribute.module';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
 
@@ -19,7 +17,7 @@ describe('WhoisObjectViewerComponent', () => {
     describe('with logged in user', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule, RouterTestingModule, WhoisObjectViewerComponent],
+                imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, WhoisObjectViewerComponent],
                 providers: [
                     { provide: UserInfoService, useValue: { isLogedIn: () => true, userLoggedIn$: of() } },
                     SessionInfoService,
@@ -55,7 +53,7 @@ describe('WhoisObjectViewerComponent', () => {
     describe('without logged in user', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule, RouterTestingModule, WhoisObjectViewerComponent],
+                imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, WhoisObjectViewerComponent],
                 providers: [
                     {
                         provide: UserInfoService,

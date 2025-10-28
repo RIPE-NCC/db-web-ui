@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,6 +40,17 @@ import { RestService } from './rest.service';
     ],
 })
 export class CreateSelfMaintainedMaintainerComponent implements OnInit {
+    whoisResourcesService = inject(WhoisResourcesService);
+    whoisMetaService = inject(WhoisMetaService);
+    private userInfoService = inject(UserInfoService);
+    private restService = inject(RestService);
+    messageStoreService = inject(MessageStoreService);
+    private errorReporterService = inject(ErrorReporterService);
+    private linkService = inject(LinkService);
+    alertsService = inject(AlertsService);
+    activatedRoute = inject(ActivatedRoute);
+    router = inject(Router);
+
     public submitInProgress = false;
     public adminC = {
         object: [],
@@ -52,19 +63,6 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     public isAdminCHelpShown: boolean;
     public showAttrsHelp: [];
     private readonly MNT_TYPE: string = 'mntner';
-
-    constructor(
-        public whoisResourcesService: WhoisResourcesService,
-        public whoisMetaService: WhoisMetaService,
-        private userInfoService: UserInfoService,
-        private restService: RestService,
-        public messageStoreService: MessageStoreService,
-        private errorReporterService: ErrorReporterService,
-        private linkService: LinkService,
-        public alertsService: AlertsService,
-        public activatedRoute: ActivatedRoute,
-        public router: Router,
-    ) {}
 
     ngOnInit() {
         this.adminCAutocomplete();

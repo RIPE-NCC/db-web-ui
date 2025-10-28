@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { ResourceStatusService } from '../myresources/resource-status.service';
 import { PropertiesService } from '../properties.service';
@@ -6,11 +6,12 @@ import { ObjectUtilService } from '../updatesweb/object-util.service';
 import { WhoisMetaService } from './whois-meta.service';
 import { IAttributeModel, IMntByModel, IObjectMessageModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WhoisResourcesService {
-    private readonly allowedEmptyAttrs = ['remarks', 'descr', 'certif', 'address'];
+    private whoisMetaService = inject(WhoisMetaService);
+    private propertiesService = inject(PropertiesService);
 
-    constructor(private whoisMetaService: WhoisMetaService, private propertiesService: PropertiesService) {}
+    private readonly allowedEmptyAttrs = ['remarks', 'descr', 'certif', 'address'];
 
     public addAttributeAfter(attributes: IAttributeModel[], attr: IAttributeModel, after: any) {
         const metaClone = {};

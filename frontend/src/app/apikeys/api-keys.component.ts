@@ -52,6 +52,9 @@ import { ApiKey } from './types';
     ],
 })
 export class ApiKeysComponent implements OnInit {
+    private apiKeysService = inject(ApiKeysService);
+    private alertsService = inject(AlertsService);
+
     displayedColumns: string[] = ['label', 'id', 'lastUsed', 'expiresAt', 'details', 'delete'];
     dataSource: MatTableDataSource<ApiKey>;
     selection = new SelectionModel<ApiKey>(true, []);
@@ -62,8 +65,6 @@ export class ApiKeysComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     readonly revokeDialog = inject(MatDialog);
-
-    constructor(private apiKeysService: ApiKeysService, private alertsService: AlertsService) {}
 
     ngOnInit(): void {
         this.loadTableData();

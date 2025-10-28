@@ -4,7 +4,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
-import { AttributeModule } from '../../../src/app/attribute/attribute.module';
 import { JsUtilService } from '../../../src/app/core/js-utils.service';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -54,7 +53,7 @@ describe('AttributeMetadataService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [AttributeModule],
+            imports: [],
             providers: [
                 AttributeMetadataService,
                 JsUtilService,

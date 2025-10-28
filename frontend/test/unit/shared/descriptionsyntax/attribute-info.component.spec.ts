@@ -1,9 +1,8 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CoreModule } from '../../../../src/app/core/core.module';
+import { FormsModule } from '@angular/forms';
 import { AttributeInfoComponent } from '../../../../src/app/shared/descriptionsyntax/attr-info.component';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 
 describe('AttributeInfoComponent', () => {
     let component: AttributeInfoComponent;
@@ -12,7 +11,7 @@ describe('AttributeInfoComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule],
+            imports: [FormsModule],
             providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 
@@ -7,9 +7,10 @@ import { AlertsService } from '../shared/alert/alerts.service';
     templateUrl: './mail-sent.component.html',
 })
 export class MailSentComponent implements OnInit, OnDestroy {
-    public email: string;
+    private alertsService = inject(AlertsService);
+    activatedRoute = inject(ActivatedRoute);
 
-    constructor(private alertsService: AlertsService, public activatedRoute: ActivatedRoute) {}
+    public email: string;
 
     public ngOnInit() {
         this.email = this.activatedRoute.snapshot.paramMap.get('email');

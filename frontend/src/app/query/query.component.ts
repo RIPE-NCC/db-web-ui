@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf, ViewportScroller } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatSuffix } from '@angular/material/form-field';
@@ -91,6 +91,15 @@ export type ShareLink = {
     ],
 })
 export class QueryComponent implements OnDestroy {
+    properties = inject(PropertiesService);
+    queryService = inject(QueryService);
+    queryFlagService = inject(QueryFlagsService);
+    private queryParametersService = inject(QueryParametersService);
+    alertsService = inject(AlertsService);
+    private viewportScroller = inject(ViewportScroller);
+    activatedRoute = inject(ActivatedRoute);
+    router = inject(Router);
+
     public offset = 0;
     public showScroller = false;
     // filter panel - dropdowns Types, Hierarchy, Inverse Lookup and Advance Filters
@@ -120,16 +129,7 @@ export class QueryComponent implements OnDestroy {
     // Search recognizing email and nserver, and filter inverse lookup according to typeOfSearchedTerm
     public typeOfSearchedTerm: string[] = [];
 
-    constructor(
-        public properties: PropertiesService,
-        public queryService: QueryService,
-        public queryFlagService: QueryFlagsService,
-        private queryParametersService: QueryParametersService,
-        public alertsService: AlertsService,
-        private viewportScroller: ViewportScroller,
-        public activatedRoute: ActivatedRoute,
-        public router: Router,
-    ) {
+    constructor() {
         this.showsDocsLink = true;
         this.qp = {
             queryText: '',

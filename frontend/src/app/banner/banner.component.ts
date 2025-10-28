@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -45,6 +45,9 @@ export enum BannerTypes {
     standalone: true,
 })
 export class BannerComponent implements OnInit {
+    private router = inject(Router);
+    private properties = inject(PropertiesService);
+
     @Input()
     title?: string;
     @Input()
@@ -61,8 +64,6 @@ export class BannerComponent implements OnInit {
     buttonText?: string;
 
     closed: boolean;
-
-    constructor(private router: Router, private properties: PropertiesService) {}
 
     ngOnInit() {
         if (this.persistDismiss) {

@@ -1,5 +1,5 @@
 import { Location, NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -37,6 +37,22 @@ interface IDomainObject {
     imports: [NgIf, MaintainersEditorComponent, WhoisObjectEditorComponent],
 })
 export class DomainObjectWizardComponent implements OnInit, OnDestroy {
+    private jsUtils = inject(JsUtilService);
+    private modalService = inject(NgbModal);
+    private restService = inject(RestService);
+    private attributeMetadataService = inject(AttributeMetadataService);
+    private attributeSharedService = inject(AttributeSharedService);
+    private whoisResourcesServices = inject(WhoisResourcesService);
+    private mntnerService = inject(MntnerService);
+    private webUpdatesCommonsService = inject(WebUpdatesCommonsService);
+    private credentialsService = inject(CredentialsService);
+    private messageStoreService = inject(MessageStoreService);
+    private errorReporterService = inject(ErrorReporterService);
+    private alertsService = inject(AlertsService);
+    private location = inject(Location);
+    activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+
     public objectType: string;
     //TODO check if make sense to convert to IWhoisObjectModel
     public domainObject: IDomainObject;
@@ -58,23 +74,10 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public subscription: any;
     public subscriptionDomaiPrefix: any;
 
-    constructor(
-        private jsUtils: JsUtilService,
-        private modalService: NgbModal,
-        private restService: RestService,
-        private attributeMetadataService: AttributeMetadataService,
-        private attributeSharedService: AttributeSharedService,
-        private whoisResourcesServices: WhoisResourcesService,
-        private mntnerService: MntnerService,
-        private webUpdatesCommonsService: WebUpdatesCommonsService,
-        private credentialsService: CredentialsService,
-        private messageStoreService: MessageStoreService,
-        private errorReporterService: ErrorReporterService,
-        private alertsService: AlertsService,
-        private location: Location,
-        public activatedRoute: ActivatedRoute,
-        private router: Router,
-    ) {
+    constructor() {
+        const attributeMetadataService = this.attributeMetadataService;
+        const attributeSharedService = this.attributeSharedService;
+
         this.subscription = attributeSharedService.attributeStateChanged$.subscribe(() => {
             attributeMetadataService.enrich(this.objectType, this.attributes);
         });

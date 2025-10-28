@@ -1,14 +1,13 @@
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CoreModule } from '../../core/core.module';
-import { SharedModule } from '../shared.module';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'search-field',
     templateUrl: './search-field.component.html',
     styleUrl: 'search-field.component.scss',
     standalone: true,
-    imports: [CoreModule, NgIf, SharedModule],
+    imports: [FormsModule, NgIf],
 })
 export class SearchFieldComponent {
     @Input()

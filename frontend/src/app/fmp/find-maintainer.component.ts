@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,17 +15,15 @@ import { FmpErrorService } from './fmp-error.service';
     imports: [FormsModule, MatButton, NgIf, NgFor],
 })
 export class FindMaintainerComponent implements OnInit {
+    private findMaintainerService = inject(FindMaintainerService);
+    private userInfoService = inject(UserInfoService);
+    alertsService = inject(AlertsService);
+    router = inject(Router);
+    activatedRoute = inject(ActivatedRoute);
+    private fmpErrorService = inject(FmpErrorService);
+
     public foundMaintainer: IFindMaintainer;
     public maintainerKey: string;
-
-    constructor(
-        private findMaintainerService: FindMaintainerService,
-        private userInfoService: UserInfoService,
-        public alertsService: AlertsService,
-        public router: Router,
-        public activatedRoute: ActivatedRoute,
-        private fmpErrorService: FmpErrorService,
-    ) {}
 
     public ngOnInit() {
         this.maintainerKey = this.activatedRoute.snapshot.queryParamMap.get('mntnerKey');

@@ -9,7 +9,7 @@ export interface ISubstitution {
 
 declare function escape(s: string): string;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CharsetToolsService {
     private substitutions: ISubstitution[] = [
         { code: '\u2013', sub: '-' }, // em dash

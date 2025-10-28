@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { TypeformDialogComponent } from '../../query/typeform-dialog/typeform-dialog.component';
@@ -12,10 +12,13 @@ import { UserInfoService } from '../../userinfo/user-info.service';
     imports: [NgIf, MatButton],
 })
 export class TypeformBannerComponent implements OnInit {
+    dialog = inject(MatDialog);
+    private userInfoService = inject(UserInfoService);
+
     public closed: boolean;
     public loggedInUser: boolean;
 
-    constructor(public dialog: MatDialog, private userInfoService: UserInfoService) {
+    constructor() {
         this.userInfoService.userLoggedIn$.subscribe(() => {
             this.loggedInUser = true;
         });

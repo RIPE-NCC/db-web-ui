@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -14,21 +14,19 @@ import { RestService } from './rest.service';
     imports: [NgFor, NgIf, MatButton],
 })
 export class DisplayMntnerPairComponent implements OnInit, OnDestroy {
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private messageStoreService = inject(MessageStoreService);
+    private restService = inject(RestService);
+    private activatedRoute = inject(ActivatedRoute);
+    alertsService = inject(AlertsService);
+    private router = inject(Router);
+
     public objectSource: string;
     public objectType: string;
     public objectTypeName: string;
     public mntnerName: string;
     public objectTypeAttributes: IAttributeModel[];
     public mntnerAttributes: IAttributeModel[];
-
-    constructor(
-        private whoisResourcesService: WhoisResourcesService,
-        private messageStoreService: MessageStoreService,
-        private restService: RestService,
-        private activatedRoute: ActivatedRoute,
-        public alertsService: AlertsService,
-        private router: Router,
-    ) {}
 
     public ngOnInit() {
         // extract parameters from the url

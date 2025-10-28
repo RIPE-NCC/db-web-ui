@@ -1,6 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -8,7 +9,6 @@ import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 import { AttributeRendererComponent } from '../../../src/app/attribute/attribute-renderer.component';
 import { AttributeReverseZonesComponent } from '../../../src/app/attribute/attribute-reverse-zones.component';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { OrgDropDownSharedService } from '../../../src/app/dropdown/org-drop-down-shared.service';
 import { AssociatedObjectsComponent } from '../../../src/app/myresources/associatedobjects/associated-objects.component';
 import { HierarchySelectorComponent } from '../../../src/app/myresources/hierarchyselector/hierarchy-selector.component';
@@ -24,7 +24,6 @@ import { ResourceDetailsComponent } from '../../../src/app/myresources/resourced
 import { ResourcesDataService } from '../../../src/app/myresources/resources-data.service';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { FlagComponent } from '../../../src/app/shared/flag/flag.component';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { RpslService } from '../../../src/app/updatestext/rpsl.service';
 import { TextCommonsService } from '../../../src/app/updatestext/text-commons.service';
 import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
@@ -50,8 +49,7 @@ describe('ResourceDetailsComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                SharedModule,
-                CoreModule,
+                FormsModule,
                 NgSelectModule,
                 RouterTestingModule,
                 ResourceDetailsComponent,

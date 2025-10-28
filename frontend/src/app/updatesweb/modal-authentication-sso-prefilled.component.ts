@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
@@ -22,6 +22,13 @@ import { RestService } from './rest.service';
     imports: [FormsModule, NgIf, BannerComponent, NgFor, MatButton],
 })
 export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
+    private activeModal = inject(NgbActiveModal);
+    whoisResourcesService = inject(WhoisResourcesService);
+    userInfoService = inject(UserInfoService);
+    credentialsService = inject(CredentialsService);
+    restService = inject(RestService);
+    properties = inject(PropertiesService);
+
     public close: any;
     @Input()
     public resolve: IModalAuthentication;
@@ -30,14 +37,9 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     public selected: any;
     public override: string;
 
-    constructor(
-        private activeModal: NgbActiveModal,
-        public whoisResourcesService: WhoisResourcesService,
-        public userInfoService: UserInfoService,
-        public credentialsService: CredentialsService,
-        public restService: RestService,
-        public properties: PropertiesService,
-    ) {
+    constructor() {
+        const properties = this.properties;
+
         this.SOURCE = properties.SOURCE;
         this.PORTAL_URL = properties.PORTAL_URL;
         this.override = properties.WHOIS_OVERRIDE + ',Automatically Added SSO {notify=false}';

@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbNav, NgbNavChangeEvent, NgbNavContent, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkBase, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
@@ -43,6 +43,14 @@ import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down
     ],
 })
 export class ResourcesComponent implements OnDestroy {
+    private resourcesDataService = inject(ResourcesDataService);
+    private userInfoService = inject(UserInfoService);
+    private orgDropDownSharedService = inject(OrgDropDownSharedService);
+    private alertsService = inject(AlertsService);
+    private properties = inject(PropertiesService);
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+
     public ipv4Resources: IIPv4ResourceDetails[] = [];
     public ipv6Resources: IIPv6ResourceDetails[] = [];
     public asnResources: IAsnResourceDetails[] = [];
@@ -63,15 +71,7 @@ export class ResourcesComponent implements OnDestroy {
     @ViewChild(AlertsDropDownComponent, { static: true })
     public alertsDropDownComponent: AlertsDropDownComponent;
 
-    constructor(
-        private resourcesDataService: ResourcesDataService,
-        private userInfoService: UserInfoService,
-        private orgDropDownSharedService: OrgDropDownSharedService,
-        private alertsService: AlertsService,
-        private properties: PropertiesService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-    ) {
+    constructor() {
         const orgSub = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
                 this.selectedOrg = selected;

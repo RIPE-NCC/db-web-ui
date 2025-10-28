@@ -1,6 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { AppModule } from '../../../src/app/app.module';
-import { MyResourcesModule } from '../../../src/app/myresources/my-resources.module';
 import { ResourceStatusService } from '../../../src/app/myresources/resource-status.service';
 
 describe('ResourceStatusService', () => {
@@ -8,7 +6,7 @@ describe('ResourceStatusService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [MyResourcesModule, AppModule],
+            imports: [],
             providers: [ResourceStatusService],
         });
         resourcesDataService = TestBed.inject(ResourceStatusService);

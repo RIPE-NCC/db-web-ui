@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NgbActiveModal, NgbProgressbar } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { interval } from 'rxjs';
@@ -10,6 +10,9 @@ import { PrefixService } from './prefix.service';
     imports: [NgbProgressbar],
 })
 export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
+    private activeModal = inject(NgbActiveModal);
+    private prefixService = inject(PrefixService);
+
     public close: any;
     public dismiss: any;
     public resolve: any;
@@ -17,8 +20,6 @@ export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
     public numberOfDomains: number;
     public pollingData: any;
     public loader: boolean;
-
-    constructor(private activeModal: NgbActiveModal, private prefixService: PrefixService) {}
 
     public ngOnInit() {
         this.done = 100;

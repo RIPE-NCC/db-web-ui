@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 const IPv6SIZE: string[] = ['', 'K', 'M', 'G', 'T'];
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IpUsageService {
     public calcFreeSpace(total: number, used: number): number {
         return total - used;

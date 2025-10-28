@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Address4 } from 'ip-address';
 import * as _ from 'lodash';
 import { JsUtilService } from '../core/js-utils.service';
@@ -11,8 +11,14 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { AttributeSharedService } from './attribute-shared.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AttributeMetadataService {
+    private jsUtils = inject(JsUtilService);
+    private prefixService = inject(PrefixService);
+    private whoisMetaService = inject(WhoisMetaService);
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private attributeSharedService = inject(AttributeSharedService);
+
     public hostnameRe = /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/;
     // Notes on metadata structure:
     //
@@ -59,13 +65,7 @@ export class AttributeMetadataService {
     private timeout: any;
     private lastPrefix: any;
 
-    constructor(
-        private jsUtils: JsUtilService,
-        private prefixService: PrefixService,
-        private whoisMetaService: WhoisMetaService,
-        private whoisResourcesService: WhoisResourcesService,
-        private attributeSharedService: AttributeSharedService,
-    ) {
+    constructor() {
         this.objectMetadata = this.makeObjectMetadata();
     }
 

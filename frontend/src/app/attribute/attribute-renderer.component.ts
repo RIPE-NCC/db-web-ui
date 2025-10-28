@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
@@ -35,6 +35,15 @@ import { AttributeReverseZonesComponent } from './attribute-reverse-zones.compon
     ],
 })
 export class AttributeRendererComponent implements OnInit {
+    private attributeMetadataService = inject(AttributeMetadataService);
+    private whoisMetaService = inject(WhoisMetaService);
+    private charsetToolsService = inject(CharsetToolsService);
+    private restService = inject(RestService);
+    private enumService = inject(EnumService);
+    private modalService = inject(NgbModal);
+    private credentialsService = inject(CredentialsService);
+    private whoisResourcesService = inject(WhoisResourcesService);
+
     @Input()
     public attribute: IAttributeModel;
     @Input()
@@ -54,17 +63,6 @@ export class AttributeRendererComponent implements OnInit {
     private isMntHelpShown: boolean = false;
     private roleForAbuseC: any;
     public widgetReverseZone: boolean;
-
-    constructor(
-        private attributeMetadataService: AttributeMetadataService,
-        private whoisMetaService: WhoisMetaService,
-        private charsetToolsService: CharsetToolsService,
-        private restService: RestService,
-        private enumService: EnumService,
-        private modalService: NgbModal,
-        private credentialsService: CredentialsService,
-        private whoisResourcesService: WhoisResourcesService,
-    ) {}
 
     /*
      * this variables we can see because they're bound by our directive: attributeRenderer

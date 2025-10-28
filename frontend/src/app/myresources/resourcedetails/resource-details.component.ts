@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -58,6 +58,22 @@ import { ResourcesDataService } from '../resources-data.service';
     ],
 })
 export class ResourceDetailsComponent implements OnDestroy {
+    private cookies = inject(CookieService);
+    private modalService = inject(NgbModal);
+    private credentialsService = inject(CredentialsService);
+    private mntnerService = inject(MntnerService);
+    private properties = inject(PropertiesService);
+    private resourceStatusService = inject(ResourceStatusService);
+    private resourcesDataService = inject(ResourcesDataService);
+    private hierarchySelectorService = inject(HierarchySelectorService);
+    private restService = inject(RestService);
+    private orgDropDownSharedService = inject(OrgDropDownSharedService);
+    private activatedRoute = inject(ActivatedRoute);
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private alertsService = inject(AlertsService);
+    private router = inject(Router);
+    private preferenceService = inject(PreferenceService);
+
     public whoisObject: IWhoisObjectModel;
     public textObject: ITextObject = {
         source: '',
@@ -87,23 +103,9 @@ export class ResourceDetailsComponent implements OnDestroy {
     public source: string;
     private subscriptions: any[] = [];
 
-    constructor(
-        private cookies: CookieService,
-        private modalService: NgbModal,
-        private credentialsService: CredentialsService,
-        private mntnerService: MntnerService,
-        private properties: PropertiesService,
-        private resourceStatusService: ResourceStatusService,
-        private resourcesDataService: ResourcesDataService,
-        private hierarchySelectorService: HierarchySelectorService,
-        private restService: RestService,
-        private orgDropDownSharedService: OrgDropDownSharedService,
-        private activatedRoute: ActivatedRoute,
-        private whoisResourcesService: WhoisResourcesService,
-        private alertsService: AlertsService,
-        private router: Router,
-        private preferenceService: PreferenceService,
-    ) {
+    constructor() {
+        const router = this.router;
+
         const orgSubs: Subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             const selectedId = this.cookies.get('activeMembershipId');
             if (selected && selectedId) {

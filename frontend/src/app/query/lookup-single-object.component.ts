@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Labels } from '../label.constants';
@@ -16,6 +16,12 @@ import { LookupService } from './lookup.service';
     imports: [NgIf, LookupComponent, WhoisVersionComponent],
 })
 export class LookupSingleObjectComponent implements OnInit, OnDestroy {
+    private lookupService = inject(LookupService);
+    properties = inject(PropertiesService);
+    activatedRoute = inject(ActivatedRoute);
+    alertsService = inject(AlertsService);
+    router = inject(Router);
+
     public whoisResponse: any;
     public error: string;
     public whoisVersion: IVersion;
@@ -25,14 +31,6 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
     public objectName: string;
 
     private subscription: Subscription;
-
-    constructor(
-        private lookupService: LookupService,
-        public properties: PropertiesService,
-        public activatedRoute: ActivatedRoute,
-        public alertsService: AlertsService,
-        public router: Router,
-    ) {}
 
     ngOnInit() {
         this.subscription = this.activatedRoute.queryParams.subscribe((params) => {

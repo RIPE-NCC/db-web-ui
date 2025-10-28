@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -38,6 +38,19 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
     ],
 })
 export class CreateMntnerPairComponent implements OnInit, OnDestroy {
+    whoisResourcesService = inject(WhoisResourcesService);
+    private whoisMetaService = inject(WhoisMetaService);
+    private userInfoService = inject(UserInfoService);
+    private restService = inject(RestService);
+    private createService = inject(CreateService);
+    messageStoreService = inject(MessageStoreService);
+    private errorReporterService = inject(ErrorReporterService);
+    private linkService = inject(LinkService);
+    private properties = inject(PropertiesService);
+    alertsService = inject(AlertsService);
+    activatedRoute = inject(ActivatedRoute);
+    router = inject(Router);
+
     public submitInProgress: boolean;
     public source: string;
     public objectTypeAttributes: any;
@@ -48,21 +61,6 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     public showAttrsHelp: [];
     public linkToRoleOrPerson: string = 'person';
     private subscription: any;
-
-    constructor(
-        public whoisResourcesService: WhoisResourcesService,
-        private whoisMetaService: WhoisMetaService,
-        private userInfoService: UserInfoService,
-        private restService: RestService,
-        private createService: CreateService,
-        public messageStoreService: MessageStoreService,
-        private errorReporterService: ErrorReporterService,
-        private linkService: LinkService,
-        private properties: PropertiesService,
-        public alertsService: AlertsService,
-        public activatedRoute: ActivatedRoute,
-        public router: Router,
-    ) {}
 
     public ngOnInit() {
         this.subscription = this.activatedRoute.params.subscribe(() => {

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { LinkService } from '../../../src/app/updatesweb/link.service';
-import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('LinkService', () => {
     let linkService: LinkService;
@@ -9,7 +8,7 @@ describe('LinkService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
+            imports: [],
             providers: [LinkService],
         });
         linkService = TestBed.inject(LinkService);

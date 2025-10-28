@@ -7,7 +7,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { CredentialsService } from '../../../../src/app/shared/credentials.service';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { ModalAuthenticationComponent } from '../../../../src/app/updatesweb/modal-authentication.component';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
@@ -32,7 +31,7 @@ describe('ModalAuthenticationComponent', () => {
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'removeCredentials', 'setCredentials']);
         TestBed.configureTestingModule({
-            imports: [FormsModule, SharedModule, RouterModule, ModalAuthenticationComponent],
+            imports: [FormsModule, RouterModule, ModalAuthenticationComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 WhoisResourcesService,

@@ -7,7 +7,7 @@ export interface IHierarchyFlag {
     description: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class HierarchyFlagsService {
     static readonly hierarchyFlagMap: IHierarchyFlag[] = [
         { id: 0, short: 'No', long: '', description: 'No hierarchy flag (default).' },

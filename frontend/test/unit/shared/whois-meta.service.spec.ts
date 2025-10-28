@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 
 describe('WhoisMetaService', () => {
@@ -7,7 +6,7 @@ describe('WhoisMetaService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule],
+            imports: [],
             providers: [WhoisMetaService, { provide: '$log', useValue: { debug: () => {}, error: () => {} } }],
         });
         whoisMetaService = TestBed.inject(WhoisMetaService);

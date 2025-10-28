@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 
@@ -13,9 +13,9 @@ interface ILookupService {
     lookupWhoisObject(params: ILookupState): Observable<IWhoisResponseModel>;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LookupService implements ILookupService {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient);
 
     public lookupWhoisObject(lookupState: ILookupState): Observable<any> {
         if (!lookupState.key || !lookupState.source || !lookupState.type) {

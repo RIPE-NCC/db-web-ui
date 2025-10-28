@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 
 export interface IAssociatedObjectApiResult {
@@ -29,9 +29,9 @@ export enum AssociatedObjectType {
     ASSOCIATED_DOMAIN = 'domain',
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AssociatedObjectsService {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient);
 
     public getAssociatedObjects(
         associatedType: string,

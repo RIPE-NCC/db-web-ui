@@ -1,7 +1,6 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FullTextSearchModule } from '../../../src/app/fulltextsearch/full-text-search.module';
 import { FullTextSearchService } from '../../../src/app/fulltextsearch/full-text-search.service';
 
 describe('FullTextSearchService', () => {
@@ -10,7 +9,7 @@ describe('FullTextSearchService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [FullTextSearchModule],
+            imports: [],
             providers: [
                 FullTextSearchService,
                 { provide: '$log', useValue: { error: () => {} } },

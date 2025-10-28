@@ -6,9 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of, throwError } from 'rxjs';
-import { CoreModule } from '../../../../src/app/core/core.module';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { CreateSelfMaintainedMaintainerComponent } from '../../../../src/app/updatesweb/create-self-maintained-maintainer.component';
 import { ErrorReporterService } from '../../../../src/app/updatesweb/error-reporter.service';
 import { LinkService } from '../../../../src/app/updatesweb/link.service';
@@ -28,7 +26,7 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, CreateSelfMaintainedMaintainerComponent],
+            imports: [NgSelectModule, CreateSelfMaintainedMaintainerComponent],
             providers: [
                 PropertiesService,
                 MessageStoreService,

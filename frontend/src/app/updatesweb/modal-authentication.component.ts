@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -33,6 +33,13 @@ export interface IModalAuthentication {
     imports: [FormsModule, NgIf, BannerComponent, NgFor, RouterLink, MatButton],
 })
 export class ModalAuthenticationComponent implements OnInit {
+    private activeModal = inject(NgbActiveModal);
+    whoisResourcesService = inject(WhoisResourcesService);
+    restService = inject(RestService);
+    userInfoService = inject(UserInfoService);
+    credentialsService = inject(CredentialsService);
+    properties = inject(PropertiesService);
+
     public close: any;
     @Input()
     public resolve: IModalAuthentication;
@@ -44,14 +51,9 @@ export class ModalAuthenticationComponent implements OnInit {
     public fmpPath: string;
     errorMsg: string;
 
-    constructor(
-        private activeModal: NgbActiveModal,
-        public whoisResourcesService: WhoisResourcesService,
-        public restService: RestService,
-        public userInfoService: UserInfoService,
-        public credentialsService: CredentialsService,
-        public properties: PropertiesService,
-    ) {
+    constructor() {
+        const properties = this.properties;
+
         this.SOURCE = properties.SOURCE;
         this.PORTAL_URL = properties.PORTAL_URL;
     }

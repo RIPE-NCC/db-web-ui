@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { of } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SerialExecutorService {
     public execute(data: any, cb: any) {
         // package function and function argument

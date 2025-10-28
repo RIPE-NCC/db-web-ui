@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
@@ -26,6 +26,15 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
     imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgIf, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
 })
 export class MaintainersEditorComponent implements OnInit, OnDestroy {
+    private attributeMetadataService = inject(AttributeMetadataService);
+    mntnerService = inject(MntnerService);
+    restService = inject(RestService);
+    private webUpdatesCommonsService = inject(WebUpdatesCommonsService);
+    alertsService = inject(AlertsService);
+    private jsUtilsService = inject(JsUtilService);
+    orgDropDownSharedService = inject(OrgDropDownSharedService);
+    private properties = inject(PropertiesService);
+
     @Input()
     public whoisObject: IWhoisObjectModel;
     @Output()
@@ -65,16 +74,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
     private justAddedMnt: IMntByModel;
     private selectedOrg: IUserInfoOrganisation;
 
-    constructor(
-        private attributeMetadataService: AttributeMetadataService,
-        public mntnerService: MntnerService,
-        public restService: RestService,
-        private webUpdatesCommonsService: WebUpdatesCommonsService,
-        public alertsService: AlertsService,
-        private jsUtilsService: JsUtilService,
-        public orgDropDownSharedService: OrgDropDownSharedService,
-        private properties: PropertiesService,
-    ) {
+    constructor() {
         this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe(() => {
             this.ngOnInit();
         });

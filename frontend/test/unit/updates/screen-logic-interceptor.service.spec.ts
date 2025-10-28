@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -9,7 +10,6 @@ import { LinkService } from '../../../src/app/updatesweb/link.service';
 import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
 import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
 import { ScreenLogicInterceptorService } from '../../../src/app/updatesweb/screen-logic-interceptor.service';
-import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('ScreenLogicInterceptorService', () => {
     let interceptor: ScreenLogicInterceptorService;
@@ -27,7 +27,7 @@ describe('ScreenLogicInterceptorService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
+            imports: [HttpClientTestingModule],
             providers: [
                 ScreenLogicInterceptorService,
                 { provide: '$log', useValue: { info: () => {}, error: () => {} } },

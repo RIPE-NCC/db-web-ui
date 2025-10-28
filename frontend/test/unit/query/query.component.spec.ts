@@ -1,13 +1,13 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CookieService } from 'ngx-cookie-service';
 import { throwError } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { CertificateInfoComponent } from '../../../src/app/query/certificate-info.component';
 import { LookupComponent } from '../../../src/app/query/lookup.component';
@@ -18,7 +18,6 @@ import { QueryComponent } from '../../../src/app/query/query.component';
 import { QueryService } from '../../../src/app/query/query.service';
 import { TemplateComponent } from '../../../src/app/query/templatecomponent/template.component';
 import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { IWhoisResponseModel } from '../../../src/app/shared/whois-response-type.model';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
@@ -171,8 +170,7 @@ describe('QueryComponent', () => {
         ]);
         TestBed.configureTestingModule({
             imports: [
-                SharedModule,
-                CoreModule,
+                FormsModule,
                 RouterTestingModule.withRoutes([]),
                 MatMenuModule,
                 QueryComponent,

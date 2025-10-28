@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
@@ -27,6 +27,13 @@ interface IObjectFromParameters {
     imports: [NgFor, MatButton],
 })
 export class ForceDeleteComponent implements OnInit {
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private webUpdatesCommonsService = inject(WebUpdatesCommonsService);
+    private restService = inject(RestService);
+    private mntnerService = inject(MntnerService);
+    alertsService = inject(AlertsService);
+    private activatedRoute = inject(ActivatedRoute);
+
     public object: IObjectFromParameters = {
         attributes: [],
         name: '',
@@ -39,15 +46,6 @@ export class ForceDeleteComponent implements OnInit {
         sso: [],
     };
     public restCallInProgress: boolean = false;
-
-    constructor(
-        private whoisResourcesService: WhoisResourcesService,
-        private webUpdatesCommonsService: WebUpdatesCommonsService,
-        private restService: RestService,
-        private mntnerService: MntnerService,
-        public alertsService: AlertsService,
-        private activatedRoute: ActivatedRoute,
-    ) {}
 
     public ngOnInit() {
         this.alertsService.clearAlertMessages();

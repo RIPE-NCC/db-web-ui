@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,12 +11,12 @@ export interface IQueryFlag {
     description: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class QueryFlagsService {
+    private http = inject(HttpClient);
+
     public FLAGS: IQueryFlag[];
     public detectedQueryFlags: IQueryFlag[];
-
-    constructor(private http: HttpClient) {}
 
     loadFlags(): Observable<void> {
         return this.helpWhois().pipe(

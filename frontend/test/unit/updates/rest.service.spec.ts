@@ -4,7 +4,6 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { RestService } from '../../../src/app/updatesweb/rest.service';
 
 describe('RestService', () => {
@@ -13,7 +12,7 @@ describe('RestService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule],
+            imports: [],
             providers: [
                 RestService,
                 PropertiesService,

@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CredentialsService } from '../../../src/app/shared/credentials.service';
-import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('CredentialsService', () => {
     let credentialsService: CredentialsService;
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
+            imports: [],
             providers: [CredentialsService],
         });
         credentialsService = TestBed.inject(CredentialsService);

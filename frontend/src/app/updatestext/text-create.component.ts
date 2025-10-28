@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,6 +34,20 @@ export interface ITextObject {
     imports: [MatButton, FormsModule, NgIf, SubmittingAgreementComponent],
 })
 export class TextCreateComponent implements OnInit {
+    whoisResourcesService = inject(WhoisResourcesService);
+    whoisMetaService = inject(WhoisMetaService);
+    restService = inject(RestService);
+    errorReporterService = inject(ErrorReporterService);
+    messageStoreService = inject(MessageStoreService);
+    rpslService = inject(RpslService);
+    textCommonsService = inject(TextCommonsService);
+    preferenceService = inject(PreferenceService);
+    mntnerService = inject(MntnerService);
+    credentialsService = inject(CredentialsService);
+    alertsService = inject(AlertsService);
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+
     public restCallInProgress: boolean = false;
     public object: ITextObject = {
         source: '',
@@ -44,22 +58,6 @@ export class TextCreateComponent implements OnInit {
     public override: string;
     public passwords: string[];
     public haveNonLatin1: boolean;
-
-    constructor(
-        public whoisResourcesService: WhoisResourcesService,
-        public whoisMetaService: WhoisMetaService,
-        public restService: RestService,
-        public errorReporterService: ErrorReporterService,
-        public messageStoreService: MessageStoreService,
-        public rpslService: RpslService,
-        public textCommonsService: TextCommonsService,
-        public preferenceService: PreferenceService,
-        public mntnerService: MntnerService,
-        public credentialsService: CredentialsService,
-        public alertsService: AlertsService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-    ) {}
 
     public ngOnInit() {
         this.restCallInProgress = false;

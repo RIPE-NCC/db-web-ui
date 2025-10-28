@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -42,6 +42,12 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
     ],
 })
 export class FullTextSearchComponent implements OnInit, OnDestroy {
+    private searchService = inject(FullTextSearchService);
+    private fullTextResponseService = inject(FullTextResponseService);
+    private whoisMetaService = inject(WhoisMetaService);
+    properties = inject(PropertiesService);
+    alertsService = inject(AlertsService);
+
     // In
     public ftquery: string;
     public advmode = 'all';
@@ -70,14 +76,6 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     // attributes which are skipped in fulltext search on whois side
     private readonly attrsNotConsiderableByWhois: string[] = ['source', 'certif', 'changed'];
-
-    constructor(
-        private searchService: FullTextSearchService,
-        private fullTextResponseService: FullTextResponseService,
-        private whoisMetaService: WhoisMetaService,
-        public properties: PropertiesService,
-        public alertsService: AlertsService,
-    ) {}
 
     public ngOnInit() {
         this.ftquery = '';

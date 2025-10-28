@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { UnsubscribeService } from './unsubscribe.service';
@@ -9,12 +9,13 @@ import { UnsubscribeService } from './unsubscribe.service';
     imports: [NgIf, LoadingIndicatorComponent],
 })
 export class UnsubscribeComponent implements OnInit {
+    unsubscribeService = inject(UnsubscribeService);
+    activatedRoute = inject(ActivatedRoute);
+
     public messageId: string;
     public email: string;
     public unsubscribed: boolean = false;
     public loading: boolean = true;
-
-    constructor(public unsubscribeService: UnsubscribeService, public activatedRoute: ActivatedRoute) {}
 
     public ngOnInit() {
         this.messageId = this.activatedRoute.snapshot.paramMap.get('messageId');

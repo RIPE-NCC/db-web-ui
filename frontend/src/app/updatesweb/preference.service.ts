@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PreferenceService {
+    private cookies = inject(CookieService);
+
     private expiredDate: Date;
 
     private UI_MODE_COOKIE = {
@@ -13,7 +15,7 @@ export class PreferenceService {
         defaultValue: 'webupdates',
     };
 
-    constructor(private cookies: CookieService) {
+    constructor() {
         this.expiredDate = new Date();
         this.expiredDate.setDate(this.expiredDate.getDate() + 7);
     }

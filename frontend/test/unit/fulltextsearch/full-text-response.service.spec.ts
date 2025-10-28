@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { FullTextResponseService } from '../../../src/app/fulltextsearch/full-text-response.service';
-import { FullTextSearchModule } from '../../../src/app/fulltextsearch/full-text-search.module';
 
 describe('FullTextResponseService', () => {
     let fullTextResponseService: FullTextResponseService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [FullTextSearchModule],
+            imports: [],
             providers: [FullTextResponseService],
         });
         fullTextResponseService = TestBed.inject(FullTextResponseService);

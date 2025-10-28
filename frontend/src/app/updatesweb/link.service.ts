@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LinkService {
     public getLink(source: string, type: string, name: string) {
         return ['<a target="_blank" href="webupdates/display/', source, '/', type, '/', name, '">', name, '</a>'].join('');

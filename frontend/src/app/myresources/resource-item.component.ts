@@ -1,5 +1,5 @@
 import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgbProgressbar, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Labels } from '../label.constants';
@@ -13,6 +13,9 @@ import { ResourceStatusService } from './resource-status.service';
     imports: [RouterLink, NameFormatterComponent, NgIf, NgFor, FlagComponent, NgClass, NgbTooltip, NgbProgressbar, DecimalPipe],
 })
 export class ResourceItemComponent implements OnInit {
+    private router = inject(Router);
+    private resourceStatusService = inject(ResourceStatusService);
+
     @Input()
     public item: any;
     @Input()
@@ -22,8 +25,6 @@ export class ResourceItemComponent implements OnInit {
     public showProgressbar: boolean;
 
     public flags: Array<IFlag> = [];
-
-    constructor(private router: Router, private resourceStatusService: ResourceStatusService) {}
 
     public ngOnInit() {
         if (this.item.usage) {

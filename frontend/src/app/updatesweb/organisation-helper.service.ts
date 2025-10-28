@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import isEmpty from 'lodash/isEmpty';
 import trim from 'lodash/trim';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { RestService } from './rest.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class OrganisationHelperService {
-    constructor(private whoisResourcesService: WhoisResourcesService, private restService: RestService) {}
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private restService = inject(RestService);
 
     public validateOrganisationAttributes(objectType: string, attributes: IAttributeModel[]): boolean {
         if (objectType === 'organisation') {

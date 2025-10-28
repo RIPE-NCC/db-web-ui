@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { IAttributeModel } from '../../../src/app/shared/whois-response-type.model';
 import { CharsetToolsService } from '../../../src/app/updatesweb/charset-tools.service';
-import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('updates: CharsetToolsService', () => {
     let subject: CharsetToolsService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
+            imports: [],
             providers: [
                 CharsetToolsService,
                 { provide: '$log', useValue: { debug: () => {} } }, // <- just because of testing AbuseCTableComponent here

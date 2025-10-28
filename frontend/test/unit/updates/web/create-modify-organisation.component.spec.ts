@@ -9,11 +9,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { EMPTY, of } from 'rxjs';
 import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
-import { CoreModule } from '../../../../src/app/core/core.module';
 import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
 import { ResourceStatusService } from '../../../../src/app/myresources/resource-status.service';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { CharsetToolsService } from '../../../../src/app/updatesweb/charset-tools.service';
@@ -43,7 +41,7 @@ describe('CreateModifyComponent for organisation', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ) });
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, CreateModifyComponent],
+            imports: [NgSelectModule, CreateModifyComponent],
             providers: [
                 PrefixService,
                 ResourceStatusService,

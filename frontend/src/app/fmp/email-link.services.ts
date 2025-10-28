@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EmailLinkService {
-    private url = 'api/whois-internal/api/fmp-pub/emaillink';
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) {}
+    private url = 'api/whois-internal/api/fmp-pub/emaillink';
 
     public get(hash: string): Observable<any> {
         return this.http.get(`${this.url}/${hash}.json`);

@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { IUserInfoOrganisation } from './org-data-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class OrgDropDownSharedService {
     public selectedOrgChanged$: EventEmitter<IUserInfoOrganisation>;
     private selectedOrg: IUserInfoOrganisation;

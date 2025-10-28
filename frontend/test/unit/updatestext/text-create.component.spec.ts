@@ -10,7 +10,6 @@ import { EMPTY, of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { CredentialsService } from '../../../src/app/shared/credentials.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { RpslService } from '../../../src/app/updatestext/rpsl.service';
@@ -46,7 +45,7 @@ describe('TextCreateComponent', () => {
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}), dismissed: EMPTY });
         TestBed.configureTestingModule({
-            imports: [FormsModule, SharedModule, TextCreateComponent],
+            imports: [FormsModule, TextCreateComponent],
             providers: [
                 { provide: PreferenceService, useValue: preferencesServiceMock },
                 WhoisResourcesService,

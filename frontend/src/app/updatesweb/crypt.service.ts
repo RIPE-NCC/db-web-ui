@@ -3,7 +3,7 @@ import * as CryptoJS from 'crypto-js';
 
 // libc crypt implementation, based on Apache commons-codec Md5Crypt
 // depends on CryptJS library
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CryptService {
     private b64t: string = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     private prefix: string = '$1$';

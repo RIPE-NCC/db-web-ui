@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Output, inject } from '@angular/core';
 
 export function debounce(delay: number = 100): MethodDecorator {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -16,9 +16,9 @@ export function debounce(delay: number = 100): MethodDecorator {
 
 @Directive({ selector: '[scroller]' })
 export class ScrollerDirective {
-    @Output() scrolled = new EventEmitter();
+    private elRef = inject(ElementRef);
 
-    public constructor(private elRef: ElementRef) {}
+    @Output() scrolled = new EventEmitter();
 
     @HostListener('window:scroll', ['$event'])
     @debounce()

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -8,5 +8,5 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     imports: [MatButton],
 })
 export class ModalDomainObjectSplashComponent {
-    constructor(public activeModal: NgbActiveModal) {}
+    activeModal = inject(NgbActiveModal);
 }
