@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+mkdir -p /app/var/logs/jetty
+
 JAVA_OPTS="
     -Xms${START_HEAP_SIZE}
     -Xmx${MAX_HEAP_SIZE}
