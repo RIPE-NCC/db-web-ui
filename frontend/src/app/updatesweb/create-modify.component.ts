@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -78,6 +78,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public showAttrsHelp: [];
 
+    @ViewChild(MaintainersEditorComponent) maintainersEditorComponent!: MaintainersEditorComponent;
+
     constructor(
         public whoisResourcesService: WhoisResourcesService,
         public attributeMetadataService: AttributeMetadataService,
@@ -98,7 +100,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         public alertsService: AlertsService,
         public activatedRoute: ActivatedRoute,
         public router: Router,
-        public maintainerEditor: MaintainersEditorComponent,
     ) {}
 
     public ngOnInit() {
@@ -192,7 +193,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
                     if (result.$value && result.$value.selectedItem) {
-                        this.maintainerEditor.initCreateMode(); //Refresh maintainers editor
+                        this.maintainersEditorComponent.initCreateMode(); //Refresh maintainers editor
                     }
                 },
                 error: (error: any) => {
