@@ -193,10 +193,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 next: (result: any) => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
-                    if (result.$value && result.$value.selectedItem) {
-                        //Refresh just if sso added to a selected mntner
-                        this.maintainersEditorComponent.refreshMntners();
-                    }
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
@@ -845,6 +841,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public refreshObjectIfNeeded(associationResp: any) {
+        console.log('calling refresh');
         if (this.operation === this.MODIFY_OPERATION && this.objectType === 'mntner') {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);
@@ -869,6 +866,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         this.restCallInProgress = false;
                     },
                 });
+            }
+        } else if (this.operation === this.CREATE_OPERATION) {
+            console.log('calling create with ' + associationResp);
+            if (associationResp) {
+                //Refresh just if sso added to a selected mntner
+                this.maintainersEditorComponent.refreshMntners();
             }
         }
     }
