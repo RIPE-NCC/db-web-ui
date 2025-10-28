@@ -147,7 +147,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             // Start empty, and populate with rest-result
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, []);
-            console.log('attributes ' + this.attributes);
 
             this.fetchDataForModify();
         }
@@ -388,7 +387,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             });
         }
         if (foundIdx > -1) {
-            console.log('attribute to add');
             attributes.splice(foundIdx + 1, 0, { name: attributeName, value: undefined });
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, attributes);
         }
@@ -435,7 +433,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public addSelectedAttribute(selectedAttributeType: IAttributeModel, attr: IAttributeModel) {
         this.addAttr(this.attributes, attr, selectedAttributeType.name);
-        console.log('attribute added ', this.attributes);
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
