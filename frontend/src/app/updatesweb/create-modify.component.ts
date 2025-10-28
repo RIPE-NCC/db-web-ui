@@ -193,6 +193,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     if (result.$value && result.$value.selectedItem) {
                         console.log('attribute value ', result.$value.selectedItem);
                         this.mntnerService.mergeMaintainers(this.attributes, { name: 'mnt-by', value: result.$value.selectedItem.key });
+                        this.attributeMetadataService.enrich(this.objectType, this.attributes);
                         console.log('attributes ', this.attributes);
                     }
                 },
