@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -12,7 +12,6 @@ import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel, IStatusOption } from '../shared/whois-response-type.model';
-import { MaintainersEditorComponent } from '../whois-object/maintainers-editor.component';
 import { EnumService } from './enum.service';
 import { ErrorReporterService } from './error-reporter.service';
 import { LinkService } from './link.service';
@@ -62,7 +61,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public mntbySyntax: string;
     public operation: string;
     public restCallInProgress: boolean;
-
     /*
      * Lazy rendering of attributes with scrollmarker directive
      */
@@ -78,8 +76,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public PENDING_OPERATION = 'Pending';
 
     public showAttrsHelp: [];
-
-    @ViewChild(MaintainersEditorComponent) maintainersEditorComponent!: MaintainersEditorComponent;
 
     constructor(
         public whoisResourcesService: WhoisResourcesService,
@@ -149,6 +145,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             // Start empty, and populate with rest-result
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, []);
+            console.log('attributes ' + this.attributes);
 
             this.fetchDataForModify();
         }
@@ -193,6 +190,9 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 next: (result: any) => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
+                    if (result.$value && result.$value.selectedItem) {
+                        (this.attributes as any[]).push(result.$value.selectedItem);
+                    }
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
@@ -841,7 +841,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public refreshObjectIfNeeded(associationResp: any) {
-        console.log('calling refresh');
         if (this.operation === this.MODIFY_OPERATION && this.objectType === 'mntner') {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);
@@ -866,12 +865,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         this.restCallInProgress = false;
                     },
                 });
-            }
-        } else if (this.operation === this.CREATE_OPERATION) {
-            console.log('calling create with ' + associationResp);
-            if (associationResp) {
-                //Refresh just if sso added to a selected mntner
-                this.maintainersEditorComponent.refreshMntners();
             }
         }
     }
