@@ -7,7 +7,7 @@ import { provideRouter } from '@angular/router';
 
 // Material & other imports that were previously in AppModule
 import { FormsModule } from '@angular/forms';
-import { MatLineModule } from '@angular/material/core';
+import { MatLineModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { BrowserModule } from '@angular/platform-browser';
@@ -73,6 +73,8 @@ bootstrapApplication(AppComponent, {
         PropertiesService,
         MenuService,
         SessionInfoService,
+
+        provideNativeDateAdapter(),
 
         provideAppInitializer(() => {
             const propertiesService = inject(PropertiesService);

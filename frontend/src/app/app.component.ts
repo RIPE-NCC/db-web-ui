@@ -9,13 +9,14 @@ import { ReleaseNotificationService } from './shared/release-notification.servic
 
 import { BannerComponent } from './banner/banner.component';
 import { MenuComponent } from './menu/menu.component';
+import { AlertBannersComponent } from './shared/alert/alert-banners.component';
 import { LabelPipe } from './shared/label.pipe';
 
 @Component({
     selector: 'app-db-web-ui',
     standalone: true,
     templateUrl: './app.component.html',
-    imports: [CommonModule, RouterModule, BannerComponent, MenuComponent, LabelPipe],
+    imports: [CommonModule, RouterModule, BannerComponent, MenuComponent, LabelPipe, AlertBannersComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnInit, AfterViewInit {
