@@ -191,7 +191,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
                     if (result.$value && result.$value.selectedItem) {
-                        (this.attributes as any[]).push(result.$value.selectedItem);
+                        (this.attributes.attribute as IAttributeModel[]).push(result.$value.selectedItem);
                     }
                 },
                 error: (error: any) => {
