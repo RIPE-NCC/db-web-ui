@@ -3,7 +3,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 
@@ -12,7 +11,7 @@ describe('WhoisResourcesService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule],
+            imports: [],
             providers: [WhoisResourcesService, WhoisMetaService, PropertiesService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         whoisResourcesService = TestBed.inject(WhoisResourcesService);

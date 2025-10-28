@@ -1,15 +1,14 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { FullTextResponseService } from '../../../src/app/fulltextsearch/full-text-response.service';
 import { FullTextResultSummaryComponent } from '../../../src/app/fulltextsearch/full-text-result-summary.component';
 import { FullTextSearchComponent } from '../../../src/app/fulltextsearch/full-text-search.component';
 import { FullTextSearchService } from '../../../src/app/fulltextsearch/full-text-search.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 
 describe('FullTextSearchComponent', () => {
@@ -20,7 +19,7 @@ describe('FullTextSearchComponent', () => {
     beforeEach(() => {
         fullTextSearchService = jasmine.createSpyObj('FullTextSearchService', ['doSearch']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, RouterTestingModule, FullTextSearchComponent, FullTextResultSummaryComponent],
+            imports: [FormsModule, RouterTestingModule, FullTextSearchComponent, FullTextResultSummaryComponent],
             providers: [
                 { provide: FullTextSearchService, useValue: fullTextSearchService },
                 FullTextResponseService,

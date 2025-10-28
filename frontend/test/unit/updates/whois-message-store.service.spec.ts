@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
-import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('MessageStoreService', () => {
     let messageStore: MessageStoreService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
+            imports: [],
             providers: [MessageStoreService],
         });
         messageStore = TestBed.inject(MessageStoreService);

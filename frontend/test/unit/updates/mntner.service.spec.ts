@@ -12,7 +12,6 @@ import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.s
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
 import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
 import { RestService } from '../../../src/app/updatesweb/rest.service';
-import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('MntnerService', () => {
     let mntnerService: MntnerService;
@@ -25,7 +24,7 @@ describe('MntnerService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
+            imports: [],
             providers: [
                 MntnerService,
                 RestService,

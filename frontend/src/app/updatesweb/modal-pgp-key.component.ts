@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CoreModule } from '../core/core.module';
 
 @Component({
     selector: 'modal-md5-password',
     templateUrl: './modal-pgp-key.component.html',
     standalone: true,
-    imports: [CoreModule, MatButton],
+    imports: [FormsModule, MatButton],
 })
 export class ModalPGPKeyComponent implements AfterViewInit {
     private activeModal = inject(NgbActiveModal);

@@ -1,11 +1,9 @@
 import { Location } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppModule } from '../../../src/app/app.module';
 import { JsUtilService } from '../../../src/app/core/js-utils.service';
 import { DomainObjectWizardComponent } from '../../../src/app/domainobject/domain-object-wizard.component';
-import { DomainObjectModule } from '../../../src/app/domainobject/domain-object.module';
 import { PropertiesService } from '../../../src/app/properties.service';
 
 describe('DomainObjectWizardComponent', () => {
@@ -14,7 +12,7 @@ describe('DomainObjectWizardComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [DomainObjectModule, RouterTestingModule, AppModule],
+            imports: [HttpClientTestingModule],
             providers: [
                 JsUtilService,
                 { provide: Location, useValue: {} },

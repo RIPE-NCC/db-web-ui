@@ -1,22 +1,15 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
 
-@Injectable({ providedIn: 'root' })
-export class MetaDataCleanerInterceptor implements HttpInterceptor {
-    public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (req.body && typeof req.body === 'object') {
-            const newBody = JSON.parse(JSON.stringify(req.body, this.toJsonReplacer));
-            const jsonReq: HttpRequest<any> = req.clone({
-                body: newBody,
-            });
-            return next.handle(jsonReq);
-        } else {
-            return next.handle(req);
-        }
+export const MetaDataCleanerInterceptor: HttpInterceptorFn = (req, next) => {
+    if (req.body && typeof req.body === 'object') {
+        const newBody = JSON.parse(JSON.stringify(req.body, toJsonReplacer));
+        const jsonReq = req.clone({ body: newBody });
+        return next(jsonReq);
     }
 
-    private toJsonReplacer(key: string, value: any): any {
-        return 'string' == typeof key && '$' === key.charAt(0) && '$' === key.charAt(1) ? undefined : value;
-    }
-}
+    return next(req);
+};
+
+const toJsonReplacer = (key: string, value: any) => {
+    return typeof key === 'string' && key.startsWith('$$') ? undefined : value;
+};
