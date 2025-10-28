@@ -145,6 +145,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             // Start empty, and populate with rest-result
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, []);
+            console.log('attributes ' + attributes);
 
             this.fetchDataForModify();
         }
