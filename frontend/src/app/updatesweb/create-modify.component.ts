@@ -192,7 +192,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.inetnumParentAuthError = false;
                     if (result.$value && result.$value.selectedItem) {
                         console.log('attribute value ', result.$value.selectedItem);
-                        this.addSelectedAttribute({ name: 'mnt-by' }, result.$value.selectedItem);
+                        this.addSelectedAttribute({ name: 'mnt-by' }, { name: 'mnt-by', value: result.$value.selectedItem.key });
                         console.log('attributes ', this.attributes);
                     }
                 },
@@ -434,6 +434,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public addSelectedAttribute(selectedAttributeType: IAttributeModel, attr: IAttributeModel) {
         this.addAttr(this.attributes, attr, selectedAttributeType.name);
+        console.log('attribute added ', this.attributes);
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
