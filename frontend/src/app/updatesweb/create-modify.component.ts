@@ -1,5 +1,5 @@
 import { NgFor, NgIf, SlicePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -127,6 +127,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public showAttrsHelp: [];
 
+    @ViewChild(MaintainersEditorComponent) maintainersEditorComponent!: MaintainersEditorComponent;
+
     public ngOnInit() {
         this.optionList = { status: [] };
 
@@ -214,9 +216,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
-                next: () => {
+                next: (result: any) => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
+                    if (result.$value && result.$value.selectedItem) {
+                        this.maintainersEditorComponent.initCreateMode(); //Refresh maintainers editor
+                    }
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
