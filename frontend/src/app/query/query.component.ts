@@ -226,10 +226,6 @@ export class QueryComponent implements OnDestroy {
         this.qp.source = this.properties.SOURCE;
     }
 
-    public uncheckReverseDomain() {
-        this.qp.reverseDomain = false;
-    }
-
     public doSearch() {
         this.searched = true;
         if (!this.qp.queryText) {
@@ -357,16 +353,11 @@ export class QueryComponent implements OnDestroy {
     }
 
     public filterCheckboxes() {
-        // this.showClearBtnInSearchField();
         // disable checkboxes according to type of query term
         this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
         this.typeOfSearchedTerm = this.queryService.getTypeOfSearchedTerm(this.qp.queryText);
         this.uncheckAllCheckboxes();
     }
-    //
-    // public showClearBtnInSearchField() {
-    //
-    // }
 
     public isDisabledHierarchyDropdown() {
         const enableHierarchyForTypes: string[] = [
