@@ -8,6 +8,7 @@ import { SessionInfoService } from './sessioninfo/session-info.service';
 import { ReleaseNotificationService } from './shared/release-notification.service';
 
 import { BannerComponent } from './banner/banner.component';
+import { OrgDropDownComponent } from './dropdown/org-drop-down.component';
 import { MenuComponent } from './menu/menu.component';
 import { AlertBannersComponent } from './shared/alert/alert-banners.component';
 import { LabelPipe } from './shared/label.pipe';
@@ -16,7 +17,7 @@ import { LabelPipe } from './shared/label.pipe';
     selector: 'app-db-web-ui',
     standalone: true,
     templateUrl: './app.component.html',
-    imports: [CommonModule, RouterModule, BannerComponent, MenuComponent, LabelPipe, AlertBannersComponent],
+    imports: [CommonModule, RouterModule, BannerComponent, MenuComponent, LabelPipe, AlertBannersComponent, OrgDropDownComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnInit, AfterViewInit {
