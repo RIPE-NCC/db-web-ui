@@ -87,7 +87,7 @@
         "@ng-bootstrap/ng-bootstrap": "18.0.0",
         "@ng-select/ng-select": "14.9.0",
         "@ngx-loading-bar/core": "6.0.2",
-        "@ngx-loading-bar/http-client": "6.0.2",
+        "@ngx-loading-bar/http-client": "7.0.0",
         "@technical-design/ripe-app-webcomponents": "4.3.0",
         "@typeform/embed": "^5.3.1",
         "@types/crypto-js": "4.2.2",
