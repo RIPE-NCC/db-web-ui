@@ -15,7 +15,6 @@ describe('ModalPGPKeyComponent', () => {
 
         await TestBed.configureTestingModule({
             imports: [FormsModule, MatButtonModule, FormsModule],
-            declarations: [],
             providers: [{ provide: NgbActiveModal, useValue: mockActiveModal }],
         }).compileComponents();
     });

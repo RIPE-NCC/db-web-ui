@@ -1,7 +1,12 @@
 <div class="padding">
     <em *ngIf="isMobileView" class="fal fa-times close" aria-label="Close"></em>
     <label id="source-radio-group-label">Source</label>
-    <mat-radio-group aria-labelledby="source-radio-group-label" class="section" [(ngModel)]="queryParameters.source">
+    <mat-radio-group
+        aria-labelledby="source-radio-group-label"
+        class="section"
+        [(ngModel)]="queryParameters.source"
+        (ngModelChange)="countSelectedDropdownAdvanceFilter()"
+    >
         <mat-radio-button value="GRS" (click)="$event.stopPropagation()">
             <a
                 href="https://docs.db.ripe.net/Types-of-Queries/RIPE-NCC-Global-Resource-Service/"
@@ -15,10 +20,20 @@
         <mat-radio-button value="RIPE" (click)="$event.stopPropagation()">RIPE Database</mat-radio-button>
     </mat-radio-group>
     <section class="section">
-        <mat-checkbox [(ngModel)]="queryParameters.showFullObjectDetails" id="showFullObjectDetails" (click)="$event.stopPropagation()">
+        <mat-checkbox
+            [(ngModel)]="queryParameters.showFullObjectDetails"
+            (ngModelChange)="countSelectedDropdownAdvanceFilter()"
+            id="showFullObjectDetails"
+            (click)="$event.stopPropagation()"
+        >
             Show full object details
         </mat-checkbox>
-        <mat-checkbox [(ngModel)]="queryParameters.doNotRetrieveRelatedObjects" id="doNotRetrieveRelatedObjects" (click)="$event.stopPropagation()">
+        <mat-checkbox
+            [(ngModel)]="queryParameters.doNotRetrieveRelatedObjects"
+            (ngModelChange)="countSelectedDropdownAdvanceFilter()"
+            id="doNotRetrieveRelatedObjects"
+            (click)="$event.stopPropagation()"
+        >
             Do not retrieve related objects
         </mat-checkbox>
     </section>
