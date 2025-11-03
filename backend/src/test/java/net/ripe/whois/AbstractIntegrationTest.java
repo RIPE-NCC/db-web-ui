@@ -74,6 +74,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("portal.url", getMockServerUrl());
         System.setProperty("portal.url.account", getMockServerUrl());
         System.setProperty("portal.url.request", getMockServerUrl());
+        System.setProperty("newest.portal.url", getMockServerUrl());
         System.setProperty("sso.access.url", getMockServerUrl());
         System.setProperty("sso.login.url", getMockServerUrl());
         System.setProperty("sso.logout.url", getMockServerUrl());
