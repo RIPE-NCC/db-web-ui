@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, EventEmitter, HostListener, Inject, Output } from '@angular/core';
+import { Directive, DOCUMENT, ElementRef, EventEmitter, HostListener, Inject, Output } from '@angular/core';
 
 export function debounce(delay: number = 25): MethodDecorator {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
