@@ -1,9 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AppModule } from '../../../src/app/app.module';
 import { MoreSpecificsService } from '../../../src/app/myresources/morespecifics/more-specifics.service';
-import { MyResourcesModule } from '../../../src/app/myresources/my-resources.module';
 
 describe('MoreSpecificsService', () => {
     let moreSpecificsService: MoreSpecificsService;
@@ -11,11 +9,10 @@ describe('MoreSpecificsService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [MyResourcesModule, AppModule],
+            imports: [],
             providers: [MoreSpecificsService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
-        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
         moreSpecificsService = TestBed.inject(MoreSpecificsService);
     });
 
@@ -39,7 +36,7 @@ describe('MoreSpecificsService', () => {
 
     it('should reject when objectType is empty', (done) => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', '', undefined, '').subscribe({
-            next: (res: any) => {},
+            next: () => {},
             error: (error: any) => {
                 expect(error).toEqual('objectType is empty. more-specifics not available');
                 done();

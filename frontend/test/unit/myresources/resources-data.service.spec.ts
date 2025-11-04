@@ -1,8 +1,6 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AppModule } from '../../../src/app/app.module';
-import { MyResourcesModule } from '../../../src/app/myresources/my-resources.module';
 import { IResourceTickets } from '../../../src/app/myresources/resource-type.model';
 import { ResourcesDataService } from '../../../src/app/myresources/resources-data.service';
 
@@ -55,7 +53,7 @@ describe('ResourcesDataService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [MyResourcesModule, AppModule],
+            imports: [],
             providers: [
                 ResourcesDataService,
                 { provide: '$log', useValue: { info: () => {} } },
@@ -64,7 +62,6 @@ describe('ResourcesDataService', () => {
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
-        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
         resourcesDataService = TestBed.inject(ResourcesDataService);
     });
 

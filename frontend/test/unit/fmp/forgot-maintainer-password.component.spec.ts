@@ -1,12 +1,11 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
 import { ForgotMaintainerPasswordComponent } from '../../../src/app/fmp/forgot-maintainer-password.component';
 import { ForgotMaintainerPasswordService } from '../../../src/app/fmp/forgot-maintainer-password.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
 describe('ForgotMaintainerPasswordComponent', () => {
@@ -25,7 +24,7 @@ describe('ForgotMaintainerPasswordComponent', () => {
         forgotMaintainerPasswordService = jasmine.createSpyObj('ForgotMaintainerPasswordService', ['generatePdfAndEmail']);
         userInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, ForgotMaintainerPasswordComponent],
+            imports: [HttpClientTestingModule, ForgotMaintainerPasswordComponent],
             providers: [
                 { provide: ForgotMaintainerPasswordService, useValue: forgotMaintainerPasswordService },
                 { provide: UserInfoService, useValue: userInfoService },

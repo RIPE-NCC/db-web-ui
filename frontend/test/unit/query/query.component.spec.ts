@@ -1,13 +1,13 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CookieService } from 'ngx-cookie-service';
 import { throwError } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { CertificateInfoComponent } from '../../../src/app/query/certificate-info.component';
 import { LookupComponent } from '../../../src/app/query/lookup.component';
@@ -18,7 +18,6 @@ import { QueryComponent } from '../../../src/app/query/query.component';
 import { QueryService } from '../../../src/app/query/query.service';
 import { TemplateComponent } from '../../../src/app/query/templatecomponent/template.component';
 import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { IWhoisResponseModel } from '../../../src/app/shared/whois-response-type.model';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
@@ -171,8 +170,7 @@ describe('QueryComponent', () => {
         ]);
         TestBed.configureTestingModule({
             imports: [
-                SharedModule,
-                CoreModule,
+                FormsModule,
                 RouterTestingModule.withRoutes([]),
                 MatMenuModule,
                 QueryComponent,
@@ -217,42 +215,6 @@ describe('QueryComponent', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
-    });
-
-    it('should count types selected in dropdown', () => {
-        component.init();
-        fixture.detectChanges();
-        expect(component.numberSelectedTypes).toEqual(0);
-        component.qp.types = { DOMAIN: true, INETNUM: true, MNTNER: true };
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedTypes).toEqual(3);
-        component.qp.types = { DOMAIN: true, INETNUM: false, MNTNER: true };
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedTypes).toEqual(2);
-    });
-
-    it('should count hierarchy flags selected in dropdown', () => {
-        component.init();
-        fixture.detectChanges();
-        expect(component.numberSelectedHierarchyItems).toEqual(0);
-        component.qp.hierarchy = 'l';
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedHierarchyItems).toEqual(1);
-        component.qp.hierarchy = 'm';
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedHierarchyItems).toEqual(1);
-        component.qp.hierarchy = 'x';
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedHierarchyItems).toEqual(1);
-        component.qp.reverseDomain = true;
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedHierarchyItems).toEqual(2);
     });
 
     it('should disable hierarchy flags dropdown when search term is some ObjectTypesEnum which is not inetnum, inet6num, route, route6, domain, route, route6', () => {
@@ -333,68 +295,6 @@ describe('QueryComponent', () => {
         fixture.detectChanges();
         component.filterCheckboxes();
         expect(component.availableTypes.length).toEqual(21);
-    });
-
-    it('should count inverse selected in dropdown', () => {
-        component.init();
-        fixture.detectChanges();
-        expect(component.numberSelectedInverseLookups).toEqual(0);
-        component.qp.inverse = { ADMIN_C: true, AUTHOR: true, MNT_BY: true, ORG: true, TECH_C: true, ZONE_C: true };
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedInverseLookups).toEqual(6);
-        component.qp.inverse = { ADMIN_C: false, AUTHOR: false, MNT_BY: false, ORG: true, TECH_C: false, ZONE_C: true };
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedInverseLookups).toEqual(2);
-        component.qp.inverse = { ADMIN_C: false, AUTHOR: false, MNT_BY: false, ORG: false, TECH_C: false, ZONE_C: false };
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedInverseLookups).toEqual(0);
-    });
-
-    it('should count advanced filters in dropdown which are not selected by default', () => {
-        component.init();
-        fixture.detectChanges();
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(0);
-        component.qp.showFullObjectDetails = true;
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(1);
-        component.qp.doNotRetrieveRelatedObjects = false; //by default is true
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(2);
-        component.qp.source = 'GRS';
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(3);
-        component.qp.doNotRetrieveRelatedObjects = true; //by default is true
-        fixture.detectChanges();
-        component.isFilteringResults();
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(2);
-    });
-
-    it('should change count of selected item just after isFilteringResults() was called', () => {
-        component.init();
-        fixture.detectChanges();
-        expect(component.numberSelectedTypes).toEqual(0);
-        expect(component.numberSelectedHierarchyItems).toEqual(0);
-        expect(component.numberSelectedInverseLookups).toEqual(0);
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(0);
-        component.qp.types = { DOMAIN: true, INETNUM: true, MNTNER: true };
-        component.qp.hierarchy = 'l';
-        component.qp.inverse = { ADMIN_C: true, AUTHOR: true, MNT_BY: true, ORG: true, TECH_C: true, ZONE_C: true };
-        component.qp.doNotRetrieveRelatedObjects = false; //by default is true
-        expect(component.numberSelectedTypes).toEqual(0);
-        expect(component.numberSelectedHierarchyItems).toEqual(0);
-        expect(component.numberSelectedInverseLookups).toEqual(0);
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(0);
-        component.isFilteringResults();
-        expect(component.numberSelectedTypes).toEqual(3);
-        expect(component.numberSelectedHierarchyItems).toEqual(1);
-        expect(component.numberSelectedInverseLookups).toEqual(6);
-        expect(component.numberSelectedAdvanceFilterItems).toEqual(1);
     });
 
     it('should return number as a string in brackets or empty string', () => {

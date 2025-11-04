@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ResourceStatusService } from '../myresources/resource-status.service';
 import { IStatusOption } from '../shared/whois-response-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EnumService {
+    private resourceStatus = inject(ResourceStatusService);
+
     private readonly languageCodes = [
         { key: 'AA', value: 'Afar' },
         { key: 'AB', value: 'Abkhazian' },
@@ -443,8 +445,6 @@ export class EnumService {
         { key: 'ZM', value: 'Zambia' },
         { key: 'ZW', value: 'Zimbabwe' },
     ];
-
-    constructor(private resourceStatus: ResourceStatusService) {}
 
     public get(objectType: string, attrName: string, attrValue?: string): IStatusOption[] {
         if (attrName === 'status') {

@@ -1,13 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SKIP_HEADER } from '../interceptor/header.interceptor';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UnsubscribeService {
-    private readonly URL: string = `api/whois-internal/public/unsubscribe`;
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) {}
+    private readonly URL: string = `api/whois-internal/public/unsubscribe`;
 
     public unsubscribe(messageId: string): Observable<any> {
         if (!messageId) {

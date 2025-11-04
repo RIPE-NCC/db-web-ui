@@ -3,7 +3,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { CryptService } from '../../../../src/app/updatesweb/crypt.service';
 import { ModalMd5PasswordComponent } from '../../../../src/app/updatesweb/modal-md5-password.component';
 
@@ -16,7 +15,7 @@ describe('ModalMd5PasswordComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            imports: [FormsModule, SharedModule, ModalMd5PasswordComponent],
+            imports: [FormsModule, ModalMd5PasswordComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 CryptService,

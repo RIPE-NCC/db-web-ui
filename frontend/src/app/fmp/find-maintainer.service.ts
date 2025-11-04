@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
 import { IWhoisObjectModel } from '../shared/whois-response-type.model';
@@ -13,11 +13,12 @@ export interface IFindMaintainer {
     expired?: boolean;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FindMaintainerService {
-    private readonly API_BASE_URL: string = 'api/whois-internal/api/fmp-pub/mntner/';
+    private http = inject(HttpClient);
+    private fmpErrorService = inject(FmpErrorService);
 
-    constructor(private http: HttpClient, private fmpErrorService: FmpErrorService) {}
+    private readonly API_BASE_URL: string = 'api/whois-internal/api/fmp-pub/mntner/';
 
     public search(maintainerKey: string): Observable<IFindMaintainer> {
         return this.find(maintainerKey).pipe(

@@ -1,13 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { AppComponent } from '../../src/app/app.component';
+import { BannerComponent } from '../../src/app/banner/banner.component';
+import { MenuComponent } from '../../src/app/menu/menu.component';
 import { PropertiesService } from '../../src/app/properties.service';
 import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
+import { LabelPipe } from '../../src/app/shared/label.pipe';
 import { ReleaseNotificationService } from '../../src/app/shared/release-notification.service';
 
 describe('AppComponent', () => {
@@ -20,9 +24,8 @@ describe('AppComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
         TestBed.configureTestingModule({
-            declarations: [AppComponent],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [],
+            imports: [AppComponent, CommonModule, RouterModule, BannerComponent, MenuComponent, LabelPipe],
             providers: [
                 {
                     provide: PropertiesService,
@@ -43,9 +46,18 @@ describe('AppComponent', () => {
                         navigate: () => {},
                         navigateByUrl: () => {},
                         url: '/not-query',
+                        events: of(),
                     },
                 },
-                { provide: SessionInfoService, useValue: { expiredSession$: of(), showUserLoggedIcon$: of() } },
+                {
+                    provide: SessionInfoService,
+                    useValue: {
+                        expiredSession$: of(false),
+                        showUserLoggedIcon$: of(false),
+                        authenticationFailure: jasmine.createSpy('authenticationFailure'),
+                        startCheckingSession: jasmine.createSpy('startCheckingSession'),
+                    },
+                },
                 {
                     provide: ReleaseNotificationService,
                     useValue: releaseNotificationService,

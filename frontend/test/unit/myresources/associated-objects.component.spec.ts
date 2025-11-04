@@ -1,8 +1,8 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { AssociatedObjectsComponent } from '../../../src/app/myresources/associatedobjects/associated-objects.component';
 import {
     AssociatedObjectsService,
@@ -10,7 +10,6 @@ import {
     IAssociatedRouteObject,
 } from '../../../src/app/myresources/associatedobjects/associated-objects.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 
 describe('AssociatedObjectsComponent', () => {
     let component: AssociatedObjectsComponent;
@@ -19,7 +18,7 @@ describe('AssociatedObjectsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, RouterTestingModule, AssociatedObjectsComponent],
+            imports: [FormsModule, RouterTestingModule, AssociatedObjectsComponent],
             providers: [AssociatedObjectsService, PropertiesService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);

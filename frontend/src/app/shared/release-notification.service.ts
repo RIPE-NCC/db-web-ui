@@ -1,17 +1,23 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { IProperties, PropertiesService } from '../properties.service';
 import { AlertsService } from './alert/alerts.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ReleaseNotificationService {
+    private httpClient = inject(HttpClient);
+    private alertsService = inject(AlertsService);
+    private router = inject(Router);
+
     private buildTime: string;
     private pollInterval: number;
     private isBannerShown: boolean = false;
 
-    constructor(propertiesService: PropertiesService, private httpClient: HttpClient, private alertsService: AlertsService, private router: Router) {
+    constructor() {
+        const propertiesService = inject(PropertiesService);
+
         this.buildTime = propertiesService.DB_WEB_UI_BUILD_TIME;
         this.pollInterval = propertiesService.RELEASE_NOTIFICATION_POLLING;
     }

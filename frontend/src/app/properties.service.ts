@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 declare var loadMatomo: (matomoId: string) => any;
 
@@ -34,8 +34,10 @@ export interface IProperties {
     SHOW_MENU_IDS: string[];
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PropertiesService {
+    private httpClient = inject(HttpClient);
+
     public ACCESS_URL = '';
     public BANNER = 'Welcome to the localhost version of the RIPE Database.';
     // Resources - menu items
@@ -78,8 +80,6 @@ export class PropertiesService {
     public WHOIS_OVERRIDE = 'whois,test';
     public NO_PASSWORD_AUTH_POPUP = false;
     public SHOW_MENU_IDS = [];
-
-    constructor(private httpClient: HttpClient) {}
 
     public load(): Promise<void> {
         return this.httpClient

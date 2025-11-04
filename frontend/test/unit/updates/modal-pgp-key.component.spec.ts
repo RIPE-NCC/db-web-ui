@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { ModalPGPKeyComponent } from 'src/app/updatesweb/modal-pgp-key.component';
-import { CoreModule } from '../../../src/app/core/core.module';
 
 describe('ModalPGPKeyComponent', () => {
     let component: ModalPGPKeyComponent;
@@ -15,8 +14,7 @@ describe('ModalPGPKeyComponent', () => {
         mockActiveModal = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
 
         await TestBed.configureTestingModule({
-            imports: [FormsModule, MatButtonModule, CoreModule],
-            declarations: [],
+            imports: [FormsModule, MatButtonModule, FormsModule],
             providers: [{ provide: NgbActiveModal, useValue: mockActiveModal }],
         }).compileComponents();
     });

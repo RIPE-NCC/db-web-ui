@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PropertiesService } from '../properties.service';
 
 @Component({
@@ -11,9 +11,9 @@ import { PropertiesService } from '../properties.service';
     imports: [NgIf],
 })
 export class WebAppVersionComponent implements OnInit {
-    public trainingEnv: boolean;
+    properties = inject(PropertiesService);
 
-    constructor(public properties: PropertiesService) {}
+    public trainingEnv: boolean;
 
     ngOnInit() {
         this.trainingEnv = this.properties.isTrainingEnv();

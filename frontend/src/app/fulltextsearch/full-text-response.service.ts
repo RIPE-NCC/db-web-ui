@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { IVersion } from '../shared/whois-response-type.model';
 import { ILstObj, IResultSummary, ISearchResponseModel } from './types.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FullTextResponseService {
     public parseResponse(data: ISearchResponseModel) {
         const results = [];

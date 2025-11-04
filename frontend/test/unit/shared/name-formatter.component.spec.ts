@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
 import { NameFormatterComponent } from '../../../src/app/shared/name-formatter.component';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 
 describe('NameFormatterComponent', () => {
     let component: NameFormatterComponent;
@@ -10,7 +9,7 @@ describe('NameFormatterComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule],
+            imports: [],
         });
         fixture = TestBed.createComponent(NameFormatterComponent);
         component = fixture.componentInstance;

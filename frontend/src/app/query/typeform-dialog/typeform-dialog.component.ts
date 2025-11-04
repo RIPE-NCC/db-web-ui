@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { createPopup } from '@typeform/embed';
 
@@ -8,7 +8,7 @@ import { createPopup } from '@typeform/embed';
     styleUrl: 'typeform-dialog.component.scss',
 })
 export class TypeformDialogComponent implements OnInit {
-    constructor(private dialogRef: MatDialogRef<TypeformDialogComponent>) {}
+    private dialogRef = inject<MatDialogRef<TypeformDialogComponent>>(MatDialogRef);
 
     ngOnInit() {
         createPopup('sFTT41YW', {

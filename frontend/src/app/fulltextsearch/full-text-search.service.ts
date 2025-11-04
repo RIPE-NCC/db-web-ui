@@ -1,15 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ISearchResponseModel } from './types.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FullTextSearchService {
+    private http = inject(HttpClient);
+
     private static sanitizeString(str: string): string {
         return str.replace(/([+&|!(){}[\]^"~*?:-])/g, '\\$1');
     }
-
-    constructor(private http: HttpClient) {}
 
     public doSearch(
         query: string,

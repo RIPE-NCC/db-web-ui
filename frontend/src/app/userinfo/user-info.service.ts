@@ -1,18 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, share, timeout } from 'rxjs/operators';
 import { IUserInfoOrganisation, IUserInfoResponseData } from '../dropdown/org-data-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserInfoService {
+    private http = inject(HttpClient);
+    private cookies = inject(CookieService);
+
     private userInfo: IUserInfoResponseData;
     private selectedOrganisation: IUserInfoOrganisation;
     public userLoggedIn$: EventEmitter<IUserInfoResponseData>;
 
-    constructor(private http: HttpClient, private cookies: CookieService) {
+    constructor() {
         this.userLoggedIn$ = new EventEmitter();
     }
 

@@ -25,7 +25,11 @@
                             <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
                         </button>
                         <mat-menu #typesMenu="matMenu" yPosition="below">
-                            <types-panel [(queryParameters)]="qp" [availableTypes]="availableTypes"></types-panel>
+                            <types-panel
+                                [(queryParameters)]="qp"
+                                [availableTypes]="availableTypes"
+                                (numberSelected)="numberSelectedTypes = $event"
+                            ></types-panel>
                         </mat-menu>
                         <button
                             mat-button
@@ -40,7 +44,7 @@
                             <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
                         </button>
                         <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below">
-                            <hierarchy-flags [(queryParameters)]="qp"></hierarchy-flags>
+                            <hierarchy-flags [(queryParameters)]="qp" (numberSelected)="numberSelectedHierarchyItems = $event"></hierarchy-flags>
                         </mat-menu>
                         <button mat-button type="button" id="inverseLookupMenu" [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">
                             Inverse lookup {{ printNumberSelected(numberSelectedInverseLookups) }}
@@ -51,6 +55,7 @@
                             <inverse-lookup-panel
                                 [(queryParameters)]="qp"
                                 [availableTypes]="availableTypes"
+                                (numberSelected)="numberSelectedInverseLookups = $event"
                                 [typeOfSearchedTerm]="typeOfSearchedTerm"
                             ></inverse-lookup-panel>
                         </mat-menu>
@@ -60,7 +65,7 @@
                             <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
                         </button>
                         <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
-                            <advance-filter-panel [(queryParameters)]="qp"></advance-filter-panel>
+                            <advance-filter-panel [(queryParameters)]="qp" (numberSelected)="numberSelectedAdvanceFilterItems = $event"></advance-filter-panel>
                         </mat-menu>
                     </div>
                     <div>

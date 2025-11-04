@@ -1,11 +1,10 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { FeedbackSupportDialogComponent } from '../../../src/app/feedbacksupport/feedback-support-dialog.component';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 import createSpy = jasmine.createSpy;
 
@@ -19,7 +18,7 @@ describe('FeedbackSupportDialogComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, MatDialogModule, FeedbackSupportDialogComponent],
+            imports: [HttpClientTestingModule, MatDialogModule, FeedbackSupportDialogComponent],
             providers: [PropertiesService, UserInfoService, { provide: MatDialogRef, useValue: dialogRef }],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         });

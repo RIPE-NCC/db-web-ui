@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -14,19 +14,17 @@ import { FmpErrorService } from './fmp-error.service';
     imports: [NgIf, MatButton],
 })
 export class ConfirmMaintainerComponent implements OnInit {
+    private emailLinkService = inject(EmailLinkService);
+    alertsService = inject(AlertsService);
+    activatedRoute = inject(ActivatedRoute);
+    router = inject(Router);
+    fmpErrorService = inject(FmpErrorService);
+
     public key: string = '';
     public email: any;
     public user: any;
     public hashOk: boolean = false;
     public localHash: any;
-
-    constructor(
-        private emailLinkService: EmailLinkService,
-        public alertsService: AlertsService,
-        public activatedRoute: ActivatedRoute,
-        public router: Router,
-        public fmpErrorService: FmpErrorService,
-    ) {}
 
     public ngOnInit() {
         this.alertsService.clearAlertMessages();

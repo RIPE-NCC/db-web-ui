@@ -57,6 +57,7 @@ describe('SearchFieldComponent', () => {
     });
 
     it('should clear queryText when clear button is clicked', () => {
+        spyOn(component, 'onInputChange');
         component.queryText = 'to be cleared';
         fixture.detectChanges();
 
@@ -64,6 +65,6 @@ describe('SearchFieldComponent', () => {
         clearBtn.nativeElement.click();
         fixture.detectChanges();
 
-        expect(component.queryText).toBe('');
+        expect(component.onInputChange).toHaveBeenCalledWith('');
     });
 });

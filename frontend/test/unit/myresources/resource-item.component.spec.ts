@@ -4,7 +4,6 @@ import { IpAddressService } from '../../../src/app/myresources/ip-address.servic
 import { ResourceItemComponent } from '../../../src/app/myresources/resource-item.component';
 import { ResourceStatusService } from '../../../src/app/myresources/resource-status.service';
 import { FlagComponent } from '../../../src/app/shared/flag/flag.component';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 
 describe('ResourceItemComponent', () => {
     let component: ResourceItemComponent;
@@ -12,7 +11,7 @@ describe('ResourceItemComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, RouterTestingModule, ResourceItemComponent, FlagComponent],
+            imports: [RouterTestingModule, ResourceItemComponent, FlagComponent],
             providers: [IpAddressService, ResourceStatusService],
         });
     });

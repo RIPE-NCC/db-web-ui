@@ -5,7 +5,7 @@ export interface ICredentials {
     successfulPassword: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CredentialsService {
     private credentials: ICredentials[] = [];
 

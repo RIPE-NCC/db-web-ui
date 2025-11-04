@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -6,9 +6,10 @@ import { IUserInfoResponseData } from './dropdown/org-data-type.model';
 import { PropertiesService } from './properties.service';
 import { UserInfoService } from './userinfo/user-info.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthenticationGuard {
-    constructor(private userInfoService: UserInfoService, private properties: PropertiesService) {}
+    private userInfoService = inject(UserInfoService);
+    private properties = inject(PropertiesService);
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return this.userInfoService.getUserOrgsAndRoles().pipe(

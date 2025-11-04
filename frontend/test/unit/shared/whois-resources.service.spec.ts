@@ -3,38 +3,31 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 
 describe('WhoisResourcesService', () => {
     let whoisResourcesService: WhoisResourcesService;
-    const propertiesService: PropertiesService = new PropertiesService(null);
-    propertiesService.RIPE_NCC_MNTNERS = [
-        'RIPE-NCC-HM-MNT',
-        'RIPE-NCC-END-MNT',
-        'RIPE-NCC-HM-PI-MNT',
-        'RIPE-GII-MNT',
-        'RIPE-DBM-MNT',
-        'RIPE-NCC-LOCKED-MNT',
-        'RIPE-ERX-MNT',
-        'RIPE-NCC-LEGACY-MNT',
-        'RIPE-NCC-MNT',
-    ];
-    propertiesService.TOP_RIPE_NCC_MNTNERS = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'];
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule],
-            providers: [
-                WhoisResourcesService,
-                WhoisMetaService,
-                { provide: PropertiesService, useFactory: () => propertiesService },
-                provideHttpClient(withInterceptorsFromDi()),
-                provideHttpClientTesting(),
-            ],
+            imports: [],
+            providers: [WhoisResourcesService, WhoisMetaService, PropertiesService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         whoisResourcesService = TestBed.inject(WhoisResourcesService);
+        const propertiesService = TestBed.inject(PropertiesService);
+        propertiesService.RIPE_NCC_MNTNERS = [
+            'RIPE-NCC-HM-MNT',
+            'RIPE-NCC-END-MNT',
+            'RIPE-NCC-HM-PI-MNT',
+            'RIPE-GII-MNT',
+            'RIPE-DBM-MNT',
+            'RIPE-NCC-LOCKED-MNT',
+            'RIPE-ERX-MNT',
+            'RIPE-NCC-LEGACY-MNT',
+            'RIPE-NCC-MNT',
+        ];
+        propertiesService.TOP_RIPE_NCC_MNTNERS = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'];
     });
 
     it('should wrap a success response', () => {

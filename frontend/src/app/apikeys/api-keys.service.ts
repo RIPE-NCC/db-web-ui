@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiKey } from './types';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ApiKeysService {
-    private readonly API_BASE_URL: string = 'api/whois-internal/public/api-key';
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) {}
+    private readonly API_BASE_URL: string = 'api/whois-internal/public/api-key';
 
     saveApiKey(apiKeyName: string, expiresAt: string, mnts: string[]): Observable<ApiKey> {
         const body = {
