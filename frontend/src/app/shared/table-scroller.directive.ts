@@ -15,7 +15,7 @@ export function debounce(delay: number = 25): MethodDecorator {
     };
 }
 
-@Directive({ selector: '[table-scroller]' })
+@Directive({ selector: '[table-scroller]', standalone: true })
 export class TableScrollerDirective {
     private elRef = inject(ElementRef);
     private document = inject<Document>(DOCUMENT);
