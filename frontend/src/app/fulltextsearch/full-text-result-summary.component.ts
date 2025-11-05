@@ -5,6 +5,7 @@ import { IResultSummary } from './types.model';
 @Component({
     selector: 'full-text-result-summary',
     templateUrl: './full-text-result-summary.component.html',
+    standalone: true,
     imports: [NgIf, NgFor, DecimalPipe],
 })
 export class FullTextResultSummaryComponent implements OnChanges {

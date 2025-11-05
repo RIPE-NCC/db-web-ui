@@ -58,6 +58,7 @@ export interface IMaintainers {
 @Component({
     selector: 'create-modify',
     templateUrl: './create-modify.component.html',
+    standalone: true,
     imports: [
         NgIf,
         MatButton,

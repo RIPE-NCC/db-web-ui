@@ -24,6 +24,7 @@ interface IObjectFromParameters {
 @Component({
     selector: 'force-delete',
     templateUrl: './force-delete.component.html',
+    standalone: true,
     imports: [NgFor, MatButton],
 })
 export class ForceDeleteComponent implements OnInit {

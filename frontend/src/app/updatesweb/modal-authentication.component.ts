@@ -30,6 +30,7 @@ export interface IModalAuthentication {
 @Component({
     selector: 'modal-authentication',
     templateUrl: './modal-authentication.component.html',
+    standalone: true,
     imports: [FormsModule, NgIf, BannerComponent, NgFor, RouterLink, MatButton],
 })
 export class ModalAuthenticationComponent implements OnInit {

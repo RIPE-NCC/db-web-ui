@@ -16,6 +16,7 @@ interface IModalCreateRoleForAbuceC {
 @Component({
     selector: 'modal-create-role-for-abusec',
     templateUrl: './modal-create-role-for-abusec.component.html',
+    standalone: true,
     imports: [FormsModule, MatButton],
 })
 export class ModalCreateRoleForAbuseCComponent {

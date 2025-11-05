@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform, SecurityContext, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-@Pipe({ name: 'sanitizeImgHtml' })
+@Pipe({ name: 'sanitizeImgHtml', standalone: true })
 export class SanitizeImgHtmlPipe implements PipeTransform {
     sanitizer = inject(DomSanitizer);
 

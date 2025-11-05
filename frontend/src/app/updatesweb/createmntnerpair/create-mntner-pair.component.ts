@@ -25,6 +25,7 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
 @Component({
     selector: 'create-mntner-pair',
     templateUrl: './create-mntner-pair.component.html',
+    standalone: true,
     imports: [
         NgFor,
         NgIf,

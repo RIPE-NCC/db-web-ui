@@ -15,6 +15,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 @Component({
     selector: 'whois-object-editor',
     templateUrl: './whois-object-editor.component.html',
+    standalone: true,
     imports: [NgFor, AttributeRendererComponent, SubmittingAgreementComponent, NgIf, MatButton, FilteroutAttributeByHiddenPipe, FilteroutAttributeByNamePipe],
 })
 export class WhoisObjectEditorComponent implements OnInit {

@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
     selector: 'api-key-confirmation-dialog',
     templateUrl: 'api-key-confirmation-dialog.component.html',
     styleUrl: 'api-key-confirmation-dialog.component.scss',
+    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDialogTitle, MatDialogContent, MatCard, MatCardContent, MatButton, CdkCopyToClipboard, MatDialogActions, MatDialogClose],
 })

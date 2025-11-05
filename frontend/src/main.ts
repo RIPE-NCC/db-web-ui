@@ -15,18 +15,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components (standalone ones)
 import { AppComponent } from './app/app.component';
-// import { BannerComponent } from './app/components/banner/banner.component';
-// import { SyncupdatesComponent } from './app/components/syncupdates/syncupdates.component';
-// import { EmailConfirmationComponent } from './app/components/email-confirmation/email-confirmation.component';
-// import { UnsubscribeComponent } from './app/components/unsubscribe/unsubscribe.component';
-// import { UnsubscribeConfirmComponent } from './app/components/unsubscribe-confirm/unsubscribe-confirm.component';
-// import { IeBannerComponent } from './app/components/ie-banner/ie-banner.component';
-// import { MenuComponent } from './app/components/menu/menu.component';
-// import { ErrorPageComponent } from './app/pages/error-page/error-page.component';
-// import { NotFoundPageComponent } from './app/pages/not-found-page/not-found-page.component';
-// import { LegalComponent } from './app/pages/legal/legal.component';
-// import { FeedbackSupportDialogComponent } from './app/dialogs/feedback-support-dialog/feedback-support-dialog.component';
-// import { LabelPipe } from './app/pipes/label.pipe';
 
 // Routing
 import { appRoutes } from './app/routes';
@@ -48,6 +36,7 @@ import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.
 import { SessionInterceptor } from './app/sessioninfo/session.interceptor';
 
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.providers';
 
 bootstrapApplication(AppComponent, {
     providers: [
@@ -75,6 +64,8 @@ bootstrapApplication(AppComponent, {
         SessionInfoService,
 
         provideNativeDateAdapter(),
+
+        CUSTOM_DATE_PROVIDERS,
 
         provideAppInitializer(() => {
             const propertiesService = inject(PropertiesService);

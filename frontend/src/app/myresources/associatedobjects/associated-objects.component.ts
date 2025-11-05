@@ -10,6 +10,7 @@ import { AssociatedObjectType, AssociatedObjectsService, IAssociatedObjectApiRes
 @Component({
     selector: 'associated-objects',
     templateUrl: './associated-objects.component.html',
+    standalone: true,
     imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, SlicePipe],
 })
 export class AssociatedObjectsComponent implements OnChanges {

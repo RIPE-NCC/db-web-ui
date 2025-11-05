@@ -9,6 +9,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 @Component({
     selector: 'display-domain-objects',
     templateUrl: './display-domain-objects.component.html',
+    standalone: true,
     imports: [NgFor, NgIf, MatButton, SlicePipe],
 })
 export class DisplayDomainObjectsComponent implements OnInit {

@@ -17,6 +17,7 @@ import { MenuService } from './menu.service';
         <app-nav-bar *ngIf="isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
         <app-nav-bar *ngIf="!isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
     `,
+    standalone: true,
     imports: [NgIf],
     schemas: [CUSTOM_ELEMENTS_SCHEMA], // web component
 })

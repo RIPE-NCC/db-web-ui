@@ -16,6 +16,7 @@ import { WebUpdatesCommonsService } from './web-updates-commons.service';
 @Component({
     selector: 'display',
     templateUrl: './display.component.html',
+    standalone: true,
     imports: [NgIf, NgFor, WhoisLineDiffDirective, MatButton, SanitizeHtmlPipe],
 })
 export class DisplayComponent implements OnInit, OnDestroy {

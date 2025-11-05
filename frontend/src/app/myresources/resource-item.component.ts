@@ -10,6 +10,7 @@ import { ResourceStatusService } from './resource-status.service';
 @Component({
     selector: 'resource-item',
     templateUrl: './resource-item.component.html',
+    standalone: true,
     imports: [RouterLink, NameFormatterComponent, NgIf, NgFor, FlagComponent, NgClass, NgbTooltip, NgbProgressbar, DecimalPipe],
 })
 export class ResourceItemComponent implements OnInit {

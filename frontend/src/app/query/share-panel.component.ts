@@ -8,6 +8,7 @@ import { ShareLink } from './query.component';
 @Component({
     selector: 'share-panel',
     templateUrl: './share-panel.component.html',
+    standalone: true,
     imports: [MatTooltip, MatInput, MatButton, CdkCopyToClipboard],
 })
 export class SharePanelComponent {

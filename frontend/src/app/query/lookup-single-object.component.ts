@@ -13,6 +13,7 @@ import { LookupService } from './lookup.service';
 @Component({
     selector: 'lookup-single',
     templateUrl: './lookup-single-object.component.html',
+    standalone: true,
     imports: [NgIf, LookupComponent, WhoisVersionComponent],
 })
 export class LookupSingleObjectComponent implements OnInit, OnDestroy {

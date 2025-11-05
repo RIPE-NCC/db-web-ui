@@ -5,6 +5,7 @@ import { AlertsService } from '../shared/alert/alerts.service';
 @Component({
     selector: 'sso-added',
     templateUrl: './sso-added.component.html',
+    standalone: true,
 })
 export class SsoAddedComponent implements OnInit, OnDestroy {
     private activatedRoute = inject(ActivatedRoute);

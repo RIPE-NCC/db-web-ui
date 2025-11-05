@@ -14,7 +14,7 @@ export function debounce(delay: number = 100): MethodDecorator {
     };
 }
 
-@Directive({ selector: '[scroller]' })
+@Directive({ selector: '[scroller]', standalone: true })
 export class ScrollerDirective {
     private elRef = inject(ElementRef);
 

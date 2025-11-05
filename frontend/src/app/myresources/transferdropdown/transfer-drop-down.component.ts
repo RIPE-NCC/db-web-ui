@@ -7,6 +7,7 @@ import { PropertiesService } from '../../properties.service';
 @Component({
     selector: 'transfer-drop-down',
     templateUrl: './transfer-drop-down.component.html',
+    standalone: true,
     imports: [NgbDropdown, MatButton, NgbDropdownToggle, NgIf, NgbDropdownMenu, NgbDropdownItem],
 })
 export class TransferDropDownComponent {

@@ -31,6 +31,7 @@ export interface ITextObject {
 @Component({
     selector: 'text-create',
     templateUrl: './text-create.component.html',
+    standalone: true,
     imports: [MatButton, FormsModule, NgIf, SubmittingAgreementComponent],
 })
 export class TextCreateComponent implements OnInit {

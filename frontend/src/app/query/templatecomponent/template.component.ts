@@ -6,6 +6,7 @@ import { QueryService } from '../query.service';
 @Component({
     selector: 'lookup-template',
     template: `<pre>{{ response }}</pre>`,
+    standalone: true,
 })
 export class TemplateComponent implements OnChanges {
     private queryService = inject(QueryService);

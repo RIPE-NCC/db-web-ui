@@ -15,6 +15,7 @@ interface ISelectedObjectType {
 @Component({
     selector: 'select-component',
     templateUrl: './select.component.html',
+    standalone: true,
     imports: [FormsModule, NgFor, MatButton],
 })
 export class SelectComponent implements OnInit {

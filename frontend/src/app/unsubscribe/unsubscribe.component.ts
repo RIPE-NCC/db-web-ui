@@ -6,6 +6,7 @@ import { UnsubscribeService } from './unsubscribe.service';
 
 @Component({
     templateUrl: './unsubscribe.component.html',
+    standalone: true,
     imports: [NgIf, LoadingIndicatorComponent],
 })
 export class UnsubscribeComponent implements OnInit {

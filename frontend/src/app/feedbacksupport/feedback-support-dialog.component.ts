@@ -8,6 +8,7 @@ import { PropertiesService } from '../properties.service';
 @Component({
     selector: 'feedback-support-dialog',
     templateUrl: './feedback-support-dialog.component.html',
+    standalone: true,
     imports: [MatDialogTitle, MatDialogActions, MatActionList, MatListItem, MatLine, NgIf],
 })
 export class FeedbackSupportDialogComponent implements OnInit {

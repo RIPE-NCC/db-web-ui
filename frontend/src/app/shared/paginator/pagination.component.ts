@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 @Component({
     selector: 'paginator',
     templateUrl: './paginator.component.html',
+    standalone: true,
     imports: [NgFor, NgClass],
 })
 export class PaginationComponent implements OnInit, OnChanges {

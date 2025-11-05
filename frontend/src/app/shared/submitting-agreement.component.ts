@@ -8,6 +8,7 @@ import { LabelPipe } from './label.pipe';
             <span [innerHTML]="'msg.ripeTandCSubmitLink.text' | label"></span>
         </section>
     </div>`,
+    standalone: true,
     imports: [LabelPipe],
 })
 export class SubmittingAgreementComponent {}

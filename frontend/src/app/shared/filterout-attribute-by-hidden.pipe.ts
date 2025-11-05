@@ -4,6 +4,7 @@ import { IAttributeModel } from './whois-response-type.model';
 @Pipe({
     name: 'filteroutAttributeByHidden',
     pure: false,
+    standalone: true,
 })
 export class FilteroutAttributeByHiddenPipe implements PipeTransform {
     transform(items: Array<IAttributeModel>): Array<IAttributeModel> {

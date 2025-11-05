@@ -15,6 +15,7 @@ import { ITextObject } from './text-create.component';
 @Component({
     selector: 'text-modify',
     templateUrl: './text-modify.component.html',
+    standalone: true,
     imports: [MatButton, WhoisObjectTextEditorComponent],
 })
 export class TextModifyComponent implements OnInit {

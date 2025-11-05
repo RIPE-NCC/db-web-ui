@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, OnChanges, OnInit, inject } from '@angular/core';
 import DiffMatchPatch, { Diff } from 'diff-match-patch';
 
-@Directive({ selector: '[whoisLineDiff]' })
+@Directive({ selector: '[whoisLineDiff]', standalone: true })
 export class WhoisLineDiffDirective implements OnInit, OnChanges {
     private el = inject(ElementRef);
 

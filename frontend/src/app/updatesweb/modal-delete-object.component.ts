@@ -20,6 +20,7 @@ interface IModalDelete {
 @Component({
     selector: 'modal-delete-object',
     templateUrl: './modal-delete-object.component.html',
+    standalone: true,
     imports: [NgIf, FormsModule, NgFor, MatButton, SlicePipe],
 })
 export class ModalDeleteObjectComponent implements OnInit, OnDestroy {

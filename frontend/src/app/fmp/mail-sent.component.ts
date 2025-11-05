@@ -5,6 +5,7 @@ import { AlertsService } from '../shared/alert/alerts.service';
 @Component({
     selector: 'mail-sent',
     templateUrl: './mail-sent.component.html',
+    standalone: true,
 })
 export class MailSentComponent implements OnInit, OnDestroy {
     private alertsService = inject(AlertsService);

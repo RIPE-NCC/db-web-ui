@@ -6,6 +6,7 @@ import { IUsage } from './resource-type.model';
 @Component({
     selector: 'ip-usage',
     templateUrl: './ip-usage.component.html',
+    standalone: true,
     imports: [NgIf, DecimalPipe],
 })
 export class IpUsageComponent implements OnChanges {

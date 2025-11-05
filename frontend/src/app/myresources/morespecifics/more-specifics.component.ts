@@ -10,6 +10,7 @@ import { IMoreSpecificsApiResult, MoreSpecificsService } from './more-specifics.
 @Component({
     selector: 'more-specifics',
     templateUrl: './more-specifics.component.html',
+    standalone: true,
     imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, RefreshComponent],
 })
 export class MoreSpecificsComponent implements OnChanges {

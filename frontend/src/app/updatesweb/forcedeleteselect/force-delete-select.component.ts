@@ -9,6 +9,7 @@ import { AlertsService } from '../../shared/alert/alerts.service';
 @Component({
     selector: 'force-delete-select',
     templateUrl: './force-delete-select.component.html',
+    standalone: true,
     imports: [FormsModule, NgFor, MatButton],
 })
 export class ForceDeleteSelectComponent implements OnInit {

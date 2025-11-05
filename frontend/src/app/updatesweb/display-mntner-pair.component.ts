@@ -11,6 +11,7 @@ import { RestService } from './rest.service';
 @Component({
     selector: 'display-mntner-pair',
     templateUrl: './display-mntner-pair.component.html',
+    standalone: true,
     imports: [NgFor, NgIf, MatButton],
 })
 export class DisplayMntnerPairComponent implements OnInit, OnDestroy {

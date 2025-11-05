@@ -10,6 +10,7 @@ import { HierarchySelectorService } from './hierarchy-selector.service';
 @Component({
     selector: 'hierarchy-selector',
     templateUrl: './hierarchy-selector.component.html',
+    standalone: true,
     imports: [NgbDropdown, NgbDropdownToggle, NgIf, NgbDropdownMenu, NgFor, NameFormatterComponent],
 })
 export class HierarchySelectorComponent implements OnChanges {

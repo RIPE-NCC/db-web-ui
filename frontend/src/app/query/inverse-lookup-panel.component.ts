@@ -12,6 +12,7 @@ import { TypeOfSearchTermEnum } from './type-of-search-term.enum';
 @Component({
     selector: 'inverse-lookup-panel',
     templateUrl: './inverse-lookup-panel.component.html',
+    standalone: true,
     imports: [NgIf, MatCheckbox, FormsModule, LabelPipe],
 })
 export class InverseLookupPanelComponent implements OnInit, OnChanges {

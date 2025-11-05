@@ -7,6 +7,7 @@ import { IQueryFlag, QueryFlagsService } from './query-flags.service';
 @Component({
     selector: 'query-flags',
     templateUrl: './query-flags.component.html',
+    standalone: true,
     imports: [NgIf, NgFor, FlagComponent, LabelPipe],
 })
 export class QueryFlagsComponent implements OnChanges {

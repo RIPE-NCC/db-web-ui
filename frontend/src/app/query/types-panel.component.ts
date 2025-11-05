@@ -10,6 +10,7 @@ import { IQueryParameters, QueryParametersService } from './query-parameters.ser
 @Component({
     selector: 'types-panel',
     templateUrl: './types-panel.component.html',
+    standalone: true,
     imports: [NgIf, MatCheckbox, FormsModule, LabelPipe],
 })
 export class TypesPanelComponent implements OnChanges {

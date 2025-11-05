@@ -11,6 +11,7 @@ import { IQueryParameters } from './query-parameters.service';
 @Component({
     selector: 'hierarchy-flags',
     templateUrl: './hierarchy-flags-panel.component.html',
+    standalone: true,
     imports: [NgIf, MatSlider, MatSliderThumb, FormsModule, MatCheckbox, LabelPipe],
 })
 export class HierarchyFlagsPanelComponent implements OnInit, OnChanges {

@@ -9,6 +9,7 @@ import { UserInfoService } from '../../userinfo/user-info.service';
     selector: 'typeform-banner',
     templateUrl: './typeform-banner.component.html',
     styleUrl: './typeform-banner.component.scss',
+    standalone: true,
     imports: [NgIf, MatButton],
 })
 export class TypeformBannerComponent implements OnInit {

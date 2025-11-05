@@ -19,6 +19,7 @@ import { RestService } from './rest.service';
 @Component({
     selector: 'modal-authentication-sso-prefilled',
     templateUrl: './modal-authentication-sso-prefilled.component.html',
+    standalone: true,
     imports: [FormsModule, NgIf, BannerComponent, NgFor, MatButton],
 })
 export class ModalAuthenticationSSOPrefilledComponent implements OnInit {

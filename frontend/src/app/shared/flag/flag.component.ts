@@ -11,6 +11,7 @@ export interface IFlag {
 @Component({
     selector: 'flag',
     templateUrl: './flag.component.html',
+    standalone: true,
     imports: [NgIf, NgbPopover],
 })
 export class FlagComponent implements OnInit {

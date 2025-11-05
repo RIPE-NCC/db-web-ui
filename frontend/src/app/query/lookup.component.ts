@@ -10,6 +10,7 @@ import { WhoisObjectViewerComponent } from '../whois-object/whois-object-viewer.
 @Component({
     selector: 'lookup',
     templateUrl: './lookup.component.html',
+    standalone: true,
     imports: [NgIf, RouterLink, NgFor, WhoisObjectViewerComponent, LabelPipe],
 })
 export class LookupComponent implements OnChanges {

@@ -12,6 +12,7 @@ import { ResourcesDataService } from '../resources-data.service';
 @Component({
     selector: 'alerts-drop-down',
     templateUrl: './alerts-drop-down.component.html',
+    standalone: true,
     imports: [NgIf, NgbDropdown, MatButton, NgbPopover, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgFor],
 })
 export class AlertsDropDownComponent implements OnChanges {

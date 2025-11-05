@@ -7,6 +7,7 @@ import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 
 @Component({
     templateUrl: './unsubscribe-confirm.component.html',
+    standalone: true,
     imports: [NgIf, LoadingIndicatorComponent, MatButton],
 })
 export class UnsubscribeConfirmComponent implements OnInit {

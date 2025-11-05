@@ -23,6 +23,7 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
 @Component({
     selector: 'maintainers-editor',
     templateUrl: './maintainers-editor.component.html',
+    standalone: true,
     imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgIf, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
 })
 export class MaintainersEditorComponent implements OnInit, OnDestroy {

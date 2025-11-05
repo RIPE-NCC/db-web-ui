@@ -38,6 +38,7 @@ import { ResourcesDataService } from '../resources-data.service';
 @Component({
     selector: 'resource-details',
     templateUrl: './resource-details.component.html',
+    standalone: true,
     imports: [
         NameFormatterComponent,
         NgFor,

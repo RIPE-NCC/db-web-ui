@@ -16,6 +16,7 @@ import { UserInfoService } from '../userinfo/user-info.service';
 @Component({
     selector: 'whois-object-viewer',
     templateUrl: './whois-object-viewer.component.html',
+    standalone: true,
     imports: [NgIf, MatCheckbox, NgClass, NgFor, MatTooltip, RouterLink, MatButton, SlicePipe, LabelPipe],
 })
 export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {

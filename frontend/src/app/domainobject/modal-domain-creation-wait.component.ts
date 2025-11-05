@@ -7,6 +7,7 @@ import { PrefixService } from './prefix.service';
 @Component({
     selector: 'modal-domain-creation-wait',
     templateUrl: './modal-domain-creation-wait.component.html',
+    standalone: true,
     imports: [NgbProgressbar],
 })
 export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {

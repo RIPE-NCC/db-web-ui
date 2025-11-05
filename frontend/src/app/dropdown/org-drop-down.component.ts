@@ -12,6 +12,7 @@ import { OrgDropDownSharedService } from './org-drop-down-shared.service';
 @Component({
     selector: 'org-drop-down',
     templateUrl: './org-drop-down.component.html',
+    standalone: true,
     imports: [NgIf, NgSelectComponent, FormsModule, NgOptionTemplateDirective],
 })
 export class OrgDropDownComponent implements OnInit {

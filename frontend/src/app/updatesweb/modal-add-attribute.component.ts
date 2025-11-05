@@ -8,6 +8,7 @@ import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-n
 @Component({
     selector: 'modal-add-attribute',
     templateUrl: './modal-add-attribute.component.html',
+    standalone: true,
     imports: [FormsModule, NgFor, MatButton, FilteroutAttributeByNamePipe],
 })
 export class ModalAddAttributeComponent implements OnInit {

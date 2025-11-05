@@ -9,6 +9,7 @@ import { ModalDeleteObjectComponent } from './modal-delete-object.component';
 @Component({
     selector: 'delete-component',
     templateUrl: './delete.component.html',
+    standalone: true,
     imports: [NgFor, MatButton, RouterLink],
 })
 export class DeleteComponent implements OnInit, OnDestroy {

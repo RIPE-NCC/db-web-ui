@@ -5,6 +5,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 @Component({
     selector: 'attribute-reverse-zones',
     templateUrl: './attribute-reverse-zones.component.html',
+    standalone: true,
     imports: [NgIf, NgFor],
 })
 export class AttributeReverseZonesComponent {

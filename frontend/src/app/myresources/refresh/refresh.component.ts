@@ -9,6 +9,7 @@ import { MatMiniFabButton } from '@angular/material/button';
             <em class="fal fa-redo"></em>
         </button>
     </p>`,
+    standalone: true,
     imports: [MatMiniFabButton],
 })
 export class RefreshComponent {

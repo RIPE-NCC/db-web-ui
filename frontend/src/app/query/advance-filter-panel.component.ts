@@ -10,6 +10,7 @@ import { IQueryParameters } from './query-parameters.service';
 @Component({
     selector: 'advance-filter-panel',
     templateUrl: './advance-filter-panel.component.html',
+    standalone: true,
     imports: [NgIf, FormsModule, MatRadioModule, MatCheckboxModule, LabelPipe],
 })
 export class AdvanceFilterPanelComponent implements OnChanges {

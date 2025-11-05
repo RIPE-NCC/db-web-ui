@@ -11,6 +11,7 @@ import { FmpErrorService } from './fmp-error.service';
 @Component({
     selector: 'confirm-maintainer',
     templateUrl: './confirm-maintainer.component.html',
+    standalone: true,
     imports: [NgIf, MatButton],
 })
 export class ConfirmMaintainerComponent implements OnInit {

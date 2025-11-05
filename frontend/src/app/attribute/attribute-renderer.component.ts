@@ -23,6 +23,7 @@ import { AttributeReverseZonesComponent } from './attribute-reverse-zones.compon
 @Component({
     selector: 'attribute-renderer',
     templateUrl: './attribute-renderer.component.html',
+    standalone: true,
     imports: [
         NgClass,
         NgIf,

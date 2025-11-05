@@ -28,6 +28,7 @@ import { ApiKey } from './types';
 @Component({
     templateUrl: './api-keys.component.html',
     styleUrl: './api-keys.component.scss',
+    standalone: true,
     imports: [
         MatAccordion,
         MatExpansionPanel,

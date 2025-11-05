@@ -11,6 +11,7 @@ import { ForgotMaintainerPasswordService, IForgotMaintainerPassword } from './fo
 @Component({
     selector: 'fmp',
     templateUrl: './forgot-maintainer-password.component.html',
+    standalone: true,
     imports: [NgIf, FormsModule, MatButton, UpperCasePipe],
 })
 export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {

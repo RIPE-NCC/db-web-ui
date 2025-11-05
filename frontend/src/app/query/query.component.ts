@@ -57,6 +57,7 @@ export type ShareLink = {
 @Component({
     selector: 'query',
     templateUrl: './query.component.html',
+    standalone: true,
     imports: [
         BannerComponent,
         OrgDropDownComponent,

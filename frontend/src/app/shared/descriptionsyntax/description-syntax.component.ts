@@ -10,6 +10,7 @@ import { AttributeInfoComponent } from './attr-info.component';
         <strong>Syntax</strong><br />
         <attr-info [objectType]="objectType" [syntax]="attrName"></attr-info>
     </div>`,
+    standalone: true,
     imports: [NgbCollapse, AttributeInfoComponent],
 })
 export class DescriptionSyntaxComponent {

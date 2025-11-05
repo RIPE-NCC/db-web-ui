@@ -22,6 +22,7 @@ import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down
 @Component({
     selector: 'resource-component',
     templateUrl: './resources.component.html',
+    standalone: true,
     imports: [
         NgbNav,
         NgbNavItem,

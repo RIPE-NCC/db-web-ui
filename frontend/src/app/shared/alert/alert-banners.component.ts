@@ -7,6 +7,7 @@ import { AlertsService, IAlerts } from './alerts.service';
 @Component({
     selector: 'alert-banners',
     templateUrl: './alert-banners.component.html',
+    standalone: true,
     imports: [NgFor, BannerComponent, SanitizeHtmlPipe],
 })
 export class AlertBannersComponent implements OnInit, OnDestroy {

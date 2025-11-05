@@ -12,6 +12,7 @@ import { SyncupdatesService } from './syncupdates.service';
 @Component({
     selector: 'syncupdates',
     templateUrl: './syncupdates.component.html',
+    standalone: true,
     imports: [NgIf, FormsModule, AutoFocusDirective, SubmittingAgreementComponent, MatButton],
 })
 export class SyncupdatesComponent {

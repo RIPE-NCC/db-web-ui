@@ -12,6 +12,7 @@ import { FmpErrorService } from './fmp-error.service';
 @Component({
     selector: 'find-maintainer',
     templateUrl: './find-maintainer.component.html',
+    standalone: true,
     imports: [FormsModule, MatButton, NgIf, NgFor],
 })
 export class FindMaintainerComponent implements OnInit {

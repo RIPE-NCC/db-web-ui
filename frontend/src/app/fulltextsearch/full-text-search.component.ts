@@ -25,6 +25,7 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
     selector: 'full-text-search',
     templateUrl: './full-text-search.component.html',
     styleUrl: 'full-text-search.component.scss',
+    standalone: true,
     imports: [
         FormsModule,
         SearchFieldComponent,

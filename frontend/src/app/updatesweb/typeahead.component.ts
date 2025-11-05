@@ -26,6 +26,7 @@ import { RestService } from './rest.service';
         [resultFormatter]="autocompleteAttributeRFormatter"
         [inputFormatter]="autocompleteAttributeIFormatter"
     />`,
+    standalone: true,
     imports: [FormsModule, NgbTypeahead],
 })
 export class TypeaheadComponent {

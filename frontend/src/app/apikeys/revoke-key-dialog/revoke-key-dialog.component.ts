@@ -7,6 +7,7 @@ import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } fr
     templateUrl: 'revoke-key-dialog.component.html',
     styleUrl: 'revoke-key-dialog.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
     imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButton, MatDialogClose],
 })
 export class RevokeKeyDialogComponent {}
