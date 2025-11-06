@@ -9,7 +9,6 @@ import { PropertiesService } from '../../../src/app/properties.service';
 import { LookupSingleObjectComponent } from '../../../src/app/query/lookup-single-object.component';
 import { LookupComponent } from '../../../src/app/query/lookup.component';
 import { LookupService } from '../../../src/app/query/lookup.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
 
@@ -21,8 +20,7 @@ describe('LookupSingleObjectComponent', () => {
     beforeEach(() => {
         lookupServiceSpy = jasmine.createSpyObj('LookupService', ['lookupWhoisObject']);
         TestBed.configureTestingModule({
-            declarations: [LookupSingleObjectComponent, LookupComponent, WhoisObjectViewerComponent],
-            imports: [SharedModule, RouterTestingModule],
+            imports: [RouterTestingModule, LookupSingleObjectComponent, LookupComponent, WhoisObjectViewerComponent],
             providers: [
                 PropertiesService,
                 UserInfoService,

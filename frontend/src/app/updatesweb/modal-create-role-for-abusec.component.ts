@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -14,9 +16,15 @@ interface IModalCreateRoleForAbuceC {
 @Component({
     selector: 'modal-create-role-for-abusec',
     templateUrl: './modal-create-role-for-abusec.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [FormsModule, MatButton],
 })
 export class ModalCreateRoleForAbuseCComponent {
+    private activeModal = inject(NgbActiveModal);
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private restService = inject(RestService);
+    private mntnerService = inject(MntnerService);
+
     private static NEW_ROLE_TEMPLATE: IAttributeModel[] = [
         {
             name: 'role',
@@ -50,13 +58,6 @@ export class ModalCreateRoleForAbuseCComponent {
     public email: string;
     @Input()
     public inputData: IModalCreateRoleForAbuceC;
-
-    constructor(
-        private activeModal: NgbActiveModal,
-        private whoisResourcesService: WhoisResourcesService,
-        private restService: RestService,
-        private mntnerService: MntnerService,
-    ) {}
 
     public create() {
         let attributes = this.whoisResourcesService.wrapAndEnrichAttributes('role', ModalCreateRoleForAbuseCComponent.NEW_ROLE_TEMPLATE);

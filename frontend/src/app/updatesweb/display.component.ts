@@ -1,8 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Subscription, combineLatest } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
+import { WhoisLineDiffDirective } from '../shared/whois-line-diff.directive';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { MessageStoreService } from './message-store.service';
@@ -12,9 +16,19 @@ import { WebUpdatesCommonsService } from './web-updates-commons.service';
 @Component({
     selector: 'display',
     templateUrl: './display.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, NgFor, WhoisLineDiffDirective, MatButton, SanitizeHtmlPipe],
 })
 export class DisplayComponent implements OnInit, OnDestroy {
+    whoisResourcesService = inject(WhoisResourcesService);
+    messageStoreService = inject(MessageStoreService);
+    private restService = inject(RestService);
+    private userInfoService = inject(UserInfoService);
+    private webUpdatesCommonsService = inject(WebUpdatesCommonsService);
+    alertsService = inject(AlertsService);
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+
     public objectSource: string;
     public objectType: string;
     public objectName: string;
@@ -25,17 +39,6 @@ export class DisplayComponent implements OnInit, OnDestroy {
     public attributes: any;
 
     private subscription: Subscription;
-
-    constructor(
-        public whoisResourcesService: WhoisResourcesService,
-        public messageStoreService: MessageStoreService,
-        private restService: RestService,
-        private userInfoService: UserInfoService,
-        private webUpdatesCommonsService: WebUpdatesCommonsService,
-        public alertsService: AlertsService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-    ) {}
 
     public ngOnInit() {
         this.subscription = combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams]).subscribe((params: any) => {

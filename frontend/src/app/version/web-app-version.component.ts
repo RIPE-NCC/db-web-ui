@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { PropertiesService } from '../properties.service';
 
 @Component({
@@ -7,12 +8,13 @@ import { PropertiesService } from '../properties.service';
         <span *ngIf="trainingEnv">RIPE Database Web Application: {{ properties.DB_WEB_UI_BUILD_TIME }} </span>
     </div>`,
     styles: ['span { color: grey; }'],
-    standalone: false,
+    standalone: true,
+    imports: [NgIf],
 })
 export class WebAppVersionComponent implements OnInit {
-    public trainingEnv: boolean;
+    properties = inject(PropertiesService);
 
-    constructor(public properties: PropertiesService) {}
+    public trainingEnv: boolean;
 
     ngOnInit() {
         this.trainingEnv = this.properties.isTrainingEnv();

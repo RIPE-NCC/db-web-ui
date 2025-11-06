@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
@@ -24,9 +26,13 @@ import { RestService } from './rest.service';
         [resultFormatter]="autocompleteAttributeRFormatter"
         [inputFormatter]="autocompleteAttributeIFormatter"
     />`,
-    standalone: false,
+    standalone: true,
+    imports: [FormsModule, NgbTypeahead],
 })
 export class TypeaheadComponent {
+    private restService = inject(RestService);
+    charsetToolsService = inject(CharsetToolsService);
+
     @Input()
     attribute: IAttributeModel;
     @Input()
@@ -35,8 +41,6 @@ export class TypeaheadComponent {
     placeholder: string;
     @Output()
     blurEmitter = new EventEmitter();
-
-    constructor(private restService: RestService, public charsetToolsService: CharsetToolsService) {}
 
     public autocompleteAttribute = (text$: Observable<string>) =>
         // value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)

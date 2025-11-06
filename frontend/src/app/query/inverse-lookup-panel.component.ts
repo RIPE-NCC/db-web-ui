@@ -1,5 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { PropertiesService } from '../properties.service';
+import { LabelPipe } from '../shared/label.pipe';
 import { InverseAttrsEnum } from './inverse-attrs.enum';
 import { ObjectTypesEnum } from './object-types.enum';
 import { IQueryParameters } from './query-parameters.service';
@@ -8,9 +12,10 @@ import { TypeOfSearchTermEnum } from './type-of-search-term.enum';
 @Component({
     selector: 'inverse-lookup-panel',
     templateUrl: './inverse-lookup-panel.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, MatCheckbox, FormsModule, LabelPipe],
 })
-export class InverseLookupPanelComponent implements OnInit {
+export class InverseLookupPanelComponent implements OnInit, OnChanges {
     @Input()
     public availableTypes: string[];
     @Input()
@@ -19,12 +24,22 @@ export class InverseLookupPanelComponent implements OnInit {
     public queryParameters: IQueryParameters;
     @Output()
     public queryParametersChange = new EventEmitter<IQueryParameters>();
+    @Output()
+    public numberSelected = new EventEmitter<number>();
     readonly InverseAttrsEnum = InverseAttrsEnum;
     public mapInverseLookupAttributesWithTypes: Map<string, string[]>;
     public isMobileView = PropertiesService.isMobileView();
 
     ngOnInit(): void {
         this.mapInverseLookupAttributesWithTypes = InverseLookupPanelComponent.mapInverseLookupAttributesToTypes();
+    }
+
+    ngOnChanges(): void {
+        this.countSelectedCheboxes();
+    }
+
+    countSelectedCheboxes() {
+        this.numberSelected.emit(Object.keys(this.queryParameters.inverse).filter((element) => this.queryParameters.inverse[element] === true).length);
     }
 
     public isDisabled(attribute: InverseAttrsEnum) {

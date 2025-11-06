@@ -18,8 +18,7 @@ describe('Testing EmailConfirmation with logged in user', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [EmailConfirmationComponent, LoadingIndicatorComponent],
-            imports: [],
+            imports: [EmailConfirmationComponent, LoadingIndicatorComponent],
             providers: [
                 EmailConfirmationService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
@@ -70,8 +69,7 @@ describe('Testing EmailConfirmation with not logged in user', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [EmailConfirmationComponent, LoadingIndicatorComponent],
-            imports: [],
+            imports: [EmailConfirmationComponent, LoadingIndicatorComponent],
             providers: [
                 EmailConfirmationService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },

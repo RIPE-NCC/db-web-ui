@@ -16,7 +16,7 @@ describe('SyncupdatesComponent', () => {
         mockAlertsService = jasmine.createSpyObj('AlertsService', ['addGlobalError']);
 
         TestBed.configureTestingModule({
-            declarations: [SyncupdatesComponent],
+            imports: [SyncupdatesComponent],
             providers: [
                 { provide: SyncupdatesService, useValue: mockSyncupdatesService },
                 { provide: AlertsService, useValue: mockAlertsService },

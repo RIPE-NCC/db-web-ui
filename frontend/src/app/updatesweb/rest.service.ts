@@ -1,5 +1,5 @@
 import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
@@ -7,9 +7,11 @@ import { catchError, debounceTime, distinctUntilChanged, map, switchMap, tap } f
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IMntByModel } from '../shared/whois-response-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RestService {
-    constructor(private http: HttpClient, private router: Router, private whoisResourcesService: WhoisResourcesService) {}
+    private http = inject(HttpClient);
+    private router = inject(Router);
+    private whoisResourcesService = inject(WhoisResourcesService);
 
     public fetchParentResource(objectType: string, qs: string) {
         // e.g. https://rest.db.ripe.net/search?flags=lr&type-filter=inetnum&query-string=193.0.4.0%20-%20193.0.4.255

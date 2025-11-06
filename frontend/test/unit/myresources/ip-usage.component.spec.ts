@@ -9,7 +9,7 @@ describe('IpUsageComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [IpUsageComponent],
+            imports: [IpUsageComponent],
             providers: [IpUsageService],
         });
     });

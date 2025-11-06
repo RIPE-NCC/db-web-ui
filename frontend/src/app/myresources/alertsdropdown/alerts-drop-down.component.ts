@@ -1,5 +1,8 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { IUserInfoOrganisation } from '../../dropdown/org-data-type.model';
 import { UserInfoService } from '../../userinfo/user-info.service';
 import { IpAddressService } from '../ip-address.service';
@@ -9,9 +12,14 @@ import { ResourcesDataService } from '../resources-data.service';
 @Component({
     selector: 'alerts-drop-down',
     templateUrl: './alerts-drop-down.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, NgbDropdown, MatButton, NgbPopover, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgFor],
 })
 export class AlertsDropDownComponent implements OnChanges {
+    private userInfoService = inject(UserInfoService);
+    private resourcesDataService = inject(ResourcesDataService);
+    private route = inject(Router);
+
     @Input()
     public selectedOrganisation: IUserInfoOrganisation;
     public overlaps: IIpv4OverlappingInetnumsAnalysis[] = [];
@@ -22,8 +30,6 @@ export class AlertsDropDownComponent implements OnChanges {
     public showDetail(resource: string): void {
         this.route.navigate(['myresources/detail', 'inetnum', resource, 'false']);
     }
-
-    constructor(private userInfoService: UserInfoService, private resourcesDataService: ResourcesDataService, private route: Router) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         this.loadIpv4Analysis();

@@ -1,13 +1,17 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { DecimalPipe, NgIf } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { IpUsageService } from './ip-usage.service';
 import { IUsage } from './resource-type.model';
 
 @Component({
     selector: 'ip-usage',
     templateUrl: './ip-usage.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, DecimalPipe],
 })
 export class IpUsageComponent implements OnChanges {
+    private ipUsageService = inject(IpUsageService);
+
     @Input()
     public type: string;
     @Input()
@@ -18,8 +22,6 @@ export class IpUsageComponent implements OnChanges {
     public ipv6CalcTotal: string;
     public ipv6CalcUsed: string;
     public ipv6CalcFree: string;
-
-    constructor(private ipUsageService: IpUsageService) {}
 
     public ngOnChanges(changes: SimpleChanges) {
         this.usage.free = this.ipUsageService.calcFreeSpace(this.usage.total, this.usage.used);

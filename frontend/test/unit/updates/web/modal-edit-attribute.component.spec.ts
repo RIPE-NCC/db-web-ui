@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { ModalEditAttributeComponent } from '../../../../src/app/updatesweb/modal-edit-attribute.component';
 
 describe('ModalEditAttributeController', () => {
@@ -17,8 +16,7 @@ describe('ModalEditAttributeController', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            declarations: [ModalEditAttributeComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, ModalEditAttributeComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 PropertiesService,

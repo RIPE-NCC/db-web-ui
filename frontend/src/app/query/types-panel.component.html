@@ -4,41 +4,69 @@
         <div class="col-md-4">
             <ul class="list-unstyled" (click)="$event.stopPropagation()">
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.AS_BLOCK" [disabled]="isDisabled(ObjectTypesEnum.AS_BLOCK)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.AS_BLOCK"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.AS_BLOCK)"
+                    >
                         {{ ObjectTypesEnum.AS_BLOCK }}
                     </mat-checkbox>
                 </li>
 
                 <li></li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.AS_SET" [disabled]="isDisabled(ObjectTypesEnum.AS_SET)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.AS_SET"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.AS_SET)"
+                    >
                         {{ ObjectTypesEnum.AS_SET }}
                     </mat-checkbox>
                 </li>
 
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.AUT_NUM" [disabled]="isDisabled(ObjectTypesEnum.AUT_NUM)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.AUT_NUM"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.AUT_NUM)"
+                    >
                         {{ ObjectTypesEnum.AUT_NUM }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.DOMAIN" [disabled]="isDisabled(ObjectTypesEnum.DOMAIN)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.DOMAIN"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.DOMAIN)"
+                    >
                         {{ ObjectTypesEnum.DOMAIN }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.FILTER_SET" [disabled]="isDisabled(ObjectTypesEnum.FILTER_SET)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.FILTER_SET"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.FILTER_SET)"
+                    >
                         {{ ObjectTypesEnum.FILTER_SET }}
                     </mat-checkbox>
                 </li>
 
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.INET6NUM" [disabled]="isDisabled(ObjectTypesEnum.INET6NUM)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.INET6NUM"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.INET6NUM)"
+                    >
                         {{ ObjectTypesEnum.INET6NUM }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.INETNUM" [disabled]="isDisabled(ObjectTypesEnum.INETNUM)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.INETNUM"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.INETNUM)"
+                    >
                         {{ ObjectTypesEnum.INETNUM }}
                     </mat-checkbox>
                 </li>
@@ -47,38 +75,66 @@
         <div class="col-md-4">
             <ul class="list-unstyled" (click)="$event.stopPropagation()">
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.INET_RTR" [disabled]="isDisabled(ObjectTypesEnum.INET_RTR)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.INET_RTR"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.INET_RTR)"
+                    >
                         {{ ObjectTypesEnum.INET_RTR }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.IRT" [disabled]="isDisabled(ObjectTypesEnum.IRT)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.IRT"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.IRT)"
+                    >
                         {{ ObjectTypesEnum.IRT }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.KEY_CERT" [disabled]="isDisabled(ObjectTypesEnum.KEY_CERT)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.KEY_CERT"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.KEY_CERT)"
+                    >
                         {{ ObjectTypesEnum.KEY_CERT }}
                     </mat-checkbox>
                 </li>
 
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.MNTNER" [disabled]="isDisabled(ObjectTypesEnum.MNTNER)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.MNTNER"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.MNTNER)"
+                    >
                         {{ ObjectTypesEnum.MNTNER }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.ORGANISATION" [disabled]="isDisabled(ObjectTypesEnum.ORGANISATION)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.ORGANISATION"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.ORGANISATION)"
+                    >
                         {{ ObjectTypesEnum.ORGANISATION }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.PEERING_SET" [disabled]="isDisabled(ObjectTypesEnum.PEERING_SET)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.PEERING_SET"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.PEERING_SET)"
+                    >
                         {{ ObjectTypesEnum.PEERING_SET }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.PERSON" [disabled]="isDisabled(ObjectTypesEnum.PERSON)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.PERSON"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.PERSON)"
+                    >
                         {{ ObjectTypesEnum.PERSON }}
                     </mat-checkbox>
                 </li>
@@ -87,37 +143,65 @@
         <div class="col-md-4">
             <ul class="list-unstyled" (click)="$event.stopPropagation()">
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.POEM" [disabled]="isDisabled(ObjectTypesEnum.POEM)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.POEM"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.POEM)"
+                    >
                         {{ ObjectTypesEnum.POEM }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.POETIC_FORM" [disabled]="isDisabled(ObjectTypesEnum.POETIC_FORM)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.POETIC_FORM"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.POETIC_FORM)"
+                    >
                         {{ ObjectTypesEnum.POETIC_FORM }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.ROLE" [disabled]="isDisabled(ObjectTypesEnum.ROLE)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.ROLE"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.ROLE)"
+                    >
                         {{ ObjectTypesEnum.ROLE }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.ROUTE" [disabled]="isDisabled(ObjectTypesEnum.ROUTE)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.ROUTE"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.ROUTE)"
+                    >
                         {{ ObjectTypesEnum.ROUTE }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.ROUTE6" [disabled]="isDisabled(ObjectTypesEnum.ROUTE6)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.ROUTE6"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.ROUTE6)"
+                    >
                         {{ ObjectTypesEnum.ROUTE6 }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.ROUTE_SET" [disabled]="isDisabled(ObjectTypesEnum.ROUTE_SET)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.ROUTE_SET"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.ROUTE_SET)"
+                    >
                         {{ ObjectTypesEnum.ROUTE_SET }}
                     </mat-checkbox>
                 </li>
                 <li>
-                    <mat-checkbox [(ngModel)]="queryParameters.types.RTR_SET" [disabled]="isDisabled(ObjectTypesEnum.RTR_SET)">
+                    <mat-checkbox
+                        [(ngModel)]="queryParameters.types.RTR_SET"
+                        (ngModelChange)="countSelectedCheboxes()"
+                        [disabled]="isDisabled(ObjectTypesEnum.RTR_SET)"
+                    >
                         {{ ObjectTypesEnum.RTR_SET }}
                     </mat-checkbox>
                 </li>

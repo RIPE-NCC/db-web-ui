@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { ApiKeyConfirmationDialogComponent } from 'src/app/apikeys/api-key-confirmation-dialog/api-key-confirmation-dialog.component';
-import { ApiKeysModule } from '../../../src/app/apikeys/api-keys.module';
 
 describe('ApiKeyConfirmationDialogComponent', () => {
     let component: ApiKeyConfirmationDialogComponent;
@@ -9,8 +8,7 @@ describe('ApiKeyConfirmationDialogComponent', () => {
 
     beforeEach(waitForAsync(() => {
         void TestBed.configureTestingModule({
-            imports: [ApiKeysModule, MatDialogModule],
-            declarations: [ApiKeyConfirmationDialogComponent],
+            imports: [MatDialogModule, ApiKeyConfirmationDialogComponent],
             providers: [{ provide: MAT_DIALOG_DATA, useValue: { data: {} } }],
         }).compileComponents();
     }));

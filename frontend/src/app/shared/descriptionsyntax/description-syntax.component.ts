@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { AttributeInfoComponent } from './attr-info.component';
 
 @Component({
     selector: 'description-syntax',
@@ -8,7 +10,8 @@ import { Component, Input } from '@angular/core';
         <strong>Syntax</strong><br />
         <attr-info [objectType]="objectType" [syntax]="attrName"></attr-info>
     </div>`,
-    standalone: false,
+    standalone: true,
+    imports: [NgbCollapse, AttributeInfoComponent],
 })
 export class DescriptionSyntaxComponent {
     @Input()

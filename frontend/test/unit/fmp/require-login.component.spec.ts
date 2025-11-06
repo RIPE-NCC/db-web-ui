@@ -15,8 +15,7 @@ describe('RequireLoginComponent', () => {
         mockLocation = jasmine.createSpyObj('Location', ['search', 'absUrl']);
         queryParamMock = convertToParamMap({});
         TestBed.configureTestingModule({
-            declarations: [RequireLoginComponent],
-            imports: [],
+            imports: [RequireLoginComponent],
             providers: [
                 { provide: PropertiesService, useValue: { LOGIN_URL: 'https://access.prepdev.ripe.net/' } },
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: queryParamMock } } },

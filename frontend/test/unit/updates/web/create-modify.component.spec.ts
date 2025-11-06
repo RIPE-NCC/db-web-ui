@@ -9,11 +9,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { EMPTY, of } from 'rxjs';
 import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
-import { CoreModule } from '../../../../src/app/core/core.module';
 import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
 import { ResourceStatusService } from '../../../../src/app/myresources/resource-status.service';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { CharsetToolsService } from '../../../../src/app/updatesweb/charset-tools.service';
@@ -28,7 +26,6 @@ import { PreferenceService } from '../../../../src/app/updatesweb/preference.ser
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
 import { ScreenLogicInterceptorService } from '../../../../src/app/updatesweb/screen-logic-interceptor.service';
 import { WebUpdatesCommonsService } from '../../../../src/app/updatesweb/web-updates-commons.service';
-import { WhoisObjectModule } from '../../../../src/app/whois-object/whois-object.module';
 
 describe('CreateModifyComponent', () => {
     let httpMock: HttpTestingController;
@@ -43,8 +40,7 @@ describe('CreateModifyComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
-            declarations: [CreateModifyComponent],
-            imports: [SharedModule, CoreModule, NgSelectModule, WhoisObjectModule],
+            imports: [NgSelectModule, CreateModifyComponent],
             providers: [
                 PrefixService,
                 ResourceStatusService,

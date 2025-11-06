@@ -1,12 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-name.pipe';
 
 @Component({
     selector: 'modal-add-attribute',
     templateUrl: './modal-add-attribute.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [FormsModule, NgFor, MatButton, FilteroutAttributeByNamePipe],
 })
 export class ModalAddAttributeComponent implements OnInit {
+    private activeModal = inject(NgbActiveModal);
+
     public close: any;
     public dismiss: any;
     public resolve: any;
@@ -14,8 +21,6 @@ export class ModalAddAttributeComponent implements OnInit {
     @Input()
     public items: any;
     public selected: any;
-
-    public constructor(private activeModal: NgbActiveModal) {}
 
     public ngOnInit() {
         this.orderItemsByName();

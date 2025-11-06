@@ -5,7 +5,7 @@ import { IAttributeModel } from './whois-response-type.model';
 @Pipe({
     name: 'filteroutAttributeByName',
     pure: false,
-    standalone: false,
+    standalone: true,
 })
 export class FilteroutAttributeByNamePipe implements PipeTransform {
     transform(items: IAttributeModel[], names: string[]): IAttributeModel[] {

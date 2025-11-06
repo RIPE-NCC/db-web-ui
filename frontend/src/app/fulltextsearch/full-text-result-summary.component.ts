@@ -1,10 +1,12 @@
+import { DecimalPipe, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IResultSummary } from './types.model';
 
 @Component({
     selector: 'full-text-result-summary',
     templateUrl: './full-text-result-summary.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, NgFor, DecimalPipe],
 })
 export class FullTextResultSummaryComponent implements OnChanges {
     @Input()

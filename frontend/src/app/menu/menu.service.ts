@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { PropertiesService } from '../properties.service';
 import { menuObject } from './menu.json';
 
@@ -25,11 +25,11 @@ export interface IFooterMenuItem {
     url?: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MenuService {
-    public menu: IMenu;
+    properties = inject(PropertiesService);
 
-    constructor(public properties: PropertiesService) {}
+    public menu: IMenu;
 
     createMenu(userRoles: string[]): IMenu {
         this.menu = this.getMenuByEnvironment();

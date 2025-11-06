@@ -1,18 +1,28 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { IVersion } from '../shared/whois-response-type.model';
+import { WhoisVersionComponent } from '../version/whois-version.component';
+import { LookupComponent } from './lookup.component';
 import { LookupService } from './lookup.service';
 
 @Component({
     selector: 'lookup-single',
     templateUrl: './lookup-single-object.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, LookupComponent, WhoisVersionComponent],
 })
 export class LookupSingleObjectComponent implements OnInit, OnDestroy {
+    private lookupService = inject(LookupService);
+    properties = inject(PropertiesService);
+    activatedRoute = inject(ActivatedRoute);
+    alertsService = inject(AlertsService);
+    router = inject(Router);
+
     public whoisResponse: any;
     public error: string;
     public whoisVersion: IVersion;
@@ -22,14 +32,6 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
     public objectName: string;
 
     private subscription: Subscription;
-
-    constructor(
-        private lookupService: LookupService,
-        public properties: PropertiesService,
-        public activatedRoute: ActivatedRoute,
-        public alertsService: AlertsService,
-        public router: Router,
-    ) {}
 
     ngOnInit() {
         this.subscription = this.activatedRoute.queryParams.subscribe((params) => {

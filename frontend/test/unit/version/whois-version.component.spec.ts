@@ -7,7 +7,7 @@ describe('WhoisVersionComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [WhoisVersionComponent],
+            imports: [WhoisVersionComponent],
         }).compileComponents();
     }));
 

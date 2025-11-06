@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, inject } from '@angular/core';
 import { Subject, interval, takeUntil } from 'rxjs';
 import { PropertiesService } from '../properties.service';
 import { UserInfoService } from '../userinfo/user-info.service';
@@ -7,14 +7,17 @@ const localStorageSessionCheckStarted = 'sessionCheck';
 const localStorageSessionExpiredKey = 'sessionExpired';
 const hasCookie = 'hasCookie';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SessionInfoService {
+    private properties = inject(PropertiesService);
+    private userInfoService = inject(UserInfoService);
+
     public cancelInterval$ = new Subject<void>();
     public expiredSession$ = new EventEmitter<boolean>();
     public checkingSession: boolean;
     private readonly onSessionManager;
 
-    constructor(private properties: PropertiesService, private userInfoService: UserInfoService) {
+    constructor() {
         SessionInfoService.propagateCurrentCookieStatus();
         this.onSessionManager = (e) => {
             if (e.key === localStorageSessionExpiredKey && e.newValue) {

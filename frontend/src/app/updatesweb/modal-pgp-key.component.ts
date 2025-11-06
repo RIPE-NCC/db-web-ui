@@ -1,16 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CoreModule } from '../core/core.module';
 
 @Component({
     selector: 'modal-md5-password',
     templateUrl: './modal-pgp-key.component.html',
     standalone: true,
-    imports: [CoreModule, MatButton],
+    imports: [FormsModule, MatButton],
 })
-export class ModalPGPKeyComponent {
+export class ModalPGPKeyComponent implements AfterViewInit {
+    private activeModal = inject(NgbActiveModal);
+
     private readonly PGP_HEADER: string = '-----BEGIN PGP PUBLIC KEY BLOCK-----';
     private readonly PGP_FOOTER: string = '-----END PGP PUBLIC KEY BLOCK-----';
     private readonly X509_HEADER: string = '-----BEGIN CERTIFICATE-----';
@@ -20,8 +21,6 @@ export class ModalPGPKeyComponent {
     validPgp: boolean = true;
 
     @ViewChild('pgpCtrl') pgpCtrl!: NgModel;
-
-    constructor(private activeModal: NgbActiveModal) {}
 
     ngAfterViewInit() {
         this.pgpCtrl.valueChanges?.subscribe(() => {

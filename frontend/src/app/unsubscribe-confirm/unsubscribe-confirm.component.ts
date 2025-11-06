@@ -1,18 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 
 @Component({
     templateUrl: './unsubscribe-confirm.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, LoadingIndicatorComponent, MatButton],
 })
 export class UnsubscribeConfirmComponent implements OnInit {
+    unsubscribeService = inject(UnsubscribeService);
+    router = inject(Router);
+    activatedRoute = inject(ActivatedRoute);
+
     public messageId: string;
     public email: string;
     public loading: boolean = true;
     public isSucess: boolean = false;
-
-    constructor(public unsubscribeService: UnsubscribeService, public router: Router, public activatedRoute: ActivatedRoute) {}
 
     public ngOnInit() {
         this.messageId = this.activatedRoute.snapshot.paramMap.get('messageId');

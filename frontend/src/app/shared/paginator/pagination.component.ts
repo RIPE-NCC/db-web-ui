@@ -1,9 +1,11 @@
+import { NgClass, NgFor } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
     selector: 'paginator',
     templateUrl: './paginator.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgFor, NgClass],
 })
 export class PaginationComponent implements OnInit, OnChanges {
     @Input()

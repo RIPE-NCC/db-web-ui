@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
@@ -9,16 +9,27 @@ import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
 
-import { BannerTypes } from '../banner/banner.component';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { IModalAuthentication } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
 @Component({
     selector: 'modal-authentication-sso-prefilled',
     templateUrl: './modal-authentication-sso-prefilled.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [FormsModule, NgIf, BannerComponent, NgFor, MatButton],
 })
 export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
+    private activeModal = inject(NgbActiveModal);
+    whoisResourcesService = inject(WhoisResourcesService);
+    userInfoService = inject(UserInfoService);
+    credentialsService = inject(CredentialsService);
+    restService = inject(RestService);
+    properties = inject(PropertiesService);
+
     public close: any;
     @Input()
     public resolve: IModalAuthentication;
@@ -27,14 +38,9 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     public selected: any;
     public override: string;
 
-    constructor(
-        private activeModal: NgbActiveModal,
-        public whoisResourcesService: WhoisResourcesService,
-        public userInfoService: UserInfoService,
-        public credentialsService: CredentialsService,
-        public restService: RestService,
-        public properties: PropertiesService,
-    ) {
+    constructor() {
+        const properties = this.properties;
+
         this.SOURCE = properties.SOURCE;
         this.PORTAL_URL = properties.PORTAL_URL;
         this.override = properties.WHOIS_OVERRIDE + ',Automatically Added SSO {notify=false}';

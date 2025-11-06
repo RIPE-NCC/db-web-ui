@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { PropertiesService } from '../properties.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -12,19 +15,20 @@ interface ISelectedObjectType {
 @Component({
     selector: 'select-component',
     templateUrl: './select.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [FormsModule, NgFor, MatButton],
 })
 export class SelectComponent implements OnInit {
+    private router = inject(Router);
+    whoisMetaService = inject(WhoisMetaService);
+    userInfoService = inject(UserInfoService);
+    properties = inject(PropertiesService);
+
     public selected: ISelectedObjectType;
     public objectTypes: string[];
     public loggedIn: boolean;
 
-    constructor(
-        private router: Router,
-        public whoisMetaService: WhoisMetaService,
-        public userInfoService: UserInfoService,
-        public properties: PropertiesService,
-    ) {
+    constructor() {
         this.userInfoService.userLoggedIn$.subscribe(() => {
             this.loggedIn = true;
         });

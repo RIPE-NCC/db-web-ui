@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RpkiValidatorService {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient);
 
     hasRoa(origin: string, route: string) {
         const params = new HttpParams().set('origin', origin).set('route', route);

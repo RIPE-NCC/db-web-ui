@@ -116,7 +116,7 @@ describe('IpUsageOfAllResourcesComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [IpUsageOfAllResourcesComponent],
+            imports: [IpUsageOfAllResourcesComponent],
             providers: [IpUsageService, ResourceStatusService],
         });
     });

@@ -9,7 +9,7 @@ export interface IRpslObject {
     deleteReason?: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RpslService {
     private TOTAL_ATTR_LENGTH: number = 15;
 

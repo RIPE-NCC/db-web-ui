@@ -2,13 +2,12 @@ import { Location } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { MoreSpecificsComponent } from '../../../src/app/myresources/morespecifics/more-specifics.component';
 import { MoreSpecificsService } from '../../../src/app/myresources/morespecifics/more-specifics.service';
 import { RefreshComponent } from '../../../src/app/myresources/refresh/refresh.component';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 
 describe('MoreSpecificsComponent', () => {
     let component: MoreSpecificsComponent;
@@ -17,8 +16,7 @@ describe('MoreSpecificsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [MoreSpecificsComponent, RefreshComponent],
-            imports: [SharedModule, CoreModule, RouterTestingModule],
+            imports: [FormsModule, RouterTestingModule, MoreSpecificsComponent, RefreshComponent],
             providers: [
                 MoreSpecificsService,
                 PropertiesService,

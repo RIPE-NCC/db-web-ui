@@ -1,17 +1,40 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { NgClass, NgFor, NgIf, ViewportScroller } from '@angular/common';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { FormControl, FormsModule } from '@angular/forms';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatSuffix } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { BannerTypes } from '../banner/banner.component';
+import { BannerComponent, BannerTypes } from '../banner/banner.component';
+import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
+import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { LabelPipe } from '../shared/label.pipe';
+import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
+import { ScrollerDirective } from '../shared/scroller.directive';
+import { SearchFieldComponent } from '../shared/sreachfield/search-field.component';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { IObjectMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel } from '../shared/whois-response-type.model';
+import { WebAppVersionComponent } from '../version/web-app-version.component';
+import { WhoisVersionComponent } from '../version/whois-version.component';
+import { AdvanceFilterPanelComponent } from './advance-filter-panel.component';
+import { CertificateInfoComponent } from './certificate-info.component';
+import { HierarchyFlagsPanelComponent } from './hierarchy-flags-panel.component';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
+import { InverseLookupPanelComponent } from './inverse-lookup-panel.component';
+import { LookupComponent } from './lookup.component';
 import { ObjectTypesEnum } from './object-types.enum';
+import { QueryFlagsComponent } from './query-flags.component';
 import { QueryFlagsService } from './query-flags.service';
 import { IQueryParameters, ITemplateTerm, QueryParametersService } from './query-parameters.service';
 import { QueryService } from './query.service';
+import { SharePanelComponent } from './share-panel.component';
+import { TemplateComponent } from './templatecomponent/template.component';
+import { TypesPanelComponent } from './types-panel.component';
 
 export interface IQueryState {
     source: string;
@@ -34,9 +57,50 @@ export type ShareLink = {
 @Component({
     selector: 'query',
     templateUrl: './query.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [
+        BannerComponent,
+        OrgDropDownComponent,
+        FormsModule,
+        NgClass,
+        SearchFieldComponent,
+        QueryFlagsComponent,
+        NgIf,
+        MatButton,
+        MatMenuTrigger,
+        MatMenu,
+        TypesPanelComponent,
+        HierarchyFlagsPanelComponent,
+        InverseLookupPanelComponent,
+        AdvanceFilterPanelComponent,
+        SubmittingAgreementComponent,
+        MatIconButton,
+        MatSuffix,
+        MatTooltip,
+        MatIcon,
+        SharePanelComponent,
+        NgFor,
+        LookupComponent,
+        ScrollerDirective,
+        LoadingIndicatorComponent,
+        TemplateComponent,
+        CertificateInfoComponent,
+        TypeformBannerComponent,
+        WhoisVersionComponent,
+        WebAppVersionComponent,
+        LabelPipe,
+    ],
 })
 export class QueryComponent implements OnDestroy {
+    properties = inject(PropertiesService);
+    queryService = inject(QueryService);
+    queryFlagService = inject(QueryFlagsService);
+    private queryParametersService = inject(QueryParametersService);
+    alertsService = inject(AlertsService);
+    private viewportScroller = inject(ViewportScroller);
+    activatedRoute = inject(ActivatedRoute);
+    router = inject(Router);
+
     public offset = 0;
     public showScroller = false;
     // filter panel - dropdowns Types, Hierarchy, Inverse Lookup and Advance Filters
@@ -66,16 +130,7 @@ export class QueryComponent implements OnDestroy {
     // Search recognizing email and nserver, and filter inverse lookup according to typeOfSearchedTerm
     public typeOfSearchedTerm: string[] = [];
 
-    constructor(
-        public properties: PropertiesService,
-        public queryService: QueryService,
-        public queryFlagService: QueryFlagsService,
-        private queryParametersService: QueryParametersService,
-        public alertsService: AlertsService,
-        private viewportScroller: ViewportScroller,
-        public activatedRoute: ActivatedRoute,
-        public router: Router,
-    ) {
+    constructor() {
         this.showsDocsLink = true;
         this.qp = {
             queryText: '',
@@ -105,6 +160,7 @@ export class QueryComponent implements OnDestroy {
     public init() {
         this.titleEnvironment = this.properties.getTitleEnvironment();
         this.headEnvironment = this.getHeaderEnvironment();
+        this.uncheckAllCheckboxes();
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         this.qp.source = queryParamMap.has('source') ? queryParamMap.getAll('source').join(',') : this.properties.SOURCE;
         this.link = {
@@ -151,6 +207,10 @@ export class QueryComponent implements OnDestroy {
         this.qp.inverse = {};
         this.resetHierarchyDropdown();
         this.resetAdvanceFilter();
+        this.numberSelectedTypes = 0;
+        this.numberSelectedHierarchyItems = 0;
+        this.numberSelectedInverseLookups = 0;
+        this.numberSelectedAdvanceFilterItems = 0;
     }
 
     public resetFilters() {
@@ -170,10 +230,6 @@ export class QueryComponent implements OnDestroy {
         this.qp.showFullObjectDetails = false;
         this.qp.doNotRetrieveRelatedObjects = true;
         this.qp.source = this.properties.SOURCE;
-    }
-
-    public uncheckReverseDomain() {
-        this.qp.reverseDomain = false;
     }
 
     public doSearch() {
@@ -246,44 +302,11 @@ export class QueryComponent implements OnDestroy {
         return !this.isShownQueryFlagsContainer() && this.showFilters;
     }
 
-    private countSelectedDropdownItems(list): number {
-        return Object.keys(list).filter((element) => list[element] === true).length;
-    }
-
-    private countSelectedDropdownHierarchyFlags(): number {
-        let count = 0;
-        if (this.qp.reverseDomain) {
-            count++;
-        }
-        if (!!this.qp.hierarchy && this.qp.hierarchy !== HierarchyFlagsService.hierarchyFlagMap[0].short) {
-            count++;
-        }
-        return count;
-    }
-
-    private countSelectedDropdownAdvanceFilter(): number {
-        let numberSelected = 0;
-        if (this.qp.showFullObjectDetails) {
-            numberSelected++;
-        }
-        if (!this.qp.doNotRetrieveRelatedObjects) {
-            numberSelected++;
-        }
-        if (this.qp.source !== 'RIPE') {
-            numberSelected++;
-        }
-        return numberSelected;
-    }
-
     public printNumberSelected(numberSelectedItems: number) {
         return numberSelectedItems > 0 ? `(${numberSelectedItems})` : '';
     }
 
     public isFilteringResults() {
-        this.numberSelectedTypes = this.countSelectedDropdownItems(this.qp.types);
-        this.numberSelectedHierarchyItems = this.countSelectedDropdownHierarchyFlags();
-        this.numberSelectedInverseLookups = this.countSelectedDropdownItems(this.qp.inverse);
-        this.numberSelectedAdvanceFilterItems = this.countSelectedDropdownAdvanceFilter();
         return this.numberSelectedTypes + this.numberSelectedHierarchyItems + this.numberSelectedInverseLookups + this.numberSelectedAdvanceFilterItems > 0;
     }
 
@@ -303,16 +326,11 @@ export class QueryComponent implements OnDestroy {
     }
 
     public filterCheckboxes() {
-        // this.showClearBtnInSearchField();
         // disable checkboxes according to type of query term
         this.availableTypes = this.queryService.getTypesAppropriateToQuery(this.qp.queryText);
         this.typeOfSearchedTerm = this.queryService.getTypeOfSearchedTerm(this.qp.queryText);
         this.uncheckAllCheckboxes();
     }
-    //
-    // public showClearBtnInSearchField() {
-    //
-    // }
 
     public isDisabledHierarchyDropdown() {
         const enableHierarchyForTypes: string[] = [

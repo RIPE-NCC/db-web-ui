@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { concat, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
@@ -8,6 +11,7 @@ import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { IAttributeModel, IMntByModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
 import { MntnerService } from '../updatesweb/mntner.service';
@@ -19,9 +23,19 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
 @Component({
     selector: 'maintainers-editor',
     templateUrl: './maintainers-editor.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgIf, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
 })
-export class MaintainersEditorComponent implements OnInit {
+export class MaintainersEditorComponent implements OnInit, OnDestroy {
+    private attributeMetadataService = inject(AttributeMetadataService);
+    mntnerService = inject(MntnerService);
+    restService = inject(RestService);
+    private webUpdatesCommonsService = inject(WebUpdatesCommonsService);
+    alertsService = inject(AlertsService);
+    private jsUtilsService = inject(JsUtilService);
+    orgDropDownSharedService = inject(OrgDropDownSharedService);
+    private properties = inject(PropertiesService);
+
     @Input()
     public whoisObject: IWhoisObjectModel;
     @Output()
@@ -61,17 +75,8 @@ export class MaintainersEditorComponent implements OnInit {
     private justAddedMnt: IMntByModel;
     private selectedOrg: IUserInfoOrganisation;
 
-    constructor(
-        private attributeMetadataService: AttributeMetadataService,
-        public mntnerService: MntnerService,
-        public restService: RestService,
-        private webUpdatesCommonsService: WebUpdatesCommonsService,
-        public alertsService: AlertsService,
-        private jsUtilsService: JsUtilService,
-        public orgDropDownSharedService: OrgDropDownSharedService,
-        private properties: PropertiesService,
-    ) {
-        this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
+    constructor() {
+        this.subscription = this.orgDropDownSharedService.selectedOrgChanged$.subscribe(() => {
             this.ngOnInit();
         });
     }
@@ -247,7 +252,7 @@ export class MaintainersEditorComponent implements OnInit {
                     this.intersectionDefaultMntAndSsoMnt(result);
                     this.populateNgSelectFieldWithMnt();
                 },
-                error: (error: any) => {
+                error: () => {
                     this.populateNgSelectFieldWithMnt();
                 },
             });

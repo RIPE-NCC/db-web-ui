@@ -1,17 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
+import { AttributeRendererComponent } from '../attribute/attribute-renderer.component';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { FilteroutAttributeByHiddenPipe } from '../shared/filterout-attribute-by-hidden.pipe';
+import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-name.pipe';
+import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { IAttributeModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { MessageStoreService } from '../updatesweb/message-store.service';
 
 @Component({
     selector: 'whois-object-editor',
     templateUrl: './whois-object-editor.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgFor, AttributeRendererComponent, SubmittingAgreementComponent, NgIf, MatButton, FilteroutAttributeByHiddenPipe, FilteroutAttributeByNamePipe],
 })
 export class WhoisObjectEditorComponent implements OnInit {
+    private attributeMetadataService = inject(AttributeMetadataService);
+    private messageStoreService = inject(MessageStoreService);
+    private alertsService = inject(AlertsService);
+    private properties = inject(PropertiesService);
+
     @Input()
     public model: IWhoisObjectModel;
     @Input()
@@ -34,13 +46,6 @@ export class WhoisObjectEditorComponent implements OnInit {
     public deleteClicked = new EventEmitter();
 
     private originalAttibutes: IAttributeModel[];
-
-    constructor(
-        private attributeMetadataService: AttributeMetadataService,
-        private messageStoreService: MessageStoreService,
-        private alertsService: AlertsService,
-        private properties: PropertiesService,
-    ) {}
 
     public ngOnInit() {
         // Assign to short-cut accessor.

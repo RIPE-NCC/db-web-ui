@@ -3,7 +3,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { ModalAddAttributeComponent } from '../../../../src/app/updatesweb/modal-add-attribute.component';
 
 describe('ModalAddAttributeComponent', () => {
@@ -13,8 +12,7 @@ describe('ModalAddAttributeComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         TestBed.configureTestingModule({
-            declarations: [ModalAddAttributeComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, ModalAddAttributeComponent],
             providers: [{ provide: NgbActiveModal, useValue: modalMock }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         componentFixture = TestBed.createComponent(ModalAddAttributeComponent);

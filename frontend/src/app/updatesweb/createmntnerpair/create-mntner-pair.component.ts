@@ -1,9 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import * as _ from 'lodash';
 import { IUserInfoResponseData } from '../../dropdown/org-data-type.model';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
+import { DescriptionSyntaxComponent } from '../../shared/descriptionsyntax/description-syntax.component';
+import { FilteroutAttributeByNamePipe } from '../../shared/filterout-attribute-by-name.pipe';
+import { SanitizeImgHtmlPipe } from '../../shared/sanitize-img-html.pipe';
+import { SubmittingAgreementComponent } from '../../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../../shared/whois-meta.service';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
 import { IAttributeModel } from '../../shared/whois-response-type.model';
@@ -18,9 +25,33 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
 @Component({
     selector: 'create-mntner-pair',
     templateUrl: './create-mntner-pair.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [
+        NgFor,
+        NgIf,
+        FormsModule,
+        DescriptionSyntaxComponent,
+        RouterLink,
+        SubmittingAgreementComponent,
+        MatButton,
+        FilteroutAttributeByNamePipe,
+        SanitizeImgHtmlPipe,
+    ],
 })
 export class CreateMntnerPairComponent implements OnInit, OnDestroy {
+    whoisResourcesService = inject(WhoisResourcesService);
+    private whoisMetaService = inject(WhoisMetaService);
+    private userInfoService = inject(UserInfoService);
+    private restService = inject(RestService);
+    private createService = inject(CreateService);
+    messageStoreService = inject(MessageStoreService);
+    private errorReporterService = inject(ErrorReporterService);
+    private linkService = inject(LinkService);
+    private properties = inject(PropertiesService);
+    alertsService = inject(AlertsService);
+    activatedRoute = inject(ActivatedRoute);
+    router = inject(Router);
+
     public submitInProgress: boolean;
     public source: string;
     public objectTypeAttributes: any;
@@ -31,21 +62,6 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     public showAttrsHelp: [];
     public linkToRoleOrPerson: string = 'person';
     private subscription: any;
-
-    constructor(
-        public whoisResourcesService: WhoisResourcesService,
-        private whoisMetaService: WhoisMetaService,
-        private userInfoService: UserInfoService,
-        private restService: RestService,
-        private createService: CreateService,
-        public messageStoreService: MessageStoreService,
-        private errorReporterService: ErrorReporterService,
-        private linkService: LinkService,
-        private properties: PropertiesService,
-        public alertsService: AlertsService,
-        public activatedRoute: ActivatedRoute,
-        public router: Router,
-    ) {}
 
     public ngOnInit() {
         this.subscription = this.activatedRoute.params.subscribe(() => {

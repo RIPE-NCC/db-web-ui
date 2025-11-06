@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LabelPipe } from './label.pipe';
 
 @Component({
     selector: 'submitting-agreement',
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
             <span [innerHTML]="'msg.ripeTandCSubmitLink.text' | label"></span>
         </section>
     </div>`,
-    standalone: false,
+    standalone: true,
+    imports: [LabelPipe],
 })
 export class SubmittingAgreementComponent {}

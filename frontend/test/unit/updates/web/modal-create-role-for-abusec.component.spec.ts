@@ -32,8 +32,7 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
         TestBed.configureTestingModule({
-            declarations: [ModalCreateRoleForAbuseCComponent],
-            imports: [FormsModule],
+            imports: [FormsModule, ModalCreateRoleForAbuseCComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 WhoisResourcesService,

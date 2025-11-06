@@ -9,7 +9,6 @@ import { EMPTY, map, of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { CredentialsService } from '../../../src/app/shared/credentials.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
@@ -86,8 +85,7 @@ describe('WhoisObjectTextEditorComponent', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
-            declarations: [TextModifyComponent],
-            imports: [FormsModule, SharedModule],
+            imports: [FormsModule, TextModifyComponent],
             providers: [
                 WhoisResourcesService,
                 WhoisMetaService,

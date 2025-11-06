@@ -1,12 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { WhoisMetaService } from '../whois-meta.service';
 
 @Component({
     selector: 'attr-info',
     template: `<span [innerHTML]="text"></span>`,
-    standalone: false,
+    standalone: true,
 })
 export class AttributeInfoComponent implements OnInit {
+    private whoisMetaService = inject(WhoisMetaService);
+
     @Input()
     public description: string;
     @Input()
@@ -15,8 +17,6 @@ export class AttributeInfoComponent implements OnInit {
     public syntax: string;
 
     public text = '';
-
-    constructor(private whoisMetaService: WhoisMetaService) {}
 
     public ngOnInit() {
         if (!this.objectType) {

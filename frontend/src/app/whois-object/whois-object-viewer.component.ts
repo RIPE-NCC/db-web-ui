@@ -1,8 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { NgClass, NgFor, NgIf, SlicePipe } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTooltip } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
+import { LabelPipe } from '../shared/label.pipe';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { IAttributeModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
@@ -10,9 +16,15 @@ import { UserInfoService } from '../userinfo/user-info.service';
 @Component({
     selector: 'whois-object-viewer',
     templateUrl: './whois-object-viewer.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, MatCheckbox, NgClass, NgFor, MatTooltip, RouterLink, MatButton, SlicePipe, LabelPipe],
 })
 export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
+    private userInfoService = inject(UserInfoService);
+    private sessionInfoService = inject(SessionInfoService);
+    private properties = inject(PropertiesService);
+    private whoisMetaService = inject(WhoisMetaService);
+
     @Input()
     public model: IWhoisObjectModel;
     @Input()
@@ -41,12 +53,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     private readonly MAX_ATTR_NAME_MASK = '                ';
     private readonly HAS_RIPE_STAT_LINK = ['aut-num', 'route', 'route6', 'inetnum', 'inet6num'];
 
-    constructor(
-        private userInfoService: UserInfoService,
-        private sessionInfoService: SessionInfoService,
-        private properties: PropertiesService,
-        private whoisMetaService: WhoisMetaService,
-    ) {
+    constructor() {
         this.subscription = this.sessionInfoService.expiredSession$.subscribe(
             (expired: boolean) => {
                 this.setButtonText(!expired);

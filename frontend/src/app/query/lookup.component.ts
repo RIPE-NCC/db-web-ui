@@ -1,14 +1,21 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, Input, OnChanges, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../properties.service';
+import { LabelPipe } from '../shared/label.pipe';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisObjectModel } from '../shared/whois-response-type.model';
+import { WhoisObjectViewerComponent } from '../whois-object/whois-object-viewer.component';
 
 @Component({
     selector: 'lookup',
     templateUrl: './lookup.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, RouterLink, NgFor, WhoisObjectViewerComponent, LabelPipe],
 })
 export class LookupComponent implements OnChanges {
+    properties = inject(PropertiesService);
+
     @Input()
     public whoisObject: IWhoisObjectModel;
 
@@ -17,8 +24,6 @@ export class LookupComponent implements OnChanges {
     public abuseContactSuspectedWithoutOrgid: boolean = false;
     public header = false;
     public resourceHolderFound = false;
-
-    constructor(public properties: PropertiesService) {}
 
     public ngOnChanges() {
         this.header = !!(this.whoisObject['resource-holder'] || this.whoisObject['abuse-contact']);
