@@ -317,7 +317,7 @@ export class MaintainersEditorComponent implements OnInit {
         return createdAttr && typeof createdAttr.value === 'string' && createdAttr.value.length > 0;
     }
 
-    private initCreateMode() {
+    public initCreateMode() {
         this.restService.fetchMntnersForSSOAccount().subscribe({
             next: (results: IMntByModel[]) => {
                 this.handleSsoResponse(results);

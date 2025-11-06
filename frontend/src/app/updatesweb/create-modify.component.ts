@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -12,6 +12,7 @@ import { CredentialsService } from '../shared/credentials.service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel, IStatusOption } from '../shared/whois-response-type.model';
+import { MaintainersEditorComponent } from '../whois-object/maintainers-editor.component';
 import { EnumService } from './enum.service';
 import { ErrorReporterService } from './error-reporter.service';
 import { LinkService } from './link.service';
@@ -76,6 +77,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public PENDING_OPERATION = 'Pending';
 
     public showAttrsHelp: [];
+
+    @ViewChild(MaintainersEditorComponent) maintainersEditorComponent!: MaintainersEditorComponent;
 
     constructor(
         public whoisResourcesService: WhoisResourcesService,
@@ -187,9 +190,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name).subscribe({
-                next: () => {
+                next: (result: any) => {
                     this.restCallInProgress = false;
                     this.inetnumParentAuthError = false;
+                    if (result.$value && result.$value.selectedItem) {
+                        this.maintainersEditorComponent.initCreateMode(); //Refresh maintainers editor
+                    }
                 },
                 error: (error: any) => {
                     this.restCallInProgress = false;
