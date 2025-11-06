@@ -166,10 +166,13 @@ export class MntnerService {
     }
 
     public enrichWithNewStatus(originalMntners: IMntByModel[], actualMntners: IMntByModel[]): IMntByModel[] {
-        return actualMntners.map((mntner: IMntByModel) => {
+        console.info('original mntners ', originalMntners);
+        let a = actualMntners.map((mntner: IMntByModel) => {
             mntner.isNew = !this.isMntnerOnlist(originalMntners, mntner);
             return mntner;
         });
+        console.info('enrich mntners ', a);
+        return a;
     }
 
     public stripNccMntners(mntners: IMntByModel[]): IMntByModel[] {

@@ -88,6 +88,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         console.log('mntners component editor init');
         this.mntnerAutocomplete();
+        console.info('mntner alternatives ', this.mntners.alternatives$);
         this.source = this.whoisObject.source.id;
         this.attributes = this.whoisObject.attributes.attribute;
         this.objectType = this.attributes[0].name;
