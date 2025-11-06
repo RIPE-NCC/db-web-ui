@@ -528,7 +528,7 @@ export class WhoisMetaService {
     }
 
     public enrichAttributesWithMetaInfo(objectTypeName: string, attrs: IAttributeModel[]) {
-        console.log('enrich attributes object type and attributes ' + objectTypeName + ' ' + attrs);
+        console.log('enrich attributes object type and attributes ', objectTypeName + ' ' + attrs);
         if (_.isUndefined(objectTypeName) || _.isUndefined(attrs)) {
             return attrs;
         }

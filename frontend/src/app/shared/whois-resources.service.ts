@@ -469,7 +469,7 @@ export class WhoisResourcesService {
     }
 
     public validateAttributes(attrs: any) {
-        console.log('attributes 1' + attrs);
+        console.log('attributes 1', attrs);
         return attrs ? attrs : [];
     }
 

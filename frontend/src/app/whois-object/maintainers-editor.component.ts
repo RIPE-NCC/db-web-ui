@@ -95,7 +95,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
             this.objectName += this.attributes.find((attr) => attr.name === 'origin').value;
         }
         if (this.isModifyMode()) {
-            console.log('entering modify mode');
+            console.info('entering modify mode');
             this.initModifyMode();
         } else {
             this.initCreateMode();
@@ -340,15 +340,15 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
 
                 // store mntners for SSO account
                 this.mntners.sso = ssoResult;
-                console.debug('maintainers.sso:', this.mntners.sso);
+                console.info('maintainers.sso:', this.mntners.sso);
 
                 // this is where we must authenticate against
                 this.mntners.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
-                console.log('mntners of original object ' + this.mntners.objectOriginal);
+                console.info('mntners of original object ', this.mntners.objectOriginal);
                 // starting point for further editing
                 const mntnersFromObject = this.extractEnrichMntnersFromObject(this.attributes);
                 this.mntners.object = this.mntnerService.removeDuplicatedMnts(mntnersFromObject);
-                console.log('mntners of object ' + this.mntners.object);
+                console.info('mntners of object ', this.mntners.object);
                 // fetch details of all selected maintainers concurrently
                 this.restCallInProgress = true;
                 this.restService.detailsForMntners(this.mntners.object).subscribe({
@@ -356,15 +356,15 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
                         this.restCallInProgress = false;
 
                         this.mntners.objectOriginal = _.flatten(result) as IMntByModel[];
-                        console.info('mntners-object-original:' + this.mntners.objectOriginal);
+                        console.info('mntners-object-original: ', this.mntners.objectOriginal);
 
                         // of course none of the initial ones are new
                         this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, _.flatten(result));
-                        console.info('mntners-object:' + this.mntners.object);
+                        console.info('mntners-object: ', this.mntners.object);
 
                         console.info(
-                            'need authentication' +
-                                this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object),
+                            'need authentication',
+                            this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object),
                         );
                         if (this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();

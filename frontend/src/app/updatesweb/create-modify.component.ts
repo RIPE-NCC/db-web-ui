@@ -176,7 +176,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             // Start empty, and populate with rest-result
             this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, []);
-            console.log('attributes ' + this.attributes);
+            console.log('attributes ', this.attributes);
 
             this.fetchDataForModify();
         }
@@ -753,7 +753,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe({
             next: (objectToModifyResponse) => {
                 this.restCallInProgress = false;
-                console.debug('[createModifyController] object to modify: ' + JSON.stringify(objectToModifyResponse));
+                console.info('[createModifyController] object to modify: ' + JSON.stringify(objectToModifyResponse));
 
                 // store object to modify
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
