@@ -42,17 +42,20 @@ export class WebUpdatesCommonsService {
     }
 
     public performAuthentication(authParams: IAuthParams) {
-        console.debug('Perform authentication', authParams.maintainers);
+        console.info('web update commons maintainers', authParams.maintainers);
+        console.info('web update commons auth mntners object', authParams.maintainers.object);
         const mntnersWithPasswords = this.mntnerService.getMntnersForAuthentication(
             authParams.maintainers.sso,
             authParams.maintainers.objectOriginal,
             authParams.maintainers.object,
         );
+        console.info('web update commons maintainers with psswd', mntnersWithPasswords);
         const mntnersWithoutPasswords = this.mntnerService.getMntnersNotEligibleForPasswordAuthentication(
             authParams.maintainers.sso,
             authParams.maintainers.objectOriginal,
             authParams.maintainers.object,
         );
+        console.info('web update commons maintainers without psswd', mntnersWithPasswords);
         const allowForcedDelete = !_.find(authParams.maintainers.object, (o: any) => {
             return this.mntnerService.isAnyNccMntner(o.key);
         });

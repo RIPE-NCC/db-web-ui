@@ -586,6 +586,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.stripNulls();
             this.alertsService.clearAlertMessages();
             if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
+                console.info('Authentication is thrown');
                 this.performAuthentication();
                 return;
             }

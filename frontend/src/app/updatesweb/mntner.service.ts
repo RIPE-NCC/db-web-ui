@@ -190,6 +190,7 @@ export class MntnerService {
 
     public needsPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
         if (originalObjectMntners.length === 0) {
+            console.info('originalObjectMntners is empty');
             // it is a creat
             originalObjectMntners = objectMntners.filter((mnt: IMntByModel) => !this.isMntnerOnlist(ssoMntners, mnt));
             // filter out sso maintainers from objectMaintainers, so we can made check just on originalMainatiners
@@ -197,20 +198,20 @@ export class MntnerService {
         const mntners = this.enrichWithSsoStatus(ssoMntners, originalObjectMntners);
 
         if (mntners.length === 0) {
-            console.debug('needsPasswordAuthentication: no: No mntners left to authenticate against');
+            console.info('needsPasswordAuthentication: no: No mntners left to authenticate against');
             return false;
         }
 
         if (MntnerService.oneOfOriginalMntnersIsMine(originalObjectMntners)) {
-            console.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
+            console.info('needsPasswordAuthentication: no: One of selected mntners is mine');
             return false;
         }
 
         if (this.oneOfOriginalMntnersHasCredential(originalObjectMntners)) {
-            console.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
+            console.info('needsPasswordAuthentication: no: One of selected mntners has credentials');
             return false;
         }
-        console.debug('needsPasswordAuthentication: yes');
+        console.info('needsPasswordAuthentication: yes');
         return true;
     }
 
