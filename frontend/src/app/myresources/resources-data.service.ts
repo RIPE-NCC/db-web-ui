@@ -1,13 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
 import { IMoreSpecificsApiResult } from './morespecifics/more-specifics.service';
 import { IIPv4ResourcesResponse, IIPv6ResourcesResponse, IIpv4Analysis, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ResourcesDataService {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient);
 
     public fetchResource(objectName: string, type: string): Observable<IMoreSpecificsApiResult> {
         return this.http.get<IMoreSpecificsApiResult>(`api/whois-internal/api/resources/${type}/${objectName}`);

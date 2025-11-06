@@ -9,7 +9,7 @@ describe('FullTextResultSummaryComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [FullTextResultSummaryComponent],
+            imports: [FullTextResultSummaryComponent],
         });
     });
 

@@ -32,8 +32,7 @@ describe('DisplayPairComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
         TestBed.configureTestingModule({
-            declarations: [DisplayMntnerPairComponent],
-            imports: [],
+            imports: [DisplayMntnerPairComponent],
             providers: [
                 WhoisResourcesService,
                 WhoisMetaService,

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'error-page',
@@ -8,6 +10,7 @@ import { Component } from '@angular/core';
         <p>Sorry, something went wrong</p>
         <a mat-flat-button color="primary" routerLink="/">BACK TO THE QUERY PAGE</a>
     </section>`,
-    standalone: false,
+    standalone: true,
+    imports: [MatButton, RouterLink],
 })
 export class ErrorPageComponent {}

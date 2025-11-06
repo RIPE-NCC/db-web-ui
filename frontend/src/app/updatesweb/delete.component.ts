@@ -1,5 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { NgFor } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { ModalDeleteObjectComponent } from './modal-delete-object.component';
@@ -7,9 +9,14 @@ import { ModalDeleteObjectComponent } from './modal-delete-object.component';
 @Component({
     selector: 'delete-component',
     templateUrl: './delete.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgFor, MatButton, RouterLink],
 })
 export class DeleteComponent implements OnInit, OnDestroy {
+    private modalService = inject(NgbModal);
+    alertsService = inject(AlertsService);
+    private activatedRoute = inject(ActivatedRoute);
+
     public modalInProgress: boolean;
     public source: string;
     public objectType: string;
@@ -17,13 +24,6 @@ export class DeleteComponent implements OnInit, OnDestroy {
     public onCancel: string;
     public deletedObjects: any;
     public skipClearError: boolean = false;
-
-    constructor(private modalService: NgbModal, public alertsService: AlertsService, private activatedRoute: ActivatedRoute) {
-        // this page does not raise a modal for authentication. It can be user directly either
-        // if you are logged in and the object has your maintainers or if you have provided password
-        // in the modify screen
-        // TODO [TP]: modularise the authentication logic from createController and use it both in create/modify and in delete
-    }
 
     public ngOnInit() {
         this.modalInProgress = true;

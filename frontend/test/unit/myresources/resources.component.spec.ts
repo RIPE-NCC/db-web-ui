@@ -1,14 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { CoreModule } from '../../../src/app/core/core.module';
+import { IpUsageService } from '../../../src/app/myresources/ip-usage.service';
+import { ResourceStatusService } from '../../../src/app/myresources/resource-status.service';
 import { ResourcesDataService } from '../../../src/app/myresources/resources-data.service';
 import { ResourcesComponent } from '../../../src/app/myresources/resources.component';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
@@ -22,9 +23,16 @@ describe('ResourcesComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, RouterTestingModule],
-            declarations: [ResourcesComponent],
-            providers: [ResourcesDataService, { provide: UserInfoService, useValue: userInfoService }, AlertsService, WhoisResourcesService, PropertiesService],
+            imports: [HttpClientTestingModule, RouterTestingModule, ResourcesComponent],
+            providers: [
+                ResourcesDataService,
+                { provide: UserInfoService, useValue: userInfoService },
+                AlertsService,
+                WhoisResourcesService,
+                PropertiesService,
+                ResourceStatusService,
+                IpUsageService,
+            ],
         });
     });
 

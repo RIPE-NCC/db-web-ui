@@ -2,14 +2,13 @@ import { Location } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
-import { CoreModule } from '../../../../src/app/core/core.module';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { CreateService } from '../../../../src/app/updatesweb/create.service';
 import { CreateMntnerPairComponent } from '../../../../src/app/updatesweb/createmntnerpair/create-mntner-pair.component';
@@ -39,8 +38,7 @@ describe('CreateMntnerPairComponent', () => {
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
             TestBed.configureTestingModule({
-                declarations: [CreateMntnerPairComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
+                imports: [FormsModule, NgSelectModule, RouterTestingModule, CreateMntnerPairComponent],
                 providers: [
                     PropertiesService,
                     CreateService,
@@ -214,8 +212,7 @@ describe('CreateMntnerPairComponent', () => {
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
             TestBed.configureTestingModule({
-                declarations: [CreateMntnerPairComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule, RouterTestingModule],
+                imports: [NgSelectModule, RouterTestingModule, CreateMntnerPairComponent],
                 providers: [
                     PropertiesService,
                     CreateService,

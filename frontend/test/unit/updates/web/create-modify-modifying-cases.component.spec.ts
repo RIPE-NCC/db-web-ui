@@ -9,11 +9,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { EMPTY, of } from 'rxjs';
 import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
-import { CoreModule } from '../../../../src/app/core/core.module';
 import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
 import { ResourceStatusService } from '../../../../src/app/myresources/resource-status.service';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { CharsetToolsService } from '../../../../src/app/updatesweb/charset-tools.service';
@@ -159,8 +157,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
-            declarations: [CreateModifyComponent],
-            imports: [SharedModule, CoreModule, NgSelectModule],
+            imports: [NgSelectModule, CreateModifyComponent],
             providers: [
                 PrefixService,
                 ResourceStatusService,
@@ -290,7 +287,6 @@ describe('CreateModifyComponent with modifying test cases', () => {
         it('should handle success put upon submit click when form is complete', () => {
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'changed', 'dummy@ripe.net');
             component.submit();
-            fixture.detectChanges();
             httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123' }).flush({
                 objects: {
                     object: [
@@ -430,25 +426,6 @@ describe('CreateModifyComponent with modifying test cases', () => {
             expect(component.alertsService.alerts.warnings[0].plainText).toEqual('Not authenticated');
         });
 
-        function getObject() {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true' }).flush({
-                objects: {
-                    object: [
-                        {
-                            'primary-key': { attribute: [{ name: 'as-block', value: 'MY-AS-BLOCK' }] },
-                            attributes: {
-                                attribute: [
-                                    { name: 'as-block', value: 'MY-AS-BLOCK' },
-                                    { name: 'mnt-by', value: 'TEST3-MNT' },
-                                    { name: 'source', value: 'RIPE' },
-                                ],
-                            },
-                        },
-                    ],
-                },
-            });
-        }
-
         function getObjectWithError() {
             httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true' }).flush(
                 {
@@ -463,16 +440,6 @@ describe('CreateModifyComponent with modifying test cases', () => {
                 },
                 { status: 404, statusText: 'error' },
             );
-        }
-
-        function failToGetMaintainerDetails() {
-            httpMock
-                .expectOne({ method: 'GET', url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT' })
-                .flush({}, { status: 404, statusText: 'error' });
-        }
-
-        function failToGetSsoMaintainers() {
-            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush({}, { status: 404, statusText: 'error' });
         }
     });
 

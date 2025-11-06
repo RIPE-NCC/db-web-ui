@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import * as _ from 'lodash';
 import { ITemplateTerm } from '../query-parameters.service';
 import { QueryService } from '../query.service';
@@ -6,16 +6,16 @@ import { QueryService } from '../query.service';
 @Component({
     selector: 'lookup-template',
     template: `<pre>{{ response }}</pre>`,
-    standalone: false,
+    standalone: true,
 })
 export class TemplateComponent implements OnChanges {
+    private queryService = inject(QueryService);
+
     @Input()
     public query: ITemplateTerm;
     public response: string;
 
     private templateQueries = ['-t', '--template'];
-
-    constructor(private queryService: QueryService) {}
 
     public ngOnChanges() {
         if (_.includes(this.templateQueries, this.query.templateType)) {

@@ -3,6 +3,6 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'loading-indicator',
     templateUrl: './loading-indicator.html',
-    standalone: false,
+    standalone: true,
 })
 export class LoadingIndicatorComponent {}

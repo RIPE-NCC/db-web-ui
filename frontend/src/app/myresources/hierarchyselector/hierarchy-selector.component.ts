@@ -1,5 +1,8 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap';
+import { NameFormatterComponent } from '../../shared/name-formatter.component';
 import { UserInfoService } from '../../userinfo/user-info.service';
 import { IResourceModel } from '../resource-type.model';
 import { HierarchySelectorService } from './hierarchy-selector.service';
@@ -7,19 +10,18 @@ import { HierarchySelectorService } from './hierarchy-selector.service';
 @Component({
     selector: 'hierarchy-selector',
     templateUrl: './hierarchy-selector.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgbDropdown, NgbDropdownToggle, NgIf, NgbDropdownMenu, NgFor, NameFormatterComponent],
 })
 export class HierarchySelectorComponent implements OnChanges {
+    private hierarchySelectorService = inject(HierarchySelectorService);
+    private userInfoService = inject(UserInfoService);
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+
     public parents: string[];
     @Input()
     public resource: IResourceModel;
-
-    constructor(
-        private hierarchySelectorService: HierarchySelectorService,
-        private userInfoService: UserInfoService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-    ) {}
 
     public ngOnChanges() {
         if (!this.resource || ['inetnum', 'inet6num'].indexOf(this.resource.type) < 0) {

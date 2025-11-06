@@ -1,17 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 
 @Component({
     selector: 'sso-added',
     templateUrl: './sso-added.component.html',
-    standalone: false,
+    standalone: true,
 })
 export class SsoAddedComponent implements OnInit, OnDestroy {
+    private activatedRoute = inject(ActivatedRoute);
+    private alertsService = inject(AlertsService);
+
     public mntnerKey: string;
     public user: any;
-
-    constructor(private activatedRoute: ActivatedRoute, private alertsService: AlertsService) {}
 
     public ngOnInit() {
         const paramMap = this.activatedRoute.snapshot.paramMap;

@@ -12,25 +12,43 @@ import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.s
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
 import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
 import { RestService } from '../../../src/app/updatesweb/rest.service';
-import { UpdatesWebModule } from '../../../src/app/updatesweb/updateweb.module';
 
 describe('MntnerService', () => {
     let mntnerService: MntnerService;
     let httpMock: HttpTestingController;
     const credentialServiceMock = {
-        getCredentials: () => {
-            return [{ mntner: 'B-MNT', successfulPassword: 'secret' }];
-        },
-        hasCredentials: () => {
-            return true;
-        },
-        getPasswordsForRestCall: () => {
-            return ['secret'];
-        },
+        getCredentials: () => [{ mntner: 'B-MNT', successfulPassword: 'secret' }],
+        hasCredentials: () => true,
+        getPasswordsForRestCall: () => ['secret'],
     };
 
     beforeEach(() => {
-        const propertiesService: PropertiesService = new PropertiesService(null);
+        TestBed.configureTestingModule({
+            imports: [],
+            providers: [
+                MntnerService,
+                RestService,
+                PrefixService,
+                WhoisResourcesService,
+                WhoisMetaService,
+                PropertiesService,
+                { provide: CredentialsService, useValue: credentialServiceMock },
+                { provide: 'ModalService', useValue: {} },
+                { provide: 'PrefixService', useValue: {} },
+                {
+                    provide: Router,
+                    useValue: {
+                        navigate: () => {},
+                        navigateByUrl: () => {},
+                        events: of(),
+                    },
+                },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
+        });
+
+        const propertiesService = TestBed.inject(PropertiesService);
         propertiesService.RIPE_NCC_MNTNERS = [
             'RIPE-NCC-HM-MNT',
             'RIPE-NCC-END-MNT',
@@ -44,33 +62,8 @@ describe('MntnerService', () => {
         ];
         propertiesService.TOP_RIPE_NCC_MNTNERS = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'];
 
-        TestBed.configureTestingModule({
-            imports: [UpdatesWebModule],
-            providers: [
-                MntnerService,
-                RestService,
-                PrefixService,
-                WhoisResourcesService,
-                WhoisMetaService,
-                { provide: PropertiesService, useValue: propertiesService },
-                { provide: CredentialsService, useValue: credentialServiceMock },
-                { provide: 'ModalService', useValue: {} },
-                { provide: 'PrefixService', useValue: {} },
-                // because of RestService
-                {
-                    provide: Router,
-                    useValue: {
-                        navigate: () => {},
-                        navigateByUrl: () => {},
-                        events: of(),
-                    },
-                },
-                provideHttpClient(withInterceptorsFromDi()),
-                provideHttpClientTesting(),
-            ],
-        });
-        httpMock = TestBed.inject(HttpTestingController);
         mntnerService = TestBed.inject(MntnerService);
+        httpMock = TestBed.inject(HttpTestingController);
     });
 
     it('should be loaded', () => {

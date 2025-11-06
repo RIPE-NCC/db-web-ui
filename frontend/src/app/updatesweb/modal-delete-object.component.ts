@@ -1,4 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { NgFor, NgIf, SlicePipe } from '@angular/common';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
@@ -17,9 +20,16 @@ interface IModalDelete {
 @Component({
     selector: 'modal-delete-object',
     templateUrl: './modal-delete-object.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, FormsModule, NgFor, MatButton, SlicePipe],
 })
 export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private activeModal = inject(NgbActiveModal);
+    restService = inject(RestService);
+    credentialsService = inject(CredentialsService);
+    private rpkiValidatorService = inject(RpkiValidatorService);
+
     public MAX_REFS_TO_SHOW: number = 5;
 
     @Input()
@@ -32,14 +42,6 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     public restCallInProgress = false;
     private isDismissed: boolean = true;
     public showRoaMsg: boolean = false;
-
-    constructor(
-        private router: Router,
-        private activeModal: NgbActiveModal,
-        public restService: RestService,
-        public credentialsService: CredentialsService,
-        private rpkiValidatorService: RpkiValidatorService,
-    ) {}
 
     public ngOnInit() {
         this.getReferences(this.inputData.source, this.inputData.objectType, this.inputData.name);

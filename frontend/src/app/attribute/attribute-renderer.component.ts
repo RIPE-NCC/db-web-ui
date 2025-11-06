@@ -1,10 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgClass, NgIf } from '@angular/common';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { CredentialsService } from '../shared/credentials.service';
+import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -14,13 +18,33 @@ import { ModalAddAttributeComponent } from '../updatesweb/modal-add-attribute.co
 import { ModalCreateRoleForAbuseCComponent } from '../updatesweb/modal-create-role-for-abusec.component';
 import { RestService } from '../updatesweb/rest.service';
 import { AttributeMetadataService } from './attribute-metadata.service';
+import { AttributeReverseZonesComponent } from './attribute-reverse-zones.component';
 
 @Component({
     selector: 'attribute-renderer',
     templateUrl: './attribute-renderer.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [
+        NgClass,
+        NgIf,
+        AttributeReverseZonesComponent,
+        DescriptionSyntaxComponent,
+        FormsModule,
+        NgbTypeahead,
+        NgSelectComponent,
+        NgOptionTemplateDirective,
+    ],
 })
 export class AttributeRendererComponent implements OnInit {
+    private attributeMetadataService = inject(AttributeMetadataService);
+    private whoisMetaService = inject(WhoisMetaService);
+    private charsetToolsService = inject(CharsetToolsService);
+    private restService = inject(RestService);
+    private enumService = inject(EnumService);
+    private modalService = inject(NgbModal);
+    private credentialsService = inject(CredentialsService);
+    private whoisResourcesService = inject(WhoisResourcesService);
+
     @Input()
     public attribute: IAttributeModel;
     @Input()
@@ -40,17 +64,6 @@ export class AttributeRendererComponent implements OnInit {
     private isMntHelpShown: boolean = false;
     private roleForAbuseC: any;
     public widgetReverseZone: boolean;
-
-    constructor(
-        private attributeMetadataService: AttributeMetadataService,
-        private whoisMetaService: WhoisMetaService,
-        private charsetToolsService: CharsetToolsService,
-        private restService: RestService,
-        private enumService: EnumService,
-        private modalService: NgbModal,
-        private credentialsService: CredentialsService,
-        private whoisResourcesService: WhoisResourcesService,
-    ) {}
 
     /*
      * this variables we can see because they're bound by our directive: attributeRenderer

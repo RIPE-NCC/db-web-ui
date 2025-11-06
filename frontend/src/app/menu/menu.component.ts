@@ -1,5 +1,5 @@
-import { Location } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Location, NgIf } from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -17,9 +17,19 @@ import { MenuService } from './menu.service';
         <app-nav-bar *ngIf="isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
         <app-nav-bar *ngIf="!isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
     `,
-    standalone: false,
+    standalone: true,
+    imports: [NgIf],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA], // web component
 })
 export class MenuComponent implements OnInit, OnDestroy {
+    properties = inject(PropertiesService);
+    orgDropDownSharedService = inject(OrgDropDownSharedService);
+    private menuService = inject(MenuService);
+    dialog = inject(MatDialog);
+    private location = inject(Location);
+    private router = inject(Router);
+    private userInfoService = inject(UserInfoService);
+
     @Input()
     public open: boolean;
     public menu: string;
@@ -28,15 +38,9 @@ export class MenuComponent implements OnInit, OnDestroy {
     public isUserLogged = false; // to rerender menu - so API Key menu item could be shown as selected - web component expand parent(s) of active item only at initial render
     private readonly navigationEnd: Subscription;
 
-    constructor(
-        public properties: PropertiesService,
-        public orgDropDownSharedService: OrgDropDownSharedService,
-        private menuService: MenuService,
-        public dialog: MatDialog,
-        private location: Location,
-        private router: Router,
-        private userInfoService: UserInfoService,
-    ) {
+    constructor() {
+        const orgDropDownSharedService = this.orgDropDownSharedService;
+
         // mainly because switching between My Resources and Sponsored Resources
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {

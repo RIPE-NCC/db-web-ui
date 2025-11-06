@@ -9,10 +9,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { EMPTY, of, throwError } from 'rxjs';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../../../src/app/attribute/attribute-shared.service';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
 import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
 import { RestService } from '../../../src/app/updatesweb/rest.service';
@@ -33,8 +31,7 @@ describe('MaintainersEditorComponent', () => {
         beforeEach(() => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
             TestBed.configureTestingModule({
-                declarations: [MaintainersEditorComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule],
+                imports: [NgSelectModule, MaintainersEditorComponent],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,
@@ -248,8 +245,7 @@ describe('MaintainersEditorComponent', () => {
             modalMock = jasmine.createSpyObj('NgbModal', ['open']);
             webUpdatesCommonsServiceMock = jasmine.createSpyObj('WebUpdatesCommonsService', ['performAuthentication']);
             TestBed.configureTestingModule({
-                declarations: [MaintainersEditorComponent],
-                imports: [SharedModule, CoreModule, NgSelectModule],
+                imports: [NgSelectModule, MaintainersEditorComponent],
                 providers: [
                     AttributeSharedService,
                     AttributeMetadataService,

@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { IAttributeModel, IStatusOption } from '../shared/whois-response-type.model';
 
 //TODO: This class should be static
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ResourceStatusService {
     private readonly statuses = {
         'aut-num': {

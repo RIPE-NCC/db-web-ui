@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address4 } from 'ip-address';
 import * as _ from 'lodash';
@@ -16,19 +16,21 @@ import { ModalAuthenticationSSOPrefilledComponent } from './modal-authentication
 import { ModalAuthenticationComponent } from './modal-authentication.component';
 import { RestService } from './rest.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MntnerService {
+    private credentialsService = inject(CredentialsService);
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private whoisMetaService = inject(WhoisMetaService);
+    private modalService = inject(NgbModal);
+    private restService = inject(RestService);
+    private propertiesService = inject(PropertiesService);
+    private http = inject(HttpClient);
+
     public enableNonAuthUpdates: boolean;
 
-    constructor(
-        private credentialsService: CredentialsService,
-        private whoisResourcesService: WhoisResourcesService,
-        private whoisMetaService: WhoisMetaService,
-        private modalService: NgbModal,
-        private restService: RestService,
-        private propertiesService: PropertiesService,
-        private http: HttpClient,
-    ) {
+    constructor() {
+        const propertiesService = this.propertiesService;
+
         this.enableNonAuthUpdates = propertiesService.isEnableNonAuthUpdates();
     }
 

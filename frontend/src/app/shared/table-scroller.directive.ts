@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, EventEmitter, HostListener, Inject, Output } from '@angular/core';
+import { Directive, DOCUMENT, ElementRef, EventEmitter, HostListener, inject, Output } from '@angular/core';
 
 export function debounce(delay: number = 25): MethodDecorator {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -16,16 +15,15 @@ export function debounce(delay: number = 25): MethodDecorator {
     };
 }
 
-@Directive({
-    selector: '[table-scroller]',
-    standalone: false,
-})
+@Directive({ selector: '[table-scroller]', standalone: true })
 export class TableScrollerDirective {
+    private elRef = inject(ElementRef);
+    private document = inject<Document>(DOCUMENT);
+
     @Output() scrolled = new EventEmitter();
 
     private lastRemaining = 9999;
     private lengthThreshold = 200;
-    public constructor(private elRef: ElementRef, @Inject(DOCUMENT) private document: Document) {}
 
     @HostListener('scroll', ['$event'])
     @debounce()

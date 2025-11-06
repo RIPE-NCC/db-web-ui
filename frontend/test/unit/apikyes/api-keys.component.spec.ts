@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 import { ApiKeysComponent } from '../../../src/app/apikeys/api-keys.component';
-import { ApiKeysModule } from '../../../src/app/apikeys/api-keys.module';
 import { ApiKeysService } from '../../../src/app/apikeys/api-keys.service';
 import { RevokeKeyDialogComponent } from '../../../src/app/apikeys/revoke-key-dialog/revoke-key-dialog.component';
 import { ApiKey } from '../../../src/app/apikeys/types';
@@ -41,9 +41,9 @@ describe('ApiKeysComponent', () => {
         matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
 
         void TestBed.configureTestingModule({
-            imports: [ApiKeysModule, MatDialogModule, NoopAnimationsModule],
-            declarations: [ApiKeysComponent],
+            imports: [MatDialogModule, NoopAnimationsModule, ApiKeysComponent],
             providers: [
+                provideNativeDateAdapter(),
                 { provide: ApiKeysService, useValue: apiKeysServiceMock },
                 { provide: RestService, useValue: {} },
                 { provide: AlertsService, useValue: alertsServiceMock },

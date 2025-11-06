@@ -1,6 +1,14 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatButton } from '@angular/material/button';
+import { MatOption } from '@angular/material/core';
+import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment-timezone';
+import { MatFormField, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import moment from 'moment-timezone';
 import { Subject, switchMap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AlertsService } from '../../shared/alert/alerts.service';
@@ -14,9 +22,30 @@ import { ApiKey } from '../types';
     selector: 'create-new-api-key',
     templateUrl: './create-new-api-key.component.html',
     styleUrl: './create-new-api-key.component.scss',
-    standalone: false,
+    standalone: true,
+    imports: [
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FormsModule,
+        MatHint,
+        MatDatepickerInput,
+        MatDatepickerToggle,
+        MatSuffix,
+        MatDatepicker,
+        NgFor,
+        MatAutocompleteTrigger,
+        MatAutocomplete,
+        MatOption,
+        MatButton,
+    ],
 })
 export class CreateNewApiKeyComponent implements OnInit {
+    private restService = inject(RestService);
+    private apiKeysService = inject(ApiKeysService);
+    dialog = inject(MatDialog);
+    private alertsService = inject(AlertsService);
+
     @Output()
     created = new EventEmitter();
 
@@ -28,8 +57,6 @@ export class CreateNewApiKeyComponent implements OnInit {
     maxDate: Date = new Date();
 
     private searchMaintainers = new Subject<string>();
-
-    constructor(private restService: RestService, private apiKeysService: ApiKeysService, public dialog: MatDialog, private alertsService: AlertsService) {}
 
     ngOnInit(): void {
         this.minDate.setDate(this.minDate.getDate() + 1);

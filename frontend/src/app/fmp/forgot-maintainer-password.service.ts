@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 export interface IForgotMaintainerPassword {
@@ -9,11 +9,11 @@ export interface IForgotMaintainerPassword {
     voluntary: boolean;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ForgotMaintainerPasswordService {
-    private readonly API_BASE_URL: string = 'api/whois-internal/api/fmp-pub/forgotmntnerpassword';
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) {}
+    private readonly API_BASE_URL: string = 'api/whois-internal/api/fmp-pub/forgotmntnerpassword';
 
     public generatePdfAndEmail(forgotPasswordMaintainerModel: IForgotMaintainerPassword) {
         console.info('Posting data to url {} with object {}.', this.API_BASE_URL, forgotPasswordMaintainerModel);

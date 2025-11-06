@@ -10,7 +10,6 @@ import { EMPTY } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { CredentialsService } from '../../../src/app/shared/credentials.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
@@ -22,7 +21,6 @@ import { MessageStoreService } from '../../../src/app/updatesweb/message-store.s
 import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
 import { PreferenceService } from '../../../src/app/updatesweb/preference.service';
 import { RestService } from '../../../src/app/updatesweb/rest.service';
-import { WhoisObjectModule } from '../../../src/app/whois-object/whois-object.module';
 import { routeJSON } from './mock-test-data';
 
 describe('TextModifyComponent', () => {
@@ -90,8 +88,7 @@ describe('TextModifyComponent', () => {
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
-            declarations: [TextModifyComponent],
-            imports: [FormsModule, SharedModule, WhoisObjectModule],
+            imports: [FormsModule, TextModifyComponent],
             providers: [
                 { provide: PreferenceService, useValue: preferencesServiceMock },
                 WhoisResourcesService,

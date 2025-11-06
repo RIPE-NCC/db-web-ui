@@ -1,12 +1,10 @@
 import { Location } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
-import { AttributeModule } from '../../../src/app/attribute/attribute.module';
-import { CoreModule } from '../../../src/app/core/core.module';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SharedModule } from '../../../src/app/shared/shared.module';
 import { CharsetToolsService } from '../../../src/app/updatesweb/charset-tools.service';
 import { EnumService } from '../../../src/app/updatesweb/enum.service';
 import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
@@ -40,8 +38,7 @@ describe('WhoisObjectEditorComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, CoreModule, NgSelectModule, AttributeModule],
-            declarations: [WhoisObjectEditorComponent],
+            imports: [HttpClientTestingModule, NgSelectModule, WhoisObjectEditorComponent],
             providers: [
                 AttributeMetadataService,
                 MntnerService,

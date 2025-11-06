@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { NgFor, NgIf, SlicePipe } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -7,20 +9,19 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
 @Component({
     selector: 'display-domain-objects',
     templateUrl: './display-domain-objects.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgFor, NgIf, MatButton, SlicePipe],
 })
 export class DisplayDomainObjectsComponent implements OnInit {
+    private messageStoreService = inject(MessageStoreService);
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private alertsService = inject(AlertsService);
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+
     public source: string;
     public prefix: string;
     public objects: any;
-
-    constructor(
-        private messageStoreService: MessageStoreService,
-        private whoisResourcesService: WhoisResourcesService,
-        private alertsService: AlertsService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-    ) {}
 
     public ngOnInit() {
         this.source = this.activatedRoute.snapshot.queryParamMap.get('source');

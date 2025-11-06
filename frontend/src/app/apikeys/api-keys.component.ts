@@ -1,20 +1,61 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import {
+    MatCell,
+    MatCellDef,
+    MatColumnDef,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatHeaderRow,
+    MatHeaderRowDef,
+    MatRow,
+    MatRowDef,
+    MatTable,
+    MatTableDataSource,
+} from '@angular/material/table';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { ApiKeysService } from './api-keys.service';
+import { CreateNewApiKeyComponent } from './create-new-api-key/create-new-api-key.component';
 import { RevokeKeyDialogComponent } from './revoke-key-dialog/revoke-key-dialog.component';
 import { ApiKey } from './types';
 
 @Component({
     templateUrl: './api-keys.component.html',
     styleUrl: './api-keys.component.scss',
-    standalone: false,
+    standalone: true,
+    imports: [
+        MatAccordion,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelTitle,
+        CreateNewApiKeyComponent,
+        MatTable,
+        MatSort,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatSortHeader,
+        MatButton,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+        MatPaginator,
+        DatePipe,
+    ],
 })
 export class ApiKeysComponent implements OnInit {
+    private apiKeysService = inject(ApiKeysService);
+    private alertsService = inject(AlertsService);
+
     displayedColumns: string[] = ['label', 'id', 'lastUsed', 'expiresAt', 'details', 'delete'];
     dataSource: MatTableDataSource<ApiKey>;
     selection = new SelectionModel<ApiKey>(true, []);
@@ -25,8 +66,6 @@ export class ApiKeysComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     readonly revokeDialog = inject(MatDialog);
-
-    constructor(private apiKeysService: ApiKeysService, private alertsService: AlertsService) {}
 
     ngOnInit(): void {
         this.loadTableData();

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class JsUtilService {
     /**
      * Checks the types of args against an array of expected JS types and throws a

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { IAttributeModel, IWhoisLinkModel } from './whois-response-type.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WhoisMetaService {
     public refs: string[] = [];
 

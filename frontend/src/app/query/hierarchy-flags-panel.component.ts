@@ -1,38 +1,60 @@
+import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { PropertiesService } from '../properties.service';
+import { LabelPipe } from '../shared/label.pipe';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
 import { IQueryParameters } from './query-parameters.service';
 
 @Component({
     selector: 'hierarchy-flags',
     templateUrl: './hierarchy-flags-panel.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, MatSlider, MatSliderThumb, FormsModule, MatCheckbox, LabelPipe],
 })
 export class HierarchyFlagsPanelComponent implements OnInit, OnChanges {
     @Input()
-    public queryParameters: IQueryParameters;
+    queryParameters: IQueryParameters;
     @Output()
-    public queryParametersChange = new EventEmitter<IQueryParameters>();
-    public hierarchyFlag: number = 0;
-    public isMobileView: boolean = PropertiesService.isMobileView();
+    queryParametersChange = new EventEmitter<IQueryParameters>();
+    @Output()
+    numberSelected = new EventEmitter<number>();
+    hierarchyFlag: number = 0;
+    isMobileView: boolean = PropertiesService.isMobileView();
 
-    public ngOnInit() {
+    ngOnInit() {
         this.hierarchyFlag = HierarchyFlagsService.idHierarchyFlagFromShort(this.queryParameters.hierarchy);
     }
 
-    public ngOnChanges(): void {
+    ngOnChanges(): void {
         this.hierarchyFlag = HierarchyFlagsService.idHierarchyFlagFromShort(this.queryParameters.hierarchy);
+        this.countSelectedHierarchyFlags();
     }
 
-    public setHierarchyFlag(id: number) {
+    setHierarchyFlag(id: number) {
         this.queryParameters.hierarchy = HierarchyFlagsService.hierarchyFlagMap[id].short;
+        this.countSelectedHierarchyFlags();
     }
 
-    public setHierarchyFlagDescription(id: number) {
+    setHierarchyFlagDescription(id: number) {
         return HierarchyFlagsService.hierarchyFlagMap[id ? id : 0].description;
     }
 
-    public getShortHierarchyFlagName(id: number) {
+    getShortHierarchyFlagName(id: number) {
         return HierarchyFlagsService.hierarchyFlagMap[id].short;
+    }
+
+    countSelectedHierarchyFlags() {
+        let count = 0;
+        if (this.queryParameters.reverseDomain) {
+            count++;
+        }
+        if (!!this.queryParameters.hierarchy && this.queryParameters.hierarchy !== HierarchyFlagsService.hierarchyFlagMap[0].short) {
+            count++;
+        }
+        this.numberSelected.emit(count);
+        this.queryParametersChange.emit({ ...this.queryParameters });
     }
 }

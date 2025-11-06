@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 declare var loadMatomo: (matomoId: string) => any;
 
@@ -12,6 +12,7 @@ export interface IProperties {
     PORTAL_URL: string;
     PORTAL_URL_ACCOUNT: string;
     PORTAL_URL_REQUEST: string;
+    NEWEST_PORTAL_URL: string;
     BANNER: string;
     MATOMO_ID: string;
     REQUEST_RESOURCES_URL: string;
@@ -34,8 +35,10 @@ export interface IProperties {
     SHOW_MENU_IDS: string[];
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PropertiesService {
+    private httpClient = inject(HttpClient);
+
     public ACCESS_URL = '';
     public BANNER = 'Welcome to the localhost version of the RIPE Database.';
     // Resources - menu items
@@ -59,6 +62,7 @@ export class PropertiesService {
     public PORTAL_URL = '';
     public PORTAL_URL_ACCOUNT = '';
     public PORTAL_URL_REQUEST = '';
+    public NEWEST_PORTAL_URL = '';
     public LIVE_CHAT_KEY = '';
     public QUERY_PAGE_LINK_TO_OTHER_DB = '';
     public REQUEST_RESOURCES_URL = '';
@@ -79,8 +83,6 @@ export class PropertiesService {
     public NO_PASSWORD_AUTH_POPUP = false;
     public SHOW_MENU_IDS = [];
 
-    constructor(private httpClient: HttpClient) {}
-
     public load(): Promise<void> {
         return this.httpClient
             .get<IProperties>('app.constants.json')
@@ -95,6 +97,7 @@ export class PropertiesService {
                     this.PORTAL_URL = response.PORTAL_URL;
                     this.PORTAL_URL_ACCOUNT = response.PORTAL_URL_ACCOUNT;
                     this.PORTAL_URL_REQUEST = response.PORTAL_URL_REQUEST;
+                    this.NEWEST_PORTAL_URL = response.NEWEST_PORTAL_URL;
                     this.BANNER = response.BANNER;
                     this.MATOMO_ID = response.MATOMO_ID;
                     this.REQUEST_RESOURCES_URL = response.REQUEST_RESOURCES_URL;

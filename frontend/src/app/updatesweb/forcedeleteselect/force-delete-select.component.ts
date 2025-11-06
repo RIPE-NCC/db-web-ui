@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
@@ -6,13 +9,16 @@ import { AlertsService } from '../../shared/alert/alerts.service';
 @Component({
     selector: 'force-delete-select',
     templateUrl: './force-delete-select.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [FormsModule, NgFor, MatButton],
 })
 export class ForceDeleteSelectComponent implements OnInit {
+    private properties = inject(PropertiesService);
+    private alertsService = inject(AlertsService);
+    private router = inject(Router);
+
     public objectTypes: string[] = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
     public selected: any;
-
-    constructor(private properties: PropertiesService, private alertsService: AlertsService, private router: Router) {}
 
     public ngOnInit() {
         this.alertsService.clearAlertMessages();

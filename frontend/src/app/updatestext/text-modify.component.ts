@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
@@ -7,15 +8,27 @@ import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { ErrorReporterService } from '../updatesweb/error-reporter.service';
 import { MessageStoreService } from '../updatesweb/message-store.service';
 import { PreferenceService } from '../updatesweb/preference.service';
+import { WhoisObjectTextEditorComponent } from '../whois-object/whois-object-text-editor.component';
 import { TextCommonsService } from './text-commons.service';
 import { ITextObject } from './text-create.component';
 
 @Component({
     selector: 'text-modify',
     templateUrl: './text-modify.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [MatButton, WhoisObjectTextEditorComponent],
 })
 export class TextModifyComponent implements OnInit {
+    private whoisResourcesService = inject(WhoisResourcesService);
+    private errorReporterService = inject(ErrorReporterService);
+    private messageStoreService = inject(MessageStoreService);
+    private textCommonsService = inject(TextCommonsService);
+    private preferenceService = inject(PreferenceService);
+    alertsServices = inject(AlertsService);
+    private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
+    private properties = inject(PropertiesService);
+
     public restCallInProgress: boolean = false;
     public noRedirect: boolean = false;
     public object: ITextObject = {
@@ -25,18 +38,6 @@ export class TextModifyComponent implements OnInit {
     public name: string;
     public override: string;
     public passwords: string[] = [];
-
-    constructor(
-        private whoisResourcesService: WhoisResourcesService,
-        private errorReporterService: ErrorReporterService,
-        private messageStoreService: MessageStoreService,
-        private textCommonsService: TextCommonsService,
-        private preferenceService: PreferenceService,
-        public alertsServices: AlertsService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private properties: PropertiesService,
-    ) {}
 
     public ngOnInit() {
         // extract parameters from the url

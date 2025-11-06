@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
@@ -9,21 +12,22 @@ import { OrgDropDownSharedService } from './org-drop-down-shared.service';
 @Component({
     selector: 'org-drop-down',
     templateUrl: './org-drop-down.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, NgSelectComponent, FormsModule, NgOptionTemplateDirective],
 })
 export class OrgDropDownComponent implements OnInit {
+    private userInfoService = inject(UserInfoService);
+    private orgDropDownSharedService = inject(OrgDropDownSharedService);
+    private properties = inject(PropertiesService);
+    private sessionInfoService = inject(SessionInfoService);
+
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];
     // Temporary until we need different application on Test, Training and RC environment
     public trainingEnv: boolean;
     public sessionExpire: boolean = false;
 
-    constructor(
-        private userInfoService: UserInfoService,
-        private orgDropDownSharedService: OrgDropDownSharedService,
-        private properties: PropertiesService,
-        private sessionInfoService: SessionInfoService,
-    ) {
+    constructor() {
         this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
             this.initOrgsAndMemebers(userInfo);
         });

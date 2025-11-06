@@ -1,12 +1,18 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, Input, OnChanges, inject } from '@angular/core';
+import { FlagComponent } from '../shared/flag/flag.component';
+import { LabelPipe } from '../shared/label.pipe';
 import { IQueryFlag, QueryFlagsService } from './query-flags.service';
 
 @Component({
     selector: 'query-flags',
     templateUrl: './query-flags.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, NgFor, FlagComponent, LabelPipe],
 })
 export class QueryFlagsComponent implements OnChanges {
+    private queryFlagsService = inject(QueryFlagsService);
+
     // whole string entered in search field
     @Input()
     public inputTerm: string;
@@ -14,8 +20,6 @@ export class QueryFlagsComponent implements OnChanges {
     public flags: string[];
     // just valid query flags
     public queryFlags: IQueryFlag[];
-
-    constructor(private queryFlagsService: QueryFlagsService) {}
 
     public ngOnChanges() {
         this.flags = this.queryFlagsService.getFlagsFromTerm(this.inputTerm);

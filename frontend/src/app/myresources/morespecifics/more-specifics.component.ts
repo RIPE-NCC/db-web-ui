@@ -1,13 +1,22 @@
-import { Location } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Location, NgFor, NgIf, NgStyle } from '@angular/common';
+import { Component, Input, OnChanges, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { NameFormatterComponent } from '../../shared/name-formatter.component';
+import { TableScrollerDirective } from '../../shared/table-scroller.directive';
+import { RefreshComponent } from '../refresh/refresh.component';
 import { IMoreSpecificsApiResult, MoreSpecificsService } from './more-specifics.service';
 
 @Component({
     selector: 'more-specifics',
     templateUrl: './more-specifics.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, RefreshComponent],
 })
 export class MoreSpecificsComponent implements OnChanges {
+    private moreSpecificsService = inject(MoreSpecificsService);
+    private location = inject(Location);
+
     @Input()
     public objectType: string;
     @Input()
@@ -25,8 +34,6 @@ export class MoreSpecificsComponent implements OnChanges {
     private filterDebouncer: any = null;
     public loading: boolean = false;
     public showRefreshButton: boolean = false;
-
-    public constructor(private moreSpecificsService: MoreSpecificsService, private location: Location) {}
 
     ngOnChanges() {
         this.lastPage = -1;

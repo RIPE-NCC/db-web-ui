@@ -1,14 +1,19 @@
 // Shown on Resources page - for all resources listed in tab
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { IpUsageService } from './ip-usage.service';
 import { ResourceStatusService } from './resource-status.service';
 
 @Component({
     selector: 'ip-usage-of-all-resources',
     templateUrl: './ip-usage-of-all-resources.component.html',
-    standalone: false,
+    standalone: true,
+    imports: [NgIf],
 })
 export class IpUsageOfAllResourcesComponent implements OnChanges {
+    private resourceStatusService = inject(ResourceStatusService);
+    private ipUsageService = inject(IpUsageService);
+
     @Input()
     public resources: any[];
     @Input()
@@ -23,8 +28,6 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
     public ipv6CalcTotal: string;
     public ipv6CalcUsed: string;
     public ipv6CalcFree: string;
-
-    constructor(private resourceStatusService: ResourceStatusService, private ipUsageService: IpUsageService) {}
 
     public ngOnChanges(changes: SimpleChanges) {
         this.setResourcesIpUsage();

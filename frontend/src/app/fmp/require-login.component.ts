@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PropertiesService } from '../properties.service';
 
 @Component({
     selector: 'require-login',
     templateUrl: './require-login.component.html',
-    standalone: false,
+    standalone: true,
 })
 export class RequireLoginComponent implements OnInit {
-    public loginUrl: string;
+    private properties = inject(PropertiesService);
+    private activatedRoute = inject(ActivatedRoute);
 
-    constructor(private properties: PropertiesService, private activatedRoute: ActivatedRoute) {}
+    public loginUrl: string;
 
     public ngOnInit() {
         this.loginUrl = this.getLoginUrl();
