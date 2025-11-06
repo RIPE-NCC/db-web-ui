@@ -96,10 +96,12 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
         if (this.objectType === 'route' || this.objectType === 'route6') {
             this.objectName += this.attributes.find((attr) => attr.name === 'origin').value;
         }
+        console.info('choosing mode');
         if (this.isModifyMode()) {
             console.info('entering modify mode');
             this.initModifyMode();
         } else {
+            console.info('entering create mode');
             this.initCreateMode();
         }
     }
@@ -318,6 +320,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
     }
 
     private isModifyMode(): boolean {
+        console.info('attributes when checking modify mode ', this.attributes);
         const createdAttr = this.attributes.find((attr: IAttributeModel) => {
             return attr.name.toUpperCase() === 'CREATED';
         });
