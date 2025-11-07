@@ -85,9 +85,9 @@ export class WebUpdatesCommonsService {
             }
             console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
             console.debug('After auth: maintainers.object:', authParams.maintainers.object);
-            if (_.isFunction(authParams.successClbk)) {
+            /*if (_.isFunction(authParams.successClbk)) {
                 authParams.successClbk(associationResp);
-            }
+            }*/
         });
         modalRef.dismissed.subscribe((failResponse) => {
             if (failResponse !== 'forceDelete' && _.isFunction(authParams.failureClbk)) {
