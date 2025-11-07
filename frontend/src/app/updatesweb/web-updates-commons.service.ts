@@ -43,6 +43,8 @@ export class WebUpdatesCommonsService {
 
     public performAuthentication(authParams: IAuthParams) {
         console.debug('Perform authentication', authParams.maintainers);
+        console.debug('Perform authentication object', authParams.maintainers.object);
+        console.debug('Perform authentication original object', authParams.maintainers.objectOriginal);
         const mntnersWithPasswords = this.mntnerService.getMntnersForAuthentication(
             authParams.maintainers.sso,
             authParams.maintainers.objectOriginal,
@@ -79,7 +81,10 @@ export class WebUpdatesCommonsService {
                 // has been successfully associated in authentication modal
                 authParams.maintainers.sso.push(selectedMntner);
                 // mark starred in selected
+                console.info('commented authParams.maintainers.object', authParams.maintainers.object);
+                /*
                 authParams.maintainers.object = this.mntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
+                */
             }
             console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
             console.debug('After auth: maintainers.object:', authParams.maintainers.object);
