@@ -340,6 +340,7 @@ export class ScreenLogicInterceptorService {
         warnings: string[] = [],
         infos: string[] = [],
     ) {
+        console.log('calling before edit');
         const attrs = this.globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
         const interceptorFunc = this._getInterceptorFunc(objectType, 'beforeEdit');
         if (_.isUndefined(interceptorFunc)) {
