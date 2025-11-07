@@ -85,9 +85,10 @@ export class WebUpdatesCommonsService {
             }
             console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
             console.debug('After auth: maintainers.object:', authParams.maintainers.object);
-            /*if (_.isFunction(authParams.successClbk)) {
+            //TODO: Causes issue with mntners when mnt-by is another mntner
+            if (_.isFunction(authParams.successClbk)) {
                 authParams.successClbk(associationResp);
-            }*/
+            }
         });
         modalRef.dismissed.subscribe((failResponse) => {
             if (failResponse !== 'forceDelete' && _.isFunction(authParams.failureClbk)) {

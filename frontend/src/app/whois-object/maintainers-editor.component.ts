@@ -213,6 +213,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
     }
 
     private onSuccessfulAuthentication = (associationResp: any) => {
+        console.log('associated response is triggered ', associationResp);
         this.authenticationSuccessClbk.emit(associationResp);
     };
 
