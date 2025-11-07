@@ -365,6 +365,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
                         if (this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();
                         }
+                        console.info('attributes after authentication', this.attributes);
                         this.updateMntnersClbk.emit(this.mntners);
                     },
                     error: (error: any) => {

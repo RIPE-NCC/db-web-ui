@@ -72,9 +72,9 @@ export class WebUpdatesCommonsService {
         modalRef.closed.subscribe((result) => {
             this.alertService.clearAlertMessages();
             const selectedMntner = result.$value.selectedItem;
-            console.debug('selected mntner:' + selectedMntner);
+            console.debug('selected mntner:', selectedMntner);
             const associationResp = result.$value.response;
-            console.debug('associationResp:' + associationResp);
+            console.debug('associationResp:', associationResp);
             if (this.mntnerService.isMine(selectedMntner)) {
                 // has been successfully associated in authentication modal
                 authParams.maintainers.sso.push(selectedMntner);
