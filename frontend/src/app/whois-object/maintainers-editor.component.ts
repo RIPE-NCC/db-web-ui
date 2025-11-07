@@ -89,6 +89,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
         this.mntnerAutocomplete();
         this.source = this.whoisObject.source.id;
         this.attributes = this.whoisObject.attributes.attribute;
+        console.info('attributes when mntner editor', this.attributes);
         this.objectType = this.attributes[0].name;
         this.objectName = this.attributes[0].value;
         if (this.objectType === 'route' || this.objectType === 'route6') {
