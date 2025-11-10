@@ -472,6 +472,20 @@ export class WhoisResourcesService {
         return attrs ? attrs : [];
     }
 
+    public isSelfMntnerUpdate(response: any, primaryKey: string) {
+        let whoisResources = this.validateWhoisResources(response);
+        if (whoisResources) {
+            console.log('resource exist');
+            let responsePrimaryKey = this.getPrimaryKey(whoisResources);
+            console.log('The key of the response is: ', responsePrimaryKey);
+            console.log('The key of the mntner is: ', primaryKey);
+            if (responsePrimaryKey.toLowerCase() === primaryKey.toLowerCase()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public validateWithoutSettingErrors(attributes: IAttributeModel[]) {
         return !attributes.some((attr: IAttributeModel) => {
             return (
