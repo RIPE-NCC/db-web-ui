@@ -876,6 +876,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public refreshObjectIfNeeded(associationResp: any) {
         if (this.operation === this.MODIFY_OPERATION && this.objectType === 'mntner') {
             if (associationResp) {
+                console.log('is refreshing the object?');
                 this.wrapAndEnrichResources(this.objectType, associationResp);
                 // save object for later diff in display-screen
                 this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));

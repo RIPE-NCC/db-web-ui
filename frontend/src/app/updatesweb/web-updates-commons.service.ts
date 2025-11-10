@@ -87,6 +87,7 @@ export class WebUpdatesCommonsService {
             console.debug('After auth: maintainers.object:', authParams.maintainers.object);
             //TODO: Causes issue with mntners when mnt-by is another mntner
             if (_.isFunction(authParams.successClbk)) {
+                console.debug('is function then associationResp:', associationResp);
                 authParams.successClbk(associationResp);
             }
         });
