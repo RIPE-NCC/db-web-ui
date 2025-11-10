@@ -42,6 +42,7 @@ export class WebUpdatesCommonsService {
     }
 
     public performAuthentication(authParams: IAuthParams) {
+        console.debug('Perform authentication', authParams.maintainers);
         const mntnersWithPasswords = this.mntnerService.getMntnersForAuthentication(
             authParams.maintainers.sso,
             authParams.maintainers.objectOriginal,
@@ -82,7 +83,6 @@ export class WebUpdatesCommonsService {
             }
             console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
             console.debug('After auth: maintainers.object:', authParams.maintainers.object);
-            //TODO: Causes issue with mntners when mnt-by is another mntner
             if (_.isFunction(authParams.successClbk)) {
                 authParams.successClbk(associationResp);
             }

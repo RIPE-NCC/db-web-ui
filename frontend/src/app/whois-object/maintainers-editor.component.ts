@@ -89,7 +89,6 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
         this.mntnerAutocomplete();
         this.source = this.whoisObject.source.id;
         this.attributes = this.whoisObject.attributes.attribute;
-        console.info('attributes when mntner editor', this.attributes);
         this.objectType = this.attributes[0].name;
         this.objectName = this.attributes[0].value;
         if (this.objectType === 'route' || this.objectType === 'route6') {
@@ -213,7 +212,6 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
     }
 
     private onSuccessfulAuthentication = (associationResp: any) => {
-        console.log('associated response is triggered ', associationResp);
         this.authenticationSuccessClbk.emit(associationResp);
     };
 
@@ -362,8 +360,6 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
                         // of course none of the initial ones are new
                         this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, _.flatten(result));
                         console.debug('mntners-object:', this.mntners.object);
-                        console.info('attributes before authentication', this.attributes);
-                        console.info('original object before authentication', this.mntners.objectOriginal);
                         if (this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();
                         }

@@ -275,7 +275,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public updateMaintainers(maintainers: IMaintainers) {
         this.maintainers = maintainers;
-        console.info('Update maintainers is being called', this.attributes);
         // delete from attributes all maintainers which doesn't exist in maintainers
         _.remove(this.attributes, (attr: any) => {
             return attr.name === 'mnt-by' && !maintainers.object.find((mnt) => mnt.key === attr.value);
@@ -292,7 +291,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             }
         });
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
-        console.info('Update maintainers ends', this.attributes);
     }
 
     public enumAutocomplete(attribute: any) {
@@ -360,7 +358,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 },
             });
         } else {
-            console.info('Here just before interceptAfterEdit');
             this.attributes = this.interceptAfterEdit(this.operation, this.attributes);
             this.fetchParentResourceCaseCreate(attribute);
         }
