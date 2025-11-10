@@ -877,7 +877,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         if (this.operation === this.MODIFY_OPERATION && this.objectType === 'mntner') {
             // Refresh just if the updated mntner is the mntner that should be displayed (mnt-by is the current mntner)
             if (associationResp && this.whoisResourcesService.isSelfMntnerUpdate(associationResp, this.name)) {
-                console.log('is self mntner and needs to be updated');
+                console.debug('is self mntner and needs to be updated');
                 this.wrapAndEnrichResources(this.objectType, associationResp);
                 // save object for later diff in display-screen
                 this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
