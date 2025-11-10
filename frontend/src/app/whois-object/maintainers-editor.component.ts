@@ -360,7 +360,6 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
                         // of course none of the initial ones are new
                         this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, _.flatten(result));
                         console.debug('mntners-object:', this.mntners.object);
-
                         if (this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();
                         }

@@ -61,7 +61,7 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
         if (!this.selected.item || !this.selected.item.key) {
             return;
         }
-        this.restService.authenticate(this.SOURCE, 'mntner', this.selected.item.key, undefined, this.override).subscribe({
+        this.restService.fetchObjectByOverride(this.SOURCE, 'mntner', this.selected.item.key, undefined, this.override).subscribe({
             next: (whoisResources: IWhoisResponseModel) => {
                 this.credentialsService.setCredentials(this.selected.item.key, this.override);
                 this.setSSOAccount(whoisResources);

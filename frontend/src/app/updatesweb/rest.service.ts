@@ -113,24 +113,6 @@ export class RestService {
         }
     }
 
-    public authenticate(source: string, objectType: string, objectName: string, passwords?: any, override?: string) {
-        if (!source) {
-            throw new TypeError('restService.authenticate source must have a value');
-        }
-        const params = this.setParams(passwords, override).set('unfiltered', 'true');
-        const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
-        return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params }).pipe(
-            map((result: any) => {
-                console.debug('authenticate success:' + JSON.stringify(result));
-                return this.whoisResourcesService.wrapSuccess(result);
-            }),
-            catchError((error: any) => {
-                console.error('authenticate error:' + JSON.stringify(error));
-                return throwError(() => this.whoisResourcesService.wrapError(error));
-            }),
-        );
-    }
-
     public fetchObject(source: string, objectType: string, objectName: string, passwords?: any, unformatted?: any) {
         let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
         if (passwords) {
@@ -207,6 +189,24 @@ export class RestService {
             }),
             catchError((error: any) => {
                 console.error('modifyObject error:' + JSON.stringify(error));
+                return throwError(() => this.whoisResourcesService.wrapError(error));
+            }),
+        );
+    }
+
+    public fetchObjectByOverride(source: string, objectType: string, objectName: string, passwords?: any, override?: string) {
+        if (!source) {
+            throw new TypeError('restService.authenticate source must have a value');
+        }
+        const params = this.setParams(passwords, override).set('unfiltered', 'true');
+        const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
+        return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params }).pipe(
+            map((result: any) => {
+                console.debug('authenticate success:' + JSON.stringify(result));
+                return this.whoisResourcesService.wrapSuccess(result);
+            }),
+            catchError((error: any) => {
+                console.error('authenticate error:' + JSON.stringify(error));
                 return throwError(() => this.whoisResourcesService.wrapError(error));
             }),
         );

@@ -96,7 +96,7 @@ export class ModalAuthenticationComponent implements OnInit {
         if (!this.selected.item || !this.selected.item.key) {
             return;
         }
-        this.restService.authenticate(this.SOURCE, 'mntner', this.selected.item.key, this.selected.password).subscribe({
+        this.restService.fetchObjectByOverride(this.SOURCE, 'mntner', this.selected.item.key, this.selected.password).subscribe({
             next: (whoisResources: IWhoisResponseModel) => {
                 if (this.whoisResourcesService.isFiltered(whoisResources)) {
                     this.selected.message = "You have not supplied the correct password for mntner: '" + this.selected.item.key + "'";
