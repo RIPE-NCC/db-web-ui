@@ -875,7 +875,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
     public refreshObjectIfNeeded(associationResp: any) {
         if (this.operation === this.MODIFY_OPERATION && this.objectType === 'mntner') {
-            if (associationResp) {
+            // Refresh just if the updated mntner is the mntner that should be displayed (mnt-by is the current mntner)
+            console.log('value is:', associationResp.objects);
+            console.log('value is:', associationResp.objects[1]);
+            console.log('value is:', associationResp.objects[1].object);
+            console.log('value is:', associationResp.objects[1].object.primaryKey);
+            if (associationResp && associationResp.objects[1].object.primaryKey === this.name) {
                 console.log('is refreshing the object?:', this.name);
                 console.log('associate response is:', associationResp);
                 this.wrapAndEnrichResources(this.objectType, associationResp);
