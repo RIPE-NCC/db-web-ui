@@ -1,97 +1,106 @@
 image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:v0.0.11
 
 variables:
-  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  PROJECT_NAME: "db-web-ui"
-  ARTIFACT_NAME: "db-web-ui"
-  ARTIFACT_DIR: "backend"
-  GROUP_ID: "net.ripe.whois"
-  CYPRESS_CACHE_FOLDER: "./cache/Cypress"
+    MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+    PROJECT_NAME: "db-web-ui"
+    ARTIFACT_NAME: "db-web-ui"
+    ARTIFACT_DIR: "backend"
+    GROUP_ID: "net.ripe.whois"
+    CYPRESS_CACHE_FOLDER: "./cache/Cypress"
 
 include:
-    - project: 'swe-database-team/gitlab-ci'
-      file: '/templates/release-template.yml'
-    - project: 'swe-database-team/gitlab-ci'
-      file: '/templates/deployment-template.yml'
+    - project: "swe-database-team/gitlab-ci"
+      file:
+          - "/templates/release-template.yml"
+          - "/templates/deployment-template.yml"
+
+# Prevent duplicate pipelines - prefer MR pipelines over branch pipelines
+workflow:
+    rules:
+        # Run for merge requests
+        - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+        # Run for tags
+        - if: "$CI_COMMIT_TAG"
+        # Run for branches ONLY if there's no open MR
+        - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
+          when: never
+        # Run for all other branch commits
+        - if: "$CI_COMMIT_BRANCH"
 
 stages:
-  - build
-  - test
-  - sonar
-  - release
-  - deploy
-  - browserstack
+    - build
+    - test
+    - sonar
+    - release
+    - deploy
+    - browserstack
 
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - frontend/node_modules/
-    - frontend/package-lock.json
-    - .m2/repository
-    - frontend/cache/Cypress/
-    - frontend/src/assets/supportedBrowsers.js
-    - frontend/src/assets/blockedBrowsers.js
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - frontend/node_modules/
+        - frontend/package-lock.json
+        - .m2/repository
+        - frontend/cache/Cypress/
+        - frontend/src/assets/supportedBrowsers.js
+        - frontend/src/assets/blockedBrowsers.js
+
+# Default rules for build/test/sonar stages (all commits, tags, and MRs)
+.default_rules:
+    rules:
+        - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+        - if: "$CI_COMMIT_TAG"
+        - if: "$CI_COMMIT_BRANCH"
 
 build:
-  tags:
-    - whois
-  stage: build
-  script:
-    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
-
-  artifacts:
-    paths:
-      - backend/target/db-web-ui*.jar
-    expire_in: 6 months
+    tags:
+        - whois
+    stage: build
+    extends: .default_rules
+    script:
+        - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
+    artifacts:
+        paths:
+            - backend/target/db-web-ui*.jar
+        expire_in: 6 months
 
 build-container:
-  tags:
-    - whois
-  stage: build
-  before_script:
-    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
-  script:
-    - >
-        docker build
-        --pull
-        --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
-        --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-        .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    tags:
+        - whois
+    stage: build
+    extends: .default_rules
+    before_script:
+        - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    script:
+        - >
+            docker build
+            --pull
+            --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
+            --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+            .
+        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
 backend:
     tags:
-      - whois
+        - whois
     stage: test
-    rules:
-        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-            when: always
-        -   if: '$CI_COMMIT_REF_NAME == "master"'
-            when: always
-        -   when: manual
-            allow_failure: true
+    extends: .default_rules
     script:
-      - cd backend && mvn test
+        - cd backend && mvn test
     artifacts:
-      paths:
-          - backend/target/
-      reports:
-        junit:
-          - backend/target/surefire-reports/TEST-*.xml
-          - backend/target/failsafe-reports/TEST-*.xml
-      expire_in: 1 month
+        paths:
+            - backend/target/
+        reports:
+            junit:
+                - backend/target/surefire-reports/TEST-*.xml
+                - backend/target/failsafe-reports/TEST-*.xml
+        expire_in: 1 month
 
 e2e-cypress-chrome:
     tags:
         - whois
     stage: test
-    rules:
-        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-            when: always
-        -   if: '$CI_COMMIT_REF_NAME == "master"'
-            when: always
-        -   when: manual
-            allow_failure: true
+    extends: .default_rules
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
@@ -108,13 +117,7 @@ e2e-cypress-firefox:
     tags:
         - whois
     stage: test
-    rules:
-        -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-            when: always
-        -   if: '$CI_COMMIT_REF_NAME == "master"'
-            when: always
-        -   when: manual
-            allow_failure: true
+    extends: .default_rules
     script:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
@@ -128,71 +131,59 @@ e2e-cypress-firefox:
         expire_in: 1 month
 
 frontend:
-  tags:
-      - whois
-  stage: test
-  rules:
-      -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-          when: always
-      -   if: '$CI_COMMIT_REF_NAME == "master"'
-          when: always
-      -   when: manual
-          allow_failure: true
-  script:
-      - cd frontend && npm run test
-  artifacts:
-      paths:
-          - frontend/lcov.info
-      expire_in: 1 month
+    tags:
+        - whois
+    stage: test
+    extends: .default_rules
+    script:
+        - cd frontend && npm run test
+    artifacts:
+        paths:
+            - frontend/lcov.info
+        expire_in: 1 month
 
 sonar:
-  stage: sonar
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the SonarQube analysis task
-  rules:
-      -   if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-          when: always
-      -   if: '$CI_COMMIT_REF_NAME == "master"'
-          when: always
-      -   when: manual
-          allow_failure: true
-  script:
-    - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN} -DskipTests
-  allow_failure: true
-  dependencies:
-      - backend
-      - frontend
+    stage: sonar
+    extends: .default_rules
+    variables:
+        GIT_SUBMODULE_STRATEGY: recursive
+        GIT_DEPTH: "0"
+    script:
+        - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN} -DskipTests
+    allow_failure: true
+    dependencies:
+        - backend
+        - frontend
 
 release:
     stage: release
-    only:
-        - tags
+    extends: .release_template
+    rules:
+        - if: "$CI_COMMIT_TAG"
     script:
         - if [ "$CI_COMMIT_TAG" ]; then NEW_VERSION="$CI_COMMIT_SHORT_SHA"; else NEW_VERSION="$CI_COMMIT_SHORT_SHA-SNAPSHOT"; fi
         - mvn versions:set -DnewVersion=$NEW_VERSION -Dartifact=$ARTIFACT_NAME
         - mvn -DskipTests -DskipITs -Djar.finalName=$ARTIFACT_NAME-$NEW_VERSION.jar deploy
-    extends: .release_template
 
 release-container:
     stage: release
-    only:
-        - tags
+    rules:
+        - if: "$CI_COMMIT_TAG"
     before_script:
-      - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+        - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     script:
-      - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-      - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-      - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+        - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+        - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 browserstack:
     stage: browserstack
+    rules:
+        - if: "$CI_COMMIT_TAG"
     script:
         - cd backend && mvn verify -Dbrowserstack_key=${BROWSERSTACK_KEY} -Dversion=${CI_COMMIT_SHORT_SHA} -Pselenium
     needs:
         - deploy_prod
-    only:
-        - tags
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
