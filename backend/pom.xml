@@ -23,7 +23,7 @@
         <google-guava.version>33.4.8-jre</google-guava.version>
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
         <httpclient.version>5.4.1</httpclient.version>
-        <jackson.version>2.19.1</jackson.version>
+        <jackson.version>2.20</jackson.version>
         <jaxb.api.version>4.0.2</jaxb.api.version>
         <jaxb.impl.version>4.0.5</jaxb.impl.version>
         <javax.inject.version>1</javax.inject.version>
