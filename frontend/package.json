@@ -48,7 +48,7 @@
         "babel-loader": "8.2.4",
         "connect-prism": "1.0.21",
         "cypress": "13.14.2",
-        "diff-package-lock": "0.1.33",
+        "diff-package-lock": "1.4.1",
         "eslint": "9.23.0",
         "eslint-config-prettier": "9.1.0",
         "husky": "8.0.3",
