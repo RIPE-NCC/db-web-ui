@@ -22,8 +22,32 @@ FROM amazoncorretto:21-alpine
 ENV PROFILE local
 ENV START_HEAP_SIZE 256m
 ENV MAX_HEAP_SIZE 2g
+ENV ENABLE_JMX_EXPORTER false
+ENV JMX_EXPORTER_PORT 9090
 
 WORKDIR /app
+
+# Download JMX Prometheus exporter
+RUN wget -q https://github.com/prometheus/jmx_exporter/releases/download/1.5.0/jmx_prometheus_javaagent-1.5.0.jar \
+    -O /app/jmx_prometheus_javaagent.jar
+
+# Create JMX exporter configuration
+RUN cat > /app/jmx_config.yml <<'EOF'
+---
+lowercaseOutputLabelNames: true
+lowercaseOutputName: true
+whitelistObjectNames: ["java.lang:type=OperatingSystem"]
+blacklistObjectNames: []
+rules:
+  - pattern: 'java.lang<type=OperatingSystem><>(committed_virtual_memory|free_physical_memory|free_swap_space|total_physical_memory|total_swap_space)_size:'
+    name: os_$1_bytes
+    type: GAUGE
+    attrNameSnakeCase: true
+  - pattern: 'java.lang<type=OperatingSystem><>((?!process_cpu_time)\w+):'
+    name: os_$1
+    type: GAUGE
+    attrNameSnakeCase: true
+EOF
 
 COPY --from=build /src/backend/target/db-web-ui-1.0.0-SNAPSHOT.jar /app/db-web-ui.jar
 COPY --from=build /src/docker-entrypoint.sh /app/
@@ -34,4 +58,4 @@ VOLUME /app/var/logs
 CMD ["/app/docker-entrypoint.sh"]
 
 HEALTHCHECK --interval=1m --timeout=3s \
-  CMD wget --spider --quiet http://localhost:1082/db-web-ui/api/healthcheck || exit 1
+    CMD wget --spider --quiet http://localhost:1082/db-web-ui/api/healthcheck || exit 1
