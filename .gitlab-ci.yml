@@ -13,6 +13,7 @@ include:
       file:
           - "/templates/release-template.yml"
           - "/templates/deployment-template.yml"
+          - "/templates/deployment-template-docker.yml"
 
 # Prevent duplicate pipelines - prefer MR pipelines over branch pipelines
 workflow:
