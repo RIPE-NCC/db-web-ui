@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+umask 0007
+
 mkdir -p /app/var/logs/jetty
 
 JAVA_OPTS="
