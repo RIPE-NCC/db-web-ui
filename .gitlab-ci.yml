@@ -77,6 +77,8 @@ build-container:
             docker build
             --pull
             --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
+            --build-arg USER_ID=$USER_ID
+            --build-arg GROUP_ID=$GROUP_ID
             --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
             .
         - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
