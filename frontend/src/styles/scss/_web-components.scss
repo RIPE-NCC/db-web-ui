@@ -29,6 +29,9 @@ swe-menu {
     padding: var(--pad) calc(2 * var(--pad)) calc(2 * var(--pad));
     max-width: 1280px;
     margin: 0 auto;
+    @media (max-width: 768px) {
+        --pad: 0.5rem;
+    }
 }
 
 #app-banners-container {

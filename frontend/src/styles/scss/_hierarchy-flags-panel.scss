@@ -2,15 +2,12 @@
     height: 67px;
 }
 
-.slider-component,
+.slider-component .mat-mdc-slider,
 .flag-description {
-    width: 600px;
-    @media (max-width: 1025px) {
-        width: 400px;
-    }
-}
-.slider-component .mat-mdc-slider {
     width: 580px;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .slider-labels {

@@ -6,6 +6,10 @@
     height: 50px;
     max-width: 90%;
     margin-bottom: 8px;
+
+    @media (max-width: 768px) {
+        width: fit-content;
+    }
 }
 
 .search-input-wrapper {
@@ -78,6 +82,12 @@
     &:focus {
         background-color: #2b46a1;
         border-color: #2b46a1;
+    }
+
+    @media (max-width: 768px) {
+        .label {
+            display: none;
+        }
     }
 }
 
