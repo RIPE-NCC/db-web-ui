@@ -55,7 +55,7 @@ rules:
 EOF
 
 COPY --from=build --chown=app:app /src/backend/target/db-web-ui-1.0.0-SNAPSHOT.jar /app/db-web-ui.jar
-COPY --from=build --chown=app:app /src/docker-entrypoint.sh /app/
+COPY --from=build --chown=app:app /src/docker/docker-entrypoint.sh /app/
 
 RUN chmod 0555 /app/docker-entrypoint.sh
 

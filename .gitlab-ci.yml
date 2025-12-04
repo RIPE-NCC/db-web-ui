@@ -75,6 +75,7 @@ build-container:
     script:
         - >
             docker build
+            --file ./docker/Dockerfile
             --pull
             --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
             --build-arg PUID=$PUID

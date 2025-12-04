@@ -23,4 +23,13 @@ if [ "${ENABLE_JMX_EXPORTER}" = "true" ]; then
     echo "JMX Exporter enabled on port ${JMX_EXPORTER_PORT}"
 fi
 
+# Use logging_config if enabled
+if [ -n "${LOGGING_CONFIG}" ] && [ -f "${LOGGING_CONFIG}" ]; then
+    JAVA_OPTS="${JAVA_OPTS} -Dlogging.config=${LOGGING_CONFIG}"
+    echo "LOGGING_CONFIG is using ${LOGGING_CONFIG}"
+else
+    [ -n "${LOGGING_CONFIG}" ] && echo "Warning: LOGGING_CONFIG file not found: ${LOGGING_CONFIG}"
+fi
+
+
 java $JAVA_OPTS -jar /app/db-web-ui.jar
