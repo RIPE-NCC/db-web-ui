@@ -152,7 +152,7 @@ sonar:
         GIT_SUBMODULE_STRATEGY: recursive
         GIT_DEPTH: "0"
     script:
-        - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.token=${SONAR_TOKEN} -DskipTests
+        - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.javascript.lcov.reportPaths=frontend/lcov.info -Dsonar.projectVersion=$CI_COMMIT_SHORT_SHA -Dsonar.projectKey=db-web-ui -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.token=${SONAR_TOKEN} -DskipTests
     allow_failure: true
     dependencies:
         - backend
