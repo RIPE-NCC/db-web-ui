@@ -1,4 +1,5 @@
-<div *ngIf="attr.name === 'address'" class="modal-content no-rounded">
+@if (attr.name === 'address') {
+<div class="modal-content no-rounded">
     <div class="modal-header">
         <h2 class="modal-title" id="commonModalLabel">Updating address information</h2>
         <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
@@ -14,7 +15,8 @@
         </div>
     </div>
 </div>
-<div *ngIf="attr.name === 'org-name'" class="modal-content no-rounded">
+} @if (attr.name === 'org-name') {
+<div class="modal-content no-rounded">
     <div class="modal-header">
         <h2 class="modal-title">Updating legal information</h2>
         <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
@@ -30,17 +32,23 @@
         </div>
     </div>
 </div>
-<div *ngIf="isModalContactField()" class="modal-content no-rounded">
+} @if (isModalContactField()) {
+<div class="modal-content no-rounded">
     <div class="modal-header">
         <h2 class="modal-title">Updating contact information</h2>
         <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
     </div>
     <div class="modal-body modal-panel">
         <div>
-            <p *ngIf="attr.name === 'phone'">My organisation&apos;s telephone number has changed</p>
-            <p *ngIf="attr.name === 'fax-no'">My organisation&apos;s fax number has changed</p>
-            <p *ngIf="attr.name === 'e-mail'">My organisation&apos;s email address has changed</p>
+            @if (attr.name === 'phone') {
+            <p>My organisation&apos;s telephone number has changed</p>
+            } @else if (attr.name === 'fax-no') {
+            <p>My organisation&apos;s fax number has changed</p>
+            } @else if (attr.name === 'e-mail') {
+            <p>My organisation&apos;s email address has changed</p>
+            }
             <button mat-flat-button color="primary" type="submit" data-dismiss="modal" (click)="goToAccountContactInfoEditor()">UPDATE</button>
         </div>
     </div>
 </div>
+}

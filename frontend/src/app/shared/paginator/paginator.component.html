@@ -1,7 +1,9 @@
 <nav aria-label="Page navigation" [hidden]="hidePaginator">
     <ul class="pagination">
-        <li class="page-item" [ngClass]="{ active: activePage === pg }" *ngFor="let pg of pages">
+        @for (pg of pages; track pg) {
+        <li class="page-item" [ngClass]="{ active: activePage === pg }">
             <a class="page-link" (click)="pageSelected(pg)">{{ pg }}</a>
         </li>
+        }
     </ul>
 </nav>

@@ -2,7 +2,8 @@
 
 <div>
     <section>
-        <div class="padding grey" *ngIf="hashOk === true">
+        @if (hashOk === true) {
+        <div class="padding grey">
             Please confirm that you wish to add {{ user }} to the <span class="mntner">MNTNER</span> object
 
             <div class="clearfix margin-top">
@@ -11,6 +12,7 @@
                 </div>
             </div>
         </div>
+        }
         <button mat-stroked-button color="primary" class="float-end" type="button" (click)="cancelAssociate()">CANCEL</button>
     </section>
 </div>

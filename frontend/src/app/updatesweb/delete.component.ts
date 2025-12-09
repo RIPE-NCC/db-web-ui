@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -10,7 +9,7 @@ import { ModalDeleteObjectComponent } from './modal-delete-object.component';
     selector: 'delete-component',
     templateUrl: './delete.component.html',
     standalone: true,
-    imports: [NgFor, MatButton, RouterLink],
+    imports: [MatButton, RouterLink],
 })
 export class DeleteComponent implements OnInit, OnDestroy {
     private modalService = inject(NgbModal);

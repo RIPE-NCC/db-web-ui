@@ -1,9 +1,12 @@
 <section class="not-found">
-    <div *ngIf="loading">
+    @if (loading) {
+    <div>
         <loading-indicator class="resource-page-message"></loading-indicator>
     </div>
-    <div *ngIf="!loading">
-        <div *ngIf="unsubscribed">
+    } @else {
+    <div>
+        @if (unsubscribed) {
+        <div>
             <em class="fal fa-check" aria-hidden="true"></em>
             <h2>You have now unsubscribed {{ email }} from Whois updates.</h2>
             <p>
@@ -12,9 +15,12 @@
             </p>
             <p>If you did not mean to unsubscribe, please contact <a href="https://www.ripe.net/support/" target="_blank">support</a>.</p>
         </div>
-        <div *ngIf="!unsubscribed">
+        } @else {
+        <div>
             <em class="fal fa-exclamation-circle"></em>
             <h2>We could not find an email address to unsubscribe.</h2>
         </div>
+        }
     </div>
+    }
 </section>

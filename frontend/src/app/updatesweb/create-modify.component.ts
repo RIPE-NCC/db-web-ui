@@ -1,4 +1,4 @@
-import { NgFor, NgIf, SlicePipe } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -60,10 +60,8 @@ export interface IMaintainers {
     templateUrl: './create-modify.component.html',
     standalone: true,
     imports: [
-        NgIf,
         MatButton,
         MaintainersEditorComponent,
-        NgFor,
         MatTooltip,
         FormsModule,
         TypeaheadComponent,

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -11,7 +10,7 @@ import { IQueryParameters } from './query-parameters.service';
     selector: 'advance-filter-panel',
     templateUrl: './advance-filter-panel.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, MatRadioModule, MatCheckboxModule, LabelPipe],
+    imports: [FormsModule, MatRadioModule, MatCheckboxModule, LabelPipe],
 })
 export class AdvanceFilterPanelComponent implements OnChanges {
     @Input()

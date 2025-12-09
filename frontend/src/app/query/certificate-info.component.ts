@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnDestroy, inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
@@ -8,7 +7,6 @@ import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.servi
     selector: 'certificate-info',
     templateUrl: './certificate-info.component.html',
     standalone: true,
-    imports: [NgIf],
 })
 export class CertificateInfoComponent implements OnDestroy {
     private cookies = inject(CookieService);

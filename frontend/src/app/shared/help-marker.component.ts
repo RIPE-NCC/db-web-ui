@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Labels } from '../label.constants';
@@ -6,11 +5,14 @@ import { Labels } from '../label.constants';
 @Component({
     selector: 'help-marker',
     template: `<span [ngbPopover]="titleLabel" placement="bottom" triggers="mouseenter:mouseleave">
-        <a [href]="hrefLabel" *ngIf="hrefLabel" target="_blank"> <span class="fal fa-question fa-lg" aria-hidden="true"></span></a>
-        <span *ngIf="!hrefLabel" class="fal fa-question fa-lg" aria-hidden="true"></span>
+        @if (hrefLabel) {
+        <a [href]="hrefLabel" target="_blank"> <span class="fal fa-question fa-lg" aria-hidden="true"></span></a>
+        } @if (!hrefLabel) {
+        <span class="fal fa-question fa-lg" aria-hidden="true"></span>
+        }
     </span>`,
     standalone: true,
-    imports: [NgbPopover, NgIf],
+    imports: [NgbPopover],
 })
 export class HelpMarkerComponent implements OnInit {
     @Input()

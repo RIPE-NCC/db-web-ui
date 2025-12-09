@@ -1,5 +1,4 @@
 // Shown on Resources page - for all resources listed in tab
-import { NgIf } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { IpUsageService } from './ip-usage.service';
 import { ResourceStatusService } from './resource-status.service';
@@ -8,7 +7,6 @@ import { ResourceStatusService } from './resource-status.service';
     selector: 'ip-usage-of-all-resources',
     templateUrl: './ip-usage-of-all-resources.component.html',
     standalone: true,
-    imports: [NgIf],
 })
 export class IpUsageOfAllResourcesComponent implements OnChanges {
     private resourceStatusService = inject(ResourceStatusService);

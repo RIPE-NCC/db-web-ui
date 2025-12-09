@@ -4,67 +4,94 @@
             <li [ngbNavItem]="0" id="0">
                 <a ngbNavLink (click)="resourcesTabClicked()">My Resources</a>
             </li>
-            <li [ngbNavItem]="1" id="1" *ngIf="isMemberOrg()">
+            @if (isMemberOrg()) {
+            <li [ngbNavItem]="1" id="1">
                 <a ngbNavLink (click)="sponsoredResourcesTabClicked()">Sponsored Resources</a>
             </li>
+            }
         </ul>
     </div>
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
+    @if (!this.isShowingSponsored && lastTab !== 'aut-num') {
     <button
         mat-flat-button
         color="primary"
         class="link-color float-end margin-left uppercase"
         id="button-create-assignment"
-        *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'"
         (click)="navigateToCreateAssignments()"
     >
         {{ 'resource.createAssignment.text' | label }}
     </button>
-    <transfer-drop-down *ngIf="isMemberOrg()" [sponsoredMenu]="isShowingSponsored"></transfer-drop-down>
-    <alerts-drop-down *ngIf="showAlerts" [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
+    } @if (isMemberOrg()) {
+    <transfer-drop-down [sponsoredMenu]="isShowingSponsored"></transfer-drop-down>
+    } @if (showAlerts) {
+    <alerts-drop-down [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
+    }
     <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
     </ip-usage-of-all-resources>
     <ul ngbNav #navIpv46ASN="ngbNav" id="ipv4-ipv6-asn-tabs" class="nav-tabs" [(activeId)]="lastTab" (navChange)="tabClicked($event)">
         <li [ngbNavItem]="'inetnum'" id="inetnum">
             <a ngbNavLink>IPv4</a>
             <ng-template ngbNavContent>
-                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
-                <div class="resource-list" *ngFor="let resource of ipv4Resources">
+                @if (loading) {
+                <loading-indicator class="resource-page-message"></loading-indicator>
+                } @for (resource of ipv4Resources; track resource) {
+                <div class="resource-list">
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
-                <p class="resource-page-message" *ngIf="loading === false && ipv4Resources.length === 0">
-                    <refresh *ngIf="fail; else noResourcesFound" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                } @if (loading === false && ipv4Resources.length === 0) {
+                <p class="resource-page-message">
+                    @if (fail) {
+                    <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                    } @else {
+                    <span class="resource-page-message">{{ reason.toString() }}</span>
+                    }
                 </p>
+                }
             </ng-template>
         </li>
         <li [ngbNavItem]="'inet6num'" id="inet6num">
             <a ngbNavLink>IPv6</a>
             <ng-template ngbNavContent>
-                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
-                <div class="resource-list" *ngFor="let resource of ipv6Resources">
+                @if (loading) {
+                <loading-indicator class="resource-page-message"></loading-indicator>
+                } @for (resource of ipv6Resources; track resource) {
+                <div class="resource-list">
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
-                <p class="resource-page-message" *ngIf="loading === false && ipv6Resources.length === 0">
-                    <refresh *ngIf="fail; else noResourcesFound" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                } @if (loading === false && ipv6Resources.length === 0) {
+                <p class="resource-page-message">
+                    @if (fail) {
+                    <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                    } @else {
+                    <span class="resource-page-message">{{ reason.toString() }}</span>
+                    }
                 </p>
+                }
             </ng-template>
         </li>
         <li [ngbNavItem]="'aut-num'" id="aut-num">
             <a ngbNavLink>ASN</a>
             <ng-template ngbNavContent>
-                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
-                <div class="resource-list" *ngFor="let resource of asnResources">
+                @if (loading) {
+                <loading-indicator class="resource-page-message"></loading-indicator>
+                } @for (resource of asnResources; track resource) {
+                <div class="resource-list">
                     <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
                 </div>
-                <p class="resource-page-message" *ngIf="loading === false && asnResources.length === 0">
-                    <refresh *ngIf="fail; else noResourcesFound" reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                } @if (loading === false && asnResources.length === 0) {
+                <p class="resource-page-message">
+                    @if (fail) {
+                    <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
+                    } @else {
+                    <span class="resource-page-message">{{ reason.toString() }}</span>
+                    }
                 </p>
+                }
             </ng-template>
         </li>
     </ul>
     <div [ngbNavOutlet]="navIpv46ASN" id="ipv4-ipv6-asn-panes" class="mt-2"></div>
 </section>
-<ng-template #noResourcesFound>
-    <span class="resource-page-message">{{ reason.toString() }}</span>
-</ng-template>
+<ng-template #noResourcesFound> </ng-template>

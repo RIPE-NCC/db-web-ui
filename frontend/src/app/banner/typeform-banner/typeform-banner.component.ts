@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,7 +9,7 @@ import { UserInfoService } from '../../userinfo/user-info.service';
     templateUrl: './typeform-banner.component.html',
     styleUrl: './typeform-banner.component.scss',
     standalone: true,
-    imports: [NgIf, MatButton],
+    imports: [MatButton],
 })
 export class TypeformBannerComponent implements OnInit {
     dialog = inject(MatDialog);

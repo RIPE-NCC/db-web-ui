@@ -1,4 +1,4 @@
-import { NgIf, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { ForgotMaintainerPasswordService, IForgotMaintainerPassword } from './fo
     selector: 'fmp',
     templateUrl: './forgot-maintainer-password.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, MatButton, UpperCasePipe],
+    imports: [FormsModule, MatButton, UpperCasePipe],
 })
 export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {
     private forgotMaintainerPasswordService = inject(ForgotMaintainerPasswordService);

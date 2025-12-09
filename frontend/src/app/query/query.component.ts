@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, ViewportScroller } from '@angular/common';
+import { NgClass, ViewportScroller } from '@angular/common';
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -65,7 +65,6 @@ export type ShareLink = {
         NgClass,
         SearchFieldComponent,
         QueryFlagsComponent,
-        NgIf,
         MatButton,
         MatMenuTrigger,
         MatMenu,
@@ -79,7 +78,6 @@ export type ShareLink = {
         MatTooltip,
         MatIcon,
         SharePanelComponent,
-        NgFor,
         LookupComponent,
         ScrollerDirective,
         LoadingIndicatorComponent,

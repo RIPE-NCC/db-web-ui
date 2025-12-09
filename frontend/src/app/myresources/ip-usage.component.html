@@ -1,4 +1,5 @@
-<div *ngIf="type === 'inetnum'">
+@if (type === 'inetnum') {
+<div>
     <div class="usage-status-box">
         <p class="box-title" title="Total address space">Total address space</p>
         <p class="box-value">{{ usage.total | number : '1.0-0' }}</p>
@@ -14,7 +15,8 @@
         <p class="box-statistic">{{ percentageFree | number : '1.0-0' }}%</p>
     </div>
 </div>
-<div *ngIf="type === 'inet6num'">
+} @if (type === 'inet6num') {
+<div>
     <div class="usage-status-box">
         <p class="box-title">Total subnets (/{{ usage.blockSize | number : '1.0-0' }})</p>
         <p class="box-value">{{ ipv6CalcTotal }}</p>
@@ -30,3 +32,4 @@
         <p class="box-statistic">{{ percentageFree | number : '0.0-0' }}%</p>
     </div>
 </div>
+}

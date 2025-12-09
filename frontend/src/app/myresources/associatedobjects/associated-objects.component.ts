@@ -1,17 +1,23 @@
-import { NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
+import { NgStyle, SlicePipe } from '@angular/common';
 import { Component, Input, OnChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../../properties.service';
 import { NameFormatterComponent } from '../../shared/name-formatter.component';
 import { TableScrollerDirective } from '../../shared/table-scroller.directive';
-import { AssociatedObjectType, AssociatedObjectsService, IAssociatedObjectApiResult } from './associated-objects.service';
+import {
+    AssociatedObjectType,
+    AssociatedObjectsService,
+    IAssociatedDomainObject,
+    IAssociatedObjectApiResult,
+    IAssociatedRouteObject,
+} from './associated-objects.service';
 
 @Component({
     selector: 'associated-objects',
     templateUrl: './associated-objects.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, SlicePipe],
+    imports: [FormsModule, TableScrollerDirective, NgStyle, RouterLink, NameFormatterComponent, SlicePipe],
 })
 export class AssociatedObjectsComponent implements OnChanges {
     private associatedObjectService = inject(AssociatedObjectsService);
@@ -82,6 +88,14 @@ export class AssociatedObjectsComponent implements OnChanges {
             this.lastPage = -1;
             this.getAssociatedObjectFromBackEnd(0, this.filter);
         }, 400);
+    }
+
+    isAssociatedRouteObject(obj: IAssociatedDomainObject | IAssociatedRouteObject): obj is IAssociatedRouteObject {
+        return 'origin' in obj;
+    }
+
+    isAssociatedDomainObject(obj: IAssociatedDomainObject | IAssociatedRouteObject): obj is IAssociatedDomainObject {
+        return 'domain' in obj;
     }
 
     private getAssociatedObjectFromBackEnd(pageNr = 0, associatedPrefixFilter = '') {

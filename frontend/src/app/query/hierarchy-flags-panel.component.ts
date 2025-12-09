@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -12,7 +11,7 @@ import { IQueryParameters } from './query-parameters.service';
     selector: 'hierarchy-flags',
     templateUrl: './hierarchy-flags-panel.component.html',
     standalone: true,
-    imports: [NgIf, MatSlider, MatSliderThumb, FormsModule, MatCheckbox, LabelPipe],
+    imports: [MatSlider, MatSliderThumb, FormsModule, MatCheckbox, LabelPipe],
 })
 export class HierarchyFlagsPanelComponent implements OnInit, OnChanges {
     @Input()

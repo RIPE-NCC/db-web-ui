@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
@@ -25,7 +24,7 @@ interface IObjectFromParameters {
     selector: 'force-delete',
     templateUrl: './force-delete.component.html',
     standalone: true,
-    imports: [NgFor, MatButton],
+    imports: [MatButton],
 })
 export class ForceDeleteComponent implements OnInit {
     private whoisResourcesService = inject(WhoisResourcesService);

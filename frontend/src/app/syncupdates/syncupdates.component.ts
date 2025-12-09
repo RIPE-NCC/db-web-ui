@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +12,7 @@ import { SyncupdatesService } from './syncupdates.service';
     selector: 'syncupdates',
     templateUrl: './syncupdates.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, AutoFocusDirective, SubmittingAgreementComponent, MatButton],
+    imports: [FormsModule, AutoFocusDirective, SubmittingAgreementComponent, MatButton],
 })
 export class SyncupdatesComponent {
     private syncupdatesService = inject(SyncupdatesService);

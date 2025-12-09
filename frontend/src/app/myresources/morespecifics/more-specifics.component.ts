@@ -1,4 +1,4 @@
-import { Location, NgFor, NgIf, NgStyle } from '@angular/common';
+import { Location, NgStyle } from '@angular/common';
 import { Component, Input, OnChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -11,7 +11,7 @@ import { IMoreSpecificsApiResult, MoreSpecificsService } from './more-specifics.
     selector: 'more-specifics',
     templateUrl: './more-specifics.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, TableScrollerDirective, NgStyle, NgFor, RouterLink, NameFormatterComponent, RefreshComponent],
+    imports: [FormsModule, TableScrollerDirective, NgStyle, RouterLink, NameFormatterComponent, RefreshComponent],
 })
 export class MoreSpecificsComponent implements OnChanges {
     private moreSpecificsService = inject(MoreSpecificsService);

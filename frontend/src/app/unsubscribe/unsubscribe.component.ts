@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
@@ -7,7 +6,7 @@ import { UnsubscribeService } from './unsubscribe.service';
 @Component({
     templateUrl: './unsubscribe.component.html',
     standalone: true,
-    imports: [NgIf, LoadingIndicatorComponent],
+    imports: [LoadingIndicatorComponent],
 })
 export class UnsubscribeComponent implements OnInit {
     unsubscribeService = inject(UnsubscribeService);

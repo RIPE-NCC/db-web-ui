@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -16,7 +15,7 @@ interface ISelectedObjectType {
     selector: 'select-component',
     templateUrl: './select.component.html',
     standalone: true,
-    imports: [FormsModule, NgFor, MatButton],
+    imports: [FormsModule, MatButton],
 })
 export class SelectComponent implements OnInit {
     private router = inject(Router);

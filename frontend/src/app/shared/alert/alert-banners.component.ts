@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { BannerComponent, BannerTypes } from '../../banner/banner.component';
 import { SanitizeHtmlPipe } from '../sanitize-html.pipe';
@@ -8,7 +7,7 @@ import { AlertsService, IAlerts } from './alerts.service';
     selector: 'alert-banners',
     templateUrl: './alert-banners.component.html',
     standalone: true,
-    imports: [NgFor, BannerComponent, SanitizeHtmlPipe],
+    imports: [BannerComponent, SanitizeHtmlPipe],
 })
 export class AlertBannersComponent implements OnInit, OnDestroy {
     alertsService = inject(AlertsService);

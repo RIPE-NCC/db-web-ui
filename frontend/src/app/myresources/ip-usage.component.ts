@@ -1,4 +1,4 @@
-import { DecimalPipe, NgIf } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { IpUsageService } from './ip-usage.service';
 import { IUsage } from './resource-type.model';
@@ -7,7 +7,7 @@ import { IUsage } from './resource-type.model';
     selector: 'ip-usage',
     templateUrl: './ip-usage.component.html',
     standalone: true,
-    imports: [NgIf, DecimalPipe],
+    imports: [DecimalPipe],
 })
 export class IpUsageComponent implements OnChanges {
     private ipUsageService = inject(IpUsageService);

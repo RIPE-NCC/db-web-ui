@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +7,7 @@ import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 @Component({
     templateUrl: './unsubscribe-confirm.component.html',
     standalone: true,
-    imports: [NgIf, LoadingIndicatorComponent, MatButton],
+    imports: [LoadingIndicatorComponent, MatButton],
 })
 export class UnsubscribeConfirmComponent implements OnInit {
     unsubscribeService = inject(UnsubscribeService);

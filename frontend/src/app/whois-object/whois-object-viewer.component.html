@@ -1,53 +1,50 @@
-<div *ngIf="show.ripeManagedToggleControl">
+@if (show.ripeManagedToggleControl) {
+<div>
     <mat-checkbox [checked]="showRipeManagedAttrs" (change)="showRipeManagedAttrs = !showRipeManagedAttrs">
         {{ 'lookup.ripeManagedValuesCheckbox.text' | label }}
     </mat-checkbox>
 </div>
+}
 <ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
-    <li *ngFor="let attr of model.attributes.attribute | slice : 0 : nrLinesToShow; index as i" [ngClass]="{ ripemanaged: attr.managed }">
+    @for (attr of (model.attributes.attribute | slice: 0 : nrLinesToShow); track attr.name) {
+    <li [ngClass]="{ ripemanaged: attr.managed }">
         <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
         >:{{ padding(attr) }}
 
-        <a *ngIf="attr.link?.type === 'locator'" [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{
-            attr.value
-        }}</a>
-
-        <a *ngIf="attr.name === pkLink" [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color">{{ attr.value }}</a>
-
-        <span *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
-
-        <span *ngIf="attr.comment && attr.comment !== 'Filtered'">{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
+        @if (attr.link?.type === 'locator') {
+        <a [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{ attr.value }}</a>
+        } @if (attr.name === pkLink) {
+        <a [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color">{{ attr.value }}</a>
+        } @if (attr.link?.type !== 'locator' && attr.name !== pkLink) {
+        <span>{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
+        } @if (attr.comment && attr.comment !== 'Filtered') {
+        <span>{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
+        }
     </li>
+    }
 </ul>
 <div class="float-end">
-    <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">
+    @if (showMoreButton) {
+    <button mat-stroked-button color="primary" id="showEntireObjectInViewer" class="show-more" (click)="clickShowMoreLines()">
         {{ 'lookup.showAllObjectButton.text' | label }}
-    </div>
+    </button>
+    }
 </div>
 <div class="viewerbuttons">
-    <a mat-flat-button color="primary" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]" *ngIf="show.loginLink">
+    @if (show.loginLink) {
+    <a mat-flat-button color="primary" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]">
         <span>LOGIN TO UPDATE </span>
         <em class="fal fa-database"></em>
     </a>
-    <a
-        mat-flat-button
-        color="primary"
-        class="uppercase"
-        [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]"
-        *ngIf="show.updateButton && linkable"
-        >{{ 'lookup.updateObjectButton.text' | label }}</a
-    >
-    <a mat-flat-button color="primary" class="uppercase" (click)="emitUpdateClicked()" *ngIf="show.updateButton && !linkable">{{
+    } @if (show.updateButton && linkable) {
+    <a mat-flat-button color="primary" class="uppercase" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]">{{
         'lookup.updateObjectButton.text' | label
     }}</a>
-    <a
-        mat-stroked-button
-        color="primary"
-        class="float-end margin-left"
-        href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb"
-        *ngIf="show.ripeStatButton"
-        target="_blank"
-    >
+    } @if (show.updateButton && !linkable) {
+    <a mat-flat-button color="primary" class="uppercase" (click)="emitUpdateClicked()">{{ 'lookup.updateObjectButton.text' | label }}</a>
+    } @if (show.ripeStatButton) {
+    <a mat-stroked-button color="primary" class="float-end margin-left" href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb" target="_blank">
         {{ 'lookup.ripestatLink.text' | label }} <em class="fal fa-external-link"></em>
     </a>
+    }
 </div>

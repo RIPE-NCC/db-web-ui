@@ -26,18 +26,27 @@
         <ng-template ng-label-tmp let-mntner="item" let-clear="clear">
             <div [ngClass]="{ 'select-locked': !showMntCloseButton(mntner), default: true }">
                 {{ mntner.key }}
-                <span class="fal fa-star" *ngIf="mntner.mine"></span>
-                <span class="fal fa-lock" *ngIf="!isRemovable(mntner.key) || isLirObject()"></span>
-                <span class="ng-value-icon close right" aria-hidden="true" *ngIf="showMntCloseButton(mntner)" (click)="clear(mntner)">×</span>
+                @if (mntner.mine) {
+                <span class="fal fa-star"></span>
+                } @if (!isRemovable(mntner.key) || isLirObject()) {
+                <span class="fal fa-lock"></span>
+                } @if (showMntCloseButton(mntner)) {
+                <span class="ng-value-icon close right" aria-hidden="true" (click)="clear(mntner)">×</span>
+                }
             </div>
         </ng-template>
         <ng-template ng-option-tmp let-mntner="item">
             <div class="option">
                 <span class="title">{{ mntner.key }}</span>
-                <span class="star fal fa-star" *ngIf="mntner.$$isMine"></span>
-                <span class="auth sso" *ngIf="hasSSo(mntner)"> SSO </span>
-                <span class="auth pgp" *ngIf="hasPgp(mntner)"> PGP </span>
-                <span class="auth md5" *ngIf="hasMd5(mntner)"> MD5 </span>
+                @if (mntner.$$isMine) {
+                <span class="star fal fa-star"></span>
+                } @if (hasSSo(mntner)) {
+                <span class="auth sso"> SSO </span>
+                } @if (hasPgp(mntner)) {
+                <span class="auth pgp"> PGP </span>
+                } @if (hasMd5(mntner)) {
+                <span class="auth md5"> MD5 </span>
+                }
             </div>
         </ng-template>
     </ng-select>

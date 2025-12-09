@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
@@ -13,7 +12,7 @@ import { OrgDropDownSharedService } from './org-drop-down-shared.service';
     selector: 'org-drop-down',
     templateUrl: './org-drop-down.component.html',
     standalone: true,
-    imports: [NgIf, NgSelectComponent, FormsModule, NgOptionTemplateDirective],
+    imports: [NgSelectComponent, FormsModule, NgOptionTemplateDirective],
 })
 export class OrgDropDownComponent implements OnInit {
     private userInfoService = inject(UserInfoService);

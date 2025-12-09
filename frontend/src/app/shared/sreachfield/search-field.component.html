@@ -10,9 +10,11 @@
             [value]="queryText"
             (input)="onInputChange($event.target.value)"
         />
-        <button type="button" *ngIf="queryText !== ''" class="clear-btn" id="clearBtn" (click)="onInputChange('')">
+        @if (queryText !== '') {
+        <button type="button" class="clear-btn" id="clearBtn" (click)="onInputChange('')">
             <em class="fal fa-times"></em>
         </button>
+        }
     </div>
     <button type="submit" class="search-button">
         <em class="fal fa-search"></em>

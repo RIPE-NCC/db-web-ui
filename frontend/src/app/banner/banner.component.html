@@ -1,21 +1,33 @@
-<div *ngIf="!closed" class="{{ type }}-banner {{ id }}">
+@if (!closed) {
+<div class="{{ type }}-banner {{ id }}">
     <div class="content">
-        <span *ngIf="type === BannerTypes.promo" class="fal fa-bell-on fa-lg"></span>
-        <span *ngIf="type === BannerTypes.informational" class="fal fa-circle-info fa-lg"></span>
-        <span *ngIf="type === BannerTypes.error" class="fal fa-exclamation-circle fa-lg"></span>
-        <span *ngIf="type === BannerTypes.warning" class="fal fa-exclamation-triangle fa-lg"></span>
-        <span *ngIf="type === BannerTypes.success" class="fal fa-check-circle fa-lg"></span>
+        @if (type === BannerTypes.promo) {
+        <span class="fal fa-bell-on fa-lg"></span>
+        } @if (type === BannerTypes.informational) {
+        <span class="fal fa-circle-info fa-lg"></span>
+        } @if (type === BannerTypes.error) {
+        <span class="fal fa-exclamation-circle fa-lg"></span>
+        } @if (type === BannerTypes.warning) {
+        <span class="fal fa-exclamation-triangle fa-lg"></span>
+        } @if (type === BannerTypes.success) {
+        <span class="fal fa-check-circle fa-lg"></span>
+        }
         <div>
-            <div *ngIf="title">
+            @if (title) {
+            <div>
                 <strong>{{ title }}</strong>
             </div>
+            }
             <div [innerHTML]="textContent"></div>
         </div>
     </div>
     <div class="content">
-        <button *ngIf="buttonText" mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="navigateToButtonUrl()">
+        @if (buttonText) {
+        <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="navigateToButtonUrl()">
             {{ buttonText }}
         </button>
+        }
         <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="closeBanner()">Dismiss</button>
     </div>
 </div>
+}

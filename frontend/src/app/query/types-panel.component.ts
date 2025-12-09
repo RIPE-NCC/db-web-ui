@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -11,7 +10,7 @@ import { IQueryParameters, QueryParametersService } from './query-parameters.ser
     selector: 'types-panel',
     templateUrl: './types-panel.component.html',
     standalone: true,
-    imports: [NgIf, MatCheckbox, FormsModule, LabelPipe],
+    imports: [MatCheckbox, FormsModule, LabelPipe],
 })
 export class TypesPanelComponent implements OnChanges {
     @Input()

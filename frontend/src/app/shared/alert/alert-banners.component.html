@@ -1,4 +1,5 @@
-<div *ngFor="let error of alerts.errors; index as i">
+@for (error of alerts.errors; let i = $index; track error) {
+<div>
     <banner
         [type]="BannerTypes.error"
         [id]="'notification-error-' + i"
@@ -7,7 +8,8 @@
         [buttonUrl]="error.linkurl !== undefined ? error.linkurl : null"
     ></banner>
 </div>
-<div *ngFor="let warning of alerts.warnings; index as i">
+} @for (warning of alerts.warnings; let i = $index; track warning) {
+<div>
     <banner
         [type]="BannerTypes.warning"
         [id]="'notification-warning-' + i"
@@ -16,7 +18,8 @@
         [buttonUrl]="warning.linkurl !== undefined ? warning.linkurl : null"
     ></banner>
 </div>
-<div *ngFor="let info of alerts.infos; index as i">
+} @for (info of alerts.infos; let i = $index; track info) {
+<div>
     <banner
         [type]="BannerTypes.informational"
         [id]="'notification-informational-' + i"
@@ -25,7 +28,8 @@
         [buttonUrl]="info.linkurl !== undefined ? info.linkurl : null"
     ></banner>
 </div>
-<div *ngFor="let success of alerts.successes; index as i">
+} @for (success of alerts.successes; let i = $index; track success) {
+<div>
     <banner
         [type]="BannerTypes.success"
         [id]="'notification-success-' + i"
@@ -34,3 +38,4 @@
         [buttonUrl]="success.linkurl !== undefined ? success.linkurl : null"
     ></banner>
 </div>
+}

@@ -11,7 +11,8 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <div *ngFor="let maintainer of maintainers; let i = index" class="multiple-field-wrapper">
+    @for (maintainer of maintainers; let i = $index; track maintainer) {
+    <div class="multiple-field-wrapper">
         <mat-form-field class="multiple-field">
             <mat-label>Maintainer</mat-label>
             <input
@@ -24,11 +25,14 @@
             />
             <mat-hint>Optional limit key to this maintainer only</mat-hint>
             <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of maintainersOptions" [value]="option.key">{{ option.key }}</mat-option>
+                @for (option of maintainersOptions; track option) {
+                <mat-option [value]="option.key">{{ option.key }}</mat-option>
+                }
             </mat-autocomplete>
         </mat-form-field>
         <i class="fal fa-plus-circle rounded-buttons" (click)="addMaintainerField()"></i>
         <i class="fal fa-minus-circle rounded-buttons" (click)="removeMaintainerField(i)"></i>
     </div>
+    }
     <button mat-flat-button color="primary" (click)="saveApiKey()">Create a key</button>
 </div>

@@ -1,4 +1,5 @@
-<div class="registry-selector-container" *ngIf="organisations.length && !trainingEnv && !sessionExpire">
+@if (organisations.length && !trainingEnv && !sessionExpire) {
+<div class="registry-selector-container">
     <span>You are editing</span>
     <ng-select
         id="organisation-selector"
@@ -9,16 +10,20 @@
         (change)="organisationSelected($event)"
         [searchFn]="customSearchFn"
     >
-        <ng-template ng-option-tmp let-org="item" let-search="searchTerm">
+        <ng-template ng-option-tmp let-org="item">
             <div>
                 <span>{{ org.organisationName }}</span>
             </div>
-            <small *ngIf="org.regId"
+            @if (org.regId) {
+            <small
                 ><span>{{ org.regId }}</span></small
             >
-            <small *ngIf="!org.regId"
+            } @if (!org.regId) {
+            <small
                 ><span>{{ org.orgObjectId }}</span></small
             >
+            }
         </ng-template>
     </ng-select>
 </div>
+}

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -20,7 +19,7 @@ import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interc
     selector: 'whois-object-text-editor',
     templateUrl: './whois-object-text-editor.component.html',
     standalone: true,
-    imports: [FormsModule, NgIf, SubmittingAgreementComponent, MatButton],
+    imports: [FormsModule, SubmittingAgreementComponent, MatButton],
 })
 export class WhoisObjectTextEditorComponent implements OnInit {
     private whoisResourcesService = inject(WhoisResourcesService);

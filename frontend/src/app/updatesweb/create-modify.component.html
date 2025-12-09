@@ -1,11 +1,13 @@
-<button mat-flat-button color="primary" id="btnCreateInTextArea" class="float-end" *ngIf="operation === CREATE_OPERATION" (click)="switchToTextMode()">
+@if (operation === CREATE_OPERATION) {
+<button mat-flat-button color="primary" id="btnCreateInTextArea" class="float-end" (click)="switchToTextMode()">
     <span class="fal fa-edit"></span> CREATE IN TEXT AREA
 </button>
-<button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" *ngIf="operation === MODIFY_OPERATION" (click)="switchToTextMode()">
+} @if (operation === MODIFY_OPERATION) {
+<button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" (click)="switchToTextMode()">
     <span class="fal fa-edit"></span> EDIT IN TEXT AREA
 </button>
-
-<div id="createForm" *ngIf="attributes?.length > 0">
+} @if (attributes?.length > 0) {
+<div id="createForm">
     <h1>{{ operation }} &quot;{{ objectType }}&quot; object</h1>
     <section class="form-fields">
         <maintainers-editor
@@ -14,24 +16,21 @@
             (updateMntnersClbk)="updateMaintainers($event)"
         ></maintainers-editor>
     </section>
-    <section class="visible-field-form" *ngIf="maintainers.object.length">
+    @if (maintainers.object.length) {
+    <section class="visible-field-form">
         <ul class="form-fields appeared-fields">
-            <li
-                attr.data-test-id="{{ attribute.name + '$' + idx }}"
-                class="attr-{{ idx }}"
-                *ngFor="
-                    let attribute of attributes | filteroutAttributeByName : ['mnt-by', 'last-modified', 'created'] | slice : 0 : nrAttributesToRender;
-                    index as idx
-                "
-            >
+            @for (attribute of attributes | filteroutAttributeByName : ['mnt-by', 'last-modified', 'created'] | slice : 0 : nrAttributesToRender; let idx =
+            $index; track attribute) {
+            <li attr.data-test-id="{{ attribute.name + '$' + idx }}" class="attr-{{ idx }}">
                 <label id="anchor-{{ attribute.name }}">{{ attribute.name }}</label>
-                <span *ngIf="attribute.$$error" class="text-error" [matTooltip]="attribute.$$error | sanitizeHtml">
+                @if (attribute.$$error) {
+                <span class="text-error" [matTooltip]="attribute.$$error | sanitizeHtml">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
-                <span *ngIf="attribute.$$success" class="text-success">{{ attribute.$$success }}</span>
-
+                } @if (attribute.$$success) {
+                <span class="text-success">{{ attribute.$$success }}</span>
+                } @if (!attribute.$$meta.$$isEnum && !isBrowserAutoComplete(attribute)) {
                 <input
-                    *ngIf="!attribute.$$meta.$$isEnum && !isBrowserAutoComplete(attribute)"
                     type="text"
                     [attr.name]="attribute.name + '$' + idx"
                     class="form-control"
@@ -42,14 +41,15 @@
                     [disabled]="attribute.$$meta.$$disable"
                     (blur)="fieldVisited(attribute)"
                 />
+                } @if (!attribute.$$meta.$$isEnum && isBrowserAutoComplete(attribute)) {
                 <typeahead
-                    *ngIf="!attribute.$$meta.$$isEnum && isBrowserAutoComplete(attribute)"
                     [attribute]="attribute"
                     [idx]="idx"
                     [placeholder]="getAttributeShortDescription(attribute.name)"
                     (blurEmitter)="fieldVisited(attribute)"
                 ></typeahead>
-                <span *ngIf="attribute.$$meta.$$isEnum">
+                } @if (attribute.$$meta.$$isEnum) {
+                <span>
                     <ng-select
                         [attr.name]="attribute.name + '$' + idx"
                         [items]="attribute.name === 'status' ? optionList.status : enumAutocomplete(attribute)"
@@ -64,18 +64,21 @@
                         </ng-template>
                     </ng-select>
                 </span>
+                }
                 <description-syntax
                     [showComponent]="showAttrsHelp[attribute.name + '$' + idx]"
                     [objectType]="objectType"
                     [attrName]="attribute.name"
                 ></description-syntax>
                 <ul class="input-group-btn">
-                    <li *ngIf="attribute.name === 'certif'">
+                    @if (attribute.name === 'certif') {
+                    <li>
                         <a id="addCertificate" class="btn btn-default ga-pgp-attr" title="Add PGP key (opens dialog)" (click)="displayPGPKeyDialogDialog()">
                             <span class="fal fa-file-certificate"></span>
                         </a>
                     </li>
-                    <li *ngIf="canAttributeBeDuplicated(attribute)">
+                    } @if (canAttributeBeDuplicated(attribute)) {
+                    <li>
                         <a
                             id="duplicateAttribute"
                             class="btn btn-default ga-add-dup"
@@ -85,6 +88,7 @@
                             <span class="fal fa-arrow-down degree-25"></span>
                         </a>
                     </li>
+                    }
                     <li>
                         <a
                             id="addAnyAttribute"
@@ -95,43 +99,46 @@
                             <span class="fal fa-plus"></span>
                         </a>
                     </li>
-                    <li *ngIf="canAttributeBeRemoved(attribute)">
+                    @if (canAttributeBeRemoved(attribute)) {
+                    <li>
                         <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute" (click)="removeAttribute(attribute)">
                             <span class="fal fa-trash"></span>
                         </a>
                     </li>
+                    }
                     <li>
+                        @if (attribute.name === 'auth') {
                         <a
                             id="changePassword"
                             class="btn btn-default ga-pass-attr"
                             title="Add/change Password (opens dialog)"
                             (click)="displayMd5DialogDialog(attribute)"
-                            *ngIf="attribute.name === 'auth'"
                         >
                             <span class="fal fa-lock fa-3"></span>
                         </a>
+                        }
                     </li>
                     <li>
+                        @if (shouldShowBellIcon(attribute)) {
                         <a
                             id="createRoleForAbuseCAttribute"
                             class="btn btn-default ga-add-dup"
                             title="Create new role to use as abuse-c"
                             (click)="createRoleForAbuseCAttribute(attribute)"
-                            *ngIf="shouldShowBellIcon(attribute)"
                         >
                             <span class="fal fa-bell degree-25"></span>
                         </a>
+                        }
                     </li>
-                    <li *ngIf="attribute.$$meta.$$isLir">
-                        <a
-                            title="Request to update"
-                            class="btn btn-default ga-edit-attr"
-                            *ngIf="showPencile(attribute.name)"
-                            (click)="displayEditAttributeDialog(attribute)"
-                        >
+                    @if (attribute.$$meta.$$isLir) {
+                    <li>
+                        @if (showPencile(attribute.name)) {
+                        <a title="Request to update" class="btn btn-default ga-edit-attr" (click)="displayEditAttributeDialog(attribute)">
                             <span class="fal fa-pencil"></span>
                         </a>
+                        }
                     </li>
+                    }
                     <li>
                         <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name + '$' + idx)">
                             <span class="fal fa-question"></span>
@@ -139,10 +146,12 @@
                     </li>
                 </ul>
             </li>
+            }
         </ul>
         <submitting-agreement></submitting-agreement>
         <p scroller (scrolled)="showMoreAttributes()"></p>
-        <span *ngIf="operation === MODIFY_OPERATION">
+        @if (operation === MODIFY_OPERATION) {
+        <span>
             <button
                 mat-flat-button
                 color="primary"
@@ -156,7 +165,8 @@
             </button>
             <button mat-flat-button color="primary" (click)="cancel()" class="float-end">CANCEL</button>
         </span>
-        <span *ngIf="operation === CREATE_OPERATION">
+        } @if (operation === CREATE_OPERATION) {
+        <span>
             <button
                 mat-flat-button
                 color="primary"
@@ -170,7 +180,8 @@
             </button>
             <button mat-stroked-button color="primary" class="float-end" (click)="cancel()">CANCEL</button>
         </span>
-        <span *ngIf="operation === MODIFY_OPERATION">
+        } @if (operation === MODIFY_OPERATION) {
+        <span>
             <button
                 id="deleteObject"
                 mat-flat-button
@@ -182,5 +193,8 @@
                 DELETE THIS OBJECT
             </button>
         </span>
+        }
     </section>
+    }
 </div>
+}

@@ -1,4 +1,4 @@
-import { DecimalPipe, NgFor, NgIf } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IResultSummary } from './types.model';
 
@@ -6,7 +6,7 @@ import { IResultSummary } from './types.model';
     selector: 'full-text-result-summary',
     templateUrl: './full-text-result-summary.component.html',
     standalone: true,
-    imports: [NgIf, NgFor, DecimalPipe],
+    imports: [DecimalPipe],
 })
 export class FullTextResultSummaryComponent implements OnChanges {
     @Input()
@@ -28,5 +28,11 @@ export class FullTextResultSummaryComponent implements OnChanges {
 
     public emitRowClicked(row: { type: IResultSummary }) {
         this.rowClicked.emit(row.type.name);
+    }
+
+    onRowKeydown(event: KeyboardEvent, td: any): void {
+        if (event.key === 'Enter' || event.key === ' ') {
+            this.emitRowClicked({ type: td });
+        }
     }
 }

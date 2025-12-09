@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -10,7 +9,7 @@ import { AlertsService } from '../../shared/alert/alerts.service';
     selector: 'force-delete-select',
     templateUrl: './force-delete-select.component.html',
     standalone: true,
-    imports: [FormsModule, NgFor, MatButton],
+    imports: [FormsModule, MatButton],
 })
 export class ForceDeleteSelectComponent implements OnInit {
     private properties = inject(PropertiesService);

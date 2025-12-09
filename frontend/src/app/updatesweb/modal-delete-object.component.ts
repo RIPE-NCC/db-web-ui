@@ -1,4 +1,4 @@
-import { NgFor, NgIf, SlicePipe } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { CredentialsService } from '../shared/credentials.service';
-import { RestService } from './rest.service';
+import { ReferenceItem, References, RestService } from './rest.service';
 import { RpkiValidatorService } from './rpki-validator.service';
 
 interface IModalDelete {
@@ -21,7 +21,7 @@ interface IModalDelete {
     selector: 'modal-delete-object',
     templateUrl: './modal-delete-object.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, NgFor, MatButton, SlicePipe],
+    imports: [FormsModule, MatButton, SlicePipe],
 })
 export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     private router = inject(Router);
@@ -36,7 +36,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     public inputData: IModalDelete;
 
     public reason = "I don't need this object";
-    public incomingReferences: any;
+    public incomingReferences: ReferenceItem[];
     public objectToDeleteWithRefs: boolean;
     public canBeDeleted: boolean;
     public restCallInProgress = false;
@@ -140,7 +140,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     public getReferences(source: string, objectType: string, name: string) {
         this.restCallInProgress = true;
         this.restService.getReferences(source, objectType, name, this.MAX_REFS_TO_SHOW.toString()).subscribe({
-            next: (resp: any) => {
+            next: (resp: References) => {
                 this.restCallInProgress = false;
                 this.incomingReferences = resp.incoming;
                 this.objectToDeleteWithRefs = this.hasNonSelfIncomingRefs(this.inputData.objectType, this.inputData.name, resp.incoming);

@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -33,7 +32,6 @@ import { ApiKey } from '../types';
         MatDatepickerToggle,
         MatSuffix,
         MatDatepicker,
-        NgFor,
         MatAutocompleteTrigger,
         MatAutocomplete,
         MatOption,

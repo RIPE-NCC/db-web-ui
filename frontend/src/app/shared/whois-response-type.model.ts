@@ -50,6 +50,7 @@ export interface IStatusOption {
     value: string;
 }
 
+// FIXME duplicated IWhoisObject
 export interface IWhoisObjectModel {
     type?: string;
     link?: IWhoisLinkModel;

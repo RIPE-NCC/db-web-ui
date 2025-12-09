@@ -17,12 +17,16 @@
                         <query-flags [inputTerm]="qp.queryText"></query-flags>
                     </div>
                 </div>
-                <div class="dropdown-menus-bar" *ngIf="isFiltersDisplayed()">
+                @if (isFiltersDisplayed()) {
+                <div class="dropdown-menus-bar">
                     <div class="dropdown-menus-bar-buttons">
                         <button mat-button type="button" id="typeMenu" [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">
                             Types {{ printNumberSelected(this.numberSelectedTypes) }}
-                            <span *ngIf="typesTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                            <span *ngIf="!typesTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                            @if (typesTrigger.menuOpen) {
+                            <span class="fal fa-chevron-up"></span>
+                            } @else {
+                            <span class="fal fa-chevron-down"></span>
+                            }
                         </button>
                         <mat-menu #typesMenu="matMenu" yPosition="below">
                             <types-panel
@@ -40,16 +44,22 @@
                             [disabled]="isDisabledHierarchyDropdown()"
                         >
                             Hierarchy flags {{ printNumberSelected(this.numberSelectedHierarchyItems) }}
-                            <span *ngIf="hierarchyTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                            <span *ngIf="!hierarchyTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                            @if (hierarchyTrigger.menuOpen) {
+                            <span class="fal fa-chevron-up"></span>
+                            } @else {
+                            <span class="fal fa-chevron-down"></span>
+                            }
                         </button>
                         <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below">
                             <hierarchy-flags [(queryParameters)]="qp" (numberSelected)="numberSelectedHierarchyItems = $event"></hierarchy-flags>
                         </mat-menu>
                         <button mat-button type="button" id="inverseLookupMenu" [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">
                             Inverse lookup {{ printNumberSelected(numberSelectedInverseLookups) }}
-                            <span *ngIf="inverseLookupTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                            <span *ngIf="!inverseLookupTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                            @if (inverseLookupTrigger.menuOpen) {
+                            <span class="fal fa-chevron-up"></span>
+                            } @else {
+                            <span class="fal fa-chevron-down"></span>
+                            }
                         </button>
                         <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
                             <inverse-lookup-panel
@@ -61,8 +71,11 @@
                         </mat-menu>
                         <button mat-button type="button" id="advanceFilterMenu" [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">
                             Advanced filter {{ printNumberSelected(this.numberSelectedAdvanceFilterItems) }}
-                            <span *ngIf="advanceFilterTrigger.menuOpen" class="fal fa-chevron-up"></span>
-                            <span *ngIf="!advanceFilterTrigger.menuOpen" class="fal fa-chevron-down"></span>
+                            @if (advanceFilterTrigger.menuOpen) {
+                            <span class="fal fa-chevron-up"></span>
+                            } @else {
+                            <span class="fal fa-chevron-down"></span>
+                            }
                         </button>
                         <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
                             <advance-filter-panel [(queryParameters)]="qp" (numberSelected)="numberSelectedAdvanceFilterItems = $event"></advance-filter-panel>
@@ -75,6 +88,7 @@
                         </button>
                     </div>
                 </div>
+                }
             </div>
             <div>
                 <submitting-agreement></submitting-agreement>
@@ -87,10 +101,12 @@
         <div class="visualClear"></div>
         <div class="documentActions"></div>
         <div class="resultsSection">
-            <h1 class="documentFirstHeading" *ngIf="!showsDocsLink">Search results</h1>
+            @if (!showsDocsLink) {
+            <h1 class="documentFirstHeading">Search results</h1>
+            }
             <div>
+                @if (link.perma && results?.length > 0) {
                 <button
-                    *ngIf="link.perma && results?.length > 0"
                     class="perma-link"
                     id="sharePermaLink"
                     [matMenuTriggerFor]="sharePermaLink"
@@ -100,9 +116,13 @@
                     matTooltip="Share Panel"
                     matTooltipPosition="left"
                 >
-                    <mat-icon *ngIf="!sharePermaLinkTrigger.menuOpen" matSuffix class="fal fa-share-alt"></mat-icon>
-                    <mat-icon *ngIf="sharePermaLinkTrigger.menuOpen" matSuffix class="fas fa-share-alt"></mat-icon>
+                    @if (!sharePermaLinkTrigger.menuOpen) {
+                    <mat-icon matSuffix class="fal fa-share-alt"></mat-icon>
+                    } @else {
+                    <mat-icon matSuffix class="fas fa-share-alt"></mat-icon>
+                    }
                 </button>
+                }
                 <mat-menu #sharePermaLink="matMenu" yPosition="below">
                     <share-panel [link]="link"></share-panel>
                 </mat-menu>
@@ -112,24 +132,32 @@
         <div class="documentDescription"></div>
     </section>
     <section class="resultsSection" id="resultsSection">
-        <div *ngIf="results?.length > 0" class="full-width">
+        @if (results?.length > 0) {
+        <div class="full-width">
             <p style="margin: 0" [innerHTML]="'msg.searchResults.text' | label"></p>
-            <div class="clearfix" *ngFor="let whoisObject of results">
+            @for (whoisObject of results; track whoisObject) {
+            <div class="clearfix">
                 <div class="resultpane">
                     <lookup [whoisObject]="whoisObject"></lookup>
                 </div>
             </div>
-            <p *ngIf="showScroller" scroller (scrolled)="lastResultOnScreen()">
+            } @if (showScroller) {
+            <p scroller (scrolled)="lastResultOnScreen()">
                 <loading-indicator></loading-indicator>
             </p>
+            }
         </div>
-        <div *ngIf="showNoResultsMsg" class="resultpane no-result-msg">No results found, try changing the search term or filters</div>
+        } @if (showNoResultsMsg) {
+        <div class="resultpane no-result-msg">No results found, try changing the search term or filters</div>
+        }
     </section>
-    <section id="templateResultsSection" *ngIf="showTemplatePanel">
+    @if (showTemplatePanel) {
+    <section id="templateResultsSection">
         <p [innerHTML]="'msg.searchResults.text' | label"></p>
         <lookup-template [query]="queriedTemplateObject"></lookup-template>
     </section>
-    <section id="informationSection" *ngIf="showsDocsLink">
+    } @if (showsDocsLink) {
+    <section id="informationSection">
         <div class="row">
             <div class="card-info">
                 <div class="padding margin-bottom">
@@ -137,16 +165,15 @@
                     You can query the RIPE Database via the web interface, the RESTful API or a command line tool. Learn more about each option by clicking the
                     link below.
                     <p>&nbsp;</p>
-                    <a *ngIf="!properties.isTestEnv()" href="https://docs.db.ripe.net/How-to-Query-the-RIPE-Database/" target="_blank" class="link-color">
+                    @if (!properties.isTestEnv()) {
+                    <a href="https://docs.db.ripe.net/How-to-Query-the-RIPE-Database/" target="_blank" class="link-color">
                         Go to documentation <em class="fal fa-external-link"></em>
                     </a>
-                    <a
-                        *ngIf="properties.isTestEnv()"
-                        href="https://docs.db.ripe.net/Appendices/Appendix-J--Ripe-Test-Database/"
-                        target="_blank"
-                        class="link-color"
+                    } @if (properties.isTestEnv()) {
+                    <a href="https://docs.db.ripe.net/Appendices/Appendix-J--Ripe-Test-Database/" target="_blank" class="link-color"
                         >Go to documentation <em class="fal fa-external-link"></em>
                     </a>
+                    }
                 </div>
             </div>
             <div class="card-info">
@@ -164,14 +191,17 @@
             <div class="card-info">
                 <div class="padding margin-bottom">
                     <p>{{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database</p>
-                    <span *ngIf="properties.SOURCE === 'RIPE'">
+                    @if (properties.SOURCE === 'RIPE') {
+                    <span>
                         You can use this environment to learn and experiment with the RIPE Database. It uses a TEST source. Important: All changes are reverted
                         every day at night.
                     </span>
-                    <span *ngIf="properties.SOURCE !== 'RIPE'">
+                    } @if (properties.SOURCE !== 'RIPE') {
+                    <span>
                         TEST environment is to learn and experiment with RIPE Database and all changes are reverted in the night. Switch to RIPE Database for
                         live action.
                     </span>
+                    }
                     <p></p>
                     <!-- Decided different color by design. This link will open same application while other not -->
                     <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank" class="inner-link-color"
@@ -182,9 +212,12 @@
             <div class="card-info">
                 <certificate-info></certificate-info>
             </div>
-            <typeform-banner *ngIf="showsDocsLink"></typeform-banner>
+            @if (showsDocsLink) {
+            <typeform-banner></typeform-banner>
+            }
         </div>
     </section>
+    }
     <whois-version [version]="whoisVersion"></whois-version>
     <web-app-version></web-app-version>
 </div>

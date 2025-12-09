@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +11,7 @@ import { RestService } from './rest.service';
     selector: 'display-mntner-pair',
     templateUrl: './display-mntner-pair.component.html',
     standalone: true,
-    imports: [NgFor, NgIf, MatButton],
+    imports: [MatButton],
 })
 export class DisplayMntnerPairComponent implements OnInit, OnDestroy {
     private whoisResourcesService = inject(WhoisResourcesService);

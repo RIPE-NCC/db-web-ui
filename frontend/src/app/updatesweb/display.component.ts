@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +16,7 @@ import { WebUpdatesCommonsService } from './web-updates-commons.service';
     selector: 'display',
     templateUrl: './display.component.html',
     standalone: true,
-    imports: [NgIf, NgFor, WhoisLineDiffDirective, MatButton, SanitizeHtmlPipe],
+    imports: [WhoisLineDiffDirective, MatButton, SanitizeHtmlPipe],
 })
 export class DisplayComponent implements OnInit, OnDestroy {
     whoisResourcesService = inject(WhoisResourcesService);

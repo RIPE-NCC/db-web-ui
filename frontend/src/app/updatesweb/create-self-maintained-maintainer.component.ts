@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -31,8 +31,6 @@ import { RestService } from './rest.service';
         NgLabelTemplateDirective,
         NgOptionTemplateDirective,
         DescriptionSyntaxComponent,
-        NgIf,
-        NgFor,
         SubmittingAgreementComponent,
         MatButton,
         AsyncPipe,

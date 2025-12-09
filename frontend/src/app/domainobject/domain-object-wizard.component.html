@@ -1,6 +1,8 @@
 <div id="createForm">
     <h1 title="Create domain objects">Create "domain" objects</h1>
-    <maintainers-editor *ngIf="domainObject" [whoisObject]="domainObject" (updateMntnersClbk)="updateMaintainers($event)"></maintainers-editor>
+    @if (domainObject) {
+    <maintainers-editor [whoisObject]="domainObject" (updateMntnersClbk)="updateMaintainers($event)"></maintainers-editor>
+    }
     <section class="visible-field-form">
         <whois-object-editor
             [model]="domainObject"

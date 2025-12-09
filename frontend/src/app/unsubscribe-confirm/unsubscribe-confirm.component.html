@@ -1,9 +1,12 @@
 <section class="not-found">
-    <div *ngIf="loading">
+    @if (loading) {
+    <div>
         <loading-indicator class="resource-page-message"></loading-indicator>
     </div>
-    <div *ngIf="!loading">
-        <div *ngIf="isSucess">
+    } @if (!loading) {
+    <div>
+        @if (isSucess) {
+        <div>
             <section>
                 <div class="padding grey">
                     <div class="padding grey">
@@ -22,9 +25,12 @@
                 </div>
             </section>
         </div>
-        <div *ngIf="!isSucess">
+        } @else {
+        <div>
             <em class="fal fa-exclamation-circle"></em>
             <h2>We could not find an email address to unsubscribe.</h2>
         </div>
+        }
     </div>
+    }
 </section>

@@ -1,8 +1,10 @@
 <h1>{{ objectType }} &quot;{{ objectName }}&quot;</h1>
 
 <section class="inner-container">
-    <table class="success-fields td-20 grey" aria-describedby="differences" *ngIf="!isDiff()">
-        <tr *ngFor="let attribute of attributes">
+    @if (!isDiff()) {
+    <table class="success-fields td-20 grey" aria-describedby="differences">
+        @for (attribute of attributes; track attribute) {
+        <tr>
             <td>
                 <label>{{ attribute.name }}:</label>
             </td>
@@ -19,9 +21,11 @@
                 </div>
             </td>
         </tr>
+        }
     </table>
-
-    <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
+    } @if (isDiff()) {
+    <pre whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
+    }
 
     <button mat-flat-button color="primary" class="float-end margin-left" (click)="navigateToSelect()">BACK TO CREATE OBJECT</button>
     <span [hidden]="!modifyButtonToBeShown()">

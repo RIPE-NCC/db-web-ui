@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +11,7 @@ import { FmpErrorService } from './fmp-error.service';
     selector: 'confirm-maintainer',
     templateUrl: './confirm-maintainer.component.html',
     standalone: true,
-    imports: [NgIf, MatButton],
+    imports: [MatButton],
 })
 export class ConfirmMaintainerComponent implements OnInit {
     private emailLinkService = inject(EmailLinkService);

@@ -1,6 +1,7 @@
 <section class="more-specifics">
     <h2>More specifics</h2>
-    <div *ngIf="moreSpecifics && !showRefreshButton">
+    @if (moreSpecifics && !showRefreshButton) {
+    <div>
         <div class="prefix-filter">
             <div class="input-group">
                 <input
@@ -18,19 +19,15 @@
                     </button>
                 </span>
             </div>
-            <span *ngIf="ipFilter; else msgWithoutFilter" class="float-end">
-                Showing {{ moreSpecifics.filteredSize }} out of {{ moreSpecifics.totalNumberOfResources }}
-            </span>
-            <ng-template #msgWithoutFilter>
-                <span class="float-end"> Total more specifics: {{ moreSpecifics.totalNumberOfResources }} </span>
-            </ng-template>
+            @if (ipFilter) {
+            <span class="float-end"> Showing {{ moreSpecifics.filteredSize }} out of {{ moreSpecifics.totalNumberOfResources }} </span>
+            } @else {
+            <span class="float-end"> Total more specifics: {{ moreSpecifics.totalNumberOfResources }} </span>
+            }
         </div>
         <div>
-            <table
-                class="table table-bordered table-body-borderless resources table-striped"
-                *ngIf="moreSpecifics.resources.length > 0"
-                aria-label="more specifics"
-            >
+            @if (moreSpecifics.resources.length > 0) {
+            <table class="table table-bordered table-body-borderless resources table-striped" aria-label="more specifics">
                 <thead>
                     <tr>
                         <th scope="col" class="w30">Internet number resource</th>
@@ -40,7 +37,8 @@
                 </thead>
                 <!-- height is: 37 + (36 * n visible rows)-->
                 <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
-                    <tr *ngFor="let resource of moreSpecifics.resources" class="break-all-word">
+                    @for (resource of moreSpecifics.resources; track resource) {
+                    <tr class="break-all-word">
                         <td class="w30">
                             <a class="link-color" [routerLink]="['/myresources/detail', resource.type, resource.resource, sponsored]">
                                 <name-formatter [name]="resource.resource" [type]="resource.type"></name-formatter>
@@ -49,10 +47,16 @@
                         <td class="w20">{{ resource.status }}</td>
                         <td class="w50">{{ resource.netname }}</td>
                     </tr>
+                    }
                 </tbody>
             </table>
+            }
         </div>
-        <div class="alert alert-warning" *ngIf="moreSpecifics.resources.length === 0">No more specific objects exist.</div>
+        @if (moreSpecifics.resources.length === 0) {
+        <div class="alert alert-warning">No more specific objects exist.</div>
+        }
     </div>
-    <refresh *ngIf="showRefreshButton" reason="There was problem reading more specifics resources please try again" (refreshClbk)="ngOnChanges()"></refresh>
+    } @if (showRefreshButton) {
+    <refresh reason="There was problem reading more specifics resources please try again" (refreshClbk)="ngOnChanges()"></refresh>
+    }
 </section>

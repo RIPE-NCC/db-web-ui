@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
@@ -41,7 +40,7 @@ export enum BannerTypes {
     selector: 'banner',
     templateUrl: './banner.component.html',
     styleUrl: 'banner.component.scss',
-    imports: [NgIf, MatButton, MatDialogClose],
+    imports: [MatButton, MatDialogClose],
     standalone: true,
 })
 export class BannerComponent implements OnInit {

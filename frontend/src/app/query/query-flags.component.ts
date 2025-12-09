@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges, inject } from '@angular/core';
 import { FlagComponent } from '../shared/flag/flag.component';
 import { LabelPipe } from '../shared/label.pipe';
@@ -8,7 +7,7 @@ import { IQueryFlag, QueryFlagsService } from './query-flags.service';
     selector: 'query-flags',
     templateUrl: './query-flags.component.html',
     standalone: true,
-    imports: [NgIf, NgFor, FlagComponent, LabelPipe],
+    imports: [FlagComponent, LabelPipe],
 })
 export class QueryFlagsComponent implements OnChanges {
     private queryFlagsService = inject(QueryFlagsService);

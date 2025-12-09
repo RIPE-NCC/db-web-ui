@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +28,6 @@ import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down
         NgbNavItemRole,
         NgbNavLink,
         NgbNavLinkBase,
-        NgIf,
         NgbNavOutlet,
         MatButton,
         TransferDropDownComponent,
@@ -37,7 +35,6 @@ import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down
         IpUsageOfAllResourcesComponent,
         NgbNavContent,
         LoadingIndicatorComponent,
-        NgFor,
         ResourceItemComponent,
         RefreshComponent,
         LabelPipe,

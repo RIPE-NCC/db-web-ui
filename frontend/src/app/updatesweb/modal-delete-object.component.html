@@ -1,51 +1,67 @@
 <div class="modal-content no-rounded">
     <div class="modal-header">
         <h2 class="modal-title" id="commonModalLabel">
-            <span *ngIf="canBeDeleted">Please provide the reason for delete</span>
-            <span *ngIf="!canBeDeleted">This object cannot be deleted</span>
+            @if (canBeDeleted) {
+            <span>Please provide the reason for delete</span>
+            } @else {
+            <span>This object cannot be deleted</span>
+            }
         </h2>
         <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
     </div>
 
     <div class="modal-body margin-left">
-        <div *ngIf="restCallInProgress">
+        @if (restCallInProgress) {
+        <div>
             <p>Retrieving information. Please wait.</p>
         </div>
-
-        <div *ngIf="canBeDeleted">
+        } @if (canBeDeleted) {
+        <div>
             <label for="reason">Reason</label><br />
             <input class="form-control" type="text" name="reason" id="reason" [(ngModel)]="reason" autocomplete="off" />
         </div>
-
-        <div *ngIf="hasNonSelfIncomingRefs(inputData.objectType, inputData.name, incomingReferences)">
-            <p *ngIf="!canBeDeleted">You can only delete unreferenced objects. Please remove the references from these objects first:</p>
-            <p *ngIf="canBeDeleted">Please note that this will also delete the following objects:</p>
+        } @if (hasNonSelfIncomingRefs(inputData.objectType, inputData.name, incomingReferences)) {
+        <div>
+            @if (canBeDeleted) {
+            <p>Please note that this will also delete the following objects:</p>
+            } @else {
+            <p>You can only delete unreferenced objects. Please remove the references from these objects first:</p>
+            }
 
             <ul class="bullets">
-                <ng-container *ngFor="let ref of incomingReferences | slice : 0 : MAX_REFS_TO_SHOW">
-                    <li *ngIf="!isEqualTo(inputData.objectType, inputData.name, ref)">
+                @for (ref of incomingReferences | slice : 0 : MAX_REFS_TO_SHOW; track ref) {
+                <ng-container>
+                    @if (!isEqualTo(inputData.objectType, inputData.name, ref)) {
+                    <li>
                         <div>
-                            {{ ref.objectType }} - <a rel="noopener" target="_blank" href="{{ displayUrl(ref) }}">{{ ref.primaryKey }}</a>
+                            {{ ref?.objectType }} - <a rel="noopener" target="_blank" href="{{ displayUrl(ref) }}">{{ ref.primaryKey }}</a>
                         </div>
                     </li>
+                    }
                 </ng-container>
+                }
             </ul>
-            <p *ngIf="incomingReferences.length > MAX_REFS_TO_SHOW">
-                There are {{ incomingReferences.length }}-{{ MAX_REFS_TO_SHOW }} more objects referring to {{ inputData.objectType }} {{ inputData.name }}
-            </p>
+            @if (incomingReferences.length > MAX_REFS_TO_SHOW) {
+            <p>There are {{ incomingReferences.length }}-{{ MAX_REFS_TO_SHOW }} more objects referring to {{ inputData.objectType }} {{ inputData.name }}</p>
+            }
         </div>
+        }
     </div>
 
     <div class="modal-footer">
-        <div *ngIf="showRoaMsg" class="modal-footer-info">
+        @if (showRoaMsg) {
+        <div class="modal-footer-info">
             <em class="fal fa-info-circle"></em>
             <div>There is an RPKI ROA for the same route. If you proceed to delete this route(6) object, you may want to delete the ROA as well.</div>
         </div>
-        <div *ngIf="canBeDeleted">
+        } @if (canBeDeleted) {
+        <div>
             <button id="btnConfirmDeleteObject" data-dismiss="modal" mat-flat-button color="warn" class="float-start" (click)="delete()">CONFIRM DELETE</button>
         </div>
-        <div *ngIf="!canBeDeleted">
+        } @else {
+        <div>
             <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">RETURN TO OBJECT</button>
         </div>
+        }
     </div>
 </div>

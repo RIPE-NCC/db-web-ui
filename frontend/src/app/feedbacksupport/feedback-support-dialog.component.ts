@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatLine } from '@angular/material/core';
 import { MatDialogActions, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
@@ -9,7 +8,7 @@ import { PropertiesService } from '../properties.service';
     selector: 'feedback-support-dialog',
     templateUrl: './feedback-support-dialog.component.html',
     standalone: true,
-    imports: [MatDialogTitle, MatDialogActions, MatActionList, MatListItem, MatLine, NgIf],
+    imports: [MatDialogTitle, MatDialogActions, MatActionList, MatListItem, MatLine],
 })
 export class FeedbackSupportDialogComponent implements OnInit {
     private properties = inject(PropertiesService);

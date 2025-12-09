@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -13,7 +12,7 @@ import { FmpErrorService } from './fmp-error.service';
     selector: 'find-maintainer',
     templateUrl: './find-maintainer.component.html',
     standalone: true,
-    imports: [FormsModule, MatButton, NgIf, NgFor],
+    imports: [FormsModule, MatButton],
 })
 export class FindMaintainerComponent implements OnInit {
     private findMaintainerService = inject(FindMaintainerService);

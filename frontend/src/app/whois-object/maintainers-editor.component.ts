@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
@@ -24,7 +24,7 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
     selector: 'maintainers-editor',
     templateUrl: './maintainers-editor.component.html',
     standalone: true,
-    imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgIf, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
+    imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
 })
 export class MaintainersEditorComponent implements OnInit, OnDestroy {
     private attributeMetadataService = inject(AttributeMetadataService);

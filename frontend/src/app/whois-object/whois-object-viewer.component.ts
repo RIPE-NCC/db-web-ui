@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, SlicePipe } from '@angular/common';
+import { NgClass, SlicePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -17,7 +17,7 @@ import { UserInfoService } from '../userinfo/user-info.service';
     selector: 'whois-object-viewer',
     templateUrl: './whois-object-viewer.component.html',
     standalone: true,
-    imports: [NgIf, MatCheckbox, NgClass, NgFor, MatTooltip, RouterLink, MatButton, SlicePipe, LabelPipe],
+    imports: [MatCheckbox, NgClass, MatTooltip, RouterLink, MatButton, SlicePipe, LabelPipe],
 })
 export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     private userInfoService = inject(UserInfoService);

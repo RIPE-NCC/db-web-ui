@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -29,9 +28,7 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
     imports: [
         FormsModule,
         SearchFieldComponent,
-        NgIf,
         MatButton,
-        NgFor,
         HelpMarkerComponent,
         SubmittingAgreementComponent,
         FullTextResultSummaryComponent,

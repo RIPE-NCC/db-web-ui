@@ -1,4 +1,5 @@
-<div *ngIf="!member" class="padding margin-bottom">
+@if (!member) {
+<div class="padding margin-bottom">
     <p>Earn the RIPE Database Associate certification</p>
 
     Do you use the RIPE Database regularly as a researching and data registration tool? You can earn a verifiable digital badge from the RIPE NCC that certifies
@@ -9,7 +10,8 @@
         >Find out more <em class="fal fa-external-link"></em>
     </a>
 </div>
-<div *ngIf="member" class="border padding margin-bottom">
+} @else {
+<div class="border padding margin-bottom">
     <p>Does your CV show your RIPE Database expertise?</p>
 
     Do you use the RIPE Database regularly as a researching and data registration tool? You can earn a verifiable digital badge that certifies your skills and
@@ -18,3 +20,4 @@
     <p>&nbsp;</p>
     <a target="_blank" class="link-color" href="https://academy.ripe.net/my/">Find out more <em class="fal fa-external-link"></em></a>
 </div>
+}

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -13,7 +12,7 @@ import { TypeOfSearchTermEnum } from './type-of-search-term.enum';
     selector: 'inverse-lookup-panel',
     templateUrl: './inverse-lookup-panel.component.html',
     standalone: true,
-    imports: [NgIf, MatCheckbox, FormsModule, LabelPipe],
+    imports: [MatCheckbox, FormsModule, LabelPipe],
 })
 export class InverseLookupPanelComponent implements OnInit, OnChanges {
     @Input()

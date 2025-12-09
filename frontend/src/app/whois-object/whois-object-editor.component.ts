@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import * as _ from 'lodash';
@@ -16,7 +15,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
     selector: 'whois-object-editor',
     templateUrl: './whois-object-editor.component.html',
     standalone: true,
-    imports: [NgFor, AttributeRendererComponent, SubmittingAgreementComponent, NgIf, MatButton, FilteroutAttributeByHiddenPipe, FilteroutAttributeByNamePipe],
+    imports: [AttributeRendererComponent, SubmittingAgreementComponent, MatButton, FilteroutAttributeByHiddenPipe, FilteroutAttributeByNamePipe],
 })
 export class WhoisObjectEditorComponent implements OnInit {
     private attributeMetadataService = inject(AttributeMetadataService);
@@ -160,4 +159,6 @@ export class WhoisObjectEditorComponent implements OnInit {
         });
         return missing;
     }
+
+    protected readonly String = String;
 }

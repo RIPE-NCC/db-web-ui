@@ -1,7 +1,7 @@
 <div>
     <ripe-header (ripe-header-menu-toggle)="open($event)">
+        @if (!properties.isTestEnv() && !properties.isTrainingEnv() && !properties.isRcEnv()) {
         <svg
-            *ngIf="!properties.isTestEnv() && !properties.isTrainingEnv() && !properties.isRcEnv()"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
@@ -117,8 +117,8 @@
                 />
             </g>
         </svg>
+        } @if (properties.isTestEnv() && isDesktopView) {
         <svg
-            *ngIf="properties.isTestEnv() && isDesktopView"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
@@ -244,8 +244,8 @@
                 />
             </g>
         </svg>
+        } @if (properties.isTestEnv() && !isDesktopView) {
         <svg
-            *ngIf="properties.isTestEnv() && !isDesktopView"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
@@ -311,8 +311,8 @@
                 />
             </g>
         </svg>
+        } @if (properties.isRcEnv() && isDesktopView) {
         <svg
-            *ngIf="properties.isRcEnv() && isDesktopView"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
@@ -429,8 +429,8 @@
                 />
             </g>
         </svg>
+        } @if (properties.isRcEnv() && !isDesktopView) {
         <svg
-            *ngIf="properties.isRcEnv() && !isDesktopView"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
@@ -487,8 +487,8 @@
                 />
             </g>
         </svg>
+        } @if (properties.isTrainingEnv() && isDesktopView) {
         <svg
-            *ngIf="properties.isTrainingEnv() && isDesktopView"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
@@ -627,8 +627,8 @@
                 />
             </g>
         </svg>
+        } @if (properties.isTrainingEnv() && !isDesktopView) {
         <svg
-            *ngIf="properties.isTrainingEnv() && !isDesktopView"
             slot="logo-app"
             version="1.1"
             id="Layer_1"
@@ -708,6 +708,7 @@
                 />
             </g>
         </svg>
+        }
         <app-switcher #switcher class="web-component" [appenv]="properties.RIPE_APP_WEBCOMPONENTS_ENV" [current]="'database'"></app-switcher>
         <user-login class="web-component" [accessurl]="properties.LOGIN_URL" [logoutredirecturl]="properties.LOGOUT_URL"></user-login>
     </ripe-header>
@@ -717,28 +718,36 @@
     <div id="main-wrapper">
         <section id="app-banners-container">
             <ngx-loading-bar></ngx-loading-bar>
-            <app-banner *ngIf="properties.BANNER" id="notification-1" level="warning" unsafehtml="{{ properties.BANNER }}" permanent="true"></app-banner>
+            @if (properties.BANNER) {
+            <app-banner id="notification-1" level="warning" unsafehtml="{{ properties.BANNER }}" permanent="true"></app-banner>
+            }
         </section>
         <div class="main-content">
-            <banner *ngIf="!isBrowserSupported" [type]="BannerTypes.warning" [id]="'notification-browser'" [textContent]="browserUnsuportedText"> </banner>
+            @if (!isBrowserSupported) {
+            <banner [type]="BannerTypes.warning" [id]="'notification-browser'" [textContent]="browserUnsuportedText"> </banner>
+            } @if (showSessionExpireBanner) {
             <banner
-                *ngIf="showSessionExpireBanner"
                 [type]="BannerTypes.warning"
                 [id]="'notification-warning-session'"
                 [textContent]="'msg.sessionTimeout.text' | label"
                 [buttonUrl]="loginUrl"
                 [buttonText]="'LOGIN'"
             ></banner>
+            }
             <alert-banners></alert-banners>
             <app-cookie-consent></app-cookie-consent>
             <section id="app-workspace">
-                <div id="org-drop-down" *ngIf="!isQueryPage()">
+                @if (!isQueryPage()) {
+                <div id="org-drop-down">
                     <org-drop-down></org-drop-down>
                 </div>
+                }
                 <div>
                     <router-outlet></router-outlet>
                     <ngx-loading-bar></ngx-loading-bar>
-                    <web-app-version *ngIf="!isQueryPage()"></web-app-version>
+                    @if (!isQueryPage()) {
+                    <web-app-version></web-app-version>
+                    }
                 </div>
                 <div class="space-bottom-for-livechat"></div>
                 <live-chat style="right: 20px; bottom: 20px" chatkey="{{ properties.LIVE_CHAT_KEY }}" accessurl="{{ properties.LOGIN_URL }}"></live-chat>

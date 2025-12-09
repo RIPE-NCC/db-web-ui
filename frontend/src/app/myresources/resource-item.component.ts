@@ -1,4 +1,4 @@
-import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { DecimalPipe, NgClass } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgbProgressbar, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
@@ -11,7 +11,7 @@ import { ResourceStatusService } from './resource-status.service';
     selector: 'resource-item',
     templateUrl: './resource-item.component.html',
     standalone: true,
-    imports: [RouterLink, NameFormatterComponent, NgIf, NgFor, FlagComponent, NgClass, NgbTooltip, NgbProgressbar, DecimalPipe],
+    imports: [RouterLink, NameFormatterComponent, FlagComponent, NgClass, NgbTooltip, NgbProgressbar, DecimalPipe],
 })
 export class ResourceItemComponent implements OnInit {
     private router = inject(Router);

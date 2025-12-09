@@ -1,6 +1,9 @@
-<div *ngIf="whoisObject.attributes">
-    <div class="lookupheader" *ngIf="header">
-        <span *ngIf="resourceHolderFound">
+@if (whoisObject.attributes) {
+<div>
+    @if (header) {
+    <div class="lookupheader">
+        @if (resourceHolderFound) {
+        <span>
             Responsible organisation:
             <a
                 [routerLink]="['/lookup']"
@@ -11,7 +14,8 @@
             >
             <br />
         </span>
-        <span *ngIf="abuseContactFound">
+        } @if (abuseContactFound) {
+        <span>
             Abuse contact info:
             <a
                 [routerLink]="['/lookup']"
@@ -19,12 +23,16 @@
                 target="_blank"
                 class="link-color"
                 >{{ whoisObject['abuse-contact'].email }}</a
-            > </span
-        ><span *ngIf="!abuseContactFound">
+            >
+        </span>
+        } @else {
+        <span>
             <i>{{ 'msg.noAbuseContactFound.text' | label }}</i>
         </span>
+        }
         <br />
-        <span *ngIf="abuseContactSuspected && !abuseContactSuspectedWithoutOrgid"
+        @if (abuseContactSuspected && !abuseContactSuspectedWithoutOrgid) {
+        <span
             >Abuse-mailbox validation failed. Please refer to
             <a
                 class="link-color"
@@ -34,12 +42,19 @@
             >
             for further information.</span
         >
+        }
     </div>
+    }
     <!--  Warning message for object conflicting with an overlapping RPKI ROA  -->
-    <div class="lookupheader" *ngIf="whoisObject.objectmessages?.objectmessage[0]">
-        <div *ngFor="let message of formatObjectMessages(whoisObject)">
+    @if (whoisObject.objectmessages?.objectmessage[0]) {
+    <div class="lookupheader">
+        @for (message of formatObjectMessages(whoisObject); track message) {
+        <div>
             <span>{{ message }}</span>
         </div>
+        }
     </div>
+    }
     <whois-object-viewer [model]="whoisObject" [linkable]="true"></whois-object-viewer>
 </div>
+}

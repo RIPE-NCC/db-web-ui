@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -32,7 +31,7 @@ export interface ITextObject {
     selector: 'text-create',
     templateUrl: './text-create.component.html',
     standalone: true,
-    imports: [MatButton, FormsModule, NgIf, SubmittingAgreementComponent],
+    imports: [MatButton, FormsModule, SubmittingAgreementComponent],
 })
 export class TextCreateComponent implements OnInit {
     whoisResourcesService = inject(WhoisResourcesService);

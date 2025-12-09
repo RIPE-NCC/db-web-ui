@@ -14,7 +14,8 @@
         <strong>Object to be deleted</strong>
         <br /><br />
         <table class="success-fields td-20 grey" aria-describedby="table objects to be deleted">
-            <tr *ngFor="let attribute of object.attributes">
+            @for (attribute of object.attributes; track attribute) {
+            <tr>
                 <td>
                     <label>{{ attribute.name }}:</label>
                 </td>
@@ -22,6 +23,7 @@
                     <p>{{ attribute.value }}</p>
                 </td>
             </tr>
+            }
         </table>
 
         <span>

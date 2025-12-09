@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusDirective } from '../autofocus.directive';
@@ -8,7 +7,7 @@ import { AutoFocusDirective } from '../autofocus.directive';
     templateUrl: './search-field.component.html',
     styleUrl: 'search-field.component.scss',
     standalone: true,
-    imports: [FormsModule, NgIf, AutoFocusDirective],
+    imports: [FormsModule, AutoFocusDirective],
 })
 export class SearchFieldComponent {
     @Input()

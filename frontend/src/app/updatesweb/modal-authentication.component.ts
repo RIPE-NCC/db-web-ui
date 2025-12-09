@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -31,7 +30,7 @@ export interface IModalAuthentication {
     selector: 'modal-authentication',
     templateUrl: './modal-authentication.component.html',
     standalone: true,
-    imports: [FormsModule, NgIf, BannerComponent, NgFor, RouterLink, MatButton],
+    imports: [FormsModule, BannerComponent, RouterLink, MatButton],
 })
 export class ModalAuthenticationComponent implements OnInit {
     private activeModal = inject(NgbActiveModal);

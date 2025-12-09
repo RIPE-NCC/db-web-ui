@@ -5,13 +5,10 @@
             <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
         </div>
         <div class="modal-body">
-            <banner
-                *ngIf="selected.message?.length > 0"
-                [type]="BannerTypes.error"
-                [id]="'notification-error-authentication'"
-                [textContent]="selected.message"
-            ></banner>
-            <div *ngIf="resolve.mntners && resolve.mntners.length > 0">
+            @if (selected.message?.length > 0) {
+            <banner [type]="BannerTypes.error" [id]="'notification-error-authentication'" [textContent]="selected.message"></banner>
+            } @if (resolve.mntners && resolve.mntners.length > 0) {
+            <div>
                 <ul>
                     <li>
                         <label for="selectAuthMntnerForSSOPrefill">Select a maintainer to authenticate the update operation.</label>
@@ -22,7 +19,9 @@
                             required="true"
                             class="form-control select-height"
                         >
-                            <option *ngFor="let item of resolve.mntners" label="{{ item.key }}" [ngValue]="item">{{ item.key }}</option>
+                            @for (item of resolve.mntners; track item) {
+                            <option label="{{ item.key }}" [ngValue]="item">{{ item.key }}</option>
+                            }
                         </select>
                     </li>
                     <li>
@@ -34,15 +33,19 @@
                     </li>
                 </ul>
             </div>
+            }
         </div>
 
         <div class="modal-footer">
-            <div *ngIf="resolve.mntners.length === 0">
+            @if (resolve.mntners.length === 0) {
+            <div>
                 <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
             </div>
-            <div *ngIf="resolve.mntners.length > 0">
+            } @if (resolve.mntners.length > 0) {
+            <div>
                 <button mat-flat-button color="primary" class="float-end" type="submit">SUBMIT</button>
             </div>
+            }
         </div>
     </form>
 </div>

@@ -5,9 +5,11 @@
         <div>
             <label for="forceDeleteSelect">Object type</label>
             <select id="forceDeleteSelect" [ngModel]="selected.objectType" [required]="true">
-                <option *ngFor="let objectType of objectTypes" label="{{ objectType }}" value="{{ objectType }}" class="form-control select-height">
+                @for (objectType of objectTypes; track objectType) {
+                <option label="{{ objectType }}" value="{{ objectType }}" class="form-control select-height">
                     {{ objectType }}
                 </option>
+                }
             </select>
             <br />
             <label

@@ -21,7 +21,7 @@ describe('Create key-cert', () => {
         cy.expectCurrentUrlToContain('webupdates/create/RIPE/key-cert');
     });
 
-    it.only('should successfully add certif to create form', () => {
+    it('should successfully add certif to create form', () => {
         webupdatesPage
             .selectObjectType('key-cert')
             .clickOnCreateButton()

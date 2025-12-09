@@ -7,6 +7,16 @@ import { catchError, debounceTime, distinctUntilChanged, map, switchMap, tap } f
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IMntByModel } from '../shared/whois-response-type.model';
 
+export type ReferenceItem = {
+    primaryKey: string;
+    objectType: string;
+};
+
+export type References = ReferenceItem & {
+    incoming?: ReferenceItem[];
+    outgoing?: ReferenceItem[];
+};
+
 @Injectable({ providedIn: 'root' })
 export class RestService {
     private http = inject(HttpClient);
@@ -31,7 +41,7 @@ export class RestService {
         return this.http.get('api/whois/search', { params });
     }
 
-    public getReferences(source: string, objectType: string, name: string, limit: string) {
+    public getReferences(source: string, objectType: string, name: string, limit: string): Observable<References> {
         const params = new HttpParams().set('limit', limit);
         return this.http.get(`api/references/${source.toUpperCase()}/${objectType}/${encodeURIComponent(name)}`, { params }).pipe(
             tap({

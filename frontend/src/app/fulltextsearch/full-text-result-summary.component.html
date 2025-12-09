@@ -1,4 +1,5 @@
-<table class="table table-hover table-condensed full-text-result-summary" *ngIf="tabledata.length > 0" aria-label="search results">
+@if (tabledata.length > 0) {
+<table class="table table-hover table-condensed full-text-result-summary" aria-label="search results">
     <thead>
         <tr>
             <th scope="col">Number of results - all object types</th>
@@ -8,11 +9,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let td of tabledata" (click)="emitRowClicked({ type: td })">
+        @for (td of tabledata; track td.name) {
+        <tr tabindex="0" role="row" (click)="emitRowClicked({ type: td })" (keydown)="onRowKeydown($event, td)">
             <td>{{ td.name }}</td>
             <td>
                 <span class="float-end">{{ td.value | number }}</span>
             </td>
         </tr>
+        }
     </tbody>
 </table>
+}

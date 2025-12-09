@@ -1,8 +1,8 @@
 <span>
+    @if (text) {
     <span
         class="flag"
         #popover="ngbPopover"
-        *ngIf="text"
         [ngbPopover]="tooltip"
         placement="bottom"
         autoClose="true"
@@ -12,4 +12,5 @@
     >
         {{ text }}
     </span>
+    }
 </span>

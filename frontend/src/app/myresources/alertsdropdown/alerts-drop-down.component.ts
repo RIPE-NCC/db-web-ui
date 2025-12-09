@@ -1,10 +1,8 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { IUserInfoOrganisation } from '../../dropdown/org-data-type.model';
-import { UserInfoService } from '../../userinfo/user-info.service';
 import { IpAddressService } from '../ip-address.service';
 import { IIpv4AllocationAnalysis, IIpv4Analysis, IIpv4OverlappingInetnumsAnalysis } from '../resource-type.model';
 import { ResourcesDataService } from '../resources-data.service';
@@ -13,10 +11,9 @@ import { ResourcesDataService } from '../resources-data.service';
     selector: 'alerts-drop-down',
     templateUrl: './alerts-drop-down.component.html',
     standalone: true,
-    imports: [NgIf, NgbDropdown, MatButton, NgbPopover, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgFor],
+    imports: [NgbDropdown, MatButton, NgbPopover, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem],
 })
 export class AlertsDropDownComponent implements OnChanges {
-    private userInfoService = inject(UserInfoService);
     private resourcesDataService = inject(ResourcesDataService);
     private route = inject(Router);
 
@@ -28,7 +25,7 @@ export class AlertsDropDownComponent implements OnChanges {
     public hasAllocations: boolean = false;
 
     public showDetail(resource: string): void {
-        this.route.navigate(['myresources/detail', 'inetnum', resource, 'false']);
+        void this.route.navigate(['myresources/detail', 'inetnum', resource, 'false']);
     }
 
     ngOnChanges(changes: SimpleChanges): void {

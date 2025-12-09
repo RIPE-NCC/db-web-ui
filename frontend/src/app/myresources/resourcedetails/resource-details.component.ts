@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnDestroy, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -41,10 +41,8 @@ import { ResourcesDataService } from '../resources-data.service';
     standalone: true,
     imports: [
         NameFormatterComponent,
-        NgFor,
         FlagComponent,
         NgClass,
-        NgIf,
         HierarchySelectorComponent,
         IpUsageComponent,
         MatButton,

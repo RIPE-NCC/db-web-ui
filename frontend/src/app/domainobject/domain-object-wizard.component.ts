@@ -1,4 +1,4 @@
-import { Location, NgIf } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -34,7 +34,7 @@ interface IDomainObject {
 @Component({
     selector: 'domain-object-wizard',
     templateUrl: './domain-object-wizard.component.html',
-    imports: [NgIf, MaintainersEditorComponent, WhoisObjectEditorComponent],
+    imports: [MaintainersEditorComponent, WhoisObjectEditorComponent],
 })
 export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     private jsUtils = inject(JsUtilService);

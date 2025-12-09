@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../properties.service';
@@ -11,7 +10,7 @@ import { WhoisObjectViewerComponent } from '../whois-object/whois-object-viewer.
     selector: 'lookup',
     templateUrl: './lookup.component.html',
     standalone: true,
-    imports: [NgIf, RouterLink, NgFor, WhoisObjectViewerComponent, LabelPipe],
+    imports: [RouterLink, WhoisObjectViewerComponent, LabelPipe],
 })
 export class LookupComponent implements OnChanges {
     properties = inject(PropertiesService);

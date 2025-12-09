@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -26,17 +25,7 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
     selector: 'create-mntner-pair',
     templateUrl: './create-mntner-pair.component.html',
     standalone: true,
-    imports: [
-        NgFor,
-        NgIf,
-        FormsModule,
-        DescriptionSyntaxComponent,
-        RouterLink,
-        SubmittingAgreementComponent,
-        MatButton,
-        FilteroutAttributeByNamePipe,
-        SanitizeImgHtmlPipe,
-    ],
+    imports: [FormsModule, DescriptionSyntaxComponent, RouterLink, SubmittingAgreementComponent, MatButton, FilteroutAttributeByNamePipe, SanitizeImgHtmlPipe],
 })
 export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     whoisResourcesService = inject(WhoisResourcesService);

@@ -3,30 +3,43 @@
         <name-formatter [name]="objectName" [type]="objectType"></name-formatter>
     </h1>
     <div class="flags-container">
-        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text" uppercase></flag>
+        @for (flag of flags; track flag) {
+        <flag [ngClass]="flag.colour" [tooltip]="flag.tooltip" [text]="flag.text" uppercase></flag>
+        }
     </div>
 </section>
 <section class="back-to-my-resources">
-    <hierarchy-selector *ngIf="resource" [resource]="resource"> </hierarchy-selector>
+    @if (resource) {
+    <hierarchy-selector [resource]="resource"> </hierarchy-selector>
+    }
 </section>
-<ip-usage *ngIf="showUsage" [type]="objectType" [usage]="resource.usage"></ip-usage>
+@if (showUsage) {
+<ip-usage [type]="objectType" [usage]="resource.usage"></ip-usage>
+}
 
 <section class="db-object" id="editortop">
     <div class="align-center">
         <h2 class="no-margin">Object in RIPE Database</h2>
-        <button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" *ngIf="isEditing && isWebEditingMode" (click)="switchToTextMode()">
+        @if (isEditing && isWebEditingMode) {
+        <button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" (click)="switchToTextMode()">
             <span class="fal fa-edit"></span> EDIT IN TEXT AREA
         </button>
-        <button mat-flat-button color="primary" id="btnSwitchToTextModify" class="float-end" *ngIf="isEditing && !isWebEditingMode" (click)="switchToWebMode()">
+        } @if (isEditing && !isWebEditingMode) {
+        <button mat-flat-button color="primary" id="btnSwitchToTextModify" class="float-end" (click)="switchToWebMode()">
             <span class="fal fa-bars"></span> EDIT IN SINGLE LINES
         </button>
+        }
     </div>
-    <loading-indicator class="resource-page-message" *ngIf="loadingResource"></loading-indicator>
-    <div *ngIf="whoisObject && !showRefreshButton && !loadingResource">
-        <div class="resultpane" *ngIf="!isEditing">
+    @if (loadingResource) {
+    <loading-indicator class="resource-page-message"></loading-indicator>
+    } @if (whoisObject && !showRefreshButton && !loadingResource) {
+    <div>
+        @if (!isEditing) {
+        <div class="resultpane">
             <whois-object-viewer [model]="whoisObject" (updateClicked)="showObjectEditor()"></whois-object-viewer>
         </div>
-        <div *ngIf="isEditing && isWebEditingMode">
+        } @if (isEditing && isWebEditingMode) {
+        <div>
             <maintainers-editor [whoisObject]="whoisObject" (authenticationFailedClbk)="hideObjectEditor()"></maintainers-editor>
             <whois-object-editor
                 [model]="whoisObject"
@@ -37,8 +50,8 @@
                 (deleteClicked)="deleteClicked()"
             ></whois-object-editor>
         </div>
+        } @if (isEditing && !isWebEditingMode) {
         <whois-object-text-editor
-            *ngIf="isEditing && !isWebEditingMode"
             [type]="objectType"
             [source]="source"
             [objectName]="objectName"
@@ -46,27 +59,33 @@
             (cancelEvent)="isEditing = false"
             (deleteEvent)="deleteClicked()"
         ></whois-object-text-editor>
+        }
     </div>
-    <refresh *ngIf="showRefreshButton" reason="There was problem reading resource please try again" (refreshClbk)="init()"></refresh>
+    } @if (showRefreshButton) {
+    <refresh reason="There was problem reading resource please try again" (refreshClbk)="init()"></refresh>
+    }
 </section>
 
-<div *ngIf="!showRefreshButton && !loadingResource">
+@if (!showRefreshButton && !loadingResource) {
+<div>
     <more-specifics id="more-specifics" [objectType]="objectType" [objectName]="objectName" [sponsored]="sponsored"></more-specifics>
 
+    @if (resource?.iRR) {
     <associated-objects
         id="associated-route-objects"
-        *ngIf="resource?.iRR"
         title="Associated Route Objects"
         associatedType="route"
         [objectType]="objectType"
         [objectName]="objectName"
     ></associated-objects>
+    } @if (resource?.rDNS) {
     <associated-objects
         id="associated-domain-objects"
-        *ngIf="resource?.rDNS"
         title="Associated Domain Objects"
         associatedType="domain"
         [objectType]="objectType"
         [objectName]="objectName"
     ></associated-objects>
+    }
 </div>
+}

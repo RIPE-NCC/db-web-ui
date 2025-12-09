@@ -5,9 +5,11 @@
     </div>
     <div class="modal-body margin-left">
         <select [(ngModel)]="selected" class="form-control select-height">
-            <option [attr.label]="attr.name" *ngFor="let attr of items | filteroutAttributeByName : ['mnt-by', 'sponsoring-org']" [ngValue]="attr">
+            @for (attr of items | filteroutAttributeByName : ['mnt-by', 'sponsoring-org']; track attr) {
+            <option [attr.label]="attr.name" [ngValue]="attr">
                 {{ attr.name }}
             </option>
+            }
         </select>
     </div>
     <div class="modal-footer">

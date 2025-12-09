@@ -1,4 +1,4 @@
-import { Location, NgIf } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
@@ -14,11 +14,13 @@ import { MenuService } from './menu.service';
 @Component({
     selector: 'swe-menu',
     template: `
-        <app-nav-bar *ngIf="isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
-        <app-nav-bar *ngIf="!isUserLogged" (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
+        @if (isUserLogged) {
+        <app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
+        } @else {
+        <app-nav-bar (app-nav-bar-select)="onNavBarSelected($event)" [menu]="menu" [open]="open" [active]="activeItem"></app-nav-bar>
+        }
     `,
     standalone: true,
-    imports: [NgIf],
     schemas: [CUSTOM_ELEMENTS_SCHEMA], // web component
 })
 export class MenuComponent implements OnInit, OnDestroy {

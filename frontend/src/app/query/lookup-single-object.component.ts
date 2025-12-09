@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -14,7 +13,7 @@ import { LookupService } from './lookup.service';
     selector: 'lookup-single',
     templateUrl: './lookup-single-object.component.html',
     standalone: true,
-    imports: [NgIf, LookupComponent, WhoisVersionComponent],
+    imports: [LookupComponent, WhoisVersionComponent],
 })
 export class LookupSingleObjectComponent implements OnInit, OnDestroy {
     private lookupService = inject(LookupService);

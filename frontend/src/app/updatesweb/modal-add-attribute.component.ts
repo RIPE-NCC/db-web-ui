@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -9,7 +8,7 @@ import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-n
     selector: 'modal-add-attribute',
     templateUrl: './modal-add-attribute.component.html',
     standalone: true,
-    imports: [FormsModule, NgFor, MatButton, FilteroutAttributeByNamePipe],
+    imports: [FormsModule, MatButton, FilteroutAttributeByNamePipe],
 })
 export class ModalAddAttributeComponent implements OnInit {
     private activeModal = inject(NgbActiveModal);

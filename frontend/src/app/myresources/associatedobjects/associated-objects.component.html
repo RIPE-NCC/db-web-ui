@@ -1,4 +1,5 @@
-<section class="associated-objects" *ngIf="canHaveAssociatedObjects">
+@if (canHaveAssociatedObjects) {
+<section class="associated-objects">
     <h2>{{ title }}</h2>
     <div class="prefix-filter">
         <div class="input-group">
@@ -17,19 +18,16 @@
                 </button>
             </span>
         </div>
-        <span *ngIf="filter; else msgWithoutFilter" class="float-end">
-            Showing {{ resultObject.filteredSize }} out of {{ resultObject.totalNumberOfResources }}
-        </span>
-        <ng-template #msgWithoutFilter>
-            <span class="float-end"> Total associated {{ associatedType }}s: {{ resultObject.totalNumberOfResources }} </span>
-        </ng-template>
+        @if (filter) {
+        <span class="float-end"> Showing {{ resultObject.filteredSize }} out of {{ resultObject.totalNumberOfResources }} </span>
+        } @else {
+        <span class="float-end"> Total associated {{ associatedType }}s: {{ resultObject.totalNumberOfResources }} </span>
+        }
     </div>
-    <div *ngIf="isShowingAssociatedRouteObjects; else domainAssociatedObjects">
-        <table
-            class="table table-bordered table-body-borderless resources table-striped"
-            *ngIf="resultObject.associatedObjects.length > 0"
-            aria-label="associated route objects"
-        >
+    @if (isShowingAssociatedRouteObjects) {
+    <div>
+        @if (resultObject.associatedObjects.length > 0) {
+        <table class="table table-bordered table-body-borderless resources table-striped" aria-label="associated route objects">
             <thead>
                 <tr>
                     <th class="w30">Origin</th>
@@ -38,7 +36,9 @@
                 </tr>
             </thead>
             <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
-                <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i" class="break-all-word">
+                @for (associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; let i = $index; track associatedObject) { @if
+                (isAssociatedRouteObject(associatedObject)) {
+                <tr class="break-all-word">
                     <td class="w30">
                         <a
                             class="link-color"
@@ -60,17 +60,15 @@
                         >
                     </td>
                 </tr>
+                } }
             </tbody>
         </table>
-        <div class="alert alert-warning" *ngIf="resultObject.associatedObjects.length === 0">No associated route objects exist.</div>
+        } @if (resultObject.associatedObjects.length === 0) {
+        <div class="alert alert-warning">No associated route objects exist.</div>
+        }
     </div>
-</section>
-<ng-template #domainAssociatedObjects>
-    <table
-        class="table table-bordered table-body-borderless resources table-striped"
-        *ngIf="resultObject.associatedObjects.length > 0"
-        aria-label="domain associated objects"
-    >
+    } @else { @if (resultObject.associatedObjects.length > 0) {
+    <table class="table table-bordered table-body-borderless resources table-striped" aria-label="domain associated objects">
         <thead>
             <tr>
                 <th scope="col" class="w40">Domain</th>
@@ -78,7 +76,9 @@
             </tr>
         </thead>
         <tbody [ngStyle]="{ height: tableHeight + 'px' }" table-scroller (scrolled)="almostOnScreen()">
-            <tr *ngFor="let associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; index as i">
+            @for (associatedObject of resultObject.associatedObjects | slice : 0 : nrAssociatedObjectToShow; let i = $index; track associatedObject) { @if
+            (isAssociatedDomainObject(associatedObject)) {
+            <tr>
                 <td class="w40">
                     <a
                         class="link-color"
@@ -93,7 +93,11 @@
                     <a class="link-color" [routerLink]="['/webupdates/modify', source, 'domain', associatedObject.domain]" target="_blank">Manage</a>
                 </td>
             </tr>
+            } }
         </tbody>
     </table>
-    <div class="alert alert-warning" *ngIf="resultObject.associatedObjects.length === 0">No associated domain objects exist.</div>
-</ng-template>
+    } @if (resultObject.associatedObjects.length === 0) {
+    <div class="alert alert-warning">No associated domain objects exist.</div>
+    } }
+</section>
+}

@@ -7,12 +7,16 @@
     <form class="grey padding margin-bottom" style="overflow: auto" (submit)="searchClicked()">
         <search-field [(queryText)]="ftquery"></search-field>
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
-            <em *ngIf="!advancedSearch" class="fal fa-plus-square"></em>
-            <em *ngIf="advancedSearch" class="fal fa-minus-square"></em>
+            @if (!advancedSearch) {
+            <em class="fal fa-plus-square"></em>
+            } @if (advancedSearch) {
+            <em class="fal fa-minus-square"></em>
+            }
             <a mat-button class="padding-left link-pointer">{{ (advancedSearch && 'Basic') || 'Advanced' }} Search</a>
         </div>
 
-        <div *ngIf="advancedSearch">
+        @if (advancedSearch) {
+        <div>
             <table class="table-radio" aria-label="advanced search">
                 <tbody>
                     <tr>
@@ -47,7 +51,9 @@
                         (change)="objectTypeChanged()"
                         [(ngModel)]="selectedObjectTypes"
                     >
-                        <option *ngFor="let o of objectTypes" [value]="o">{{ o }}</option>
+                        @for (type of objectTypes; track type) {
+                        <option [value]="type">{{ type }}</option>
+                        }
                     </select>
                     <span class="small link-pointer">
                         <a class="inner-link-color" (click)="selectAll()">Select all</a> |
@@ -66,29 +72,36 @@
                         size="{{ objectTypes.length }}"
                         [(ngModel)]="selectedAttrs"
                     >
-                        <option *ngFor="let a of selectableAttributes" [value]="a">{{ a }}</option>
+                        @for (attr of selectableAttributes; track attr) {
+                        <option [value]="attr">{{ attr }}</option>
+                        }
                     </select>
                 </div>
             </div>
         </div>
+        }
         <submitting-agreement></submitting-agreement>
     </form>
 </section>
-<section *ngIf="results && results.length > 0">
+@if (results && results.length > 0) {
+<section>
     <div class="grey padding" id="resultsAnchor">
         <h2>Search results</h2>
         <p [innerHTML]="'msg.searchResultsFullTextTandCLink.text' | label"></p>
-        <full-text-result-summary *ngIf="resultSummary" [tabledata]="resultSummary" (rowClicked)="addObjectToFilter($event)"></full-text-result-summary>
+        @if (resultSummary) {
+        <full-text-result-summary [tabledata]="resultSummary" (rowClicked)="addObjectToFilter($event)"></full-text-result-summary>
+        } @if (results) {
         <paginator
-            *ngIf="results"
             [pages]="navbarSyncArray"
             [activePage]="activePage"
             [numResults]="numResults"
             [resultsPerPage]="numResultsPerPage"
             (pageClicked)="pageClicked($event)"
         ></paginator>
+        }
         <div class="padding">
-            <div class="margin-bottom grey-border-top padding-top results" *ngFor="let result of results">
+            @for (result of results; track result) {
+            <div class="margin-bottom grey-border-top padding-top results">
                 <div>
                     <a [routerLink]="['/lookup']" [queryParams]="{ source: properties.SOURCE, type: result.name, key: result.lookupKey }" target="_blank"
                         >{{ result.name }}: {{ result.lookupKey }}</a
@@ -96,7 +109,9 @@
                 </div>
                 <div class="small" [innerHTML]="getResultText(result) | sanitizeImgHtml"></div>
             </div>
+            }
         </div>
     </div>
 </section>
+}
 <whois-version [version]="whoisVersion"></whois-version>

@@ -1,5 +1,7 @@
 <div class="padding">
-    <em *ngIf="isMobileView" class="fal fa-times close" aria-label="Close"></em>
+    @if (isMobileView) {
+    <em class="fal fa-times close" aria-label="Close"></em>
+    }
     <div class="row radio">
         <div class="col-md-4">
             <ul class="list-unstyled" (click)="$event.stopPropagation()">

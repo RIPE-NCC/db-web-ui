@@ -5,39 +5,36 @@
             <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
         </div>
         <div class="modal-body">
-            <banner
-                *ngIf="selected.message?.length > 0"
-                [type]="BannerTypes.error"
-                [id]="'notification-error-authentication'"
-                [textContent]="selected.message"
-            ></banner>
-            <div *ngIf="resolve.mntners.length === 0">
+            @if (selected.message?.length > 0) {
+            <banner [type]="BannerTypes.error" [id]="'notification-error-authentication'" [textContent]="selected.message"></banner>
+            } @if (resolve.mntners.length === 0) {
+            <div>
+                @if (!resolve.isLirObject) {
                 <banner
-                    *ngIf="!resolve.isLirObject"
                     [type]="BannerTypes.error"
                     [id]="'notification-error-authentication'"
                     [textContent]="
                         'You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password.'
                     "
                 ></banner>
-                <span *ngIf="resolve.isLirObject">
+                } @if (resolve.isLirObject) {
+                <span>
+                    @if (resolve.mntnersWithoutPassword.length > 0) {
                     <banner
-                        *ngIf="resolve.mntnersWithoutPassword.length > 0"
                         [type]="BannerTypes.error"
                         [id]="'notification-error-authentication'"
                         [textContent]="
                             'You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password.'
                         "
                     ></banner>
-                    <banner
-                        *ngIf="resolve.mntnersWithoutPassword.length === 0"
-                        [type]="BannerTypes.error"
-                        [id]="'notification-error-authentication'"
-                        [textContent]="errorMsg"
-                    ></banner>
+                    } @if (resolve.mntnersWithoutPassword.length === 0) {
+                    <banner [type]="BannerTypes.error" [id]="'notification-error-authentication'" [textContent]="errorMsg"></banner>
+                    }
                 </span>
+                }
             </div>
-            <div *ngIf="resolve.mntners && resolve.mntners.length > 0">
+            } @if (resolve.mntners && resolve.mntners.length > 0) {
+            <div>
                 <ul>
                     <li>
                         <label for="selectAuthMntner">Select a maintainer to authenticate the update operation.</label>
@@ -49,7 +46,9 @@
                             required="true"
                             class="form-control select-height"
                         >
-                            <option *ngFor="let item of resolve.mntners" label="{{ item.key }}" [ngValue]="item">{{ item.key }}</option>
+                            @for (item of resolve.mntners; track item) {
+                            <option label="{{ item.key }}" [ngValue]="item">{{ item.key }}</option>
+                            }
                         </select>
                     </li>
                     <li>
@@ -71,16 +70,21 @@
                     </li>
                 </ul>
             </div>
-            <div *ngIf="resolve.mntnersWithoutPassword && resolve.mntnersWithoutPassword.length > 0">
+            } @if (resolve.mntnersWithoutPassword && resolve.mntnersWithoutPassword.length > 0) {
+            <div>
                 <hr />
                 The following maintainers are used to protect this object, but are not eligible to be used here:
                 <br />
-                <span *ngFor="let mnt of resolve.mntnersWithoutPassword; let last = last">
+                @for (mnt of resolve.mntnersWithoutPassword; let last = $last; track mnt) {
+                <span>
                     <a href="webupdates/display/{{ resolve.source }}/mntner/{{ mnt.key }}" rel="noopener" target="_blank">
                         {{ mnt.key }}
                     </a>
-                    <span *ngIf="!last">,</span>
+                    @if (!last) {
+                    <span>,</span>
+                    }
                 </span>
+                }
                 <br />
                 <a href="https://docs.db.ripe.net/Authorisation/Authorisation-Model#solving-authentication-problems" taget="_blank"
                     >Learn more <em class="fal fa-external-link"></em>.</a
@@ -88,22 +92,27 @@
                 <br />
                 <a class="forgot-password" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Recover Maintainer Access</a>
             </div>
+            }
         </div>
 
         <div class="modal-footer">
-            <div style="float: left" *ngIf="allowForceDelete()">
+            @if (allowForceDelete()) {
+            <div style="float: left">
                 <a [routerLink]="['/forceDelete', resolve.source, resolve.objectType, resolve.objectName]" (click)="cancel('forceDelete')">Force delete</a> this
                 object?
                 <a href="https://docs.db.ripe.net/Authorisation/Force-Delete-Functionality" target="_blank"
                     >Learn More. <em class="fal fa-external-link"></em
                 ></a>
             </div>
-            <div *ngIf="resolve.mntners.length === 0">
+            } @if (resolve.mntners.length === 0) {
+            <div>
                 <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
             </div>
-            <div *ngIf="resolve.mntners.length > 0">
+            } @if (resolve.mntners.length > 0) {
+            <div>
                 <button mat-flat-button color="primary" class="float-end" type="submit">SUBMIT</button>
             </div>
+            }
         </div>
     </form>
 </div>

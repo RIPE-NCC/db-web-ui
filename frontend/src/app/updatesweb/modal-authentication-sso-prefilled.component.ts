@@ -9,7 +9,6 @@ import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
 
-import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
@@ -20,7 +19,7 @@ import { RestService } from './rest.service';
     selector: 'modal-authentication-sso-prefilled',
     templateUrl: './modal-authentication-sso-prefilled.component.html',
     standalone: true,
-    imports: [FormsModule, NgIf, BannerComponent, NgFor, MatButton],
+    imports: [FormsModule, BannerComponent, MatButton],
 })
 export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     private activeModal = inject(NgbActiveModal);

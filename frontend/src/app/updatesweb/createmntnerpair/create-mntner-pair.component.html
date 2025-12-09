@@ -3,14 +3,14 @@
         <h1>Create {{ objectType }} and maintainer pair</h1>
 
         <ul class="form-fields appeared-fields">
-            <li
-                attr.data-test-id="{{ attribute.name }}"
-                *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName : ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']"
-            >
+            @for (attribute of mntnerAttributes | filteroutAttributeByName : ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']; track attribute) {
+            <li attr.data-test-id="{{ attribute.name }}">
                 <label>{{ attribute.name }}</label>
-                <span *ngIf="attribute.$$error" class="text-error">
+                @if (attribute.$$error) {
+                <span class="text-error">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
+                }
                 <input
                     type="text"
                     [attr.name]="attribute.name"
@@ -30,19 +30,21 @@
                     </li>
                 </ul>
             </li>
-
-            <li
-                attr.data-test-id="{{ attribute.name }}"
-                *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName : ['nic-hdl', 'mnt-by', 'source']"
-            >
+            } @for (attribute of objectTypeAttributes | filteroutAttributeByName : ['nic-hdl', 'mnt-by', 'source']; track attribute) {
+            <li attr.data-test-id="{{ attribute.name }}">
                 <label>{{ attribute.name }}</label>
-                <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">
-                    <span *ngIf="attribute.$$error" class="text-error">{{ attribute.$$error }}</span>
+                @if (attribute.name === objectType) {
+                <span id="create-person-link" class="text-note">
+                    @if (attribute.$$error) {
+                    <span class="text-error">{{ attribute.$$error }}</span>
+                    }
                     <strong
                         >Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{ linkToRoleOrPerson }}</a></strong
                     >
                 </span>
-                <span *ngIf="attribute.$$error && attribute.name !== objectType" class="text-error">{{ attribute.$$error }}</span>
+                } @if (attribute.$$error && attribute.name !== objectType) {
+                <span class="text-error">{{ attribute.$$error }}</span>
+                }
                 <input
                     type="text"
                     [attr.name]="attribute.name"
@@ -62,6 +64,7 @@
                     </li>
                 </ul>
             </li>
+            }
         </ul>
         <submitting-agreement></submitting-agreement>
 

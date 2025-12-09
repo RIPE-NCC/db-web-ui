@@ -4,6 +4,7 @@ export interface IDefaultMaintainer {
     };
 }
 
+// FIXME duplicated IWhoisObjectModel
 export interface IWhoisObject {
     type: string;
     link: {

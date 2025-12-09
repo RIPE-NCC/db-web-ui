@@ -35,22 +35,27 @@
             </ng-template>
         </ng-select>
         <description-syntax [showComponent]="isAdminCHelpShown" [objectType]="'mntner'" [attrName]="'admin-c'"></description-syntax>
-        <div *ngIf="!hasAdminC()">
+        @if (!hasAdminC()) {
+        <div>
             <strong
                 >Don't have an administrative contact?
                 <a id="linkToCreatePair" href="webupdates/create/{{ source }}/person/self">Create maintainer and person pair</a></strong
             >
         </div>
+        }
     </section>
 
     <section class="visible-field-form" [hidden]="!hasAdminC()">
         <ul class="form-fields appeared-fields">
-            <li *ngFor="let attribute of maintainerAttributes | filteroutAttributeByName : ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']">
+            @for (attribute of maintainerAttributes | filteroutAttributeByName : ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']; track attribute) {
+            <li>
                 <label>{{ attribute.name }}</label>
 
-                <span *ngIf="attribute.$$error" class="text-error">
+                @if (attribute.$$error) {
+                <span class="text-error">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
+                }
 
                 <input
                     type="text"
@@ -71,6 +76,7 @@
                     </li>
                 </ul>
             </li>
+            }
         </ul>
         <submitting-agreement></submitting-agreement>
         <button mat-flat-button color="primary" class="float-end margin-left" type="submit" [disabled]="!isFormValid() || submitInProgress" (click)="submit()">

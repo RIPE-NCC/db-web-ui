@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
@@ -24,16 +24,7 @@ import { AttributeReverseZonesComponent } from './attribute-reverse-zones.compon
     selector: 'attribute-renderer',
     templateUrl: './attribute-renderer.component.html',
     standalone: true,
-    imports: [
-        NgClass,
-        NgIf,
-        AttributeReverseZonesComponent,
-        DescriptionSyntaxComponent,
-        FormsModule,
-        NgbTypeahead,
-        NgSelectComponent,
-        NgOptionTemplateDirective,
-    ],
+    imports: [NgClass, AttributeReverseZonesComponent, DescriptionSyntaxComponent, FormsModule, NgbTypeahead, NgSelectComponent, NgOptionTemplateDirective],
 })
 export class AttributeRendererComponent implements OnInit {
     private attributeMetadataService = inject(AttributeMetadataService);

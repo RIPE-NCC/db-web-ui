@@ -8,12 +8,14 @@
                 <div class="secondary">Need help? Open a ticket.</div>
             </div>
         </mat-list-item>
-        <mat-list-item *ngIf="showChatMenuItem" (click)="openLiveChat()">
+        @if (showChatMenuItem) {
+        <mat-list-item (click)="openLiveChat()">
             <em mat-list-icon class="fal fa-comment-alt"></em>
             <div mat-line>
                 <div class="primary">Chat</div>
                 <div class="secondary">Launch Chat.</div>
             </div>
         </mat-list-item>
+        }
     </mat-action-list>
 </div>

@@ -2,12 +2,16 @@
     <h1 id="anchorScroll" class="documentFirstHeading">Syncupdates</h1>
     <p>This form allows an advanced user to paste one or more objects into the text area, and perform a whois update.</p>
 </section>
-<div *ngIf="updateResponse">
+@if (updateResponse) {
+<div>
     <pre id="updateResultPreview">{{ updateResponse }}</pre>
 </div>
+}
 <ng-form class="ga-syncupdate-form">
     <label for="rpslTextArea">Object Data</label>
-    <span *ngIf="hasNonLatin1()" class="text-error"> You can only enter latin1 characters </span>
+    @if (hasNonLatin1()) {
+    <span class="text-error"> You can only enter latin1 characters </span>
+    }
     <textarea autoFocusDirective id="rpslTextArea" name="rpslObject" [(ngModel)]="rpslObject" rows="18" class="full-width form-control margin-bottom">{{
         rpslObject
     }}</textarea>

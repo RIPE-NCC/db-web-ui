@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,7 +8,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
     selector: 'modal-edit-attribute',
     templateUrl: './modal-edit-attribute.component.html',
     standalone: true,
-    imports: [NgIf, MatButton],
+    imports: [MatButton],
 })
 export class ModalEditAttributeComponent {
     private activeModal = inject(NgbActiveModal);

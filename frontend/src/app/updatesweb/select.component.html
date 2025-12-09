@@ -6,7 +6,9 @@
             <label for="objectTypeSelector">Object type</label>
             <select name="objectTypeSelector" id="objectTypeSelector" [(ngModel)]="selected.objectType" [required]="true" class="form-control select-height">
                 <option [ngValue]="'role-mntnr'" label="role and maintainer pair">role and maintainer pair</option>
-                <option *ngFor="let objectType of objectTypes" label="{{ objectType }}" [ngValue]="objectType">{{ objectType }}</option>
+                @for (objectType of objectTypes; track objectType) {
+                <option label="{{ objectType }}" [ngValue]="objectType">{{ objectType }}</option>
+                }
             </select>
         </div>
         <br />
