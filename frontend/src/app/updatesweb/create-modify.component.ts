@@ -657,15 +657,14 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.maintainers.sso = results;
                 // set the statuses which apply to the objectType (if any)
                 this.setStatusOptions();
+                let attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
+                // Post-process attributes before showing using screen-logic-interceptor
+                this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
             },
             error: () => {
                 this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
             },
         });
-
-        let attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
-        // Post-process attributes before showing using screen-logic-interceptor
-        this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
         this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
     }
 
@@ -695,6 +694,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             errorMessages,
             warningMessages,
             infoMessages,
+            this.whoisResourcesService.isSSOComaintained(this.maintainers.sso),
         );
 
         this.loadAlerts(errorMessages, warningMessages, infoMessages);
