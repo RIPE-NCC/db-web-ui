@@ -12,7 +12,6 @@ include:
     - project: "swe-database-team/gitlab-ci"
       file:
           - "/templates/release-template.yml"
-          - "/templates/deployment-template.yml"
           - "/templates/deployment-template-docker.yml"
 
 # Prevent duplicate pipelines - run only tag and branch pipelines
@@ -180,7 +179,7 @@ browserstack:
     script:
         - cd backend && mvn verify -Dbrowserstack_key=${BROWSERSTACK_KEY} -Dversion=${CI_COMMIT_SHORT_SHA} -Pselenium
     needs:
-        - deploy_prod
+        - deploy_docker_prod
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
