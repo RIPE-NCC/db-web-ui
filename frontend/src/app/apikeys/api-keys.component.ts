@@ -19,6 +19,7 @@ import {
     MatTable,
     MatTableDataSource,
 } from '@angular/material/table';
+import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { ApiKeysService } from './api-keys.service';
 import { CreateNewApiKeyComponent } from './create-new-api-key/create-new-api-key.component';
@@ -55,11 +56,13 @@ import { ApiKey } from './types';
 export class ApiKeysComponent implements OnInit {
     private apiKeysService = inject(ApiKeysService);
     private alertsService = inject(AlertsService);
+    private properties = inject(PropertiesService);
 
     displayedColumns: string[] = ['label', 'id', 'lastUsed', 'expiresAt', 'details', 'delete'];
     dataSource: MatTableDataSource<ApiKey>;
     selection = new SelectionModel<ApiKey>(true, []);
 
+    environment: string = this.properties.getTitleEnvironment();
     panelOpenState: boolean = false;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
