@@ -450,7 +450,12 @@ export class ScreenLogicInterceptorService {
                 );
             }
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'organisation', 'AUTO-1');
-            attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER');
+
+            if (!this.properties.isTestEnv() || !isComaintained) {
+                attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER');
+                this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type').$$meta.$$disable = true;
+            }
+            return attributes;
         }
 
         if (method === 'Modify' && !this.organisationHelperService.containsAttribute(attributes, 'abuse-c')) {
@@ -462,9 +467,7 @@ export class ScreenLogicInterceptorService {
                 <p>Please specify the abuse-c attribute below.</p>`);
         }
 
-        if (!this.properties.isTestEnv() || !isComaintained) {
-            this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type').$$meta.$$disable = true;
-        }
+        this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type').$$meta.$$disable = true;
 
         return attributes;
     }

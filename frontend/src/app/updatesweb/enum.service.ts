@@ -193,6 +193,11 @@ export class EnumService {
         { key: 'ZU', value: 'Zulu' },
     ];
 
+    private readonly orgTypes = [
+        { key: 'LIR', value: 'LIR' },
+        { key: 'OTHER', value: 'OTHER' },
+    ];
+
     private readonly countryCodes = [
         { key: 'AD', value: 'Andorra' },
         { key: 'AE', value: 'United Arab Emirates' },
@@ -453,6 +458,8 @@ export class EnumService {
             return this.languageCodes;
         } else if (attrName === 'country') {
             return this.countryCodes;
+        } else if (attrName === 'org-type') {
+            return this.orgTypes;
         }
     }
 }
