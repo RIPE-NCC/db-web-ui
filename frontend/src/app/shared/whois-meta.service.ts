@@ -535,6 +535,7 @@ export class WhoisMetaService {
 
         const enrichedAttrs: IAttributeModel[] = [];
         let i = 0;
+
         attrs.forEach((attr) => {
             attr.$$id = 'attr-' + i;
             i++;
@@ -558,7 +559,6 @@ export class WhoisMetaService {
                 }
             }
         });
-
         return enrichedAttrs;
     }
 

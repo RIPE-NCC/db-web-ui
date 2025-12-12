@@ -450,7 +450,7 @@ export class ScreenLogicInterceptorService {
                 );
             }
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'organisation', 'AUTO-1');
-
+            attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', undefined); // Initialising to display the short description
             if (!this.properties.isTestEnv() || !isComaintained) {
                 attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER');
                 this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type').$$meta.$$disable = true;
