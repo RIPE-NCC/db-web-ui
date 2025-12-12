@@ -7,6 +7,7 @@ import { ApiKeysComponent } from '../../../src/app/apikeys/api-keys.component';
 import { ApiKeysService } from '../../../src/app/apikeys/api-keys.service';
 import { RevokeKeyDialogComponent } from '../../../src/app/apikeys/revoke-key-dialog/revoke-key-dialog.component';
 import { ApiKey } from '../../../src/app/apikeys/types';
+import { PropertiesService } from '../../../src/app/properties.service';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
 import { RestService } from '../../../src/app/updatesweb/rest.service';
 import SpyObj = jasmine.SpyObj;
@@ -15,6 +16,7 @@ describe('ApiKeysComponent', () => {
     let component: ApiKeysComponent;
     let fixture: ComponentFixture<ApiKeysComponent>;
     let apiKeysServiceMock: SpyObj<ApiKeysService>;
+    let properties: SpyObj<PropertiesService>;
     let alertsServiceMock: SpyObj<AlertsService>;
     let matDialogMock: SpyObj<MatDialog>;
 
@@ -36,6 +38,10 @@ describe('ApiKeysComponent', () => {
     ];
 
     beforeEach(waitForAsync(() => {
+        properties = jasmine.createSpyObj('PropertiesService', ['getTitleEnvironment'], {
+            ENV: 'prod',
+            SHOW_MENU_IDS: [],
+        });
         apiKeysServiceMock = jasmine.createSpyObj<ApiKeysService>('ApiKeysService', ['getApiKeys', 'deleteApiKey']);
         alertsServiceMock = jasmine.createSpyObj<AlertsService>('AlertsService', ['addGlobalError']);
         matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
@@ -44,6 +50,7 @@ describe('ApiKeysComponent', () => {
             imports: [MatDialogModule, NoopAnimationsModule, ApiKeysComponent],
             providers: [
                 provideNativeDateAdapter(),
+                { provide: PropertiesService, useValue: properties },
                 { provide: ApiKeysService, useValue: apiKeysServiceMock },
                 { provide: RestService, useValue: {} },
                 { provide: AlertsService, useValue: alertsServiceMock },
