@@ -754,10 +754,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 // store object to modify
                 this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
-                // status options are editable just in inetnum
-                if (this.objectType === ObjectTypesEnum.INETNUM) {
-                    this.calculateStatusForInetnumInUpdate();
-                }
+
+                this.calculateStatusForDisplay();
 
                 // show description under fields
                 this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
@@ -795,40 +793,43 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         });
     }
 
-    private calculateStatusForInetnumInUpdate() {
-        const statusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(this.attributes, 'status');
-        if (statusAttr.value === 'ALLOCATED PA') {
-            this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
-            return;
-        }
+    private calculateStatusForDisplay() {
+        // status options are editable just in inetnum
+        if (this.objectType === ObjectTypesEnum.INETNUM) {
+            const statusAttr: IAttributeModel = this.whoisResourcesService.getSingleAttributeOnName(this.attributes, 'status');
+            if (statusAttr.value === 'ALLOCATED PA') {
+                this.optionList.status = [{ key: 'ALLOCATED-ASSIGNED PA', value: 'ALLOCATED-ASSIGNED PA' }];
+                return;
+            }
 
-        if (statusAttr.value === 'ALLOCATED-ASSIGNED PA') {
-            this.optionList.status = [{ key: 'ALLOCATED PA', value: 'ALLOCATED PA' }];
-            return;
-        }
+            if (statusAttr.value === 'ALLOCATED-ASSIGNED PA') {
+                this.optionList.status = [{ key: 'ALLOCATED PA', value: 'ALLOCATED PA' }];
+                return;
+            }
 
-        this.restService.fetchMntnersForSSOAccount().subscribe({
-            next: (results: any) => {
-                this.maintainers.sso = results;
-                const inetnumAttr = _.find(this.attributes, (attr: any) => {
-                    return this.objectType === attr.name && attr.value;
-                });
-                this.restService.fetchParentResource(this.objectType, inetnumAttr.value).subscribe({
-                    next: (result: any) => {
-                        if (result && result.objects && _.isArray(result.objects.object)) {
-                            let parent = result.objects.object[0];
-                            this.setStatusOptions(parent.attributes.attribute);
-                        }
-                    },
-                    error: () => {
-                        this.setStatusOptions();
-                    },
-                });
-            },
-            error: () => {
-                this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
-            },
-        });
+            this.restService.fetchMntnersForSSOAccount().subscribe({
+                next: (results: any) => {
+                    this.maintainers.sso = results;
+                    const inetnumAttr = _.find(this.attributes, (attr: any) => {
+                        return this.objectType === attr.name && attr.value;
+                    });
+                    this.restService.fetchParentResource(this.objectType, inetnumAttr.value).subscribe({
+                        next: (result: any) => {
+                            if (result && result.objects && _.isArray(result.objects.object)) {
+                                let parent = result.objects.object[0];
+                                this.setStatusOptions(parent.attributes.attribute);
+                            }
+                        },
+                        error: () => {
+                            this.setStatusOptions();
+                        },
+                    });
+                },
+                error: () => {
+                    this.alertsService.addGlobalError('Error fetching maintainers associated with this SSO account');
+                },
+            });
+        }
     }
 
     private insertMissingMandatoryAttributes() {
