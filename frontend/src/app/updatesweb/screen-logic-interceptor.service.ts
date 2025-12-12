@@ -55,7 +55,7 @@ export class ScreenLogicInterceptorService {
                 errors: string[],
                 warnings: string[],
                 infos: string[],
-                isComaintained: boolean = false,
+                isComaintainedByNccMntner: boolean = false,
             ) => {
                 this.disablePrimaryKeyIfModifying(method, attributes);
                 return this._loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
@@ -91,7 +91,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
-                    isComaintained: boolean = false,
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     return this._disableOrgWhenStatusIsAssignedPI(attributes);
@@ -139,7 +139,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
-                    isComaintained: boolean = false,
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableRipeMntnrAttributes(attributes);
@@ -170,7 +170,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
-                    isComaintained: boolean = false,
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableRipeMntnrAttributes(attributes);
@@ -223,11 +223,11 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
-                    isComaintained: boolean = false,
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._checkLirAttributes(method, attributes);
                     this.disableRipeMntIfModifying(method, attributes);
-                    return this._loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos, isComaintained);
+                    return this._loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos, isComaintainedByNccMntner);
                 },
             },
             'peering-set': {
@@ -250,7 +250,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
-                    isComaintained: boolean = false,
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     return this._loadPersonRoleDefaults(method, attributes);
                 },
@@ -282,7 +282,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
-                    isComaintained: boolean = false,
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     return this._loadPersonRoleDefaults(method, attributes);
                 },
@@ -348,14 +348,14 @@ export class ScreenLogicInterceptorService {
         errors: string[] = [],
         warnings: string[] = [],
         infos: string[] = [],
-        isComaintained: boolean = false,
+        isComaintainedByNccMntner: boolean = false,
     ) {
         const attrs = this.globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
         const interceptorFunc = this._getInterceptorFunc(objectType, 'beforeEdit');
         if (_.isUndefined(interceptorFunc)) {
             return attrs;
         }
-        return interceptorFunc(method, source, objectType, attrs, errors, warnings, infos, isComaintained);
+        return interceptorFunc(method, source, objectType, attrs, errors, warnings, infos, isComaintainedByNccMntner);
     }
 
     public afterEdit(method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) {
@@ -433,7 +433,7 @@ export class ScreenLogicInterceptorService {
         errors: string[],
         warnings: string[],
         infos: string[],
-        isComaintained: boolean = false,
+        isComaintainedByNccMntner: boolean = false,
     ) {
         if (method === 'Create') {
             if (!this.organisationHelperService.containsAttribute(attributes, 'abuse-c')) {
@@ -451,7 +451,7 @@ export class ScreenLogicInterceptorService {
             }
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'organisation', 'AUTO-1');
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', undefined); // Initialising to display the short description
-            if (!this.properties.isTestEnv() || !isComaintained) {
+            if (!this.properties.isTestEnv() || !isComaintainedByNccMntner) {
                 attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER');
                 this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type').$$meta.$$disable = true;
             }
