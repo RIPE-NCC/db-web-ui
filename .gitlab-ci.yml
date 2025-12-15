@@ -13,6 +13,11 @@ include:
       file:
           - "/templates/release-template.yml"
           - "/templates/deployment-template-docker.yml"
+    # Security scanning
+    - template: Jobs/Container-Scanning.gitlab-ci.yml
+    - template: Jobs/Secret-Detection.gitlab-ci.yml
+    - template: Jobs/SAST.gitlab-ci.yml
+    - template: Jobs/Dependency-Scanning.gitlab-ci.yml
 
 # Prevent duplicate pipelines - run only tag and branch pipelines
 workflow:
@@ -76,6 +81,11 @@ build-container:
             --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
             .
         - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+container_scanning:
+    variables:
+        CS_DOCKERFILE_PATH: "./docker/Dockerfile"
+        CS_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
 backend:
     tags:
