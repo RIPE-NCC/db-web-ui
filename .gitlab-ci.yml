@@ -83,9 +83,34 @@ build-container:
         - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
 container_scanning:
+    rules:
+        - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
     variables:
         CS_DOCKERFILE_PATH: "./docker/Dockerfile"
         CS_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+gemnasium-maven-dependency_scanning:
+    rules:
+        - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+
+secret_detection:
+    rules:
+        - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+
+semgrep-sast:
+    rules:
+        - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+
+spotbugs-sast:
+    rules:
+        - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+    dependencies:
+        - build
+    variables:
+        SAST_ANALYZER_IMAGE_TAG: "6"
+        SAST_JAVA_VERSION: "21"
+        MAVEN_REPO_PATH: $CI_PROJECT_DIR/.m2/repository
+        COMPILE: "false"
 
 backend:
     tags:
