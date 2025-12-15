@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import * as _ from 'lodash';
+import { PropertiesService } from '../properties.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { LinkService } from './link.service';
@@ -14,6 +15,7 @@ export class ScreenLogicInterceptorService {
     private mntnerService = inject(MntnerService);
     private whoisResourcesService = inject(WhoisResourcesService);
     private linkService = inject(LinkService);
+    private properties = inject(PropertiesService);
 
     public globalInterceptor: any;
     public objectInterceptors: any;
@@ -53,6 +55,7 @@ export class ScreenLogicInterceptorService {
                 errors: string[],
                 warnings: string[],
                 infos: string[],
+                isComaintainedByNccMntner: boolean = false,
             ) => {
                 this.disablePrimaryKeyIfModifying(method, attributes);
                 return this._loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
@@ -88,6 +91,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     return this._disableOrgWhenStatusIsAssignedPI(attributes);
@@ -135,6 +139,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableRipeMntnrAttributes(attributes);
@@ -165,6 +170,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableRipeMntnrAttributes(attributes);
@@ -217,10 +223,11 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     this._checkLirAttributes(method, attributes);
                     this.disableRipeMntIfModifying(method, attributes);
-                    return this._loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
+                    return this._loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos, isComaintainedByNccMntner);
                 },
             },
             'peering-set': {
@@ -243,6 +250,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     return this._loadPersonRoleDefaults(method, attributes);
                 },
@@ -274,6 +282,7 @@ export class ScreenLogicInterceptorService {
                     errors: string[],
                     warnings: string[],
                     infos: string[],
+                    isComaintainedByNccMntner: boolean = false,
                 ) => {
                     return this._loadPersonRoleDefaults(method, attributes);
                 },
@@ -339,13 +348,14 @@ export class ScreenLogicInterceptorService {
         errors: string[] = [],
         warnings: string[] = [],
         infos: string[] = [],
+        isComaintainedByNccMntner: boolean = false,
     ) {
         const attrs = this.globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
         const interceptorFunc = this._getInterceptorFunc(objectType, 'beforeEdit');
         if (_.isUndefined(interceptorFunc)) {
             return attrs;
         }
-        return interceptorFunc(method, source, objectType, attrs, errors, warnings, infos);
+        return interceptorFunc(method, source, objectType, attrs, errors, warnings, infos, isComaintainedByNccMntner);
     }
 
     public afterEdit(method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) {
@@ -423,6 +433,7 @@ export class ScreenLogicInterceptorService {
         errors: string[],
         warnings: string[],
         infos: string[],
+        isComaintainedByNccMntner: boolean = false,
     ) {
         if (method === 'Create') {
             if (!this.organisationHelperService.containsAttribute(attributes, 'abuse-c')) {
@@ -440,6 +451,10 @@ export class ScreenLogicInterceptorService {
             }
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'organisation', 'AUTO-1');
             attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, 'org-type', 'OTHER');
+            if (!this.properties.isTestEnv() || !isComaintainedByNccMntner) {
+                this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type').$$meta.$$disable = true;
+            }
+            return attributes;
         }
 
         if (method === 'Modify' && !this.organisationHelperService.containsAttribute(attributes, 'abuse-c')) {
@@ -452,6 +467,7 @@ export class ScreenLogicInterceptorService {
         }
 
         this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type').$$meta.$$disable = true;
+
         return attributes;
     }
 

@@ -616,7 +616,7 @@ export class WhoisResourcesService {
     }
 
     public isSSOComaintained(ssoMntners: IMntByModel[]) {
-        return ssoMntners.some((mnt) => this.propertiesService.isNccHmMntner(mnt.key));
+        return ssoMntners.some((mnt) => this.propertiesService.isAnyNccMntner(mnt.key));
     }
 
     public isComaintainedWithNccHmMntner(attributes: any) {

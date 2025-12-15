@@ -260,7 +260,7 @@ export class WhoisMetaService {
             attributes: [
                 { name: 'organisation', mandatory: true, multiple: false, primaryKey: true, refs: this.refs },
                 { name: 'org-name', mandatory: true, multiple: false, refs: this.refs, searchable: true },
-                { name: 'org-type', mandatory: true, multiple: false, refs: this.refs },
+                { name: 'org-type', mandatory: true, multiple: false, refs: this.refs, isEnum: true },
                 { name: 'descr', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'remarks', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'address', mandatory: true, multiple: true, refs: this.refs },
@@ -535,6 +535,7 @@ export class WhoisMetaService {
 
         const enrichedAttrs: IAttributeModel[] = [];
         let i = 0;
+
         attrs.forEach((attr) => {
             attr.$$id = 'attr-' + i;
             i++;
@@ -558,7 +559,6 @@ export class WhoisMetaService {
                 }
             }
         });
-
         return enrichedAttrs;
     }
 
