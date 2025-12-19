@@ -749,7 +749,7 @@ export class WhoisMetaService {
             syntax: this._shared.nicHandle.syntax,
         },
         address: {
-            description: 'Full postal address of a contact. Not Managed by RIPE NCC.',
+            description: 'Full postal address of a contact. Managed by the user.',
             syntax: this._shared.freeForm.syntax,
         },
         'admin-c': {
