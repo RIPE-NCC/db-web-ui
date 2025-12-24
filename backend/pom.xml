@@ -20,7 +20,7 @@
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <dnsjava.version>3.6.2</dnsjava.version>
         <freemarker.version>2.3.33</freemarker.version>
-        <google-guava.version>33.4.8-jre</google-guava.version>
+        <google-guava.version>33.5.0-jre</google-guava.version>
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
         <httpclient.version>5.4.1</httpclient.version>
         <jackson.version>2.19.1</jackson.version>
