@@ -1,0 +1,20 @@
+services:
+    db-web-ui:
+        build:
+            context: ../
+            dockerfile: ${PWD}/docker/Dockerfile
+            args:
+                - CI_COMMIT_SHA=local
+        environment:
+            - PROFILE=local
+            - START_HEAP_SIZE=256m
+            - MAX_HEAP_SIZE=2g
+            # - LOGGING_CONFIG=/app/resources/logback.xml
+        volumes:
+            - $PWD/backend/src/main/resources/config/application-local.properties:/app/resources/application-local.properties:ro
+            - $PWD/backend/src/main/resources/menu.properties:/app/resources/menu.properties:ro
+            # - ./conf/logback.xml:/app/resources/logback.xml:ro
+            # - ./logs:/app/var/logs:rw
+        ports:
+            - "1082:1082" # http
+            - "8443:8443" # https

@@ -27,10 +27,14 @@ ENV JMX_EXPORTER_PORT=9090
 RUN addgroup -g ${PGID} app && \
     adduser -D -u ${PUID} -G app app
 
+WORKDIR /app
+
+# Create directory structure with proper ownership
+RUN mkdir -p /app/var/logs && \
+    chown -R app:app /app
+
 # Switch to non-root user
 USER app
-
-WORKDIR /app
 
 # Download JMX Prometheus exporter
 RUN wget -q https://github.com/prometheus/jmx_exporter/releases/download/1.5.0/jmx_prometheus_javaagent-1.5.0.jar \
@@ -55,13 +59,13 @@ rules:
 EOF
 
 COPY --from=build --chown=app:app /src/backend/target/db-web-ui-1.0.0-SNAPSHOT.jar /app/db-web-ui.jar
-COPY --from=build --chown=app:app /src/docker/docker-entrypoint.sh /app/
+COPY --from=build --chown=app:app /src/docker/entrypoint.sh /app/
 
-RUN chmod 0555 /app/docker-entrypoint.sh
+RUN chmod 0555 /app/entrypoint.sh
 
 VOLUME /app/var/logs
 
-CMD ["/app/docker-entrypoint.sh"]
+CMD ["/app/entrypoint.sh"]
 
 HEALTHCHECK --interval=1m --timeout=3s \
     CMD wget --spider --quiet http://localhost:1082/db-web-ui/api/healthcheck || exit 1

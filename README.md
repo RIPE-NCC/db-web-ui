@@ -31,15 +31,39 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
+Build and Run with Docker (Local Development)
+-------------------------------------------------------------------
+
+For local development, you can use Docker Compose as an alternative to running the application via IntelliJ.
+
+### Build Docker image
+
+    docker compose -f ./docker/compose.yml build --no-cache
+
+### Run the application
+
+    docker compose -f ./docker/compose.yml up
+
+Or to rebuild and start in one command:
+
+    docker compose -f ./docker/compose.yml up --build
+
+* Access the app at: http://localhost:1082
+
+Note: All production environments (dev, prepdev, rc, prod) run via Docker using Salt for deployment and orchestration.
+
 Runtime
 -------------------
-Add the `-Dspring.profiles.active=<ENV>` to the JVM args of the application server.
-
 Valid profile names are `local`, `dev`, `prepdev`, `rc` and `prod`.
 
 Properties are read from the `/config/application-<ENV>`.properties file on the classpath.
 
-To run locally add in the vm options: `-Dspring.profiles.active=local -Duser.timezone=UTC`
+### For Container Deployments (dev, prepdev, rc, prod)
+Set the `PROFILE` environment variable in the container to the appropriate environment name (e.g., `PROFILE=dev`, `PROFILE=prod`).
+
+### For Local Development
+* **IntelliJ/Traditional**: Add `-Dspring.profiles.active=local -Duser.timezone=UTC` to the VM options
+* **Docker Compose**: The `PROFILE` environment variable is set in the `docker/compose.yml` file (defaults to `local`)
 
 Frontend
 --------
@@ -203,6 +227,8 @@ Do not store personal information in local storage.
 
 Deployment
 ----------
+The application is deployed via Docker containers across all environments (dev, prepdev, rc, prod) using Salt for orchestration and configuration management.
+
 Generally, we only deploy changes to production from the master branch, from a tag on a specific commit.
 
 The team will review changes on a branch beforehand using a Merge Request, and changes are only merged once all issues are resolved.
@@ -211,4 +237,7 @@ Every so often an exception can be made and we deploy from a tag on a branch in 
 * Point releases when we select (cherry-pick) fixes (and nothing else) from master to a branch
 * Hotfix release to fix a critical production issue
 
-
+### Deployment Process
+* Docker images are built from the Dockerfile in the `docker/` directory
+* Salt is used to deploy and manage containers across all environments
+* For local development, both Docker Compose and traditional IntelliJ-based deployments are supported
