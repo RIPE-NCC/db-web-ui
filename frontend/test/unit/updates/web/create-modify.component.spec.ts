@@ -384,10 +384,8 @@ describe('CreateModifyComponent', () => {
             fixture.detectChanges();
 
             const requests = httpMock.match({ method: 'GET', url: 'api/user/mntners' });
-            expect(requests.length).toBe(2); //One when the page is being loaded for the first time and when the
-            // page is being loaded the second time after specifying the IP (so is checking with parent)
+            expect(requests.length).toBe(1);
             requests[0].flush(USER_RIPE_NCC_MNT_MOCK);
-            requests[1].flush(USER_RIPE_NCC_MNT_MOCK);
             await fixture.whenStable();
         });
 
@@ -511,10 +509,8 @@ describe('CreateModifyComponent', () => {
 
         it('should do proper request', () => {
             const requests = httpMock.match({ method: 'GET', url: 'api/user/mntners' });
-            expect(requests.length).toBe(2); //One when the page is being loaded for the first time and when the
-            // page is being loaded the second time after specifying the IP (so is checking with parent)
+            expect(requests.length).toBe(1);
             requests[0].flush(USER_WITH_MORE_ASSOCIATED_MNT_MOCK);
-            requests[1].flush(USER_WITH_MORE_ASSOCIATED_MNT_MOCK);
             fixture.detectChanges();
         });
     });

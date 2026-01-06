@@ -2,8 +2,8 @@ import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { Observable, forkJoin, of, throwError } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { Observable, forkJoin, of, shareReplay, throwError } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IMntByModel } from '../shared/whois-response-type.model';
 
@@ -22,6 +22,7 @@ export class RestService {
     private http = inject(HttpClient);
     private router = inject(Router);
     private whoisResourcesService = inject(WhoisResourcesService);
+    private mntnersSso$?: Observable<IMntByModel[]>;
 
     public fetchParentResource(objectType: string, qs: string) {
         // e.g. https://rest.db.ripe.net/search?flags=lr&type-filter=inetnum&query-string=193.0.4.0%20-%20193.0.4.255
@@ -56,12 +57,20 @@ export class RestService {
     }
 
     public fetchMntnersForSSOAccount(): Observable<IMntByModel[]> {
-        return this.http.get('api/user/mntners').pipe(
-            tap({
-                next: (result: IMntByModel[]) => console.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result)),
-                error: (error) => console.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error)),
-            }),
-        );
+        if (!this.mntnersSso$) {
+            this.mntnersSso$ = this.http.get<IMntByModel[]>('api/user/mntners').pipe(
+                tap({
+                    next: (result) => console.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result)),
+                    error: (error) => console.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error)),
+                }),
+                finalize(() => {
+                    this.mntnersSso$ = undefined;
+                }),
+                shareReplay(1),
+            );
+        }
+
+        return this.mntnersSso$;
     }
 
     public detailsForMntners(mntners: any) {
