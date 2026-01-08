@@ -12,7 +12,6 @@ include:
     - project: "swe-database-team/gitlab-ci"
       file:
           - "/templates/release-template.yml"
-          - "/templates/deployment-template-docker.yml"
     # Security scanning
     - project: swe/gitlab-support
       file: /templates/security.yml
@@ -222,3 +221,91 @@ browserstack:
     artifacts:
         paths:
             - backend/target/db-web-ui*.jar
+
+.deploy_docker_template: &deploy_docker_env
+    stage: deploy
+    allow_failure: true
+    before_script:
+        - mkdir -p /root/.ssh
+        - eval $(ssh-agent -s)
+        - echo -e "Host *\n\tStrictHostKeyChecking no\n\nAddressFamily inet\n\n" > ~/.ssh/config
+        - echo "$SALT_SSH_KEYS" | tr -d '\r' | ssh-add -
+        - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    script:
+        - echo "machine gitlab.ripe.net login dbase password $DB_OPERATIONAL_DEPLOY_TOKEN" > ~/.netrc
+        - chmod 600 ~/.netrc
+        - git clone https://gitlab.ripe.net/swe-database-team/db-operational.git
+        - >
+           properties_file="db-operational/configs/$PROJECT_NAME-${CI_ENVIRONMENT_NAME%/docker}/resources/application-${CI_ENVIRONMENT_NAME%/docker}.properties"
+              variables=(
+                        BA_APPS_API_KEY
+                        INTERNAL_API_KEY
+                        KEYSTORE_PASSWORD
+                        LIVECHAT_KEY
+                        MATOMO_ID
+                        RSNG_API_KEY
+                        SENTRY_DSN
+                        WHOIS_OVERRIDE_PASSWORD
+                        WHOIS_OVERRIDE_USERNAME
+                        )
+              for variable in "${variables[@]}"; do
+                sed -i "s|\${$variable}|${!variable}|g" "$properties_file"
+              done
+        - cd db-operational/deployment
+        - >
+            if [ "$CI_COMMIT_TAG" ]; then
+             ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_TAG \;
+            else
+             ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_SHORT_SHA \;
+            fi
+
+deploy_docker_dev:
+    <<: *deploy_docker_env
+    needs:
+        - job: build
+    environment:
+        name: dev/docker
+    rules:
+        - when: manual
+
+deploy_docker_prepdev:
+    <<: *deploy_docker_env
+    needs:
+        - job: build
+    environment:
+        name: prepdev/docker
+    rules:
+        - when: manual
+
+deploy_docker_test:
+    <<: *deploy_docker_env
+    environment:
+        name: test/docker
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: manual
+        - when: never
+deploy_docker_training:
+    <<: *deploy_docker_env
+    environment:
+        name: training/docker
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: manual
+        - when: never
+deploy_docker_rc:
+    <<: *deploy_docker_env
+    environment:
+        name: rc/docker
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: manual
+        - when: never
+deploy_docker_prod:
+    <<: *deploy_docker_env
+    environment:
+        name: prod/docker
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: manual
+        - when: never
