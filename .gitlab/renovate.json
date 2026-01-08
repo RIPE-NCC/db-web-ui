@@ -1,6 +1,8 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": ["config:recommended"],
+    "dependencyDashboard": true,
+    "schedule": ["every weekday"],
     "packageRules": [
         {
             "matchPackageNames": [
@@ -12,5 +14,8 @@
         }
     ],
     "prConcurrentLimit": 10,
-    "rangeStrategy": "bump"
+    "rangeStrategy": "bump",
+    "vulnerabilityAlerts": {
+        "prConcurrentLimit": 0
+    }
 }
