@@ -9,6 +9,7 @@ backend/src/main/resources/config/application-local.properties
 
 # frontend
 frontend/target/
+frontend/package-lock.json
 # compiled output
 frontend/tmp/
 frontend/dist/
