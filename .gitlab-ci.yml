@@ -24,7 +24,8 @@ include:
           needs: [build]
           scan-mrs: false
           name: db-web-ui
-          image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+          dockerfile: ./docker/Dockerfile
+          image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
 # Prevent duplicate pipelines - run only tag and branch pipelines
 workflow:
@@ -39,7 +40,6 @@ stages:
     - security
     - test
     - sonar
-    - release
     - deploy
     - browserstack
 
@@ -88,16 +88,9 @@ build-container:
             --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
             --build-arg PUID=$PUID
             --build-arg PGID=$PGID
-            --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+            --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
             .
-        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-
-container_scanning:
-    rules:
-        - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
-    variables:
-        CS_DOCKERFILE_PATH: "./docker/Dockerfile"
-        CS_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
 gitlab-advanced-sast:
     rules:
@@ -119,6 +112,10 @@ backend:
     extends: .default_rules
     script:
         - cd backend && mvn test
+    rules:
+        - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+          when: always
+        - when: manual
     artifacts:
         paths:
             - backend/target/
@@ -138,6 +135,10 @@ e2e-cypress-chrome:
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
         - cd frontend && npm run cypress:chrome
+    rules:
+        - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+          when: always
+        - when: manual
     artifacts:
         when: on_failure
         paths:
@@ -155,6 +156,10 @@ e2e-cypress-firefox:
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
         - cd frontend && npm run cypress:firefox
+    rules:
+        - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+          when: always
+        - when: manual
     artifacts:
         when: on_failure
         paths:
@@ -169,6 +174,10 @@ frontend:
     extends: .default_rules
     script:
         - cd frontend && npm run test
+    rules:
+        - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+          when: always
+        - when: manual
     artifacts:
         paths:
             - frontend/lcov.info
@@ -186,17 +195,6 @@ sonar:
     dependencies:
         - backend
         - frontend
-
-release-container:
-    stage: release
-    rules:
-        - if: "$CI_COMMIT_TAG"
-    before_script:
-        - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
-    script:
-        - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-        - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 browserstack:
     stage: browserstack
@@ -240,12 +238,7 @@ browserstack:
                  sed -i "s|\${$variable}|${!variable}|g" "$properties_file"
                done
         - cd db-operational/deployment
-        - >
-            if [ "$CI_COMMIT_TAG" ]; then
-             ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_TAG \;
-            else
-             ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_SHORT_SHA \;
-            fi
+        - ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_REF_SLUG
 
 deploy_docker_dev:
     <<: *deploy_docker_env
