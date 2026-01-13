@@ -110,6 +110,9 @@
         "whatwg-fetch": "3.6.2",
         "zone.js": "0.15.1"
     },
+    "overrides": {
+        "minimist": "1.2.8"
+    },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
     }
