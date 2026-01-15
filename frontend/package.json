@@ -111,7 +111,6 @@
         "zone.js": "0.15.1"
     },
     "overrides": {
-        "minipass-sized": "1.0.3",
         "minimist": "1.2.8",
         "uri-js": "npm:uri-js-replace"
     },
