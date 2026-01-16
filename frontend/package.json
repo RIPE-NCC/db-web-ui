@@ -38,7 +38,7 @@
         "@babel/preset-env": "7.26.9",
         "@babel/runtime": "7.26.10",
         "@types/diff-match-patch": "^1.0.36",
-        "@types/jasmine": "4.0.3",
+        "@types/jasmine": "5.1.13",
         "@types/jasminewd2": "2.0.10",
         "@types/lodash": "4.14.195",
         "@types/node": "22.15.21",
