@@ -2,6 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PropertiesService } from '../properties.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { MntnerService } from './mntner.service';
@@ -24,6 +25,7 @@ export class ModalCreateRoleForAbuseCComponent {
     private whoisResourcesService = inject(WhoisResourcesService);
     private restService = inject(RestService);
     private mntnerService = inject(MntnerService);
+    private propertiesService = inject(PropertiesService);
 
     private static NEW_ROLE_TEMPLATE: IAttributeModel[] = [
         {
@@ -68,8 +70,8 @@ export class ModalCreateRoleForAbuseCComponent {
 
         attributes = this.whoisResourcesService.validateAttributes(attributes);
         this.inputData.maintainers.forEach((mnt: any) => {
-            // remove mnt - for which on backend fail creating role
-            if (typeof mnt.value === 'string' && !this.mntnerService.isAnyNccMntner(mnt.value)) {
+            // remove NCC mnt for PROD environment
+            if (typeof mnt.value === 'string' && (!this.propertiesService.isProdEnv() || !this.mntnerService.isAnyNccMntner(mnt.value))) {
                 attributes = this.whoisResourcesService.addAttributeAfterType(
                     attributes,
                     {

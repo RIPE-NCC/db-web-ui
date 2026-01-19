@@ -13,12 +13,13 @@ import { WhoisResourcesService } from '../../../../src/app/shared/whois-resource
 import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
 import { ModalCreateRoleForAbuseCComponent } from '../../../../src/app/updatesweb/modal-create-role-for-abusec.component';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
+import SpyObj = jasmine.SpyObj;
 
 describe('ModalCreateRoleForAbuseCComponent', () => {
     const source = 'RIPE';
     const maintainers = [
-        { type: 'mntner', key: 'TEST29-MNT', auth: ['MD5-PW'] },
-        { type: 'mntner', key: 'RIPE-NCC-HM-MNT' },
+        { name: 'mntner', value: 'TEST29-MNT' },
+        { name: 'mntner', value: 'RIPE-NCC-HM-MNT' },
     ];
 
     let httpMock: HttpTestingController;
@@ -26,11 +27,18 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
     let modalCreateRoleForAbuseCComponent: ModalCreateRoleForAbuseCComponent;
     let modalMock: any;
     let restServiceMock: any;
+    let propertiesSpy: SpyObj<PropertiesService>;
 
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
+        propertiesSpy = jasmine.createSpyObj('PropertiesService', ['isEnableNonAuthUpdates', 'isProdEnv'], {
+            ENV: 'prod',
+            isAnyNccMntner: (mntnerKey: string) => {
+                return ['RIPE-NCC-HM-MNT'].includes(mntnerKey);
+            },
+        });
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalCreateRoleForAbuseCComponent],
             providers: [
@@ -40,7 +48,7 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
                 WhoisMetaService,
                 CredentialsService,
                 PrefixService,
-                PropertiesService,
+                { provide: PropertiesService, useValue: propertiesSpy },
                 { provide: RestService, useValue: restServiceMock },
                 { provide: Router, useValue: routerMock },
                 provideHttpClient(withInterceptorsFromDi()),
@@ -62,6 +70,11 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
         httpMock.verify();
     });
 
+    const spyOnProperty = (propertyName: string) => {
+        // @ts-ignore
+        return Object.getOwnPropertyDescriptor(propertiesSpy, propertyName).get.and;
+    };
+
     it('should create role with abuse-mailbox and close', () => {
         restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {} }));
 
@@ -78,12 +91,33 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
     });
 
     it('should remove mnt-by: RIPE-NCC-HM-MNT from creating role', () => {
+        propertiesSpy.isProdEnv.and.returnValue(true);
+        spyOnProperty('ENV').returnValue('prod');
         restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {} }));
 
         modalCreateRoleForAbuseCComponent.email = 'm@ripe.net';
         modalCreateRoleForAbuseCComponent.create();
 
         expect(restServiceMock.createObject.calls.mostRecent().args[2].objects.object[0].attributes.attribute).not.toContain(
+            jasmine.objectContaining({
+                name: 'mnt-by',
+                value: 'RIPE-NCC-HM-MNT',
+            }),
+        );
+        expect(modalMock.close).toHaveBeenCalled();
+    });
+
+    it('should not remove mnt-by: RIPE-NCC-HM-MNT from creating role on not PROD environment', () => {
+        propertiesSpy.isProdEnv.and.returnValue(false);
+        spyOnProperty('ENV').returnValue('test');
+        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {} }));
+
+        componentFixture.detectChanges();
+
+        modalCreateRoleForAbuseCComponent.email = 'm@ripe.net';
+        modalCreateRoleForAbuseCComponent.create();
+
+        expect(restServiceMock.createObject.calls.mostRecent().args[2].objects.object[0].attributes.attribute).toContain(
             jasmine.objectContaining({
                 name: 'mnt-by',
                 value: 'RIPE-NCC-HM-MNT',
