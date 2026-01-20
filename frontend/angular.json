@@ -15,25 +15,27 @@
             "prefix": "app",
             "architect": {
                 "build": {
-                    "builder": "@angular-builders/custom-webpack:browser",
+                    "builder": "@angular/build:application",
                     "options": {
-                        "customWebpackConfig": {
-                            "path": "test/e2e/extra-webpack.config.js"
+                        "outputPath": {
+                            "base": "dist",
+                            "browser": ""
                         },
                         "allowedCommonJsDependencies": ["lodash", "ip-address", "crypto-js", "sanitize-html"],
-                        "outputPath": "dist",
                         "index": "src/index.html",
-                        "main": "src/main.ts",
-                        "polyfills": "src/polyfills.ts",
+                        "browser": "src/main.ts",
+                        "polyfills": ["src/polyfills.ts"],
                         "tsConfig": "tsconfig.app.json",
-                        "aot": true,
                         "baseHref": "/db-web-ui/",
                         "assets": ["src/assets"],
                         "styles": ["src/styles.scss"]
                     },
                     "configurations": {
                         "local": {
-                            "outputPath": "../backend/target/classes/static",
+                            "outputPath": {
+                                "base": "../backend/target/classes/static",
+                                "browser": ""
+                            },
                             "fileReplacements": [
                                 {
                                     "replace": "src/environments/environment.ts",
@@ -46,8 +48,6 @@
                             "namedChunks": false,
                             "aot": false,
                             "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": false,
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -80,8 +80,6 @@
                             "namedChunks": false,
                             "aot": true,
                             "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -98,21 +96,20 @@
                     }
                 },
                 "serve-mock": {
-                    "builder": "@angular-builders/custom-webpack:dev-server",
+                    "builder": "@angular-builders/custom-esbuild:dev-server",
                     "options": {
                         "buildTarget": "frontend:build",
-                        "disableHostCheck": true,
                         "port": 9002,
                         "host": "0.0.0.0",
-                        "ssl": true
+                        "ssl": true,
+                        "middlewares": ["test/e2e/prism.js"]
                     },
+
                     "configurations": {
                         "local": {
-                            "publicHost": "localhost.ripe.net:9002/db-web-ui/",
                             "buildTarget": "frontend:build:local"
                         },
                         "remote": {
-                            "publicHost": "db-tools-1.ripe.net:9002/db-web-ui/",
                             "buildTarget": "frontend:build:production"
                         }
                     }
