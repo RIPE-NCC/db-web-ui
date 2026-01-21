@@ -40,26 +40,8 @@ USER app
 RUN wget -q https://github.com/prometheus/jmx_exporter/releases/download/1.5.0/jmx_prometheus_javaagent-1.5.0.jar \
     -O /app/jmx_prometheus_javaagent.jar
 
-# Create JMX exporter configuration
-RUN cat > /app/jmx_config.yml <<'EOF'
----
-lowercaseOutputLabelNames: true
-lowercaseOutputName: true
-whitelistObjectNames: ["java.lang:type=OperatingSystem"]
-blacklistObjectNames: []
-rules:
-  - pattern: 'java.lang<type=OperatingSystem><>(committed_virtual_memory|free_physical_memory|free_swap_space|total_physical_memory|total_swap_space)_size:'
-    name: os_$1_bytes
-    type: GAUGE
-    attrNameSnakeCase: true
-  - pattern: 'java.lang<type=OperatingSystem><>((?!process_cpu_time)\w+):'
-    name: os_$1
-    type: GAUGE
-    attrNameSnakeCase: true
-EOF
-
 COPY --from=build --chown=app:app /src/backend/target/db-web-ui-1.0.0-SNAPSHOT.jar /app/db-web-ui.jar
-COPY --from=build --chown=app:app /src/docker/entrypoint.sh /app/
+COPY --from=build --chown=app:app /src/docker/entrypoint.sh /src/docker/jmx_config.yml /app/
 
 RUN chmod 0555 /app/entrypoint.sh
 

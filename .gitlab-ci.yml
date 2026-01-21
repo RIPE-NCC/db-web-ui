@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:v0.0.11
+image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:v0.0.12
 
 variables:
     MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
@@ -21,11 +21,12 @@ include:
       file: /templates/container.yml
       inputs:
           stage: security
-          needs: [build]
+          needs: [build-container]
           scan-mrs: false
           name: db-web-ui
           dockerfile: ./docker/Dockerfile
-          image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+          image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+          default_branch_image: $CI_REGISTRY_IMAGE:$CI_DEFAULT_BRANCH
 
 # Prevent duplicate pipelines - run only tag and branch pipelines
 workflow:
@@ -88,9 +89,22 @@ build-container:
             --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
             --build-arg PUID=$PUID
             --build-arg PGID=$PGID
-            --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+            --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
             .
-        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+        # Tag and push version tags
+        - |
+            if [ "$CI_COMMIT_TAG" ]; then
+              docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+              docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+            fi
+
+        # Tag and push default branch
+        - |
+            if [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then
+              docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:CI_DEFAULT_BRANCH
+              docker push $CI_REGISTRY_IMAGE:CI_DEFAULT_BRANCH
+            fi
 
 gitlab-advanced-sast:
     rules:
@@ -238,7 +252,12 @@ browserstack:
                  sed -i "s|\${$variable}|${!variable}|g" "$properties_file"
                done
         - cd db-operational/deployment
-        - ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_REF_SLUG
+        - >
+            if [ "$CI_COMMIT_TAG" ]; then
+             ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_TAG \;
+            else
+             ./deploy-docker.sh -p $PROJECT_NAME -e ${CI_ENVIRONMENT_NAME%/docker} $CI_COMMIT_SHORT_SHA \;
+            fi
 
 deploy_docker_dev:
     <<: *deploy_docker_env
