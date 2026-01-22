@@ -12,31 +12,31 @@ describe('Release notification', () => {
 
     it('should show the banner when new build is released', () => {
         queryPage.visit();
-        cy.get('banner').should('have.length', 1);
+        cy.get('banner').should('have.length', 0);
         cy.changeJsonResponseFile(newReleaseProperties, targetProperties);
-        cy.get('banner').should('have.length', 2);
+        cy.get('banner').should('have.length', 1);
         cy.get('banner').should('contain.text', 'There is a new release available. Click reload to start using it.');
     });
 
     it('should show only 1 banner', () => {
         queryPage.visit();
-        cy.get('banner').should('have.length', 1);
+        cy.get('banner').should('have.length', 0);
         cy.changeJsonResponseFile(newReleaseProperties, targetProperties);
-        cy.get('banner').should('have.length', 2);
+        cy.get('banner').should('have.length', 1);
         cy.changeJsonResponseFile(defaultProperties, targetProperties);
         // here we wait until the next tick of RELEASE_NOTIFICATION_POLLING
         cy.wait(5000);
-        cy.get('banner').should('have.length', 2);
+        cy.get('banner').should('have.length', 1);
     });
 
     it('should show the banner after reloading', () => {
         queryPage.visit();
-        cy.get('banner:visible').should('have.length', 1);
+        cy.get('banner:visible').should('have.length', 0);
         cy.changeJsonResponseFile(newReleaseProperties, targetProperties);
-        cy.get('banner:visible').should('have.length', 2);
+        cy.get('banner:visible').should('have.length', 1);
         cy.get('banner .warning-banner button:contains("Dismiss")').click();
-        cy.get('banner:visible').should('have.length', 1);
+        cy.get('banner:visible').should('have.length', 0);
         cy.changeJsonResponseFile(defaultProperties, targetProperties);
-        cy.get('banner:visible').should('have.length', 1);
+        cy.get('banner:visible').should('have.length', 0);
     });
 });
