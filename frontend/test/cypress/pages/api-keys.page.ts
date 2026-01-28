@@ -50,11 +50,11 @@ export class ApiKeysPage {
     }
 
     clickAddMaintainerButton() {
-        return cy.get(`.fa-plus-circle`).click();
+        return cy.get(`.fa-circle-plus`).click();
     }
 
     clickRemoveMaintainerButton() {
-        return cy.get(`.fa-minus-circle`).first().click();
+        return cy.get(`.fa-circle-minus`).first().click();
     }
 
     toggleAccordion() {

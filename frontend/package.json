@@ -92,6 +92,7 @@
         "angulartics": "1.6.0",
         "angulartics-piwik": "1.0.6",
         "bootstrap": "5.2.3",
+        "@fortawesome/fontawesome-pro": "7.1.0",
         "browserslist-useragent-regexp": "^4.1.0",
         "classlist": "2.0.0",
         "cookie-parser": "1.4.7",

@@ -1,6 +1,6 @@
 <div class="padding">
     @if (isMobileView) {
-    <em class="fal fa-times close" aria-label="Close"></em>
+    <em class="fa-light fa-x close" aria-label="Close"></em>
     }
     <label id="source-radio-group-label">Source</label>
     <mat-radio-group
@@ -16,7 +16,7 @@
                 class="link-color"
                 [title]="'query.optionAllDatabases.title' | label"
             >
-                Global Resources Service <em class="fal fa-external-link"></em
+                Global Resources Service <em class="fa-light fa-arrow-up-right-from-square"></em
             ></a>
         </mat-radio-button>
         <mat-radio-button value="RIPE" (click)="$event.stopPropagation()">RIPE Database</mat-radio-button>

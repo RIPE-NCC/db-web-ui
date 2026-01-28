@@ -10,7 +10,7 @@ export class FullTextSearchPage {
     }
 
     clickOnSearchButton() {
-        cy.get('search-field button .fa-search').click({ force: true });
+        cy.get('search-field button .fa-magnifying-glass').click({ force: true });
         return this;
     }
 

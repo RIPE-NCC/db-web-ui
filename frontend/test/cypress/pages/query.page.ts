@@ -25,7 +25,7 @@ export class QueryPage {
     }
 
     clickOnSearchButton() {
-        cy.get('form[name="searchform"] button .fa-search').click({ force: true });
+        cy.get('form[name="searchform"] button .fa-magnifying-glass').click({ force: true });
         return this;
     }
 

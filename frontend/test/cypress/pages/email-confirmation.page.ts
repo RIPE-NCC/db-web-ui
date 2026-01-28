@@ -10,7 +10,7 @@ export class EmailConfirmationPage {
     }
 
     expectExclamationImagePresent() {
-        cy.get('.fa-exclamation-circle').should('exist');
+        cy.get('.fa-circle-exclamation').should('exist');
         return this;
     }
 

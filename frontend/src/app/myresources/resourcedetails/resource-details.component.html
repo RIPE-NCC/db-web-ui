@@ -22,11 +22,11 @@
         <h2 class="no-margin">Object in RIPE Database</h2>
         @if (isEditing && isWebEditingMode) {
         <button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" (click)="switchToTextMode()">
-            <span class="fal fa-edit"></span> EDIT IN TEXT AREA
+            <span class="fa-light fa-pen-to-square"></span> EDIT IN TEXT AREA
         </button>
         } @if (isEditing && !isWebEditingMode) {
         <button mat-flat-button color="primary" id="btnSwitchToTextModify" class="float-end" (click)="switchToWebMode()">
-            <span class="fal fa-bars"></span> EDIT IN SINGLE LINES
+            <span class="fa-light fa-bars"></span> EDIT IN SINGLE LINES
         </button>
         }
     </div>

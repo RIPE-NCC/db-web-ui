@@ -6,9 +6,9 @@ import { Labels } from '../label.constants';
     selector: 'help-marker',
     template: `<span [ngbPopover]="titleLabel" placement="bottom" triggers="mouseenter:mouseleave">
         @if (hrefLabel) {
-        <a [href]="hrefLabel" target="_blank"> <span class="fal fa-question fa-lg" aria-hidden="true"></span></a>
+        <a [href]="hrefLabel" target="_blank"> <span class="fa-light fa-question fa-lg" aria-hidden="true"></span></a>
         } @if (!hrefLabel) {
-        <span class="fal fa-question fa-lg" aria-hidden="true"></span>
+        <span class="fa-light fa-question fa-lg" aria-hidden="true"></span>
         }
     </span>`,
     standalone: true,

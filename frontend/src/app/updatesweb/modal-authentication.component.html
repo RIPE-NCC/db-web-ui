@@ -2,7 +2,7 @@
     <form (submit)="submit()">
         <div class="modal-header">
             <h2 class="modal-title">Password authentication</h2>
-            <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+            <em class="fa-light fa-x close" aria-label="Close" (click)="cancel()"></em>
         </div>
         <div class="modal-body">
             @if (selected.message?.length > 0) {
@@ -64,7 +64,7 @@
                         <label for="associate"
                             >Also authorise my RIPE NCC Access account for this maintainer.
                             <a href="https://docs.db.ripe.net/Authorisation/Using-the-Authorisation-Methods" rel="noopener" target="_blank"
-                                >Learn more <em class="fal fa-external-link"></em>.</a
+                                >Learn more <em class="fa-light fa-arrow-up-right-from-square"></em>.</a
                             ></label
                         >
                     </li>
@@ -87,7 +87,7 @@
                 }
                 <br />
                 <a href="https://docs.db.ripe.net/Authorisation/Authorisation-Model#solving-authentication-problems" taget="_blank"
-                    >Learn more <em class="fal fa-external-link"></em>.</a
+                    >Learn more <em class="fa-light fa-arrow-up-right-from-square"></em>.</a
                 >
                 <br />
                 <a class="forgot-password" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Recover Maintainer Access</a>
@@ -101,7 +101,7 @@
                 <a [routerLink]="['/forceDelete', resolve.source, resolve.objectType, resolve.objectName]" (click)="cancel('forceDelete')">Force delete</a> this
                 object?
                 <a href="https://docs.db.ripe.net/Authorisation/Force-Delete-Functionality" target="_blank"
-                    >Learn More. <em class="fal fa-external-link"></em
+                    >Learn More. <em class="fa-light fa-arrow-up-right-from-square"></em
                 ></a>
             </div>
             } @if (resolve.mntners.length === 0) {

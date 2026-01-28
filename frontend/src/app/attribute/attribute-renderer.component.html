@@ -67,31 +67,31 @@
     @if (canBeAdded(objectType, attributes, attribute)) {
     <li>
         <a class="btn btn-default ga-add-dup" title="Add another attribute of this type" (click)="duplicateAttribute(objectType, attributes, attribute)">
-            <span class="fal fa-arrow-down"></span>
+            <span class="fa-light fa-arrow-down"></span>
         </a>
     </li>
     } @if (canAddExtraAttributes(objectType)) {
     <li>
         <a class="btn btn-default ga-add-attr" title="Add any attribute (opens dialog)" (click)="displayAddAttributeDialog(objectType, attributes, attribute)">
-            <span class="fal fa-plus"></span>
+            <span class="fa-light fa-plus"></span>
         </a>
     </li>
     } @if (!attribute.$$disable && canBeRemoved(objectType, attributes, attribute)) {
     <li>
         <a class="btn btn-default ga-del-attr" title="Remove current attribute" (click)="removeAttribute(objectType, attributes, attribute)">
-            <span class="fal fa-trash"></span>
+            <span class="fa-light fa-trash"></span>
         </a>
     </li>
     } @if (shouldShowBellIcon(attribute)) {
     <li>
         <a class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c" (click)="createRoleForAbuseCAttribute()">
-            <span class="fal fa-bell"></span>
+            <span class="fa-light fa-bell"></span>
         </a>
     </li>
     } @if (attribute.name !== 'reverse-zone') {
     <li>
         <a class="btn btn-default ga-help-attr" (click)="toggleHelp()">
-            <span class="fal fa-question"></span>
+            <span class="fa-light fa-question"></span>
         </a>
     </li>
     }

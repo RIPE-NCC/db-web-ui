@@ -6,7 +6,7 @@ import { MatMiniFabButton } from '@angular/material/button';
     template: `<p class="resource-page-message">
         {{ reason }}
         <button mat-mini-fab color="primary" class="margin-left" (click)="refresh()">
-            <em class="fal fa-redo"></em>
+            <em class="fa-light fa-rotate-right"></em>
         </button>
     </p>`,
     standalone: true,

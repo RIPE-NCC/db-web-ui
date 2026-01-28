@@ -1,10 +1,10 @@
 @if (operation === CREATE_OPERATION) {
 <button mat-flat-button color="primary" id="btnCreateInTextArea" class="float-end" (click)="switchToTextMode()">
-    <span class="fal fa-edit"></span> CREATE IN TEXT AREA
+    <span class="fa-light fa-pen-to-square"></span> CREATE IN TEXT AREA
 </button>
 } @if (operation === MODIFY_OPERATION) {
 <button mat-flat-button color="primary" id="btnEditInTextArea" class="float-end" (click)="switchToTextMode()">
-    <span class="fal fa-edit"></span> EDIT IN TEXT AREA
+    <span class="fa-light fa-pen-to-square"></span> EDIT IN TEXT AREA
 </button>
 } @if (attributes?.length > 0) {
 <div id="createForm">
@@ -74,7 +74,7 @@
                     @if (attribute.name === 'certif') {
                     <li>
                         <a id="addCertificate" class="btn btn-default ga-pgp-attr" title="Add PGP key (opens dialog)" (click)="displayPGPKeyDialogDialog()">
-                            <span class="fal fa-file-certificate"></span>
+                            <span class="fa-light fa-file-certificate"></span>
                         </a>
                     </li>
                     } @if (canAttributeBeDuplicated(attribute)) {
@@ -85,7 +85,7 @@
                             title="Add another attribute of this type"
                             (click)="duplicateAttribute(attribute)"
                         >
-                            <span class="fal fa-arrow-down degree-25"></span>
+                            <span class="fa-light fa-arrow-down degree-25"></span>
                         </a>
                     </li>
                     }
@@ -96,13 +96,13 @@
                             title="Add any attribute (opens dialog)"
                             (click)="displayAddAttributeDialog(attribute)"
                         >
-                            <span class="fal fa-plus"></span>
+                            <span class="fa-light fa-plus"></span>
                         </a>
                     </li>
                     @if (canAttributeBeRemoved(attribute)) {
                     <li>
                         <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute" (click)="removeAttribute(attribute)">
-                            <span class="fal fa-trash"></span>
+                            <span class="fa-light fa-trash"></span>
                         </a>
                     </li>
                     }
@@ -114,7 +114,7 @@
                             title="Add/change Password (opens dialog)"
                             (click)="displayMd5DialogDialog(attribute)"
                         >
-                            <span class="fal fa-lock fa-3"></span>
+                            <span class="fa-light fa-lock fa-3"></span>
                         </a>
                         }
                     </li>
@@ -126,7 +126,7 @@
                             title="Create new role to use as abuse-c"
                             (click)="createRoleForAbuseCAttribute(attribute)"
                         >
-                            <span class="fal fa-bell degree-25"></span>
+                            <span class="fa-light fa-bell degree-25"></span>
                         </a>
                         }
                     </li>
@@ -134,14 +134,14 @@
                     <li>
                         @if (showPencile(attribute.name)) {
                         <a title="Request to update" class="btn btn-default ga-edit-attr" (click)="displayEditAttributeDialog(attribute)">
-                            <span class="fal fa-pencil"></span>
+                            <span class="fa-light fa-pencil"></span>
                         </a>
                         }
                     </li>
                     }
                     <li>
                         <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name + '$' + idx)">
-                            <span class="fal fa-question"></span>
+                            <span class="fa-light fa-question"></span>
                         </a>
                     </li>
                 </ul>

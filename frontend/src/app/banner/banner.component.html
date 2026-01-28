@@ -2,15 +2,15 @@
 <div class="{{ type }}-banner {{ id }}">
     <div class="content">
         @if (type === BannerTypes.promo) {
-        <span class="fal fa-bell-on fa-lg"></span>
+        <span class="fa-light fa-bell-on-on fa-lg"></span>
         } @if (type === BannerTypes.informational) {
-        <span class="fal fa-circle-info fa-lg"></span>
+        <span class="fa-light fa-circle-info fa-lg"></span>
         } @if (type === BannerTypes.error) {
-        <span class="fal fa-exclamation-circle fa-lg"></span>
+        <span class="fa-light fa-circle-exclamation fa-lg"></span>
         } @if (type === BannerTypes.warning) {
-        <span class="fal fa-exclamation-triangle fa-lg"></span>
+        <span class="fa-light fa-triangle-exclamation fa-lg"></span>
         } @if (type === BannerTypes.success) {
-        <span class="fal fa-check-circle fa-lg"></span>
+        <span class="fa-light fa-circle-check fa-lg"></span>
         }
         <div>
             @if (title) {

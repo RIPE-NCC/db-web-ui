@@ -16,9 +16,9 @@
                         <button mat-button type="button" id="typeMenu" [matMenuTriggerFor]="typesMenu" #typesTrigger="matMenuTrigger">
                             Types {{ printNumberSelected(this.numberSelectedTypes) }}
                             @if (typesTrigger.menuOpen) {
-                            <span class="fal fa-chevron-up"></span>
+                            <span class="fa-light fa-chevron-up"></span>
                             } @else {
-                            <span class="fal fa-chevron-down"></span>
+                            <span class="fa-light fa-chevron-down"></span>
                             }
                         </button>
                         <mat-menu #typesMenu="matMenu" yPosition="below">
@@ -38,9 +38,9 @@
                         >
                             Hierarchy flags {{ printNumberSelected(this.numberSelectedHierarchyItems) }}
                             @if (hierarchyTrigger.menuOpen) {
-                            <span class="fal fa-chevron-up"></span>
+                            <span class="fa-light fa-chevron-up"></span>
                             } @else {
-                            <span class="fal fa-chevron-down"></span>
+                            <span class="fa-light fa-chevron-down"></span>
                             }
                         </button>
                         <mat-menu #hierarchyFlagsMenu="matMenu" yPosition="below">
@@ -49,9 +49,9 @@
                         <button mat-button type="button" id="inverseLookupMenu" [matMenuTriggerFor]="inverseLookupMenu" #inverseLookupTrigger="matMenuTrigger">
                             Inverse lookup {{ printNumberSelected(numberSelectedInverseLookups) }}
                             @if (inverseLookupTrigger.menuOpen) {
-                            <span class="fal fa-chevron-up"></span>
+                            <span class="fa-light fa-chevron-up"></span>
                             } @else {
-                            <span class="fal fa-chevron-down"></span>
+                            <span class="fa-light fa-chevron-down"></span>
                             }
                         </button>
                         <mat-menu #inverseLookupMenu="matMenu" yPosition="below">
@@ -65,9 +65,9 @@
                         <button mat-button type="button" id="advanceFilterMenu" [matMenuTriggerFor]="advanceFilterMenu" #advanceFilterTrigger="matMenuTrigger">
                             Advanced filter {{ printNumberSelected(this.numberSelectedAdvanceFilterItems) }}
                             @if (advanceFilterTrigger.menuOpen) {
-                            <span class="fal fa-chevron-up"></span>
+                            <span class="fa-light fa-chevron-up"></span>
                             } @else {
-                            <span class="fal fa-chevron-down"></span>
+                            <span class="fa-light fa-chevron-down"></span>
                             }
                         </button>
                         <mat-menu #advanceFilterMenu="matMenu" yPosition="below">
@@ -110,9 +110,9 @@
                     matTooltipPosition="left"
                 >
                     @if (!sharePermaLinkTrigger.menuOpen) {
-                    <mat-icon matSuffix class="fal fa-share-alt"></mat-icon>
+                    <mat-icon matSuffix class="fa-light fa-share-nodes"></mat-icon>
                     } @else {
-                    <mat-icon matSuffix class="fas fa-share-alt"></mat-icon>
+                    <mat-icon matSuffix class="fa-solid fa-share-nodes"></mat-icon>
                     }
                 </button>
                 }
@@ -160,11 +160,11 @@
                     <p>&nbsp;</p>
                     @if (!properties.isTestEnv()) {
                     <a href="https://docs.db.ripe.net/How-to-Query-the-RIPE-Database/" target="_blank" class="link-color">
-                        Go to documentation <em class="fal fa-external-link"></em>
+                        Go to documentation <em class="fa-light fa-arrow-up-right-from-square"></em>
                     </a>
                     } @if (properties.isTestEnv()) {
                     <a href="https://docs.db.ripe.net/Appendices/Appendix-J--Ripe-Test-Database/" target="_blank" class="link-color"
-                        >Go to documentation <em class="fal fa-external-link"></em>
+                        >Go to documentation <em class="fa-light fa-arrow-up-right-from-square"></em>
                     </a>
                     }
                 </div>
@@ -177,7 +177,7 @@
 
                     <p>&nbsp;</p>
                     <a href="https://docs.db.ripe.net/Update-Methods/RESTful-API" rel="noopener" target="_blank" class="link-color"
-                        >Go to documentation <em class="fal fa-external-link"></em>
+                        >Go to documentation <em class="fa-light fa-arrow-up-right-from-square"></em>
                     </a>
                 </div>
             </div>
@@ -198,7 +198,7 @@
                     <p></p>
                     <!-- Decided different color by design. This link will open same application while other not -->
                     <a [href]="properties.QUERY_PAGE_LINK_TO_OTHER_DB" target="_blank" class="inner-link-color"
-                        >Go to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database <em class="fal fa-arrow-right"></em>
+                        >Go to {{ properties.SOURCE === 'RIPE' ? 'Test' : 'RIPE' }} Database <em class="fa-light fa-arrow-right"></em>
                     </a>
                 </div>
             </div>

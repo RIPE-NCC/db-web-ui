@@ -8,9 +8,9 @@
         <search-field [(queryText)]="ftquery"></search-field>
         <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
             @if (!advancedSearch) {
-            <em class="fal fa-plus-square"></em>
+            <em class="fa-light fa-square-plus"></em>
             } @if (advancedSearch) {
-            <em class="fal fa-minus-square"></em>
+            <em class="fa-light fa-square-minus"></em>
             }
             <a mat-button class="padding-left link-pointer">{{ (advancedSearch && 'Basic') || 'Advanced' }} Search</a>
         </div>

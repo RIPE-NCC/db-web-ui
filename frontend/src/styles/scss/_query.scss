@@ -25,7 +25,7 @@ $padding: 24px;
         &[aria-expanded='true'] {
             background-color: rgba(0, 0, 0, 0.075);
         }
-        .mdc-button__label .fal {
+        .mdc-button__label .fa-light {
             margin-left: common.spacing(2);
         }
         &.perma-link {

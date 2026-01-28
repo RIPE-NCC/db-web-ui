@@ -7,7 +7,7 @@
             <span>This object cannot be deleted</span>
             }
         </h2>
-        <em class="fal fa-times close" aria-label="Close" (click)="cancel()"></em>
+        <em class="fa-light fa-x close" aria-label="Close" (click)="cancel()"></em>
     </div>
 
     <div class="modal-body margin-left">
@@ -51,7 +51,7 @@
     <div class="modal-footer">
         @if (showRoaMsg) {
         <div class="modal-footer-info">
-            <em class="fal fa-info-circle"></em>
+            <em class="fa-light fa-circle-info"></em>
             <div>There is an RPKI ROA for the same route. If you proceed to delete this route(6) object, you may want to delete the ROA as well.</div>
         </div>
         } @if (canBeDeleted) {

@@ -34,7 +34,7 @@
     @if (show.loginLink) {
     <a mat-flat-button color="primary" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]">
         <span>LOGIN TO UPDATE </span>
-        <em class="fal fa-database"></em>
+        <em class="fa-light fa-database"></em>
     </a>
     } @if (show.updateButton && linkable) {
     <a mat-flat-button color="primary" class="uppercase" [routerLink]="['/webupdates/modify', model.source.id, model.type, objectPrimaryKey]">{{
@@ -44,7 +44,7 @@
     <a mat-flat-button color="primary" class="uppercase" (click)="emitUpdateClicked()">{{ 'lookup.updateObjectButton.text' | label }}</a>
     } @if (show.ripeStatButton) {
     <a mat-stroked-button color="primary" class="float-end margin-left" href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb" target="_blank">
-        {{ 'lookup.ripestatLink.text' | label }} <em class="fal fa-external-link"></em>
+        {{ 'lookup.ripestatLink.text' | label }} <em class="fa-light fa-arrow-up-right-from-square"></em>
     </a>
     }
 </div>
