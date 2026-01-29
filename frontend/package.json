@@ -113,7 +113,7 @@
     "overrides": {
         "minimist": "1.2.8",
         "uri-js": "npm:uri-js-replace",
-        "tar": "7.5.4"
+        "tar": "7.5.7"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
