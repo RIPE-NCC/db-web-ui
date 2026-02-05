@@ -8,4 +8,5 @@ export type ApiKey = {
     id?: string;
     secretKey?: string;
     userId?: string;
+    keyType: string;
 };

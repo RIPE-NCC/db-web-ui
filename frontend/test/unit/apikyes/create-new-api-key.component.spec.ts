@@ -61,6 +61,7 @@ describe('CreateNewApiKeyComponent', () => {
             label: 'my key name',
             id: 'accessKey',
             secretKey: 'secretKey',
+            keyType: 'mntner',
         };
         apiKeysServiceMock.saveApiKey.and.returnValue(of(apiKeyResponse));
 
@@ -87,6 +88,7 @@ describe('CreateNewApiKeyComponent', () => {
             label: 'my key name',
             id: 'accessKey',
             secretKey: 'secretKey',
+            keyType: 'mntner',
         };
         apiKeysServiceMock.saveApiKey.and.returnValue(of(apiKeyResponse));
 

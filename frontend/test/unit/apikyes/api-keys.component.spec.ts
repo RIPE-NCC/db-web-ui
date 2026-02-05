@@ -27,6 +27,7 @@ describe('ApiKeysComponent', () => {
             label: 'my key name',
             id: 'accessKey',
             secretKey: 'secretKey',
+            keyType: 'mntner',
         },
         {
             expiresAt: '2024-01-01', // just to ensure that next 100 years this test won't fail
@@ -34,6 +35,7 @@ describe('ApiKeysComponent', () => {
             label: 'my key name',
             id: 'accessKey',
             secretKey: 'secretKey',
+            keyType: 'mntner',
         },
     ];
 

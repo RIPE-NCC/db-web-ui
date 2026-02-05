@@ -58,7 +58,7 @@ export class ApiKeysComponent implements OnInit {
     private alertsService = inject(AlertsService);
     private properties = inject(PropertiesService);
 
-    displayedColumns: string[] = ['label', 'id', 'lastUsed', 'expiresAt', 'details', 'delete'];
+    displayedColumns: string[] = ['label', 'id', 'lastUsed', 'expiresAt', 'keyType', 'details', 'delete'];
     dataSource: MatTableDataSource<ApiKey>;
     selection = new SelectionModel<ApiKey>(true, []);
 
