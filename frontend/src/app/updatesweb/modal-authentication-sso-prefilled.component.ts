@@ -90,7 +90,7 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
                         name: 'auth',
                         value: 'SSO ' + ssoUserName,
                     },
-                    { name: 'auth' },
+                    { name: 'mnt-by' },
                 );
                 AttributeMetadataService.splitAttrsCommentsFromValue(attributes, false);
                 // do adjust the maintainer
