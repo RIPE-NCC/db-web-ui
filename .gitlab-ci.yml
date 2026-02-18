@@ -61,8 +61,6 @@ cache:
         - if: "$CI_COMMIT_BRANCH"
 
 build:
-    tags:
-        - whois
     stage: build
     extends: .default_rules
     script:
@@ -75,8 +73,6 @@ build:
         expire_in: 6 months
 
 build-container:
-    tags:
-        - whois
     stage: build
     extends: .default_rules
     before_script:
@@ -120,8 +116,6 @@ spotbugs-sast:
         COMPILE: "false"
 
 backend:
-    tags:
-        - whois
     stage: test
     extends: .default_rules
     script:
@@ -140,8 +134,6 @@ backend:
         expire_in: 1 month
 
 e2e-cypress-chrome:
-    tags:
-        - whois
     stage: test
     extends: .default_rules
     script:
@@ -161,8 +153,6 @@ e2e-cypress-chrome:
         expire_in: 1 month
 
 e2e-cypress-firefox:
-    tags:
-        - whois
     stage: test
     extends: .default_rules
     script:
@@ -182,8 +172,6 @@ e2e-cypress-firefox:
         expire_in: 1 month
 
 frontend:
-    tags:
-        - whois
     stage: test
     extends: .default_rules
     script:
