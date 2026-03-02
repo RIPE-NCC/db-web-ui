@@ -114,8 +114,7 @@
         "minimist": "1.2.8",
         "uri-js": "npm:uri-js-replace",
         "tar": "7.5.8",
-        "rollup": "4.59.0",
-        "minimatch": "3.1.4"
+        "rollup": "4.59.0"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
