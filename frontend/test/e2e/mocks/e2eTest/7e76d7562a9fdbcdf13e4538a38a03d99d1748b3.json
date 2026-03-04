@@ -90,6 +90,15 @@
                     {
                         "link": {
                             "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "TEST03-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
                             "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TSTMNT01-MNT"
                         },
                         "name": "mnt-lower",

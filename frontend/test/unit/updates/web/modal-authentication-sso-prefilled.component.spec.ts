@@ -6,7 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { CredentialsService } from '../../../../src/app/shared/credentials.service';
+import { OverrideCredentialsService } from '../../../../src/app/shared/override-credentials-service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { ModalAuthenticationSSOPrefilledComponent } from '../../../../src/app/updatesweb/modal-authentication-sso-prefilled.component';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
@@ -20,11 +20,10 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
     let credentialsServiceMock: any;
 
     const mntners = [
-        { type: 'mntner', key: 'TEST29-MNT', auth: ['MD5-PW'] },
-        { type: 'mntner', name: 'b-mnt', auth: ['MD5-PW'] },
+        { type: 'mntner', key: 'TEST29-MNT', auth: ['SSO'] },
+        { type: 'mntner', name: 'b-mnt', auth: ['SSO'] },
+        { type: 'mntner', key: 'z-mnt', auth: ['SSO'] },
     ];
-
-    const mntnersWithoutPassword = [{ type: 'mntner', key: 'z-mnt', auth: ['SSO'] }];
 
     let MockPropertiesService = {
         WHOIS_OVERRIDE: 'whois,test',
@@ -42,7 +41,7 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
                 { provide: NgbActiveModal, useValue: modalMock },
                 WhoisResourcesService,
                 UserInfoService,
-                { provide: CredentialsService, useValue: credentialsServiceMock },
+                { provide: OverrideCredentialsService, useValue: credentialsServiceMock },
                 { provide: PropertiesService, useValue: MockPropertiesService },
                 RestService,
                 CookieService,
@@ -59,7 +58,6 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
             objectType: 'mntner',
             objectName: 'someName',
             mntners,
-            mntnersWithoutPassword,
             allowForcedDelete: false,
             isLirObject: false,
             source: 'RIPE',

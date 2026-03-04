@@ -7,18 +7,18 @@ import { from, mergeMap, Observable, of } from 'rxjs';
 import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
 import { IpAddressService } from '../myresources/ip-address.service';
 import { PropertiesService } from '../properties.service';
-import { CredentialsService } from '../shared/credentials.service';
+import { OverrideCredentialsService } from '../shared/override-credentials-service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel } from '../shared/whois-response-type.model';
 import { IDefaultMaintainer } from '../whois-object/types';
 import { ModalAuthenticationSSOPrefilledComponent } from './modal-authentication-sso-prefilled.component';
-import { ModalAuthenticationComponent } from './modal-authentication.component';
+import { ModalSsoRequiredAuthenticationComponent } from './modal-sso-required-authentication.component';
 import { RestService } from './rest.service';
 
 @Injectable({ providedIn: 'root' })
 export class MntnerService {
-    private credentialsService = inject(CredentialsService);
+    private overrideCredentialsService = inject(OverrideCredentialsService);
     private whoisResourcesService = inject(WhoisResourcesService);
     private whoisMetaService = inject(WhoisMetaService);
     private modalService = inject(NgbModal);
@@ -48,27 +48,29 @@ export class MntnerService {
                 return { key: mntner.value };
             });
 
-            // check if we've already got a passwd
+            // check if we've already got an override
             const alreadyAuthed = parentMntners.findIndex((parentMnt) => {
-                return this.credentialsService.hasCredentials() && this.credentialsService.getCredentials().some((cred) => cred.mntner === parentMnt.key);
+                return (
+                    this.overrideCredentialsService.hasCredentials() &&
+                    this.overrideCredentialsService.getCredentials().some((cred) => cred.mntner === parentMnt.key)
+                );
             });
+
             if (alreadyAuthed > -1) {
                 return of(true);
             }
             // pop up an auth box
             return this.restService.detailsForMntners(parentMntners).pipe(
                 mergeMap((enrichedMntners: IMntByModel[]) => {
-                    const mntnersWithPasswords = this.getMntnersForAuthentication(ssoAccts, enrichedMntners, []);
-                    const mntnersWithoutPasswords = this.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                    const mntnersForAuthentication = this.getMntnersForAuthentication(ssoAccts, enrichedMntners, []);
                     const modalRef = this.modalService.open(
-                        this.enableNonAuthUpdates ? ModalAuthenticationSSOPrefilledComponent : ModalAuthenticationComponent,
+                        !this.enableNonAuthUpdates ? ModalSsoRequiredAuthenticationComponent : ModalAuthenticationSSOPrefilledComponent,
                     );
                     modalRef.componentInstance.resolve = {
                         method: operation,
                         objectType: object.type,
                         objectName: object.name,
-                        mntners: mntnersWithPasswords,
-                        mntnersWithoutPassword: mntnersWithoutPasswords,
+                        mntners: mntnersForAuthentication,
                         allowForcedDelete: false,
                         isLirObject: false,
                         source: object.source,
@@ -112,16 +114,6 @@ export class MntnerService {
     public isMntnerOnlist(list: IMntByModel[], mntner: IMntByModel): boolean {
         return list.some((item: IMntByModel) => {
             return item.key.toUpperCase() === mntner.key.toUpperCase();
-        });
-    }
-
-    public hasMd5(mntner: IMntByModel): boolean {
-        if (_.isUndefined(mntner.auth)) {
-            return false;
-        }
-
-        return mntner.auth.some((i: string) => {
-            return i.startsWith('MD5');
         });
     }
 
@@ -188,7 +180,7 @@ export class MntnerService {
 
     public enrichWithMine = (ssoMntners: IMntByModel[], mntners: IMntByModel[]) => this.enrichWithSsoStatus(ssoMntners, mntners);
 
-    public needsPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
+    public needsAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
         if (originalObjectMntners.length === 0) {
             // it is a creat
             originalObjectMntners = objectMntners.filter((mnt: IMntByModel) => !this.isMntnerOnlist(ssoMntners, mnt));
@@ -197,20 +189,16 @@ export class MntnerService {
         const mntners = this.enrichWithSsoStatus(ssoMntners, originalObjectMntners);
 
         if (mntners.length === 0) {
-            console.debug('needsPasswordAuthentication: no: No mntners left to authenticate against');
             return false;
         }
 
         if (MntnerService.oneOfOriginalMntnersIsMine(originalObjectMntners)) {
-            console.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
             return false;
         }
 
         if (this.oneOfOriginalMntnersHasCredential(originalObjectMntners)) {
-            console.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
             return false;
         }
-        console.debug('needsPasswordAuthentication: yes');
         return true;
     }
 
@@ -225,38 +213,8 @@ export class MntnerService {
             if (mntner.mine === true) {
                 // Mntner is in the list already
                 return false;
-            } else if (this.enableNonAuthUpdates) {
-                return true;
-            } else if (this.isAnyNccMntner(mntner.key)) {
-                // prevent authenticating against any RIPE-NCC mntner (not just TOP-RIPE-NCC mntner)
-                return false;
-            } else if (
-                this.credentialsService.hasCredentials() &&
-                this.credentialsService.getCredentials().some((credential) => credential.mntner === mntner.key)
-            ) {
-                return false;
             } else {
-                return this.hasMd5(mntner);
-            }
-        });
-    }
-
-    public getMntnersNotEligibleForPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]) {
-        // Note: this function is NOT the exact opposite of getMntnersForPasswordAuthentication()
-        let input = originalObjectMntners;
-        if (originalObjectMntners.length === 0) {
-            // it is a create
-            input = objectMntners;
-        }
-        const mntners = this.enrichWithSsoStatus(ssoMntners, input);
-        return _.uniqBy(mntners, 'key').filter((mntner) => {
-            if (mntner.mine === true) {
-                return false;
-            } else if (this.isAnyNccMntner(mntner.key)) {
-                // prevent customers contacting us about RIPE-NCC mntners
-                return false;
-            } else {
-                return !this.hasMd5(mntner);
+                return this.enableNonAuthUpdates;
             }
         });
     }
@@ -343,8 +301,8 @@ export class MntnerService {
     }
 
     private oneOfOriginalMntnersHasCredential(originalObjectMntners: IMntByModel[]) {
-        if (this.credentialsService.hasCredentials()) {
-            const credentialsUpperCase = this.credentialsService.getCredentials().map((cred) => cred.mntner.toUpperCase());
+        if (this.overrideCredentialsService.hasCredentials()) {
+            const credentialsUpperCase = this.overrideCredentialsService.getCredentials().map((cred) => cred.mntner.toUpperCase());
             return originalObjectMntners.some((mntner: IMntByModel) => credentialsUpperCase.includes(mntner.key.toUpperCase()));
         }
         return false;

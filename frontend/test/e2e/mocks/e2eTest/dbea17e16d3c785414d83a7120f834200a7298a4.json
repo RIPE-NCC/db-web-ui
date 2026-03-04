@@ -9,25 +9,25 @@
         },
         {
             "mine": true,
-            "auth": ["MD5-PW", "SSO"],
+            "auth": ["SSO", "SSO"],
             "type": "mntner",
             "key": "TST001-MNT"
         },
         {
             "mine": true,
-            "auth": ["MD5-PW", "SSO", "SSO", "SSO", "SSO"],
+            "auth": ["SSO", "SSO", "SSO", "SSO", "SSO"],
             "type": "mntner",
             "key": "TST002-MNT"
         },
         {
             "mine": true,
-            "auth": ["MD5-PW", "SSO"],
+            "auth": ["SSO", "SSO"],
             "type": "mntner",
             "key": "TST003-MNT"
         },
         {
             "mine": true,
-            "auth": ["MD5-PW", "SSO"],
+            "auth": ["SSO", "SSO"],
             "type": "mntner",
             "key": "TEST53-MNT"
         },
@@ -36,6 +36,67 @@
             "auth": ["SSO"],
             "type": "mntner",
             "key": "TST004-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO"],
+            "type": "mntner",
+            "key": "TEST13-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO"],
+            "type": "mntner",
+            "key": "TEST04-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "TEST03-MNT"
+        },
+
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "SYSTEM"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "TST01-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "TST03-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "TEST14-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "TEST15-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "TEST11-MNT"
+        },
+        {
+            "mine": true,
+            "auth": ["SSO", "SSO"],
+            "type": "mntner",
+            "key": "TEST02-MNT"
         }
     ],
     "statusCode": 200,

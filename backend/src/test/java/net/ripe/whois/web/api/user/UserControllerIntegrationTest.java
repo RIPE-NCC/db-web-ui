@@ -21,7 +21,7 @@ public class UserControllerIntegrationTest extends AbstractIntegrationTest {
         assertThat(response.getBody(), is(
                 "[{" +
                         "\"mine\":true," +
-                        "\"auth\":[\"MD5-PW\",\"SSO\"]," +
+                        "\"auth\":[\"SSO\"]," +
                         "\"type\":\"mntner\"," +
                         "\"key\":\"TST14-RIPE\"" +
                         "}]"));

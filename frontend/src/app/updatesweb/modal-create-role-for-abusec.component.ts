@@ -10,7 +10,6 @@ import { RestService } from './rest.service';
 
 interface IModalCreateRoleForAbuceC {
     maintainers: any;
-    passwords: any;
     source: any;
 }
 
@@ -85,16 +84,14 @@ export class ModalCreateRoleForAbuseCComponent {
         });
 
         attributes = this.whoisResourcesService.wrapAndEnrichAttributes('role', this.whoisResourcesService.removeNullAttributes(attributes));
-        this.restService
-            .createObject(this.inputData.source, 'role', this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), this.inputData.passwords)
-            .subscribe({
-                next: (response: any) => {
-                    this.activeModal.close(this.whoisResourcesService.getAttributes(response));
-                },
-                error: (error: any) => {
-                    return this.activeModal.dismiss(error);
-                },
-            });
+        this.restService.createObject(this.inputData.source, 'role', this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes)).subscribe({
+            next: (response: any) => {
+                this.activeModal.close(this.whoisResourcesService.getAttributes(response));
+            },
+            error: (error: any) => {
+                return this.activeModal.dismiss(error);
+            },
+        });
     }
 
     public cancel() {

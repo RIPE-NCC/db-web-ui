@@ -5,11 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, throwError } from 'rxjs';
-import { CredentialsService } from '../../../../src/app/shared/credentials.service';
+import { OverrideCredentialsService } from '../../../../src/app/shared/override-credentials-service';
 import { ModalDeleteObjectComponent } from '../../../../src/app/updatesweb/modal-delete-object.component';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
 import { RpkiValidatorService } from '../../../../src/app/updatesweb/rpki-validator.service';
-
 const objectType = 'mntner';
 const name = 'TEST-MNT';
 const source = 'RIPE';
@@ -226,14 +225,14 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         restServiceMock.deleteObject.and.returnValue(of({}));
         restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT));
         rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
+        credentialsServiceMock = jasmine.createSpyObj('OverrideCredentialsService', ['hasCredentials', 'getCredentials', 'getOverrideForRestCall']);
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalDeleteObjectComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
                 { provide: RpkiValidatorService, useValue: rpkiValidatorServiceMock },
-                { provide: CredentialsService, useValue: credentialsServiceMock },
+                { provide: OverrideCredentialsService, useValue: credentialsServiceMock },
                 { provide: Router, useValue: routerMock },
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
@@ -274,28 +273,14 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         expect(modalDeleteObjectComponent.canBeDeleted).toBeTruthy();
     });
 
-    it('should call delete endpoint without password and close modal', async () => {
+    it('should call delete endpoint and close modal', async () => {
         await componentFixture.whenStable();
 
         modalDeleteObjectComponent.reason = 'some reason';
 
         modalDeleteObjectComponent.delete();
 
-        expect(restServiceMock.deleteObject).toHaveBeenCalledWith(source, objectType, name, modalDeleteObjectComponent.reason, true, undefined);
-        expect(modalMock.close).toHaveBeenCalled();
-    });
-
-    it('should call delete endpoint with password and close modal', async () => {
-        await componentFixture.whenStable();
-
-        modalDeleteObjectComponent.reason = 'some reason';
-
-        credentialsServiceMock.hasCredentials.and.returnValue(true);
-        credentialsServiceMock.getPasswordsForRestCall.and.returnValue('secret');
-
-        modalDeleteObjectComponent.delete();
-
-        expect(restServiceMock.deleteObject).toHaveBeenCalledWith(source, objectType, name, modalDeleteObjectComponent.reason, true, 'secret');
+        expect(restServiceMock.deleteObject).toHaveBeenCalledWith(source, objectType, name, modalDeleteObjectComponent.reason, true);
         expect(modalMock.close).toHaveBeenCalled();
     });
 

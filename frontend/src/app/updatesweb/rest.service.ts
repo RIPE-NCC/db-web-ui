@@ -132,15 +132,8 @@ export class RestService {
         }
     }
 
-    public fetchObject(source: string, objectType: string, objectName: string, passwords?: any, unformatted?: any) {
+    public fetchObject(source: string, objectType: string, objectName: string, unformatted?: any) {
         let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
-        if (passwords) {
-            if (Array.isArray(passwords)) {
-                passwords.forEach((password) => (params = params.append('password', password)));
-            } else {
-                params = params.set('password', passwords);
-            }
-        }
         params = params.set('unfiltered', 'true');
         if (unformatted) {
             params = params.set('unformatted', unformatted);
@@ -162,26 +155,22 @@ export class RestService {
         );
     }
 
-    private setParams(passwords: string[], override?: any, unformatted?: any): HttpParams {
+    private setParams(override?: any, unformatted?: any): HttpParams {
         let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
         if (override) {
-            params = params.set('override', override);
-        }
-        if (passwords) {
-            if (Array.isArray(passwords)) {
-                passwords.forEach((password) => (params = params.append('password', password)));
-            } else {
-                params = params.set('password', passwords);
+            if (!Array.isArray(override) || override.length > 0) {
+                params = params.set('override', override);
             }
         }
+
         if (unformatted) {
             params = params.set('unformatted', unformatted);
         }
         return params;
     }
 
-    public createObject(source: string, objectType: string, attributes: any, passwords: string[], overrides?: any, unformatted?: any) {
-        let params = this.setParams(passwords, overrides, unformatted);
+    public createObject(source: string, objectType: string, attributes: any, overrides?: any, unformatted?: any) {
+        let params = this.setParams(overrides, unformatted);
         return this.http.post(`api/whois/${source}/${objectType}`, attributes, { params }).pipe(
             map((result: any) => {
                 console.debug('createObject success:' + JSON.stringify(result));
@@ -198,8 +187,8 @@ export class RestService {
         );
     }
 
-    public modifyObject(source: string, objectType: string, objectName: any, attributes: any, passwords: any, overrides?: any, unformatted?: any) {
-        let params = this.setParams(passwords, overrides, unformatted);
+    public modifyObject(source: string, objectType: string, objectName: any, attributes: any, overrides?: any, unformatted?: any) {
+        let params = this.setParams(overrides, unformatted);
         const name = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.put(`api/whois/${source.toUpperCase()}/${objectType}/${name}`, attributes, { params }).pipe(
             map((result: any) => {
@@ -213,11 +202,11 @@ export class RestService {
         );
     }
 
-    public fetchObjectByOverride(source: string, objectType: string, objectName: string, passwords?: any, override?: string) {
+    public fetchObjectByOverride(source: string, objectType: string, objectName: string, override?: string) {
         if (!source) {
             throw new TypeError('restService.authenticate source must have a value');
         }
-        const params = this.setParams(passwords, override).set('unfiltered', 'true');
+        const params = this.setParams(override).set('unfiltered', 'true');
         const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params }).pipe(
             map((result: any) => {
@@ -240,25 +229,9 @@ export class RestService {
         );
     }
 
-    public associateSSOMntner(source: string, objectType: string, objectName: string, whoisResources: any, passwords: string) {
-        return this.http.put(`api/whois/${source}/${objectType}/${objectName}?password=${encodeURIComponent(passwords)}`, whoisResources).pipe(
-            tap({
-                next: (result: any) => console.debug('associateSSOMntner success:' + JSON.stringify(result.data)),
-                error: (error: any) => console.error('associateSSOMntner error:' + JSON.stringify(error)),
-            }),
-        );
-    }
-
-    public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, passwords: string[], dryRun: boolean = false) {
+    public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, dryRun: boolean = false) {
         const service = withReferences ? 'references' : 'whois';
         let params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('dry-run', String(!!dryRun)).set('reason', reason);
-        if (passwords) {
-            if (Array.isArray(passwords)) {
-                passwords.forEach((password) => (params = params.append('password', password)));
-            } else {
-                params = params.set('password', passwords);
-            }
-        }
         return this.http.delete(`api/${service}/${source.toUpperCase()}/${objectType}/${encodeURIComponent(name)}`, { params }).pipe(
             map((result: any) => {
                 console.debug('deleteObject success:' + JSON.stringify(result));
@@ -283,9 +256,9 @@ export class RestService {
                     return item.key === mntner.key;
                 });
                 if (_.isUndefined(found)) {
-                    // NOTE: the  autocomplete service just returns 10 matching records. The exact match might not be part of this set.
-                    // So if this happens, perform best guess and just enrich the existing mntner with md5.
-                    mntner.auth = ['MD5-PW'];
+                    // NOTE: the autocomplete service just returns 10 matching records. The exact match might not be part of this set.
+                    // So if this happens, perform best guess and just enrich the existing mntner with SSO.
+                    mntner.auth = ['SSO'];
                     found = mntner;
                 } else {
                     found.mine = mntner.mine;

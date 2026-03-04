@@ -1,3 +1,4 @@
+import createError from '../../e2e/mocks/e2eTest/1c9396eb287bd4fcdb8fd47ea0e3a453f2f3533d.json';
 import { WebupdatesPage } from '../pages/webupdates.page';
 
 describe('The inetnum editor', () => {
@@ -8,11 +9,21 @@ describe('The inetnum editor', () => {
     });
 
     it('should ask for authentication of parent inetnum', () => {
+        cy.intercept('GET', '**/db-web-ui/api/user/mntners', {
+            statusCode: 200,
+            body: [
+                {
+                    mine: true,
+                    auth: ['SSO'],
+                    type: 'mntner',
+                    key: 'TEST03-MNT',
+                },
+            ],
+        });
         webupdatesPage
             .expectDisabledSubmitCreate(true)
             .typeOnField('inetnum', '213.159.160.0-213.159.190.255')
             .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('TEST03-MNT')
             .typeOnField('netname', 'bogus-netname1')
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'aa1-ripe')
@@ -26,30 +37,6 @@ describe('The inetnum editor', () => {
             .expectDisabledSubmitCreate(false);
     });
 
-    it('should ask for authentication of parent inetnum and handle a bad password properly', () => {
-        webupdatesPage
-            .expectDisabledSubmitCreate(true)
-            .typeOnField('inetnum', '213.159.160.0-213.159.190.255')
-            .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('xxx', true)
-            .getModalAuthentication()
-            .expectBannerToContain('You have not supplied the correct password for mntner')
-            .closeModal();
-
-        webupdatesPage
-            .typeOnField('netname', 'bogus-netname1')
-            .selectFromNgSelect('country', 'Afghanistan [AF]')
-            .typeOnField('admin-c', 'aa1-ripe')
-            .typeOnField('tech-c', 'aa1-ripe')
-            .expectOptionSizeFromNgSelect('status', 4)
-            .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
-            .expectOptionFromNgSelect('status', 'ASSIGNED PA')
-            .expectOptionFromNgSelect('status', 'LIR-PARTITIONED PA')
-            .expectOptionFromNgSelect('status', 'SUB-ALLOCATED PA')
-            .selectFromNgSelect('status', 'ASSIGNED PA')
-            .expectDisabledSubmitCreate(true);
-    });
-
     it('should show an editor for inet6num', () => {
         webupdatesPage
             .visit('select')
@@ -59,7 +46,6 @@ describe('The inetnum editor', () => {
             .expectDisabledSubmitCreate(true)
             .typeOnField('inet6num', '2001:888:2000::/38')
             .blurOnField('inet6num')
-            .authenticateWithDisabledAssociate('TEST11-MNT')
             .expectOptionSizeFromNgSelect('status', 2)
             .expectOptionFromNgSelect('status', 'AGGREGATED-BY-LIR')
             .expectOptionFromNgSelect('status', 'ASSIGNED');
@@ -113,7 +99,6 @@ describe('The inetnum editor', () => {
         webupdatesPage
             .typeOnField('inetnum', '5.254.68.40/29')
             .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('TEST02-MNT')
             .typeOnField('netname', 'SOMETHING')
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'TSTADMINC-RIPE')
@@ -129,10 +114,14 @@ describe('The inetnum editor', () => {
     });
 
     it('should show field validation errors', () => {
+        cy.intercept('POST', '/db-web-ui/api/whois/RIPE/inetnum', {
+            statusCode: 400,
+            body: createError,
+        }).as('createItem');
+
         webupdatesPage
             .typeOnField('inetnum', '5.254.68.40/29')
             .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('TEST02-MNT')
             .typeOnField('netname', 'SOMETHING.')
             .selectFromNgSelect('country', 'Afghanistan [AF]')
             .typeOnField('admin-c', 'TSTADMINC-RIPE')
@@ -147,11 +136,6 @@ describe('The inetnum editor', () => {
             .submitForm()
             .expectErrorOnField('inetnum', 'Value 5.254.68.40/29 converted to 5.254.68.40 - 5.254.68.47')
             .expectErrorOnField('netname', 'Syntax error in SOMETHING.');
-    });
-
-    it('should show authenticate error when modal window is dismissed', () => {
-        webupdatesPage.typeOnField('inetnum', '5.254.68.40/29').blurOnField('inetnum').getModalAuthentication().closeModal();
-        webupdatesPage.expectErrorOnField('inetnum', 'Failed to authenticate parent resource').expectErrorMessage('Failed to authenticate parent resource');
     });
 
     it('should show error message above field and in banner for existing resource', () => {
@@ -180,7 +164,6 @@ describe('The inetnum editor', () => {
             // after specifying inetnum statuses depend on parent status
             .typeOnField('inetnum', '5.104.73.0 - 5.104.73.255')
             .blurOnField('inetnum')
-            .authenticateWithDisabledAssociate('TEST03-MNT')
             .expectOptionSizeFromNgSelect('status', 1)
             .expectOptionFromNgSelect('status', 'ASSIGNED PA');
     });

@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { IUserInfoResponseData } from '../dropdown/org-data-type.model';
 import { PropertiesService } from '../properties.service';
-import { CredentialsService } from '../shared/credentials.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
@@ -12,7 +11,8 @@ import { UserInfoService } from '../userinfo/user-info.service';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
-import { IModalAuthentication } from './modal-authentication.component';
+import { OverrideCredentialsService } from '../shared/override-credentials-service';
+import { IModalAuthentication } from './modal-sso-required-authentication.component';
 import { RestService } from './rest.service';
 
 @Component({
@@ -25,9 +25,9 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     private activeModal = inject(NgbActiveModal);
     whoisResourcesService = inject(WhoisResourcesService);
     userInfoService = inject(UserInfoService);
-    credentialsService = inject(CredentialsService);
     restService = inject(RestService);
     properties = inject(PropertiesService);
+    overrideCredentialsService = inject(OverrideCredentialsService);
 
     public close: any;
     @Input()
@@ -60,9 +60,9 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
         if (!this.selected.item || !this.selected.item.key) {
             return;
         }
-        this.restService.fetchObjectByOverride(this.SOURCE, 'mntner', this.selected.item.key, undefined, this.override).subscribe({
+        this.restService.fetchObjectByOverride(this.SOURCE, 'mntner', this.selected.item.key, this.override).subscribe({
             next: (whoisResources: IWhoisResponseModel) => {
-                this.credentialsService.setCredentials(this.selected.item.key, this.override);
+                this.overrideCredentialsService.setCredentials(this.selected.item.key, this.override);
                 this.setSSOAccount(whoisResources);
             },
             error: (error: any) => {
@@ -83,7 +83,6 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
         this.userInfoService.getUserOrgsAndRoles().subscribe((userInfo: IUserInfoResponseData) => {
             const ssoUserName = userInfo.user.username;
             if (ssoUserName) {
-                // append auth-md5 attribute
                 const attributes = this.whoisResourcesService.addAttributeAfterType(
                     this.whoisResourcesService.getAttributes(whoisResources),
                     {
@@ -106,8 +105,7 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
                         next: (resp: any) => {
                             this.selected.item.mine = true;
                             this.addSSOAsAuthMethod();
-                            this.credentialsService.removeCredentials(); // because it's now an sso mntner
-                            // report success back
+                            this.overrideCredentialsService.removeCredentials(); // because it's now a sso mntner report success back
                             this.activeModal.close({
                                 $value: {
                                     selectedItem: this.selected.item,

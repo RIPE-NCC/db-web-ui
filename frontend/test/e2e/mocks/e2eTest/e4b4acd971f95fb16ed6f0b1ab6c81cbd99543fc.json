@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/whois/RIPE/ROLE/TSTROLE-RIPE?password=TEST15-MNT",
+    "requestUrl": "/db-web-ui/api/whois/RIPE/ROLE/TSTROLE-RIPE",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

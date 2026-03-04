@@ -165,7 +165,7 @@ export class ForceDeleteComponent implements OnInit {
 
     private useDryRunDeleteToDetectAuthCandidates() {
         this.restCallInProgress = true;
-        return this.restService.deleteObject(this.object.source, this.object.type, this.object.name, 'dry-run', false, undefined, true).pipe(
+        return this.restService.deleteObject(this.object.source, this.object.type, this.object.name, 'dry-run', false, true).pipe(
             mergeMap(() => {
                 this.restCallInProgress = false;
                 console.debug('auth can be performed without interactive popup');
@@ -200,7 +200,7 @@ export class ForceDeleteComponent implements OnInit {
 
     public forceDelete() {
         if (this.isFormValid()) {
-            if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, [], this.maintainers.object)) {
+            if (this.mntnerService.needsAuthentication(this.maintainers.sso, [], this.maintainers.object)) {
                 console.debug('Need auth');
                 this.performAuthentication();
             } else {

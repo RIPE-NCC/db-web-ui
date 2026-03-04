@@ -96,7 +96,7 @@
                                     "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST06-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "TEST06-MNT",
+                                "value": "TEST03-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

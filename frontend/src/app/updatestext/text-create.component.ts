@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { CredentialsService } from '../shared/credentials.service';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -43,7 +42,6 @@ export class TextCreateComponent implements OnInit {
     textCommonsService = inject(TextCommonsService);
     preferenceService = inject(PreferenceService);
     mntnerService = inject(MntnerService);
-    credentialsService = inject(CredentialsService);
     alertsService = inject(AlertsService);
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
@@ -56,7 +54,6 @@ export class TextCreateComponent implements OnInit {
     public mntners: any;
     public name: string;
     public override: string;
-    public passwords: string[];
     public haveNonLatin1: boolean;
 
     public ngOnInit() {
@@ -103,7 +100,6 @@ export class TextCreateComponent implements OnInit {
             this.alertsService.setGlobalError('Only a single object is allowed');
             return;
         }
-        this.passwords = objects[0].passwords;
         this.override = objects[0].override;
         const attributes = this.textCommonsService.uncapitalize(objects[0].attributes);
         console.debug('attributes:' + JSON.stringify(attributes));
@@ -152,11 +148,10 @@ export class TextCreateComponent implements OnInit {
             }
         } else {
             this.textCommonsService
-                .authenticate('Create', this.object.source, this.object.type, undefined, this.mntners.sso, attributes, this.passwords, this.override)
+                .authenticate('Create', this.object.source, this.object.type, undefined, this.mntners.sso, attributes, this.override)
                 .subscribe({
                     next: (authenticated: any) => {
                         console.debug('Authenticated successfully:' + authenticated);
-                        // combine all passwords
                         this.doCreate(attributes, this.object.type);
                     },
                     error: (authenticated: any) => {
@@ -202,7 +197,6 @@ export class TextCreateComponent implements OnInit {
             const obj: IRpslObject = {
                 attributes: attrs,
                 override: this.override,
-                passwords: this.passwords,
             };
             this.object.rpsl = this.rpslService.toRpsl(obj);
         });
@@ -246,19 +240,11 @@ export class TextCreateComponent implements OnInit {
     }
 
     private doCreate(attributes: any, objectType: string) {
-        const combinedPaswords = _.union(this.passwords, this.credentialsService.getPasswordsForRestCall());
         attributes = this.textCommonsService.stripEmptyAttributes(attributes);
         // rest-POST to server
         this.restCallInProgress = true;
         this.restService
-            .createObject(
-                this.object.source,
-                objectType,
-                this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes),
-                combinedPaswords,
-                this.override,
-                true,
-            )
+            .createObject(this.object.source, objectType, this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), this.override, true)
             .subscribe({
                 next: (whoisResources: any) => {
                     this.restCallInProgress = false;

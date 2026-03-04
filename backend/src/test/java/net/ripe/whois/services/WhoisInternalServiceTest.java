@@ -49,7 +49,6 @@ public class WhoisInternalServiceTest {
         "<attribute name=\"mntner\" value=\"TSTSSO18-MNT\"/>" +
         "<attribute name=\"descr\" value=\"My Descr again\"/>" +
         "<attribute name=\"admin-c\" value=\"TSTADMINC-RIPE\"/>" +
-        "<attribute name=\"auth\" value=\"MD5-PW\" comment=\"Filtered\"/>" +
         "<attribute name=\"auth\" value=\"SSO\" comment=\"Filtered\"/>" +
         "<attribute name=\"mnt-by\" value=\"TSTSSO18-MNT\"/>" +
         "<attribute name=\"created\" value=\"2015-05-26T15:30:45Z\"/>" +
@@ -126,7 +125,7 @@ public class WhoisInternalServiceTest {
 
         assertEquals("mntner", response.get(1).get("type"));
         assertEquals("TSTSSO18-MNT", response.get(1).get("key"));
-        assertEquals("[MD5-PW, SSO]", response.get(1).get("auth").toString());
+        assertEquals("[SSO]", response.get(1).get("auth").toString());
 
         assertEquals("mntner", response.get(2).get("type"));
         assertEquals("TST19-MNT", response.get(2).get("key"));

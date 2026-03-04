@@ -108,7 +108,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
 
         this.mergeMaintainers(this.attributes, { name: 'mnt-by', value: item.key });
 
-        if (this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
+        if (this.mntnerService.needsAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
             this.performAuthentication();
         }
         this.attributeMetadataService.enrich(this.objectType, this.attributes);
@@ -172,7 +172,6 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
     }
 
     // hot-wire the mntnerService functions
-    public hasMd5 = (mntner: IMntByModel) => this.mntnerService.hasMd5(mntner);
     public hasPgp = (mntner: IMntByModel) => this.mntnerService.hasPgp(mntner);
     public hasSSo = (mntner: IMntByModel) => this.mntnerService.hasSSo(mntner);
     public isRemovable = (mntnerKey: string) => this.mntnerService.isRemovable(mntnerKey);
@@ -360,7 +359,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
                         // of course none of the initial ones are new
                         this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, _.flatten(result));
                         console.debug('mntners-object:', this.mntners.object);
-                        if (this.mntnerService.needsPasswordAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
+                        if (this.mntnerService.needsAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();
                         }
                         this.updateMntnersClbk.emit(this.mntners);

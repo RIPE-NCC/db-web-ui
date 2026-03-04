@@ -30,10 +30,6 @@
                             },
                             {
                                 "name": "auth",
-                                "value": "MD5-PW $1$uWBBDkpT$31ZLYSr70AfXCgZEQEhwJ/"
-                            },
-                            {
-                                "name": "auth",
                                 "value": "SSO ca81cdf1-95e8-4af1-a75e-84868c33b0ec"
                             },
                             {

@@ -177,11 +177,10 @@ describe('CreateModifyComponent', () => {
                 },
             };
 
-            component.credentialsService.setCredentials('TEST-MNT', '@123');
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'as-block', 'A');
             component.submit();
 
-            httpMock.expectOne({ method: 'POST', url: 'api/whois/RIPE/as-block?password=%40123' }).flush(DUMMY_RESPONSE);
+            httpMock.expectOne({ method: 'POST', url: 'api/whois/RIPE/as-block' }).flush(DUMMY_RESPONSE);
             fixture.detectChanges();
 
             const resp = component.messageStoreService.get('MY-AS-BLOCK');
@@ -294,8 +293,8 @@ describe('CreateModifyComponent', () => {
             modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(() => 'cancel') });
 
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'as-block', 'MY-AS-BLOCK');
-            // simulate manual addition of a new mntner with only md5
-            component.maintainers.object = [{ mine: false, type: 'mntner', auth: ['MD5'], key: 'TEST-MNT-1' }];
+            // simulate manual addition of a new mntner with only SSO
+            component.maintainers.object = [{ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' }];
             component.updateMaintainers(component.maintainers);
             component.submit();
 
@@ -389,6 +388,7 @@ describe('CreateModifyComponent', () => {
             await fixture.whenStable();
         });
 
+        //TODO: [MH] review the description of this test, is not doing what it is suppose to do
         it('should not be possible to create route objects with RIPE-NCC-RPSL-MNT for out-of-region objects', async () => {
             // for creation and modification of route, route6 and aut-num, password for RIPE-NCC-RPSL-MNT is added to
             // the rest-call to allow creation of "out-of-region"-objects without knowing the details of RPSL-mntner
@@ -519,8 +519,8 @@ describe('CreateModifyComponent', () => {
 const USER_MAINTAINERS_MOCK = [{ mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' }];
 const USER_RIPE_NCC_MNT_MOCK = [{ mine: true, type: 'mntner', auth: ['SSO'], key: 'RIPE-NCC-MNT' }];
 const USER_WITH_MORE_ASSOCIATED_MNT_MOCK = [
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TST12-MNT' },
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TEST01-MNT' },
+    { mine: true, type: 'mntner', auth: ['SSO', 'SSO'], key: 'TST12-MNT' },
+    { mine: true, type: 'mntner', auth: ['SSO', 'SSO'], key: 'TEST01-MNT' },
     { mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' },
 ];
 

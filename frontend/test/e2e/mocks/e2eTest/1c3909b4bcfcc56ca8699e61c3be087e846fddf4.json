@@ -65,6 +65,15 @@
                     {
                         "link": {
                             "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "TEST03-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
                             "href": "https://rest-prepdev.db.ripe.net/ripe/person/WS1234-RIPE"
                         },
                         "name": "admin-c",
@@ -83,6 +92,15 @@
                     {
                         "name": "status",
                         "value": "ALLOCATED-ASSIGNED PA"
+                    },
+                    {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST004-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "TST004-MNT",
+                        "referenced-type": "mntner"
                     },
                     {
                         "link": {

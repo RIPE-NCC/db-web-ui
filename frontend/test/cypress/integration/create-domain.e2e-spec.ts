@@ -31,7 +31,6 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '212.17.110.0/23')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('TEST03-MNT')
             .typeOnField('nserver$1', 'ns1.orgtest22.nl')
             .blurOnField('nserver$1')
             .typeOnField('nserver$2', 'ns2.orgtest22.nl')
@@ -70,7 +69,6 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '212.17.110.0/23')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('TEST03-MNT')
             .typeOnField('nserver$1', 'rns1.test.biz')
             .blurOnField('nserver$1')
             .typeOnField('nserver$2', 'rns2.test.biz')
@@ -94,7 +92,6 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '91.90.153.0/24')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('TEST13-MNT')
             .typeOnField('nserver$1', 'dns1.test.net')
             .blurOnField('nserver$1')
             .typeOnField('nserver$2', 'dns2.test.de')
@@ -143,7 +140,6 @@ describe('The create domain screen', () => {
         webupdatesPage
             .typeOnField('prefix', '91.109.48.0-91.109.48.255')
             .blurOnField('prefix')
-            .authenticateWithDisabledAssociate('TEST04-MNT')
             .typeOnField('nserver$1', 'dns01.test.it')
             .blurOnField('nserver$1')
             .typeOnField('nserver$2', 'dns02.test.it')

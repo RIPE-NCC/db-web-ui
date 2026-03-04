@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 import { EMPTY } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { CredentialsService } from '../../../src/app/shared/credentials.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
@@ -34,7 +33,6 @@ describe('TextModifyComponent', () => {
     let preferencesServiceMock: any;
     let routerMock: any;
     let modalMock: any;
-    let credentialsServiceMock: any;
     let textModifyComponent: TextModifyComponent;
 
     const testPersonRpsl =
@@ -86,7 +84,6 @@ describe('TextModifyComponent', () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
         TestBed.configureTestingModule({
             imports: [FormsModule, TextModifyComponent],
             providers: [
@@ -99,7 +96,6 @@ describe('TextModifyComponent', () => {
                 RpslService,
                 MntnerService,
                 TextCommonsService,
-                { provide: CredentialsService, useValue: credentialsServiceMock },
                 PrefixService,
                 PropertiesService,
                 { provide: NgbModal, useValue: modalMock },

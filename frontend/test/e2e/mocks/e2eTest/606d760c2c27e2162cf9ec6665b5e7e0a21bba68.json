@@ -29,10 +29,6 @@
                                 "value": "TEST14-MNT"
                             },
                             {
-                                "name": "auth",
-                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
-                            },
-                            {
                                 "name": "descr",
                                 "value": "Test org name"
                             },

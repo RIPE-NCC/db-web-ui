@@ -87,28 +87,25 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
         }
     }
 
-    public ResponseEntity<String> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, @Nullable final String password, final HttpHeaders headers) {
-        return handleErrors(() -> restTemplate.exchange(buildDeleteUri(source, objectType, name, reason, password),
+    public ResponseEntity<String> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, final HttpHeaders headers) {
+        return handleErrors(() -> restTemplate.exchange(buildDeleteUri(source, objectType, name, reason),
                 HttpMethod.DELETE,
                 new HttpEntity<String>(headers),
                 String.class), LOGGER);
     }
 
-    private URI buildDeleteUri(final String source, final String objectType, final String objectName, final String reason, final String password) {
+    private URI buildDeleteUri(final String source, final String objectType, final String objectName, final String reason) {
         try {
             final UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(referencesApiUrl)
                 .pathSegment(source)
                 .pathSegment(objectType)
                 .pathSegment(objectName)
                 .queryParam("reason", reason);
-            if (password != null) {
-                builder.queryParam("password", password);
-            }
             final URI uri = builder.build().toUri();
             LOGGER.debug("Delete URI {}", uri);
             return uri;
         } catch (IllegalArgumentException e) {
-            LOGGER.warn("Invalid Delete URI {}/{}/{}/{}?reason={}&password={}", referencesApiUrl, source, objectType, objectName, reason, password);
+            LOGGER.warn("Invalid Delete URI {}/{}/{}/{}?reason={}", referencesApiUrl, source, objectType, objectName, reason);
             throw e;
         }
     }

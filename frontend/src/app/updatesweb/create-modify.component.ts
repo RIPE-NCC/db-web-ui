@@ -13,7 +13,6 @@ import { IpAddressService } from '../myresources/ip-address.service';
 import { ResourceStatusService } from '../myresources/resource-status.service';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { CredentialsService } from '../shared/credentials.service';
 import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-name.pipe';
 import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
@@ -32,7 +31,6 @@ import { MntnerService } from './mntner.service';
 import { ModalAddAttributeComponent } from './modal-add-attribute.component';
 import { ModalCreateRoleForAbuseCComponent } from './modal-create-role-for-abusec.component';
 import { ModalEditAttributeComponent } from './modal-edit-attribute.component';
-import { ModalMd5PasswordComponent } from './modal-md5-password.component';
 import { ModalPGPKeyComponent } from './modal-pgp-key.component';
 import { ObjectUtilService } from './object-util.service';
 import { OrganisationHelperService } from './organisation-helper.service';
@@ -81,7 +79,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     attributeMetadataService = inject(AttributeMetadataService);
     whoisMetaService = inject(WhoisMetaService);
     messageStoreService = inject(MessageStoreService);
-    credentialsService = inject(CredentialsService);
     restService = inject(RestService);
     modalService = inject(NgbModal);
     mntnerService = inject(MntnerService);
@@ -252,7 +249,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         abuseAttr.$$success = undefined;
         const inputData = {
             maintainers: maintainers,
-            passwords: this.credentialsService.getPasswordsForRestCall(),
             source: this.source,
         };
         const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });
@@ -463,16 +459,6 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
     }
 
-    public displayMd5DialogDialog(attr: IAttributeModel) {
-        const modalRef = this.modalService.open(ModalMd5PasswordComponent, { size: 'lg' });
-        modalRef.closed.subscribe((md5Value: any) => {
-            attr.value = md5Value;
-        });
-        modalRef.dismissed.subscribe((reason: any) => {
-            console.debug('openMd5Modal cancelled because: ' + reason);
-        });
-    }
-
     public displayPGPKeyDialogDialog() {
         const modalRef = this.modalService.open(ModalPGPKeyComponent, { windowClass: 'resizable-modal' });
         modalRef.closed.subscribe((pgp: string) => {
@@ -582,12 +568,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         } else {
             this.stripNulls();
             this.alertsService.clearAlertMessages();
-            if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
+            if (this.mntnerService.needsAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                 this.performAuthentication();
                 return;
             }
-
-            const passwords = this.credentialsService.getPasswordsForRestCall();
 
             this.restCallInProgress = true;
 
@@ -595,11 +579,11 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             if (!this.name) {
                 this.restService
-                    .createObject(this.source, this.objectType, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
+                    .createObject(this.source, this.objectType, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes))
                     .subscribe({ next: onSubmitSuccess, error: onSubmitError });
             } else {
                 this.restService
-                    .modifyObject(this.source, this.objectType, this.name, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes), passwords)
+                    .modifyObject(this.source, this.objectType, this.name, this.whoisResourcesService.turnAttrsIntoWhoisObject(this.attributes))
                     .subscribe({ next: onSubmitSuccess, error: onSubmitError });
             }
         }
@@ -740,13 +724,9 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     private fetchDataForModify() {
-        let password = null;
-        if (this.credentialsService.hasCredentials()) {
-            password = this.credentialsService.getPasswordsForRestCall();
-        }
         // wait until both have completed
         this.restCallInProgress = true;
-        this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe({
+        this.restService.fetchObject(this.source, this.objectType, this.name).subscribe({
             next: (objectToModifyResponse) => {
                 this.restCallInProgress = false;
                 console.debug('[createModifyController] object to modify: ' + JSON.stringify(objectToModifyResponse));
@@ -878,12 +858,8 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 // save object for later diff in display-screen
                 this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
             } else {
-                let password = null;
-                if (this.credentialsService.hasCredentials()) {
-                    password = this.credentialsService.getPasswordsForRestCall();
-                }
                 this.restCallInProgress = true;
-                this.restService.fetchObject(this.source, this.objectType, this.name, password).subscribe({
+                this.restService.fetchObject(this.source, this.objectType, this.name).subscribe({
                     next: (result: any) => {
                         this.restCallInProgress = false;
 

@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 import { EMPTY, of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { CredentialsService } from '../../../src/app/shared/credentials.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { RpslService } from '../../../src/app/updatestext/rpsl.service';
@@ -56,7 +55,6 @@ describe('TextCreateComponent', () => {
                 RpslService,
                 MntnerService,
                 TextCommonsService,
-                CredentialsService,
                 PrefixService,
                 PropertiesService,
                 { provide: Location, useValue: { path: () => '' } },
@@ -401,49 +399,14 @@ describe('TextCreateComponent', () => {
         expect(modalMock.open).not.toHaveBeenCalled();
     });
 
-    it('should extract password from rpsl', async () => {
+    it('should extract override from rpsl and not show authentication modal', async () => {
         createParams(SOURCE, 'person', true, null);
         componentFixture.detectChanges();
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
 
         await componentFixture.whenStable();
-        textCreateComponent.object.rpsl = person_correct + 'password:secret\n';
-        textCreateComponent.submit();
-        await componentFixture.whenStable();
-
-        httpMock.expectOne({ method: 'POST', url: 'api/whois/RIPE/person?password=secret&unformatted=true' }).flush({
-            objects: {
-                object: [
-                    {
-                        'primary-key': { attribute: [{ name: 'person', value: 'TST07-RIPE' }] },
-                        attributes: {
-                            attribute: [
-                                { name: 'person', value: 'Tester X' },
-                                { name: 'address', value: 'Singel, Amsterdam' },
-                                { name: 'phone', value: '+316' },
-                                { name: 'nic-hdl', value: 'TST07-RIPE' },
-                                { name: 'mnt-by', value: 'TEST-MNT' },
-                                { name: 'source', value: 'RIPE' },
-                            ],
-                        },
-                    },
-                ],
-            },
-        });
-
-        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TST07-RIPE?method=Create`);
-        expect(modalMock.open).not.toHaveBeenCalled();
-    });
-
-    it('should extract override from rpsl and ignore password', async () => {
-        createParams(SOURCE, 'person', true, null);
-        componentFixture.detectChanges();
-
-        httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
-
-        await componentFixture.whenStable();
-        textCreateComponent.object.rpsl = person_correct + 'override:me,secret,because\n' + 'password:secret';
+        textCreateComponent.object.rpsl = person_correct + 'override:me,secret,because\n';
         textCreateComponent.submit();
         await componentFixture.whenStable();
 

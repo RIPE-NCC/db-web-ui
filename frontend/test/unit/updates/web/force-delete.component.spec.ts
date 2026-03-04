@@ -8,7 +8,6 @@ import { EMPTY } from 'rxjs';
 import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
-import { CredentialsService } from '../../../../src/app/shared/credentials.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { ForceDeleteComponent } from '../../../../src/app/updatesweb/forcedelete/force-delete.component';
@@ -54,7 +53,6 @@ describe('ForceDeleteController', () => {
     let componentFixture: ComponentFixture<ForceDeleteComponent>;
     let forceDeleteComponent: ForceDeleteComponent;
     let routerMock: any;
-    let credentialsServiceMock: any;
     let whoisResourcesService: WhoisResourcesService;
 
     afterAll(() => {
@@ -65,9 +63,6 @@ describe('ForceDeleteController', () => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials']);
-        credentialsServiceMock.hasCredentials.and.returnValue(true);
-        credentialsServiceMock.getCredentials.and.returnValue({ mntner: 'TEST-MNT', successfulPassword: '@123' });
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
 
         TestBed.configureTestingModule({
@@ -83,7 +78,6 @@ describe('ForceDeleteController', () => {
                     },
                 },
                 { provide: Router, useValue: routerMock },
-                { provide: CredentialsService, useValue: credentialsServiceMock },
                 AlertsService,
                 MntnerService,
                 RestService,
@@ -231,16 +225,12 @@ describe('ForceDeleteController should be able to handle escape objected with sl
     let componentFixture: ComponentFixture<ForceDeleteComponent>;
     let forceDeleteComponent: ForceDeleteComponent;
     let routerMock: any;
-    let credentialsServiceMock: any;
     let modalMock: any;
 
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials']);
-        credentialsServiceMock.hasCredentials.and.returnValue(false);
-        credentialsServiceMock.getCredentials.and.returnValue({ mntner: undefined, successfulPassword: undefined });
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
@@ -257,7 +247,6 @@ describe('ForceDeleteController should be able to handle escape objected with sl
                     },
                 },
                 { provide: Router, useValue: routerMock },
-                { provide: CredentialsService, useValue: credentialsServiceMock },
                 { provide: NgbModal, useValue: modalMock },
                 AlertsService,
                 MntnerService,
@@ -288,13 +277,13 @@ describe('ForceDeleteController should be able to handle escape objected with sl
             .flush(dryRunDeleteFailure, { statusText: 'error', status: 403 });
         httpMock
             .expectOne({ method: 'GET', url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT' })
-            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW'] }]);
+            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'] }]);
         httpMock
             .expectOne({ method: 'GET', url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT' })
-            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW'] }]);
+            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'] }]);
         httpMock
             .expectOne({ method: 'GET', url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT' })
-            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW'] }]);
+            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'] }]);
         await componentFixture.whenStable();
 
         expect(forceDeleteComponent.object.source).toBe(SOURCE);
@@ -316,13 +305,13 @@ describe('ForceDeleteController should be able to handle escape objected with sl
             .flush(dryRunDeleteFailure, { statusText: 'error', status: 403 });
         httpMock
             .expectOne({ method: 'GET', url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT' })
-            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW'] }]);
+            .flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'] }]);
         httpMock
             .expectOne({ method: 'GET', url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT' })
-            .flush([{ key: 'TEST1-MNT', type: 'mntner', auth: ['MD5-PW'] }]);
+            .flush([{ key: 'TEST1-MNT', type: 'mntner', auth: ['SSO'] }]);
         httpMock
             .expectOne({ method: 'GET', url: 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT' })
-            .flush([{ key: 'TEST2-MNT', type: 'mntner', auth: ['MD5-PW'] }]);
+            .flush([{ key: 'TEST2-MNT', type: 'mntner', auth: ['SSO'] }]);
         await componentFixture.whenStable();
 
         forceDeleteComponent.forceDelete();

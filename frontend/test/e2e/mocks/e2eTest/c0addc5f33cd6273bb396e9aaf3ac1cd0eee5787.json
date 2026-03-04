@@ -1,19 +1,15 @@
 {
-    "requestUrl": "/api/whois/RIPE/inetnum/3.0.103.0%20-%203.0.103.255?dry-run=false&reason=I%20don%27t%20need%20this%20object&password=TST03-MNT",
+    "requestUrl": "/db-web-ui/api/whois/ripe/mntner/TEST21-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
-        "link": {
-            "type": "locator",
-            "href": "http://prepdev.ripe.net:1080/RIPE/inetnum/3.0.103.0%20-%203.0.103.255?dry-run=false&reason=I%20don%27t%20need%20this%20object"
-        },
         "objects": {
             "object": [
                 {
-                    "type": "inetnum",
+                    "type": "mntner",
                     "link": {
                         "type": "locator",
-                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/3.0.103.0 - 3.0.103.255"
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST21-MNT"
                     },
                     "source": {
                         "id": "ripe"
@@ -21,67 +17,75 @@
                     "primary-key": {
                         "attribute": [
                             {
-                                "name": "inetnum",
-                                "value": "3.0.103.0 - 3.0.103.255"
+                                "name": "mntner",
+                                "value": "TEST21-MNT"
                             }
                         ]
                     },
                     "attributes": {
                         "attribute": [
                             {
-                                "name": "inetnum",
-                                "value": "3.0.103.0 - 3.0.103.255"
+                                "name": "mntner",
+                                "value": "TEST21-MNT"
                             },
                             {
-                                "name": "netname",
-                                "value": "test-netname"
+                                "name": "auth",
+                                "value": "SSO teste2e@ripe.net"
                             },
                             {
-                                "name": "country",
-                                "value": "NL"
-                            },
-                            {
-                                "link": {
-                                    "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
-                                },
-                                "name": "admin-c",
-                                "value": "TSTTECHC-RIPE",
-                                "referenced-type": "person"
-                            },
-                            {
-                                "link": {
-                                    "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/TSTTECHC-RIPE"
-                                },
-                                "name": "tech-c",
-                                "value": "TSTTECHC-RIPE",
-                                "referenced-type": "person"
+                                "name": "auth",
+                                "value": "SSO isvonja@ripe.net"
                             },
                             {
                                 "name": "descr",
-                                "value": "testing"
-                            },
-                            {
-                                "name": "status",
-                                "value": "ALLOCATED PA"
+                                "value": "Maintainer for all TEST objects"
                             },
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/TSTADMINC-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TSTADMINC-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "upd-to",
+                                "value": "test@test.com"
+                            },
+                            {
+                                "name": "mnt-nfy",
+                                "value": "test@test.com"
+                            },
+                            {
+                                "name": "notify",
+                                "value": "test@test.com"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST21-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "TST03-MNT",
+                                "value": "TEST21-MNT",
                                 "referenced-type": "mntner"
                             },
                             {
                                 "name": "created",
-                                "value": "2016-04-25T12:53:03Z"
+                                "value": "2002-08-19T16:53:54Z"
                             },
                             {
                                 "name": "last-modified",
-                                "value": "2017-08-31T15:36:41Z"
+                                "value": "2019-10-04T09:28:28Z"
                             },
                             {
                                 "name": "source",

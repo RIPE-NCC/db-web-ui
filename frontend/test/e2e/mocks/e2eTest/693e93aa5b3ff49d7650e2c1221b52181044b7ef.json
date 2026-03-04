@@ -13,7 +13,6 @@
                     "attributes": {
                         "attribute": [
                             { "name": "mntner", "value": "SHRYANE-MNT" },
-                            { "name": "auth", "value": "MD5-PW", "comment": "Filtered" },
                             { "name": "auth", "value": "SSO", "comment": "Filtered" },
                             { "name": "auth", "value": "SSO", "comment": "Filtered" },
                             { "name": "auth", "value": "SSO", "comment": "Filtered" },

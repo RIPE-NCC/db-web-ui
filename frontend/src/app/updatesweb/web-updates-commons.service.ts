@@ -8,7 +8,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from './create-modify.component';
 import { MntnerService } from './mntner.service';
 import { ModalAuthenticationSSOPrefilledComponent } from './modal-authentication-sso-prefilled.component';
-import { ModalAuthenticationComponent } from './modal-authentication.component';
+import { ModalSsoRequiredAuthenticationComponent } from './modal-sso-required-authentication.component';
 
 export interface IAuthParams {
     maintainers: IMaintainers;
@@ -35,6 +35,7 @@ export class WebUpdatesCommonsService {
 
     constructor() {
         const properties = this.properties;
+        console.log('properties', properties.NO_PASSWORD_AUTH_POPUP);
 
         this.enableNonAuthUpdates =
             !properties.isProdEnv() && // Security property, this should never be enabled in PROD
@@ -43,28 +44,25 @@ export class WebUpdatesCommonsService {
 
     public performAuthentication(authParams: IAuthParams) {
         console.debug('Perform authentication', authParams.maintainers);
-        const mntnersWithPasswords = this.mntnerService.getMntnersForAuthentication(
+        const mntnersForAuthentication = this.mntnerService.getMntnersForAuthentication(
             authParams.maintainers.sso,
             authParams.maintainers.objectOriginal,
             authParams.maintainers.object,
         );
-        const mntnersWithoutPasswords = this.mntnerService.getMntnersNotEligibleForPasswordAuthentication(
-            authParams.maintainers.sso,
-            authParams.maintainers.objectOriginal,
-            authParams.maintainers.object,
-        );
+
         const allowForcedDelete = !_.find(authParams.maintainers.object, (o: any) => {
             return this.mntnerService.isAnyNccMntner(o.key);
         });
 
-        const modalRef = this.modalService.open(this.enableNonAuthUpdates ? ModalAuthenticationSSOPrefilledComponent : ModalAuthenticationComponent);
+        const modalRef = this.modalService.open(
+            !this.enableNonAuthUpdates ? ModalSsoRequiredAuthenticationComponent : ModalAuthenticationSSOPrefilledComponent,
+        );
 
         modalRef.componentInstance.resolve = {
             method: null,
             objectType: authParams.object.type,
             objectName: authParams.object.name,
-            mntners: mntnersWithPasswords,
-            mntnersWithoutPassword: mntnersWithoutPasswords,
+            mntners: mntnersForAuthentication,
             allowForcedDelete: !!allowForcedDelete,
             isLirObject: !!authParams.isLirObject,
             source: authParams.object.source,

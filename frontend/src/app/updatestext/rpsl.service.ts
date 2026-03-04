@@ -5,7 +5,6 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
 export interface IRpslObject {
     attributes: IAttributeModel[];
     override?: string;
-    passwords?: string[];
     deleteReason?: string;
 }
 
@@ -43,12 +42,6 @@ export class RpslService {
             rpslData = rpslData.concat('delete:' + obj.deleteReason + '\n');
         }
 
-        if (!_.isUndefined(obj.passwords) && obj.passwords.length > 0) {
-            _.each(obj.passwords, (pwd) => {
-                rpslData = rpslData.concat('password:' + pwd + '\n');
-            });
-        }
-
         if (!_.isUndefined(obj.override)) {
             rpslData = rpslData.concat('override:' + obj.override + '\n');
         }
@@ -61,21 +54,14 @@ export class RpslService {
 
         _.each(rpslText.split('\n\n'), (objRpsl) => {
             if (objRpsl !== '') {
-                const passwords: string[] = [];
                 const overrides: string[] = [];
                 const deleteReasons: string[] = [];
 
                 const obj: IRpslObject = {
-                    attributes: this.parseSingleObject(objRpsl, passwords, overrides, deleteReasons),
+                    attributes: this.parseSingleObject(objRpsl, overrides, deleteReasons),
                     deleteReason: undefined,
                     override: undefined,
-                    passwords: [],
                 };
-
-                this.stripDuplicates(passwords);
-                if (passwords.length > 0) {
-                    obj.passwords = passwords;
-                }
 
                 this.stripDuplicates(overrides);
                 if (overrides.length > 0) {
@@ -104,7 +90,7 @@ export class RpslService {
         });
     }
 
-    private parseSingleObject(rpslText: string, passwords: string[], overrides: string[], deleteReasons: string[]) {
+    private parseSingleObject(rpslText: string, overrides: string[], deleteReasons: string[]) {
         const attrs: IAttributeModel[] = [];
 
         let buffer = '';
@@ -120,11 +106,7 @@ export class RpslService {
                 const attr = this.parseSingleAttribute(_.clone(buffer));
                 if (!_.isUndefined(attr)) {
                     const trimmed = _.trim(attr.value);
-                    if (attr.name === 'password') {
-                        if (!_.isEmpty(trimmed)) {
-                            passwords.push(trimmed);
-                        }
-                    } else if (attr.name === 'override') {
+                    if (attr.name === 'override') {
                         if (!_.isEmpty(trimmed)) {
                             overrides.push(trimmed);
                         }

@@ -43,7 +43,6 @@ public class WhoisDomainObjectService {
     @Async
     public Future<ResponseEntity<String>> createDomainObjects(
                 final String source,
-                List<String> passwords,
                 final List<WhoisObject> domainObjects,
                 final String remoteAddress,
                 final String cookie) {
@@ -60,7 +59,7 @@ public class WhoisDomainObjectService {
 
         ResponseEntity<String> result;
         try {
-            result = restTemplate.postForEntity(getCreateDomainUri(source, passwords, remoteAddress), new HttpEntity<>(whoisResources, headers), String.class);
+            result = restTemplate.postForEntity(getCreateDomainUri(source, remoteAddress), new HttpEntity<>(whoisResources, headers), String.class);
         } catch (HttpClientErrorException.BadRequest e) {
             // whois update failed due to validation failure etc. (expected)
             LOGGER.info("Failed to create domain object(s): {}:{}\n{}\n{}", e.getClass().getName(), e.getMessage(), e.getResponseBodyAsString(), e.getStatusCode());
@@ -81,18 +80,12 @@ public class WhoisDomainObjectService {
         return new AsyncResult<>(result);
     }
 
-    private URI getCreateDomainUri(final String source, final List<String> passwords, final String clientIp) {
+    private URI getCreateDomainUri(final String source, final String clientIp) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", restApiUrl);
         variables.put("source", source);
         variables.put("clientIp", clientIp);
         final URI uri = new UriTemplate("{url}/domain-objects/{source}?clientIp={clientIp}").expand(variables);
-        final UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUri(uri);
-        if (passwords != null) {
-            for (String password : passwords){
-                uriComponentsBuilder.queryParam("password", password);
-            }
-        }
-        return uriComponentsBuilder.build().encode().toUri();
+        return UriComponentsBuilder.fromUri(uri).build().encode().toUri();
     }
 }

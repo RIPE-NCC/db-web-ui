@@ -6,7 +6,7 @@
         {
             "key": "etchells-mnt",
             "type": "mntner",
-            "auth": ["MD5-PW", "SSO"]
+            "auth": ["SSO"]
         }
     ]
 }

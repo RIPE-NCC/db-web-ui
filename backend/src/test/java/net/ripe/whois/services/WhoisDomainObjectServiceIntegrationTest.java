@@ -20,7 +20,6 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
     @Test
     public void create_domain_object() {
         final WhoisWebDTO dto = new WhoisWebDTO();
-        dto.passwords = Lists.newArrayList("test");
         dto.type = "prefix";
         dto.attributes = Lists.newArrayList(
             new NameValuePair("prefix", "192.0.2.0/22"),

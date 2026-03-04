@@ -37,7 +37,6 @@ export class TextModifyComponent implements OnInit {
     };
     public name: string;
     public override: string;
-    public passwords: string[] = [];
 
     public ngOnInit() {
         // extract parameters from the url

@@ -2,10 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import * as _ from 'lodash';
-import { union } from 'lodash';
 import { forkJoin } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { CredentialsService } from '../shared/credentials.service';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { RpslService } from '../updatestext/rpsl.service';
@@ -27,7 +25,6 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     private messageStoreService = inject(MessageStoreService);
     private rpslService = inject(RpslService);
     private textCommonsService = inject(TextCommonsService);
-    private credentialsService = inject(CredentialsService);
     alertsServices = inject(AlertsService);
 
     @Input()
@@ -56,7 +53,6 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     };
     public override: string;
     public deletable: boolean;
-    public passwords: string[] = [];
     public haveNonLatin1: boolean;
 
     public ngOnInit() {
@@ -72,7 +68,6 @@ export class WhoisObjectTextEditorComponent implements OnInit {
             return;
         }
 
-        const passwords = objects[0].passwords;
         const override = objects[0].override;
         let attributes = this.textCommonsService.uncapitalize(objects[0].attributes);
 
@@ -81,30 +76,13 @@ export class WhoisObjectTextEditorComponent implements OnInit {
             return;
         }
 
-        if (this.credentialsService.hasCredentials()) {
-            // todo: prevent duplicate password
-            passwords.push(...this.credentialsService.getPasswordsForRestCall());
-        }
-
-        this.textCommonsService.authenticate('Modify', this.source, this.type, this.objectName, this.mntners.sso, attributes, passwords, override).subscribe({
+        this.textCommonsService.authenticate('Modify', this.source, this.type, this.objectName, this.mntners.sso, attributes, override).subscribe({
             next: () => {
                 console.info('Successfully authenticated');
-
-                // combine all passwords
-                const combinedPasswords = union(passwords, this.credentialsService.getPasswordsForRestCall());
-
                 attributes = this.textCommonsService.stripEmptyAttributes(attributes);
 
                 this.restService
-                    .modifyObject(
-                        this.source,
-                        this.type,
-                        this.objectName,
-                        this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes),
-                        combinedPasswords,
-                        override,
-                        true,
-                    )
+                    .modifyObject(this.source, this.type, this.objectName, this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), override, true)
                     .subscribe({
                         next: (whoisResources: any) => {
                             this.submitEvent.emit(whoisResources);
@@ -136,14 +114,9 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     }
 
     private fetchAndPopulateObject() {
-        // see if we have a password from a previous session
-        if (this.credentialsService.hasCredentials()) {
-            console.debug('Found password in CredentialsService for fetch');
-            this.passwords.push(...this.credentialsService.getPasswordsForRestCall());
-        }
         this.restCallInProgress = true;
         const mntners = this.restService.fetchMntnersForSSOAccount();
-        const objectToModify = this.restService.fetchObject(this.source, this.type, this.objectName, this.passwords, true);
+        const objectToModify = this.restService.fetchObject(this.source, this.type, this.objectName, true);
         forkJoin([mntners, objectToModify]).subscribe({
             next: (response) => {
                 const mntnersResponse = response[0];
@@ -153,17 +126,15 @@ export class WhoisObjectTextEditorComponent implements OnInit {
                 // store mntners for SSO account
                 this.mntners.sso = mntnersResponse;
                 this.deletable = this.whoisResourcesService.canDeleteObject(attributes, this.mntners.sso, this.type);
-                this.textCommonsService
-                    .authenticate('Modify', this.source, this.type, this.objectName, this.mntners.sso, attributes, this.passwords, this.override)
-                    .subscribe({
-                        next: () => {
-                            console.debug('Successfully authenticated');
-                            this.refreshObjectIfNeeded(this.source, this.type, this.objectName);
-                        },
-                        error: () => {
-                            console.error('Error authenticating');
-                        },
-                    });
+                this.textCommonsService.authenticate('Modify', this.source, this.type, this.objectName, this.mntners.sso, attributes, this.override).subscribe({
+                    next: () => {
+                        console.debug('Successfully authenticated');
+                        this.refreshObjectIfNeeded(this.source, this.type, this.objectName);
+                    },
+                    error: () => {
+                        console.error('Error authenticating');
+                    },
+                });
             },
             error: (error) => {
                 this.restCallInProgress = false;
@@ -191,7 +162,6 @@ export class WhoisObjectTextEditorComponent implements OnInit {
         const obj = {
             attributes,
             override: this.override,
-            passwords: this.passwords,
         };
         this.rpsl = this.rpslService.toRpsl(obj);
         console.debug('RPSL:' + this.rpsl);
@@ -202,13 +172,8 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     private refreshObjectIfNeeded(objectSource: string, objectType: string, objectName: string) {
         console.debug('refreshObjectIfNeeded:' + objectType);
         if (objectType === 'mntner') {
-            let password = null;
-            if (this.credentialsService.hasCredentials()) {
-                password = this.credentialsService.getPasswordsForRestCall();
-            }
-
             this.restCallInProgress = true;
-            this.restService.fetchObject(objectSource, objectType, objectName, password, true).subscribe({
+            this.restService.fetchObject(objectSource, objectType, objectName, true).subscribe({
                 next: (result: any) => {
                     this.restCallInProgress = false;
                     this.handleFetchResponse(result);

@@ -89,7 +89,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
             }
             this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
         } else {
-            this.restService.fetchObject(this.objectSource, this.objectType, this.objectName, null, null).subscribe({
+            this.restService.fetchObject(this.objectSource, this.objectType, this.objectName, null).subscribe({
                 next: (resp: any) => {
                     this.attributes = this.whoisResourcesService.getAttributes(resp);
                     this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);

@@ -29,8 +29,6 @@ public class WhoisWebDTO {
     @XmlElement(name = "attributes", required = true)
     public List<NameValuePair> attributes;
 
-    @XmlElement(name = "passwords")
-    public List<String> passwords;
 
     /**
      * For example: getValues("nserver") returns ["ns.test.nl", "ns1.test.nl"]

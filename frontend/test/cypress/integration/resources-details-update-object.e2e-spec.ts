@@ -10,7 +10,7 @@ describe('Resources, update object', () => {
     });
 
     it('should allow editing of the object', () => {
-        resourcesDetailPage.clickOnUpdate().typePassword('TST01-MNT').disableAssociateCheckbox().submitModal();
+        resourcesDetailPage.clickOnUpdate();
         const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
         whoisObjectEditor.expectFieldExist('abuse-c', false).typeOnField('descr', 'Updated test description').clickAddAttributeOnField('descr').submitModal();
         whoisObjectEditor
@@ -23,7 +23,7 @@ describe('Resources, update object', () => {
     });
 
     it('should show non Latin1 character error', () => {
-        resourcesDetailPage.clickOnUpdate().typePassword('TST01-MNT').disableAssociateCheckbox().submitModal();
+        resourcesDetailPage.clickOnUpdate();
         const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
         whoisObjectEditor
             .typeOnField('netname', 'UNSPECIFIEDč')
@@ -39,7 +39,7 @@ describe('Resources, update object', () => {
     });
 
     it('should switch to text editor', () => {
-        resourcesDetailPage.clickOnUpdate().typePassword('TST01-MNT').disableAssociateCheckbox().submitModal();
+        resourcesDetailPage.clickOnUpdate();
         const whoisTextEditor = resourcesDetailPage.switchToTextAreaEditor().getWhoisTextEditor();
         whoisTextEditor.expectTextAreaToContain('netname:NETNAME-TEST-02');
         const whoisObjectEditor = resourcesDetailPage.switchToObjectEditor().getWhoisObjectEditor();
@@ -53,7 +53,7 @@ describe('Resources, update object', () => {
         });
 
         it('should edit netname', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             // ensure netname is editable and edit it
             resourcesDetailPage
                 .getWhoisObjectEditor()
@@ -64,7 +64,7 @@ describe('Resources, update object', () => {
         });
 
         it('should add org attribute', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
             whoisObjectEditor
                 .expectFieldExist('org', false)
@@ -78,12 +78,12 @@ describe('Resources, update object', () => {
         });
 
         it('should contain delete button for not co-maintained by RIPE-NCC-*-MNT', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             resourcesDetailPage.getWhoisObjectEditor().expectDeleteObjectButtonExist(true);
         });
 
         it('should delete resource on click on delete button', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TST03-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             resourcesDetailPage.getWhoisObjectEditor().clickDeleteObjectButton().clickOnConfirmDeleteObject();
 
             cy.expectCurrentUrlToContain(
@@ -100,7 +100,7 @@ describe('Resources, update object', () => {
         });
 
         it('should not contain delete button for co-maintained by RIPE-NCC-*-MNT', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TDACRUZPER2-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             resourcesDetailPage.getWhoisObjectEditor().expectDeleteObjectButtonExist(false);
         });
     });
@@ -112,7 +112,7 @@ describe('Resources, update object', () => {
         });
 
         it('should have only status ALLOCATED-ASSIGNED PA', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TESTMD-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             resourcesDetailPage
                 .expectModalToExist(false)
                 .expectFieldToExist('status', true)
@@ -129,7 +129,7 @@ describe('Resources, update object', () => {
         });
 
         it('should have all with RS status when ALLOCATED-ASSIGNED PA', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TESTMD-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             resourcesDetailPage
                 .expectModalToExist(false)
                 .expectFieldToExist('status', true)

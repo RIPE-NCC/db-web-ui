@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,7 +6,7 @@ import { AttributeMetadataService } from '../attribute/attribute-metadata.servic
 import { AttributeSharedService } from '../attribute/attribute-shared.service';
 import { JsUtilService } from '../core/js-utils.service';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { CredentialsService } from '../shared/credentials.service';
+import { OverrideCredentialsService } from '../shared/override-credentials-service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
@@ -45,11 +44,10 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     private whoisResourcesServices = inject(WhoisResourcesService);
     private mntnerService = inject(MntnerService);
     private webUpdatesCommonsService = inject(WebUpdatesCommonsService);
-    private credentialsService = inject(CredentialsService);
     private messageStoreService = inject(MessageStoreService);
     private errorReporterService = inject(ErrorReporterService);
+    private overrideCredentialsService = inject(OverrideCredentialsService);
     private alertsService = inject(AlertsService);
-    private location = inject(Location);
     activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
 
@@ -150,7 +148,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                 this.restService.fetchMntnersForSSOAccount().subscribe({
                     next: (results: any) => {
                         this.maintainers.sso = results;
-                        if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
+                        if (this.mntnerService.needsAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
                             this.performAuthentication(this.maintainers);
                         }
                     },
@@ -190,13 +188,13 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (this.mntnerService.needsPasswordAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
+        if (this.mntnerService.needsAuthentication(this.maintainers.sso, this.maintainers.objectOriginal, this.maintainers.object)) {
             this.performAuthentication(this.maintainers);
             return;
         }
 
         const flattenedAttributes = this.flattenStructure(this.attributes);
-        const passwords = this.credentialsService.getPasswordsForRestCall();
+        const overrides = this.overrideCredentialsService.getOverrideForRestCall();
 
         this.restCallInProgress = true;
         this.alreadySubmited = true;
@@ -206,7 +204,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
         const data = {
             attributes: flattenedAttributes,
-            passwords,
+            overrides,
             type: this.objectType,
         };
 

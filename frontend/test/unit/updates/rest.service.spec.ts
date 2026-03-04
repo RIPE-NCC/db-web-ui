@@ -45,12 +45,12 @@ describe('RestService', () => {
         const name = 'TEST-MNT';
         const reason = 'testing';
 
-        restService.deleteObject(source, objectType, name, reason, false, ['pass +word']).subscribe((resp) => {
+        restService.deleteObject(source, objectType, name, reason, false).subscribe((resp) => {
             expect(resp).toBe('deleted');
         });
         const req = httpMock.expectOne({
             method: 'DELETE',
-            url: 'api/whois/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=pass%20%2Bword',
+            url: 'api/whois/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing',
         });
         expect(req.request.method).toBe('DELETE');
         req.flush('deleted');
@@ -62,12 +62,12 @@ describe('RestService', () => {
         const name = 'TEST-MNT';
         const reason = 'testing';
 
-        restService.deleteObject(source, objectType, name, reason, true, ['pass +word']).subscribe((resp) => {
+        restService.deleteObject(source, objectType, name, reason, true).subscribe((resp) => {
             expect(resp).toBe('deleted');
         });
         const req = httpMock.expectOne({
             method: 'DELETE',
-            url: 'api/references/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing&password=pass%20%2Bword',
+            url: 'api/references/RIPE/MNT/TEST-MNT?dry-run=false&reason=testing',
         });
         expect(req.request.method).toBe('DELETE');
         req.flush('deleted');
@@ -92,29 +92,16 @@ describe('RestService', () => {
         req.flush(mockRef);
     });
 
-    it('should encode password when authenticate mntner', () => {
-        restService.fetchObjectByOverride('RIPE', 'mntner', 'SVONJA-MNT', 'test 123+&456').subscribe((resp) => {
-            expect(resp).toBe('TEST');
-        });
-        // test 123+456 should be encoded to test%20123%2B456
-        const req = httpMock.expectOne({
-            method: 'GET',
-            url: 'api/whois/RIPE/mntner/SVONJA-MNT?password=test%20123%2B%26456&unfiltered=true',
-        });
-        expect(req.request.method).toBe('GET');
-        req.flush('TEST');
-    });
-
     it('should properly encode on fetchObject', () => {
         const source = 'ripe';
         const objectType = 'ROUTE6';
         const name = 'a000:b000::/43AS123';
 
-        restService.fetchObject(source, objectType, name, 'pass +word').subscribe(() => {});
+        restService.fetchObject(source, objectType, name).subscribe(() => {});
 
         const req = httpMock.expectOne({
             method: 'GET',
-            url: 'api/whois/RIPE/ROUTE6/a000%3Ab000%3A%3A%2F43AS123?password=pass%20%2Bword&unfiltered=true',
+            url: 'api/whois/RIPE/ROUTE6/a000%3Ab000%3A%3A%2F43AS123?unfiltered=true',
         });
         expect(req.request.method).toBe('GET');
     });
@@ -128,7 +115,7 @@ describe('RestService', () => {
 
         const req = httpMock.expectOne({
             method: 'PUT',
-            url: 'api/whois/RIPE/ROUTE6/a000:b000::/43AS123?password=pass%20%2Bword',
+            url: 'api/whois/RIPE/ROUTE6/a000:b000::/43AS123?override=pass%20%2Bword',
         });
         expect(req.request.method).toBe('PUT');
     });
@@ -141,7 +128,7 @@ describe('RestService', () => {
 
         const req = httpMock.expectOne({
             method: 'POST',
-            url: 'api/whois/ripe/ROUTE6?password=pass%20%2Bword&password=pwd%2B%26',
+            url: 'api/whois/ripe/ROUTE6?override=pass%20%2Bword%2Cpwd%2B%26',
         });
         expect(req.request.method).toBe('POST');
     });

@@ -24,21 +24,6 @@ export class WebupdatesPage {
         return new WebupdatesDisplayPage();
     }
 
-    authenticateWithDisabledAssociate(password: string, expectFail: boolean = false) {
-        new ModalAuthentication().typePassword(password).disableAssociateCheckbox().submitModal(expectFail);
-        if (expectFail) {
-            return this;
-        }
-        this.expectModalToExist(false);
-        return this;
-    }
-
-    authenticateWithEnabledAssociate(password: string) {
-        new ModalAuthentication().typePassword(password).submitModal();
-        this.expectModalToExist(false);
-        return this;
-    }
-
     getModalAuthentication() {
         return new ModalAuthentication();
     }

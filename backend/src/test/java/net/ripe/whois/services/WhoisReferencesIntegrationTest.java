@@ -40,9 +40,9 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void delete_references() {
-        mock("/references/RIPE/inetnum/212.154.128.20%20-%20212.154.128.23?reason=delete%20reason&password=test%25ing", "test");
+        mock("/references/RIPE/inetnum/212.154.128.20%20-%20212.154.128.23?reason=delete%20reason", "test");
 
-        final ResponseEntity<String> response = delete("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23?password=test%ing&reason=delete reason", String.class, entity("test"));
+        final ResponseEntity<String> response = delete("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23?reason=delete reason", String.class, entity("test"));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("test"));

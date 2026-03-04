@@ -63,7 +63,7 @@ describe('MaintainersEditorComponent', () => {
             httpMock.verify();
         });
 
-        it('should ask for password after add non-sso maintainer with password - create case.', async () => {
+        it('should display non-sso error after add non-sso maintainer - create case.', async () => {
             modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
             spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
             spyOn(component, 'onMntnerRemoved');
@@ -75,9 +75,9 @@ describe('MaintainersEditorComponent', () => {
             expect(component.onMntnerRemoved).toHaveBeenCalled();
             expect(component.mntners.object.length === 0).toBeTruthy();
 
-            // simulate manual addition of a new mntner with only md5
-            component.mntners.object = [{ mine: false, type: 'mntner', auth: ['MD5'], key: 'TEST-MNT-1' }];
-            component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['MD5'], key: 'TEST-MNT-1' });
+            // simulate manual addition of a new mntner with only SSO
+            component.mntners.object = [{ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' }];
+            component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' });
             await fixture.whenStable();
             expect(modalMock.open).toHaveBeenCalled();
         });
@@ -95,7 +95,7 @@ describe('MaintainersEditorComponent', () => {
 
         it('should add the selected maintainers to the object emit update-mntners-clbk', async () => {
             spyOn(component.updateMntnersClbk, 'emit');
-            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(false);
+            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(false);
             fixture.detectChanges();
             expect(component.mntners.object.length).toEqual(0);
             component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' });
@@ -107,7 +107,7 @@ describe('MaintainersEditorComponent', () => {
 
         it('should remove just added mnt in case authentication was canceled', async () => {
             modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of('cancel') });
-            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(true);
+            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(true);
             component.ngOnInit();
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
             expect(component.attributes.length).toEqual(10);
@@ -117,7 +117,7 @@ describe('MaintainersEditorComponent', () => {
 
         it('should not remove just added mnt in case authentication was success', async () => {
             modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
-            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(true);
+            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(true);
             component.ngOnInit();
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
             expect(component.attributes.length).toEqual(10);
@@ -127,13 +127,13 @@ describe('MaintainersEditorComponent', () => {
 
         it('should remove the selected maintainers from the object emit update-mntners-clbk', async () => {
             spyOn(component.updateMntnersClbk, 'emit');
-            spyOn(component.mntnerService, 'needsPasswordAuthentication').and.returnValue(false);
+            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(false);
             fixture.detectChanges();
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
                 {
                     mine: false,
                     type: 'mntner',
-                    auth: ['MD5'],
+                    auth: ['SSO'],
                     key: 'TEST-MNT-1',
                 },
             ]);
@@ -189,7 +189,7 @@ describe('MaintainersEditorComponent', () => {
             expect(component.mntners.object[1].key).toEqual('TESTSSO-MNT');
             expect(component.mntners.object[1].type).toEqual('mntner');
             expect(component.mntners.object[1].mine).toEqual(true);
-            expect(component.mntners.object[1].auth).toEqual(['MD5-PW', 'SSO']);
+            expect(component.mntners.object[1].auth).toEqual(['SSO', 'SSO']);
         });
 
         it('should filter associated mnts by showing just associated default mnts of selected organisation', async () => {
@@ -282,7 +282,7 @@ describe('MaintainersEditorComponent', () => {
             // get SSO maintainers
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
                 { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
-                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true },
+                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true },
             ]);
             // fail to get maintainer details
             httpMock
@@ -295,7 +295,7 @@ describe('MaintainersEditorComponent', () => {
                         {
                             key: 'TEST-MNT',
                             type: 'mntner',
-                            auth: ['MD5-PW'],
+                            auth: ['SSO'],
                         },
                     ],
                     { status: 200, statusText: 'OK' },
@@ -309,7 +309,7 @@ describe('MaintainersEditorComponent', () => {
             // get SSO maintainers
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
                 { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
-                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true },
+                { key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true },
             ]);
             // fail to get maintainer details
             httpMock
@@ -502,9 +502,9 @@ const ORG_MOCK = () => ({
 });
 
 const USER_WITH_MORE_ASSOCIATED_MNT_MOCK = [
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TST12-MNT' },
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO', 'PGPKEY-TEST01', 'PGPKEY-TEST02'], key: 'TST10-MNT' },
-    { mine: true, type: 'mntner', auth: ['MD5-PW', 'SSO'], key: 'TEST01-MNT' },
+    { mine: true, type: 'mntner', auth: ['SSO', 'SSO'], key: 'TST12-MNT' },
+    { mine: true, type: 'mntner', auth: ['SSO', 'SSO', 'PGPKEY-TEST01', 'PGPKEY-TEST02'], key: 'TST10-MNT' },
+    { mine: true, type: 'mntner', auth: ['SSO', 'SSO'], key: 'TEST01-MNT' },
     { mine: true, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT' },
 ];
 
@@ -512,5 +512,5 @@ const USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK = [{ mine: true, type: 'mntner', aut
 
 const MNTNERS_SSO_ACCOUNT_RESPONS = [
     { key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true },
-    { key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO'], mine: true },
+    { key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO', 'SSO'], mine: true },
 ];

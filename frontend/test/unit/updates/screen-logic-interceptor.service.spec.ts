@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { CredentialsService } from '../../../src/app/shared/credentials.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { LinkService } from '../../../src/app/updatesweb/link.service';
@@ -16,15 +15,6 @@ describe('ScreenLogicInterceptorService', () => {
     let whoisResourcesService: WhoisResourcesService;
     let whoisMetaService: WhoisMetaService;
 
-    const credentialServiceMock = {
-        getCredentials: () => {
-            return { mntner: 'B-MNT', successfulPassword: 'secret' };
-        },
-        hasCredentials: () => {
-            return true;
-        },
-    };
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
@@ -35,7 +25,6 @@ describe('ScreenLogicInterceptorService', () => {
                     provide: 'OrganisationHelperService',
                     useValue: { containsAttribute: (attributes: any, attribute: string) => attributes, addAbuseC: (attributes: any) => attributes },
                 },
-                { provide: CredentialsService, useValue: credentialServiceMock },
                 MessageStoreService,
                 { provide: MntnerService, useValue: { ssoMntners: [], isNccMntner: (mntnerKey: string) => true } },
                 LinkService,

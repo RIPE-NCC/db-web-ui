@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { EMPTY, map, of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { CredentialsService } from '../../../src/app/shared/credentials.service';
+import { OverrideCredentialsService } from '../../../src/app/shared/override-credentials-service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
@@ -83,7 +83,7 @@ describe('WhoisObjectTextEditorComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'getPasswordsForRestCall']);
+        credentialsServiceMock = jasmine.createSpyObj('OverrideCredentialsService', ['hasCredentials', 'getCredentials', 'getOverrideForRestCall']);
         TestBed.configureTestingModule({
             imports: [FormsModule, TextModifyComponent],
             providers: [
@@ -95,7 +95,7 @@ describe('WhoisObjectTextEditorComponent', () => {
                 RpslService,
                 MntnerService,
                 TextCommonsService,
-                { provide: CredentialsService, useValue: credentialsServiceMock },
+                { provide: OverrideCredentialsService, useValue: credentialsServiceMock },
                 PrefixService,
                 PropertiesService,
                 { provide: NgbModal, useValue: modalMock },
@@ -158,37 +158,6 @@ describe('WhoisObjectTextEditorComponent', () => {
         await componentFixture.whenStable();
 
         expect(whoisObjectTextEditorComponent.alertsServices.addGlobalError).toHaveBeenCalledWith('phone: Mandatory attribute not set');
-    });
-
-    it('should extract password from rpsl', async () => {
-        spyOn(whoisObjectTextEditorComponent.submitEvent, 'emit');
-        createInputParams();
-        componentFixture.detectChanges();
-
-        httpMock
-            .expectOne({
-                method: 'GET',
-                url: 'api/whois/RIPE/person/TST08-RIPE?unfiltered=true&unformatted=true',
-            })
-            .flush(testPersonObject);
-        httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([]);
-
-        await componentFixture.whenStable();
-        credentialsServiceMock.hasCredentials.and.returnValue(true);
-        whoisObjectTextEditorComponent.rpsl = testPersonRpsl + 'password:secret2\n';
-        expect(modalMock.open).toHaveBeenCalled();
-        credentialsServiceMock.getCredentials.and.returnValue({ mntner: 'TEST-MNT', successfulPassword: 'secret' });
-        credentialsServiceMock.getPasswordsForRestCall.and.returnValue(['secret']);
-        whoisObjectTextEditorComponent.submit();
-        await componentFixture.whenStable();
-
-        const req1 = httpMock.expectOne({
-            method: 'PUT',
-            url: 'api/whois/RIPE/person/TST08-RIPE?password=secret2&password=secret&unformatted=true',
-        });
-        req1.flush(testPersonObject);
-        await componentFixture.whenStable();
-        expect(whoisObjectTextEditorComponent.submitEvent.emit).toHaveBeenCalledWith(testPersonObject);
     });
 
     it('should emit delete event after pressing delete button', async () => {
@@ -260,7 +229,7 @@ describe('WhoisObjectTextEditorComponent', () => {
         expect(plaintextErrors).toEqual([{ plainText: 'Error fetching maintainers associated with this SSO account' }]);
     });
 
-    it('should present password popup when trying to modify object with no sso mnt-by ', async () => {
+    it('should display non-sso error when trying to modify object with no sso mnt-by ', async () => {
         createInputParams();
         componentFixture.detectChanges();
 
@@ -297,7 +266,7 @@ describe('WhoisObjectTextEditorComponent', () => {
                             successfulPassword: 'secret',
                         },
                     ]);
-                    credentialsServiceMock.getPasswordsForRestCall.and.returnValue(['secret']);
+                    credentialsServiceMock.getOverrideForRestCall.and.returnValue(['secret']);
                     return { $value: { selectedItem: { key: 'TEST-MNT', name: 'mntner', mine: true } } };
                 }),
             ),
@@ -323,7 +292,7 @@ describe('WhoisObjectTextEditorComponent', () => {
                                     { name: 'descr', value: '.' },
                                     { name: 'admin-c', value: 'TST08-RIPE' },
                                     { name: 'upd-to', value: 'email@email.com' },
-                                    { name: 'auth', value: 'MD5-PW first fetch' },
+                                    { name: 'auth', value: 'SSO teste2e@ripe.net' },
                                     { name: 'mnt-by', value: 'TEST-MNT' },
                                     { name: 'source', value: 'RIPE' },
                                 ],
@@ -347,7 +316,7 @@ describe('WhoisObjectTextEditorComponent', () => {
         httpMock
             .expectOne({
                 method: 'GET',
-                url: 'api/whois/RIPE/mntner/TEST-MNT?password=secret&unfiltered=true&unformatted=true',
+                url: 'api/whois/RIPE/mntner/TEST-MNT?unfiltered=true&unformatted=true',
             })
             .flush({
                 objects: {
@@ -360,7 +329,7 @@ describe('WhoisObjectTextEditorComponent', () => {
                                     { name: 'descr', value: '.' },
                                     { name: 'admin-c', value: 'TST08-RIPE' },
                                     { name: 'upd-to', value: 'email@email.com' },
-                                    { name: 'auth', value: 'MD5-PW authenticated refetch' },
+                                    { name: 'auth', value: 'SSO teste2e@ripe.net' },
                                     { name: 'mnt-by', value: 'TEST-MNT' },
                                     { name: 'source', value: 'RIPE' },
                                 ],
@@ -378,7 +347,7 @@ describe('WhoisObjectTextEditorComponent', () => {
                 'descr:.\n' +
                 'admin-c:TST08-RIPE\n' +
                 'upd-to:email@email.com\n' +
-                'auth:MD5-PW authenticated refetch\n' +
+                'auth:SSO teste2e@ripe.net\n' +
                 'mnt-by:TEST-MNT\n' +
                 'source:RIPE\n',
         );

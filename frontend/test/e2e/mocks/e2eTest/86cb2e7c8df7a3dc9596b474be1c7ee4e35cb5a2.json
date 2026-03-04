@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/RIPE/inetnum/192.87.0.0%20-%20192.87.255.255?password=TST01-MNT&unfiltered=true&unformatted=true",
+    "requestUrl": "/db-web-ui/api/whois/RIPE/inetnum/192.87.0.0%20-%20192.87.255.255?unfiltered=true&unformatted=true",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

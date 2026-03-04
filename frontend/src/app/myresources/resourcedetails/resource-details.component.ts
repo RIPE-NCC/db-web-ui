@@ -10,10 +10,10 @@ import { OrgDropDownSharedService } from '../../dropdown/org-drop-down-shared.se
 import { Labels } from '../../label.constants';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
-import { CredentialsService } from '../../shared/credentials.service';
 import { FlagComponent, IFlag } from '../../shared/flag/flag.component';
 import { LoadingIndicatorComponent } from '../../shared/loadingindicator/loading-indicator.component';
 import { NameFormatterComponent } from '../../shared/name-formatter.component';
+import { OverrideCredentialsService } from '../../shared/override-credentials-service';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
 import { IAttributeModel, IWhoisObjectModel, IWhoisResponseModel } from '../../shared/whois-response-type.model';
 import { ITextObject } from '../../updatestext/text-create.component';
@@ -59,7 +59,6 @@ import { ResourcesDataService } from '../resources-data.service';
 export class ResourceDetailsComponent implements OnDestroy {
     private cookies = inject(CookieService);
     private modalService = inject(NgbModal);
-    private credentialsService = inject(CredentialsService);
     private mntnerService = inject(MntnerService);
     private properties = inject(PropertiesService);
     private resourceStatusService = inject(ResourceStatusService);
@@ -68,6 +67,7 @@ export class ResourceDetailsComponent implements OnDestroy {
     private restService = inject(RestService);
     private orgDropDownSharedService = inject(OrgDropDownSharedService);
     private activatedRoute = inject(ActivatedRoute);
+    private overrideCredentialsService = inject(OverrideCredentialsService);
     private whoisResourcesService = inject(WhoisResourcesService);
     private alertsService = inject(AlertsService);
     private router = inject(Router);
@@ -215,7 +215,8 @@ export class ResourceDetailsComponent implements OnDestroy {
         );
         const object = { objects: { object: [{ attributes: { attribute: attributesWithoutDates } }] } };
         const pKey = modifiedWhoisObject['primary-key'].attribute[0].value;
-        this.restService.modifyObject(this.source, this.objectType, pKey, object, this.credentialsService.getPasswordsForRestCall()).subscribe({
+
+        this.restService.modifyObject(this.source, this.objectType, pKey, object, this.overrideCredentialsService.getOverrideForRestCall()).subscribe({
             next: (response: IWhoisResponseModel) => {
                 this.onSubmitSuccess(response);
             },

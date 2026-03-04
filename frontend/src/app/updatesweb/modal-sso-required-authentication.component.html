@@ -1,0 +1,37 @@
+<div class="modal-content no-rounded">
+    <div class="modal-header">
+        <h2 class="modal-title">SSO association required</h2>
+        <em class="fa-light fa-x close" aria-label="Close" (click)="cancel()"></em>
+    </div>
+    <div class="modal-body">
+        @if (resolve.mntners.length === 0) {
+        <div>
+            <banner
+                [type]="BannerTypes.error"
+                [id]="'notification-error-authentication'"
+                [textContent]="'You cannot modify this object here because your SSO account is not associated with any of the maintainers.'"
+            ></banner>
+        </div>
+        } @if (resolve.isLirObject) {
+        <span>
+            <banner [type]="BannerTypes.error" [id]="'notification-error-authentication'" [textContent]="errorMsg"></banner>
+        </span>
+        }
+    </div>
+
+    <div class="modal-footer">
+        @if (allowForceDelete()) {
+        <div style="float: left">
+            <a [routerLink]="['/forceDelete', resolve.source, resolve.objectType, resolve.objectName]" (click)="cancel('forceDelete')">Force delete</a> this
+            object?
+            <a href="https://docs.db.ripe.net/Authorisation/Force-Delete-Functionality" target="_blank"
+                >Learn More. <em class="fa-light fa-arrow-up-right-from-square"></em
+            ></a>
+        </div>
+        } @if (resolve.mntners.length === 0) {
+        <div>
+            <button mat-stroked-button color="primary" class="float-end" data-dismiss="modal" (click)="cancel()">CANCEL</button>
+        </div>
+        }
+    </div>
+</div>

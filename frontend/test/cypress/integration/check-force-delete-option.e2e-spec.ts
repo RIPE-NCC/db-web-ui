@@ -22,22 +22,20 @@ describe('webupdates', () => {
             );
     });
 
-    it("should NOT show 'force delete' for an inetnum if allocated by RIPE and no mntners have a passwd", () => {
+    it("should NOT show 'force delete' for an inetnum if allocated by RIPE", () => {
         webupdatesPage
             .visit('display/ripe/inetnum/193.0.4.0%20-%20193.0.7.255')
             .modifyObject()
             .expectFooterToContain('CANCEL')
             .expectFooterToContain('Force delete this object?', false)
-            .expectBannerToContain(
-                'You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password',
-            );
+            .expectBannerToContain('You cannot modify this object here because your SSO account is not associated with any of the maintainers');
     });
 
     it("should show 'force delete' for an inet6num if NOT allocated by RIPE", () => {
         webupdatesPage.visit('display/ripe/inet6num/2001%253A67c%253A2e8%253A%253A%252F64').modifyObject().expectFooterToContain('Force delete this object?');
     });
 
-    it("should NOT show 'force delete' for an inet6num if allocated by RIPE and no mntners have a passwd", () => {
+    it("should NOT show 'force delete' for an inet6num if allocated by RIPE", () => {
         webupdatesPage
             .visit('display/ripe/inet6num/2001%253A67c%253A2e8%253A%253A%252F32')
             // .visit('display/ripe/inet6num/2001%253Aa08%253A%253A%252F32')

@@ -218,9 +218,8 @@ describe('CreateModifyComponent with modifying test cases', () => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
-            component.credentialsService.setCredentials('TEST-MNT', '@123');
             fixture.detectChanges();
-            httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123&unfiltered=true' }).flush({
+            httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true' }).flush({
                 objects: {
                     object: [
                         {
@@ -287,7 +286,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
         it('should handle success put upon submit click when form is complete', () => {
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'changed', 'dummy@ripe.net');
             component.submit();
-            httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123' }).flush({
+            httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK' }).flush({
                 objects: {
                     object: [
                         {
@@ -320,7 +319,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
             component.submit();
             await fixture.whenStable();
 
-            httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?password=%40123' }).flush(
+            httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK' }).flush(
                 {
                     objects: {
                         object: [
@@ -441,49 +440,6 @@ describe('CreateModifyComponent with modifying test cases', () => {
                 { status: 404, statusText: 'error' },
             );
         }
-    });
-
-    xdescribe('ask for password before modify object with non-sso maintainer with password', () => {
-        const OBJECT_TYPE = 'as-block';
-        const SOURCE = 'RIPE';
-        const NAME = 'MY-AS-BLOCK';
-
-        beforeEach(async () => {
-            paramMapMock.source = SOURCE;
-            paramMapMock.objectType = OBJECT_TYPE;
-            paramMapMock.objectName = NAME;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
-                return component.activatedRoute.snapshot.paramMap[param];
-            });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
-                return !!component.activatedRoute.snapshot.paramMap[param];
-            });
-            component = fixture.componentInstance;
-            fixture.detectChanges();
-            httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
-            httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true' }).flush({
-                objects: {
-                    object: [
-                        {
-                            'primary-key': { attribute: [{ name: 'as-block', value: 'MY-AS-BLOCK' }] },
-                            attributes: {
-                                attribute: [
-                                    { name: 'as-block', value: 'MY-AS-BLOCK' },
-                                    { name: 'mnt-by', value: 'TEST3-MNT' },
-                                    { name: 'source', value: 'RIPE' },
-                                ],
-                            },
-                        },
-                    ],
-                },
-            });
-            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(() => 'cancel') });
-            await fixture.whenStable();
-        });
-
-        it('should ask for password before modify object with non-sso maintainer with password.', () => {
-            expect(modalMock.open).toHaveBeenCalled();
-        });
     });
 
     describe('slash', () => {

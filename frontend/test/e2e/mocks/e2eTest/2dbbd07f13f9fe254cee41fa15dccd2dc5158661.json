@@ -79,6 +79,15 @@
                         "referenced-type": "mntner"
                     },
                     {
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST04-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "TEST04-MNT",
+                        "referenced-type": "mntner"
+                    },
+                    {
                         "name": "created",
                         "value": "2005-08-26T10:56:16Z"
                     },

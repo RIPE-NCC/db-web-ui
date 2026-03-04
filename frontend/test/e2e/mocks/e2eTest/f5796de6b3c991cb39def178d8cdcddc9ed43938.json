@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/whois/RIPE/key-cert/PGPKEY-TESTKEYCERT?password=SYSTEM",
+    "requestUrl": "/api/whois/RIPE/key-cert/PGPKEY-TESTKEYCERT",
     "contentType": "application/javascript",
     "statusCode": 400,
     "data": {

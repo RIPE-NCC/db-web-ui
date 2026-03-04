@@ -107,18 +107,6 @@
                     </li>
                     }
                     <li>
-                        @if (attribute.name === 'auth') {
-                        <a
-                            id="changePassword"
-                            class="btn btn-default ga-pass-attr"
-                            title="Add/change Password (opens dialog)"
-                            (click)="displayMd5DialogDialog(attribute)"
-                        >
-                            <span class="fa-light fa-lock fa-3"></span>
-                        </a>
-                        }
-                    </li>
-                    <li>
                         @if (shouldShowBellIcon(attribute)) {
                         <a
                             id="createRoleForAbuseCAttribute"

@@ -30,7 +30,11 @@
                             },
                             {
                                 "name": "auth",
-                                "value": "MD5-PW $1$TEST1234$ABcdEfGHiJkLMnO56789/"
+                                "value": "SSO teste2e@ripe.net"
+                            },
+                            {
+                                "name": "auth",
+                                "value": "SSO isvonja@ripe.net"
                             },
                             {
                                 "name": "descr",

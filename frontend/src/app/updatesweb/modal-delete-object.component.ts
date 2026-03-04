@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { ObjectTypesEnum } from '../query/object-types.enum';
-import { CredentialsService } from '../shared/credentials.service';
 import { ReferenceItem, References, RestService } from './rest.service';
 import { RpkiValidatorService } from './rpki-validator.service';
 
@@ -27,7 +26,6 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     private router = inject(Router);
     private activeModal = inject(NgbActiveModal);
     restService = inject(RestService);
-    credentialsService = inject(CredentialsService);
     private rpkiValidatorService = inject(RpkiValidatorService);
 
     public MAX_REFS_TO_SHOW: number = 5;
@@ -60,14 +58,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
         }
 
         this.restService
-            .deleteObject(
-                this.inputData.source,
-                this.inputData.objectType,
-                this.inputData.name,
-                this.reason,
-                this.objectToDeleteWithRefs,
-                this.credentialsService.getPasswordsForRestCall(),
-            )
+            .deleteObject(this.inputData.source, this.inputData.objectType, this.inputData.name, this.reason, this.objectToDeleteWithRefs)
             .subscribe({
                 next: (resp: any) => {
                     this.isDismissed = false;

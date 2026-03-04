@@ -6,7 +6,7 @@
         {
             "key": "TST03-MNT",
             "type": "mntner",
-            "auth": ["MD5-PW", "MD5-PW"]
+            "auth": ["SSO", "SSO"]
         }
     ]
 }

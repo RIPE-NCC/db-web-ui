@@ -57,7 +57,7 @@ export class OrganisationHelperService {
         }
     }
 
-    public updateAbuseC(source: string, objectType: string, roleForAbuseC: any, organisationAttributes: any, passwords?: any) {
+    public updateAbuseC(source: string, objectType: string, roleForAbuseC: any, organisationAttributes: any) {
         if (objectType === 'organisation' && roleForAbuseC) {
             roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
             WhoisResourcesService.getAllAttributesOnName(roleForAbuseC, 'mnt-by').forEach((mnt) => {
@@ -83,7 +83,6 @@ export class OrganisationHelperService {
                     'role',
                     this.whoisResourcesService.getSingleAttributeOnName(roleForAbuseC, 'nic-hdl').value,
                     this.whoisResourcesService.turnAttrsIntoWhoisObject(roleForAbuseC),
-                    passwords,
                 )
                 .subscribe({
                     next: () => {

@@ -5,7 +5,7 @@ describe('Modifying an inet6num', () => {
 
     describe('which is an allocation', () => {
         beforeEach(() => {
-            webupdatesPage.visit('modify/RIPE/inet6num/2001:999:2000::%2F36').authenticateWithDisabledAssociate('TEST11-MNT');
+            webupdatesPage.visit('modify/RIPE/inet6num/2001:999:2000::%2F36');
         });
 
         it('should show input controls in the correct disabled or enabled state', () => {
@@ -23,7 +23,7 @@ describe('Modifying an inet6num', () => {
 
     describe('which is an assignment', () => {
         beforeEach(() => {
-            webupdatesPage.visit('modify/RIPE/inet6num/2001:998:2000::%2F36').authenticateWithDisabledAssociate('TEST11-MNT');
+            webupdatesPage.visit('modify/RIPE/inet6num/2001:998:2000::%2F36');
         });
 
         it('should show input controls in the correct disabled or enabled state', function () {
@@ -41,7 +41,7 @@ describe('Modifying an inet6num', () => {
 
     describe('which is an allocated by lir', () => {
         beforeEach(() => {
-            webupdatesPage.visit('modify/RIPE/inet6num/2002:998:2000::%2F36').authenticateWithDisabledAssociate('TEST11-MNT');
+            webupdatesPage.visit('modify/RIPE/inet6num/2002:998:2000::%2F36');
         });
 
         it('should show delete btn', () => {

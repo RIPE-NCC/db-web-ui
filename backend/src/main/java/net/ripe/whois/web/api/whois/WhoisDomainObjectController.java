@@ -88,7 +88,6 @@ public class WhoisDomainObjectController extends ApiController {
         batchUpdateSession.setResponseFuture(
             whoisDomainObjectService.createDomainObjects(
                 source,
-                dto.passwords,
                 domainObjects,
                 request.getRemoteAddr(),
                 request.getHeader(HttpHeaders.COOKIE)));

@@ -342,7 +342,7 @@ describe('Resources detail', () => {
         it('should show out of region aut-num', () => {
             resourcesDetailPage
                 .getWhoisObjectViewer()
-                .expectAttributesSize(11)
+                .expectAttributesSize(12)
                 .expectAttributeToContainKeyAndValue(0, 'aut-num', 'AS36867')
                 .expectAttributeToContainKeyAndValue(1, 'as-name', 'ASNAME-TEST')
                 .expectAttributeToContainKeyAndValue(2, 'descr', 'TESTORG3')
@@ -350,7 +350,7 @@ describe('Resources detail', () => {
                 .expectAttributeToContainKeyAndValue(4, 'admin-c', 'TSTADMINC-RIPE')
                 .expectAttributeToContainKeyAndValue(5, 'tech-c', 'TSTTECHC-RIPE')
                 .expectAttributeToContainKeyAndValue(6, 'status', 'OTHER')
-                .expectAttributeToContainKeyAndValue(10, 'source', 'RIPE-NONAUTH')
+                .expectAttributeToContainKeyAndValue(11, 'source', 'RIPE-NONAUTH')
                 .expectAttributeToContainLink(0, '?source=ripe-nonauth&key=AS36867&type=aut-num')
                 .expectAttributeToContainLink(3, '?source=ripe-nonauth&key=ORG-TEST23-RIPE&type=organisation')
                 .expectAttributeToContainLink(4, '?source=ripe-nonauth&key=TSTADMINC-RIPE&type=role')
@@ -359,7 +359,7 @@ describe('Resources detail', () => {
         });
 
         it('should edit and update out of region aut-num', () => {
-            resourcesDetailPage.clickOnUpdate().disableAssociateCheckbox().typePassword('TEST05-MNT').submitModal();
+            resourcesDetailPage.clickOnUpdate();
             const whoisObjectEditor = resourcesDetailPage.getWhoisObjectEditor();
             whoisObjectEditor
                 .expectFieldExist('abuse-c', false)

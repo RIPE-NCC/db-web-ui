@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/whois/RIPE/route/211.43.192.0%2F19AS9777?dry-run=false&reason=I%20don%27t%20need%20this%20object&password=TEST14-MNT",
+    "requestUrl": "/db-web-ui/api/whois/RIPE/route/211.43.192.0%2F19AS9777?dry-run=false&reason=I%20don%27t%20need%20this%20object",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

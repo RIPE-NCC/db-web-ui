@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 
 export interface ICredentials {
     mntner: string;
-    successfulPassword: string;
+    successfulOverride: string;
 }
 
 @Injectable({ providedIn: 'root' })
-export class CredentialsService {
+export class OverrideCredentialsService {
     private credentials: ICredentials[] = [];
 
-    public setCredentials(mntner: string, successfulPassword: string) {
+    public setCredentials(mntner: string, successfulOverride: string) {
         this.credentials.push({
             mntner,
-            successfulPassword,
+            successfulOverride,
         });
     }
 
@@ -28,9 +28,9 @@ export class CredentialsService {
         return this.credentials;
     }
 
-    public getPasswordsForRestCall(): string[] {
+    public getOverrideForRestCall(): string[] {
         if (this.hasCredentials()) {
-            return this.credentials.map((cred) => cred.successfulPassword);
+            return this.credentials.map((cred) => cred.successfulOverride);
         }
         return [];
     }

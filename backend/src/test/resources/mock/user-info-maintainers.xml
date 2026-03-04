@@ -10,7 +10,6 @@
     <attributes>
         <attribute name="mntner" value="TST14-RIPE"/>
         <attribute name="descr" value="RIPE NCC Database Department"/>
-        <attribute name="auth" value="MD5-PW" comment="Filtered"/>
         <attribute name="auth" value="SSO" comment="Filtered"/>
         <attribute name="mnt-by" value="TST14-RIPE" referenced-type="mntner">
             <link xlink:type="locator" xlink:href="http://localhost/ripe/mntner/TST14-RIPE"/>

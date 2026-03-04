@@ -7,7 +7,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { CredentialsService } from '../../../../src/app/shared/credentials.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
@@ -46,7 +45,6 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
                 WhoisResourcesService,
                 MntnerService,
                 WhoisMetaService,
-                CredentialsService,
                 PrefixService,
                 { provide: PropertiesService, useValue: propertiesSpy },
                 { provide: RestService, useValue: restServiceMock },
@@ -60,7 +58,6 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
         modalCreateRoleForAbuseCComponent = componentFixture.componentInstance;
         modalCreateRoleForAbuseCComponent.inputData = {
             maintainers: maintainers,
-            passwords: 'password',
             source: source,
         };
         componentFixture.detectChanges();

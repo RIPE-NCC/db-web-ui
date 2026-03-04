@@ -5,10 +5,6 @@
         <span class="text-error"> You can only enter latin1 characters </span>
         }
         <textarea id="modifyRpsl" name="modifyRpsl" class="form-control" rows="20" [(ngModel)]="rpsl" style="font-family: monospace"></textarea>
-
-        <section class="supporting-text">
-            <span>You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</span>
-        </section>
         <submitting-agreement></submitting-agreement>
 
         <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()" [disabled]="haveNonLatin1">SUBMIT</button>

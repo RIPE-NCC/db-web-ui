@@ -1,34 +1,6 @@
 import { WebupdatesDelete } from '../webupdates.page';
 
 export class ModalAuthentication {
-    expectSelectedAuthenticationMaintainer(maintainer: string) {
-        cy.get('#selectAuthMntner').should('contain.text', maintainer);
-        return this;
-    }
-
-    expectItemInList(itemValue: string, exist: boolean) {
-        cy.get(`#selectAuthMntner select option[label='${itemValue}']`).should(exist ? 'exist' : 'not.exist');
-        return this;
-    }
-
-    typePassword(password: string) {
-        cy.get(".modal-content input[name='passwordAuth']").type(password);
-        return this;
-    }
-
-    disableAssociateCheckbox() {
-        cy.get(".modal-content input[name='associate']").uncheck();
-        return this;
-    }
-
-    submitModal(expectFail: boolean = false) {
-        cy.get('.modal-content button[type=submit]').click();
-        if (!expectFail) {
-            cy.get('.modal-content .modal-body').should('not.exist');
-        }
-        return this;
-    }
-
     expectFooterToContain(text: string, contain: boolean = true) {
         cy.get('.modal-content .modal-footer').should(contain ? 'contain.text' : 'not.contain.text', text);
         return this;

@@ -974,7 +974,7 @@ describe('LookupSingleObjectComponent', () => {
                                 },
                                 {
                                     name: 'auth',
-                                    value: 'MD5-PW',
+                                    value: 'SSO',
                                     comment: 'Filtered',
                                 },
                                 {

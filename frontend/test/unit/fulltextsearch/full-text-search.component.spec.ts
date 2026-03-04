@@ -493,7 +493,7 @@ const responseEtchMnt: any = {
                         {
                             str: {
                                 name: 'auth',
-                                value: 'MD5-PW',
+                                value: 'SSO',
                             },
                         },
                         {

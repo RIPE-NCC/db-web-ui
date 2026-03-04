@@ -5,6 +5,6 @@
     "data": {
         "key": "TEST05-MNT",
         "type": "mntner",
-        "auth": ["MD5-PW"]
+        "auth": ["SSO"]
     }
 }

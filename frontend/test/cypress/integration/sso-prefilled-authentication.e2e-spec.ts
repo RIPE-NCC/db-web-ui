@@ -47,4 +47,36 @@ describe('SSO prefilled authentication when TEST env', () => {
             expect(wasCalled).to.be.false;
         });
     });
+
+    it('should remove Filtered in display page after associating SSO mnt', () => {
+        cy.intercept('PUT', '**/db-web-ui/api/whois/ripe/mntner/TEST21-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D').as(
+            'ssoUpdated',
+        );
+
+        webupdatesPage.visit('modify/ripe/mntner/TEST21-MNT').expectValueInField('auth', 'SSO # Filtered', 0);
+
+        webupdatesPage.getModalSSOPrefilledAuthentication().expectSelectedAuthenticationMaintainer('TEST21-MNT').submitModal();
+        webupdatesPage.expectValueInField('auth', 'SSO teste2e@ripe.net', 0).expectValueInField('auth', 'SSO isvonja@ripe.net', 1);
+
+        cy.wasUrlCalled('ssoUpdated').then((wasCalled: any) => {
+            expect(wasCalled).to.be.true;
+        });
+    });
+
+    it('should show authenticate error when modal window is dismissed', () => {
+        cy.intercept('GET', '**/db-web-ui/api/user/mntners', {
+            statusCode: 200,
+            body: [
+                {
+                    mine: true,
+                    auth: ['SSO'],
+                    type: 'mntner',
+                    key: 'TEST03-MNT',
+                },
+            ],
+        });
+        webupdatesPage.visit('select').selectObjectType('inetnum').clickOnCreateButton();
+        webupdatesPage.typeOnField('inetnum', '5.254.68.40/29').blurOnField('inetnum').getModalAuthentication().closeModal();
+        webupdatesPage.expectErrorOnField('inetnum', 'Failed to authenticate parent resource').expectErrorMessage('Failed to authenticate parent resource');
+    });
 });

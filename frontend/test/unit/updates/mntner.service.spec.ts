@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { CredentialsService } from '../../../src/app/shared/credentials.service';
+import { OverrideCredentialsService } from '../../../src/app/shared/override-credentials-service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
@@ -17,9 +17,9 @@ describe('MntnerService', () => {
     let mntnerService: MntnerService;
     let httpMock: HttpTestingController;
     const credentialServiceMock = {
-        getCredentials: () => [{ mntner: 'B-MNT', successfulPassword: 'secret' }],
+        getCredentials: () => [{ mntner: 'B-MNT', successfulOverride: 'secret' }],
         hasCredentials: () => true,
-        getPasswordsForRestCall: () => ['secret'],
+        getOverrideForRestCall: () => ['secret'],
     };
 
     beforeEach(() => {
@@ -32,7 +32,7 @@ describe('MntnerService', () => {
                 WhoisResourcesService,
                 WhoisMetaService,
                 PropertiesService,
-                { provide: CredentialsService, useValue: credentialServiceMock },
+                { provide: OverrideCredentialsService, useValue: credentialServiceMock },
                 { provide: 'ModalService', useValue: {} },
                 { provide: 'PrefixService', useValue: {} },
                 {
@@ -73,7 +73,7 @@ describe('MntnerService', () => {
     it('should enrich mntners with SSO status', () => {
         const ssoMntners: IMntByModel[] = [
             { type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'B-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'B-MNT', mine: true, auth: ['SSO'] },
         ];
         const objectMntners: IMntByModel[] = [
             { type: 'mntner', key: 'A-MNT' },
@@ -141,7 +141,7 @@ describe('MntnerService', () => {
     it('should enrich mntners with new status', () => {
         const originalMntners = [
             { type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'B-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'B-MNT', mine: true, auth: ['SSO'] },
         ];
         const currentMntners = [
             { type: 'mntner', key: 'A-MNT' },
@@ -164,22 +164,22 @@ describe('MntnerService', () => {
     it('should need authentication for SSO mntner', () => {
         const ssoMntners = [
             { type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'B-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'B-MNT', mine: true, auth: ['SSO'] },
         ];
         const objectMntners = [
             { type: 'mntner', key: 'A-MNT' },
             { type: 'mntner', key: 'D-MNT' },
         ];
         // need authentication for D-MNT
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeTruthy();
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
+        expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeTruthy();
+        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
 
     it('should need authentication for SSO mntner with different case', () => {
         const ssoMntners = [{ type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] }];
         const objectMntners = [{ type: 'mntner', key: 'A-MNT' }];
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
+        expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
+        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
 
     it('should need authentication for trusted mntner', () => {
@@ -189,125 +189,16 @@ describe('MntnerService', () => {
             { type: 'mntner', key: 'D-MNT' },
         ];
 
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
+        expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
+        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
 
-    it('should have authentication when no sso or password', () => {
+    it('should have authentication when no sso', () => {
         const ssoMntners = [{ type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] }];
         const objectMntners = [{ type: 'mntner', key: 'D-MNT' }];
 
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, [], objectMntners)).toBeTruthy();
-        expect(mntnerService.needsPasswordAuthentication(ssoMntners, objectMntners, [])).toBeTruthy();
-    });
-
-    it('should get mntners that support password auth', () => {
-        const ssoMntners = [
-            { type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO', 'MD5-PW'] },
-            { type: 'mntner', key: 'Z-MNT', mine: true, auth: ['SSO', 'PGP'] },
-        ];
-        const objectMntners = [
-            { type: 'mntner', key: 'A-MNT', auth: ['SSO', 'MD5-PW'] },
-            { type: 'mntner', key: 'B-MNT', auth: ['SSO', 'PGP'] },
-            { type: 'mntner', key: 'C-MNT', auth: ['MD5-PW', 'PGP'] },
-            { type: 'mntner', key: 'D-MNT', auth: ['MD5-PW'] },
-            { type: 'mntner', key: 'E-MNT', auth: ['SSO', 'PGP'] },
-        ];
-
-        const mntnersWithPasswordCreate = mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
-        expect(mntnersWithPasswordCreate.length).toBe(2);
-        expect(mntnersWithPasswordCreate[0].key).toBe('C-MNT');
-        expect(mntnersWithPasswordCreate[1].key).toBe('D-MNT');
-
-        const mntnersWithPasswordModify = mntnerService.getMntnersForAuthentication(ssoMntners, objectMntners, []);
-        expect(mntnersWithPasswordModify.length).toBe(2);
-        expect(mntnersWithPasswordModify[0].key).toBe('C-MNT');
-        expect(mntnersWithPasswordModify[1].key).toBe('D-MNT');
-    });
-
-    it('should not not return RIPE-DBM-MNT as candidate for authentication', () => {
-        const ssoMntners: IMntByModel[] = [];
-        const objectMntners = [
-            { type: 'mntner', key: 'RIPE-DBM-MNT', auth: ['MD5-PW'] },
-            { type: 'mntner', key: 'A-MNT', auth: ['MD5-PW'] },
-        ];
-
-        const mntnersWithPasswordCreate = mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
-        expect(mntnersWithPasswordCreate.length).toBe(1);
-        expect(mntnersWithPasswordCreate[0].key).toBe('A-MNT');
-
-        const mntnersWithPasswordModify = mntnerService.getMntnersForAuthentication(ssoMntners, objectMntners, []);
-        expect(mntnersWithPasswordModify.length).toBe(1);
-        expect(mntnersWithPasswordModify[0].key).toBe('A-MNT');
-    });
-
-    it('should get mntners that do not support password auth', () => {
-        const ssoMntners = [
-            { type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO', 'MD5-PW'] },
-            { type: 'mntner', key: 'Y-MNT', mine: true, auth: ['SSO', 'PGP'] },
-        ];
-        const objectMntners = [
-            { type: 'mntner', key: 'A-MNT', auth: ['SSO', 'MD5-PW'] },
-            { type: 'mntner', key: 'B-MNT', auth: ['SSO', 'PGP'] },
-            { type: 'mntner', key: 'C-MNT', auth: ['MD5-PW', 'PGP'] },
-            { type: 'mntner', key: 'D-MNT', auth: ['MD5-PW'] },
-            { type: 'mntner', key: 'E-MNT', auth: ['SSO', 'PGP'] },
-        ];
-
-        const mntnersWithoutPasswordCreate = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
-        expect(mntnersWithoutPasswordCreate.length).toBe(2);
-        expect(mntnersWithoutPasswordCreate[0].key).toBe('B-MNT');
-        expect(mntnersWithoutPasswordCreate[1].key).toBe('E-MNT');
-
-        const mntnersWithoutPasswordModify = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, objectMntners, []);
-        expect(mntnersWithoutPasswordModify.length).toBe(2);
-        expect(mntnersWithoutPasswordModify[0].key).toBe('B-MNT');
-        expect(mntnersWithoutPasswordModify[1].key).toBe('E-MNT');
-    });
-
-    it('should not not return RIPE-GII-MNT as candidate not eligible for authentication', () => {
-        const ssoMntners: IMntByModel[] = [];
-        const objectMntners = [
-            { type: 'mntner', key: 'RIPE-GII-MNT', auth: ['SSO', 'MD5-PW'] },
-            { type: 'mntner', key: 'A-MNT', auth: ['SSO'] },
-        ];
-
-        const mntnersWithoutPasswordCreate = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
-        expect(mntnersWithoutPasswordCreate.length).toBe(1);
-        expect(mntnersWithoutPasswordCreate[0].key).toBe('A-MNT');
-
-        const mntnersWithoutPasswordModify = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, objectMntners, []);
-        expect(mntnersWithoutPasswordModify.length).toBe(1);
-        expect(mntnersWithoutPasswordModify[0].key).toBe('A-MNT');
-    });
-
-    it('should ensure NCC mntners are stripped and duplicates removed', () => {
-        const ssoMntners = [{ type: 'mntner', key: 'C-MNT', mine: true, auth: ['SSO', 'MD5-PW'] }];
-        const objectMntners = [
-            { type: 'mntner', key: 'RIPE-DBM-MNT', auth: ['MD5-PW'] },
-            { type: 'mntner', key: 'A-MNT', auth: ['SSO'] },
-            { type: 'mntner', key: 'A-MNT', auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-NCC-END-MNT', auth: ['MD5-PW'] },
-            { type: 'mntner', key: 'F-MNT', auth: ['MD5-PW'] },
-            { type: 'mntner', key: 'F-MNT', auth: ['MD5-PW'] },
-            { type: 'mntner', key: 'C-MNT', auth: ['SSO', 'MD5-PW'] },
-        ];
-
-        const mntnersWithoutPasswordCreate = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
-        expect(mntnersWithoutPasswordCreate.length).toBe(1);
-        expect(mntnersWithoutPasswordCreate[0].key).toBe('A-MNT');
-
-        const mntnersWithoutPasswordModify = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, objectMntners, []);
-        expect(mntnersWithoutPasswordModify.length).toBe(1);
-        expect(mntnersWithoutPasswordModify[0].key).toBe('A-MNT');
-
-        const mntnersWithPasswordCreate = mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
-        expect(mntnersWithPasswordCreate.length).toBe(1);
-        expect(mntnersWithPasswordCreate[0].key).toBe('F-MNT');
-
-        const mntnersWithPasswordModify = mntnerService.getMntnersForAuthentication(ssoMntners, objectMntners, []);
-        expect(mntnersWithPasswordModify.length).toBe(1);
-        expect(mntnersWithPasswordModify[0].key).toBe('F-MNT');
+        expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeTruthy();
+        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeTruthy();
     });
 
     it('should remove duplicated mnt-by from list of IMntByModel', () => {
@@ -399,7 +290,7 @@ describe('MntnerService', () => {
     it('should filter already listed mntners in autocomplete', () => {
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['SSO'] },
         ];
         expect(mntnerService.filterAutocompleteMntners(mockMnts, mockMnts).length).toEqual(0);
     });
@@ -410,7 +301,7 @@ describe('MntnerService', () => {
 
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['SSO'] },
         ];
         expect(mntnerService.filterAutocompleteMntners([], mockMnts)).toEqual(mockMnts);
     });
@@ -418,7 +309,7 @@ describe('MntnerService', () => {
     it('should filter NCC Mntner for PROD env in autocomplete', () => {
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['SSO'] },
         ];
         expect(mntnerService.filterAutocompleteMntners([], mockMnts).length).toEqual(0);
     });
@@ -426,7 +317,7 @@ describe('MntnerService', () => {
     it('should stripNccMntners for PROD env', () => {
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['SSO'] },
         ];
         expect(mntnerService.stripNccMntners(mockMnts).length).toEqual(0);
     });
@@ -437,7 +328,7 @@ describe('MntnerService', () => {
 
         const mockMnts = [
             { type: 'mntner', key: 'RIPE-NCC-HM-MNT', mine: true, auth: ['SSO'] },
-            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['MD5-PW'] },
+            { type: 'mntner', key: 'RIPE-DBM-MNT', mine: true, auth: ['SSO'] },
         ];
         expect(mntnerService.stripNccMntners(mockMnts)).toEqual(mockMnts);
     });

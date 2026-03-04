@@ -802,11 +802,6 @@ export class WhoisMetaService {
                         <th>Description</th>
                     </tr>
                     <tr><br></tr>
-                    <tr>
-                        <td>MD5-PW</td>
-                        <td>encrypted password, produced using the FreeBSD crypt_md5 algorithm</td>
-                        <td>We strongly advise phrases longer than 8 characters to be used, avoiding the use of words or combinations of words found in any dictionary of any language.</td>
-                    </tr>
                     <tr><br></tr>
                     <tr>
                         <td>PGPKEY&#8209;&lt;id&gt;</td>

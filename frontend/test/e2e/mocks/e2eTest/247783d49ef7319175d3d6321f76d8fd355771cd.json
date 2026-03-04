@@ -5,6 +5,6 @@
     "data": {
         "key": "RIPE-NCC-MNT",
         "type": "mntner",
-        "auth": ["MD5-PW", "PGPKEY-TEST0004"]
+        "auth": ["SSO", "PGPKEY-TEST0004"]
     }
 }

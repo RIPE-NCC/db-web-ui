@@ -6,7 +6,7 @@
         {
             "key": "TEST03-MNT",
             "type": "mntner",
-            "auth": ["MD5-PW", "SSO", "SSO"]
+            "auth": ["SSO", "SSO", "SSO"]
         }
     ]
 }

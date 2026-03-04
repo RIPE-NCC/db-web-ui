@@ -73,13 +73,13 @@ public class WhoisReferencesController extends ApiController {
 
     @RequestMapping(value = "/{source}/{objectType}/{name:.*}", method = RequestMethod.DELETE)
     public ResponseEntity<String> delete(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
-                                                 @RequestParam("reason") String reason, @RequestParam(value = "password", required = false) String password,
+                                                 @RequestParam("reason") String reason,
                                                  @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
         LOGGER.debug("delete {} {} {}", source, objectType, name);
 
         removeUnnecessaryHeaders(headers);
 
-        return whoisReferencesService.deleteObjectAndReferences(source, objectType, name, reason, password, headers);
+        return whoisReferencesService.deleteObjectAndReferences(source, objectType, name, reason, headers);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

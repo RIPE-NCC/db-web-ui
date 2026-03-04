@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/whois/RIPE/inetnum/192.87.0.0%20-%20192.87.255.255?password=TST01-MNT",
+    "requestUrl": "/db-web-ui/api/whois/RIPE/inetnum/192.87.0.0%20-%20192.87.255.255?unfiltered=true&unformatted=true",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -34,7 +34,7 @@
                             },
                             {
                                 "name": "netname",
-                                "value": "NETNAME-TEST85"
+                                "value": "NETNAME-TEST-02"
                             },
                             {
                                 "name": "descr",
@@ -82,10 +82,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST41-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST03-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "TEST41-MNT",
+                                "value": "TEST03-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

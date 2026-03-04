@@ -3,7 +3,7 @@
         {
             "key": "TEST17-MNT",
             "type": "mntner",
-            "auth": ["SSO", "SSO", "MD5-PW", "SSO"]
+            "auth": ["SSO", "SSO", "SSO"]
         }
     ],
     "statusCode": 200,

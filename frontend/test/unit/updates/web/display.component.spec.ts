@@ -7,7 +7,6 @@ import { of } from 'rxjs';
 import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
-import { CredentialsService } from '../../../../src/app/shared/credentials.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { IAttributeModel } from '../../../../src/app/shared/whois-response-type.model';
@@ -37,7 +36,6 @@ describe('DisplayComponent', () => {
         TestBed.configureTestingModule({
             imports: [DisplayComponent],
             providers: [
-                CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
                 WhoisResourcesService,
                 MntnerService,
@@ -250,7 +248,6 @@ describe('DisplayComponent with object containing slash', () => {
         TestBed.configureTestingModule({
             imports: [DisplayComponent],
             providers: [
-                CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
                 WhoisResourcesService,
                 MntnerService,
@@ -387,7 +384,6 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
         TestBed.configureTestingModule({
             imports: [DisplayComponent],
             providers: [
-                CredentialsService,
                 { provide: MessageStoreService, useValue: messageStoreServiceMock },
                 WhoisResourcesService,
                 MntnerService,

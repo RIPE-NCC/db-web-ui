@@ -7,7 +7,7 @@
             "key": "TEST11-MNT",
             "type": "mntner",
             "auth": [
-                "MD5-PW",
+                "SSO",
                 "PGPKEY-TESTKEYCERT01",
                 "PGPKEY-TESTKEYCERT02",
                 "PGPKEY-TESTKEYCERT03",

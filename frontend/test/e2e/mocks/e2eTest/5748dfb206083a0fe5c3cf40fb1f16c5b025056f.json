@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/api/whois/RIPE-NONAUTH/aut-num/AS36867?password=TEST05-MNT",
+    "requestUrl": "/db-web-ui/api/whois/RIPE-NONAUTH/aut-num/AS36867",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {
@@ -74,10 +74,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST05-MNT"
+                                    "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/TEST04-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "TEST05-MNT",
+                                "value": "TEST04-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

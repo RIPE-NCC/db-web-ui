@@ -16,7 +16,6 @@ describe('Modifying an inetnum', () => {
     describe('which has ASSIGNED PA status', () => {
         it('should have status box disabled', () => {
             webupdatesPage.visit('modify/RIPE/inetnum/194.219.52.224%20-%20194.219.52.239');
-            webupdatesPage.getModalAuthentication().typePassword('TST03-MNT').disableAssociateCheckbox().submitModal();
             webupdatesPage.expectModalToExist(false).expectFieldToExist('status', true).expectDisabledField('status', true);
         });
 
@@ -43,7 +42,6 @@ describe('Modifying an inetnum', () => {
     describe('which has ALLOCATED PA status', () => {
         it('should have only status ALLOCATED-ASSIGNED PA', () => {
             webupdatesPage.visit('modify/RIPE/inetnum/193.228.143.0%20-%20193.228.143.255');
-            webupdatesPage.getModalAuthentication().typePassword('TESTMD-MNT').disableAssociateCheckbox().submitModal();
             webupdatesPage
                 .expectModalToExist(false)
                 .expectFieldToExist('status', true)
@@ -56,7 +54,6 @@ describe('Modifying an inetnum', () => {
     describe('which has ALLOCATED-ASSIGNED PA status', () => {
         it('should have only status ALLOCATED PA', () => {
             webupdatesPage.visit('modify/RIPE/inetnum/80.73.136.0%20-%2080.73.143.255');
-            webupdatesPage.getModalAuthentication().typePassword('TESTMD-MNT').disableAssociateCheckbox().submitModal();
             webupdatesPage
                 .expectModalToExist(false)
                 .expectFieldToExist('status', true)

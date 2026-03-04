@@ -66,10 +66,10 @@
                             {
                                 "link": {
                                     "type": "locator",
-                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST03-MNT"
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TST004-MNT"
                                 },
                                 "name": "mnt-by",
-                                "value": "TST03-MNT",
+                                "value": "TST004-MNT",
                                 "referenced-type": "mntner"
                             },
                             {

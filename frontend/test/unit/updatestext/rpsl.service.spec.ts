@@ -32,21 +32,13 @@ describe('RpslService', () => {
                 { name: 'address', value: '        Singel', comment: 'My comment' },
             ],
             deleteReason: 'because',
-            passwords: ['a', 'b', 'c'],
             override: 'a,b,c',
         };
         const rpsl = rpslService.toRpsl(obj);
 
         // should exta padding spaces should be added
         expect(rpsl).toEqual(
-            'person:        Tester X\n' +
-                'phone:        +316\n' +
-                'address:        Singel # My comment\n' +
-                'delete:because\n' +
-                'password:a\n' +
-                'password:b\n' +
-                'password:c\n' +
-                'override:a,b,c\n',
+            'person:        Tester X\n' + 'phone:        +316\n' + 'address:        Singel # My comment\n' + 'delete:because\n' + 'override:a,b,c\n',
         );
     });
 
@@ -71,7 +63,6 @@ describe('RpslService', () => {
                     { name: 'address', value: '       Singel', comment: undefined },
                 ],
                 deleteReason: undefined,
-                passwords: [],
                 override: undefined,
             },
         ]);
@@ -86,7 +77,6 @@ describe('RpslService', () => {
             {
                 attributes: [{ name: 'person', value: '   Me     #hoi', comment: undefined }],
                 deleteReason: undefined,
-                passwords: [],
                 override: undefined,
             },
         ]);
@@ -134,7 +124,7 @@ describe('RpslService', () => {
     });
 
     it('should interpret empty-line as object separator', () => {
-        const rpsl = 'person:        #hoi\n' + 'phone:         +316\n' + 'password:a\n' + '\n' + 'address:       Singel # My comment\n' + 'password:\n';
+        const rpsl = 'person:        #hoi\n' + 'phone:         +316\n' + '\n' + 'address:       Singel # My comment\n';
 
         const objs = rpslService.fromRpsl(rpsl);
 
@@ -146,14 +136,12 @@ describe('RpslService', () => {
                 { name: 'phone', value: '         +316', comment: undefined },
             ],
             deleteReason: undefined,
-            passwords: ['a'],
             override: undefined,
         });
 
         expect(objs[1]).toEqual({
             attributes: [{ name: 'address', value: '       Singel # My comment', comment: undefined }],
             deleteReason: undefined,
-            passwords: [],
             override: undefined,
         });
     });
@@ -211,22 +199,6 @@ describe('RpslService', () => {
             {
                 attributes: [{ name: 'person', value: ' Tester X', comment: undefined }],
                 deleteReason: 'because',
-                passwords: [],
-                override: undefined,
-            },
-        ]);
-    });
-
-    it('should parse password from rpsl', () => {
-        const rpsl = 'person: Tester X\n' + 'password:  secret\n' + 'password:  secret\n';
-
-        const objs = rpslService.fromRpsl(rpsl);
-
-        expect(objs).toEqual([
-            {
-                attributes: [{ name: 'person', value: ' Tester X', comment: undefined }],
-                deleteReason: undefined,
-                passwords: ['secret'],
                 override: undefined,
             },
         ]);
@@ -241,7 +213,6 @@ describe('RpslService', () => {
             {
                 attributes: [{ name: 'person', value: ' Tester X', comment: undefined }],
                 deleteReason: undefined,
-                passwords: [],
                 override: 'admin.secret,because',
             },
         ]);

@@ -106,7 +106,7 @@ public class WhoisSyncupdatesServiceTest {
         mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy(rpslObject.concat("password:TST02-MNT"), request,
+        final String response = whoisSyncupdatesService.proxy(rpslObject, request,
                 httpHeaders).toString();
 
         assertThat(response, containsString(expectedResponse));
