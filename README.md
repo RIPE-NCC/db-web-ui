@@ -36,6 +36,9 @@ Build and Run with Docker (Local Development)
 
 For local development, you can use Docker Compose as an alternative to running the application via IntelliJ.
 
+### Prerequisites
+* map `127.0.0.1` to `localhost.ripe.net` in your local hosts file
+
 ### Build Docker image
 
     docker compose -f ./docker/compose.yml build --no-cache
@@ -48,7 +51,7 @@ Or to rebuild and start in one command:
 
     docker compose -f ./docker/compose.yml up --build
 
-* Access the app at: http://localhost:1082
+* Access the app at: http://localhost:1082 or https://localhost.ripe.net:8443 (recommended to avoid logging-in issues)
 
 Note: All production environments (dev, prepdev, rc, prod) run via Docker using Salt for deployment and orchestration.
 
