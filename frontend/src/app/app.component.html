@@ -734,6 +734,12 @@
                 [buttonText]="'LOGIN'"
             ></banner>
             }
+            <banner
+                [type]="BannerTypes.promo"
+                [id]="'notification-promo-nav-release'"
+                [textContent]="'msg.navRelease.text' | label"
+                [persistDismiss]="true"
+            ></banner>
             <alert-banners></alert-banners>
             <app-cookie-consent></app-cookie-consent>
             <section id="app-workspace">

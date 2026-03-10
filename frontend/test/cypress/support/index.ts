@@ -18,3 +18,8 @@ import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// TODO REMOVE THIS WITH PROMO BANNER FOR NEW NAVIGATION
+Cypress.on('window:before:load', (win) => {
+    win.localStorage.setItem('notification-promo-nav-release', 'closed');
+});

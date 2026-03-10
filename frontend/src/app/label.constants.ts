@@ -48,4 +48,6 @@ export const Labels = {
     'resource.createAssignment.text': 'Create assignment',
     'msg.sessionTimeout.text': 'Your RIPE NCC Access session has expired. You need to login again.',
     'link.loginUrl.text': 'LOGIN',
+    'msg.navRelease.text':
+        'We\'re rolling out an updated navigation across RIPE NCC services starting on 16 March 2026. <a href="https://labs.ripe.net/author/antonella-de-bellis/rethinking-ripe-ncc-navigation/" class="link-color" target=\'_blank\'>Find out more <em class="fa-light fa-arrow-up-right-from-square"></em></a>.',
 };
