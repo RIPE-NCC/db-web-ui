@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
@@ -26,6 +26,7 @@ export interface IModalAuthentication {
 export class ModalSsoRequiredAuthenticationComponent implements OnInit {
     private activeModal = inject(NgbActiveModal);
     properties = inject(PropertiesService);
+    private router = inject(Router);
 
     @Input()
     public resolve: IModalAuthentication;
@@ -52,6 +53,9 @@ export class ModalSsoRequiredAuthenticationComponent implements OnInit {
     }
 
     public cancel(reason?: string) {
+        if (reason === undefined) {
+            void this.router.navigate(['query']);
+        }
         this.activeModal.dismiss(reason);
     }
 

@@ -76,7 +76,7 @@ describe('SSO prefilled authentication when TEST env', () => {
             ],
         });
         webupdatesPage.visit('select').selectObjectType('inetnum').clickOnCreateButton();
-        webupdatesPage.typeOnField('inetnum', '5.254.68.40/29').blurOnField('inetnum').getModalAuthentication().closeModal();
+        webupdatesPage.typeOnField('inetnum', '5.254.68.40/29').blurOnField('inetnum').getModalSSOPrefilledAuthentication().closeModal();
         webupdatesPage.expectErrorOnField('inetnum', 'Failed to authenticate parent resource').expectErrorMessage('Failed to authenticate parent resource');
     });
 });
