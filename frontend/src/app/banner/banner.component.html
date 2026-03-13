@@ -26,8 +26,9 @@
         <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="navigateToButtonUrl()">
             {{ buttonText }}
         </button>
-        }
+        } @if (!permanent) {
         <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="closeBanner()">Dismiss</button>
+        }
     </div>
 </div>
 }

@@ -12,9 +12,13 @@
         >:{{ padding(attr) }}
 
         @if (attr.link?.type === 'locator') {
-        <a [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{ attr.value }}</a>
+        <a [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color"
+            >{{ attr.value }} @if (menuService.isActiveResourcesMenu()) { <em class="fa-light fa-arrow-right"></em> }
+        </a>
         } @if (attr.name === pkLink) {
-        <a [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color">{{ attr.value }}</a>
+        <a [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color"
+            >{{ attr.value }} @if (menuService.isActiveResourcesMenu()) { <em class="fa-light fa-arrow-right"></em> }
+        </a>
         } @if (attr.link?.type !== 'locator' && attr.name !== pkLink) {
         <span>{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
         } @if (attr.comment && attr.comment !== 'Filtered') {

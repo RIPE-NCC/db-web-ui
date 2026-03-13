@@ -148,11 +148,19 @@ export const appRoutes: Routes = [
         loadComponent: () => import('./footer-legal/legal.component').then((m) => m.LegalComponent),
     },
     {
+        path: 'myresources/error',
+        loadComponent: () => import('./errorpages/error-page.component').then((m) => m.ErrorPageComponent),
+    },
+    {
         path: 'error',
         loadComponent: () => import('./errorpages/error-page.component').then((m) => m.ErrorPageComponent),
     },
     {
         path: 'not-found',
+        loadComponent: () => import('./errorpages/not-found-page.component').then((m) => m.NotFoundPageComponent),
+    },
+    {
+        path: 'myresources/not-found',
         loadComponent: () => import('./errorpages/not-found-page.component').then((m) => m.NotFoundPageComponent),
     },
     {

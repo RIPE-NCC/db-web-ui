@@ -10,7 +10,7 @@ export class FeedbackSupportPage {
     }
 
     clickFeedbackSupportMenuItem() {
-        cy.get('app-nav-bar').shadow().find('#footer menu-item.top-level').shadow().find('.item #title-feedback').click();
+        cy.get('ripe-unified-layout').find('a:contains("Feedback/Support")').click();
         return this;
     }
 

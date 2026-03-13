@@ -1,0 +1,40 @@
+.ripeSidebar {
+    flex-shrink: 0;
+    display: flex;
+}
+// so angular doesn'add ngcontent_ attribute to the selector
+::ng-deep ripe-unified-header nav {
+    z-index: 11;
+}
+
+sidebar {
+    flex-shrink: 0;
+    display: flex;
+    z-index: 11;
+}
+
+main {
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+    overflow-y: auto;
+}
+
+.main-header {
+    position: sticky;
+    top: 0;
+}
+
+.main-content {
+    --pad: 2rem;
+    padding: var(--pad) calc(2 * var(--pad)) calc(2 * var(--pad));
+    max-width: 1280px;
+    margin: 0 auto;
+    @media (max-width: 768px) {
+        --pad: 0.5rem;
+    }
+}
+
+#visual-portal-wrapper > div {
+    z-index: 100000; //because of dropdown menus on query page
+}

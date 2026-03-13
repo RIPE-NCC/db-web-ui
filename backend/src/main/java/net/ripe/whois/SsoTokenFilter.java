@@ -114,6 +114,7 @@ public class SsoTokenFilter implements Filter {
                 request.getRequestURI().endsWith(".woff") ||
                 request.getRequestURI().endsWith(".woff2") ||
                 request.getRequestURI().endsWith(".png") ||
+                request.getRequestURI().endsWith(".svg") ||
                 request.getRequestURI().endsWith(".gif"));
     }
 

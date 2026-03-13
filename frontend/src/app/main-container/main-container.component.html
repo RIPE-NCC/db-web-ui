@@ -1,0 +1,43 @@
+<div class="mainContainer">
+    <div>
+        <main class="main">
+            <div class="main-header">
+                <ngx-loading-bar></ngx-loading-bar>
+                @if (properties.BANNER) {
+                <banner [type]="BannerTypes.warning" [id]="'notification-1'" [textContent]="properties.BANNER" [permanent]="true"> </banner>
+                }
+            </div>
+            <div class="main-content">
+                @if (!isBrowserSupported) {
+                <banner [type]="BannerTypes.warning" [id]="'notification-browser'" [textContent]="browserUnsuportedText"> </banner>
+                } @if (showSessionExpireBanner) {
+                <banner
+                    [type]="BannerTypes.warning"
+                    [id]="'notification-warning-session'"
+                    [textContent]="'msg.sessionTimeout.text' | label"
+                    [buttonUrl]="loginUrl"
+                    [buttonText]="'LOGIN'"
+                ></banner>
+                }
+                <alert-banners></alert-banners>
+                <app-cookie-consent></app-cookie-consent>
+                <section>
+                    @if (!isQueryPage()) {
+                    <div id="org-drop-down">
+                        <org-drop-down></org-drop-down>
+                    </div>
+                    }
+                    <div>
+                        <router-outlet></router-outlet>
+                        <ngx-loading-bar></ngx-loading-bar>
+                        @if (!isQueryPage()) {
+                        <web-app-version></web-app-version>
+                        }
+                    </div>
+                    <div class="space-bottom-for-livechat"></div>
+                    <live-chat style="right: 20px; bottom: 20px" chatkey="{{ properties.LIVE_CHAT_KEY }}" accessurl="{{ properties.LOGIN_URL }}"></live-chat>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>

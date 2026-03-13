@@ -19,7 +19,8 @@ public class CachingSessionChecker {
         this.whoisInternalService = whoisInternalService;
     }
 
-    @Cacheable(CacheConfiguration.SSO_SESSIONS_CACHE)
+    // only cache if the token is active
+    @Cacheable(value = CacheConfiguration.SSO_SESSIONS_CACHE, unless = "#result == false")
     public boolean hasActiveToken(final String ssoToken, final String clientIp) {
         return whoisInternalService.getActiveToken(ssoToken, clientIp);
     }

@@ -4,6 +4,7 @@ describe('Feedback support dialog', () => {
     const feedbackSupportPage = new FeedbackSupportPage();
 
     beforeEach(() => {
+        cy.setCookie('mtm-paq', 'accepted');
         feedbackSupportPage.visit();
         feedbackSupportPage.clickFeedbackSupportMenuItem();
     });

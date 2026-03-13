@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import _ from 'lodash';
 import { catchError, throwError } from 'rxjs';
 
+import { MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 
@@ -11,6 +12,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
     const properties = inject(PropertiesService);
     const alertService = inject(AlertsService);
+    const menuService = inject(MenuService);
 
     const isServerError = (status: number) => status === 500;
     const isAuthorisationError = (status: number) => status === 401;
@@ -96,10 +98,10 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                     case 500:
                     case 502:
                     case 503:
-                        void router.navigate(['error']);
+                        menuService.isActiveResourcesMenu() ? void router.navigate(['myresources/error']) : void router.navigate(['error']);
                         break;
                     case 404:
-                        void router.navigate(['not-found']);
+                        menuService.isActiveResourcesMenu() ? void router.navigate(['myresources/not-found']) : void router.navigate(['not-found']);
                         break;
                     case 401:
                         handleTransitionError(err);

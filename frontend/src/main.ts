@@ -23,7 +23,6 @@ import { appRoutes } from './app/routes';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationGuard } from './app/authentication-guard.service';
 import { EmailConfirmationService } from './app/emailconfirmation/email-confirmation.service';
-import { MenuService } from './app/menu/menu.service';
 import { PropertiesService } from './app/properties.service';
 import { SessionInfoService } from './app/sessioninfo/session-info.service';
 import { SyncupdatesService } from './app/syncupdates/syncupdates.service';
@@ -34,6 +33,8 @@ import { ErrorInterceptor } from './app/interceptor/error.interceptor';
 import { HeaderInterceptor } from './app/interceptor/header.interceptor';
 import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.interceptor';
 import { SessionInterceptor } from './app/sessioninfo/session.interceptor';
+
+import '@lir-portal/web-components';
 
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.providers';
@@ -60,7 +61,6 @@ bootstrapApplication(AppComponent, {
         EmailConfirmationService,
         UnsubscribeService,
         PropertiesService,
-        MenuService,
         SessionInfoService,
 
         provideNativeDateAdapter(),

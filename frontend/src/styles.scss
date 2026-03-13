@@ -1,7 +1,6 @@
 /* Extended CSS */
 @import './styles/scss/extend.scss';
 /* Generic CSS */
-@import './styles/scss/web-components.scss';
 @import './styles/scss/general.scss';
 @import './styles/scss/paginator.scss';
 @import './styles/scss/query.scss';
@@ -36,6 +35,7 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import '@typeform/embed/build/css/widget.css';
 @import '@fortawesome/fontawesome-pro/css/all.min.css';
+@import '@lir-portal/web-components/style.css';
 
 //this is needed until we migrate to bootstrap4
 .popover {

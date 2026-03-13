@@ -19,7 +19,7 @@
 
 .search-input-wrapper input {
     width: 100%;
-    padding: 12px 0 12px 12px;
+    padding: 14px 0 15px 12px;
     font-size: 16px;
     font-weight: 400;
     outline: none;
@@ -36,7 +36,7 @@
         border-color: #0d1b48;
     }
     &:focus-within {
-        padding: 11px 11px;
+        padding: 13px 11px 14px 11px;
         border-top: 2px solid #0d1b48;
         border-right: 0;
         border-bottom: 2px solid #0d1b48;

@@ -1,34 +1,31 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Output, inject } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, OnDestroy, Output, inject } from '@angular/core';
 
-export function debounce(delay: number = 100): MethodDecorator {
-    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-        let timeout: any = null;
-        const original = descriptor.value;
+@Directive({
+    selector: '[scroller]',
+    standalone: true,
+})
+export class ScrollerDirective implements AfterViewInit, OnDestroy {
+    private el = inject(ElementRef);
+    private observer!: IntersectionObserver;
 
-        descriptor.value = function (...args: any[]) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => original.apply(this, args), delay);
-        };
+    @Output() scrolled = new EventEmitter<void>();
 
-        return descriptor;
-    };
-}
+    ngAfterViewInit() {
+        this.observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    this.scrolled.emit();
+                }
+            },
+            {
+                threshold: 0.1,
+            },
+        );
 
-@Directive({ selector: '[scroller]', standalone: true })
-export class ScrollerDirective {
-    private elRef = inject(ElementRef);
+        this.observer.observe(this.el.nativeElement);
+    }
 
-    @Output() scrolled = new EventEmitter();
-
-    @HostListener('window:scroll', ['$event'])
-    @debounce()
-    onListenerTriggered(event: UIEvent): void {
-        const nearly =
-            this.elRef.nativeElement.getBoundingClientRect().top > 0 &&
-            this.elRef.nativeElement.getBoundingClientRect().top < document.documentElement.clientHeight + document.body.scrollTop;
-        // Emit the event
-        if (nearly) {
-            this.scrolled.emit();
-        }
+    ngOnDestroy() {
+        this.observer.disconnect();
     }
 }

@@ -3,12 +3,10 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { AppComponent } from '../../src/app/app.component';
 import { BannerComponent } from '../../src/app/banner/banner.component';
-import { MenuComponent } from '../../src/app/menu/menu.component';
 import { PropertiesService } from '../../src/app/properties.service';
 import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
 import { LabelPipe } from '../../src/app/shared/label.pipe';
@@ -25,7 +23,7 @@ describe('AppComponent', () => {
         releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [AppComponent, CommonModule, RouterModule, BannerComponent, MenuComponent, LabelPipe],
+            imports: [AppComponent, CommonModule, RouterModule, BannerComponent, LabelPipe],
             providers: [
                 {
                     provide: PropertiesService,
@@ -76,21 +74,5 @@ describe('AppComponent', () => {
     it('should start checking if new release is available', () => {
         fixture.detectChanges();
         expect(releaseNotificationService.startPolling).toHaveBeenCalled();
-    });
-
-    it('should set properties to app-switcher', () => {
-        fixture.detectChanges();
-        const appSwitch = fixture.debugElement.query(By.css('app-switcher'));
-        expect(appSwitch.properties.appenv).toBe('pre');
-        expect(appSwitch.properties.current).toBe('database');
-    });
-
-    it('should set properties to user-login', () => {
-        fixture.detectChanges();
-        const appSwitch = fixture.debugElement.query(By.css('user-login'));
-        expect(appSwitch.properties.accessurl).toBe('https://access.prepdev.ripe.net/');
-        expect(appSwitch.properties.logoutredirecturl).toBe(
-            'https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query',
-        );
     });
 });

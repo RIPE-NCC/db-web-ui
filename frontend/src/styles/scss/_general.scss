@@ -32,20 +32,6 @@ html {
     --mdc-dialog-supporting-text-color: $neutral;
 }
 
-a {
-    color: $link;
-    text-decoration: unset;
-}
-
-a:visited {
-    color: #2a6496;
-}
-
-a:hover,
-a:focus {
-    color: #2a6496;
-}
-
 .checkbox-inline input[type='checkbox'],
 .checkbox input[type='checkbox'],
 .radio-inline input[type='radio'],
@@ -487,6 +473,20 @@ ngx-loading-bar {
     margin: 0;
 }
 
+.full-width {
+    width: 100%;
+}
+
+a {
+    color: $link;
+    text-decoration: unset;
+}
+
+a:hover,
+a:focus {
+    color: #2a6496;
+}
+
 a.link-color {
     color: $link;
     &:hover {
@@ -501,8 +501,4 @@ a.inner-link-color {
         color: $link;
         text-decoration: underline;
     }
-}
-
-.full-width {
-    width: 100%;
 }

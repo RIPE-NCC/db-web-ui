@@ -61,6 +61,8 @@ export class BannerComponent implements OnInit {
     buttonUrl?: string;
     @Input() // 2nd button text
     buttonText?: string;
+    @Input() //permanent means no dismiss button
+    permanent?: boolean = false;
 
     closed: boolean;
 

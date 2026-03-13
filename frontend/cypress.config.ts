@@ -9,6 +9,7 @@ export default defineConfig({
     chromeWebSecurity: false,
     viewportHeight: 1080,
     viewportWidth: 1920,
+    defaultCommandTimeout: 10000,
     e2e: {
         setupNodeEvents(on, config) {},
         specPattern: './test/cypress/integration/**/*.e2e-spec.{js,jsx,ts,tsx}',

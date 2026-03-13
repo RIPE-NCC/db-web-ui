@@ -10,6 +10,21 @@ describe('Session expire', () => {
     const userNotLoggedIn = './test/e2e/mocks/e2eTest/user-not-logged-in.json';
     const userInfoFile = './test/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json';
     const userWithAllRoles = './test/e2e/mocks/e2eTest/user-with-all-role.json';
+    const mockProfile = {
+        login: 'test@ripe.net',
+        firstName: 'Big',
+        lastName: 'Wolf',
+        active: true,
+        twoFactorAuthEnabled: true,
+        uuid: 'test1234-1234-1234-abcd-test12345678',
+    };
+
+    const mockUnauthorizedProfile = {
+        response: {
+            status: 401,
+            message: 'Unauthorized',
+        },
+    };
 
     afterEach(() => {
         cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
@@ -17,8 +32,8 @@ describe('Session expire', () => {
 
     it('should show logged out icon if the user is not logged', () => {
         // we can't use prism to intercept calls to other domains
-        cy.intercept('GET', 'https://access.prepdev.ripe.net/user/profile', { statusCode: 401 }).as('getProfile');
-        cy.intercept('GET', 'https://access.ripe.net/user/profile', { statusCode: 401 });
+        cy.intercept('GET', 'https://access.prepdev.ripe.net/user/profile', mockUnauthorizedProfile).as('getProfile');
+        cy.intercept('GET', 'https://access.ripe.net/user/profile', mockUnauthorizedProfile);
         cy.setCookie('crowd.ripe.hint', 'true');
         queryPage.visit();
         cy.wait('@getProfile');
@@ -29,8 +44,8 @@ describe('Session expire', () => {
 
     it('should show the logged icon if the user is logged', () => {
         // we can't use prism to intercept calls to other domains
-        cy.intercept('GET', 'https://access.prepdev.ripe.net/user/profile', { statusCode: 200, body: {} }).as('getProfile');
-        cy.intercept('GET', 'https://access.ripe.net/user/profile', { statusCode: 200, body: {} });
+        cy.intercept('GET', 'https://access.prepdev.ripe.net/user/profile', { statusCode: 200, body: mockProfile }).as('getProfile');
+        cy.intercept('GET', 'https://access.ripe.net/user/profile', { statusCode: 200, body: mockProfile });
         cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
         cy.setCookie('crowd.ripe.hint', 'true');
         queryPage.visit();
@@ -62,8 +77,8 @@ describe('Session expire', () => {
     });
 
     it('should not show the banner when the user is logged and the create request doesnt expire the cookie', () => {
-        cy.intercept('GET', 'https://access.prepdev.ripe.net/user/profile', { statusCode: 200, body: {} }).as('getProfile');
-        cy.intercept('GET', 'https://access.ripe.net/user/profile', { statusCode: 200, body: {} });
+        cy.intercept('GET', 'https://access.prepdev.ripe.net/user/profile', { statusCode: 200, body: mockProfile }).as('getProfile');
+        cy.intercept('GET', 'https://access.ripe.net/user/profile', { statusCode: 200, body: mockProfile });
         cy.setCookie('crowd.ripe.hint', 'true');
         webupdatesPage.visit('select');
         cy.wait('@getProfile');

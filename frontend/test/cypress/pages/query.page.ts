@@ -264,10 +264,9 @@ export class QueryPage {
     }
 
     expectUserLoggedImage(exist: boolean) {
-        cy.get('user-login')
+        cy.get('button[class*="UserProfile-module_profilePicture"]')
             .should('exist')
-            .shadow()
-            .find('image[id="user-img"]')
+            .find('img')
             .should(exist ? 'exist' : 'not.exist');
         return this;
     }

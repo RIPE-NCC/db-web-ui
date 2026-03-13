@@ -5,6 +5,7 @@ export class ApiKeysPage {
     }
 
     expectTableToContain(text: string) {
+        cy.get('table').should('exist');
         cy.get('table').should('contain.text', text);
         return this;
     }

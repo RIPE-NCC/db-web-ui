@@ -6,6 +6,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
+import { MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { LabelPipe } from '../shared/label.pipe';
@@ -24,6 +25,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     private sessionInfoService = inject(SessionInfoService);
     private properties = inject(PropertiesService);
     private whoisMetaService = inject(WhoisMetaService);
+    menuService = inject(MenuService);
 
     @Input()
     public model: IWhoisObjectModel;

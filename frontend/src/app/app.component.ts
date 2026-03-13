@@ -1,103 +1,103 @@
-import { CommonModule, Location } from '@angular/common';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import supportedBrowsers from '../../src/assets/supportedBrowsers.js';
-import { BannerTypes } from './banner/banner.component';
-import { PropertiesService } from './properties.service';
-import { SessionInfoService } from './sessioninfo/session-info.service';
-import { ReleaseNotificationService } from './shared/release-notification.service';
+import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit, effect, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 
-import { BannerComponent } from './banner/banner.component';
-import { OrgDropDownComponent } from './dropdown/org-drop-down.component';
-import { MenuComponent } from './menu/menu.component';
-import { AlertBannersComponent } from './shared/alert/alert-banners.component';
-import { LabelPipe } from './shared/label.pipe';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { FeedbackSupportDialogComponent } from './feedbacksupport/feedback-support-dialog.component';
+import { MainContainerComponent } from './main-container/main-container.component';
+import { dbMenuObject } from './menu/db-menu.json';
+import { ActiveMenu, MenuService } from './menu/menu.service';
+import { resourcesMenuObject } from './menu/resources-menu.json';
+import { PropertiesService } from './properties.service';
+
+export const EnvNamesInRipeWebComponents = {
+    local: 'local',
+    dev: 'development',
+    prepdev: 'prepdev',
+    prod: 'production',
+    rc: 'rc',
+    test: 'test',
+    training: 'training',
+};
+
+const envDisplayMap: Record<string, string> = {
+    training: 'Training Database',
+    test: 'Test Database',
+    rc: 'RC Database',
+};
 
 @Component({
     selector: 'app-db-web-ui',
     standalone: true,
     templateUrl: './app.component.html',
-    imports: [CommonModule, RouterModule, BannerComponent, MenuComponent, LabelPipe, AlertBannersComponent, OrgDropDownComponent],
+    styleUrl: 'app.component.scss',
+    imports: [CommonModule, RouterModule, MainContainerComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
+    activeMenu: ActiveMenu;
+    activeMenuItem: string;
+    envNameInRipeWebComponents: string;
+
     properties = inject(PropertiesService);
-    private releaseNotificationService = inject(ReleaseNotificationService);
+    dialog = inject(MatDialog);
     private router = inject(Router);
-    private location = inject(Location);
-    private sessionInfoService = inject(SessionInfoService);
+    private menuService = inject(MenuService);
 
-    public isDesktopView: boolean;
-    public isOpenMenu: boolean = true;
-    public innerWidth: number;
-    public showSessionExpireBanner: boolean = false;
-    public loginUrl: string;
-    public isBrowserSupported: boolean = true;
+    private readonly navigationEnd: Subscription;
 
-    browserUnsuportedText = `Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.`;
-
-    @ViewChild('switcher', { static: false }) switcher!: ElementRef;
+    labelEnv: string;
+    labelEnvImg: string;
 
     constructor() {
-        this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner: boolean) => {
-            this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
-            this.showSessionExpireBanner = raiseSessionExpireBanner;
-
-            if (raiseSessionExpireBanner) {
-                const userLogin = document.querySelector('user-login');
-                userLogin?.dispatchEvent(new Event('access-logout'));
-            }
+        this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV];
+        const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
+        this.navigationEnd = event.subscribe((evt) => {
+            this.setActiveMenuItem(evt.url);
         });
-
-        this.skipHash();
+        effect(() => {
+            this.activeMenu = this.menuService.activeMenu();
+        });
     }
 
     ngOnInit() {
-        this.isBrowserSupported = supportedBrowsers.test(navigator.userAgent);
-        this.mobileOrDesktopView();
-        this.releaseNotificationService.startPolling();
+        const env = this.properties.ENV?.toLowerCase();
+        this.labelEnv = envDisplayMap[env] ?? `${this.properties.ENV} Database`;
+        this.labelEnvImg = this.properties.isTrainingEnv() ? 'assets/icons/fa-graduation-cap.svg' : 'assets/icons/fa-axe.svg';
+        this.menuService.setActiveMenu();
     }
 
-    ngAfterViewInit() {
-        if (this.switcher) {
-            this.switcher.nativeElement.addEventListener('click', this.handleSwitcherClick);
+    public ngOnDestroy() {
+        if (this.navigationEnd) {
+            this.navigationEnd.unsubscribe();
         }
     }
 
-    handleSwitcherClick = () => {
-        (window as any)._paq = (window as any)._paq || [];
-        (window as any)._paq.push(['trackEvent', 'Web Component', 'Click', 'app-switcher']);
-    };
+    onMenuItemClick(event) {
+        event.preventDefault();
+        this.setActiveMenuItem(event.detail.url);
 
-    private skipHash() {
-        const hash = window.location.hash;
-        if (hash && !this.isLegalPage()) {
-            this.router.navigateByUrl(hash.substring(1));
+        if (event.detail.id === 'feedback') {
+            this.dialog.open(FeedbackSupportDialogComponent, { panelClass: 'feedback-support-panel' });
+        } else if (event.detail.url.startsWith('http')) {
+            window.open(event.detail.url, '_blank');
+        } else {
+            if (event.detail.id === 'sponsored') {
+                void this.router.navigate([event.detail.url], { queryParams: { sponsored: true } });
+            } else {
+                void this.router.navigate([event.detail.url]);
+            }
         }
     }
 
-    @HostListener('window:resize')
-    onResize() {
-        this.mobileOrDesktopView();
+    setActiveMenuItem(url: string) {
+        this.menuService.setActiveMenu();
+        this.activeMenuItem = `${location.origin}/db-web-ui/${url}`;
     }
 
-    mobileOrDesktopView() {
-        this.innerWidth = PropertiesService.getInnerWidth();
-        this.isDesktopView = !PropertiesService.isMobileView();
-        this.isOpenMenu = this.isDesktopView;
-    }
-
-    open = (event: any) => {
-        this.isOpenMenu = event.detail.open;
-    };
-
-    isQueryPage(): boolean {
-        return this.location.path().startsWith('/query');
-    }
-
-    isLegalPage(): boolean {
-        return this.location.path().startsWith('/legal');
-    }
-
-    protected readonly BannerTypes = BannerTypes;
+    protected readonly ActiveMenu = ActiveMenu;
+    protected readonly dbMenuObject = dbMenuObject;
+    protected readonly resourcesMenuObject = resourcesMenuObject;
 }

@@ -1,41 +1,52 @@
 export class MenuPage {
-    openTopLevelMenu(title: string) {
-        cy.get('app-nav-bar').shadow().find(`#menu menu-item.top-level`).shadow().find(`.title:contains('${title}')`).click();
+    visit(url?: string) {
+        cy.setCookie('mtm-paq', 'accepted');
+        cy.visit(url ?? '');
         return this;
     }
 
-    expectTopMenuSize(size: number) {
-        cy.get('app-nav-bar').shadow().find('#menu menu-item.top-level').should('have.length', size);
+    clickHeaderMenuItem(menuItem: string) {
+        cy.get('ripe-unified-layout').find('header').find(`a:contains(${menuItem})`).click();
         return this;
     }
 
-    expectTopMenuTitleToBe(index: number, title: string) {
-        cy.get('app-nav-bar').shadow().find(`#menu menu-item.top-level:nth(${index})`).shadow().find('.title').should('contain.text', title);
+    expectSidebarMenuSize(size: number) {
+        cy.get('ripe-unified-layout').find('main nav ul:nth-child(1) li').should('have.length', size);
         return this;
     }
 
-    expectTopMenuSubTitleToBe(index: number, title: string) {
-        cy.get('app-nav-bar').shadow().find(`#menu menu-item.top-level:nth(${index})`).shadow().find('.subtitle').should('contain.text', title);
+    expectSidebarMenuItem(position: number, label: string) {
+        cy.get('ripe-unified-layout').find('main').find(`nav ul:nth-child(1) li:nth-child(${position})`).should('contain.text', label);
         return this;
     }
 
-    expectSecondLevelMenuSize(parent: string, size: number) {
-        cy.get('app-nav-bar')
-            .shadow()
-            .find(`#menu menu-item.top-level`)
-            .shadow()
-            .find(`.item.menu-level-1:contains('${parent}') + .menu-level-1 .item.isChild`)
-            .should('have.length', size);
+    clickSidebarMenuItem(label: string) {
+        cy.get('ripe-unified-layout').find('main').find(`nav ul:nth-child(1) li:contains(${label})`).click();
         return this;
     }
 
-    expectSecondLevelTitleToBe(parent: string, index: number, title: string) {
-        cy.get('app-nav-bar')
-            .shadow()
-            .find(`#menu menu-item.top-level`)
-            .shadow()
-            .find(`.item.menu-level-1:contains('${parent}') + .menu-level-1 .item.isChild:nth(${index}) p`)
-            .should('contain.text', title);
+    expectSidebarFooterSize(size: number) {
+        cy.get('ripe-unified-layout').find('main nav ul:nth-child(2) li').should('have.length', size);
+        return this;
+    }
+
+    clickSidebarFooterMenuItem(label: string) {
+        cy.get('ripe-unified-layout').find('main').find(`nav ul:nth-child(2) li:contains(${label})`).click();
+        return this;
+    }
+
+    expectSidebarFooterItem(position: number, label: string) {
+        cy.get('ripe-unified-layout').find('main').find(`nav ul:nth-child(2) li:nth-child(${position})`).should('contain.text', label);
+        return this;
+    }
+
+    expectPage(url: string) {
+        cy.expectCurrentUrlToContain(`${url}`);
+        return this;
+    }
+
+    expectFeedbackSupportDialog() {
+        cy.get('feedback-support-dialog').should('exist');
         return this;
     }
 }

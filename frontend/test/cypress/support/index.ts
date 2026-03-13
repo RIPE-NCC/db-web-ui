@@ -16,6 +16,14 @@
 // Import commands.ts using ES2015 syntax:
 import './commands';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // ignore url exception coming from sidebar menu web component
+    if (err.message.indexOf('Invalid URL') > -1 || err.message.indexOf('not a valid URL') > -1) {
+        return false;
+    }
+    return true;
+});
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
