@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.collect.Maps.newHashMap;
+import static org.springframework.http.HttpHeaders.ORIGIN;
 
 @Service
 public class WhoisSyncupdatesService implements ExchangeErrorHandler {
@@ -52,6 +53,13 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         final List<String> forwardedFor = headers.get(X_FORWARDED_FOR);
         if (forwardedFor != null) {
             proxyHeaders.put(X_FORWARDED_FOR, forwardedFor);
+        }
+
+        final List<String> origin = headers.get(ORIGIN);
+        if (origin != null) {
+            proxyHeaders.put(ORIGIN, origin);
+        } else {
+            LOGGER.warn("No origin header found in request");
         }
 
         proxyHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
