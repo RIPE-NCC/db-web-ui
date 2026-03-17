@@ -83,7 +83,7 @@
         "@angular/router": "20.3.16",
         "@cypress/schematic": "3.0.0",
         "@fortawesome/fontawesome-pro": "7.1.0",
-        "@lir-portal/web-components": "0.1.5",
+        "@lir-portal/web-components": "1.0.0",
         "@ng-bootstrap/ng-bootstrap": "19.0.1",
         "@ng-select/ng-select": "15.2.0",
         "@ngx-loading-bar/core": "6.0.2",

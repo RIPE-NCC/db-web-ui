@@ -1,5 +1,6 @@
 @if (!this.properties.isProdEnv()) { @if (activeMenu === ActiveMenu.DB) {
 <ripe-unified-layout
+    class="layout-overrides"
     service-logo="assets/images/RIPE_NCC_Database_White_2025.svg"
     active-app="db"
     home-url="/"
@@ -15,6 +16,7 @@
 </ripe-unified-layout>
 } @else {
 <ripe-unified-layout
+    class="layout-overrides"
     service-logo="assets/images/Resources_2025-05.svg"
     active-app="resources"
     home-url="/"
@@ -30,6 +32,7 @@
 </ripe-unified-layout>
 } } @else { @if (activeMenu === ActiveMenu.DB) {
 <ripe-unified-layout
+    class="layout-overrides"
     service-logo="assets/images/RIPE_NCC_Database_White_2025.svg"
     active-app="db"
     home-url="/"
@@ -43,6 +46,7 @@
 </ripe-unified-layout>
 } @else {
 <ripe-unified-layout
+    class="layout-overrides"
     service-logo="assets/images/Resources_2025-05.svg"
     active-app="resources"
     home-url="/"
