@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Collections;
@@ -185,6 +186,21 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
 
     }
 
+    public ResponseEntity<String> callPublicPath(final String path, final HttpHeaders httpHeaders, final HashMap<String, Object> params) {
+        try {
+            final URI uri = buildUrl("/public/" + path, params);
+
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
+        } catch (HttpClientErrorException e) {
+            LOGGER.debug("Failed to retrieve details for {} from whois internal due to {}: {}", path, e.getClass().getName(), e.getMessage());
+            throw new RestClientException(e.getStatusCode().value(), e.getResponseBodyAsString());
+        } catch (Exception e) {
+            LOGGER.error("Exception: Failed to retrieve details for {} from whois internal due to {}: {}", path, e.getClass().getName(), e.getMessage());
+            LOGGER.error(e.getClass().getName(), e);
+            throw new RestClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
+        }
+    }
+
     public ResponseEntity<byte[]> bypassFile(final HttpServletRequest request, final String body, final HttpHeaders headers) {
         headers.set(API_KEY_HEADER, apiKey);
         final URI uri = composeWhoisUrl(request);
@@ -205,5 +221,14 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
             "/api/whois-internal",
             apiUrl,
             true);
+    }
+
+    private URI buildUrl(final String path, final HashMap<String, Object> params) {
+        final UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(apiUrl)
+            .path(path);
+
+        params.forEach( (k, v) -> builder.queryParam(k, v));
+
+        return builder.build(false).toUri();
     }
 }
