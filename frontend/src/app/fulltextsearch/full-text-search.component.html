@@ -103,7 +103,7 @@
             @for (result of results; track result) {
             <div class="margin-bottom grey-border-top padding-top results">
                 <div>
-                    <a [routerLink]="['/lookup']" [queryParams]="{ source: properties.SOURCE, type: result.name, key: result.lookupKey }" target="_blank"
+                    <a [routerLink]="['/lookup']" [queryParams]="{ source: properties.SOURCE, type: result.name, key: result.lookupKey }"
                         >{{ result.name }}: {{ result.lookupKey }}</a
                     >
                 </div>
