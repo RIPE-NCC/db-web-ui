@@ -84,7 +84,7 @@ describe('ErrorInterceptor', () => {
                 error: () => {
                     expect(mockAlertsService.setGlobalError).toHaveBeenCalledWith(
                         'Blocked user',
-                        'https://apps.db.ripe.net/docs/FAQ/#why-did-i-receive-an-error-201-access-denied',
+                        'https://apps.db.ripe.net/docs/FAQ#why-did-i-receive-an-error-201-access-denied',
                         'More information',
                     );
                     done();
