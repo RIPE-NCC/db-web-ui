@@ -33,7 +33,7 @@ public class PublicApiController extends ApiController {
             return getResponseFromWhoisInternal(request);
     }
 
-    @RequestMapping(value = {"/myResources/v2/allResources", "/myResources/v2/asns", "/myResources/v2/{ipv:ipv4|ipv6}", "/myResources/v2/{ipv:ipv4|ipv6}/{type}"}, method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = {"/myresources/v2/allresources", "/myresources/v2/asns", "/myresources/v2/{ipv:ipv4|ipv6}", "/myresources/v2/{ipv:ipv4|ipv6}/{type}"}, method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity myResourcesWithApiKey(final HttpServletRequest request,  @RequestParam("org-id") final String orgId) {
         return getResponseFromWhoisInternal(request);
     }

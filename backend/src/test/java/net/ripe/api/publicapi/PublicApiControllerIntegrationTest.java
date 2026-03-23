@@ -70,11 +70,11 @@ public class PublicApiControllerIntegrationTest extends AbstractIntegrationTest 
     }
 
     @Test
-    public void read_myresources_allResources() {
-        mock("/public/myResources/v2/allResources?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
+    public void read_myresources_allresources() {
+        mock("/public/myresources/v2/allresources?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
             getResourcesMock());
 
-        final ResponseEntity<String> response = get("/api/myResources/v2/allResources?org-id=ORG-LIR1-TEST", String.class, getHeaders());
+        final ResponseEntity<String> response = get("/api/myresources/v2/allresources?org-id=ORG-LIR1-TEST", String.class, getHeaders());
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("asnResources"));
@@ -82,10 +82,10 @@ public class PublicApiControllerIntegrationTest extends AbstractIntegrationTest 
 
     @Test
     public void read_myresources_asns() {
-        mock("/public/myResources/v2/asns?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
+        mock("/public/myresources/v2/asns?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
             getResourcesMock());
 
-        final ResponseEntity<String> response = get("/api/myResources/v2/asns?org-id=ORG-LIR1-TEST", String.class, getHeaders());
+        final ResponseEntity<String> response = get("/api/myresources/v2/asns?org-id=ORG-LIR1-TEST", String.class, getHeaders());
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("asnResources"));
@@ -93,10 +93,10 @@ public class PublicApiControllerIntegrationTest extends AbstractIntegrationTest 
 
     @Test
     public void read_myresources_ipv4() {
-        mock("/public/myResources/v2/ipv4?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
+        mock("/public/myresources/v2/ipv4?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
             getResourcesMock());
 
-        final ResponseEntity<String> response = get("/api/myResources/v2/ipv4?org-id=ORG-LIR1-TEST", String.class, getHeaders());
+        final ResponseEntity<String> response = get("/api/myresources/v2/ipv4?org-id=ORG-LIR1-TEST", String.class, getHeaders());
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("ipv4Assignments"));
@@ -104,10 +104,10 @@ public class PublicApiControllerIntegrationTest extends AbstractIntegrationTest 
 
     @Test
     public void read_myresources_ipv6() {
-        mock("/public/myResources/v2/ipv6?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
+        mock("/public/myresources/v2/ipv6?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
             getResourcesMock());
 
-        final ResponseEntity<String> response = get("/api/myResources/v2/ipv6?org-id=ORG-LIR1-TEST", String.class, getHeaders());
+        final ResponseEntity<String> response = get("/api/myresources/v2/ipv6?org-id=ORG-LIR1-TEST", String.class, getHeaders());
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("ipv6Assignments"));
@@ -115,10 +115,10 @@ public class PublicApiControllerIntegrationTest extends AbstractIntegrationTest 
 
     @Test
     public void read_myresources_ipv6_allocations() {
-        mock("/public/myResources/v2/ipv6/allocations?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
+        mock("/public/myresources/v2/ipv6/allocations?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
             getResourcesMock());
 
-        final ResponseEntity<String> response = get("/api/myResources/v2/ipv6/allocations?org-id=ORG-LIR1-TEST", String.class, getHeaders());
+        final ResponseEntity<String> response = get("/api/myresources/v2/ipv6/allocations?org-id=ORG-LIR1-TEST", String.class, getHeaders());
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("ipv6Allocations"));
@@ -126,10 +126,10 @@ public class PublicApiControllerIntegrationTest extends AbstractIntegrationTest 
 
     @Test
     public void read_myresources_ipv4_allocations() {
-        mock("/public/myResources/v2/ipv4/allocations?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
+        mock("/public/myresources/v2/ipv4/allocations?clientIp=127.0.0.1&org-id=ORG-LIR1-TEST",
             getResourcesMock());
 
-        final ResponseEntity<String> response = get("/api/myResources/v2/ipv4/allocations?org-id=ORG-LIR1-TEST", String.class, getHeaders());
+        final ResponseEntity<String> response = get("/api/myresources/v2/ipv4/allocations?org-id=ORG-LIR1-TEST", String.class, getHeaders());
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("ipv4Allocations"));
