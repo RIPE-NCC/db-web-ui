@@ -4,7 +4,6 @@ import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
@@ -28,23 +27,23 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     menuService = inject(MenuService);
 
     @Input()
-    public model: IWhoisObjectModel;
+    model: IWhoisObjectModel;
     @Input()
-    public linkable?: boolean;
+    linkable?: boolean;
     @Output()
-    public updateClicked? = new EventEmitter();
+    updateClicked? = new EventEmitter();
 
-    public nrLinesToShow: number;
-    public showMoreButton: boolean;
-    public showMoreInfo: boolean;
-    public objectPrimaryKey: string;
-    public pkLink: string;
-    public ripeStatLink: string;
-    public subscription: any;
+    nrLinesToShow: number;
+    showMoreButton: boolean;
+    showMoreInfo: boolean;
+    objectPrimaryKey: string;
+    pkLink: string;
+    ripeStatLink: string;
+    subscription: any;
 
-    public showRipeManagedAttrs = true;
+    showRipeManagedAttrs = true;
 
-    public show = {
+    show = {
         loginLink: false,
         ripeManagedToggleControl: false,
         ripeStatButton: false,
@@ -64,7 +63,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         );
     }
 
-    public ngOnChanges() {
+    ngOnChanges() {
         AttributeMetadataService.splitAttrsCommentsFromValue(this.model.attributes.attribute);
         this.objLength = this.model.attributes.attribute.length;
         this.nrLinesToShow = this.objLength > 30 ? 25 : 30;
@@ -80,28 +79,32 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         this.show.ripeManagedToggleControl = this.model.managed;
     }
 
-    public clickShowMoreLines() {
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
+    clickShowMoreLines() {
         this.nrLinesToShow = this.objLength;
         this.showMoreButton = this.objLength > this.nrLinesToShow;
     }
 
-    public padding(attr: IAttributeModel): string {
+    padding(attr: IAttributeModel): string {
         const numLeftPads = attr.name.length - this.MAX_ATTR_NAME_MASK.length;
         return this.MAX_ATTR_NAME_MASK.slice(numLeftPads);
     }
 
-    public getRipeStatLink(): string {
-        const routeObject = _.find(this.model['primary-key'].attribute, (attr) => {
+    getRipeStatLink(): string {
+        const routeObject = this.model['primary-key'].attribute.find((attr) => {
             return attr.name === 'route' || attr.name === 'route6';
         });
         return routeObject ? routeObject.value : this.objectPrimaryKey;
     }
 
-    public emitUpdateClicked() {
+    emitUpdateClicked() {
         this.updateClicked.emit();
     }
 
-    public getPkLinksQueryParams() {
+    getPkLinksQueryParams() {
         return {
             source: this.model.source.id,
             key: this.objectPrimaryKey,
@@ -109,7 +112,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         };
     }
 
-    public getLocalLinksQueryParams(attr: IAttributeModel) {
+    getLocalLinksQueryParams(attr: IAttributeModel) {
         return {
             source: attr.value === 'DUMY-RIPE' ? this.properties.SOURCE : this.model.source.id,
             key: attr.value,
@@ -117,8 +120,14 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         };
     }
 
-    public getDescription(attributeName: string) {
+    getDescription(attributeName: string) {
         return this.whoisMetaService.getAttributeShortDescription(this.model.type, attributeName);
+    }
+
+    trim(value: string) {
+        console.log('before', value + '|');
+        console.log('after', value.trim() + '|');
+        return value?.trim();
     }
 
     private setButtonText(isLoggedIn: boolean) {
@@ -142,9 +151,5 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
 
     private isPlaceholderObjects(): boolean {
         return this.model.attributes.attribute.filter((attr) => attr.name === 'netname' && attr.value === 'NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK').length > 0;
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
     }
 }

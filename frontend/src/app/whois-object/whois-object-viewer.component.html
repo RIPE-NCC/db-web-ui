@@ -12,14 +12,10 @@
         >:{{ padding(attr) }}
 
         @if (attr.link?.type === 'locator') {
-        <a [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color"
-            >{{ attr.value }} @if (menuService.isActiveResourcesMenu()) { <em class="fa-light fa-arrow-right"></em> }
-        </a>
-        } @if (attr.name === pkLink) {
-        <a [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color"
-            >{{ attr.value }} @if (menuService.isActiveResourcesMenu()) { <em class="fa-light fa-arrow-right"></em> }
-        </a>
-        } @if (attr.link?.type !== 'locator' && attr.name !== pkLink) {
+        <a [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{ attr.value }}</a>
+        @if (menuService.isActiveResourcesMenu()) { <em class="fa-light fa-arrow-right"></em> } } @if (attr.name === pkLink) {
+        <a [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()" class="link-color">{{ attr.value }}</a>
+        @if (menuService.isActiveResourcesMenu()) { <em class="fa-light fa-arrow-right"></em> } } @if (attr.link?.type !== 'locator' && attr.name !== pkLink) {
         <span>{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span>
         } @if (attr.comment && attr.comment !== 'Filtered') {
         <span>{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
