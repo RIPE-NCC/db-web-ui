@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import supportedBrowsers from '../../../src/assets/supportedBrowsers.js';
@@ -17,7 +17,7 @@ import { ReleaseNotificationService } from '../shared/release-notification.servi
     standalone: true,
     templateUrl: './main-container.component.html',
     styleUrl: 'main-container.component.scss',
-    imports: [CommonModule, RouterModule, BannerComponent, LabelPipe, AlertBannersComponent, OrgDropDownComponent],
+    imports: [RouterModule, BannerComponent, LabelPipe, AlertBannersComponent, OrgDropDownComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MainContainerComponent implements OnInit {

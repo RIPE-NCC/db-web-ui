@@ -1,5 +1,5 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
+import { importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -42,6 +42,7 @@ import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.provide
 bootstrapApplication(AppComponent, {
     providers: [
         // Routing
+        provideZoneChangeDetection(),
         provideRouter(appRoutes),
 
         // HTTP with interceptors

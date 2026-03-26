@@ -135,9 +135,9 @@ describe('IpUsageOfAllResourcesComponent', () => {
         component.resources = ipv4Resources;
         component.sponsored = false;
         component.ngOnChanges({
-            resources: new SimpleChange([], true, undefined),
-            sponsored: new SimpleChange(undefined, true, undefined),
-            type: new SimpleChange('inet6num', true, undefined),
+            resources: new SimpleChange(undefined, [], true),
+            sponsored: new SimpleChange(undefined, undefined, true),
+            type: new SimpleChange(undefined, 'inet6num', true),
         });
         fixture.detectChanges();
         expect(component.total).toEqual(2048);
@@ -150,9 +150,9 @@ describe('IpUsageOfAllResourcesComponent', () => {
         component.resources = ipv6Resources;
         component.sponsored = false;
         component.ngOnChanges({
-            resources: new SimpleChange([], true, undefined),
-            sponsored: new SimpleChange(undefined, true, undefined),
-            type: new SimpleChange('inet6num', true, undefined),
+            resources: new SimpleChange(undefined, [], true),
+            sponsored: new SimpleChange(undefined, undefined, true),
+            type: new SimpleChange(undefined, 'inet6num', true),
         });
         fixture.detectChanges();
         expect(component.total).toEqual(65536);

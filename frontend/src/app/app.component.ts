@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit, effect, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 
@@ -33,7 +32,7 @@ const envDisplayMap: Record<string, string> = {
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: 'app.component.scss',
-    imports: [CommonModule, RouterModule, MainContainerComponent],
+    imports: [RouterModule, MainContainerComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnInit, OnDestroy {
