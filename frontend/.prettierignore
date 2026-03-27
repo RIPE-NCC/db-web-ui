@@ -9,3 +9,6 @@ cache/Cypress
 
 # ignore test.ts to avoid reorganize imports
 test/unit/test.ts
+
+# ignore blockedBrowsers file
+src/assets/blockedBrowsers.js

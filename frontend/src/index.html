@@ -59,29 +59,29 @@
             </h1>
         </noscript>
         <app-db-web-ui></app-db-web-ui>
+        <script src="assets/blockedBrowsers.js"></script>
+
         <script>
-            loadModuleOrValid().then((results) => {
-                if (results === 'valid' || results.test(navigator.userAgent)) {
-                    printUnsupportedBrowserMessage();
-                }
-            });
+            (function () {
+                function isUnsupported() {
+                    try {
+                        if (!window.blockedBrowsers) return true;
 
-            //Some old browsers does not support import module
-            function loadModuleOrValid() {
-                try {
-                    return new Function("return import('./assets/blockedBrowsers.js').then(r => r.default)")();
-                } catch (e) {
-                    return Promise.resolve('valid');
+                        return window.blockedBrowsers.test(navigator.userAgent);
+                    } catch (e) {
+                        return true;
+                    }
                 }
-            }
 
-            function printUnsupportedBrowserMessage() {
-                document.write(
-                    "    <h1 style='text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;'>" +
-                        "      Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>.\n" +
-                        '    </h1>',
-                );
-            }
+                if (isUnsupported()) {
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.body.innerHTML =
+                            "<h1 style='text-align:center;margin-top:20px;background:#eee;padding:20px'>" +
+                            "Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href='https://www.ripe.net/about-us/legal/supported-browsers' target='_blank'>supported browser</a>." +
+                            '</h1>';
+                    });
+                }
+            })();
         </script>
 
         <!--  Webupdates specific body-end end -->
