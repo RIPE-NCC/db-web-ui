@@ -5,7 +5,6 @@ import { MatButton } from '@angular/material/button';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { AutoFocusDirective } from '../shared/autofocus.directive';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
-import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interceptor.service';
 import { SyncupdatesService } from './syncupdates.service';
 
 @Component({
@@ -22,7 +21,6 @@ export class SyncupdatesComponent {
     public updateResponse: string;
 
     public isUpdating: boolean = false;
-    public haveNonLatin1: boolean;
 
     public update() {
         if (!this.rpslObject) {
@@ -50,10 +48,5 @@ export class SyncupdatesComponent {
             },
             complete: () => (this.isUpdating = false),
         });
-    }
-
-    hasNonLatin1(): boolean {
-        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1(this.rpslObject);
-        return this.haveNonLatin1;
     }
 }

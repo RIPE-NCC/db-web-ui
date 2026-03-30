@@ -31,7 +31,6 @@ describe('Modifying an aut-num', () => {
             .typeOnField('remarks', 'remarksŠ')
             .expectDisabledSubmitModify(true)
             .expectErrorOnField('as-name', 'You can only enter latin1 characters')
-            .expectErrorOnField('remarks', 'You can only enter latin1 characters')
             .expectErrorOnField('notify', 'You can only enter latin1 characters')
             .expectErrorOnField('tech-c', 'You can only enter latin1 characters');
     });

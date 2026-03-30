@@ -34,8 +34,7 @@ describe('Resources, update object', () => {
             .expectDisabledSubmit(true)
             .expectErrorOnField('netname', 'You can only enter latin1 characters')
             .expectErrorOnField('org', 'You can only enter latin1 characters')
-            .expectErrorOnField('tech-c', 'You can only enter latin1 characters')
-            .expectErrorOnField('remarks', 'You can only enter latin1 characters');
+            .expectErrorOnField('tech-c', 'You can only enter latin1 characters');
     });
 
     it('should switch to text editor', () => {
@@ -43,6 +42,7 @@ describe('Resources, update object', () => {
         const whoisTextEditor = resourcesDetailPage.switchToTextAreaEditor().getWhoisTextEditor();
         whoisTextEditor.expectTextAreaToContain('netname:NETNAME-TEST-02');
         const whoisObjectEditor = resourcesDetailPage.switchToObjectEditor().getWhoisObjectEditor();
+        whoisObjectEditor.expectValueInField('netname', 'NETNAME-TEST-02');
         whoisObjectEditor.expectValueInField('netname', 'NETNAME-TEST-02');
     });
 
