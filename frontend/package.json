@@ -116,7 +116,8 @@
         "uri-js": "npm:uri-js-replace",
         "tar": "7.5.11",
         "undici": "7.24.0",
-        "rollup": "4.59.0"
+        "rollup": "4.59.0",
+        "picomatch": "4.0.4"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
