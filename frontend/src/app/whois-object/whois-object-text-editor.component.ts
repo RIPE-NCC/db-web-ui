@@ -6,7 +6,7 @@ import { forkJoin } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
-import { RpslService } from '../updatestext/rpsl.service';
+import { IRpslObject, RpslService } from '../updatestext/rpsl.service';
 import { TextCommonsService } from '../updatestext/text-commons.service';
 import { IMaintainers } from '../updatesweb/create-modify.component';
 import { MessageStoreService } from '../updatesweb/message-store.service';
@@ -26,6 +26,7 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     private rpslService = inject(RpslService);
     private textCommonsService = inject(TextCommonsService);
     alertsServices = inject(AlertsService);
+    private formattedObject?: IRpslObject;
 
     @Input()
     type: string;
@@ -109,7 +110,7 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     }
 
     hasNonLatin1(): boolean {
-        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1(this.rpsl);
+        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute(this.formattedObject.attributes);
         return this.haveNonLatin1;
     }
 
@@ -159,11 +160,11 @@ export class WhoisObjectTextEditorComponent implements OnInit {
         this.whoisResourcesService.removeAttributeWithName(attributes, 'created');
         this.whoisResourcesService.removeAttributeWithName(attributes, 'last-modified');
 
-        const obj = {
+        this.formattedObject = {
             attributes,
             override: this.override,
         };
-        this.rpsl = this.rpslService.toRpsl(obj);
+        this.rpsl = this.rpslService.toRpsl(this.formattedObject);
         console.debug('RPSL:' + this.rpsl);
 
         return attributes;

@@ -189,7 +189,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     }
 
     public fieldVisited(attr: IAttributeModel) {
-        attr.$$error = ScreenLogicInterceptorService.setErrorForNonLatin1(attr.value);
+        attr.$$error = ScreenLogicInterceptorService.setErrorForNonLatin1SupportedAttributes(attr);
         if (attr.name === 'person') {
             attr.$$error = !attr.value || this.personRe.exec(attr.value) ? undefined : 'Input contains unsupported characters.';
             attr.$$invalid = !!attr.$$error;

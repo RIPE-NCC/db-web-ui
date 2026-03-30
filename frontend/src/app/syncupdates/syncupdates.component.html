@@ -9,14 +9,11 @@
 }
 <ng-form class="ga-syncupdate-form">
     <label for="rpslTextArea">Object Data</label>
-    @if (hasNonLatin1()) {
-    <span class="text-error"> You can only enter latin1 characters </span>
-    }
     <textarea autoFocusDirective id="rpslTextArea" name="rpslObject" [(ngModel)]="rpslObject" rows="18" class="full-width form-control margin-bottom">{{
         rpslObject
     }}</textarea>
     <submitting-agreement></submitting-agreement>
-    <button mat-flat-button color="primary" name="btnSyncupdate" class="float-end" (click)="update()" [disabled]="isUpdating || haveNonLatin1">UPDATE</button>
+    <button mat-flat-button color="primary" name="btnSyncupdate" class="float-end" (click)="update()" [disabled]="isUpdating">UPDATE</button>
 </ng-form>
 <div id="instructionsSyncupdate">
     <h3>Instructions</h3>
