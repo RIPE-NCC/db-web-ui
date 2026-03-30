@@ -601,18 +601,27 @@ export class ScreenLogicInterceptorService {
         }
     }
 
-    public static hasNonLatin1(attributeValue: string): boolean {
+    public static hasNonLatin1SupportedAttribute(attr: IAttributeModel[]): boolean {
         const regExp = /[^\u0000-\u00FF]+/g;
-        return regExp.test(attributeValue);
+
+        for (let i = 0; i < attr.length; i++) {
+            if (['remarks', 'descr'].includes(attr[i].name)) {
+                continue;
+            }
+            if (regExp.test(attr[i].value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static setErrorForNonLatin1(attrValue: string) {
-        return ScreenLogicInterceptorService.hasNonLatin1(attrValue) ? 'You can only enter latin1 characters' : undefined;
+    public static setErrorForNonLatin1SupportedAttributes(attr: IAttributeModel) {
+        return ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute([attr]) ? 'You can only enter latin1 characters' : undefined;
     }
 
     private setErrorForNonLatin1(attributes: IAttributeModel[]) {
         return attributes.map((attribute) => {
-            attribute.$$error = ScreenLogicInterceptorService.setErrorForNonLatin1(attribute.value);
+            attribute.$$error = ScreenLogicInterceptorService.setErrorForNonLatin1SupportedAttributes(attribute);
             return attribute;
         });
     }
