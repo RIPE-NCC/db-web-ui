@@ -41,67 +41,8 @@
 <br />
 <div class="keys-table">
     <h2>Database Keys</h2>
-    @if (loading) {
-    <loading-indicator class="resource-page-message"></loading-indicator>
-    } @else {
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
-        <!-- Name Column -->
-        <ng-container matColumnDef="label">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let element">{{ element.label }}</td>
-        </ng-container>
-
-        <!-- Key Column -->
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Key ID</th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-        </ng-container>
-
-        <!-- Last used Column -->
-        <ng-container matColumnDef="lastUsed">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Last used</th>
-            <td mat-cell *matCellDef="let element">{{ element.lastUsed | date : 'yyyy-MM-dd HH:mm' }}</td>
-        </ng-container>
-
-        <!-- Expiration date Column -->
-        <ng-container matColumnDef="expiresAt">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Expiration date</th>
-            <td mat-cell *matCellDef="let element">{{ element.expiresAt }}</td>
-        </ng-container>
-
-        <!-- Key type Column -->
-        <ng-container matColumnDef="keyType">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Key type</th>
-            <td mat-cell *matCellDef="let element">{{ element.keyType }}</td>
-        </ng-container>
-
-        <!-- Details Column -->
-        <ng-container matColumnDef="details">
-            <th mat-header-cell *matHeaderCellDef>Details</th>
-            <td mat-cell *matCellDef="let element">{{ element.details }}</td>
-        </ng-container>
-
-        <!-- Delete Column -->
-        <ng-container matColumnDef="delete">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
-                <button
-                    mat-stroked-button
-                    class="revoke-button"
-                    color="primary"
-                    id="search-maintainer"
-                    attr.data-test-id="{{ element.id }}"
-                    (click)="openRevokeDialog(element.id)"
-                >
-                    <span class="fa-light fa-trash"></span> Revoke
-                </button>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
-    </table>
-    <mat-paginator [length]="dataSource?.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" showFirstLastButtons="true">
-    </mat-paginator>
-    }
+    <span
+        >You can manage existing API keys in
+        <a href="{{ linkToManageApiKeysInAccess }}" class="inner-link-color">RIPE NCC Access <em class="fa-light fa-arrow-right"></em></a
+    ></span>
 </div>

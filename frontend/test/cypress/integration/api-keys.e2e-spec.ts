@@ -3,14 +3,6 @@ import { ApiKeysPage } from '../pages/api-keys.page';
 describe('api keys', () => {
     const apiKeysPage = new ApiKeysPage();
 
-    it('should show the current api keys in the table', () => {
-        apiKeysPage.visit().expectTableToContain('my mocked access key').expectTableToContain('2025-01-08');
-    });
-
-    it('should revoke key', () => {
-        apiKeysPage.visit().revokeKey('my mocked access key').expectRevokeKeyDialogToBePresent();
-    });
-
     // Create API Key section
 
     it('should create new Maintainer api key', () => {
@@ -31,8 +23,8 @@ describe('api keys', () => {
             .toggleAccordion('Create a new Database key')
             .changeKeyType('IP Analyser')
             .expectedOrganisationInField('SUPERTESTORG bv')
-            .selectOrganizationInDropdown('ViTest organisation')
-            .expectedOrganisationInField('ViTest organisation');
+            .selectOrganizationInDropdown('WTest Organisation name')
+            .expectedOrganisationInField('WTest Organisation name');
     });
 
     it('should add/remove maintainer field on click on +/- button', () => {

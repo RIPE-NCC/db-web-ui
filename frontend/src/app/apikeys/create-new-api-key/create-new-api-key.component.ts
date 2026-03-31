@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
@@ -11,7 +11,7 @@ import { MatSelect } from '@angular/material/select';
 import moment from 'moment-timezone';
 import { Subject, switchMap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { IUserInfoOrganisation } from '../../dropdown/org-data-type.model';
+import { IUserInfoOrganisation, IUserInfoRegistration } from '../../dropdown/org-data-type.model';
 import { AlertsService } from '../../shared/alert/alerts.service';
 import { IMntByModel } from '../../shared/whois-response-type.model';
 import { RestService } from '../../updatesweb/rest.service';
@@ -47,11 +47,12 @@ export enum KeyType {
         MatSelect,
     ],
 })
-export class CreateNewApiKeyComponent implements OnInit {
+export class CreateNewApiKeyComponent implements OnInit, OnChanges {
     private restService = inject(RestService);
     private apiKeysService = inject(ApiKeysService);
-    dialog = inject(MatDialog);
     private alertsService = inject(AlertsService);
+
+    dialog = inject(MatDialog);
 
     @Input()
     initialCreateKeyType?: KeyType;
@@ -89,6 +90,12 @@ export class CreateNewApiKeyComponent implements OnInit {
             });
     }
 
+    ngOnChanges(): void {
+        if (!this.isMemberOrg()) {
+            this.selectedKeyType = this.selectedOrg ? this.initialCreateKeyType || KeyType.MAINTAINER : KeyType.MAINTAINER;
+        }
+    }
+
     onInputChange(index: number, value: string) {
         this.searchMaintainers.next(value);
         this.maintainers[index].key = value;
@@ -102,6 +109,17 @@ export class CreateNewApiKeyComponent implements OnInit {
         if (this.maintainers.length > 1) {
             this.maintainers.splice(index, 1);
         }
+    }
+
+    isMemberOrg(): boolean {
+        return !!this.selectedOrg && !!(this.selectedOrg as IUserInfoRegistration).membershipId;
+    }
+
+    isKeyDisabled(key: KeyType): boolean {
+        const isRestricted = this.restrictedKeys.has(key);
+        const noValidOrg = !this.selectedOrg || !this.isMemberOrg();
+
+        return isRestricted && noValidOrg;
     }
 
     saveApiKey() {

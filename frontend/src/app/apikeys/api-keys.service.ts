@@ -28,12 +28,4 @@ export class ApiKeysService {
         const url = apiKeyType === KeyType.MAINTAINER ? this.API_BASE_URL : `${this.API_BASE_URL}/${endpointMap[apiKeyType]}`;
         return this.http.post<ApiKey>(url, body);
     }
-
-    getApiKeys(): Observable<ApiKey[]> {
-        return this.http.get<ApiKey[]>(this.API_BASE_URL);
-    }
-
-    deleteApiKey(id: string) {
-        return this.http.delete(`${this.API_BASE_URL}/${id}`);
-    }
 }
