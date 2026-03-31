@@ -1,0 +1,34 @@
+@import '../../../styles/scss/extend.scss';
+
+.resource-item {
+    padding: 10px 20px 20px 20px;
+    border: 1px transparent solid;
+    background: #f7f7fa;
+    --mat-progress-bar-active-indicator-height: 10px;
+    --mat-progress-bar-track-height: 10px;
+
+    .title {
+        font: {
+            size: 16px;
+            weight: bold;
+        }
+        cursor: pointer;
+
+        span {
+            line-height: 1.1em;
+        }
+    }
+
+    p.org-name {
+        font-size: 12px;
+        font-weight: bold;
+        margin: 0;
+        color: $black;
+    }
+
+    .flags-container {
+        width: 100%;
+        display: inline-block;
+        margin-top: 5px;
+    }
+}

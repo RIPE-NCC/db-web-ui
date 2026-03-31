@@ -1,4 +1,12 @@
 <div class="create-new-api-key-form">
+    <mat-form-field class="select" appearance="outline">
+        <mat-label>Key type</mat-label>
+        <mat-select [(value)]="selectedKeyType">
+            @for (key of keyTypes; track key) {
+            <mat-option [value]="key">{{ key.valueOf() }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
     <mat-form-field>
         <mat-label>Key name</mat-label>
         <input matInput maxlength="24" [(ngModel)]="apiKeyName" />
@@ -11,7 +19,7 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    @for (maintainer of maintainers; let i = $index; track maintainer) {
+    @if (selectedKeyType === KeyType.MAINTAINER) { @for (maintainer of maintainers; let i = $index; track maintainer) {
     <div class="multiple-field-wrapper">
         <mat-form-field class="multiple-field">
             <mat-label>Maintainer</mat-label>
@@ -33,6 +41,12 @@
         <i class="fa-light fa-circle-plus rounded-buttons" (click)="addMaintainerField()"></i>
         <i class="fa-light fa-circle-minus rounded-buttons" (click)="removeMaintainerField(i)"></i>
     </div>
+    } } @if (selectedKeyType === KeyType.IP_ANALYSER || selectedKeyType === KeyType.MY_RESOURCES) {
+    <mat-form-field>
+        <mat-label>Selected organisation</mat-label>
+        <input matInput disabled [ngModel]="selectedOrg.organisationName" />
+        <mat-hint>Associated organisation linked to the API key</mat-hint>
+    </mat-form-field>
     }
     <button mat-flat-button color="primary" (click)="saveApiKey()">Create a key</button>
 </div>

@@ -8,6 +8,10 @@
         width: max-content;
         align-self: flex-end;
     }
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .rounded-buttons {
@@ -29,4 +33,14 @@
 
 .multiple-field {
     flex: 1;
+}
+
+::ng-deep .select .mdc-line-ripple {
+    opacity: 0;
+}
+
+.custom-field:hover .mdc-notched-outline__leading,
+.custom-field:hover .mdc-notched-outline__notch,
+.custom-field:hover .mdc-notched-outline__trailing {
+    background-color: orange !important;
 }

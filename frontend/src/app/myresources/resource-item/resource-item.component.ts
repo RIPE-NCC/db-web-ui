@@ -1,17 +1,19 @@
 import { DecimalPipe, NgClass } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
-import { NgbProgressbar, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { Labels } from '../label.constants';
-import { FlagComponent, IFlag } from '../shared/flag/flag.component';
-import { NameFormatterComponent } from '../shared/name-formatter.component';
-import { ResourceStatusService } from './resource-status.service';
+import { Labels } from '../../label.constants';
+import { FlagComponent, IFlag } from '../../shared/flag/flag.component';
+import { NameFormatterComponent } from '../../shared/name-formatter.component';
+import { ResourceStatusService } from '../resource-status.service';
 
 @Component({
     selector: 'resource-item',
     templateUrl: './resource-item.component.html',
+    styleUrl: './resource-item.component.scss',
     standalone: true,
-    imports: [RouterLink, NameFormatterComponent, FlagComponent, NgClass, NgbTooltip, NgbProgressbar, DecimalPipe],
+    imports: [RouterLink, NameFormatterComponent, FlagComponent, NgClass, DecimalPipe, MatProgressBar, MatTooltip],
 })
 export class ResourceItemComponent implements OnInit {
     private router = inject(Router);

@@ -1,0 +1,13 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/public/api-key/myresources",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "id": "my mocked IP Resources key",
+            "details": ["ORG-ID-TEST"],
+            "lastUsed": "2025-01-08T10:21:49.96061Z",
+            "expiresAt": "2125-01-22"
+        }
+    ]
+}

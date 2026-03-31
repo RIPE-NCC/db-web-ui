@@ -138,4 +138,12 @@ $custom-theme: mat.m2-define-light-theme(
 );
 @include mat.all-component-themes($custom-theme);
 @include mat.all-component-typographies($custom-typography);
-//@include mat.button-theme($custom-theme);
+
+:root {
+    @include mat.button-toggle-overrides(
+        (
+            selected-state-background-color: #e8edfe,
+            shape: 100px,
+        )
+    );
+}

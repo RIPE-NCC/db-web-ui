@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import supportedBrowsers from '../../../src/assets/supportedBrowsers.js';
+import supportedBrowsers from '../../assets/supportedBrowsers.js';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { dbMenuObject } from '../menu/db-menu.json';

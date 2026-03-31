@@ -32,8 +32,9 @@ describe('The menu and sidebar', () => {
     */
     const expectResourcesSidebarItem = () => {
         menuPage
-            .expectSidebarMenuSize(1)
+            .expectSidebarMenuSize(2)
             .expectSidebarMenuItem(1, 'Overview')
+            .expectSidebarMenuItem(2, 'IP Analyser')
             .expectSidebarFooterSize(3)
             .expectSidebarFooterItem(1, 'Documentation')
             .expectSidebarFooterItem(2, 'Legal')

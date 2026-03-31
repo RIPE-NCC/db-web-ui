@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -26,6 +27,8 @@ public class WhoisInternalProxyControllerTest {
 
     @Mock
     private HttpServletRequest request;
+    @Mock
+    private HttpHeaders httpHeaders;
     @Mock
     private WhoisInternalService whoisInternalService;
     @InjectMocks
@@ -61,4 +64,28 @@ public class WhoisInternalProxyControllerTest {
         verify(whoisInternalService, Mockito.never()).getUserInfo("", "");
     }
 
+    @Test
+    public void whoisInternalGetApiKeys() {
+        when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
+        final ResponseEntity<?> response = subject.getApiKeys(request, "", httpHeaders);
+        verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
+    }
+    @Test
+    public void whoisInternalSaveApiKey() {
+        when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
+        final ResponseEntity<?> response = subject.saveApiKey(request, "", httpHeaders);
+        verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
+    }
+    @Test
+    public void whoisInternalDeleteApiKeys() {
+        when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
+        final ResponseEntity<?> response = subject.deleteApiKeys(request, "", httpHeaders);
+        verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
+    }
+    @Test
+    public void whoisInternalGetIpAnalyser() {
+        when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
+        final ResponseEntity<?> response = subject.getIpAnalyser(request, "", "", httpHeaders);
+        verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
+    }
 }

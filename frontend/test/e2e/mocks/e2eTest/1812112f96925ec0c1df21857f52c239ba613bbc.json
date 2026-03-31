@@ -1,0 +1,19 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/public/ipanalyser/v2/ipv4?org-id=ORG-ATEST-RIPE",
+    "contentType": "application/javascript",
+    "statusCode": 400,
+    "data": {
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "text": "user test@ripe.net is not associated with organisation ORG-ATEST-RIPE"
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://docs.db.ripe.net/terms-conditions.html"
+        }
+    }
+}

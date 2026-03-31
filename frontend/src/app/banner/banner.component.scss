@@ -8,8 +8,8 @@
     margin: 0 0 1em 0;
 
     .content {
-        display: flex;
-        align-items: flex-start;
+        display: inline-flex;
+        align-items: center;
         gap: 16px;
         .fa-lg {
             line-height: normal;
@@ -20,6 +20,10 @@
             display: block;
             padding-bottom: 5px;
         }
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
     }
 }
 

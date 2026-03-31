@@ -33,6 +33,8 @@ export interface IProperties {
     WHOIS_OVERRIDE: string;
     NO_PASSWORD_AUTH_POPUP: boolean;
     SHOW_MENU_IDS: string[];
+    LINK_TO_MANAGE_APIKEYS_IN_ACCESS: string;
+    REST_API_RIPE_URL: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -82,6 +84,8 @@ export class PropertiesService {
     public WHOIS_OVERRIDE = 'whois,test';
     public NO_PASSWORD_AUTH_POPUP = false;
     public SHOW_MENU_IDS = [];
+    public LINK_TO_MANAGE_APIKEYS_IN_ACCESS = '';
+    public REST_API_RIPE_URL = '';
 
     public load(): Promise<void> {
         return this.httpClient
@@ -119,6 +123,8 @@ export class PropertiesService {
                     this.WHOIS_OVERRIDE = response.WHOIS_OVERRIDE;
                     this.NO_PASSWORD_AUTH_POPUP = response.NO_PASSWORD_AUTH_POPUP;
                     this.SHOW_MENU_IDS = response.SHOW_MENU_IDS;
+                    this.LINK_TO_MANAGE_APIKEYS_IN_ACCESS = response.LINK_TO_MANAGE_APIKEYS_IN_ACCESS;
+                    this.REST_API_RIPE_URL = response.REST_API_RIPE_URL;
                     // once we deploy the db-operational
 
                     this.injectProperties();

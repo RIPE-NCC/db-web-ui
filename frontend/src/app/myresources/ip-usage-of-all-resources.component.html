@@ -1,15 +1,29 @@
 <div class="resources-ip-usage">
     @if (type === 'inetnum' && !sponsored) {
-    <p>
-        <span>Total allocated: {{ total }}</span>
-        <span>Total allocated used: {{ used }}</span>
-        <span>Total allocated free: {{ free }}</span>
-    </p>
+    <div class="usage-card">
+        <p>Total Allocated</p>
+        <span>{{ total }}</span>
+    </div>
+    <div class="usage-card">
+        <p>Total Allocated Used</p>
+        <span>{{ used }}</span>
+    </div>
+    <div class="usage-card">
+        <p>Total Allocated Free</p>
+        <span>{{ free }}</span>
+    </div>
     } @if (type === 'inet6num' && !sponsored) {
-    <p>
-        <span>Total allocated subnets: {{ ipv6CalcTotal }}</span>
-        <span>Total allocated subnets used: {{ ipv6CalcUsed }}</span>
-        <span>Total allocated subnets free: {{ ipv6CalcFree }}</span>
-    </p>
+    <div class="usage-card">
+        <p>Total Allocated Subnets</p>
+        <span>{{ ipv6CalcTotal }}</span>
+    </div>
+    <div class="usage-card">
+        <p>Total Allocated Subnets Used</p>
+        <span>{{ ipv6CalcUsed }}</span>
+    </div>
+    <div class="usage-card">
+        <p>Total Allocated Subnets Free</p>
+        <span>{{ ipv6CalcFree }}</span>
+    </div>
     }
 </div>

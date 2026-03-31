@@ -1,7 +1,8 @@
-import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { Component, inject, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbNav, NgbNavChangeEvent, NgbNavContent, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkBase, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
@@ -11,33 +12,39 @@ import { LabelPipe } from '../shared/label.pipe';
 import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { AlertsDropDownComponent } from './alertsdropdown/alerts-drop-down.component';
+import { ApikeysDropdownComponent } from './apikeys-dropdown/apikeys-dropdown.component';
 import { IpUsageOfAllResourcesComponent } from './ip-usage-of-all-resources.component';
+import { ManageResourcesComponent } from './manage-resources/manage-resources.component';
 import { RefreshComponent } from './refresh/refresh.component';
-import { ResourceItemComponent } from './resource-item.component';
+import { ResourceItemComponent } from './resource-item/resource-item.component';
 import { IAsnResourceDetails, IIPv4ResourceDetails, IIPv6ResourceDetails, IResourceOverviewResponseModel } from './resource-type.model';
 import { ResourcesDataService } from './resources-data.service';
-import { TransferDropDownComponent } from './transferdropdown/transfer-drop-down.component';
+
+export enum ResourceType {
+    RESOURCES = 'My Resources',
+    SPONSORED = 'Sponsored Resources',
+}
 
 @Component({
     selector: 'resource-component',
     templateUrl: './resources.component.html',
+    styleUrl: './resources.component.scss',
+    encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-        NgbNav,
-        NgbNavItem,
-        NgbNavItemRole,
-        NgbNavLink,
-        NgbNavLinkBase,
-        NgbNavOutlet,
         MatButton,
-        TransferDropDownComponent,
+        ManageResourcesComponent,
         AlertsDropDownComponent,
         IpUsageOfAllResourcesComponent,
-        NgbNavContent,
         LoadingIndicatorComponent,
         ResourceItemComponent,
         RefreshComponent,
         LabelPipe,
+        ApikeysDropdownComponent,
+        MatTabGroup,
+        MatTab,
+        MatButtonModule,
+        MatButtonToggleModule,
     ],
 })
 export class ResourcesComponent implements OnDestroy {
@@ -55,16 +62,19 @@ export class ResourcesComponent implements OnDestroy {
     public selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
     public loading: boolean = false; // true until resources are loaded to tabs
     public reason: string = 'No resources found';
+    public explanation =
+        'If you hold Provider Independent (PI) resources through a sponsoring LIR and want to view them on this page, your maintainer must be registered in your organisation object in the RIPE Database.';
     public fail: boolean;
     public isRedirectedFromIpAnalyser: boolean = false;
     public lastTab: string;
+    public lastTabIndex: number = 0;
 
     public isShowingSponsored: boolean = false;
-    public activeSponsoredTab = 0;
+    public activeToggleButton = 'resources';
     public showAlerts: boolean = true;
     private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
-    private readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
+    public readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
 
     @ViewChild(AlertsDropDownComponent, { static: true })
     public alertsDropDownComponent: AlertsDropDownComponent;
@@ -95,11 +105,12 @@ export class ResourcesComponent implements OnDestroy {
 
     public init() {
         this.isShowingSponsored = this.activatedRoute.snapshot.queryParamMap.get('sponsored') === 'true';
-        this.activeSponsoredTab = this.isShowingSponsored ? 1 : 0;
+        this.activeToggleButton = this.isShowingSponsored ? ResourceType.SPONSORED : ResourceType.RESOURCES;
 
         this.showTheIpAnalyserBanner();
 
         this.lastTab = this.activatedRoute.snapshot.queryParamMap.get('type');
+        this.lastTabIndex = this.listOfTabs.indexOf(this.lastTab);
         // default show inetnum if lastTab have value different then 'inetnum', 'inet6num', 'aut-num'
         if (!this.listOfTabs.includes(this.lastTab)) {
             this.lastTab = ObjectTypesEnum.INETNUM;
@@ -108,15 +119,26 @@ export class ResourcesComponent implements OnDestroy {
         this.showAlerts = !this.isShowingSponsored && this.lastTab === ObjectTypesEnum.INETNUM;
     }
 
-    public tabClicked($event: NgbNavChangeEvent) {
-        if ($event.activeId !== $event.nextId) {
-            this.lastTab = $event.nextId;
-            const params = { type: $event.nextId, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
-            void this.router.navigate(['myresources/overview'], { queryParams: params });
+    public tabClicked($event: MatTabChangeEvent) {
+        this.lastTab = $event.tab.id;
+        this.lastTabIndex = $event.tab.position;
+        const params = {
+            type: this.lastTab,
+            sponsored: this.isShowingSponsored,
+            ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser,
+        };
+        void this.router.navigate(['myresources/overview'], { queryParams: params });
+    }
+
+    resourcesSponsoredToggleClicked(toggleButtonEvent: MatButtonToggleChange): void {
+        if (toggleButtonEvent.value === ResourceType.SPONSORED) {
+            this.sponsoredResourcesTabClicked();
+        } else {
+            this.resourcesTabClicked();
         }
     }
 
-    public sponsoredResourcesTabClicked() {
+    private sponsoredResourcesTabClicked() {
         if (!this.isShowingSponsored) {
             this.isShowingSponsored = true;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
@@ -124,7 +146,7 @@ export class ResourcesComponent implements OnDestroy {
         }
     }
 
-    public resourcesTabClicked() {
+    private resourcesTabClicked() {
         if (this.isShowingSponsored) {
             this.isShowingSponsored = false;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
@@ -219,4 +241,6 @@ export class ResourcesComponent implements OnDestroy {
                 },
             });
     }
+
+    protected readonly ResourceType = ResourceType;
 }

@@ -22,12 +22,12 @@
         <li ngbDropdownItem>
             <span>Not present</span>
         </li>
-        } @for (overlap of overlaps; track overlap) {
+        } @for (overlap of overlaps; track overlap) { @if (overlap.range) {
         <li role="menuitem">
             <a class="overlap-link" (click)="showDetail(getRange(overlap.range))" style="border: 0 !important"> {{ getRange(overlap.range) }} <br /> </a>
             <div style="border-bottom: 1px solid #eaeaea !important"></div>
         </li>
-        }
+        } }
     </ul>
     } @else {
     <button
