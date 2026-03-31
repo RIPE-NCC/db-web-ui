@@ -109,6 +109,9 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     }
 
     hasNonLatin1(): boolean {
+        if (this.formattedObject == undefined) {
+            return true;
+        }
         this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute(this.formattedObject.attributes);
         return this.haveNonLatin1;
     }

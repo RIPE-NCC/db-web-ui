@@ -174,6 +174,9 @@ export class TextCreateComponent implements OnInit {
     }
 
     hasNonLatin1(): boolean {
+        if (this.object.rpsl == undefined) {
+            return true;
+        }
         this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute(this.object.rpsl.attributes);
         return this.haveNonLatin1;
     }

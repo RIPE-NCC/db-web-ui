@@ -602,6 +602,9 @@ export class ScreenLogicInterceptorService {
     }
 
     public static hasNonLatin1SupportedAttribute(attr: IAttributeModel[]): boolean {
+        if (attr == undefined) {
+            return false;
+        }
         const regExp = /[^\u0000-\u00FF]+/g;
 
         for (let i = 0; i < attr.length; i++) {

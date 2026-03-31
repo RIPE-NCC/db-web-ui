@@ -44,7 +44,6 @@ describe('The CreateMntnerPairComponent', () => {
             .typeOnField('mntner', 'TESTč16-MNT')
             .typeOnField('role', 'Švonja')
             .typeOnField('address', 'Utrechtč')
-            .typeOnField('remarks', 'Utrechtč')
             .typeOnField('e-mail', 'išvonja@ripe.net')
             .typeOnField('role', 'Švonja')
             .expectDisabledSubmitCreate(true)
