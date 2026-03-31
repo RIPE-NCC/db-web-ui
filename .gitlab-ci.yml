@@ -99,8 +99,8 @@ build-container:
         # Tag and push default branch
         - |
             if [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then
-              docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:CI_DEFAULT_BRANCH
-              docker push $CI_REGISTRY_IMAGE:CI_DEFAULT_BRANCH
+              docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_DEFAULT_BRANCH
+              docker push $CI_REGISTRY_IMAGE:$CI_DEFAULT_BRANCH
             fi
 
 gitlab-advanced-sast:
@@ -141,7 +141,7 @@ e2e-cypress-chrome:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
-        - cd frontend && npm run cypress:chrome
+        - cd frontend && npm ci && npm run cypress:chrome
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
           when: always
@@ -160,7 +160,7 @@ e2e-cypress-firefox:
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
-        - cd frontend && npm run cypress:firefox
+        - cd frontend && npm ci && npm run cypress:firefox
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
           when: always
@@ -176,7 +176,7 @@ frontend:
     stage: test
     extends: .default_rules
     script:
-        - cd frontend && npm run test
+        - cd frontend && npm ci && npm run test
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
           when: always
