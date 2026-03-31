@@ -369,9 +369,24 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <delimiters>
+                                <delimeter>@</delimeter>
+                                <useDefaultDelimeter>false</useDefaultDelimeter>
+                            </delimiters>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/../frontend/dist</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>index.html</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../frontend/dist</directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>index.html</exclude>
+                                    </excludes>
                                 </resource>
                             </resources>
                             <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>

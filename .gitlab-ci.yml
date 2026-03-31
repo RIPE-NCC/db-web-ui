@@ -70,6 +70,7 @@ build:
         paths:
             - "**/maven.graph.json"
             - backend/target/db-web-ui*.jar
+            - frontend/package-lock.json
         expire_in: 6 months
 
 build-container:
