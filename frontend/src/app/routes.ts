@@ -19,6 +19,11 @@ export const appRoutes: Routes = [
         canActivate: [AuthenticationGuard],
     },
     {
+        path: 'ip-analyser',
+        loadComponent: () => import('./ip-analyser/ip-analyser.component').then((m) => m.IpAnalyserComponent),
+        canActivate: [AuthenticationGuard],
+    },
+    {
         path: 'webupdates/wizard/:source/:objectType',
         loadComponent: () => import('./domainobject/domain-object-wizard.component').then((m) => m.DomainObjectWizardComponent),
         canActivate: [AuthenticationGuard],
@@ -87,6 +92,11 @@ export const appRoutes: Routes = [
         path: 'query',
         loadComponent: () => import('./query/query.component').then((m) => m.QueryComponent),
         resolve: { data: queryFlagResolver },
+    },
+    {
+        path: 'api-keys/:apiKeyType',
+        loadComponent: () => import('./apikeys/api-keys.component').then((m) => m.ApiKeysComponent),
+        canActivate: [AuthenticationGuard],
     },
     {
         path: 'api-keys',

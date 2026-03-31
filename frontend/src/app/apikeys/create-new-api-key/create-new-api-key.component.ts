@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
@@ -7,15 +7,23 @@ import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormField, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
 import moment from 'moment-timezone';
 import { Subject, switchMap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { IUserInfoOrganisation } from '../../dropdown/org-data-type.model';
 import { AlertsService } from '../../shared/alert/alerts.service';
 import { IMntByModel } from '../../shared/whois-response-type.model';
 import { RestService } from '../../updatesweb/rest.service';
 import { ApiKeyConfirmationDialogComponent } from '../api-key-confirmation-dialog/api-key-confirmation-dialog.component';
 import { ApiKeysService } from '../api-keys.service';
 import { ApiKey } from '../types';
+
+export enum KeyType {
+    MAINTAINER = 'Maintainer',
+    MY_RESOURCES = 'My Resources',
+    IP_ANALYSER = 'IP Analyser',
+}
 
 @Component({
     selector: 'create-new-api-key',
@@ -36,6 +44,7 @@ import { ApiKey } from '../types';
         MatAutocomplete,
         MatOption,
         MatButton,
+        MatSelect,
     ],
 })
 export class CreateNewApiKeyComponent implements OnInit {
@@ -44,9 +53,16 @@ export class CreateNewApiKeyComponent implements OnInit {
     dialog = inject(MatDialog);
     private alertsService = inject(AlertsService);
 
+    @Input()
+    initialCreateKeyType?: KeyType;
+
+    @Input()
+    selectedOrg: IUserInfoOrganisation;
+
     @Output()
     created = new EventEmitter();
-
+    keyTypes = Object.values(KeyType) as KeyType[];
+    selectedKeyType!: KeyType;
     apiKeyName: string;
     expiresAt: Date;
     maintainers: { key: string }[] = [{ key: '' }];
@@ -57,6 +73,7 @@ export class CreateNewApiKeyComponent implements OnInit {
     private searchMaintainers = new Subject<string>();
 
     ngOnInit(): void {
+        this.selectedKeyType = this.initialCreateKeyType || KeyType.MAINTAINER;
         this.minDate.setDate(this.minDate.getDate() + 1);
         this.maxDate.setFullYear(this.maxDate.getFullYear() + 1);
         this.searchMaintainers
@@ -92,7 +109,9 @@ export class CreateNewApiKeyComponent implements OnInit {
             .saveApiKey(
                 this.apiKeyName,
                 expiresAtFormated,
+                this.selectedKeyType,
                 !(this.maintainers.length === 1 && this.maintainers[0].key === '') ? this.maintainers.map((item) => item.key) : undefined,
+                this.selectedOrg.orgObjectId,
             )
             .subscribe({
                 next: (response: ApiKey) => {
@@ -102,6 +121,7 @@ export class CreateNewApiKeyComponent implements OnInit {
                 },
                 error: (error) => {
                     this.alertsService.addGlobalError(error.error.errormessages.errormessage[0].text);
+                    document.getElementById('anchorToBanner')?.scrollIntoView();
                 },
             });
     }
@@ -116,4 +136,6 @@ export class CreateNewApiKeyComponent implements OnInit {
         this.expiresAt = undefined;
         this.maintainers = [{ key: '' }];
     }
+
+    protected readonly KeyType = KeyType;
 }

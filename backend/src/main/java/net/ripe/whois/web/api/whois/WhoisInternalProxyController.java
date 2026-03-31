@@ -85,7 +85,7 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
-    @PostMapping(path = "/public/api-key", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    @PostMapping(path = {"/public/api-key", "/public/api-key/{keyType}"}, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> saveApiKey(
         final HttpServletRequest request,
         @Nullable @RequestBody(required = false) final String body,
@@ -99,6 +99,15 @@ public class WhoisInternalProxyController extends ApiController {
         @PathVariable final String key,
         @RequestHeader final HttpHeaders headers) {
         return proxyRestCalls(request, "", headers);
+    }
+
+    @GetMapping(path = "/public/ipanalyser/v2/{ipv:ipv4|ipv6}", consumes = {MediaType.TEXT_PLAIN_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<?> getIpAnalyser(
+        final HttpServletRequest request,
+        @Nullable @RequestBody(required = false) final String body,
+        @PathVariable final String ipv,
+        @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
     }
 
     @GetMapping(path = "/api/resources/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })

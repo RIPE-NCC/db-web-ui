@@ -79,6 +79,10 @@ public class AngularConstantsController {
     private boolean noPasswordAuthPopup;
     @Value("${show.menu.id:}")
     private String[] showMenuIds;
+    @Value("${access.manage.apikeys:}")
+    private String linkToManageApiKeysInAccess;
+    @Value("${rest.api.ripeUrl:}")
+    private String restApiRipeUrl;
 
     private AppConstants appConstants;
 
@@ -135,6 +139,8 @@ public class AngularConstantsController {
         constants.setWhoisOverride(whoisOverride);
         constants.setNoPasswordAuthPopup(noPasswordAuthPopup);
         constants.setShowMenuIds(showMenuIds);
+        constants.setLinkToManageApiKeysInAccess(linkToManageApiKeysInAccess);
+        constants.setRestApiRipeUrl(restApiRipeUrl);
         return constants;
     }
 
@@ -197,6 +203,10 @@ public class AngularConstantsController {
         private boolean noPasswordAuthPopup;
         @JsonProperty("SHOW_MENU_IDS")
         private String[] showMenuIds;
+        @JsonProperty("LINK_TO_MANAGE_APIKEYS_IN_ACCESS")
+        private String linkToManageApiKeysInAccess;
+        @JsonProperty("REST_API_RIPE_URL")
+        private String restApiRipeUrl;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -312,6 +322,14 @@ public class AngularConstantsController {
 
         public void setShowMenuIds(String[] showMenuIds) {
             this.showMenuIds = showMenuIds;
+        }
+
+        public void setLinkToManageApiKeysInAccess(String linkToManageApiKeysInAccess) {
+            this.linkToManageApiKeysInAccess = linkToManageApiKeysInAccess;
+        }
+
+        public void setRestApiRipeUrl(String restApiRipeUrl) {
+            this.restApiRipeUrl = restApiRipeUrl;
         }
     }
 }

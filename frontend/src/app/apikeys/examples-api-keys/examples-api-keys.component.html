@@ -1,0 +1,178 @@
+<div>
+    <form>
+        <div class="display-filter">
+            <span>
+                Display the URL of
+                <mat-form-field class="select" appearance="outline">
+                    <mat-select name="keyType" [(ngModel)]="selectedKeyType" (selectionChange)="showExamples()" required placeholder="Key type">
+                        @for (key of keyTypes; track key) {
+                        <mat-option [value]="key">{{ key.valueOf() }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                in
+                <mat-form-field class="select" appearance="outline">
+                    <mat-select [(value)]="selectedDocType" (selectionChange)="showExamples()" placeholder="Format">
+                        @for (docsName of docFormatOptions; track docsName) {
+                        <mat-option [value]="docsName">{{ docsName.valueOf() }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                format.
+            </span>
+        </div>
+    </form>
+    <br />
+    Below you'll find a sample curl request to read from or update the database. You have to fill in your 'api-key'. @switch (selectedKeyType) { @case
+    (KeyType.MAINTAINER) {
+    <div class="panel">
+        <strong>Read an object:</strong>
+        <div class="copy-content">
+            <span>
+                {{ readAnObject }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="readAnObject"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>Create an object:</strong>
+        <div class="copy-content">
+            <span>{{ createAnObject }}</span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="createAnObject"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>Update an object:</strong>
+        <div class="copy-content">
+            <span>{{ updateAnObject }}</span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="updateAnObject"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>Delete an object:</strong>
+        <div class="copy-content">
+            <span>{{ deleteAnObject }}</span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="deleteAnObject"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+    </div>
+    } @case (KeyType.IP_ANALYSER) {
+    <div class="panel">
+        <strong>IPv4 Resources:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv4Analyser }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv4Analyser"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>IPv6 Resources:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv6Analyser }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv6Analyser"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+    </div>
+    } @case (KeyType.MY_RESOURCES) {
+    <div class="panel">
+        <strong>All Resource information combined:</strong>
+        <div class="copy-content">
+            <span>
+                {{ allResourcesMyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="allResourcesMyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>Autonomous System Numbers:</strong>
+        <div class="copy-content">
+            <span>
+                {{ asnsMyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="asnsMyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>All IPv4 resource information combined:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv4MyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv4MyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>All IPv6 resource information combined:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv6MyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv6MyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>IPv4 Allocations:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv4NAllocationMyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv4NAllocationMyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>IPv4 Assignments:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv4NAssignmentMyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv4NAssignmentMyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>IPv4 Legacy resources:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv4NLegacyMyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv4NLegacyMyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>IPv6 Allocations:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv6NAllocationMyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv6NAllocationMyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+        <br />
+        <strong>IPv6 Assignments:</strong>
+        <div class="copy-content">
+            <span>
+                {{ ipv6NAssignmentMyResources }}
+            </span>
+            <div class="copy-key-content">
+                <button mat-flat-button color="primary" [cdkCopyToClipboard]="ipv6NAssignmentMyResources"><span class="fa-light fa-copy"></span> Copy</button>
+            </div>
+        </div>
+    </div>
+    } }
+</div>

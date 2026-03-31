@@ -1,0 +1,64 @@
+@import '../../styles/scss/extend.scss';
+
+.my-resources {
+    background-color: #ffffff;
+    padding: 25px;
+
+    @media (max-width: 768px) {
+        padding: 0;
+    }
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    gap: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    z-index: 0;
+}
+
+ip-usage-of-all-resources {
+    display: flex;
+    padding-top: 24px;
+    padding-bottom: 30px;
+}
+
+.bell-panel {
+    position: relative;
+    z-index: 5;
+
+    alerts-drop-down {
+        position: absolute;
+        right: 0;
+    }
+}
+
+.ipv4-ipv6-asn-tabs {
+    .mdc-tab {
+        font-size: 18px;
+        width: 218px;
+        height: 72px;
+        &:not(.mdc-tab--active) {
+            border-bottom-color: #d0d2da;
+            border-bottom-style: solid;
+            border-bottom-width: 2px;
+        }
+
+        @media (max-width: 768px) {
+            width: fit-content;
+        }
+    }
+}
+
+.resource-list {
+    margin: 20px;
+}

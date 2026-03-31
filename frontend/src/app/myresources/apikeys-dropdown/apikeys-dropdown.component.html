@@ -1,0 +1,19 @@
+<div class="apikeys-dropdown">
+    <mat-accordion>
+        <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+                <mat-panel-title> API Keys</mat-panel-title>
+            </mat-expansion-panel-header>
+            <ul>
+                <li>
+                    <a class="inner-link-color" [routerLink]="['/api-keys', apiKeyType.toLowerCase()]"> Create API key </a
+                    ><em class="fa-light fa-arrow-right"></em>
+                </li>
+                <li>
+                    <a href="{{ linkToManageApiKeysInAccess }}" target="_blank" class="inner-link-color">Manage API keys </a>
+                    <em class="fa-light fa-arrow-right"></em>
+                </li>
+            </ul>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

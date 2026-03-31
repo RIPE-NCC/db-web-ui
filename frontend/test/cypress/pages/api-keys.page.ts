@@ -1,4 +1,11 @@
+import { OrganisationSelector } from './components/organisation-selector.component';
+
+type KeyType = 'Maintainer' | 'My Resources' | 'IP Analyser';
+type KeyTypeFormat = 'XML' | 'JSON' | 'PLAIN TEXT';
+
 export class ApiKeysPage {
+    private organisationSelector: OrganisationSelector = new OrganisationSelector();
+
     visit() {
         cy.visit('api-keys');
         return this;
@@ -10,11 +17,14 @@ export class ApiKeysPage {
         return this;
     }
 
-    createApiKey(label: string, expiresAt: string, maintainers: string[]) {
-        this.toggleAccordion();
+    createApiKey(keyType: KeyType, label: string, expiresAt: string, details?: string[]) {
+        this.toggleAccordion('Create a new Database key');
+        this.selectOption('Key type', keyType);
         this.getInput('Key name').clear().type(label);
         this.getInput('Expiration date').clear().type(expiresAt);
-        this.getInput('Maintainer').clear().type(maintainers[0]);
+        if (details) {
+            this.getInput('Maintainer').clear().type(details[0]);
+        }
         cy.get('button:contains("Create a key")').click();
         return this;
     }
@@ -37,14 +47,12 @@ export class ApiKeysPage {
     }
 
     addedMultipleMaintainerField() {
-        this.toggleAccordion();
         this.clickAddMaintainerButton();
         cy.get(`label:contains("Maintainer")`).should('have.length', 2);
         return this;
     }
 
     removedMultipleMaintainerField() {
-        this.toggleAccordion();
         this.clickRemoveMaintainerButton();
         cy.get(`label:contains("Maintainer")`).should('have.length', 1);
         return this;
@@ -58,12 +66,83 @@ export class ApiKeysPage {
         return cy.get(`.fa-circle-minus`).first().click();
     }
 
-    toggleAccordion() {
-        cy.get('mat-accordion:contains("Create a new Database key")').click();
+    toggleAccordion(accordionTitle: string) {
+        cy.get(`mat-accordion:contains(${accordionTitle})`).click();
         return this;
     }
 
+    selectOrganizationInDropdown(text: string) {
+        this.organisationSelector.selectOrganization(text);
+        return this;
+    }
+
+    expectedOrganisationInField(orgName: string) {
+        this.getInput('Selected organisation').should('have.value', orgName);
+        return this;
+    }
+
+    changeKeyType(selectKeyType: KeyType) {
+        this.selectOption('Key type', selectKeyType);
+        return this;
+    }
+
+    changeExamplesKeyType(keyType: KeyType) {
+        this.geExamplesKeyTypeDropdown().click();
+        cy.get(`mat-option:contains("${keyType}")`).click();
+        return this;
+    }
+
+    changeExamplesKeyTypeFormat(keyTypeFormat: KeyTypeFormat) {
+        cy.wait(1000);
+        this.getExamplesKeyTypeFormatDropdown().click();
+        cy.get(`mat-option:contains("${keyTypeFormat}")`).click();
+        return this;
+    }
+
+    expectExamplesKeyTypeToBe(keyType: KeyType) {
+        this.geExamplesKeyTypeDropdown().should('contain.text', keyType);
+        return this;
+    }
+
+    expectExamplesKeyTypeFormatToBe(format: KeyTypeFormat) {
+        this.getExamplesKeyTypeFormatDropdown().should('contain.text', format);
+        return this;
+    }
+
+    expectExamplesKeyTypeFormatOptionsToContain(formats: KeyTypeFormat[]) {
+        this.getExamplesKeyTypeFormatDropdown().click();
+        cy.get('mat-option').should('have.length', formats.length);
+        formats.forEach((format, idx) => {
+            cy.get('mat-option').eq(idx).should('contain.text', format);
+        });
+        // click away to close option selector
+        cy.get('body').click();
+        return this;
+    }
+
+    expectExamplesToContain(text: string) {
+        cy.get('examples-api-keys').should('contain.text', text);
+        return this;
+    }
+
+    private geExamplesKeyTypeDropdown() {
+        return cy.get('mat-select[placeholder="Key type"]');
+    }
+
+    private getExamplesKeyTypeFormatDropdown() {
+        return cy.get('mat-select[placeholder="Format"]');
+    }
+
     private getInput(label: string) {
-        return cy.get(`label:contains("${label}") + input`);
+        return cy.get(`.mat-mdc-form-field-flex:contains("${label}") input`);
+    }
+
+    private getSelect(label: string) {
+        return cy.get(`.mat-mdc-form-field-flex:contains("${label}") mat-select`);
+    }
+
+    private selectOption(dropdownLabel: string, value: string) {
+        this.getSelect(dropdownLabel).click();
+        cy.get(`mat-option:contains("${value}")`).click();
     }
 }

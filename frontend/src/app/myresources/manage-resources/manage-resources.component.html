@@ -1,0 +1,43 @@
+<div class="manage-resources">
+    <mat-accordion>
+        <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+                <mat-panel-title> Manage resources</mat-panel-title>
+            </mat-expansion-panel-header>
+            @if (!sponsoredMenu) {
+            <ul aria-labelledby="single-button">
+                <li>
+                    <a
+                        href="{{ properties.PORTAL_URL }}#/update-registry/provide-details?onBehalfOfEndUser=false&updateRegistryRequestType=transfer"
+                        class="inner-link-color"
+                        >Transfer resources </a
+                    ><em class="fa-light fa-arrow-right"></em>
+                </li>
+                <li>
+                    <a href="{{ properties.PORTAL_URL }}#/request" class="inner-link-color">Request resources </a> <em class="fa-light fa-arrow-right"></em>
+                </li>
+            </ul>
+            } @if (sponsoredMenu) {
+            <ul aria-labelledby="single-button">
+                <li>
+                    <a
+                        href="{{
+                            properties.PORTAL_URL
+                        }}#/update-registry/provide-details?onBehalfOfEndUser=true&updateRegistryRequestType=start_sponsorship_request"
+                        class="inner-link-color"
+                        >Start sponsoring PI resources </a
+                    ><em class="fa-light fa-arrow-right"></em>
+                </li>
+                <li>
+                    <a href="{{ properties.NEWEST_PORTAL_URL }}#/stop-sponsorship" class="inner-link-color">Stop sponsoring PI resources </a
+                    ><em class="fa-light fa-arrow-right"></em>
+                </li>
+                <li>
+                    <a href="{{ properties.PORTAL_URL }}#/transfers/userIdentification" class="inner-link-color">Transfer customer's resources </a
+                    ><em class="fa-light fa-arrow-right"></em>
+                </li>
+            </ul>
+            }
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

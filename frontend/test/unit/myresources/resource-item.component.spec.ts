@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IpAddressService } from '../../../src/app/myresources/ip-address.service';
-import { ResourceItemComponent } from '../../../src/app/myresources/resource-item.component';
+import { ResourceItemComponent } from '../../../src/app/myresources/resource-item/resource-item.component';
 import { ResourceStatusService } from '../../../src/app/myresources/resource-status.service';
 import { FlagComponent } from '../../../src/app/shared/flag/flag.component';
 

@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/public/ipanalyser/v2/ipv6?org-id=ORG-TEST23-RIPE",
+    "contentType": "text/plain",
+    "statusCode": 200,
+    "data": "ipv6 analyses \ntest"
+}

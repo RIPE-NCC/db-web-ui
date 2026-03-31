@@ -10,6 +10,13 @@ export const resourcesMenuObject = {
                 icon: 'assets/icons/fa-sitemap.svg',
                 active: () => location.href.includes('myresources/overview') || location.href.includes('myresources/detail'),
             },
+            {
+                title: 'IP Analyser',
+                url: 'ip-analyser',
+                id: 'ipanalyser',
+                icon: 'assets/icons/fa-signal-bar.svg',
+                active: () => location.href.includes('ipanalyser'),
+            },
         ],
         footer: footer,
     },

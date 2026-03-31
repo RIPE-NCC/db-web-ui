@@ -5,7 +5,7 @@ import { WhoisObjectViewer } from './components/whois-object-viewer.component';
 import { WhoisTextEditor } from './components/whois-text-editor.component';
 
 type IPTab = 'IPv4' | 'IPv6' | 'ASN';
-type ResourceTab = 'My Resources' | 'Sponsored Resources';
+type ResourceToggleBtn = 'My Resources' | 'Sponsored Resources';
 
 export class ResourcesPage {
     visitOverview() {
@@ -176,85 +176,85 @@ export class ResourcesOverViewPage {
         return this;
     }
 
-    clickOnMyResources() {
-        cy.get('.my-resources .resources-sponsored-tabs li:contains("My Resources")').click();
-        return this;
-    }
-
     clickOnSponsoredResources() {
-        cy.get('.my-resources .resources-sponsored-tabs li:contains("Sponsored Resources")').click();
+        cy.get(`.mat-button-toggle .mat-button-toggle-label-content:contains("Sponsored Resources")`).click();
         return this;
     }
 
-    clickOnTransferButton() {
-        cy.get('transfer-drop-down .grey-button').click({ force: true });
+    clickOnManageResourcesButton() {
+        cy.get('manage-resources mat-expansion-panel').click({ force: true });
         return this;
     }
 
     clickOnCreateAssignmentButton() {
-        cy.get('.my-resources #button-create-assignment').click({ force: true });
+        cy.get('#button-create-assignment').click({ force: true });
         return this;
     }
 
     clickOnIPTab(tab: IPTab) {
-        cy.get(`#ipv4-ipv6-asn-tabs .nav-item:contains("${tab}")`).click();
+        cy.contains('.ipv4-ipv6-asn-tabs .mdc-tab__text-label', tab).closest('.mdc-tab').click();
         return this;
     }
 
-    expectTransferOptionToContain(index: number, text: string) {
-        cy.get(`transfer-drop-down li:nth(${index})`).should('contain.text', text);
+    expectManageResorcesOptionToContain(index: number, text: string) {
+        cy.get(`manage-resources li:nth(${index})`).should('contain.text', text);
         return this;
     }
 
-    expectTransferOptionToExist(exist: boolean) {
-        cy.get('transfer-drop-down .grey-button').should(exist ? 'exist' : 'not.exist');
+    expectManageResourcesOptionToExist(exist: boolean) {
+        cy.get('manage-resources mat-expansion-panel').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
     expectCreateAssignmentButtonToExist(exist: boolean) {
-        cy.get('.my-resources #button-create-assignment').should(exist ? 'exist' : 'not.exist');
+        cy.get('#button-create-assignment').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
     expectActiveIPTabToBe(tab: IPTab) {
-        cy.get('#ipv4-ipv6-asn-tabs .nav-item .active').should('contain.text', tab);
+        cy.get('.ipv4-ipv6-asn-tabs .mdc-tab--active').should('contain.text', tab);
         return this;
     }
 
     expectResourcesTabSize(size: number) {
-        cy.get('.my-resources .resources-sponsored-tabs li').should('have.length', size);
+        cy.get('mat-button-toggle-group mat-button-toggle').should('have.length', size);
+        return this;
+    }
+
+    expectDescription(description: string) {
+        cy.get('.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active').should('contain.text', description);
         return this;
     }
 
     expectResourcesSize(size: number) {
-        cy.get('#ipv4-ipv6-asn-panes .tab-pane.active resource-item').should('have.length', size);
+        cy.get('.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item').should('have.length', size);
         return this;
     }
 
     expectResourcesToContainText(index: number, text: string) {
-        cy.get(`#ipv4-ipv6-asn-panes .tab-pane.active resource-item:nth(${index})`).should('contain.text', text);
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index})`).should('contain.text', text);
         return this;
     }
 
     expectResourcesToContainFlag(index: number, flag: string) {
-        cy.get(`#ipv4-ipv6-asn-panes .tab-pane.active resource-item:nth(${index}) flag`).should('contain.text', flag);
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) flag`).should('contain.text', flag);
         return this;
     }
 
     expectResourcesToContainHref(index: number, href: string) {
-        cy.get(`#ipv4-ipv6-asn-panes .tab-pane.active resource-item:nth(${index}) a`)
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) a`)
             .should('have.attr', 'href')
             .then((val) => expect(val).to.contain(href));
         return this;
     }
 
     expectExistProgressBarOnResource(index: number, exist: boolean) {
-        cy.get(`#ipv4-ipv6-asn-panes .tab-pane.active resource-item:nth(${index}) .progress-bar`).should(exist ? 'exist' : 'not.exist');
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) mat-progress-bar`).should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
-    expectResourcesTabActiveToBe(tab: ResourceTab) {
-        cy.get('.my-resources .resources-sponsored-tabs .nav-tabs .nav-item .active').should('contain.text', tab);
+    expectResourcesToggleBtnActiveToBe(tab: ResourceToggleBtn) {
+        cy.get('mat-button-toggle-group .mat-button-toggle-checked .mat-button-toggle-label-content').should('have.text', tab);
         return this;
     }
 
@@ -268,8 +268,9 @@ export class ResourcesOverViewPage {
         return this;
     }
 
-    expectUsageToContain(text: string) {
-        cy.get('.resources-ip-usage p').should('contain.text', text);
+    expectUsageToContain(title: string, value: string) {
+        cy.get('.resources-ip-usage p').should('contain.text', title);
+        cy.get('.resources-ip-usage span').should('contain.text', value);
         return this;
     }
 

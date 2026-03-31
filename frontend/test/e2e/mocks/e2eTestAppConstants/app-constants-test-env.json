@@ -39,6 +39,7 @@
         "SESSION_TTL": 2000,
         "RELEASE_NOTIFICATION_POLLING": 2000,
         "WHOIS_OVERRIDE": "whois,test",
-        "NO_PASSWORD_AUTH_POPUP": true
+        "NO_PASSWORD_AUTH_POPUP": true,
+        "REST_API_RIPE_URL": "https://rest-prepdev.db.ripe.net"
     }
 }

@@ -54,6 +54,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/fulltextsearch") ||
                 uri.startsWith("/syncupdates") ||
                 uri.startsWith("/myresources") ||
+                uri.startsWith("/ip-analyser") ||
                 uri.startsWith("/lookup") ||
                 uri.startsWith("/textupdates") ||
                 uri.startsWith("/fmp") ||

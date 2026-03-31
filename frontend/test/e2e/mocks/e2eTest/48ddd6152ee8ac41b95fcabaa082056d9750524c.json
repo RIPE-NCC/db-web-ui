@@ -1,0 +1,20 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources?org-id=ORG-TEST33-RIPE&type=aut-num",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "stats": {
+            "numInetnums": 0,
+            "numInet6nums": 2,
+            "numAutnums": 0,
+            "numSponsoredInetnums": 0,
+            "numSponsoredInet6nums": 0,
+            "numSponsoredAutnums": 0
+        },
+        "orgId": "ORG-TEST33-RIPE",
+        "resources": [],
+        "totalNumberOfResources": 0,
+        "filteredSize": 0,
+        "pageSize": 0
+    }
+}

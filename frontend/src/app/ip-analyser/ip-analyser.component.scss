@@ -1,0 +1,32 @@
+@import '../../styles/scss/extend.scss';
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    padding-bottom: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    z-index: 0;
+}
+
+.subtitle {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 0;
+}
+
+.analyses {
+    background-color: #ffffff;
+    padding: 25px;
+    min-height: 100px;
+}
+
+.log {
+    font-family: monospace;
+    white-space: pre;
+}

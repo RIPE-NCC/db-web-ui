@@ -16,4 +16,8 @@ export default defineConfig({
         supportFile: './test/cypress/support/index.ts',
         baseUrl: 'https://localhost.ripe.net:9002/db-web-ui',
     },
+    retries: {
+        runMode: 3,
+        openMode: 0,
+    },
 });
