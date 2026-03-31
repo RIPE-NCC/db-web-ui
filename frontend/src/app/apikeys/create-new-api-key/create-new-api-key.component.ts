@@ -70,10 +70,12 @@ export class CreateNewApiKeyComponent implements OnInit {
     minDate: Date = new Date();
     maxDate: Date = new Date();
 
+    restrictedKeys: Set<KeyType> = new Set([KeyType.MY_RESOURCES, KeyType.IP_ANALYSER]);
+
     private searchMaintainers = new Subject<string>();
 
     ngOnInit(): void {
-        this.selectedKeyType = this.initialCreateKeyType || KeyType.MAINTAINER;
+        this.selectedKeyType = this.selectedOrg ? this.initialCreateKeyType || KeyType.MAINTAINER : KeyType.MAINTAINER;
         this.minDate.setDate(this.minDate.getDate() + 1);
         this.maxDate.setFullYear(this.maxDate.getFullYear() + 1);
         this.searchMaintainers
