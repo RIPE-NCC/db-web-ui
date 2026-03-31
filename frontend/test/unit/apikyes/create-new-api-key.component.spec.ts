@@ -64,8 +64,15 @@ describe('CreateNewApiKeyComponent', () => {
 
     it('should init component with proper type', () => {
         component.initialCreateKeyType = KeyType.IP_ANALYSER;
+        component.selectedOrg = mockOrg;
         component.ngOnInit();
         expect(component.selectedKeyType).toEqual(KeyType.IP_ANALYSER);
+    });
+
+    it('should init component with MAINTAINER type in case no selected organisation', () => {
+        component.initialCreateKeyType = KeyType.IP_ANALYSER;
+        component.ngOnInit();
+        expect(component.selectedKeyType).toEqual(KeyType.MAINTAINER);
     });
 
     it('should search maintainers', fakeAsync(() => {
