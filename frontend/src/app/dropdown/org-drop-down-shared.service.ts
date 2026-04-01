@@ -3,19 +3,19 @@ import { IUserInfoOrganisation } from './org-data-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrgDropDownSharedService {
-    public selectedOrgChanged$: EventEmitter<IUserInfoOrganisation>;
+    selectedOrgChanged$: EventEmitter<IUserInfoOrganisation>;
     private selectedOrg: IUserInfoOrganisation;
 
     constructor() {
         this.selectedOrgChanged$ = new EventEmitter();
     }
 
-    public setSelectedOrg(org: any): void {
+    setSelectedOrg(org: any): void {
         this.selectedOrg = org;
         this.selectedOrgChanged$.emit(org);
     }
 
-    public getSelectedOrg(): IUserInfoOrganisation {
+    getSelectedOrg(): IUserInfoOrganisation {
         return this.selectedOrg;
     }
 }
