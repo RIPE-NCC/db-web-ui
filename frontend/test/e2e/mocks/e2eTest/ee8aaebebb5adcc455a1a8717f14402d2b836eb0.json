@@ -1,0 +1,136 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/ripe/inetnum/185.51.48.0%20-%20185.51.55.255?abuse-contact=true&managed-attributes=true&resource-holder=true&unfiltered=true",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/185.51.48.0 - 185.51.55.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "185.51.48.0 - 185.51.55.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "185.51.48.0 - 185.51.55.255",
+                                "managed": true
+                            },
+                            {
+                                "name": "netname",
+                                "value": "TEST-20181029",
+                                "managed": true
+                            },
+                            {
+                                "name": "country",
+                                "value": "AE"
+                            },
+                            {
+                                "name": "geofeed",
+                                "value": "https://geo.test.net/geofeed.csv"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TEST-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-TEST-RIPE",
+                                "referenced-type": "organisation",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TEST-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TEST-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TEST-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TEST-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ALLOCATED PA",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "TEST-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-HM-MNT",
+                                "referenced-type": "mntner",
+                                "managed": true
+                            },
+                            {
+                                "name": "created",
+                                "value": "2022-07-04T09:31:06Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2025-06-25T14:55:26Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "managed": true
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-TEST-RIPE",
+                        "name": "TEST November"
+                    },
+                    "abuse-contact": {
+                        "key": "TEST-RIPE",
+                        "email": "abuse@test.net",
+                        "suspect": false,
+                        "org-id": "ORG-TEST-RIPE"
+                    },
+                    "managed": true
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://docs.db.ripe.net/terms-conditions.html"
+        },
+        "version": {
+            "version": "1.122-SNAPSHOT",
+            "timestamp": "2026-03-27T10:12:18Z",
+            "commit-id": "8fa80c6"
+        }
+    }
+}

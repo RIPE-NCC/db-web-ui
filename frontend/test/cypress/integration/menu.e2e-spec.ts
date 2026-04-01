@@ -1,4 +1,5 @@
 import { MenuPage } from '../pages/menu.page';
+import { ResourcesDetailPage, ResourcesPage } from '../pages/resources.page';
 
 describe('The menu and sidebar', () => {
     const menuPage = new MenuPage();
@@ -91,4 +92,29 @@ describe('The menu and sidebar', () => {
     //         .clickHeaderMenuItem('Resources')
     //         .expectPage('myresources/overview')
     // });
+
+    describe('navigate between RIPE Database and Resources pages', () => {
+        const resourcesPage = new ResourcesPage();
+        let resourcesDetailPage: ResourcesDetailPage;
+
+        beforeEach(() => {
+            cy.setCookie('activeMembershipId', '3629', { path: '/' });
+            resourcesDetailPage = resourcesPage.visitDetails('inetnum/185.51.48.0%20-%20185.51.55.255/false');
+        });
+
+        it('should navigate to lookup page and back', () => {
+            cy.expectCurrentUrlToContain('/myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false');
+            cy.get('h1:contains("185.51.48.0/21")').should('be.visible');
+            resourcesDetailPage.clickOnLinkInField('185.51.48.0 - 185.51.55.255');
+            // redirected to lookup page
+            cy.expectCurrentUrlToContain('lookup?source=ripe&key=185.51.48.0%20-%20185.51.55.255&type=inetnum');
+            cy.get('h1:contains("Lookup results")').should('be.visible');
+            cy.get('.lookupheader').should('be.visible');
+            cy.go('back');
+            // redirect back to resource details page
+            cy.get('h1:contains("185.51.48.0/21")').should('be.visible');
+            cy.expectCurrentUrlToContain('/myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false');
+            resourcesDetailPage.getWhoisObjectViewer().expectAttributeToContainKeyAndValue(0, 'inetnum', '185.51.48.0 - 185.51.55.255');
+        });
+    });
 });

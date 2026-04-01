@@ -5,6 +5,22 @@ export enum ActiveMenu {
     RESOURCES = 'resources',
 }
 
+export type Active = (current: URL) => boolean;
+
+export type SidebarMenuItem = {
+    title: string;
+    url: string;
+    id: string;
+    external?: boolean;
+    icon?: string;
+    active?: Active;
+};
+
+export type SidebarMenu = {
+    main: SidebarMenuItem[];
+    footer: SidebarMenuItem[];
+};
+
 @Injectable({
     providedIn: 'root',
 })

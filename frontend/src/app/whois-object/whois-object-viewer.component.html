@@ -6,7 +6,7 @@
 </div>
 }
 <ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
-    @for (attr of (model.attributes.attribute | slice: 0 : nrLinesToShow); track attr.name) {
+    @for (attr of (model.attributes.attribute | slice: 0 : nrLinesToShow); track attr) {
     <li [ngClass]="{ ripemanaged: attr.managed }">
         <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
         >:{{ padding(attr) }}

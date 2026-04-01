@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit, effect, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { FeedbackSupportDialogComponent } from './feedbacksupport/feedback-support-dialog.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { dbMenuObject } from './menu/db-menu.json';
-import { ActiveMenu, MenuService } from './menu/menu.service';
+import { ActiveMenu, MenuService, SidebarMenu } from './menu/menu.service';
 import { resourcesMenuObject } from './menu/resources-menu.json';
 import { PropertiesService } from './properties.service';
 
@@ -35,9 +35,11 @@ const envDisplayMap: Record<string, string> = {
     imports: [RouterModule, MainContainerComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnDestroy {
     activeMenu: ActiveMenu;
     activeMenuItem: string;
+    sidebarMenu: SidebarMenu;
+    icon: string;
     envNameInRipeWebComponents: string;
 
     properties = inject(PropertiesService);
@@ -58,14 +60,22 @@ export class AppComponent implements OnInit, OnDestroy {
         });
         effect(() => {
             this.activeMenu = this.menuService.activeMenu();
+            this.onInit();
         });
     }
 
-    ngOnInit() {
+    onInit() {
+        this.menuService.setActiveMenu();
+        if (this.activeMenu === ActiveMenu.DB) {
+            this.icon = 'assets/images/RIPE_NCC_Database_White_2025.svg';
+            this.sidebarMenu = dbMenuObject.menu;
+        } else {
+            this.icon = 'assets/images/Resources_2025-05.svg';
+            this.sidebarMenu = resourcesMenuObject.menu;
+        }
         const env = this.properties.ENV?.toLowerCase();
         this.labelEnv = envDisplayMap[env] ?? `${this.properties.ENV} Database`;
         this.labelEnvImg = this.properties.isTrainingEnv() ? 'assets/icons/fa-graduation-cap.svg' : 'assets/icons/fa-axe.svg';
-        this.menuService.setActiveMenu();
     }
 
     public ngOnDestroy() {
@@ -95,8 +105,4 @@ export class AppComponent implements OnInit, OnDestroy {
         this.menuService.setActiveMenu();
         this.activeMenuItem = `${location.origin}/db-web-ui/${url}`;
     }
-
-    protected readonly ActiveMenu = ActiveMenu;
-    protected readonly dbMenuObject = dbMenuObject;
-    protected readonly resourcesMenuObject = resourcesMenuObject;
 }

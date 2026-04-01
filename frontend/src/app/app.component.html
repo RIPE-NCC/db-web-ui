@@ -1,10 +1,10 @@
-@if (!this.properties.isProdEnv()) { @if (activeMenu === ActiveMenu.DB) {
+@if (!this.properties.isProdEnv()) {
 <ripe-unified-layout
     class="layout-overrides"
-    service-logo="assets/images/RIPE_NCC_Database_White_2025.svg"
-    active-app="db"
+    [attr.service-logo]="icon"
+    [attr.active-app]="activeMenu"
     home-url="/"
-    [sidebarMenu]="dbMenuObject.menu"
+    [menu]="sidebarMenu"
     (:ripe-unified-sidebar:item-clicked)="onMenuItemClick($event)"
     [attr.active-route]="activeMenuItem"
     user-auth="cookie"
@@ -17,26 +17,10 @@
 } @else {
 <ripe-unified-layout
     class="layout-overrides"
-    service-logo="assets/images/Resources_2025-05.svg"
-    active-app="resources"
+    [attr.service-logo]="icon"
+    [attr.active-app]="activeMenu"
     home-url="/"
-    [sidebarMenu]="resourcesMenuObject.menu"
-    (:ripe-unified-sidebar:item-clicked)="onMenuItemClick($event)"
-    [attr.active-route]="activeMenuItem"
-    user-auth="cookie"
-    [attr.env]="envNameInRipeWebComponents"
-    [attr.env-label-img]="labelEnvImg"
-    [attr.env-label-title]="labelEnv"
->
-    <section slot="main"><main-container></main-container></section>
-</ripe-unified-layout>
-} } @else { @if (activeMenu === ActiveMenu.DB) {
-<ripe-unified-layout
-    class="layout-overrides"
-    service-logo="assets/images/RIPE_NCC_Database_White_2025.svg"
-    active-app="db"
-    home-url="/"
-    [sidebarMenu]="dbMenuObject.menu"
+    [menu]="sidebarMenu"
     (:ripe-unified-sidebar:item-clicked)="onMenuItemClick($event)"
     [attr.active-route]="activeMenuItem"
     user-auth="cookie"
@@ -44,18 +28,4 @@
 >
     <section slot="main"><main-container></main-container></section>
 </ripe-unified-layout>
-} @else {
-<ripe-unified-layout
-    class="layout-overrides"
-    service-logo="assets/images/Resources_2025-05.svg"
-    active-app="resources"
-    home-url="/"
-    [sidebarMenu]="resourcesMenuObject.menu"
-    (:ripe-unified-sidebar:item-clicked)="onMenuItemClick($event)"
-    [attr.active-route]="activeMenuItem"
-    user-auth="cookie"
-    [attr.env]="envNameInRipeWebComponents"
->
-    <section slot="main"><main-container></main-container></section>
-</ripe-unified-layout>
-} }
+}
