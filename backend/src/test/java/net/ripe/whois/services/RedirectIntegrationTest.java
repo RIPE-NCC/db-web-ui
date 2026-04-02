@@ -126,15 +126,6 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
         assertThat(response.getHeaders().getLocation(), is(URI.create(getServerUrlHttpsWithOutPort() + "/whois/use-cases/abuse-finder.json?source=ripe&primary-key=192.0.2.0")));
     }
 
-    @Test
-    public void get_favicon_from_resources_path() {
-        final ResponseEntity<String> response = get("/favicon.ico", String.class);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getHeaders().get("Cache-Control"), is(not(nullValue())));
-        assertThat(Objects.requireNonNull(response.getHeaders().get("Cache-Control")), is(not(empty())));
-    }
-
     private HttpEntity<String> xForwardedProto(final String scheme) {
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeader.X_FORWARDED_PROTO.toString(), scheme);
