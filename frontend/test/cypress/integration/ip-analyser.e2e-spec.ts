@@ -20,7 +20,7 @@ describe('Resources', () => {
     });
 
     it('should contain IPv4 and IPv6 sections', () => {
-        ipAnalyserPage.selectOrganization('SUPERTESTORG').expectIpvSection('Ipv4').expectIpvSection('Ipv6').expectErrorAlert(false).expectRefreshPanel(false);
+        ipAnalyserPage.selectOrganization('SUPERTESTORG').expectIpvSection('IPv4').expectIpvSection('IPv6').expectErrorAlert(false).expectRefreshPanel(false);
     });
 
     it('should show error message and refresh button in error case', () => {
@@ -28,7 +28,7 @@ describe('Resources', () => {
     });
 
     it('should redirect to myresources page for not LIR organisation', () => {
-        ipAnalyserPage.expectIpvSection('Ipv4').selectOrganization('ViTest organisation');
+        ipAnalyserPage.expectIpvSection('IPv4').selectOrganization('ViTest organisation');
         cy.expectCurrentUrlToContain('myresources/overview');
     });
 });
