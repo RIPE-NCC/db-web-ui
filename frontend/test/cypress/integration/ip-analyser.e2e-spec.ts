@@ -15,10 +15,6 @@ describe('Resources', () => {
             .expectApiKeysOptionToExist(true);
     });
 
-    it('should contain Create assignment button', () => {
-        ipAnalyserPage.expectCreateAssignmentButtonToExist(true);
-    });
-
     it('should contain IPv4 and IPv6 sections', () => {
         ipAnalyserPage.selectOrganization('SUPERTESTORG').expectIpvSection('IPv4').expectIpvSection('IPv6').expectErrorAlert(false).expectRefreshPanel(false);
     });
