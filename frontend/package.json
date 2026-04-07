@@ -20,7 +20,8 @@
         "cypress:firefox": "ng run frontend:cypress --browser firefox",
         "supportedBrowsers": "echo \"export default $(browserslist-useragent-regexp --allowHigherVersions);\" > src/assets/supportedBrowsers.js",
         "blockedBrowsers": "echo \"window.blockedBrowsers = $(browserslist-useragent-regexp \"firefox < 126 or safari < 18 or opera < 112 or chrome < 126 or dead\");\" > src/assets/blockedBrowsers.js",
-        "postinstall": "npm run supportedBrowsers && npm run blockedBrowsers"
+        "postinstall": "npm run supportedBrowsers && npm run blockedBrowsers",
+        "analyze-bundle": "ng build --configuration=analyze-bundle && source-map-explorer dist/*.js --no-border-checks --only-mapped --json results.json"
     },
     "private": true,
     "devDependencies": {
@@ -62,6 +63,7 @@
         "lint-staged": "12.4.3",
         "prettier": "2.8.8",
         "prettier-plugin-organize-imports": "3.2.2",
+        "source-map-explorer": "^2.5.3",
         "ts-node": "10.7.0",
         "typescript": "5.9.3"
     },
