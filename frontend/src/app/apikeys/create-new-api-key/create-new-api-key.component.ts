@@ -131,7 +131,7 @@ export class CreateNewApiKeyComponent implements OnInit, OnChanges {
                 expiresAtFormated,
                 this.selectedKeyType,
                 !(this.maintainers.length === 1 && this.maintainers[0].key === '') ? this.maintainers.map((item) => item.key) : undefined,
-                this.selectedOrg.orgObjectId,
+                this.selectedOrg?.orgObjectId,
             )
             .subscribe({
                 next: (response: ApiKey) => {
