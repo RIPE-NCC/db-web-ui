@@ -156,6 +156,11 @@ export class ResourcesDetailPage {
         return this;
     }
 
+    clickOnLinkInField(valueInLink: string) {
+        cy.get(`#editortop a:contains('${valueInLink}')`).click({ force: true });
+        return this;
+    }
+
     expectOptionFromNgSelect(fieldName: string, option: string) {
         this.clickOnField(fieldName);
         cy.get(`#editortop [name^='${fieldName}'] .ng-option:contains('${option}')`).should('exist');

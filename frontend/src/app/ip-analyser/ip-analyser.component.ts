@@ -99,10 +99,5 @@ export class IpAnalyserComponent implements OnInit, OnDestroy {
         return !!this.organisation && !!(this.organisation as IUserInfoRegistration).membershipId;
     }
 
-    //TODO where to navigate ipv4 or ipv6???
-    public navigateToCreateAssignments() {
-        // void this.router.navigate(['webupdates/create', this.pr.SOURCE, this.lastTab]);
-    }
-
     protected readonly KeyType = KeyType;
 }

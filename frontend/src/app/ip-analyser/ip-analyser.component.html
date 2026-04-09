@@ -5,9 +5,6 @@
         <div class="action-buttons">
             <manage-resources [sponsoredMenu]="false"></manage-resources>
             <apikeys-dropdown [apiKeyType]="'IP_ANALYSER'"></apikeys-dropdown>
-            <button mat-flat-button color="primary" class="link-color" id="button-create-assignment" (click)="navigateToCreateAssignments()">
-                {{ 'resource.createAssignment.text' | label }}
-            </button>
         </div>
     </div>
     <div class="analyses">
@@ -15,14 +12,14 @@
         <loading-indicator class="resource-page-message"></loading-indicator>
         } @else if (ipv4Analysis && ipv6Analysis) {
         <div class="subtitle">
-            <h1>Ipv4</h1>
+            <h1>IPv4</h1>
             <button mat-flat-button color="primary" (click)="(false)" [cdkCopyToClipboard]="ipv4Analysis" [matTooltip]="'Copy'">
                 <i class="fa-light fa-copy"></i>
             </button>
         </div>
         <pre class="log">{{ ipv4Analysis }}</pre>
         <div class="subtitle">
-            <h1>Ipv6</h1>
+            <h1>IPv6</h1>
             <button mat-flat-button color="primary" (click)="(false)" [cdkCopyToClipboard]="ipv6Analysis" [matTooltip]="'Copy'">
                 <i class="fa-light fa-copy"></i>
             </button>

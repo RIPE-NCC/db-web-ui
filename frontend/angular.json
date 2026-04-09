@@ -31,6 +31,11 @@
                         "styles": ["src/styles.scss"]
                     },
                     "configurations": {
+                        "analyze-bundle": {
+                            "sourceMap": true,
+                            "outputHashing": "none",
+                            "namedChunks": true
+                        },
                         "local": {
                             "outputPath": {
                                 "base": "../backend/target/classes/static",
