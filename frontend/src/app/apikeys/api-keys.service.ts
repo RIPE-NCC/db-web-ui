@@ -16,7 +16,7 @@ export class ApiKeysService {
 
     private readonly API_BASE_URL: string = 'api/whois-internal/public/api-key';
 
-    saveApiKey(apiKeyName: string, expiresAt: string, apiKeyType: KeyType, mnts: string[], orgId: string): Observable<ApiKey> {
+    saveApiKey(apiKeyName: string, expiresAt: string, apiKeyType: KeyType, mnts: string[], orgId?: string): Observable<ApiKey> {
         const details = apiKeyType === KeyType.MAINTAINER ? mnts : [orgId];
 
         const body = {

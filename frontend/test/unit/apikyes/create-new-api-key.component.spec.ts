@@ -102,7 +102,6 @@ describe('CreateNewApiKeyComponent', () => {
         component.apiKeyName = 'fake api key name';
         component.expiresAt = new Date();
         component.maintainers = [{ key: 'fake maintainer' }];
-        component.selectedOrg = mockOrg;
         component.saveApiKey();
 
         //should clear previous error messages
