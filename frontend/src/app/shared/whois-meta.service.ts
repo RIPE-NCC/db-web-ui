@@ -270,6 +270,7 @@ export class WhoisMetaService {
                 { name: 'e-mail', mandatory: true, multiple: true, refs: this.refs },
                 { name: 'geoloc', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'language', mandatory: false, multiple: true, refs: this.refs, isEnum: true },
+                { name: 'reg-nr', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION'] },
                 { name: 'admin-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE'] },
                 { name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE'] },
@@ -1337,6 +1338,11 @@ export class WhoisMetaService {
                 ' returned by the query contains an <strong>abuse-mailbox</strong> attribute.',
             short: 'Notification e-mail address when a reference to the organisation object is' + ' added or removed.',
             syntax: this._shared.email.syntax,
+        },
+        'reg-nr': {
+            description: 'Organisation registration number.',
+            short: 'Organisation registration number.',
+            syntax: this._shared.freeForm.syntax,
         },
         remarks: {
             description: 'Contains remarks.',
