@@ -3,7 +3,7 @@
         <mat-label>Key type</mat-label>
         <mat-select [(value)]="selectedKeyType">
             @for (key of keyTypes; track key) {
-            <mat-option [value]="key" [disabled]="isKeyDisabled(key)">{{ key.valueOf() }}</mat-option>
+            <mat-option [value]="key" [disabled]="isKeyDisabled(key, selectedOrg)">{{ key.valueOf() }}</mat-option>
             }
         </mat-select>
     </mat-form-field>

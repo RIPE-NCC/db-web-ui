@@ -6,7 +6,7 @@
                 <mat-form-field class="select" appearance="outline">
                     <mat-select name="keyType" [(ngModel)]="selectedKeyType" (selectionChange)="showExamples()" required placeholder="Key type">
                         @for (key of keyTypes; track key) {
-                        <mat-option [value]="key">{{ key.valueOf() }}</mat-option>
+                        <mat-option [value]="key" [disabled]="isKeyDisabled(key, selectedOrg)">{{ key.valueOf() }}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
