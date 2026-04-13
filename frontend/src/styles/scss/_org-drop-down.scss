@@ -17,6 +17,7 @@ div.registry-selector-container {
     z-index: 5; // because is overlap on ipanalyser page
     display: inline-block;
     width: 250px !important;
+    background-color: white;
     div.ng-select-container {
         @extend %brd;
         background: none;
