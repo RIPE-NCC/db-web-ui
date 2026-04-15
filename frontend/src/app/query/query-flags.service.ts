@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ObjectTypesEnum } from './object-types.enum';
@@ -79,7 +78,13 @@ export class QueryFlagsService {
                 this.findFlags(groupedFlags.map((item) => `-${item}`));
             }
         }
-        return _.uniqBy(this.detectedQueryFlags, 'description'); // remove duplicate flags
+        // remove duplicate flags
+        const seen = new Set();
+        return (this.detectedQueryFlags ?? []).filter((item) => {
+            if (seen.has(item.description)) return false;
+            seen.add(item.description);
+            return true;
+        });
     }
 
     private findFlag(flag: string): IQueryFlag {

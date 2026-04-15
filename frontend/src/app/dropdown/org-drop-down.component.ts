@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
-import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { UserInfoService } from '../userinfo/user-info.service';
@@ -74,13 +73,13 @@ export class OrgDropDownComponent implements OnInit {
     private initOrgsAndMemebers(userInfo: IUserInfoResponseData) {
         const orgs: IUserInfoOrganisation[] = [];
         const members: IUserInfoOrganisation[] = [];
-        if (_.isArray(userInfo.organisations)) {
+        if (Array.isArray(userInfo.organisations)) {
             for (const org of userInfo.organisations) {
                 orgs.push(org);
             }
             this.sortOrganisations(orgs);
         }
-        if (_.isArray(userInfo.members)) {
+        if (Array.isArray(userInfo.members)) {
             for (const org of userInfo.members) {
                 members.push(org);
             }

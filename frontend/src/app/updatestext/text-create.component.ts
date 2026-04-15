@@ -2,8 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
@@ -84,7 +83,7 @@ export class TextCreateComponent implements OnInit {
             return;
         }
 
-        if (_.isUndefined(this.object.rpsl)) {
+        if (this.object.rpsl === undefined) {
             this.prepopulateRpsl();
         }
     }
@@ -110,10 +109,10 @@ export class TextCreateComponent implements OnInit {
 
         // if inet(6)num, find the parent and get some auth for that
         if (['inetnum', 'inet6num'].indexOf(this.object.type) > -1) {
-            const inetnumAttr = _.find(attributes, (attr: any) => {
+            const inetnumAttr = (attributes ?? []).find((attr: any) => {
                 return this.object.type === attr.name && attr.value;
             });
-            const sourceAttr = _.find(attributes, (attr: any) => {
+            const sourceAttr = (attributes ?? []).find((attr: any) => {
                 return 'source' === attr.name && attr.value;
             });
             if (inetnumAttr && sourceAttr) {
@@ -121,9 +120,9 @@ export class TextCreateComponent implements OnInit {
                 this.restService.fetchParentResource(inetnumAttr.name, inetnumAttr.value).subscribe({
                     next: (result: any) => {
                         let parent;
-                        if (result && result.objects && _.isArray(result.objects.object)) {
+                        if (result && result.objects && Array.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
-                            if (parent.attributes && _.isArray(parent.attributes.attribute)) {
+                            if (parent.attributes && Array.isArray(parent.attributes.attribute)) {
                                 const parentObject = parent.attributes.attribute;
                                 this.mntnerService
                                     .getAuthForObjectIfNeeded(parentObject, this.mntners.sso, 'Modify', sourceAttr.value.trim(), inetnumAttr.name, this.name)
@@ -181,7 +180,7 @@ export class TextCreateComponent implements OnInit {
 
     private prepopulateRpsl() {
         const attributesOnObjectType = this.whoisMetaService.getAllAttributesOnObjectType(this.object.type);
-        if (_.isEmpty(attributesOnObjectType)) {
+        if (attributesOnObjectType.length === 0) {
             console.error('Object type ' + this.object.type + ' was not found');
             void this.router.navigate(['not-found']);
             return;
@@ -212,7 +211,7 @@ export class TextCreateComponent implements OnInit {
                 this.mntners.sso = ssoMntners;
                 return this.addSsoMntnersAsMntBy(attributes, ssoMntners);
             }),
-            catchError((error: any, caught: Observable<any>) => {
+            catchError((error: any) => {
                 this.restCallInProgress = false;
                 console.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                 this.alertsService.setGlobalError('Error fetching maintainers associated with this SSO account');
@@ -228,14 +227,14 @@ export class TextCreateComponent implements OnInit {
         }
 
         // merge mntners into json-attributes
-        const mntnersAsAttrs = _.map(mntners, (item: any) => {
+        const mntnersAsAttrs = mntners.map((item: any) => {
             return { name: 'mnt-by', value: item.key };
         });
         const attrsWithMntners = this.whoisResourcesService.addAttrsSorted(attributes, 'mnt-by', mntnersAsAttrs);
 
         // strip mnt-by without value from attributes
-        return _.filter(attrsWithMntners, (item: any) => {
-            return !(item.name === 'mnt-by' && _.isUndefined(item.value));
+        return attrsWithMntners.filter((item: any) => {
+            return !(item.name === 'mnt-by' && item.value === undefined);
         });
     }
 
@@ -257,7 +256,7 @@ export class TextCreateComponent implements OnInit {
                     const whoisResources = error.data;
                     this.alertsService.setAllErrors(whoisResources);
                     const attributes = this.whoisResourcesService.getAttributes(whoisResources);
-                    if (!_.isEmpty(attributes)) {
+                    if (attributes.length !== 0) {
                         this.errorReporterService.log('TextCreate', objectType, this.alertsService.alerts.errors, attributes);
                     }
                 },

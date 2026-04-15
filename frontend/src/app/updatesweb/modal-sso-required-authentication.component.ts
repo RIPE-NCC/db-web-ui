@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { PropertiesService } from '../properties.service';
 
@@ -49,7 +48,7 @@ export class ModalSsoRequiredAuthenticationComponent implements OnInit {
         if (this.resolve.method === 'ForceDelete') {
             return false;
         }
-        return this.resolve.allowForcedDelete && _.includes(this.allowedObjectTypes, this.resolve.objectType);
+        return this.resolve.allowForcedDelete && (this.allowedObjectTypes ?? []).includes(this.resolve.objectType);
     }
 
     public cancel(reason?: string) {

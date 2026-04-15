@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 
 export interface IRpslObject {
@@ -18,31 +17,31 @@ export class RpslService {
         // If the first attribute of an object has no value, we are composing a new template.
         // In this case we should use padding (max 15 spaces)
         // otherwise we will inherit existing formatting
-        const f = _.first(obj.attributes);
-        if (!_.isUndefined(f)) {
-            if (_.isUndefined(f.value) || _.isEmpty(f.value) || f.value === 'AUTO-1') {
+        const f = obj.attributes[0];
+        if (f !== undefined) {
+            if (f.value === undefined || f.value.length === 0 || f.value === 'AUTO-1') {
                 spacing = this.TOTAL_ATTR_LENGTH;
             }
         }
 
         let rpslData = '';
-        _.each(obj.attributes, (item) => {
-            rpslData = rpslData.concat(_.padEnd(item.name + ':', spacing, ' '));
-            if (!_.isUndefined(item.value)) {
+        (obj.attributes ?? []).forEach((item) => {
+            rpslData = rpslData.concat(`${item.name}:`.padEnd(spacing, ' '));
+            if (item.value !== undefined) {
                 rpslData = rpslData.concat(item.value);
             }
-            if (!_.isUndefined(item.comment)) {
+            if (item.comment !== undefined) {
                 rpslData = rpslData.concat(' # ' + item.comment);
             }
 
             rpslData = rpslData.concat('\n');
         });
 
-        if (!_.isUndefined(obj.deleteReason)) {
+        if (obj.deleteReason !== undefined) {
             rpslData = rpslData.concat('delete:' + obj.deleteReason + '\n');
         }
 
-        if (!_.isUndefined(obj.override)) {
+        if (obj.override !== undefined) {
             rpslData = rpslData.concat('override:' + obj.override + '\n');
         }
 
@@ -52,7 +51,7 @@ export class RpslService {
     public fromRpsl(rpslText: string) {
         const objs: IRpslObject[] = [];
 
-        _.each(rpslText.split('\n\n'), (objRpsl) => {
+        (rpslText.split('\n\n') ?? []).forEach((objRpsl) => {
             if (objRpsl !== '') {
                 const overrides: string[] = [];
                 const deleteReasons: string[] = [];
@@ -80,12 +79,12 @@ export class RpslService {
     }
 
     private stripDuplicates(array: string[]) {
-        const uniqued = _.uniq(_.clone(array));
+        const uniqued = [...new Set(array ?? [])];
         // don't copy into a new pointer, but leave existing pointer in tact
         while (array.length) {
             array.pop();
         }
-        _.each(uniqued, (item) => {
+        (uniqued ?? []).forEach((item) => {
             array.push(item);
         });
     }
@@ -103,15 +102,15 @@ export class RpslService {
             // newline followed by alpha-numeric character is attribute separator
             if (idx === rpslText.length - 1 || (current === '\n' && this.isLetter(next))) {
                 // end of attribute reached
-                const attr = this.parseSingleAttribute(_.clone(buffer));
-                if (!_.isUndefined(attr)) {
-                    const trimmed = _.trim(attr.value);
+                const attr = this.parseSingleAttribute(structuredClone(buffer));
+                if (attr !== undefined) {
+                    const trimmed = attr.value?.trim();
                     if (attr.name === 'override') {
-                        if (!_.isEmpty(trimmed)) {
+                        if (trimmed.length !== 0) {
                             overrides.push(trimmed);
                         }
                     } else if (attr.name === 'delete') {
-                        if (!_.isEmpty(trimmed)) {
+                        if (trimmed.length !== 0) {
                             deleteReasons.push(trimmed);
                         }
                     } else {
@@ -131,16 +130,16 @@ export class RpslService {
 
         // extract the key
         const keyWithRest = rawAttribute.split(':');
-        if (keyWithRest.length > 0 && !_.isEmpty(_.trim(keyWithRest[0]))) {
-            const key = _.trim(_.head(keyWithRest));
-            const rest = _.tail(keyWithRest).join(':'); // allow colons in value
+        if (keyWithRest.length > 0 && keyWithRest[0].trim() !== '') {
+            const key = keyWithRest?.[0].trim();
+            const rest = (keyWithRest ?? []).slice(1).join(':'); // allow colons in value
             const values: string[] = [];
             const comments: string[] = [];
 
             // extract the value and comment
             if (keyWithRest.length > 1) {
-                _.each(rest.split('\n'), (item) => {
-                    values.push(_.trimEnd(item));
+                (rest.split('\n') ?? []).forEach((item) => {
+                    values.push(item?.trimEnd());
                 });
             }
             attr = {
@@ -152,18 +151,24 @@ export class RpslService {
         return attr;
     }
 
-    private concatenate(array: string[], separator: string): string {
-        return _.reduce(array, (combined, item) => {
-            if (!_.isUndefined(item)) {
-                return combined + separator + item;
+    private concatenate(array: string[], separator: string): string | undefined {
+        let combined: string | undefined = undefined;
+        for (const item of array) {
+            if (item !== undefined) {
+                if (combined === undefined) {
+                    combined = item;
+                } else {
+                    combined = combined + separator + item;
+                }
             }
-        });
+        }
+        return combined;
     }
 
-    private isLetter(c: string): boolean {
-        if (_.isEmpty(c)) {
+    private isLetter(letter: string): boolean {
+        if (letter.length === 0) {
             return false;
         }
-        return c.toLowerCase() !== c.toUpperCase();
+        return letter.toLowerCase() !== letter.toUpperCase();
     }
 }

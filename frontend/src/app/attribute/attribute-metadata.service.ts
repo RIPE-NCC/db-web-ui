@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Address4 } from 'ip-address';
-import * as _ from 'lodash';
 import { JsUtilService } from '../core/js-utils.service';
 import { PrefixService } from '../domainobject/prefix.service';
 import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
@@ -62,7 +61,6 @@ export class AttributeMetadataService {
      */
     public existingDomains = {};
     public existingDomainTo: any;
-    private timeout: any;
     private lastPrefix: any;
 
     constructor() {
@@ -81,13 +79,15 @@ export class AttributeMetadataService {
 
     public determineAttributesForNewObject(objectType: string): IAttributeModel[] {
         const attributes: IAttributeModel[] = [];
-        _.forEach(this.getAllMetadata(objectType), (val, key) => {
+        for (const [key, val] of Object.entries(this.getAllMetadata(objectType))) {
+            // @ts-ignore
             if (val.minOccurs) {
+                // @ts-ignore
                 for (let i = 0; i < val.minOccurs; i++) {
                     attributes.push({ name: key, value: '' });
                 }
             }
-        });
+        }
         return attributes;
     }
 
@@ -213,7 +213,7 @@ export class AttributeMetadataService {
             return true;
         }
         const existing = this.existingDomains[attribute.value];
-        if (existing && _.isNumber(existing.domainsInTheWay)) {
+        if (typeof existing?.domainsInTheWay === 'number') {
             if (existing.hierarchyFlag) {
                 attribute.$$info = '';
                 attribute.$$error = this.setLinkToQueryPage(existing.hierarchyFlag, attribute.value);
@@ -229,7 +229,7 @@ export class AttributeMetadataService {
                 next: (results: any) => {
                     let domainsInTheWay = 0;
                     let hierarchyFlag: string;
-                    _.forEach(results, (result: any) => {
+                    (results ?? []).forEach((result: any) => {
                         if (result && result.body && result.body.objects) {
                             domainsInTheWay += result.body.objects.object.length;
                             hierarchyFlag = result.url.indexOf('flags=drx') > -1 ? 'exact' : 'all-more';
@@ -326,7 +326,7 @@ export class AttributeMetadataService {
             // handles { ..., invalid: [RegExp, invalid: ["attr1", "attr2"], Function]}
             return (
                 -1 !==
-                _.findIndex(attrMetadata, (item: any) => {
+                (attrMetadata ?? []).findIndex((item: any) => {
                     if (this.jsUtils.typeOf(item) === 'string') {
                         // must be "invalid" or "hidden" or "readOnly"
                         if (attrMetadata[item]) {
@@ -350,7 +350,7 @@ export class AttributeMetadataService {
         let target;
         // Evaluate the invalid's and return the first true result
         if (this.jsUtils.typeOf(attrMetadata.invalid) === 'string') {
-            target = _.filter(attributes, (o) => {
+            target = (attributes ?? []).filter((o) => {
                 return o.name === attrMetadata.invalid;
             });
             for (let i in target) {
@@ -362,9 +362,9 @@ export class AttributeMetadataService {
         } else if (this.jsUtils.typeOf(attrMetadata.invalid) === 'array') {
             return (
                 -1 !==
-                _.findIndex(attrMetadata.invalid, (attrName) => {
+                (attrMetadata.invalid ?? []).findIndex((attrName) => {
                     // filter takes care of multiple attributes with the same name
-                    target = _.filter(attributes, (o) => {
+                    target = (attributes ?? []).filter((o) => {
                         return o.name === attrName;
                     });
                     for (let i in target) {
@@ -385,7 +385,7 @@ export class AttributeMetadataService {
             return true;
         }
 
-        const reverseZone = _.find(attributes, (item) => {
+        const reverseZone = (attributes ?? []).find((item) => {
             return item.name === 'reverse-zone';
         });
 
@@ -407,8 +407,7 @@ export class AttributeMetadataService {
             attribute.$$error = '';
             return true;
         }
-        let keepTrying = 4;
-        const sameValList = _.filter(attributes, (attr: IAttributeModel) => {
+        const sameValList = (attributes ?? []).filter((attr: IAttributeModel) => {
             return attribute.name === attr.name && attribute.value === attr.value;
         });
         if (sameValList.length > 1) {
@@ -422,7 +421,7 @@ export class AttributeMetadataService {
 
     private isModifyMode(objectType: string, attributes: IAttributeModel[]): boolean {
         // If "created" is filled, we're modifying
-        const created = _.find(attributes, (item: IAttributeModel) => {
+        const created = (attributes ?? []).find((item: IAttributeModel) => {
             return item.name.toUpperCase() === 'CREATED';
         });
         return created && typeof created.value === 'string';

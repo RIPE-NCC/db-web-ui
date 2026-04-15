@@ -1,7 +1,6 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import _ from 'lodash';
 import { catchError, throwError } from 'rxjs';
 
 import { MenuService } from '../menu/menu.service';
@@ -24,19 +23,19 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
         console.debug('ui-url:' + router.url);
         console.debug('http-status:' + error.status);
-        if (!_.isUndefined(error)) {
+        if (error !== undefined) {
             console.debug('rest-url:' + error.url);
-            if ((isServerError(error.status) || isAuthorisationError(error.status)) && _.endsWith(error.url, 'api/user/info')) {
+            if ((isServerError(error.status) || isAuthorisationError(error.status)) && error.url.endsWith('api/user/info')) {
                 toBeSwallowed = true;
             }
-            if (isForbiddenError(error.status) && _.endsWith(error.url, 'api/user/info')) {
+            if (isForbiddenError(error.status) && error.url.endsWith('api/user/info')) {
                 toBeSwallowed = true;
             }
             if (error.url?.includes('/rpki/roa')) {
                 toBeSwallowed = true;
             }
             if (isNotFoundError(error.status)) {
-                if (_.startsWith(error.url, 'api/whois-internal/')) {
+                if (error.url.startsWith('api/whois-internal/')) {
                     toBeSwallowed = true;
                 } else if (error.url?.includes('ignore404')) {
                     toBeSwallowed = true;
@@ -44,24 +43,24 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                     toBeSwallowed = true;
                 }
             }
-            if ((isServerError(error.status) || isNotFoundError(error.status)) && _.startsWith(error.url, 'api/whois/autocomplete')) {
+            if ((isServerError(error.status) || isNotFoundError(error.status)) && error.url.startsWith('api/whois/autocomplete')) {
                 toBeSwallowed = true;
             }
-            if (isServerError(error.status) && _.startsWith(error.url, 'api/dns/status')) {
+            if (isServerError(error.status) && error.url.startsWith('api/dns/status')) {
                 toBeSwallowed = true;
             }
         }
 
-        if (isNotFoundError(error.status) && _.startsWith(router.url, '/textupdates/multi')) {
+        if (isNotFoundError(error.status) && router.url.startsWith('/textupdates/multi')) {
             toBeSwallowed = true;
         }
-        if (isNotFoundError(error.status) && _.startsWith(router.url, '/fmp')) {
+        if (isNotFoundError(error.status) && router.url.startsWith('/fmp')) {
             toBeSwallowed = true;
         }
-        if (isServerError(error.status) && _.includes(error.url, 'api/ba-apps/resources')) {
+        if (isServerError(error.status) && error.url.includes('api/ba-apps/resources')) {
             toBeSwallowed = true;
         }
-        if (_.includes(router.url, '/syncupdates')) {
+        if (router.url.includes('/syncupdates')) {
             toBeSwallowed = true;
         }
 

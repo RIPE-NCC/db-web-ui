@@ -1,7 +1,6 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import * as _ from 'lodash';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
@@ -549,7 +548,7 @@ describe('WhoisResourcesService', () => {
     it('should add missing mandatory attribute', () => {
         let attrs = whoisResourcesService.validateAttributes([{ name: 'as-block', value: 'a', $$meta: { $$idx: 0, $$mandatory: true, $$multiple: false } }]);
 
-        _.each(whoisResourcesService.getMissingMandatoryAttributes(attrs, 'as-block'), (item) => {
+        (whoisResourcesService.getMissingMandatoryAttributes(attrs, 'as-block') ?? []).forEach((item) => {
             const allAttributes = whoisResourcesService.addMissingMandatoryAttribute(attrs, 'as-block', item);
             attrs = whoisResourcesService.validateAttributes(allAttributes);
         });

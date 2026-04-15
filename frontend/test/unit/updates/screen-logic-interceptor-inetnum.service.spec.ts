@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
@@ -19,23 +18,20 @@ describe('ScreenLogicInterceptorService InetNum', () => {
 
     let MockMntnerService = {
         isNccMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
+            return ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'].includes(mntnerKey.toUpperCase());
         },
         isAnyNccMntner: (mntnerKey: string) => {
-            return _.includes(
-                [
-                    'RIPE-NCC-HM-MNT',
-                    'RIPE-NCC-END-MNT',
-                    'RIPE-NCC-HM-PI-MNT',
-                    'RIPE-GII-MNT',
-                    'RIPE-DBM-MNT',
-                    'RIPE-NCC-LOCKED-MNT',
-                    'RIPE-ERX-MNT',
-                    'RIPE-NCC-LEGACY-MNT',
-                    'RIPE-NCC-MNT',
-                ],
-                mntnerKey.toUpperCase(),
-            );
+            return [
+                'RIPE-NCC-HM-MNT',
+                'RIPE-NCC-END-MNT',
+                'RIPE-NCC-HM-PI-MNT',
+                'RIPE-GII-MNT',
+                'RIPE-DBM-MNT',
+                'RIPE-NCC-LOCKED-MNT',
+                'RIPE-ERX-MNT',
+                'RIPE-NCC-LEGACY-MNT',
+                'RIPE-NCC-MNT',
+            ].includes(mntnerKey.toUpperCase());
         },
     };
 

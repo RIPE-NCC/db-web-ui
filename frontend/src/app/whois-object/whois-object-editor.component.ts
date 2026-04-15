@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { AttributeRendererComponent } from '../attribute/attribute-renderer.component';
 import { PropertiesService } from '../properties.service';
@@ -68,7 +67,7 @@ export class WhoisObjectEditorComponent implements OnInit {
         });
         if (createdAttr && createdAttr.length && createdAttr[0].value) {
             // make a copy of the object in case we need to restore
-            this.originalAttibutes = _.cloneDeep(this.attributes);
+            this.originalAttibutes = structuredClone(this.attributes);
 
             // decorate the object
             this.attributeMetadataService.enrich(this.objectType, this.attributes);
@@ -77,9 +76,9 @@ export class WhoisObjectEditorComponent implements OnInit {
             this.missingMandatoryAttributes = this.getMissingMandatoryAttributes();
 
             // save object for later diff in display-screen
-            this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
+            this.messageStoreService.add('DIFF', structuredClone(this.attributes));
         } else {
-            this.originalAttibutes = _.cloneDeep(this.attributes);
+            this.originalAttibutes = structuredClone(this.attributes);
             this.attributeMetadataService.enrich(this.objectType, this.attributes);
             this.missingMandatoryAttributes = this.getMissingMandatoryAttributes();
         }
@@ -89,7 +88,7 @@ export class WhoisObjectEditorComponent implements OnInit {
     }
 
     public btnCancelClicked() {
-        this.model.attributes.attribute = this.attributes = _.cloneDeep(this.originalAttibutes);
+        this.model.attributes.attribute = this.attributes = structuredClone(this.originalAttibutes);
         this.cancelClicked.emit();
     }
 
@@ -146,11 +145,11 @@ export class WhoisObjectEditorComponent implements OnInit {
      * @returns {[string,string,string,string,string]}
      */
     private getMissingMandatoryAttributes(): string[] {
-        const attrCopy = _.cloneDeep(this.attributes);
+        const attrCopy = structuredClone(this.attributes);
         const shouldHave: IAttributeModel[] = this.attributeMetadataService.determineAttributesForNewObject(this.objectType);
         const missing: any[] = [];
         Object.keys(shouldHave).forEach((k: string) => {
-            const found = _.findIndex(attrCopy, (item) => item.name === shouldHave[k].name);
+            const found = (attrCopy ?? []).findIndex((item) => item.name === shouldHave[k].name);
             if (found > -1) {
                 attrCopy.splice(found, 1);
             } else {

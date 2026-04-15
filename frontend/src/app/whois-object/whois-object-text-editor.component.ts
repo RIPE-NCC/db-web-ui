@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import * as _ from 'lodash';
 import { forkJoin } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
@@ -56,7 +55,7 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     public haveNonLatin1: boolean;
 
     public ngOnInit() {
-        if (_.isUndefined(this.rpsl)) {
+        if (this.rpsl === undefined) {
             this.fetchAndPopulateObject();
         }
     }
@@ -153,7 +152,7 @@ export class WhoisObjectTextEditorComponent implements OnInit {
         const attributes = this.whoisResourcesService.getAttributes(objectToModify);
 
         // Needed by display screen
-        this.messageStoreService.add('DIFF', _.cloneDeep(attributes));
+        this.messageStoreService.add('DIFF', structuredClone(attributes));
 
         // prevent created and last-modfied to be in
         this.whoisResourcesService.removeAttributeWithName(attributes, 'created');

@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -50,7 +49,7 @@ export class WebUpdatesCommonsService {
             authParams.maintainers.object,
         );
 
-        const allowForcedDelete = !_.find(authParams.maintainers.object, (o: any) => {
+        const allowForcedDelete = !(authParams.maintainers.object ?? []).find((o: any) => {
             return this.mntnerService.isAnyNccMntner(o.key);
         });
 
@@ -81,12 +80,12 @@ export class WebUpdatesCommonsService {
             }
             console.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
             console.debug('After auth: maintainers.object:', authParams.maintainers.object);
-            if (_.isFunction(authParams.successClbk)) {
+            if (typeof authParams.successClbk === 'function') {
                 authParams.successClbk(associationResp);
             }
         });
         modalRef.dismissed.subscribe((failResponse) => {
-            if (failResponse !== 'forceDelete' && _.isFunction(authParams.failureClbk)) {
+            if (failResponse !== 'forceDelete' && typeof authParams.failureClbk === 'function') {
                 authParams.failureClbk();
             }
         });
@@ -94,8 +93,8 @@ export class WebUpdatesCommonsService {
 
     public addLinkToReferenceAttributes(attributes: IAttributeModel[], objectSource: string) {
         const parser = document.createElement('a');
-        return _.map(attributes, (attribute: any) => {
-            if (!_.isUndefined(attribute.link)) {
+        return (attributes ?? []).map((attribute: any) => {
+            if (attribute.link !== undefined) {
                 attribute.link.href = this._displayUrl(parser, attribute, objectSource);
             }
             return attribute;
@@ -122,6 +121,7 @@ export class WebUpdatesCommonsService {
     private _displayUrl(parser: any, attribute: IAttributeModel, objectSource: string) {
         parser.href = attribute.link.href;
         const parts = parser.pathname.split('/');
-        return `webupdates/display/${this.properties.SOURCE}/${attribute['referenced-type']}/${_.last(parts)}`;
+        const last: string = parts[parts.length - 1];
+        return `webupdates/display/${this.properties.SOURCE}/${attribute['referenced-type']}/${last}`;
     }
 }

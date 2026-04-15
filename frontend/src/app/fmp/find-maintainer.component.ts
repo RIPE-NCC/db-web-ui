@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { FindMaintainerService, IFindMaintainer } from './find-maintainer.service';
@@ -68,7 +67,7 @@ export class FindMaintainerComponent implements OnInit {
                     return;
                 }
                 if (error.status !== 401 && error.status !== 403) {
-                    if (_.isUndefined(error.data)) {
+                    if (error.data === undefined) {
                         this.alertsService.addGlobalError('Error sending email');
                     } else if (error.data.match(/unable to send email/i)) {
                         this.alertsService.addGlobalError(error.data);

@@ -2,7 +2,6 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
-import * as _ from 'lodash';
 import { concat, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
@@ -12,6 +11,7 @@ import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.servi
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
+import { findLastIndex } from '../shared/utils';
 import { IAttributeModel, IMntByModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
 import { MntnerService } from '../updatesweb/mntner.service';
@@ -123,9 +123,11 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
             return attr.name === 'mnt-by';
         });
         if (objectMntBys.length > 1) {
-            _.remove(this.attributes, (i: IAttributeModel) => {
-                return i.name === 'mnt-by' && i.value === item.key;
-            });
+            for (let i = this.attributes.length - 1; i >= 0; i--) {
+                if (this.attributes[i].name === 'mnt-by' && this.attributes[i].value === item.key) {
+                    this.attributes.splice(i, 1);
+                }
+            }
         } else {
             objectMntBys[0].value = '';
         }
@@ -287,7 +289,7 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
     }
 
     private populateNgSelectFieldWithMnt() {
-        this.mntners.object = this.mntners.defaultMntner.length > 0 ? this.mntners.defaultMntner : _.cloneDeep(this.mntners.sso);
+        this.mntners.object = this.mntners.defaultMntner.length > 0 ? this.mntners.defaultMntner : structuredClone(this.mntners.sso);
         this.updateMntnersClbk.emit(this.mntners);
     }
 
@@ -296,9 +298,12 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
             throw new TypeError('attrs must be an array in mergeMaintainers');
         }
         let i;
-        let lastIdxOfType = _.findLastIndex(attrs, (item) => {
-            return item.name === 'mnt-by';
-        });
+        // TODO REPLACE AFTER UPGRADING "target": "ES2023" and removing lodash
+        let lastIdxOfType = findLastIndex(attrs, 'mnt-by');
+        // let lastIdxOfType = (attrs ?? []).findLastIndex(item => {
+        //     return item.name === 'mnt-by';
+        // });
+
         if (lastIdxOfType < 0) {
             lastIdxOfType = attrs.length;
         } else if (!attrs[lastIdxOfType].value) {
@@ -353,11 +358,11 @@ export class MaintainersEditorComponent implements OnInit, OnDestroy {
                     next: (result: any) => {
                         this.restCallInProgress = false;
 
-                        this.mntners.objectOriginal = _.flatten(result) as IMntByModel[];
+                        this.mntners.objectOriginal = result.flat() as IMntByModel[];
                         console.debug('mntners-object-original:', this.mntners.objectOriginal);
 
                         // of course none of the initial ones are new
-                        this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, _.flatten(result));
+                        this.mntners.object = this.mntnerService.enrichWithNewStatus(this.mntners.objectOriginal, result.flat());
                         console.debug('mntners-object:', this.mntners.object);
                         if (this.mntnerService.needsAuthentication(this.mntners.sso, this.mntners.objectOriginal, this.mntners.object)) {
                             this.performAuthentication();

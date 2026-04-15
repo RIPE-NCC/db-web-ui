@@ -1,6 +1,5 @@
 import { Location } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 
 @Injectable({ providedIn: 'root' })
@@ -8,11 +7,11 @@ export class ErrorReporterService {
     private location = inject(Location);
 
     public log(operation: string, objectType: string, globalErrors: any, attributes?: IAttributeModel[]) {
-        _.each(globalErrors, (item: any) => {
+        (globalErrors ?? []).forEach((item: any) => {
             console.error('url:' + this.location.path() + ', operation:' + operation + ', objectType: ' + objectType + ', description: ' + item.plainText);
         });
-        _.each(attributes, (item: any) => {
-            if (!_.isUndefined(item.$$error)) {
+        (attributes ?? []).forEach((item: any) => {
+            if (item.$$error !== undefined) {
                 console.error(
                     'url:' +
                         this.location.path() +

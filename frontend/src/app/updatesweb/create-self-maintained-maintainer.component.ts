@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
-import * as _ from 'lodash';
 import { Subject, concat, of } from 'rxjs';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -127,7 +126,7 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
     public fieldVisited(attr: any) {
         this.restService.autocomplete(attr.name, attr.value, true, []).subscribe((data: any) => {
             if (
-                _.some(data, (item: any) => {
+                (data ?? []).some((item: any) => {
                     return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
                 })
             ) {
@@ -175,9 +174,11 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
 
     public onAdminCRemoved(item: any) {
         console.debug('onAdminCRemoved:' + JSON.stringify(item));
-        _.remove(this.maintainerAttributes, (i: any) => {
-            return i.name === 'admin-c' && i.value === item.key;
-        });
+        for (let i = this.maintainerAttributes.length - 1; i >= 0; i--) {
+            if (this.maintainerAttributes[i].name === 'admin-c' && this.maintainerAttributes[i].value === item.key) {
+                this.maintainerAttributes.splice(i, 1);
+            }
+        }
     }
 
     public setVisibilityAttrsHelp(attributeName: string) {

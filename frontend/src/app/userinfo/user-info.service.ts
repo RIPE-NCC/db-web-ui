@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, share, timeout } from 'rxjs/operators';
@@ -56,7 +55,7 @@ export class UserInfoService {
         return this.getUserOrgsAndRoles().pipe(
             map((userInfo: IUserInfoResponseData) => {
                 if (storedSelectionId) {
-                    if (_.isArray(userInfo.organisations)) {
+                    if (Array.isArray(userInfo.organisations)) {
                         for (const org of userInfo.organisations) {
                             if ('org:' + org.orgObjectId === storedSelectionId.toString()) {
                                 this.selectedOrganisation = org;
@@ -64,7 +63,7 @@ export class UserInfoService {
                             }
                         }
                     }
-                    if (_.isArray(userInfo.members)) {
+                    if (Array.isArray(userInfo.members)) {
                         for (const org of userInfo.members) {
                             if (org.membershipId.toString() === storedSelectionId.toString()) {
                                 this.selectedOrganisation = org;

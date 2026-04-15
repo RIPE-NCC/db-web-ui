@@ -1,6 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import isEmpty from 'lodash/isEmpty';
-import trim from 'lodash/trim';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { RestService } from './rest.service';
@@ -23,7 +21,7 @@ export class OrganisationHelperService {
     public validateCountry(attributes: IAttributeModel[]): boolean {
         const country = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'country');
 
-        if (country && isEmpty(trim(country.value))) {
+        if (country && !country.value?.trim().length) {
             country.$$error = 'Please provide a valid country code or remove the attribute if you would like to do it later';
             return false;
         }
@@ -43,7 +41,7 @@ export class OrganisationHelperService {
 
     public containsAttribute(attributes: IAttributeModel[], attributeName: string): boolean {
         const attribute = this.whoisResourcesService.getSingleAttributeOnName(attributes, attributeName);
-        return attribute ? !isEmpty(trim(attribute.value)) : false;
+        return attribute && attribute.value !== undefined ? attribute.value.trim().length !== 0 : false;
     }
 
     public addAbuseC(objectType: string, attributes: any): IAttributeModel[] {

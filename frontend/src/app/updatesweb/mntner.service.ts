@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address4 } from 'ip-address';
-import * as _ from 'lodash';
 import { from, mergeMap, Observable, of } from 'rxjs';
 import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
 import { IpAddressService } from '../myresources/ip-address.service';
@@ -126,7 +125,7 @@ export class MntnerService {
     }
 
     public hasSSo(mntner: IMntByModel): boolean {
-        if (_.isUndefined(mntner.auth)) {
+        if (mntner.auth === undefined) {
             return false;
         }
         return mntner.auth.some((i: string) => {
@@ -135,7 +134,7 @@ export class MntnerService {
     }
 
     public hasPgp(mntner: IMntByModel): boolean {
-        if (_.isUndefined(mntner.auth)) {
+        if (mntner.auth === undefined) {
             return false;
         }
         return mntner.auth.some((i: string) => {
@@ -144,7 +143,7 @@ export class MntnerService {
     }
 
     public isNew(mntner: any): boolean {
-        if (_.isUndefined(mntner.isNew)) {
+        if (mntner.isNew === undefined) {
             return false;
         }
         return mntner.isNew;
@@ -205,17 +204,16 @@ export class MntnerService {
     public getMntnersForAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]) {
         let input = originalObjectMntners;
         if (originalObjectMntners.length === 0) {
-            // it is a create
+            // it is a creat
             input = objectMntners;
         }
         const mntners = this.enrichWithSsoStatus(ssoMntners, input);
-        return _.uniqBy(mntners, 'key').filter((mntner) => {
-            if (mntner.mine === true) {
-                // Mntner is in the list already
-                return false;
-            } else {
-                return this.enableNonAuthUpdates;
-            }
+        const seen = new Set();
+        return (mntners ?? []).filter((mntner) => {
+            if (seen.has(mntner.key)) return false;
+            seen.add(mntner.key);
+
+            return !mntner.mine && this.enableNonAuthUpdates;
         });
     }
 
@@ -257,7 +255,7 @@ export class MntnerService {
         const objectType = address instanceof Address4 ? 'inetnum' : 'inet6num';
         this.restService.fetchResource(objectType, prefix).subscribe({
             next: (result: any) => {
-                if (result && result.objects && _.isArray(result.objects.object)) {
+                if (result && result.objects && Array.isArray(result.objects.object)) {
                     const wrappedResource = this.whoisResourcesService.validateWhoisResources(result);
 
                     // Find exact or most specific matching inet(num), and collect the following mntners:

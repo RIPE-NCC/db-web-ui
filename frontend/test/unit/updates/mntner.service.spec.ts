@@ -2,7 +2,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -95,7 +94,7 @@ describe('MntnerService', () => {
 
     it('should detect top RIPE-NCC mntners', () => {
         const topNccMntners = ['ripe-ncc-hm-mnt', 'ripe-ncc-end-mnt', 'RIPE-NCC-LEGACY-MNT'];
-        const ripeOwned = _.filter(topNccMntners, (mntnerKey) => {
+        const ripeOwned = topNccMntners.filter((mntnerKey) => {
             return mntnerService.isNccMntner(mntnerKey);
         });
 
@@ -114,7 +113,7 @@ describe('MntnerService', () => {
             'RIPE-NCC-LEGACY-MNT',
             'RIPE-NCC-MNT',
         ];
-        const ripeOwned = _.filter(allNccMntners, (mntnerKey) => {
+        const ripeOwned = allNccMntners.filter((mntnerKey) => {
             return mntnerService.isAnyNccMntner(mntnerKey);
         });
 
@@ -122,7 +121,7 @@ describe('MntnerService', () => {
     });
 
     it('should detect non RIPE-NCC mntners', () => {
-        const notRipeOwned = _.filter(['test-MNT', 'other-mnt'], (mntnerKey) => {
+        const notRipeOwned = ['test-MNT', 'other-mnt'].filter((mntnerKey) => {
             return mntnerService.isNccMntner(mntnerKey);
         });
 

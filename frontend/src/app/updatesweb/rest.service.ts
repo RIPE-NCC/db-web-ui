@@ -1,7 +1,6 @@
 import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { Observable, forkJoin, of, shareReplay, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -87,7 +86,7 @@ export class RestService {
     }
 
     private queryAutocomplete(attrName: string, query: any, extended: any, attrsToBeReturned: string[] = []) {
-        if (_.isUndefined(query) || query.length < 2) {
+        if (query === undefined || query.length < 2) {
             return of([]);
         } else {
             let params = new HttpParams();
@@ -112,7 +111,7 @@ export class RestService {
     }
 
     private queryAutocompleteAdvanced(query: string, targetObjectTypes: string[]) {
-        if (_.isUndefined(query) || query.length < 2) {
+        if (query === undefined || query.length < 2) {
             return of([]);
         } else {
             const attrsToFilterOn: string[] = this.whoisResourcesService.getFilterableAttrsForObjectTypes(targetObjectTypes);
@@ -142,7 +141,7 @@ export class RestService {
             map((result: any) => {
                 console.debug('fetchObject success:' + JSON.stringify(result));
                 const primaryKey = this.whoisResourcesService.getPrimaryKey(this.whoisResourcesService.wrapSuccess(result));
-                if (_.isEqual(objectName.toUpperCase(), primaryKey.toUpperCase())) {
+                if (objectName.toUpperCase() === primaryKey.toUpperCase()) {
                     return this.whoisResourcesService.wrapSuccess(result);
                 } else {
                     return this.router.navigateByUrl(`webupdates/modify/${source}/${objectType}/${primaryKey}`);
@@ -251,11 +250,11 @@ export class RestService {
     private singleMntnerDetails(mntner: IMntByModel) {
         const params = new HttpParams().set('attribute', 'auth').set('extended', 'true').set('field', 'mntner').set('query', mntner.key);
         return this.http.get('api/whois/autocomplete', { params }).pipe(
-            map((result: any) => {
-                let found = _.find(result, (item: IMntByModel) => {
+            map((result: IMntByModel[]) => {
+                let found = Object.values(result ?? {}).find((item: IMntByModel) => {
                     return item.key === mntner.key;
                 });
-                if (_.isUndefined(found)) {
+                if (found === undefined) {
                     // NOTE: the autocomplete service just returns 10 matching records. The exact match might not be part of this set.
                     // So if this happens, perform best guess and just enrich the existing mntner with SSO.
                     mntner.auth = ['SSO'];

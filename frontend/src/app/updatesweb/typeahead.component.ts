@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -90,11 +89,11 @@ export class TypeaheadComponent {
     }
 
     private static isServerLookupKey(refs: any) {
-        return !(_.isUndefined(refs) || refs.length === 0);
+        return !(refs === undefined || refs.length === 0);
     }
 
     private addNiceAutocompleteName(items: any[], attrName: string) {
-        return _.map(items, (item) => {
+        return items.map((item) => {
             let name = '';
             let separator = ' / ';
             if (item.type === 'person') {
@@ -106,12 +105,12 @@ export class TypeaheadComponent {
                 }
             } else if (item.type === 'aut-num') {
                 // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
-                name = _.isArray(item.descr) && item.descr.length ? [item['as-name'], separator, item.descr[0]].join('') : item['as-name'];
-            } else if (_.isString(item['org-name'])) {
+                name = Array.isArray(item.descr) && item.descr.length ? [item['as-name'], separator, item.descr[0]].join('') : item['as-name'];
+            } else if (typeof item['org-name'] === 'string') {
                 name = item['org-name'];
-            } else if (_.isArray(item.descr)) {
+            } else if (Array.isArray(item.descr)) {
                 name = item.descr.join('');
-            } else if (_.isArray(item.owner)) {
+            } else if (Array.isArray(item.owner)) {
                 name = item.owner.join('');
             } else {
                 separator = '';
@@ -121,10 +120,10 @@ export class TypeaheadComponent {
         });
     }
 
-    private filterBasedOnAttr(suggestions: string, attrName: string) {
-        return _.filter(suggestions, (item) => {
+    private filterBasedOnAttr(suggestions: any[], attrName: string) {
+        return suggestions.filter((item) => {
             if (attrName === 'abuse-c') {
-                return !_.isEmpty(item['abuse-mailbox']);
+                return item['abuse-mailbox'] != null && item['abuse-mailbox'] !== '';
             }
             return true;
         });

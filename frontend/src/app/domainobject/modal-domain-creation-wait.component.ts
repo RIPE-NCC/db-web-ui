@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NgbActiveModal, NgbProgressbar } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { interval } from 'rxjs';
 import { PrefixService } from './prefix.service';
 
@@ -24,7 +23,7 @@ export class ModalDomainCreationWaitComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         this.done = 100;
-        this.numberOfDomains = _.filter(this.resolve.attributes, (attr: any) => {
+        this.numberOfDomains = this.resolve.attributes.filter((attr: any) => {
             return attr.name === 'reverse-zone';
         }).length;
         this.saving();

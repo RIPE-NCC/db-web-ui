@@ -356,7 +356,7 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     private getTicketsAndDates() {
         this.resourcesDataService.fetchTicketsAndDates(this.orgId, this.objectName).subscribe((response: IResourceTickets) => {
-            if (response.tickets !== undefined && response.tickets[this.objectName] !== undefined) {
+            if (response?.tickets !== undefined && response.tickets[this.objectName] !== undefined) {
                 for (const ticket of response.tickets[this.objectName]) {
                     this.addFlag(ticket.date, 'Issue date for ' + ticket.resource);
                     this.addFlag(ticket.number, 'Ticket number for ' + ticket.resource);

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { IAttributeModel, IWhoisLinkModel } from './whois-response-type.model';
 
 @Injectable({ providedIn: 'root' })
@@ -472,7 +471,7 @@ export class WhoisMetaService {
 
     public getAttributeShortDescription(objectType: string, attrName: string) {
         let short = this._getDocumentationForAttribute(objectType, attrName, 'short');
-        if (_.isUndefined(short)) {
+        if (short === undefined) {
             short = this._getDocumentationForAttribute(objectType, attrName, 'description');
         }
         return short;
@@ -504,7 +503,7 @@ export class WhoisMetaService {
         if (!objectTypeName || !this.objectTypesMap[objectTypeLowerCase]) {
             return undefined;
         }
-        return _.find(this.objectTypesMap[objectTypeLowerCase].attributes, (attr: IAttributeModel) => {
+        return (this.objectTypesMap[objectTypeLowerCase].attributes ?? []).find((attr: IAttributeModel) => {
             return attr.name === attributeName;
         });
     }
@@ -529,7 +528,7 @@ export class WhoisMetaService {
     }
 
     public enrichAttributesWithMetaInfo(objectTypeName: string, attrs: IAttributeModel[]) {
-        if (_.isUndefined(objectTypeName) || _.isUndefined(attrs)) {
+        if (objectTypeName === undefined || attrs === undefined) {
             return attrs;
         }
         const attrsMeta = this.getMetaAttributesOnObjectType(objectTypeName, false);
@@ -540,11 +539,11 @@ export class WhoisMetaService {
         attrs.forEach((attr) => {
             attr.$$id = 'attr-' + i;
             i++;
-            const attrMeta = _.find(attrsMeta, (am: IAttributeModel) => {
+            const attrMeta = (attrsMeta ?? []).find((am: IAttributeModel) => {
                 return am.name === attr.name;
             });
-            if (!_.isUndefined(attrMeta)) {
-                if (!_.isUndefined(attr.$$meta)) {
+            if (attrMeta !== undefined) {
+                if (attr.$$meta !== undefined) {
                     enrichedAttrs.push(attr);
                 } else {
                     let value = attr.value;
@@ -570,7 +569,7 @@ export class WhoisMetaService {
 
         // enrich with order info
         let idx = 0;
-        return _.map(this.getMetaAttributesOnObjectType(objectTypeName, false), (meta: any) => {
+        return this.getMetaAttributesOnObjectType(objectTypeName, false).map((meta: any) => {
             const wrapped = this.wrapMetaInAttribute(this, objectTypeName, meta.name, undefined, undefined, undefined, undefined, meta, idx);
             idx++;
             return wrapped;
@@ -583,7 +582,7 @@ export class WhoisMetaService {
         }
         // enrich with order info
         let idx = 0;
-        return _.map(this.getMetaAttributesOnObjectType(objectTypeName, true), (meta: any) => {
+        return this.getMetaAttributesOnObjectType(objectTypeName, true).map((meta: any) => {
             const wrapped = this.wrapMetaInAttribute(this, objectTypeName, meta.name, '', undefined, undefined, undefined, meta, idx);
             idx++;
             return wrapped;
@@ -599,13 +598,13 @@ export class WhoisMetaService {
         } else if (attrName === 'status') {
             doc = this._statusDoc[objectType];
         }
-        if (_.isUndefined(doc)) {
+        if (doc === undefined) {
             doc = this._attrDocumentation[attrName];
         }
 
         if (doc === null) {
             console.info('objectType, attrName, docKind', objectType, attrName, docKind);
-        } else if (!_.isUndefined(doc)) {
+        } else if (doc !== undefined) {
             return this.lookupDefaultText(doc, objectType, attrName, docKind);
         } else {
             console.warn('No documentation for objectType:', objectType, 'attrName:', attrName);

@@ -1,6 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap, reduce } from 'rxjs/operators';
 import { IpAddressService } from '../myresources/ip-address.service';
@@ -101,7 +100,7 @@ export class QueryService {
             }
         }
 
-        const acc = _.cloneDeep(EMPTY_MODEL);
+        const acc = structuredClone(EMPTY_MODEL);
 
         // paging:
         params = params.set('offset', String(offset)).set('limit', String(this.PAGE_SIZE));
@@ -145,7 +144,7 @@ export class QueryService {
             linkParts.push('dflag=true');
         }
         linkParts.push('rflag=' + qp.doNotRetrieveRelatedObjects);
-        if (!_.isUndefined(qp.source)) {
+        if (qp.source !== undefined) {
             qp.source.split(/,/).forEach((s) => linkParts.push('source=' + s));
         }
         linkParts.push('bflag=' + qp.showFullObjectDetails);
@@ -187,7 +186,7 @@ export class QueryService {
         if (qp.showFullObjectDetails) {
             linkParts.push('flags=no-filtering');
         }
-        if (!_.isUndefined(qp.source)) {
+        if (qp.source !== undefined) {
             qp.source.split(/,/).forEach((s) => {
                 if (s.toUpperCase() === 'GRS') {
                     linkParts.push('flags=' + 'resource');

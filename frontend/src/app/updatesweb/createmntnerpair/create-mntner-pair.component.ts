@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import * as _ from 'lodash';
 import { IUserInfoResponseData } from '../../dropdown/org-data-type.model';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
@@ -98,7 +97,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         this.populateMissingAttributes();
 
         const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.mntnerAttributes, 'mntner');
-        if (!_.isUndefined(mntner.value)) {
+        if (mntner.value !== undefined) {
             this.objectTypeAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.objectTypeAttributes, 'mnt-by', mntner.value);
             this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'mnt-by', mntner.value);
         }
@@ -116,7 +115,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
 
     private populateMissingAttributes() {
         const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.mntnerAttributes, 'mntner');
-        if (!_.isUndefined(mntner.value)) {
+        if (mntner.value !== undefined) {
             this.objectTypeAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.objectTypeAttributes, 'mnt-by', mntner.value);
             this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'mnt-by', mntner.value);
         }
@@ -196,12 +195,12 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         }
         if (attr.$$meta.$$primaryKey === true) {
             this.restService.autocomplete(attr.name, attr.value, true, []).subscribe((data: any) => {
-                const found = _.find(data, (item: any) => {
+                const found = (data ?? []).find((item: any) => {
                     if (item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase()) {
                         return item;
                     }
                 });
-                if (!_.isUndefined(found)) {
+                if (found !== undefined) {
                     attr.$$error = attr.name + ' ' + this.linkService.getModifyLink(this.source, attr.name, found.key) + ' already exists';
                 }
             });

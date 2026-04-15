@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { IUserInfoResponseData } from '../dropdown/org-data-type.model';
 import { PropertiesService } from '../properties.service';
@@ -68,8 +67,8 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
             error: (error: any) => {
                 console.info('Authentication error:' + error);
 
-                if (!_.isUndefined(error.data)) {
-                    this.selected.message = _.reduce(this.whoisResourcesService.getGlobalErrors(error.data), (total, msg) => {
+                if (error.data !== undefined) {
+                    this.selected.message = this.whoisResourcesService.getGlobalErrors(error.data).reduce((total, msg) => {
                         return total + '\n' + msg;
                     });
                 } else {
@@ -115,9 +114,9 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
                         },
                         error: (error: any) => {
                             if (
-                                !_.isUndefined(error.error) &&
-                                !_.isUndefined(error.error.errormessages) &&
-                                !_.isUndefined(error.error.errormessages.errormessage[0])
+                                error.error !== undefined &&
+                                error.error.errormessages !== undefined &&
+                                error.error.errormessages.errormessage[0] !== undefined
                             ) {
                                 const errorMsg = error.error.errormessages.errormessage[0];
                                 this.selected.message = error.status === 401 ? WhoisResourcesService.readableError(errorMsg) : errorMsg.text;

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 
 export interface ISubstitution {
@@ -18,12 +17,12 @@ export class CharsetToolsService {
     ];
 
     public isLatin1(value: string): boolean {
-        if (_.isUndefined(value) || _.isEmpty(value)) {
+        if (value === undefined || value.length === 0) {
             return true;
         }
         // escape encodes extended ISO-8859-1 characters (UTF code points U+0080-U+00ff) as %xx (two-digit hex)
         // whereas it encodes UTF codepoints U+0100 and above as %uxxxx (%u followed by four-digit hex.)
-        return !_.includes(escape(value), '%u');
+        return !escape(value).includes('%u');
     }
 
     // compare string against array of substitutable values and replace if found
@@ -31,7 +30,7 @@ export class CharsetToolsService {
         let subbedValue = value;
 
         // if we have this unicode char in the string we always want to replace it
-        _.forEach(this.substitutions, (sub) => {
+        this.substitutions.forEach((sub) => {
             // g to replace all not just the first
             subbedValue = subbedValue.replace(new RegExp(sub.code, 'g'), this.replaceUnicodeG(sub));
         });

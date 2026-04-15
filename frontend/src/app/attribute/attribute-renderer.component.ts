@@ -3,7 +3,6 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
-import * as _ from 'lodash';
 import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 import { ObjectTypesEnum } from '../query/object-types.enum';
@@ -155,7 +154,7 @@ export class AttributeRendererComponent implements OnInit {
 
     public removeAttribute(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {
         if (this.canBeRemoved(objectType, attributes, attribute)) {
-            const foundIdx = _.findIndex(attributes, (attr: IAttributeModel) => {
+            const foundIdx = (attributes ?? []).findIndex((attr: IAttributeModel) => {
                 return attr.name === attribute.name && attr.value === attribute.value;
             });
             if (foundIdx > -1) {
@@ -189,7 +188,7 @@ export class AttributeRendererComponent implements OnInit {
             return true;
         }
         // count attributes which match by name
-        const matches = _.filter(attributes, (attr: IAttributeModel) => {
+        const matches = attributes.filter((attr: IAttributeModel) => {
             return attr.name === attribute.name;
         });
         return matches.length < cardinality.maxOccurs;
@@ -208,7 +207,7 @@ export class AttributeRendererComponent implements OnInit {
             return true;
         }
         // count the attributes which match "attribute" name
-        const matches = _.filter(attributes, (attr: IAttributeModel) => {
+        const matches = attributes.filter((attr: IAttributeModel) => {
             return attr.name === attribute.name;
         });
         return matches.length > cardinality.minOccurs;
@@ -217,13 +216,13 @@ export class AttributeRendererComponent implements OnInit {
     private addAttr(attributes: IAttributeModel[], attribute: IAttributeModel, attributeName: string) {
         let foundIdx = -1;
         if (attribute.$$id) {
-            foundIdx = _.findIndex(attributes, (attr: IAttributeModel) => {
+            foundIdx = (attributes ?? []).findIndex((attr: IAttributeModel) => {
                 return attribute.$$id === attr.$$id;
             });
         }
         // if id wasn't found, find match on name/value.
         if (foundIdx < 0) {
-            foundIdx = _.findIndex(attributes, (attr: IAttributeModel) => {
+            foundIdx = (attributes ?? []).findIndex((attr: IAttributeModel) => {
                 return attr.name === attribute.name && attr.value === attribute.value;
             });
         }
@@ -297,7 +296,7 @@ export class AttributeRendererComponent implements OnInit {
     }
 
     private isServerLookupKey(refs: any) {
-        return !(_.isUndefined(refs) || refs.length === 0);
+        return !(refs === undefined || refs.length === 0);
     }
 
     private warnForNonSubstitutableUtf8(attribute: IAttributeModel, userInput: any) {
@@ -316,16 +315,16 @@ export class AttributeRendererComponent implements OnInit {
     }
 
     private filterBasedOnAttr(suggestions: any, attrName: string) {
-        return _.filter(suggestions, (item: any) => {
+        return suggestions.filter((item: any) => {
             if (attrName === 'abuse-c') {
-                return !_.isEmpty(item['abuse-mailbox']);
+                return item['abuse-mailbox'].length !== 0;
             }
             return true;
         });
     }
 
     private addNiceAutocompleteName(items: any, attrName: string) {
-        return _.map(items, (item: any) => {
+        return items.map((item: any) => {
             let name = '';
             let separator = ' / ';
             if (item.type === 'person') {
@@ -337,16 +336,16 @@ export class AttributeRendererComponent implements OnInit {
                 }
             } else if (item.type === 'aut-num') {
                 // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
-                if (_.isArray(item.descr) && item.descr.length) {
+                if (Array.isArray(item.descr) && item.descr.length) {
                     name = [item['as-name'], separator, item.descr[0]].join('');
                 } else {
                     name = item['as-name'];
                 }
             } else if (typeof item['org-name'] === 'string') {
                 name = item['org-name'];
-            } else if (_.isArray(item.descr)) {
+            } else if (Array.isArray(item.descr)) {
                 name = item.descr.join('');
-            } else if (_.isArray(item.owner)) {
+            } else if (Array.isArray(item.owner)) {
                 name = item.owner.join('');
             } else {
                 separator = '';

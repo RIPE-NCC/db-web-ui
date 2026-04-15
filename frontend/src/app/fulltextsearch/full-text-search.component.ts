@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { isArray } from 'lodash';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -187,7 +186,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     private refreshAttributeList(): string[] {
         const objects = this.selectedObjectTypes;
-        if (!isArray(objects) || objects.length === 0) {
+        if (!Array.isArray(objects) || objects.length === 0) {
             return [];
         }
         const allAttrs: string[] = [];

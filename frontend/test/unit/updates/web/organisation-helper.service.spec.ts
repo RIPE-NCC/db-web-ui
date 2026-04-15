@@ -2,7 +2,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import find from 'lodash/find';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
@@ -111,7 +110,7 @@ describe('OrganisationHelperService', () => {
         ];
 
         const attrs = organisationHelperService.addAbuseC('organisation', attributes);
-        const abuseC = find(attrs, (attr) => {
+        const abuseC = attrs.find((attr) => {
             return attr.name === 'abuse-c';
         });
 
@@ -127,7 +126,7 @@ describe('OrganisationHelperService', () => {
         ];
 
         const attrs = organisationHelperService.addAbuseC('something', attributes);
-        const abuseC = find(attrs, (attr) => {
+        const abuseC = attrs.find((attr) => {
             return attr.name === 'abuse-c';
         });
 
@@ -187,7 +186,7 @@ describe('OrganisationHelperService', () => {
         ];
 
         organisationHelperService.validateOrganisationAttributes('organisation', attributes);
-        const abuseC = find(attributes, (attr) => {
+        const abuseC = attributes.find((attr) => {
             return attr.name === 'abuse-c';
         });
         //@ts-ignore
@@ -244,7 +243,7 @@ describe('OrganisationHelperService', () => {
         ];
 
         organisationHelperService.validateOrganisationAttributes('organisation', attributes);
-        const abuseC = find(attributes, (attr) => {
+        const abuseC = attributes.find((attr) => {
             return attr.name === 'country';
         });
         //@ts-ignore

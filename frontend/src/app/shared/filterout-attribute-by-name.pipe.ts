@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as _ from 'lodash';
 import { IAttributeModel } from './whois-response-type.model';
 
 @Pipe({
@@ -9,6 +8,6 @@ import { IAttributeModel } from './whois-response-type.model';
 })
 export class FilteroutAttributeByNamePipe implements PipeTransform {
     transform(items: IAttributeModel[], names: string[]): IAttributeModel[] {
-        return items.filter((item) => !_.includes(names, item.name));
+        return items.filter((item) => !(names ?? []).includes(item.name));
     }
 }

@@ -6,7 +6,6 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
-import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { IpAddressService } from '../myresources/ip-address.service';
@@ -159,7 +158,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             // Populate empty attributes based on meta-info
             const mandatoryAttributesOnObjectType = this.whoisMetaService.getMandatoryAttributesOnObjectType(this.objectType);
-            if (_.isEmpty(mandatoryAttributesOnObjectType)) {
+            if (mandatoryAttributesOnObjectType.length === 0) {
                 void this.router.navigate(['not-found']);
                 return;
             }
@@ -242,7 +241,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public createRoleForAbuseCAttribute(abuseAttr: any) {
-        const maintainers = _.map(this.maintainers.object, (o: any) => {
+        const maintainers = this.maintainers.object.map((o: any) => {
             return { name: 'mnt-by', value: o.key };
         });
         abuseAttr.$$error = undefined;
@@ -270,9 +269,11 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public updateMaintainers(maintainers: IMaintainers) {
         this.maintainers = maintainers;
         // delete from attributes all maintainers which doesn't exist in maintainers
-        _.remove(this.attributes, (attr: any) => {
-            return attr.name === 'mnt-by' && !maintainers.object.find((mnt) => mnt.key === attr.value);
-        });
+        for (let i = this.attributes.length - 1; i >= 0; i--) {
+            if (this.attributes[i].name === 'mnt-by' && !maintainers.object.find((mnt) => mnt.key === this.attributes[i].value)) {
+                this.attributes.splice(i, 1);
+            }
+        }
         // add maintainers from maintainers object
         maintainers.object.forEach((mnt) => {
             if (!this.attributes.find((attr) => attr.name === 'mnt-by' && attr.value === mnt.key)) {
@@ -302,7 +303,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public isServerLookupKey(refs: any) {
-        return !(_.isUndefined(refs) || refs.length === 0);
+        return !(refs === undefined || refs.length === 0);
     }
 
     public isBrowserAutoComplete(attribute: any) {
@@ -368,7 +369,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.restService.fetchParentResource(type, attribute.value).subscribe({
                     next: (result: any) => {
                         let parent;
-                        if (result && result.objects && _.isArray(result.objects.object)) {
+                        if (result && result.objects && Array.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
                         }
                         this.resourceParentFound(parent);
@@ -382,10 +383,10 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     private static uniformed(input: string) {
-        if (_.isUndefined(input)) {
+        if (input === undefined) {
             return input;
         }
-        return _.trim(input).toUpperCase();
+        return input?.trim().toUpperCase();
     }
 
     public canAttributeBeDuplicated(attr: IAttributeModel) {
@@ -399,13 +400,13 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     private addAttr(attributes: IAttributeModel[], attribute: IAttributeModel, attributeName: string) {
         let foundIdx = -1;
         if (attribute.$$id) {
-            foundIdx = _.findIndex(attributes, (attr: IAttributeModel) => {
+            foundIdx = (attributes ?? []).findIndex((attr: IAttributeModel) => {
                 return attribute.$$id === attr.$$id;
             });
         }
         // if id wasn't found, find match on name/value.
         if (foundIdx < 0) {
-            foundIdx = _.findIndex(attributes, (attr: IAttributeModel) => {
+            foundIdx = (attributes ?? []).findIndex((attr: IAttributeModel) => {
                 return attr.name === attribute.name && attr.value === attribute.value;
             });
         }
@@ -429,12 +430,11 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     public displayAddAttributeDialog(attr: any) {
         let originalAddableAttributes = this.whoisResourcesService.getAddableAttributes(this.attributes, this.objectType, this.attributes);
 
-        const addableAttributes = _.filter(
-            this.screenLogicInterceptorService.beforeAddAttribute(this.operation, this.source, this.objectType, this.attributes, originalAddableAttributes),
-            (attrPred: any) => {
+        const addableAttributes = this.screenLogicInterceptorService
+            .beforeAddAttribute(this.operation, this.source, this.objectType, this.attributes, originalAddableAttributes)
+            .filter((attrPred: any) => {
                 return !attrPred.$$meta.$$isLir;
-            },
-        );
+            });
 
         const modalRef = this.modalService.open(ModalAddAttributeComponent, { size: 'lg' });
         modalRef.componentInstance.items = addableAttributes;
@@ -464,7 +464,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
         modalRef.closed.subscribe((pgp: string) => {
             // get index of first attribute above current - editing certif
             let foundIdx =
-                _.findIndex(this.attributes, (attribute: IAttributeModel) => {
+                (this.attributes ?? []).findIndex((attribute: IAttributeModel) => {
                     return attribute.name === 'certif';
                 }) - 1;
             // remove all existing certif attributes from object
@@ -744,7 +744,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.insertMissingMandatoryAttributes();
 
                 // save object for later diff in display-screen
-                this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
+                this.messageStoreService.add('DIFF', structuredClone(this.attributes));
 
                 // prevent warning upon modify with last-modified
                 this.whoisResourcesService.removeAttributeWithName(this.attributes, 'last-modified');
@@ -790,12 +790,12 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
             this.restService.fetchMntnersForSSOAccount().subscribe({
                 next: (results: any) => {
                     this.maintainers.sso = results;
-                    const inetnumAttr = _.find(this.attributes, (attr: any) => {
+                    const inetnumAttr = (this.attributes ?? []).find((attr: any) => {
                         return this.objectType === attr.name && attr.value;
                     });
                     this.restService.fetchParentResource(this.objectType, inetnumAttr.value).subscribe({
                         next: (result: any) => {
-                            if (result && result.objects && _.isArray(result.objects.object)) {
+                            if (result && result.objects && Array.isArray(result.objects.object)) {
                                 let parent = result.objects.object[0];
                                 this.setStatusOptions(parent.attributes.attribute);
                             }
@@ -815,7 +815,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     private insertMissingMandatoryAttributes() {
         const missingMandatories = this.whoisResourcesService.getMissingMandatoryAttributes(this.attributes, this.objectType);
         if (missingMandatories.length > 0) {
-            _.each(missingMandatories, (item) => {
+            (missingMandatories ?? []).forEach((item) => {
                 this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(
                     this.objectType,
                     this.whoisResourcesService.addMissingMandatoryAttribute(this.attributes, this.objectType, item),
@@ -856,7 +856,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 console.debug('is self mntner and needs to be updated');
                 this.wrapAndEnrichResources(this.objectType, associationResp);
                 // save object for later diff in display-screen
-                this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
+                this.messageStoreService.add('DIFF', structuredClone(this.attributes));
             } else {
                 this.restCallInProgress = true;
                 this.restService.fetchObject(this.source, this.objectType, this.name).subscribe({
@@ -866,7 +866,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                         this.attributes = this.whoisResourcesService.getAttributes(result);
 
                         // save object for later diff in display-screen
-                        this.messageStoreService.add('DIFF', _.cloneDeep(this.attributes));
+                        this.messageStoreService.add('DIFF', structuredClone(this.attributes));
                     },
                     error: () => {
                         this.restCallInProgress = false;
