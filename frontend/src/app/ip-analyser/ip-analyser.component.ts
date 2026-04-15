@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
-import { KeyType } from '../apikeys/create-new-api-key/create-new-api-key.component';
+import { KeyType } from '../apikeys/utils';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { ApikeysDropdownComponent } from '../myresources/apikeys-dropdown/apikeys-dropdown.component';

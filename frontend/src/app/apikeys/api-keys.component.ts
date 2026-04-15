@@ -7,9 +7,9 @@ import { Subscription } from 'rxjs';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
-import { ApiKeysService } from './api-keys.service';
-import { CreateNewApiKeyComponent, KeyType } from './create-new-api-key/create-new-api-key.component';
+import { CreateNewApiKeyComponent } from './create-new-api-key/create-new-api-key.component';
 import { ExamplesApiKeysComponent } from './examples-api-keys/examples-api-keys.component';
+import { KeyType } from './utils';
 
 @Component({
     templateUrl: './api-keys.component.html',
@@ -19,7 +19,6 @@ import { ExamplesApiKeysComponent } from './examples-api-keys/examples-api-keys.
 })
 export class ApiKeysComponent implements OnInit, OnDestroy {
     private activatedRoute = inject(ActivatedRoute);
-    private apiKeysService = inject(ApiKeysService);
     private properties = inject(PropertiesService);
     private orgDropDownSharedService = inject(OrgDropDownSharedService);
 

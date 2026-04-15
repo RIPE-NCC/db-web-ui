@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KeyType } from './create-new-api-key/create-new-api-key.component';
 import { ApiKey } from './types';
+import { KeyType } from './utils';
 
 const endpointMap: Record<KeyType, string> = {
     [KeyType.MY_RESOURCES]: 'myresources',

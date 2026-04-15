@@ -18,12 +18,7 @@ import { RestService } from '../../updatesweb/rest.service';
 import { ApiKeyConfirmationDialogComponent } from '../api-key-confirmation-dialog/api-key-confirmation-dialog.component';
 import { ApiKeysService } from '../api-keys.service';
 import { ApiKey } from '../types';
-
-export enum KeyType {
-    MAINTAINER = 'Maintainer',
-    MY_RESOURCES = 'My Resources',
-    IP_ANALYSER = 'IP Analyser',
-}
+import { isKeyDisabled, isMemberOrg, KeyType } from '../utils';
 
 @Component({
     selector: 'create-new-api-key',
@@ -71,8 +66,6 @@ export class CreateNewApiKeyComponent implements OnInit, OnChanges {
     minDate: Date = new Date();
     maxDate: Date = new Date();
 
-    restrictedKeys: Set<KeyType> = new Set([KeyType.MY_RESOURCES, KeyType.IP_ANALYSER]);
-
     private searchMaintainers = new Subject<string>();
 
     ngOnInit(): void {
@@ -91,8 +84,8 @@ export class CreateNewApiKeyComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(): void {
-        if (!this.isMemberOrg()) {
-            this.selectedKeyType = this.selectedOrg ? this.initialCreateKeyType || KeyType.MAINTAINER : KeyType.MAINTAINER;
+        if (!isMemberOrg(this.selectedOrg as IUserInfoRegistration)) {
+            this.selectedKeyType = KeyType.MAINTAINER;
         }
     }
 
@@ -109,17 +102,6 @@ export class CreateNewApiKeyComponent implements OnInit, OnChanges {
         if (this.maintainers.length > 1) {
             this.maintainers.splice(index, 1);
         }
-    }
-
-    isMemberOrg(): boolean {
-        return !!this.selectedOrg && !!(this.selectedOrg as IUserInfoRegistration).membershipId;
-    }
-
-    isKeyDisabled(key: KeyType): boolean {
-        const isRestricted = this.restrictedKeys.has(key);
-        const noValidOrg = !this.selectedOrg || !this.isMemberOrg();
-
-        return isRestricted && noValidOrg;
     }
 
     saveApiKey() {
@@ -158,4 +140,5 @@ export class CreateNewApiKeyComponent implements OnInit, OnChanges {
     }
 
     protected readonly KeyType = KeyType;
+    protected readonly isKeyDisabled = isKeyDisabled;
 }

@@ -103,7 +103,6 @@ public class JettyConfiguration  {
             /* ---------------- ROOT HANDLER CHAIN ---------------- */
             final ContextHandlerCollection rootHandlers = new ContextHandlerCollection();
 
-            rootHandlers.addHandler(resourceStaticHandler());
             rootHandlers.addHandler(badRequestRewriteHandler());
             rootHandlers.addHandler(contexts);
 
@@ -147,19 +146,7 @@ public class JettyConfiguration  {
             }
         }
     }
-
-    private ContextHandler resourceStaticHandler() {
-        final ResourceHandler resourceHandler = new ResourceHandler();
-        final Resource base = ResourceFactory.of(resourceHandler).newClassLoaderResource("/static/", true);
-        resourceHandler.setBaseResource(base);
-        resourceHandler.setDirAllowed(false);
-        resourceHandler.setCacheControl("public, max-age=31536000");
-
-        ContextHandler contextHandler = new ContextHandler();
-        contextHandler.setHandler(resourceHandler);
-        return contextHandler;
-    }
-
+    
     private RewriteHandler rewriteHandler() {
         final RewriteHandler rewriteHandler = new RewriteHandler();
         redirectRules(rewriteHandler);

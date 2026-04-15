@@ -6,7 +6,7 @@ import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ApiKeysComponent } from '../../../src/app/apikeys/api-keys.component';
 import { ApiKeysService } from '../../../src/app/apikeys/api-keys.service';
-import { KeyType } from '../../../src/app/apikeys/create-new-api-key/create-new-api-key.component';
+import { KeyType } from '../../../src/app/apikeys/utils';
 import { IUserInfoOrganisation } from '../../../src/app/dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../../../src/app/dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../../../src/app/properties.service';

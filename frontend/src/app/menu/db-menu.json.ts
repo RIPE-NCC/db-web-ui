@@ -34,6 +34,7 @@ export const dbMenuObject = {
                 url: 'api-keys',
                 id: 'api-keys',
                 icon: 'assets/icons/fa-key.svg',
+                active: () => location.href.includes('api-keys'),
             },
             {
                 title: 'Test Database',

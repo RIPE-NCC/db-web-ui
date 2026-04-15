@@ -6,9 +6,10 @@ import { MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
-import { IUserInfoOrganisation } from '../../dropdown/org-data-type.model';
+import { IUserInfoOrganisation, IUserInfoRegistration } from '../../dropdown/org-data-type.model';
 import { PropertiesService } from '../../properties.service';
-import { KeyType } from '../create-new-api-key/create-new-api-key.component';
+
+import { isKeyDisabled, isMemberOrg, KeyType } from '../utils';
 
 export const DOCUMENT_TYPE = {
     XML: { name: 'XML', type: 'application/xml' },
@@ -61,6 +62,9 @@ export class ExamplesApiKeysComponent implements OnChanges {
     ipv6NAssignmentMyResources: string;
 
     ngOnChanges(): void {
+        if (!isMemberOrg(this.selectedOrg as IUserInfoRegistration)) {
+            this.selectedKeyType = KeyType.MAINTAINER;
+        }
         this.showExamples();
     }
 
@@ -74,27 +78,27 @@ export class ExamplesApiKeysComponent implements OnChanges {
 
         switch (this.selectedKeyType) {
             case KeyType.MAINTAINER: {
-                this.readAnObject = `curl -H \"Authorisation: Basic <api-key>\" -H \"Accept: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>/<primary-key>?unfiltered\"`;
-                this.createAnObject = `curl -d @<file> -H \"Authorisation: Basic <api-key>\" -H \"Content-type: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>\"`;
-                this.updateAnObject = `curl -X PUT -d @<file> -H \"Authorisation: Basic <api-key>\" -H \"Content-type: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>/<primary-key>\"`;
-                this.deleteAnObject = `curl -X DELETE -d @file -H \"Authorisation: Basic <api-key>\" -H \"Content-type: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>/<primary-key>\"`;
+                this.readAnObject = `curl -H \"Authorization: Basic <api-key>\" -H \"Accept: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>/<primary-key>?unfiltered\"`;
+                this.createAnObject = `curl -d @<file> -H \"Authorization: Basic <api-key>\" -H \"Content-type: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>\"`;
+                this.updateAnObject = `curl -X PUT -d @<file> -H \"Authorization: Basic <api-key>\" -H \"Content-type: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>/<primary-key>\"`;
+                this.deleteAnObject = `curl -X DELETE -d @file -H \"Authorization: Basic <api-key>\" -H \"Content-type: ${this.docTypeForView}\" \"${this.propertiesService.REST_API_RIPE_URL}/ripe/<object-type>/<primary-key>\"`;
                 break;
             }
             case KeyType.IP_ANALYSER: {
-                this.ipv6Analyser = `curl "${location.origin}/api/ipanalyser/v2/ipv6?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv4Analyser = `curl "${location.origin}/api/ipanalyser/v2/ipv4?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv6Analyser = `curl "${location.origin}/api/ipanalyser/v2/ipv6?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv4Analyser = `curl "${location.origin}/api/ipanalyser/v2/ipv4?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
                 break;
             }
             case KeyType.MY_RESOURCES: {
-                this.allResourcesMyResources = `curl "${location.origin}/api/myresources/v2/allresources?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.asnsMyResources = `curl "${location.origin}/api/myresources/v2/asns?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv4MyResources = `curl "${location.origin}/api/myresources/v2/ipv4?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv6MyResources = `curl "${location.origin}/api/myresources/v2/ipv6?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv4NAllocationMyResources = `curl "${location.origin}/api/myresources/v2/ipv4/allocations?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv4NAssignmentMyResources = `curl "${location.origin}/api/myresources/v2/ipv4/assignments?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv4NLegacyMyResources = `curl "${location.origin}/api/myresources/v2/ipv4/erx?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv6NAllocationMyResources = `curl "${location.origin}/api/myresources/v2/ipv6/allocations?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
-                this.ipv6NAssignmentMyResources = `curl "${location.origin}/api/myresources/v2/ipv6/assignments?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <apiKey>" -H "Accept: ${this.docTypeForView}"`;
+                this.allResourcesMyResources = `curl "${location.origin}/api/myresources/v2/allresources?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.asnsMyResources = `curl "${location.origin}/api/myresources/v2/asns?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv4MyResources = `curl "${location.origin}/api/myresources/v2/ipv4?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv6MyResources = `curl "${location.origin}/api/myresources/v2/ipv6?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv4NAllocationMyResources = `curl "${location.origin}/api/myresources/v2/ipv4/allocations?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv4NAssignmentMyResources = `curl "${location.origin}/api/myresources/v2/ipv4/assignments?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv4NLegacyMyResources = `curl "${location.origin}/api/myresources/v2/ipv4/erx?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv6NAllocationMyResources = `curl "${location.origin}/api/myresources/v2/ipv6/allocations?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
+                this.ipv6NAssignmentMyResources = `curl "${location.origin}/api/myresources/v2/ipv6/assignments?org-id=${this.selectedOrg.orgObjectId}\" -H "Authorization: Basic <api-key>" -H "Accept: ${this.docTypeForView}"`;
                 break;
             }
         }
@@ -115,4 +119,5 @@ export class ExamplesApiKeysComponent implements OnChanges {
     };
 
     protected readonly KeyType = KeyType;
+    protected readonly isKeyDisabled = isKeyDisabled;
 }

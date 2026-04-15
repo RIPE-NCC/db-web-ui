@@ -15,7 +15,7 @@ export const resourcesMenuObject = {
                 url: 'ip-analyser',
                 id: 'ipanalyser',
                 icon: 'assets/icons/fa-signal-bar.svg',
-                active: () => location.href.includes('ipanalyser'),
+                active: () => location.href.includes('ip-analyser'),
             },
         ],
         footer: footer,
