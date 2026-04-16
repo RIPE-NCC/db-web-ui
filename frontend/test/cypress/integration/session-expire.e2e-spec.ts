@@ -67,8 +67,7 @@ describe('Session expire', () => {
             .clickOnCreateButton()
             .expectHeadingTitleToContain('Create "person" object')
             .typeOnField('person', 'Test t')
-            .typeOnField('address', '123')
-            .typeOnField('phone', '+44 123 123 123');
+            .typeOnField('e-mail', 'test@ripe.net');
         cy.changeJsonResponseFile(personCreation, personAuthError);
         cy.clearCookie('crowd.ripe.hint');
         webupdatesPage.submitForm();
@@ -88,8 +87,7 @@ describe('Session expire', () => {
             .clickOnCreateButton()
             .expectHeadingTitleToContain('Create "person" object')
             .typeOnField('person', 'Test t')
-            .typeOnField('address', '123')
-            .typeOnField('phone', '+44 123 123 123');
+            .typeOnField('e-mail', 'test@ripe.net');
         cy.changeJsonResponseFile(personCreation, personAuthError);
 
         webupdatesPage.submitForm();
