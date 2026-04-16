@@ -103,10 +103,7 @@ describe('CreateMntnerPairComponent', () => {
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'person').$$error).toEqual(
                 'Mandatory attribute not set',
             );
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'address').$$error).toEqual(
-                'Mandatory attribute not set',
-            );
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'phone').$$error).toEqual(
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'e-mail').$$error).toEqual(
                 'Mandatory attribute not set',
             );
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, 'mntner').$$error).toEqual(
@@ -123,16 +120,14 @@ describe('CreateMntnerPairComponent', () => {
             component.submit();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'person', PERSON_NAME);
-            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'phone', '+316');
-            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'address', 'home');
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'e-mail', 'test@ripe.net');
             component.whoisResourcesService.setSingleAttributeOnName(component.mntnerAttributes, 'mntner', MNTNER_NAME);
 
             component.submit();
             fixture.detectChanges();
 
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'person').value).toBe(PERSON_NAME);
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'phone').value).toBe('+316');
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'address').value).toBe('home');
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'e-mail').value).toBe('test@ripe.net');
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'nic-hdl').value).toEqual('AUTO-1');
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'mnt-by').value).toEqual(MNTNER_NAME);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'source').value).toEqual(SOURCE);
@@ -168,6 +163,7 @@ describe('CreateMntnerPairComponent', () => {
             component.submit();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'person', 'Titus Tester');
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'e-mail', 'test@ripe.net');
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'phone', '+316');
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'address', 'home');
             component.whoisResourcesService.setSingleAttributeOnName(component.mntnerAttributes, 'mntner', MNTNER_NAME);
@@ -175,6 +171,7 @@ describe('CreateMntnerPairComponent', () => {
             component.submit();
 
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'person').value).toBe(PERSON_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'e-mail').value).toEqual('test@ripe.net');
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'nic-hdl').value).toEqual('AUTO-1');
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'mnt-by').value).toEqual(MNTNER_NAME);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'source').value).toEqual(SOURCE);
@@ -277,9 +274,6 @@ describe('CreateMntnerPairComponent', () => {
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'role').$$error).toEqual(
                 'Mandatory attribute not set',
             );
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'address').$$error).toEqual(
-                'Mandatory attribute not set',
-            );
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'e-mail').$$error).toEqual(
                 'Mandatory attribute not set',
             );
@@ -298,7 +292,6 @@ describe('CreateMntnerPairComponent', () => {
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'role', ROLE_NAME);
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'e-mail', ROLE_EMAIL);
-            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'address', 'Amsterdam');
             component.whoisResourcesService.setSingleAttributeOnName(component.mntnerAttributes, 'mntner', MNTNER_NAME);
 
             component.submit();
@@ -306,7 +299,6 @@ describe('CreateMntnerPairComponent', () => {
 
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'role').value).toBe(ROLE_NAME);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'e-mail').value).toBe(ROLE_EMAIL);
-            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'address').value).toBe('Amsterdam');
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'nic-hdl').value).toEqual('AUTO-1');
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'mnt-by').value).toEqual(MNTNER_NAME);
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'source').value).toEqual(SOURCE);

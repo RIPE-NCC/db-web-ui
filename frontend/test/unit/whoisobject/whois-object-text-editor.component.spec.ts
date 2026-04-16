@@ -43,8 +43,7 @@ describe('WhoisObjectTextEditorComponent', () => {
     const testPersonRpslScreen =
         'person:test person\n' + 'address:Amsterdam\n' + 'phone:+316\n' + 'nic-hdl:TST08-RIPE\n' + 'mnt-by:TEST-MNT\n' + 'source:RIPE\n';
 
-    const testPersonRpslMissingPhone =
-        'person:test person\n' + 'address:Amsterdam\n' + 'phone:\n' + 'nic-hdl:TST08-RIPE\n' + 'mnt-by:TEST-MNT\n' + 'source:RIPE\n';
+    const testPersonRpslMissingPhone = 'person:test person\n' + 'address:test@test.net\n' + 'nic-hdl:TST08-RIPE\n' + 'mnt-by:TEST-MNT\n' + 'source:RIPE\n';
 
     const testPersonObject = {
         objects: {
@@ -156,7 +155,7 @@ describe('WhoisObjectTextEditorComponent', () => {
         whoisObjectTextEditorComponent.submit();
         await componentFixture.whenStable();
 
-        expect(whoisObjectTextEditorComponent.alertsServices.addGlobalError).toHaveBeenCalledWith('phone: Mandatory attribute not set');
+        expect(whoisObjectTextEditorComponent.alertsServices.addGlobalError).toHaveBeenCalledWith('e-mail: Missing mandatory attribute');
     });
 
     it('should emit delete event after pressing delete button', async () => {

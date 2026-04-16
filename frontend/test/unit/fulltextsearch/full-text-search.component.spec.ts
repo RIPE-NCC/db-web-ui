@@ -88,7 +88,7 @@ describe('FullTextSearchComponent', () => {
 
         component.selectAll();
         expect(component.selectedObjectTypes.length).toEqual(21);
-        expect(component.selectableAttributes.length).toEqual(102);
+        expect(component.selectableAttributes.length).toEqual(103);
         expect(component.queryHash()).toEqual(
             'alltrueas-blockas-setaut-numdomainfilter-setinet-rtrinet6numinetnumirtkey-certmntnerorganisationpeering-setpersonpoempoetic-formrolerouteroute-setroute6rtr-set',
         );
