@@ -45,7 +45,7 @@
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>3.5.12</spring-boot.version>
         <!-- whois master 13-oct -->
-        <whois.version>c7b9f4e6</whois.version>
+        <whois.version>052a4c13</whois.version>
     </properties>
 
     <dependencyManagement>
