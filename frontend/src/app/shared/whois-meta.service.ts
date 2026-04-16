@@ -199,6 +199,7 @@ export class WhoisMetaService {
                 { name: 'e-mail', mandatory: true, multiple: true, refs: this.refs },
                 { name: 'abuse-mailbox', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'signature', mandatory: false, multiple: true, refs: ['KEY-CERT'] },
+                { name: 'contact', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'encryption', mandatory: false, multiple: true, refs: ['KEY-CERT'] },
                 { name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION'] },
                 { name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE'] },
@@ -267,6 +268,7 @@ export class WhoisMetaService {
                 { name: 'phone', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'fax-no', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'e-mail', mandatory: true, multiple: true, refs: this.refs },
+                { name: 'contact', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'geoloc', mandatory: false, multiple: false, refs: this.refs },
                 { name: 'language', mandatory: false, multiple: true, refs: this.refs, isEnum: true },
                 { name: 'reg-nr', mandatory: false, multiple: false, refs: this.refs },
@@ -307,10 +309,11 @@ export class WhoisMetaService {
         person: {
             attributes: [
                 { name: 'person', mandatory: true, multiple: false, refs: this.refs, searchable: true },
-                { name: 'address', mandatory: true, multiple: true, refs: this.refs },
-                { name: 'phone', mandatory: true, multiple: true, refs: this.refs },
+                { name: 'address', mandatory: false, multiple: true, refs: this.refs },
+                { name: 'phone', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'fax-no', mandatory: false, multiple: true, refs: this.refs },
-                { name: 'e-mail', mandatory: false, multiple: true, refs: this.refs },
+                { name: 'e-mail', mandatory: true, multiple: true, refs: this.refs },
+                { name: 'contact', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION'] },
                 { name: 'nic-hdl', mandatory: true, multiple: false, primaryKey: true, refs: this.refs },
                 { name: 'remarks', mandatory: false, multiple: true, refs: this.refs },
@@ -356,10 +359,11 @@ export class WhoisMetaService {
         role: {
             attributes: [
                 { name: 'role', mandatory: true, multiple: false, refs: this.refs, searchable: true },
-                { name: 'address', mandatory: true, multiple: true, refs: this.refs },
+                { name: 'address', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'phone', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'fax-no', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'e-mail', mandatory: true, multiple: true, refs: this.refs },
+                { name: 'contact', mandatory: false, multiple: true, refs: this.refs },
                 { name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION'] },
                 { name: 'admin-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE'] },
                 { name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE'] },
@@ -843,6 +847,11 @@ export class WhoisMetaService {
             short: 'Defines what component routes are used to form the aggregate.',
             syntax: '',
         }, // no documentation available
+        contact: {
+            description: `Specifies a contact URI for messaging platforms such as WhatsApp, Signal, SIP or Telegram.`,
+            short: 'Specifies a contact URI for messaging platforms such as WhatsApp, Signal, SIP or Telegram.',
+            syntax: 'The syntax of a “contact:” attribute value is a URI. Any valid URI value will be accepted.',
+        },
         country: {
             description: 'Identifies the country.',
             short: 'Officially Assigned two-letter ISO 3166 country code or "EU" (exceptionally reserved), e.g. NL',
