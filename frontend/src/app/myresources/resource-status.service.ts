@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { IAttributeModel, IStatusOption } from '../shared/whois-response-type.model';
 
 //TODO: This class should be static
@@ -106,7 +105,7 @@ export class ResourceStatusService {
         }
         for (const attr of attributes) {
             if (attr.name.trim() === 'status') {
-                return attr.value && _.includes(ResourceStatusService.rsMntnerStatuses.get(objectType.toLowerCase()), attr.value.trim());
+                return attr.value && (ResourceStatusService.rsMntnerStatuses.get(objectType.toLowerCase()) ?? []).includes(attr.value.trim());
             }
         }
         return false;

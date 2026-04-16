@@ -5,7 +5,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { EMPTY } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -282,7 +281,7 @@ describe('TextModifyComponent', () => {
 
         await componentFixture.whenStable();
 
-        const plaintextErrors = _.map(textModifyComponent.alertsServices.alerts.errors, (item) => ({ plainText: item.plainText }));
+        const plaintextErrors = textModifyComponent.alertsServices.alerts.errors.map((item) => ({ plainText: item.plainText }));
         expect(plaintextErrors).toEqual([{ plainText: 'ERROR:101: no entries found\n\nNo entries found in source RIPE.\n' }]);
     });
 
@@ -335,7 +334,7 @@ describe('TextModifyComponent', () => {
         await componentFixture.whenStable();
 
         expect(textModifyComponent.alertsServices.alerts.errors.length).toEqual(1);
-        const plaintextErrors = _.map(textModifyComponent.alertsServices.alerts.errors, (item) => ({ plainText: item.plainText }));
+        const plaintextErrors = textModifyComponent.alertsServices.alerts.errors.map((item) => ({ plainText: item.plainText }));
         expect(plaintextErrors).toEqual([{ plainText: `"mnt-ref" is not valid for this object type` }]);
 
         expect(textModifyComponent.object.rpsl).toEqual(testPersonRpsl);

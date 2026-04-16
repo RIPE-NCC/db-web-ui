@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -75,7 +74,7 @@ export class TextModifyComponent implements OnInit {
             const whoisResources = response.data;
             this.alertsServices.setAllErrors(whoisResources);
             const attributes = this.whoisResourcesService.getAttributes(whoisResources);
-            if (!_.isEmpty(attributes)) {
+            if (attributes.length !== 0) {
                 this.errorReporterService.log('TextModify', this.object.type, this.alertsServices.alerts.errors, attributes);
             }
         } else {

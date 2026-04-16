@@ -7,7 +7,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import * as _ from 'lodash';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
@@ -237,7 +236,7 @@ export class QueryComponent implements OnDestroy {
             return;
         }
         this.showsDocsLink = false;
-        const cleanQp = _.cloneDeep(this.qp);
+        const cleanQp = structuredClone(this.qp);
         // Reset on-screen widgets
         this.alertsService.clearAlertMessages();
 
@@ -352,7 +351,7 @@ export class QueryComponent implements OnDestroy {
         this.whoisVersion = response.version;
         // multiple term searches can have errors, too
         this.alertsService.setAllErrors(response);
-        const cleanQp = _.cloneDeep(this.qp);
+        const cleanQp = structuredClone(this.qp);
         this.queryParametersService.validate(cleanQp);
         const jsonQueryString = this.queryService.buildQueryStringForLink(cleanQp);
         if (jsonQueryString) {
@@ -389,7 +388,7 @@ export class QueryComponent implements OnDestroy {
 
     private convertListToMapOfBools(list: string[]) {
         const map = {};
-        if (_.isArray(list)) {
+        if (Array.isArray(list)) {
             for (const l of list) {
                 map[l.replace(/-/g, '_').toLocaleUpperCase()] = true;
             }
@@ -419,9 +418,10 @@ export class QueryComponent implements OnDestroy {
     }
 
     private equalsItemsInString(formQueryParamItems: string, stateParamItems: string): boolean {
-        const listFormItems = formQueryParamItems ? formQueryParamItems.split(';') : formQueryParamItems;
-        const listStateItems = stateParamItems ? stateParamItems.split(';') : stateParamItems;
-        return _.difference(listFormItems, listStateItems).length === 0;
+        const listFormItems = formQueryParamItems?.split(';') ?? [];
+        const listStateItems = stateParamItems?.split(';') ?? [];
+
+        return listFormItems.every((item) => listStateItems.includes(item));
     }
 
     private gotoAnchor() {

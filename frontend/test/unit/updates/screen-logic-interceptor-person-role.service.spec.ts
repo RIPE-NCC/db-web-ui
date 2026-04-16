@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
@@ -19,7 +18,7 @@ describe('ScreenLogicInterceptorService Person/Role', () => {
 
     let MockMntnerService = {
         isNccMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
+            return ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'].includes(mntnerKey.toUpperCase());
         },
     };
 

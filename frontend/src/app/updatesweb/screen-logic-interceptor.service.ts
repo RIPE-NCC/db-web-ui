@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { PropertiesService } from '../properties.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -352,7 +351,7 @@ export class ScreenLogicInterceptorService {
     ) {
         const attrs = this.globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
         const interceptorFunc = this._getInterceptorFunc(objectType, 'beforeEdit');
-        if (_.isUndefined(interceptorFunc)) {
+        if (interceptorFunc === undefined) {
             return attrs;
         }
         return interceptorFunc(method, source, objectType, attrs, errors, warnings, infos, isComaintainedByNccMntner);
@@ -362,7 +361,7 @@ export class ScreenLogicInterceptorService {
         let attrs = this.globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
         attrs = this.setErrorForNonLatin1(attrs);
         const interceptorFunc = this._getInterceptorFunc(objectType, 'afterEdit');
-        if (_.isUndefined(interceptorFunc)) {
+        if (interceptorFunc === undefined) {
             return attrs;
         }
         return interceptorFunc(method, source, objectType, attrs, errors, warnings, infos);
@@ -370,7 +369,7 @@ export class ScreenLogicInterceptorService {
 
     public afterSubmitSuccess(method: string, source: string, objectType: string, responseAttributes: IAttributeModel[], warnings: string[], infos: string[]) {
         const interceptorFunc = this._getInterceptorFunc(objectType, 'afterSubmitSuccess');
-        if (_.isUndefined(interceptorFunc)) {
+        if (interceptorFunc === undefined) {
             return false;
         }
         return interceptorFunc(method, source, objectType, responseAttributes, warnings, infos);
@@ -387,7 +386,7 @@ export class ScreenLogicInterceptorService {
         infos: string[],
     ) {
         const interceptorFunc = this._getInterceptorFunc(objectType, 'afterSubmitError');
-        if (_.isUndefined(interceptorFunc)) {
+        if (interceptorFunc === undefined) {
             return false;
         }
         return interceptorFunc(method, source, objectType, status, whoisResources, errors, warnings, infos);
@@ -396,7 +395,7 @@ export class ScreenLogicInterceptorService {
     public beforeAddAttribute(method: string, source: string, objectType: string, objectAttributes: IAttributeModel[], addableAttributes: any) {
         const addableAttrs = this.globalInterceptor.beforeAddAttribute(method, source, objectType, objectAttributes, addableAttributes);
         const interceptorFunc = this._getInterceptorFunc(objectType, 'beforeAddAttribute');
-        if (_.isUndefined(interceptorFunc)) {
+        if (interceptorFunc === undefined) {
             return addableAttrs;
         }
         return interceptorFunc(method, source, objectType, objectAttributes, addableAttrs);
@@ -413,7 +412,7 @@ export class ScreenLogicInterceptorService {
         const orgType = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'org-type');
 
         if (method === 'Modify' && orgType.value === 'LIR') {
-            _.forEach(attributes, (attr) => {
+            attributes.forEach((attr) => {
                 if (['address', 'phone', 'fax-no', 'e-mail', 'org-name', 'mnt-by', 'abuse-c'].indexOf(attr.name) > -1) {
                     attr.$$meta.$$isLir = true;
                 }
@@ -486,7 +485,7 @@ export class ScreenLogicInterceptorService {
 
     private disablePrimaryKeyIfModifying(method: string, attributes: IAttributeModel[]) {
         if (method === 'Modify') {
-            _.forEach(attributes, (attr) => {
+            attributes.forEach((attr) => {
                 if (attr.$$meta.$$primaryKey) {
                     attr.$$meta.$$disable = true;
                 }
@@ -498,7 +497,7 @@ export class ScreenLogicInterceptorService {
 
     private disableRipeMntIfModifying(method: string, attributes: any) {
         const disable = (type: string) => {
-            _.forEach(WhoisResourcesService.getAllAttributesOnName(attributes, type), (attr) => {
+            WhoisResourcesService.getAllAttributesOnName(attributes, type).forEach((attr) => {
                 attr.$$meta.$$disable = this.mntnerService.isAnyNccMntner(attr.value);
             });
         };
@@ -535,7 +534,7 @@ export class ScreenLogicInterceptorService {
 
         if (
             statusAttr &&
-            !_.isEmpty(statusAttr.value) &&
+            statusAttr.value?.length !== 0 &&
             statusAttr.value !== 'ASSIGNED PI' &&
             statusAttr.value !== 'ASSIGNED ANYCAST' &&
             statusAttr.value !== 'LEGACY'
@@ -567,7 +566,7 @@ export class ScreenLogicInterceptorService {
     private _disableRipeMntnrAttributes(attributes: any) {
         // if any of the maintainers is a ripe maintainer then some attributes are read-only
         if (
-            _.findIndex(WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by'), (mntBy: any) => {
+            (WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by') ?? []).findIndex((mntBy: any) => {
                 return this.mntnerService.isNccMntner(mntBy.value);
             }) < 0
         ) {
@@ -587,7 +586,7 @@ export class ScreenLogicInterceptorService {
     private disableNetnameAttribute(attributes: any) {
         const allocationStatuses = ['ALLOCATED PA', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
 
-        if (_.includes(allocationStatuses, this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status').value)) {
+        if (allocationStatuses.includes(this.whoisResourcesService.getSingleAttributeOnName(attributes, 'status').value)) {
             const netnameAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'netname');
             if (netnameAttr) {
                 netnameAttr.$$meta.$$disable = true;
@@ -652,7 +651,7 @@ export class ScreenLogicInterceptorService {
     private _isPendingAuthenticationError(httpStatus: number, whoisResources: any) {
         let status = false;
         if (httpStatus === 400) {
-            status = _.some(whoisResources.errormessages.errormessage, (item: any) => {
+            status = (whoisResources.errormessages.errormessage ?? []).some((item: any) => {
                 return item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
             });
         }
@@ -661,11 +660,11 @@ export class ScreenLogicInterceptorService {
     }
 
     private _composePendingResponse(resp: any, source: string) {
-        const found = _.find(resp.errormessages.errormessage, (item: any) => {
+        const found = (resp.errormessages.errormessage ?? []).find((item: any) => {
             return item.severity === 'Error' && item.text === `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`;
         });
 
-        if (!_.isUndefined(found) && found.args.length >= 4) {
+        if (found !== undefined && found.args.length >= 4) {
             const obstructingType = found.args[0].value;
             const obstructingName = found.args[1].value;
             const mntnersToConfirm = found.args[3].value;
@@ -698,11 +697,11 @@ export class ScreenLogicInterceptorService {
     }
 
     private _getInterceptorFunc(objectType: string, actionName: any) {
-        if (_.isUndefined(this.objectInterceptors[objectType])) {
+        if (this.objectInterceptors[objectType] === undefined) {
             console.error('Object-type ' + objectType + ' not understood');
             return undefined;
         }
-        if (_.isUndefined(this.objectInterceptors[objectType][actionName])) {
+        if (this.objectInterceptors[objectType][actionName] === undefined) {
             console.info('Interceptor-function ' + objectType + '.' + actionName + ' not found');
             return undefined;
         }

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KeyType } from './create-new-api-key/create-new-api-key.component';
 import { ApiKey } from './types';
+import { KeyType } from './utils';
 
 const endpointMap: Record<KeyType, string> = {
     [KeyType.MY_RESOURCES]: 'myresources',
@@ -16,7 +16,7 @@ export class ApiKeysService {
 
     private readonly API_BASE_URL: string = 'api/whois-internal/public/api-key';
 
-    saveApiKey(apiKeyName: string, expiresAt: string, apiKeyType: KeyType, mnts: string[], orgId: string): Observable<ApiKey> {
+    saveApiKey(apiKeyName: string, expiresAt: string, apiKeyType: KeyType, mnts: string[], orgId?: string): Observable<ApiKey> {
         const details = apiKeyType === KeyType.MAINTAINER ? mnts : [orgId];
 
         const body = {

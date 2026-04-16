@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { IVersion } from '../shared/whois-response-type.model';
 import { ILstObj, IResultSummary, ISearchResponseModel } from './types.model';
 
@@ -17,9 +16,9 @@ export class FullTextResponseService {
             return { details: [], summary: [] };
         }
 
-        if (!_.isUndefined(data.lsts[1].lst.lsts)) {
+        if (data.lsts[1].lst.lsts !== undefined) {
             for (const doc of data.lsts[1].lst.lsts) {
-                if (!_.isUndefined(doc.lst.arrs)) {
+                if (doc.lst.arrs !== undefined) {
                     hlMap[doc.lst.name] = doc.lst.arrs
                         .filter((arr) => arr.name !== 'object-type')
                         .map((arr) => {
@@ -28,7 +27,7 @@ export class FullTextResponseService {
                 }
             }
         }
-        if (!_.isUndefined(data.result.docs)) {
+        if (data.result.docs !== undefined) {
             for (const doc of data.result.docs) {
                 const pk = this.getDocPk(doc.doc.strs);
                 const attrMap = this.strsToAttributeMap(doc.doc.strs);

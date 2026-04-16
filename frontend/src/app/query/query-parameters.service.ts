@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import includes from 'lodash/includes';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { HierarchyFlagsService } from './hierarchy-flags.service';
 import { QueryFlagsService } from './query-flags.service';
@@ -73,7 +72,7 @@ export class QueryParametersService {
 
     public static isQueriedTemplate(queryText: string): boolean {
         const terms: string[] = queryText.split(/ +/);
-        return terms.some((term: string) => includes(allowedTemplateQueries, term));
+        return terms.some((term: string) => allowedTemplateQueries.includes(term));
     }
 
     private validateQueriedTemplate(queryParams: IQueryParameters): { errors: string[]; warnings: string[] } {
@@ -85,7 +84,7 @@ export class QueryParametersService {
         let countVerboseQueries: number = 0;
         terms.forEach((term: string, index: number) => {
             if (allowedTemplateQueries.indexOf(term) > -1) {
-                includes(templateQueries, term) ? countTemplateQueries++ : countVerboseQueries++;
+                templateQueries.includes(term) ? countTemplateQueries++ : countVerboseQueries++;
                 templateTerms.push({ templateType: terms[index], objectType: terms[index + 1] });
             }
         });
@@ -97,8 +96,8 @@ export class QueryParametersService {
             errors.push(`Unknown object type "${templateTerms[0].objectType}".`);
         } else {
             if (
-                (includes(templateQueries, validTemplateTypes[0].templateType) && countTemplateQueries > 1) ||
-                (includes(verboseQueries, validTemplateTypes[0].templateType) && countVerboseQueries > 1)
+                (templateQueries.includes(validTemplateTypes[0].templateType) && countTemplateQueries > 1) ||
+                (verboseQueries.includes(validTemplateTypes[0].templateType) && countVerboseQueries > 1)
             ) {
                 warnings.push(`The flag "${validTemplateTypes[0].templateType}" cannot be used multiple times.`);
             }

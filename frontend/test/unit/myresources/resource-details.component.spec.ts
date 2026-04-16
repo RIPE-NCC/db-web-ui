@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
-import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 import { AttributeRendererComponent } from '../../../src/app/attribute/attribute-renderer.component';
 import { AttributeReverseZonesComponent } from '../../../src/app/attribute/attribute-reverse-zones.component';
@@ -42,7 +41,7 @@ describe('ResourceDetailsComponent', () => {
 
     let MockMntnerService = {
         isNccMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
+            return ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'].includes(mntnerKey.toUpperCase());
         },
     };
 

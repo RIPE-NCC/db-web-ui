@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { PropertiesService } from '../properties.service';
@@ -48,13 +47,13 @@ export class TextCommonsService {
     }
 
     public validate(objectType: string, attributes: IAttributeModel[], errors?: any) {
-        const unknownAttrs = _.filter(attributes, (attr) => {
-            return _.isUndefined(this.whoisMetaService.findMetaAttributeOnObjectTypeAndName(objectType, attr.name));
+        const unknownAttrs = attributes.filter((attr) => {
+            return this.whoisMetaService.findMetaAttributeOnObjectTypeAndName(objectType, attr.name) === undefined;
         });
-        if (!_.isEmpty(unknownAttrs)) {
-            _.each(unknownAttrs, (attr) => {
+        if (unknownAttrs.length !== 0) {
+            (unknownAttrs ?? []).forEach((attr) => {
                 const msg = attr.name + ': Unknown attribute';
-                if (_.isUndefined(errors)) {
+                if (errors === undefined) {
                     this.alertService.addGlobalError(msg);
                 } else {
                     errors.push({ plainText: msg });
@@ -65,14 +64,14 @@ export class TextCommonsService {
 
         let errorCount = 0;
         const mandatoryAtrs = this.whoisMetaService.getMetaAttributesOnObjectType(objectType, true);
-        _.each(mandatoryAtrs, (meta) => {
+        (mandatoryAtrs ?? []).forEach((meta) => {
             if (
-                _.some(attributes, (attr: IAttributeModel) => {
+                (attributes ?? []).some((attr: IAttributeModel) => {
                     return attr.name === meta.name;
                 }) === false
             ) {
                 const msg = meta.name + ': Missing mandatory attribute';
-                if (_.isUndefined(errors)) {
+                if (errors === undefined) {
                     this.alertService.addGlobalError(msg);
                 } else {
                     errors.push({ plainText: msg });
@@ -83,11 +82,11 @@ export class TextCommonsService {
 
         const enrichedAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(objectType, attributes);
         if (!this.whoisResourcesService.validate(enrichedAttributes)) {
-            _.each(enrichedAttributes, (item) => {
+            (enrichedAttributes ?? []).forEach((item) => {
                 if (item.$$error) {
                     // Note: keep it lower-case to be consistent with server-side error reports
                     const msg = item.name + ': ' + item.$$error;
-                    if (_.isUndefined(errors)) {
+                    if (errors === undefined) {
                         this.alertService.addGlobalError(msg);
                     } else {
                         errors.push({ plainText: msg });
@@ -101,7 +100,7 @@ export class TextCommonsService {
 
     public authenticate(method: string, objectSource: string, objectType: string, objectName: string, ssoMaintainers: any, attributes: any, override: string) {
         let needsAuth = false;
-        if (_.isUndefined(override)) {
+        if (override === undefined) {
             // show SSO popup if needed
             const objectMntners = this._getObjectMntners(attributes);
             const originalMntners = method === 'Create' ? [] : objectMntners;
@@ -137,7 +136,7 @@ export class TextCommonsService {
 
     public uncapitalize(attributes: IAttributeModel[]) {
         return this.whoisResourcesService.validateAttributes(
-            _.map(attributes, (attr) => {
+            attributes.map((attr) => {
                 attr.name = attr.name.toLowerCase();
                 return attr;
             }),
@@ -145,8 +144,8 @@ export class TextCommonsService {
     }
 
     public capitaliseMandatory(attributes: IAttributeModel[]) {
-        _.each(attributes, (attr) => {
-            if (!_.isUndefined(attr.$$meta) && attr.$$meta.$$mandatory) {
+        (attributes ?? []).forEach((attr) => {
+            if (attr.$$meta !== undefined && attr.$$meta.$$mandatory) {
                 attr.name = attr.name.toUpperCase();
             }
         });
@@ -167,7 +166,7 @@ export class TextCommonsService {
             type: objectType,
         };
         const mntnersForAuthentication = this.mntnerService.getMntnersForAuthentication(ssoMntners, [], objectMntners);
-        const allowForcedDelete = !_.find(objectMntners, (o) => {
+        const allowForcedDelete = !(objectMntners ?? []).find((o) => {
             return this.mntnerService.isAnyNccMntner(o.key);
         });
 
@@ -210,11 +209,11 @@ export class TextCommonsService {
     }
 
     private _getObjectMntners(attributes: any) {
-        return _.map(this.whoisResourcesService.getAllAttributesWithValueOnName(attributes, 'mnt-by'), (objMntner: any) => {
+        return this.whoisResourcesService.getAllAttributesWithValueOnName(attributes, 'mnt-by').map((objMntner: any) => {
             // Notes:
             // - RPSL attribute values can contain leading and trailing spaces, so the must be trimmed
             // - Assume maintainers have SSO, so prevent unmodifiable error
-            return { type: 'mntner', key: _.trim(objMntner.value), auth: ['SSO'] };
+            return { type: 'mntner', key: objMntner.value?.trim(), auth: ['SSO'] };
         });
     }
 }

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import * as _ from 'lodash';
 import { LinkService } from '../../../src/app/updatesweb/link.service';
 
 describe('LinkService', () => {
@@ -15,9 +14,9 @@ describe('LinkService', () => {
     });
 
     it('should be linkService defined', () => {
-        expect(_.isUndefined(linkService)).toBeFalse();
-        expect(_.isUndefined(linkService.getModifyUrl)).toBeFalse();
-        expect(_.isFunction(linkService.getModifyUrl)).toBeTruthy();
+        expect(linkService === undefined).toBeFalse();
+        expect(linkService.getModifyUrl === undefined).toBeFalse();
+        expect(typeof linkService.getModifyUrl === 'function').toBeTruthy();
     });
 
     it('should create a display link for object', () => {

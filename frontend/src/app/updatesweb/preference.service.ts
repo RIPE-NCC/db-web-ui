@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
@@ -38,7 +37,7 @@ export class PreferenceService {
 
     private hasCookie(name: string): boolean {
         const value = this.cookies.get(name);
-        return !_.isUndefined(value);
+        return value !== undefined;
     }
 
     private setCookie(name: string, value: string) {
@@ -47,7 +46,7 @@ export class PreferenceService {
 
     private getCookie(name: string, defaulValue: string): any {
         let value = this.cookies.get(name);
-        if (_.isUndefined(value)) {
+        if (value === undefined) {
             value = defaulValue;
         }
         return value;

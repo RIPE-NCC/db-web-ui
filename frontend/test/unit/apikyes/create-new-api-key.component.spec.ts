@@ -3,9 +3,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
+import { KeyType } from 'src/app/apikeys/utils';
 import { ApiKeyConfirmationDialogComponent } from '../../../src/app/apikeys/api-key-confirmation-dialog/api-key-confirmation-dialog.component';
 import { ApiKeysService } from '../../../src/app/apikeys/api-keys.service';
-import { CreateNewApiKeyComponent, KeyType } from '../../../src/app/apikeys/create-new-api-key/create-new-api-key.component';
+import { CreateNewApiKeyComponent } from '../../../src/app/apikeys/create-new-api-key/create-new-api-key.component';
 import { ApiKey } from '../../../src/app/apikeys/types';
 import { IUserInfoOrganisation } from '../../../src/app/dropdown/org-data-type.model';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
@@ -102,7 +103,6 @@ describe('CreateNewApiKeyComponent', () => {
         component.apiKeyName = 'fake api key name';
         component.expiresAt = new Date();
         component.maintainers = [{ key: 'fake maintainer' }];
-        component.selectedOrg = mockOrg;
         component.saveApiKey();
 
         //should clear previous error messages

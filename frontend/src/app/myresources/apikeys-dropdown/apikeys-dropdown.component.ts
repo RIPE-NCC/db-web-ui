@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { RouterLink } from '@angular/router';
-import { KeyType } from '../../apikeys/create-new-api-key/create-new-api-key.component';
+import { KeyType } from '../../apikeys/utils';
 import { PropertiesService } from '../../properties.service';
 
 @Component({

@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { ITemplateTerm } from '../query-parameters.service';
 import { QueryService } from '../query.service';
 
@@ -18,7 +17,7 @@ export class TemplateComponent implements OnChanges {
     private templateQueries = ['-t', '--template'];
 
     public ngOnChanges() {
-        if (_.includes(this.templateQueries, this.query.templateType)) {
+        if (this.templateQueries.includes(this.query.templateType)) {
             this.getTemplates();
         } else {
             this.getVerboses();

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
 import { Subscription, combineLatest } from 'rxjs';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
@@ -73,7 +72,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
 
         // fetch just created object from temporary store
         const cached = this.messageStoreService.get(this.objectName);
-        if (!_.isUndefined(cached)) {
+        if (cached !== undefined) {
             const whoisResources = this.whoisResourcesService.validateWhoisResources(cached);
             this.attributes = this.whoisResourcesService.getAttributes(whoisResources);
             this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, cached);
@@ -82,7 +81,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
 
             if (this.method === 'Modify') {
                 const diff = this.whoisResourcesService.validateAttributes(this.messageStoreService.get('DIFF'));
-                if (!_.isUndefined(diff)) {
+                if (diff !== undefined) {
                     this.before = this.whoisResourcesService.toPlaintext(diff);
                     this.after = this.whoisResourcesService.toPlaintext(this.attributes);
                 }
@@ -113,7 +112,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
     }
 
     private isPending() {
-        return !_.isUndefined(this.method) && this.method === 'Pending';
+        return this.method !== undefined && this.method === 'Pending';
     }
 
     public getOperationName(): string {
@@ -129,6 +128,6 @@ export class DisplayComponent implements OnInit, OnDestroy {
     }
 
     public isDiff() {
-        return !_.isUndefined(this.before) && !_.isUndefined(this.after);
+        return this.before !== undefined && this.after !== undefined;
     }
 }

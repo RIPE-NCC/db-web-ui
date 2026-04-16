@@ -1,5 +1,4 @@
 import { EventEmitter, Injectable, Output, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { WhoisResourcesService } from '../whois-resources.service';
 import { IAttributeModel, IObjectMessageModel, IWhoisResponseModel } from '../whois-response-type.model';
 
@@ -73,7 +72,7 @@ export class AlertsService {
     }
 
     public addAlertMsgs(whoisResources: IWhoisResponseModel) {
-        if (_.isUndefined(whoisResources)) {
+        if (whoisResources === undefined) {
             console.error('AlertService.addAlertMsgs: undefined input');
         } else {
             this.alerts.errors = this.alerts.errors.concat(this.whoisResourcesService.getGlobalErrors(whoisResources));
@@ -132,7 +131,7 @@ export class AlertsService {
 
     public populateFieldSpecificErrors(objectType: string, attrs: IAttributeModel[], whoisResources: IWhoisResponseModel) {
         let firstAttrError: string;
-        _.each(attrs, (attr: IAttributeModel) => {
+        (attrs ?? []).forEach((attr: IAttributeModel) => {
             // keep existing error messages
             if (!attr.$$error) {
                 const errors = this.whoisResourcesService.getErrorsOnAttribute(whoisResources, attr.name, attr.value);

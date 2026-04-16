@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
 import { forkJoin, of, throwError } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { AlertsService } from '../../shared/alert/alerts.service';
@@ -78,8 +77,8 @@ export class ForceDeleteComponent implements OnInit {
         let hasError = false;
         const forceDeletableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
-        if (!_.includes(forceDeletableObjectTypes, this.object.type)) {
-            const typesString = _.reduce(forceDeletableObjectTypes, (str, n) => {
+        if (!forceDeletableObjectTypes.includes(this.object.type)) {
+            const typesString = forceDeletableObjectTypes.reduce((str, n) => {
                 return str + ', ' + n;
             });
 
@@ -87,12 +86,12 @@ export class ForceDeleteComponent implements OnInit {
             hasError = true;
         }
 
-        if (_.isUndefined(this.object.source)) {
+        if (this.object.source === undefined) {
             this.alertsService.setGlobalError('Source is missing');
             hasError = true;
         }
 
-        if (_.isUndefined(this.object.name)) {
+        if (this.object.name === undefined) {
             this.alertsService.setGlobalError('Object key is missing');
             hasError = true;
         }
@@ -121,7 +120,7 @@ export class ForceDeleteComponent implements OnInit {
 
                 this.useDryRunDeleteToDetectAuthCandidates().subscribe({
                     next: (authCandidates: any) => {
-                        const objectMntners = _.map(authCandidates, (item) => {
+                        const objectMntners = authCandidates.map((item) => {
                             return {
                                 key: item,
                                 type: 'mntner',
@@ -179,8 +178,8 @@ export class ForceDeleteComponent implements OnInit {
                 } else {
                     // strip RIPE-NCC- mntners
                     let authCandidates = this.whoisResourcesService.getAuthenticationCandidatesFromError(error.data);
-                    authCandidates = _.filter(authCandidates, (mntner: string) => !_.startsWith(mntner, 'RIPE-NCC-'));
-                    return of(_.map(authCandidates, (item: string) => _.trim(item)));
+                    authCandidates = authCandidates.filter((mntner: string) => !mntner.startsWith('RIPE-NCC-'));
+                    return of(authCandidates.map((item: string) => item?.trim()));
                 }
             }),
         );

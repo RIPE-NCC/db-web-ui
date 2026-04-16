@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import * as _ from 'lodash';
 import { ResourceStatusService } from '../myresources/resource-status.service';
 import { PropertiesService } from '../properties.service';
 import { ObjectUtilService } from '../updatesweb/object-util.service';
+import { findLastIndex } from './utils';
 import { WhoisMetaService } from './whois-meta.service';
 import { IAttributeModel, IMntByModel, IObjectMessageModel, IWhoisObjectModel, IWhoisResponseModel } from './whois-response-type.model';
 
@@ -22,9 +22,9 @@ export class WhoisResourcesService {
                 hasMeta = true;
             });
         }
-        const foundAt = after.$$hashKey
-            ? _.findIndex(attributes, { name: after.name, value: after.value, $$hashKey: after.$$hashKey })
-            : _.findIndex(attributes, { name: after.name, value: after.value });
+        const foundAt = (attributes ?? []).findIndex(
+            (item) => item.name === after.name && item.value === after.value && (!after.$$hashKey || item.$$hashKey === after.$$hashKey),
+        );
 
         const attrCopy: IAttributeModel = { name: attr.name, value: attr.value };
         if (hasMeta) {
@@ -37,36 +37,39 @@ export class WhoisResourcesService {
     public addAttributeAfterType(attributes: IAttributeModel[], attr: IAttributeModel, after: any) {
         const result: IAttributeModel[] = [];
         let found = false;
-        _.each(attributes, (next: IAttributeModel) => {
+        for (const next of attributes ?? []) {
             result.push(next);
-            if (found === false && next.name === after.name) {
+
+            if (!found && next.name === after.name) {
                 result.push({ name: attr.name, value: attr.value });
                 found = true;
             }
-        });
+        }
 
         return result;
     }
 
     public addAttrsSorted(attributes: IAttributeModel[], attrTypeName: string, attrs: IAttributeModel[]) {
-        const lastIdxOfType = _.findLastIndex(attributes, (item) => {
-            return item.name === attrTypeName;
-        });
+        // TODO REPLACE AFTER UPGRADING "target": "ES2023" and removing lodash
+        const lastIdxOfType = findLastIndex(attributes, attrTypeName);
+        // const lastIdxOfType = (attributes ?? []).findLastIndex(item => {
+        //     return item.name === attrTypeName;
+        // });
         if (lastIdxOfType > -1) {
             const lastItemDetail = attributes[lastIdxOfType];
             const result: IAttributeModel[] = [];
             let idx = 0;
-            _.each(attributes, (attr: IAttributeModel) => {
+            for (const attr of attributes ?? []) {
                 result.push(attr);
                 if (idx === lastIdxOfType) {
-                    _.each(attrs, (item: IAttributeModel) => {
-                        const newItem = _.cloneDeep(lastItemDetail);
+                    for (const item of attrs ?? []) {
+                        const newItem = structuredClone(lastItemDetail);
                         newItem.value = item.value;
                         result.push(newItem);
-                    });
+                    }
                 }
                 idx++;
-            });
+            }
 
             return result;
         } else {
@@ -75,13 +78,13 @@ export class WhoisResourcesService {
     }
 
     private addBelowLastOf(attrs: IAttributeModel[], attrTypeName: string, item: any) {
-        const last = _.last(
-            _.filter(attrs, (attr) => {
-                return attr.name === attrTypeName;
-            }),
-        );
+        const attrsTypeName = attrs.filter((attr) => {
+            return attr.name === attrTypeName;
+        });
+        const last = attrsTypeName && attrsTypeName.length ? attrsTypeName[attrsTypeName.length - 1] : undefined;
+
         const result: IAttributeModel[] = [];
-        _.each(attrs, (next) => {
+        (attrs ?? []).forEach((next) => {
             result.push(next);
             if (next.name === last.name && next.value === last.value) {
                 result.push(item);
@@ -95,7 +98,7 @@ export class WhoisResourcesService {
     }
 
     private attributeWithNameExists(attrs: IAttributeModel[], attributeName: string): boolean {
-        return _.some(attrs, (attribute: IAttributeModel) => {
+        return (attrs ?? []).some((attribute: IAttributeModel) => {
             return attribute.name === attributeName;
         });
     }
@@ -117,9 +120,9 @@ export class WhoisResourcesService {
 
     public getFilterableAttrsForObjectTypes(targetObjectTypes: any) {
         const attrsToFilterOn: string[] = [];
-        _.each(targetObjectTypes, (objectType) => {
-            _.each(this.whoisMetaService.getMetaAttributesOnObjectType(objectType.toLowerCase(), false), (metaAttr) => {
-                if ((metaAttr.primaryKey === true || metaAttr.searchable === true) && !_.includes(attrsToFilterOn, metaAttr.name)) {
+        (targetObjectTypes ?? []).forEach((objectType) => {
+            (this.whoisMetaService.getMetaAttributesOnObjectType(objectType.toLowerCase(), false) ?? []).forEach((metaAttr) => {
+                if ((metaAttr.primaryKey === true || metaAttr.searchable === true) && !(attrsToFilterOn ?? []).includes(metaAttr.name)) {
                     attrsToFilterOn.push(metaAttr.name);
                 }
             });
@@ -141,10 +144,10 @@ export class WhoisResourcesService {
 
     public turnAttrsIntoWhoisObjects(attrsList: any) {
         // list of attribute-arrays ia passed along
-        const wrapped = _.map(attrsList, (attrs) => {
+        const wrapped = attrsList.map((attrs) => {
             let packed;
             const first = attrs[0];
-            if (!_.isUndefined(first)) {
+            if (first !== undefined) {
                 packed = { type: first.name, attributes: { attribute: attrs } };
             }
             return packed;
@@ -234,7 +237,7 @@ export class WhoisResourcesService {
     }
 
     public clearErrors(attributes: IAttributeModel[]) {
-        _.map(attributes, (attr: IAttributeModel) => {
+        attributes.map((attr: IAttributeModel) => {
             attr.$$error = undefined;
         });
     }
@@ -256,16 +259,16 @@ export class WhoisResourcesService {
         if (!whoisResponse.errormessages) {
             return [];
         }
-        const myMsgs = _.filter(whoisResponse.errormessages.errormessage, (msg: IObjectMessageModel) => {
+        const myMsgs = whoisResponse.errormessages.errormessage.filter((msg: IObjectMessageModel) => {
             return msg.severity === 'Error' && msg.text === `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`;
         });
 
         // FIXME PUT TYPE
         const mntners: any[] = [];
-        _.each(myMsgs, (msg) => {
+        (myMsgs ?? []).forEach((msg) => {
             const candidates = msg.args[3].value;
-            _.each(candidates.split(','), (mntner) => {
-                if (!_.includes(mntners, mntner)) {
+            (candidates.split(',') ?? []).forEach((mntner) => {
+                if (!(mntners ?? []).includes(mntner)) {
                     mntners.push(mntner);
                 }
             });
@@ -274,7 +277,7 @@ export class WhoisResourcesService {
     }
 
     public getRequiresAdminRightFromError(whoisResponse: IWhoisResponseModel) {
-        return _.some(whoisResponse.errormessages.errormessage, (msg: IObjectMessageModel) => {
+        return whoisResponse.errormessages.errormessage.some((msg: IObjectMessageModel) => {
             return msg.text === 'Deleting this object requires administrative authorisation';
         });
     }
@@ -288,17 +291,17 @@ export class WhoisResourcesService {
 
     private getFirstMandatoryAttrAbove(objectType: string, attrTypeName: string) {
         const metaAttrs = this.whoisMetaService.getMandatoryAttributesOnObjectType(objectType);
-        const idx = _.findIndex(metaAttrs, (item: IAttributeModel) => {
+        const idx = (metaAttrs ?? []).findIndex((item: IAttributeModel) => {
             return item.name === attrTypeName;
         });
         return metaAttrs[Math.max(0, idx - 1)].name;
     }
 
     public getPrimaryKey(whoisResponse: IWhoisResponseModel) {
-        if (_.isUndefined(whoisResponse.objects)) {
+        if (whoisResponse.objects === undefined) {
             return undefined;
         }
-        const keys = _.map(whoisResponse.objects.object[0]['primary-key'].attribute, (item) => {
+        const keys = whoisResponse.objects.object[0]['primary-key'].attribute.map((item) => {
             return item.value;
         });
 
@@ -343,13 +346,13 @@ export class WhoisResourcesService {
     }
 
     public getAttributesForObjectOfType(whoisresources: IWhoisResponseModel, typename: string) {
-        if (_.isUndefined(whoisresources.objects)) {
+        if (whoisresources.objects === undefined) {
             return [];
         }
-        const object = _.find(whoisresources.objects.object, (item) => {
+        const object = (whoisresources.objects.object ?? []).find((item) => {
             return item.attributes.attribute[0].name === typename;
         });
-        if (_.isUndefined(object)) {
+        if (object === undefined) {
             return [];
         }
 
@@ -357,7 +360,7 @@ export class WhoisResourcesService {
     }
 
     public static getAllAttributesOnName(attributes: IAttributeModel[], attributeName: string) {
-        return _.filter(attributes, (attribute) => {
+        return attributes.filter((attribute) => {
             return attribute.name === attributeName;
         });
     }
@@ -376,7 +379,7 @@ export class WhoisResourcesService {
 
     public setSingleAttributeOnName(attributes: IAttributeModel[], name: string, value: any) {
         let found = false;
-        return _.map(attributes, (attr: IAttributeModel) => {
+        return attributes.map((attr: IAttributeModel) => {
             if (attr.name === name && found === false) {
                 attr.value = value;
                 found = true;
@@ -387,7 +390,7 @@ export class WhoisResourcesService {
 
     public getMissingMandatoryAttributes(attributes: IAttributeModel[], objectType: string) {
         const missingAttrs: IAttributeModel[] = [];
-        _.each(this.whoisMetaService.getMandatoryAttributesOnObjectType(objectType), (item) => {
+        (this.whoisMetaService.getMandatoryAttributesOnObjectType(objectType) ?? []).forEach((item) => {
             if (!this.attributeWithNameExists(attributes, item.name)) {
                 missingAttrs.push(item);
             }
@@ -396,28 +399,36 @@ export class WhoisResourcesService {
     }
 
     public removeAttribute(attributes: IAttributeModel[], attr: IAttributeModel) {
-        return _.filter(attributes, (next: IAttributeModel) => {
+        return attributes.filter((next: IAttributeModel) => {
             return attr !== next;
         });
     }
 
     public removeAttributeWithName(attributes: IAttributeModel[], attrName: string) {
-        return _.remove(attributes, (next: IAttributeModel) => {
-            return next.name === attrName;
-        });
+        const removed: IAttributeModel[] = [];
+
+        for (let i = attributes.length - 1; i >= 0; i--) {
+            if (attributes[i].name === attrName) {
+                removed.push(attributes[i]);
+                attributes.splice(i, 1);
+            }
+        }
+        // FIXME check
+        // TODO not sure we need list of removed attributes, but this is what _.remove use to do
+        return removed;
     }
 
     public removeNullAttributes(attributes: IAttributeModel[]) {
-        const filtered = _.filter(attributes, (attr: IAttributeModel) => {
-            const allowedEmpty = _.includes(this.allowedEmptyAttrs, attr.name);
+        const filtered = attributes.filter((attr: IAttributeModel) => {
+            const allowedEmpty = this.allowedEmptyAttrs.includes(attr.name);
             if (allowedEmpty) {
                 return true;
             }
             return attr.value;
         });
 
-        return _.map(filtered, (item: IAttributeModel) => {
-            if (_.isUndefined(item.value)) {
+        return filtered.map((item: IAttributeModel) => {
+            if (item.value === undefined) {
                 item.value = '';
             }
             return item;
@@ -429,20 +440,20 @@ export class WhoisResourcesService {
         Object.keys(attr.$$meta).forEach((itemKey) => {
             metaClone[itemKey] = attr.$$meta[itemKey];
         });
-        const foundAt = _.findIndex(attributes, { name: attr.name, value: attr.value });
+        const foundAt = (attributes ?? []).findIndex((item) => item.name === attr.name && item.value === attr.value);
         const attrCopy = { name: attr.name, value: '', $$meta: metaClone };
         attributes.splice(foundAt + 1, 0, attrCopy);
         return attributes;
     }
 
     private isValidWhoisResources(whoisResources: IWhoisResponseModel) {
-        if (_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
+        if (whoisResources === undefined || whoisResources === null) {
             console.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
             return false;
         }
         if (
-            (_.isUndefined(whoisResources.objects) || _.isNull(whoisResources.objects)) &&
-            (_.isUndefined(whoisResources.errormessages) || _.isNull(whoisResources.errormessages))
+            (whoisResources.objects === undefined || whoisResources.objects === null) &&
+            (whoisResources.errormessages === undefined || whoisResources.errormessages === null)
         ) {
             console.error('isValidWhoisResources: Missing objects and errormessages:' + JSON.stringify(whoisResources));
             return false;
@@ -453,7 +464,7 @@ export class WhoisResourcesService {
 
     public validate(attributes: IAttributeModel[]) {
         let errorFound = false;
-        _.each(attributes, (attr: IAttributeModel) => {
+        (attributes ?? []).forEach((attr: IAttributeModel) => {
             if (attr.$$meta.$$mandatory === true && !attr.value && this.getAllAttributesWithValueOnName(attributes, attr.name).length === 0) {
                 attr.$$error = 'Mandatory attribute not set';
                 errorFound = true;
@@ -494,7 +505,7 @@ export class WhoisResourcesService {
     }
 
     public getAddableAttributes(attributes: IAttributeModel[], objectType: string, attrs: IAttributeModel[]) {
-        return _.filter(this.whoisMetaService.getAllAttributesOnObjectType(objectType), (attr: IAttributeModel) => {
+        return this.whoisMetaService.getAllAttributesOnObjectType(objectType).filter((attr: IAttributeModel) => {
             if (attr.name === 'created') {
                 return false;
             } else if (attr.name === 'last-modified') {
@@ -503,7 +514,7 @@ export class WhoisResourcesService {
                 return true;
             } else if (attr.$$meta.$$mandatory === false) {
                 if (
-                    !_.some(attrs, (a) => {
+                    !attrs.some((a) => {
                         return a.name === attr.name;
                     })
                 ) {
@@ -520,17 +531,17 @@ export class WhoisResourcesService {
 
     public toPlaintext(attributes: IAttributeModel[]) {
         let result = '';
-        _.each(attributes, (attr: IAttributeModel) => {
-            result += attr.name + ':' + WhoisResourcesService.repeat(' ', Math.max(0, 20 - attr.name.length)) + _.trim(attr.value) + '\n';
+        (attributes ?? []).forEach((attr: IAttributeModel) => {
+            result += attr.name + ':' + WhoisResourcesService.repeat(' ', Math.max(0, 20 - attr.name.length)) + attr.value?.trim() + '\n';
         });
         return result;
     }
 
     private wrap(whoisResources: IWhoisResponseModel): IWhoisResponseModel {
         let result: IWhoisResponseModel = whoisResources;
-        if (!_.isUndefined(whoisResources) && this.isValidWhoisResources(whoisResources)) {
+        if (whoisResources !== undefined && this.isValidWhoisResources(whoisResources)) {
             const objectType = this.getObjectType(whoisResources);
-            if (!_.isUndefined(objectType) && !_.isUndefined(this.getAttributes(whoisResources))) {
+            if (objectType !== undefined && this.getAttributes(whoisResources) !== undefined) {
                 whoisResources.objects.object[0].attributes.attribute = this.wrapAndEnrichAttributes(objectType, this.getAttributes(whoisResources));
             }
             result = whoisResources;

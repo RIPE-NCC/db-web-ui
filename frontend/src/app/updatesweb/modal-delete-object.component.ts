@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { ReferenceItem, References, RestService } from './rest.service';
 import { RpkiValidatorService } from './rpki-validator.service';
@@ -94,14 +93,14 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
             return false;
         }
         // parent is the object we asked references for
-        const objectDeletable = _.every(parent.incoming, (first: any) => {
+        const objectDeletable = (parent.incoming ?? []).every((first: any) => {
             // direct incoming references
             if (this.isEqualTo(parent.objectType, parent.primaryKey, first)) {
                 // self ref
                 console.debug(first.primaryKey + ' is first level self-ref');
                 return true;
             } else if (first.incoming) {
-                return _.every(first.incoming, (second: any) => {
+                return (first.incoming ?? []).every((second: any) => {
                     // secondary incoming references
                     if (this.isEqualTo(first.objectType, first.primaryKey, second)) {
                         // self ref
@@ -123,9 +122,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     }
 
     public hasNonSelfIncomingRefs(objectType: string, objectName: string, incomingRefs: any) {
-        return _.some(incomingRefs, (ref) => {
-            return !this.isEqualTo(objectType, objectName, ref);
-        });
+        return (incomingRefs ?? []).some((ref) => !this.isEqualTo(objectType, objectName, ref));
     }
 
     public getReferences(source: string, objectType: string, name: string) {
@@ -163,7 +160,7 @@ export class ModalDeleteObjectComponent implements OnInit, OnDestroy {
     }
 
     private shouldDeleteWithRefs(objectType: string) {
-        if (_.isUndefined(this.objectToDeleteWithRefs) || !this.objectToDeleteWithRefs) {
+        if (this.objectToDeleteWithRefs === undefined || !this.objectToDeleteWithRefs) {
             return true;
         }
         return this.isSupportedType(objectType);

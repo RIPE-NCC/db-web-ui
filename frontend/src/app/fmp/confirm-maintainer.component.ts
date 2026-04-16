@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
 import * as moment from 'moment';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { EmailLinkService } from './email-link.services';
@@ -64,7 +63,7 @@ export class ConfirmMaintainerComponent implements OnInit {
                     return;
                 }
                 let msg = 'Error fetching email-link';
-                if (!_.isObject(error.data)) {
+                if (typeof error.data !== 'object') {
                     msg = msg.concat(': ' + error.data);
                 }
                 console.error(msg);
@@ -86,7 +85,7 @@ export class ConfirmMaintainerComponent implements OnInit {
                     this.fmpErrorService.setGlobalAccountBlockedError();
                     return;
                 }
-                if (error.status === 400 && !_.isUndefined(error.data) && error.data.match(/already contains SSO/).length === 1) {
+                if (error.status === 400 && error.data !== undefined && error.data.match(/already contains SSO/).length === 1) {
                     this.alertsService.setGlobalError(error.data);
                 } else {
                     this.alertsService.setGlobalError(

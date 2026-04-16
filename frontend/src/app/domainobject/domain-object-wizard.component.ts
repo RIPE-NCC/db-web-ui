@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { AttributeSharedService } from '../attribute/attribute-shared.service';
 import { JsUtilService } from '../core/js-utils.service';
@@ -127,19 +126,19 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     }
 
     public onValidPrefix = (prefixValue: any) => {
-        const revZonesAttr = _.find(this.attributes, (attr: any) => {
+        const revZonesAttr = (this.attributes ?? []).find((attr: any) => {
             return attr.name === 'reverse-zone';
         });
         revZonesAttr.value = PrefixServiceUtils.getReverseDnsZones(prefixValue);
 
         this.mntnerService.getMntsToAuthenticateUsingParent(prefixValue, (mntners: any) => {
-            const mySsos = _.map(this.maintainers.sso, 'key');
+            const mySsos = (this.maintainers.sso ?? []).map((item) => item.key) ?? [];
 
             // NB don't use the enrichWithSso call cz it's lame
-            const enriched = _.map(mntners, (mntnerAttr: any) => {
+            const enriched = (mntners ?? []).map((mntnerAttr: any) => {
                 return {
                     key: mntnerAttr.value,
-                    mine: _.includes(mySsos, mntnerAttr.value),
+                    mine: (mySsos ?? []).includes(mntnerAttr.value),
                     type: 'mntner',
                 };
             });
@@ -163,9 +162,12 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public updateMaintainers(maintainers: IMaintainers) {
         this.maintainers = maintainers;
         // delete from attributes all maintainers which doesn't exist in maintainers
-        _.remove(this.attributes, (attr: any) => {
-            return attr.name === 'mnt-by' && !maintainers.object.find((mnt) => mnt.key === attr.value);
-        });
+        for (let i = this.attributes.length - 1; i >= 0; i--) {
+            if (this.attributes[i].name === 'mnt-by' && !maintainers.object.find((mnt) => mnt.key === this.attributes[i].value)) {
+                this.attributes.splice(i, 1);
+            }
+        }
+
         // add maintainers from maintainers object
         maintainers.object.forEach((mnt) => {
             if (!this.attributes.find((attr) => attr.name === 'mnt-by' && attr.value === mnt.key)) {
@@ -235,15 +237,15 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private flattenStructure(attributes: any) {
         const flattenedAttributes: any[] = [];
-        _.forEach(attributes, (attr: any) => {
+        for (const attr of attributes ?? []) {
             if (this.jsUtils.typeOf(attr.value) === 'array') {
-                _.forEach(attr.value, (atr: any) => {
+                for (const atr of attr.value ?? []) {
                     flattenedAttributes.push({ name: atr.name, value: atr.value || '' });
-                });
+                }
             } else {
                 flattenedAttributes.push({ name: attr.name, value: attr.value || '' });
             }
-        });
+        }
         return flattenedAttributes;
     }
 
@@ -264,7 +266,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     private showCreatedDomains(resp: any) {
         this.restCallInProgress = false;
         this.alertsService.clearAlertMessages();
-        const prefix = _.find(this.attributes, (attr: any) => {
+        const prefix = (this.attributes ?? []).find((attr: any) => {
             return attr.name === 'prefix';
         });
         this.attributeMetadataService.resetDomainLookups(prefix.value);
@@ -278,7 +280,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, response.error);
         this.alertsService.addGlobalError(`Creation of domain objects failed, please see below for more details`);
         this.alertsService.addAlertMsgs(response.error);
-        if (!_.isEmpty(this.alertsService.alerts.errors)) {
+        if (this.alertsService.alerts.errors.length !== 0) {
             this.errorReporterService.log('DomainWizard', 'domain', this.alertsService.alerts.errors);
         }
     }

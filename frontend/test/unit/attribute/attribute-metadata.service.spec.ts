@@ -2,7 +2,6 @@ import { Location } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import * as _ from 'lodash';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
 import { JsUtilService } from '../../../src/app/core/js-utils.service';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
@@ -14,21 +13,21 @@ import { IAttributeModel } from '../../../src/app/shared/whois-response-type.mod
 describe('AttributeMetadataService', () => {
     let MockPropertiesService = {
         isNccMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
+            return ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'].includes(mntnerKey.toUpperCase());
         },
         isNccHmMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-MNT'], mntnerKey.toUpperCase());
+            return ['RIPE-NCC-HM-MNT'].includes(mntnerKey.toUpperCase());
         },
     };
     let MockWhoisResourcesService = {
         isNccMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'], mntnerKey.toUpperCase());
+            return ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT', 'RIPE-NCC-LEGACY-MNT'].includes(mntnerKey.toUpperCase());
         },
         isNccHmMntner: (mntnerKey: string) => {
-            return _.includes(['RIPE-NCC-HM-MNT'], mntnerKey.toUpperCase());
+            return ['RIPE-NCC-HM-MNT'].includes(mntnerKey.toUpperCase());
         },
         isComaintained: (attributes: IAttributeModel[]) => {
-            return _.some(attributes, (attr) => {
+            return attributes.some((attr) => {
                 if (attr.name.toUpperCase() === 'MNT-BY') {
                     return MockPropertiesService.isNccMntner(attr.value);
                 } else {
@@ -37,7 +36,7 @@ describe('AttributeMetadataService', () => {
             });
         },
         isComaintainedWithNccHmMntner: (attributes: IAttributeModel[]) => {
-            return _.some(attributes, (attr) => {
+            return attributes.some((attr) => {
                 if (attr.name.toUpperCase() === 'MNT-BY') {
                     return MockPropertiesService.isNccHmMntner(attr.value);
                 } else {

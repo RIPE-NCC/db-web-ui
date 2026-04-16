@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { KeyType } from 'src/app/apikeys/create-new-api-key/create-new-api-key.component';
 import { DOCUMENT_TYPE, ExamplesApiKeysComponent } from 'src/app/apikeys/examples-api-keys/examples-api-keys.component';
+import { KeyType } from 'src/app/apikeys/utils';
 import { PropertiesService } from '../../../src/app/properties.service';
 
 describe('ExamplesApiKeysComponent', () => {

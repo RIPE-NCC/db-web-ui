@@ -4,7 +4,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { EMPTY, map, of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -206,7 +205,7 @@ describe('WhoisObjectTextEditorComponent', () => {
 
         await componentFixture.whenStable();
 
-        const plaintextErrors = _.map(whoisObjectTextEditorComponent.alertsServices.alerts.errors, (item) => ({ plainText: item.plainText }));
+        const plaintextErrors = whoisObjectTextEditorComponent.alertsServices.alerts.errors.map((item) => ({ plainText: item.plainText }));
         expect(plaintextErrors).toEqual([{ plainText: 'ERROR:101: no entries found\n\nNo entries found in source RIPE.\n' }]);
     });
 
@@ -225,7 +224,7 @@ describe('WhoisObjectTextEditorComponent', () => {
         await componentFixture.whenStable();
 
         expect(whoisObjectTextEditorComponent.alertsServices.alerts.errors.length).toEqual(1);
-        const plaintextErrors = _.map(whoisObjectTextEditorComponent.alertsServices.alerts.errors, (item) => ({ plainText: item.plainText }));
+        const plaintextErrors = whoisObjectTextEditorComponent.alertsServices.alerts.errors.map((item) => ({ plainText: item.plainText }));
         expect(plaintextErrors).toEqual([{ plainText: 'Error fetching maintainers associated with this SSO account' }]);
     });
 

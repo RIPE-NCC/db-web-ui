@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class LinkService {
@@ -16,8 +15,8 @@ export class LinkService {
     }
 
     public filterAndCreateTextWithLinksForMntners(source: string, mntners: string) {
-        const chopped = _.words(mntners, /[^, ]+/g);
-        if (_.isUndefined(chopped)) {
+        const chopped = mntners.match(/[^, ]+/g) ?? [];
+        if (chopped === undefined) {
             return mntners;
         }
 
@@ -29,16 +28,16 @@ export class LinkService {
          * If there are multiple mntners to authenticate against, we remove the ripe mntners
          * because regular users are confused by the presence of RIPE mntners
          */
-        const withoutRipeMntners = _.filter(chopped, (name) => {
-            return !_.startsWith(name, source.toUpperCase() + '-NCC');
+        const withoutRipeMntners = chopped.filter((name: string) => {
+            return !name.startsWith(`${source.toUpperCase()}-NCC`);
         });
 
-        const asLinks = _.map(withoutRipeMntners, (name) => {
+        const asLinks = withoutRipeMntners.map((name) => {
             return this.getLink(source, 'mntner', name);
         });
 
         if (asLinks.length > 1) {
-            const linksWithoutLast = _.initial(asLinks).join(', ');
+            const linksWithoutLast = (asLinks ?? []).slice(0, -1)?.join(', ');
             return linksWithoutLast + ' or ' + asLinks[asLinks.length - 1];
         } else {
             // should be just one

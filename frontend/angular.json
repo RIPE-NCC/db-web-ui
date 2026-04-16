@@ -21,7 +21,7 @@
                             "base": "dist",
                             "browser": ""
                         },
-                        "allowedCommonJsDependencies": ["lodash", "ip-address", "crypto-js", "sanitize-html"],
+                        "allowedCommonJsDependencies": ["ip-address", "crypto-js", "sanitize-html"],
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": ["src/polyfills.ts"],

@@ -5,7 +5,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
 import { EMPTY, of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -498,14 +497,14 @@ describe('TextCreateComponent', () => {
         );
 
         expect(textCreateComponent.alertsService.alerts.errors.length).toEqual(2);
-        const plaintextErrors = _.map(textCreateComponent.alertsService.alerts.errors, (item) => ({ plainText: item.plainText }));
+        const plaintextErrors = textCreateComponent.alertsService.alerts.errors.map((item) => ({ plainText: item.plainText }));
         expect(plaintextErrors).toEqual([
             { plainText: 'Unrecognized source: INVALID_SOURCE' },
             { plainText: 'person: "Tester X" is not valid for this object type' },
         ]);
 
         expect(textCreateComponent.alertsService.alerts.warnings.length).toEqual(1);
-        const plaintextWarnings = _.map(textCreateComponent.alertsService.alerts.warnings, (item) => ({ plainText: item.plainText }));
+        const plaintextWarnings = textCreateComponent.alertsService.alerts.warnings.map((item) => ({ plainText: item.plainText }));
         expect(plaintextWarnings).toEqual([{ plainText: 'Not authenticated' }]);
 
         expect(textCreateComponent.object.rpsl).toEqual(person_correct);

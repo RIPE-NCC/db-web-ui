@@ -11,12 +11,6 @@ export class ApiKeysPage {
         return this;
     }
 
-    expectTableToContain(text: string) {
-        cy.get('table').should('exist');
-        cy.get('table').should('contain.text', text);
-        return this;
-    }
-
     createApiKey(keyType: KeyType, label: string, expiresAt: string, details?: string[]) {
         this.toggleAccordion('Create a new Database key');
         this.selectOption('Key type', keyType);
@@ -29,20 +23,14 @@ export class ApiKeysPage {
         return this;
     }
 
-    revokeKey(id: string) {
-        cy.get(`button[data-test-id="${id}"]`).click();
+    openApiKeyTypeSelect() {
+        this.getSelect('Key type').click();
         return this;
     }
 
     expectCreatedKeyDialogToBePresent() {
         cy.get('mat-dialog-container').should('exist');
         cy.get('mat-dialog-container').should('contain.text', 'Your Database Key');
-        return this;
-    }
-
-    expectRevokeKeyDialogToBePresent() {
-        cy.get('mat-dialog-container').should('exist');
-        cy.get('mat-dialog-container').should('contain.text', 'Revoke this key');
         return this;
     }
 
@@ -81,13 +69,18 @@ export class ApiKeysPage {
         return this;
     }
 
+    expectedDisabledKeyType(keyType: KeyType) {
+        cy.get(`mat-option:contains("${keyType}")`).should('have.attr', 'aria-disabled', 'true');
+        return this;
+    }
+
     changeKeyType(selectKeyType: KeyType) {
         this.selectOption('Key type', selectKeyType);
         return this;
     }
 
     changeExamplesKeyType(keyType: KeyType) {
-        this.geExamplesKeyTypeDropdown().click();
+        this.getExamplesKeyTypeDropdown().click();
         cy.get(`mat-option:contains("${keyType}")`).click();
         return this;
     }
@@ -100,7 +93,13 @@ export class ApiKeysPage {
     }
 
     expectExamplesKeyTypeToBe(keyType: KeyType) {
-        this.geExamplesKeyTypeDropdown().should('contain.text', keyType);
+        this.getExamplesKeyTypeDropdown().should('contain.text', keyType);
+        return this;
+    }
+
+    expectedDisabledExamplesKeyType(keyType: KeyType) {
+        this.getExamplesKeyTypeDropdown().click();
+        cy.get(`mat-option:contains("${keyType}")`).should('have.attr', 'aria-disabled', 'true');
         return this;
     }
 
@@ -125,7 +124,7 @@ export class ApiKeysPage {
         return this;
     }
 
-    private geExamplesKeyTypeDropdown() {
+    private getExamplesKeyTypeDropdown() {
         return cy.get('mat-select[placeholder="Key type"]');
     }
 
