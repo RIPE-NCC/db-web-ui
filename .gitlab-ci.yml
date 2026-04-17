@@ -64,6 +64,10 @@ build:
     stage: build
     extends: .default_rules
     script:
+        - node --version
+        - npm --version
+        - java -version
+        - mvn --version
         - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
         - mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.1:tree -DoutputType=json -DoutputFile=maven.graph.json
     artifacts:
@@ -138,6 +142,8 @@ e2e-cypress-chrome:
     stage: test
     extends: .default_rules
     script:
+        - node --version
+        - npm --version
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
@@ -157,6 +163,8 @@ e2e-cypress-firefox:
     stage: test
     extends: .default_rules
     script:
+        - node --version
+        - npm --version
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
@@ -176,6 +184,8 @@ frontend:
     stage: test
     extends: .default_rules
     script:
+        - node --version
+        - npm --version
         - cd frontend && npm ci && npm run test
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
