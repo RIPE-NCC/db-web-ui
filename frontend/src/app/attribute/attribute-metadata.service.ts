@@ -196,13 +196,15 @@ export class AttributeMetadataService {
     public static splitAttrsCommentsFromValue(attributes: IAttributeModel[], edited?: boolean) {
         attributes.forEach((attribute: IAttributeModel) => {
             let commentCharacter = '#';
-            if (attribute.name.toLowerCase() === 'contact') {
-                //signal contains /#p/ in the middle of the URL
-                commentCharacter = ' #';
-            }
+            let commentIndex = 1;
             if (attribute.value) {
+                if (attribute.name.toLowerCase() === 'contact') {
+                    //signal contains /#p/ in the middle of the URL
+                    commentCharacter = ' #';
+                    commentIndex = 2;
+                }
                 if (attribute.value.indexOf(commentCharacter) > -1) {
-                    attribute.comment = attribute.value.substring(attribute.value.indexOf(commentCharacter) + 1, attribute.value.length).trim();
+                    attribute.comment = attribute.value.substring(attribute.value.indexOf(commentCharacter) + commentIndex, attribute.value.length).trim();
                     attribute.value = attribute.value.substring(0, attribute.value.indexOf(commentCharacter)).trim();
                 } else if (edited) {
                     attribute.comment = undefined;
