@@ -7,6 +7,7 @@ RUN curl -sL https://rpm.nodesource.com/setup_22.x | bash - && \
     dnf install -y nodejs && \
     dnf clean all && \
     rm -rf /var/cache/dnf
+RUN node --version && npm --version && java -version && mvn --version
 COPY . /src
 ARG CI_COMMIT_SHA
 RUN mvn clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
