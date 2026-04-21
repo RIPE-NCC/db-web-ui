@@ -8,6 +8,16 @@
         [buttonUrl]="error.linkurl !== undefined ? error.linkurl : null"
     ></banner>
 </div>
+} @for (success of alerts.successes; let i = $index; track success) {
+<div>
+    <banner
+        [type]="BannerTypes.success"
+        [id]="'notification-success-' + i"
+        textContent="{{ success.plainText | sanitizeHtml }}"
+        [buttonText]="success.linktext !== undefined ? success.linktext : null"
+        [buttonUrl]="success.linkurl !== undefined ? success.linkurl : null"
+    ></banner>
+</div>
 } @for (warning of alerts.warnings; let i = $index; track warning) {
 <div>
     <banner
@@ -26,16 +36,6 @@
         textContent="{{ info.plainText | sanitizeHtml }}"
         [buttonText]="info.linktext !== undefined ? info.linktext : null"
         [buttonUrl]="info.linkurl !== undefined ? info.linkurl : null"
-    ></banner>
-</div>
-} @for (success of alerts.successes; let i = $index; track success) {
-<div>
-    <banner
-        [type]="BannerTypes.success"
-        [id]="'notification-success-' + i"
-        textContent="{{ success.plainText | sanitizeHtml }}"
-        [buttonText]="success.linktext !== undefined ? success.linktext : null"
-        [buttonUrl]="success.linkurl !== undefined ? success.linkurl : null"
     ></banner>
 </div>
 }

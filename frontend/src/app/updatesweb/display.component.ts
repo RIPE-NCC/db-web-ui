@@ -77,7 +77,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
             this.attributes = this.whoisResourcesService.getAttributes(whoisResources);
             this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, cached);
             this.alertsService.addGlobalSuccesses(`Your object has been successfully ${this.getOperationName()}`);
-            this.alertsService.setErrors(whoisResources);
+            this.alertsService.setAllErrors(whoisResources);
 
             if (this.method === 'Modify') {
                 const diff = this.whoisResourcesService.validateAttributes(this.messageStoreService.get('DIFF'));
@@ -93,7 +93,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
                     this.attributes = this.whoisResourcesService.getAttributes(resp);
                     this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
-                    this.alertsService.setErrors(resp);
+                    this.alertsService.setAllErrors(resp);
                 },
                 error: (resp: any) => {
                     this.alertsService.populateFieldSpecificErrors(this.objectType, this.attributes, resp.data);
