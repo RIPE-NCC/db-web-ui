@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { ErrorInterceptor } from 'src/app/interceptor/error.interceptor';
 import { PropertiesService } from 'src/app/properties.service';
 import { AlertsService } from 'src/app/shared/alert/alerts.service';
@@ -11,9 +11,10 @@ describe('ErrorInterceptor', () => {
     let mockProperties: jasmine.SpyObj<PropertiesService>;
     let mockAlertsService: jasmine.SpyObj<AlertsService>;
     let mockHandler: jasmine.SpyObj<{ handle: (req: HttpRequest<any>) => any }>;
+    const routerEvents$ = new Subject();
 
     beforeEach(() => {
-        mockRouter = jasmine.createSpyObj('Router', ['navigate'], { url: '/test' });
+        mockRouter = jasmine.createSpyObj('Router', ['navigate'], { url: '/test', events: routerEvents$.asObservable() });
         mockProperties = jasmine.createSpyObj('PropertiesService', [], { LOGIN_URL: 'http://sso.test/login' });
         mockAlertsService = jasmine.createSpyObj('AlertsService', ['setGlobalError']);
         mockHandler = jasmine.createSpyObj('HttpHandlerFn', ['handle']);

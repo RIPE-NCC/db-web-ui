@@ -75,7 +75,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         if (this.show.ripeStatButton) {
             this.ripeStatLink = this.getRipeStatLink();
         }
-        this.setButtonText(this.userInfoService.isLogedIn());
+        this.setButtonText(this.userInfoService.isLoggedIn());
         this.show.ripeManagedToggleControl = this.model.managed;
     }
 

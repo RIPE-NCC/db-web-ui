@@ -4,8 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import supportedBrowsers from '../../assets/supportedBrowsers.js';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
-import { dbMenuObject } from '../menu/db-menu.json';
-import { ActiveMenu } from '../menu/menu.service';
+import { ActiveMenu, MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { AlertBannersComponent } from '../shared/alert/alert-banners.component';
@@ -26,6 +25,7 @@ export class MainContainerComponent implements OnInit {
     private router = inject(Router);
     private location = inject(Location);
     private sessionInfoService = inject(SessionInfoService);
+    private menuService = inject(MenuService);
 
     isDesktopView: boolean;
     collapsedMenu: boolean = false;
@@ -52,8 +52,7 @@ export class MainContainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        const dbMenuIds = dbMenuObject.menu.main.map((item) => item.id.toLowerCase());
-        this.activeMenu = dbMenuIds.some((id) => location.href.includes(id)) ? ActiveMenu.DB : ActiveMenu.RESOURCES;
+        this.activeMenu = this.menuService.activeMenu();
         this.isBrowserSupported = supportedBrowsers.test(navigator.userAgent);
         this.mobileOrDesktopView();
         this.releaseNotificationService.startPolling();
@@ -62,7 +61,7 @@ export class MainContainerComponent implements OnInit {
     private skipHash() {
         const hash = window.location.hash;
         if (hash && !this.isLegalPage()) {
-            this.router.navigateByUrl(hash.substring(1));
+            void this.router.navigateByUrl(hash.substring(1));
         }
     }
 

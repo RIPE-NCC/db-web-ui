@@ -19,7 +19,7 @@ describe('WhoisObjectViewerComponent', () => {
             TestBed.configureTestingModule({
                 imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, WhoisObjectViewerComponent],
                 providers: [
-                    { provide: UserInfoService, useValue: { isLogedIn: () => true, userLoggedIn$: of() } },
+                    { provide: UserInfoService, useValue: { isLoggedIn: () => true, userLoggedIn$: of() } },
                     SessionInfoService,
                     CookieService,
                     PropertiesService,
@@ -57,7 +57,7 @@ describe('WhoisObjectViewerComponent', () => {
                 providers: [
                     {
                         provide: UserInfoService,
-                        useValue: { isLogedIn: () => false, userLoggedIn$: of() },
+                        useValue: { isLoggedIn: () => false, userLoggedIn$: of() },
                     },
                     SessionInfoService,
                     CookieService,

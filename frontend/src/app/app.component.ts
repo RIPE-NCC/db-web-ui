@@ -1,15 +1,14 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy } from '@angular/core';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter, Observable, Subscription } from 'rxjs';
 import { FeedbackSupportDialogComponent } from './feedbacksupport/feedback-support-dialog.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { dbMenuObject } from './menu/db-menu.json';
 import { ActiveMenu, MenuService, SidebarMenu } from './menu/menu.service';
-import { resourcesMenuObject } from './menu/resources-menu.json';
+import { getResourceMenu } from './menu/resources-menu.json';
 import { PropertiesService } from './properties.service';
+import { UserInfoService } from './userinfo/user-info.service';
 
 export const EnvNamesInRipeWebComponents = {
     local: 'local',
@@ -37,7 +36,7 @@ const envDisplayMap: Record<string, string> = {
 })
 export class AppComponent implements OnDestroy {
     activeMenu: ActiveMenu;
-    activeMenuItem: string;
+    activeSidebarItem: string;
     sidebarMenu: SidebarMenu;
     icon: string;
     envNameInRipeWebComponents: string;
@@ -46,6 +45,7 @@ export class AppComponent implements OnDestroy {
     dialog = inject(MatDialog);
     private router = inject(Router);
     private menuService = inject(MenuService);
+    private userInfoService = inject(UserInfoService);
 
     private readonly navigationEnd: Subscription;
 
@@ -56,22 +56,29 @@ export class AppComponent implements OnDestroy {
         this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV];
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
-            this.setActiveMenuItem(evt.url);
+            this.setActiveSidebarItem(evt.url);
         });
         effect(() => {
-            this.activeMenu = this.menuService.activeMenu();
-            this.onInit();
+            this.onActiveMenuChange();
         });
     }
 
-    onInit() {
+    onActiveMenuChange() {
         this.menuService.setActiveMenu();
-        if (this.activeMenu === ActiveMenu.DB) {
+        this.activeMenu = this.menuService.activeMenu();
+        if (this.menuService.isActiveDBMenu()) {
             this.icon = 'assets/images/RIPE_NCC_Database_White_2025.svg';
             this.sidebarMenu = dbMenuObject.menu;
         } else {
             this.icon = 'assets/images/Resources_2025-05.svg';
-            this.sidebarMenu = resourcesMenuObject.menu;
+            this.userInfoService.getUserOrgsAndRoles().subscribe({
+                next: (response) => {
+                    this.sidebarMenu = getResourceMenu(!!response);
+                },
+                error: () => {
+                    this.sidebarMenu = getResourceMenu(false);
+                },
+            });
         }
         const env = this.properties.ENV?.toLowerCase();
         this.labelEnv = envDisplayMap[env] ?? `${this.properties.ENV} Database`;
@@ -84,9 +91,9 @@ export class AppComponent implements OnDestroy {
         }
     }
 
-    onMenuItemClick(event) {
+    onSidebarItemClick(event) {
         event.preventDefault();
-        this.setActiveMenuItem(event.detail.url);
+        this.setActiveSidebarItem(event.detail.url);
 
         if (event.detail.id === 'feedback') {
             this.dialog.open(FeedbackSupportDialogComponent, { panelClass: 'feedback-support-panel' });
@@ -101,8 +108,7 @@ export class AppComponent implements OnDestroy {
         }
     }
 
-    setActiveMenuItem(url: string) {
-        this.menuService.setActiveMenu();
-        this.activeMenuItem = `${location.origin}/db-web-ui/${url}`;
+    setActiveSidebarItem(url: string) {
+        this.activeSidebarItem = `${location.origin}/db-web-ui/${url}`;
     }
 }

@@ -45,6 +45,7 @@ public class SsoTokenFilter implements Filter {
             ".*/db-web-ui/fmp/requireLogin",
             ".*/db-web-ui/unsubscribe.*",
             ".*/db-web-ui/unsubscribe-confirm.*",
+            ".*/db-web-ui/myresources/overview",
             ".*/db-web-ui/error",
             ".*/db-web-ui/not-found",
             ".*/db-web-ui/index.html",
@@ -115,6 +116,7 @@ public class SsoTokenFilter implements Filter {
                 request.getRequestURI().endsWith(".woff2") ||
                 request.getRequestURI().endsWith(".png") ||
                 request.getRequestURI().endsWith(".svg") ||
+                request.getRequestURI().endsWith(".jpg") ||
                 request.getRequestURI().endsWith(".gif"));
     }
 

@@ -18,7 +18,7 @@ export class UserInfoService {
         this.userLoggedIn$ = new EventEmitter();
     }
 
-    public isLogedIn(): boolean {
+    public isLoggedIn(): boolean {
         return !!this.userInfo;
     }
 

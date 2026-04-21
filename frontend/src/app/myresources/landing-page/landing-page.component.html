@@ -1,0 +1,10 @@
+@if (loggedIn) {
+<resource-component></resource-component>
+} @else {
+<ripe-unified-landing-page
+    title="View Your Internet Number Resources"
+    image="assets/images/resources.jpg"
+    active-app="resources"
+    [attr.description]="description"
+></ripe-unified-landing-page>
+}

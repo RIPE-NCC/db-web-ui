@@ -1,4 +1,6 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 export enum ActiveMenu {
     DB = 'db',
@@ -25,11 +27,18 @@ export type SidebarMenu = {
     providedIn: 'root',
 })
 export class MenuService {
+    private router = inject(Router);
     private _activeMenu = signal<ActiveMenu | null>(null);
     readonly activeMenu = this._activeMenu.asReadonly();
 
+    constructor() {
+        this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => this.setActiveMenu());
+    }
+
     setActiveMenu() {
-        const activeMenu = ['myresources', 'ip-analyser'].some((id) => location.href.includes(id)) ? ActiveMenu.RESOURCES : ActiveMenu.DB;
+        const url = this.router.url;
+        const activeMenu = ['myresources', 'ip-analyser'].some((id) => url.includes(id)) ? ActiveMenu.RESOURCES : ActiveMenu.DB;
+
         this._activeMenu.set(activeMenu);
     }
 

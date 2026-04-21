@@ -5,8 +5,7 @@ import { queryFlagResolver } from './query/query-flag.resolver';
 export const appRoutes: Routes = [
     {
         path: 'myresources/overview',
-        loadComponent: () => import('./myresources/resources.component').then((m) => m.ResourcesComponent),
-        canActivate: [AuthenticationGuard],
+        loadComponent: () => import('./myresources/landing-page/landing-page.component').then((m) => m.LandingPageComponent),
     },
     {
         path: 'myresources/detail/:objectType/:objectName',

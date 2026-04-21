@@ -21,3 +21,10 @@ export const resourcesMenuObject = {
         footer: footer,
     },
 };
+
+export const getResourceMenu = (userLoggedIn: boolean) => {
+    return {
+        main: userLoggedIn ? resourcesMenuObject.menu.main : [],
+        footer: footer,
+    };
+};

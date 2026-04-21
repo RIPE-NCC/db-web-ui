@@ -20,7 +20,7 @@ describe('LookupComponent', () => {
                 {
                     provide: UserInfoService,
                     useValue: {
-                        isLogedIn: () => true,
+                        isLoggedIn: () => true,
                         userLoggedIn$: of(),
                     },
                 },

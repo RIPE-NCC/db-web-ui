@@ -31,16 +31,16 @@ describe('UserInfoService', () => {
 
     it('should provide user info on success', () => {
         userInfoService.getUserOrgsAndRoles().subscribe((respons: IUserInfoResponseData) => {
-            expect(respons).toBe(userInfo);
+            expect(respons).toBe(mockUserInfo);
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
         expect(req.request.method).toBe('GET');
-        req.flush(userInfo);
+        req.flush(mockUserInfo);
     });
 
     it('should check session status', () => {
         userInfoService.pingUserInfo().subscribe((respons: IUserInfoResponseData) => {
-            expect(respons).toBe(userInfo);
+            expect(respons).toBe(mockUserInfo);
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
         expect(req.request.method).toBe('GET');
@@ -69,7 +69,7 @@ describe('UserInfoService', () => {
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
         expect(req.request.method).toBe('GET');
-        req.flush(userInfo);
+        req.flush(mockUserInfo);
     });
 
     it('should preselect correct lir based on cookie activeMembershipId value', () => {
@@ -79,34 +79,34 @@ describe('UserInfoService', () => {
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
         expect(req.request.method).toBe('GET');
-        req.flush(userInfo);
+        req.flush(mockUserInfo);
     });
-
-    const userInfo: IUserInfoResponseData = {
-        user: {
-            username: 'TSTADMINC-RIPE',
-            displayName: 'Test User',
-            uuid: 'aaaa-bbbb-cccc-dddd',
-            active: true,
-        },
-        members: [
-            {
-                membershipId: '7347',
-                regId: 'zz.example',
-                orgObjectId: 'ORG-TEST19-RIPE',
-                organisationName: 'Internet Provider Test',
-                roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
-                lir: true,
-            },
-            {
-                membershipId: '3629',
-                regId: 'nl.supertestorg',
-                orgObjectId: 'ORG-TEST23-RIPE',
-                organisationName: 'SUPERTESTORG bv',
-                roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
-                lir: true,
-            },
-        ],
-        organisations: [],
-    };
 });
+
+export const mockUserInfo: IUserInfoResponseData = {
+    user: {
+        username: 'TSTADMINC-RIPE',
+        displayName: 'Test User',
+        uuid: 'aaaa-bbbb-cccc-dddd',
+        active: true,
+    },
+    members: [
+        {
+            membershipId: '7347',
+            regId: 'zz.example',
+            orgObjectId: 'ORG-TEST19-RIPE',
+            organisationName: 'Internet Provider Test',
+            roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
+            lir: true,
+        },
+        {
+            membershipId: '3629',
+            regId: 'nl.supertestorg',
+            orgObjectId: 'ORG-TEST23-RIPE',
+            organisationName: 'SUPERTESTORG bv',
+            roles: ['admin', 'general', 'generalMeeting', 'resources', 'certification', 'ticketing', 'billing', 'LIR'],
+            lir: true,
+        },
+    ],
+    organisations: [],
+};
