@@ -646,9 +646,10 @@ describe('WhoisResourcesService', () => {
     it('should detact if an attribute can be added', () => {
         const attrs = whoisResourcesService.validateAttributes([
             { name: 'person', value: 'a', $$meta: { $$mandatory: true, $$multiple: false } },
-            { name: 'address', value: 'b', $$meta: { $$mandatory: true, $$multiple: true } },
-            { name: 'address', value: 'c', $$meta: { $$mandatory: true, $$multiple: true } },
-            { name: 'phone', value: 'd', $$meta: { $$mandatory: true, $$multiple: true } },
+            { name: 'address', value: 'b', $$meta: { $$mandatory: false, $$multiple: true } },
+            { name: 'address', value: 'c', $$meta: { $$mandatory: false, $$multiple: true } },
+            { name: 'e-mail', value: 'd@test.net', $$meta: { $$mandatory: true, $$multiple: true } },
+            { name: 'phone', value: 'd', $$meta: { $$mandatory: false, $$multiple: true } },
             { name: 'nic-hdl', value: 'e', $$meta: { $$mandatory: true, $$multiple: false } },
             { name: 'source', value: 'g', $$meta: { $$mandatory: true, $$multiple: false } },
         ]);
@@ -658,12 +659,13 @@ describe('WhoisResourcesService', () => {
         expect(addableAttrs[1].name).toBe('phone');
         expect(addableAttrs[2].name).toBe('fax-no');
         expect(addableAttrs[3].name).toBe('e-mail');
-        expect(addableAttrs[4].name).toBe('org');
-        expect(addableAttrs[5].name).toBe('remarks');
-        expect(addableAttrs[6].name).toBe('notify');
-        expect(addableAttrs[7].name).toBe('mnt-by');
-        expect(addableAttrs[8].name).toBe('mnt-ref');
-        expect(addableAttrs.length).toBe(9);
+        expect(addableAttrs[4].name).toBe('contact');
+        expect(addableAttrs[5].name).toBe('org');
+        expect(addableAttrs[6].name).toBe('remarks');
+        expect(addableAttrs[7].name).toBe('notify');
+        expect(addableAttrs[8].name).toBe('mnt-by');
+        expect(addableAttrs[9].name).toBe('mnt-ref');
+        expect(addableAttrs.length).toBe(10);
     });
 
     it('should detact if an attribute can be removed', () => {

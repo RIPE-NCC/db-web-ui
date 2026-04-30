@@ -144,10 +144,11 @@ describe('TextCreateComponent', () => {
         await componentFixture.whenStable();
         expect(textCreateComponent.object.rpsl).toEqual(
             'PERSON:        \n' +
-                'ADDRESS:       \n' +
-                'PHONE:         \n' +
+                'address:       \n' +
+                'phone:         \n' +
                 'fax-no:        \n' +
-                'e-mail:        \n' +
+                'E-MAIL:        \n' +
+                'contact:       \n' +
                 'org:           \n' +
                 'NIC-HDL:       AUTO-1\n' +
                 'remarks:       \n' +
@@ -291,8 +292,7 @@ describe('TextCreateComponent', () => {
 
         expect(textCreateComponent.alertsService.alerts.errors).toEqual([
             { plainText: 'person: Mandatory attribute not set' },
-            { plainText: 'address: Mandatory attribute not set' },
-            { plainText: 'phone: Mandatory attribute not set' },
+            { plainText: 'e-mail: Mandatory attribute not set' },
         ]);
 
         expect(modalMock.open).not.toHaveBeenCalled();
@@ -341,6 +341,7 @@ describe('TextCreateComponent', () => {
     const person_correct =
         'person:        Tester X\n' +
         'address:       Singel, Amsterdam\n' +
+        'e-mail:        test@ripe.net\n' +
         'phone:         +316\n' +
         'nic-hdl:       AUTO-1\n' +
         'mnt-by:        grol129-mnt\n' +
@@ -383,6 +384,7 @@ describe('TextCreateComponent', () => {
                             attribute: [
                                 { name: 'person', value: 'Tester X' },
                                 { name: 'address', value: 'Singel, Amsterdam' },
+                                { name: 'e-mail', value: 'test@ripe.net' },
                                 { name: 'phone', value: '+316' },
                                 { name: 'nic-hdl', value: 'TST07-RIPE' },
                                 { name: 'mnt-by', value: 'TEST-MNT' },
@@ -423,6 +425,7 @@ describe('TextCreateComponent', () => {
                                 attribute: [
                                     { name: 'person', value: 'Tester X' },
                                     { name: 'address', value: 'Singel, Amsterdam' },
+                                    { name: 'e-mail', value: 'test@ripe.net' },
                                     { name: 'phone', value: '+316' },
                                     { name: 'nic-hdl', value: 'TST07-RIPE' },
                                     { name: 'mnt-by', value: 'TEST-MNT' },

@@ -87,7 +87,6 @@ describe('WhoisMetaService', () => {
     it('should return exactly the mandatory meta attributes for a given type', () => {
         expect(whoisMetaService.getMetaAttributesOnObjectType('role', true)).toEqual([
             { name: 'role', mandatory: true, multiple: false, refs: [], searchable: true },
-            { name: 'address', mandatory: true, multiple: true, refs: [] },
             { name: 'e-mail', mandatory: true, multiple: true, refs: [] },
             { name: 'nic-hdl', mandatory: true, multiple: false, primaryKey: true, refs: [] },
             { name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER'] },
@@ -99,7 +98,6 @@ describe('WhoisMetaService', () => {
     it('should return exactly the mandatory meta attributes for a given type in UpperCase', () => {
         expect(whoisMetaService.getMetaAttributesOnObjectType('ROLE', true)).toEqual([
             { name: 'role', mandatory: true, multiple: false, refs: [], searchable: true },
-            { name: 'address', mandatory: true, multiple: true, refs: [] },
             { name: 'e-mail', mandatory: true, multiple: true, refs: [] },
             { name: 'nic-hdl', mandatory: true, multiple: false, primaryKey: true, refs: [] },
             { name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER'] },
