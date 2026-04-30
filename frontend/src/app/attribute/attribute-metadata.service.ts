@@ -98,7 +98,7 @@ export class AttributeMetadataService {
             attributes[i].$$invalid = this.isInvalid(objectType, attributes, attributes[i]);
             attributes[i].$$hidden = this.isHidden(objectType, attributes, attributes[i]);
             attributes[i].$$disable = this.isReadOnly(objectType, attributes, attributes[i]);
-            attributes[i].$$error = ScreenLogicInterceptorService.setErrorForNonLatin1(attributes[i].value);
+            attributes[i].$$error = ScreenLogicInterceptorService.setErrorForNonLatin1SupportedAttributes(attributes[i]);
             attributes[i].$$id = 'attr-' + i;
         }
     };
