@@ -25,6 +25,6 @@ export const resourcesMenuObject = {
 export const getResourceMenu = (userLoggedIn: boolean) => {
     return {
         main: userLoggedIn ? resourcesMenuObject.menu.main : [],
-        footer: footer,
+        footer: userLoggedIn ? footer : footer.map(({ icon, external, ...rest }) => rest),
     };
 };

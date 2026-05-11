@@ -16,7 +16,7 @@ export class LandingPageComponent implements OnInit {
     private sessionInfoService = inject(SessionInfoService);
 
     description: string =
-        'View and manage your IPv4, IPv6 and AS Numbers in one place. RIPE NCC members can view and manage their resources. Holders of Provider Independent (PI) assignments can also view their resources. \nTo access the Resources page, you need to have a RIPE NCC Access account. Each user needs their own personal account.';
+        'View and manage your IPv4, IPv6 and AS Numbers in one place. RIPE NCC members can view and manage their resources. Holders of Provider Independent (PI) assignments can also view their resources. \n\nTo access the Resources page, you need to have a RIPE NCC Access account. Each user needs their own personal account.';
     loggedIn: boolean;
 
     ngOnInit() {

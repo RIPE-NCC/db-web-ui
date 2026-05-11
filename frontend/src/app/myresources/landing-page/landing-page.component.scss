@@ -4,3 +4,10 @@
     font-weight: 700;
     margin: 0;
 }
+
+:host ::ng-deep h2 {
+    color: var(--ripe-color-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
