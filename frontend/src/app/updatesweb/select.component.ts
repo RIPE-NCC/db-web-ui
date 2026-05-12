@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { PropertiesService } from '../properties.service';
+import { DropdownComponent } from '../shared/dropdown/dropdown.component';
+import { DropdownOption } from '../shared/dropdown/types';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 
@@ -14,8 +16,9 @@ interface ISelectedObjectType {
 @Component({
     selector: 'select-component',
     templateUrl: './select.component.html',
+    styleUrl: 'select.component.scss',
     standalone: true,
-    imports: [FormsModule, MatButton],
+    imports: [FormsModule, MatButton, DropdownComponent],
 })
 export class SelectComponent implements OnInit {
     private router = inject(Router);
@@ -24,7 +27,7 @@ export class SelectComponent implements OnInit {
     properties = inject(PropertiesService);
 
     public selected: ISelectedObjectType;
-    public objectTypes: string[];
+    public objectTypes: DropdownOption[];
     public loggedIn: boolean;
 
     constructor() {
@@ -33,8 +36,8 @@ export class SelectComponent implements OnInit {
         });
     }
 
-    public ngOnInit() {
-        this.objectTypes = this.filterObjectTypes(this.whoisMetaService.getObjectTypes());
+    ngOnInit() {
+        this.objectTypes = this.mapTypesToOptions(this.filterObjectTypes(this.whoisMetaService.getObjectTypes()));
         this.userInfoService.getUserOrgsAndRoles().subscribe({
             next: () => (this.loggedIn = true),
             error: () => {
@@ -47,7 +50,7 @@ export class SelectComponent implements OnInit {
         };
     }
 
-    public navigateToCreate() {
+    navigateToCreate() {
         if (this.selected.objectType === 'mntner') {
             void this.router.navigate(['webupdates/create', this.selected.source, 'mntner', 'self']);
         } else if (this.selected.objectType === 'domain') {
@@ -59,11 +62,25 @@ export class SelectComponent implements OnInit {
         }
     }
 
-    public filterObjectTypes(unfiltered: string[]): string[] {
+    filterObjectTypes(unfiltered: string[]): string[] {
         // only on PROD env should be filtered out option to create autnum and as-block
         if (this.properties.isEnableNonAuthUpdates()) {
             return unfiltered.filter((item: string) => item !== 'poem' && item !== 'poetic-form');
         }
         return unfiltered.filter((item: string) => item !== 'as-block' && item !== 'poem' && item !== 'poetic-form' && item != 'aut-num');
+    }
+
+    mapTypesToOptions(types: string[]): DropdownOption[] {
+        return [
+            {
+                label: 'role and maintainer pair',
+                value: 'role-mntnr',
+            },
+
+            ...types.map((type) => ({
+                label: type,
+                value: type,
+            })),
+        ];
     }
 }

@@ -1,0 +1,18 @@
+.select-field {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 50%;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+
+    button {
+        width: max-content;
+        align-self: flex-end;
+    }
+}
+
+.db-dropdown {
+    min-width: 500px;
+}

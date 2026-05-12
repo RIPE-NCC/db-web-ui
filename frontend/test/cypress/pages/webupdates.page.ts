@@ -77,7 +77,8 @@ export class WebupdatesPage {
     }
 
     selectObjectType(type: string) {
-        cy.get('#objectTypeSelector').select(type);
+        cy.get('db-dropdown .dropdown-trigger').click();
+        cy.get(`[data-cy="dropdown-item-${type}"]`).click();
         return this;
     }
 

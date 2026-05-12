@@ -1,19 +1,9 @@
 <h1>Select object type you would like to create</h1>
 
-<section>
-    <form id="selectForm" class="grey padding float-start">
-        <div>
-            <label for="objectTypeSelector">Object type</label>
-            <select name="objectTypeSelector" id="objectTypeSelector" [(ngModel)]="selected.objectType" [required]="true" class="form-control select-height">
-                <option [ngValue]="'role-mntnr'" label="role and maintainer pair">role and maintainer pair</option>
-                @for (objectType of objectTypes; track objectType) {
-                <option label="{{ objectType }}" [ngValue]="objectType">{{ objectType }}</option>
-                }
-            </select>
-        </div>
-        <br />
-        <button id="btnNavigateToCreate" mat-flat-button color="primary" class="float-end" (click)="navigateToCreate()">
-            {{ loggedIn ? 'CREATE' : 'LOGIN TO CREATE' }}
-        </button>
-    </form>
-</section>
+<div class="select-field">
+    <db-dropdown [label]="'Object type'" [options]="objectTypes" [(selectedValue)]="selected.objectType"></db-dropdown>
+    <br />
+    <button id="btnNavigateToCreate" mat-flat-button color="primary" class="float-end" (click)="navigateToCreate()">
+        {{ loggedIn ? 'CREATE' : 'LOGIN TO CREATE' }}
+    </button>
+</div>

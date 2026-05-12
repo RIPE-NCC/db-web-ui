@@ -473,7 +473,7 @@ export class WhoisMetaService {
         },
     };
 
-    public getAttributeShortDescription(objectType: string, attrName: string) {
+    getAttributeShortDescription(objectType: string, attrName: string) {
         let short = this._getDocumentationForAttribute(objectType, attrName, 'short');
         if (short === undefined) {
             short = this._getDocumentationForAttribute(objectType, attrName, 'description');
@@ -481,15 +481,15 @@ export class WhoisMetaService {
         return short;
     }
 
-    public getAttributeDescription(objectType: string, attrName: string) {
+    getAttributeDescription(objectType: string, attrName: string) {
         return this._getDocumentationForAttribute(objectType, attrName, 'description');
     }
 
-    public getAttributeSyntax(objectType: string, attrName: string) {
+    getAttributeSyntax(objectType: string, attrName: string) {
         return this._getDocumentationForAttribute(objectType, attrName, 'syntax');
     }
 
-    public getMetaAttributesOnObjectType(objectTypeName: string, mandatoryOnly: boolean) {
+    getMetaAttributesOnObjectType(objectTypeName: string, mandatoryOnly: boolean) {
         const objectTypeLowerCase = objectTypeName.toLowerCase();
         if (!objectTypeName || !this.objectTypesMap[objectTypeLowerCase]) {
             return [];
@@ -502,7 +502,7 @@ export class WhoisMetaService {
         });
     }
 
-    public findMetaAttributeOnObjectTypeAndName(objectTypeName: string, attributeName: string) {
+    findMetaAttributeOnObjectTypeAndName(objectTypeName: string, attributeName: string) {
         const objectTypeLowerCase = objectTypeName.toLowerCase();
         if (!objectTypeName || !this.objectTypesMap[objectTypeLowerCase]) {
             return undefined;
@@ -512,7 +512,7 @@ export class WhoisMetaService {
         });
     }
 
-    public getObjectTypes() {
+    getObjectTypes(): string[] {
         const keys: string[] = [];
         for (const key in this.objectTypesMap) {
             keys.push(key);
@@ -520,18 +520,14 @@ export class WhoisMetaService {
         return keys;
     }
 
-    public getObjectTypesMap() {
-        return this.objectTypesMap;
-    }
-
-    public isExistingObjectTypes(objectType: string): boolean {
+    isExistingObjectTypes(objectType: string): boolean {
         if (objectType) {
             return this.objectTypesMap[objectType.toLowerCase()] !== undefined;
         }
         return false;
     }
 
-    public enrichAttributesWithMetaInfo(objectTypeName: string, attrs: IAttributeModel[]) {
+    enrichAttributesWithMetaInfo(objectTypeName: string, attrs: IAttributeModel[]) {
         if (objectTypeName === undefined || attrs === undefined) {
             return attrs;
         }
@@ -566,7 +562,7 @@ export class WhoisMetaService {
         return enrichedAttrs;
     }
 
-    public getAllAttributesOnObjectType(objectTypeName: string): IAttributeModel[] {
+    getAllAttributesOnObjectType(objectTypeName: string): IAttributeModel[] {
         if (objectTypeName === null) {
             return [];
         }
@@ -580,7 +576,7 @@ export class WhoisMetaService {
         });
     }
 
-    public getMandatoryAttributesOnObjectType(objectTypeName: string) {
+    getMandatoryAttributesOnObjectType(objectTypeName: string) {
         if (objectTypeName === null) {
             return [];
         }
