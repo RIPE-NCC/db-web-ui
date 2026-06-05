@@ -17,6 +17,12 @@ export interface IUserInfo {
     uuid: string;
 }
 
+export type UserInfo = {
+    name: string;
+    email: string;
+    username: string;
+};
+
 export interface IUserInfoResponseData {
     user: IUserInfo;
     organisations: IUserInfoOrganisation[];

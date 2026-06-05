@@ -52,11 +52,17 @@ export class AppComponent implements OnDestroy {
     labelEnv: string;
     labelEnvImg: string;
 
+    //currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
+    currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
+
     constructor() {
         this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV];
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
             this.setActiveSidebarItem(evt.url);
+            //this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
+            this.currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
+            this.userInfoService.getLoggedInOidc();
         });
         effect(() => {
             this.onActiveMenuChange();
@@ -85,7 +91,7 @@ export class AppComponent implements OnDestroy {
         this.labelEnvImg = this.properties.isTrainingEnv() ? 'assets/icons/fa-graduation-cap.svg' : 'assets/icons/fa-axe.svg';
     }
 
-    public ngOnDestroy() {
+    ngOnDestroy() {
         if (this.navigationEnd) {
             this.navigationEnd.unsubscribe();
         }

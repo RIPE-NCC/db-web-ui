@@ -22,9 +22,10 @@ export class AuthenticationGuard {
     }
 
     private redirectToLogin(originalPath: string) {
-        const url = window.location.origin + `/db-web-ui${originalPath}`;
-        const ssoUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
-        console.info('Force SSO login:' + ssoUrl);
-        window.location.href = ssoUrl;
+        // const url = window.location.origin + `/db-web-ui${originalPath}`;
+        // const ssoUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
+        // console.info('Force SSO login:' + ssoUrl);
+        // window.location.href = ssoUrl;
+        window.location.href = '/oauth2/authorization/keycloak';
     }
 }

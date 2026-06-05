@@ -1,4 +1,4 @@
-@if (!this.properties.isProdEnv()) {
+@if(currentHref) { @if (!this.properties.isProdEnv()) {
 <ripe-unified-layout
     class="layout-overrides"
     [attr.service-logo]="icon"
@@ -7,10 +7,16 @@
     [menu]="sidebarMenu"
     (:ripe-unified-sidebar:item-clicked)="onSidebarItemClick($event)"
     [attr.active-route]="activeSidebarItem"
-    user-auth="cookie"
-    [attr.env]="envNameInRipeWebComponents"
+    [attr.env]="'prepdev'"
     [attr.env-label-img]="labelEnvImg"
     [attr.env-label-title]="labelEnv"
+    [attr.user-logged-in]="'false'"
+    [attr.user-login-url]="currentHref"
+    [attr.user-logout-url]="'/logout'"
+    [attr.user-picture]="currentHref"
+    [attr.user-name]="properties.LOGIN_URL"
+    [attr.user-profile-url]="properties.LOGIN_URL"
+    [attr.user-auth]="'custom'"
 >
     <section slot="main"><main-container></main-container></section>
 </ripe-unified-layout>
@@ -23,9 +29,9 @@
     [menu]="sidebarMenu"
     (:ripe-unified-sidebar:item-clicked)="onSidebarItemClick($event)"
     [attr.active-route]="activeSidebarItem"
-    user-auth="cookie"
     [attr.env]="envNameInRipeWebComponents"
+    user-auth="custom"
 >
     <section slot="main"><main-container></main-container></section>
 </ripe-unified-layout>
-}
+} }

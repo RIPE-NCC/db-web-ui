@@ -3,7 +3,7 @@ import { EventEmitter, Injectable, inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, share, timeout } from 'rxjs/operators';
-import { IUserInfoOrganisation, IUserInfoResponseData } from '../dropdown/org-data-type.model';
+import { IUserInfoOrganisation, IUserInfoResponseData, UserInfo } from '../dropdown/org-data-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService {
@@ -12,7 +12,7 @@ export class UserInfoService {
 
     private userInfo: IUserInfoResponseData;
     private selectedOrganisation: IUserInfoOrganisation;
-    public userLoggedIn$: EventEmitter<IUserInfoResponseData>;
+    userLoggedIn$: EventEmitter<IUserInfoResponseData>;
 
     constructor() {
         this.userLoggedIn$ = new EventEmitter();
@@ -22,11 +22,17 @@ export class UserInfoService {
         return !!this.userInfo;
     }
 
-    public removeUserInfo() {
+    getLoggedInOidc() {
+        this.http.get('api/user-oidc/me').subscribe((user: UserInfo) => {
+            console.log(user);
+        });
+    }
+
+    removeUserInfo() {
         this.userInfo = undefined;
     }
 
-    public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
+    getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
         if (this.userInfo) {
             return of(this.userInfo);
         } else {
@@ -46,11 +52,11 @@ export class UserInfoService {
         }
     }
 
-    public pingUserInfo(): Observable<Object> {
+    pingUserInfo(): Observable<Object> {
         return this.http.get('api/whois-internal/api/user/info');
     }
 
-    public getSelectedOrganisation(): Observable<IUserInfoOrganisation> {
+    getSelectedOrganisation(): Observable<IUserInfoOrganisation> {
         const storedSelectionId = this.getSelectedOrgFromCookie();
         return this.getUserOrgsAndRoles().pipe(
             map((userInfo: IUserInfoResponseData) => {
@@ -90,7 +96,7 @@ export class UserInfoService {
         );
     }
 
-    public setSelectedOrganisation(selected: any) {
+    setSelectedOrganisation(selected: any) {
         this.selectedOrganisation = selected;
         this.cookies.set(
             'activeMembershipId',
