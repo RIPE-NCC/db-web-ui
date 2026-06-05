@@ -23,8 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.annotation.Nullable;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -65,9 +65,15 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         return restTemplate.execute(
             composeWhoisUrl(request),
             HttpMethod.valueOf(request.getMethod().toUpperCase()),
-             httpEntityCallback(new HttpEntity<>(requestBody, requestHeaders)),
+            httpEntityCallback(new HttpEntity<>(requestBody, requestHeaders)),
             responseExtractor -> {
+                final MediaType mediaType = responseExtractor.getHeaders().getContentType();
+                if (mediaType != null){
+                    response.setContentType(mediaType.toString());
+                }
+
                 IOUtils.copy(responseExtractor.getBody(), response.getOutputStream());
+
                 return null;
             });
     }
