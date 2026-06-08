@@ -4,12 +4,11 @@
         <main class="main">
             <div class="main-header">
                 <ngx-loading-bar></ngx-loading-bar>
-                @if (properties.BANNER) {
-                <banner [type]="BannerTypes.warning" [id]="'notification-1'" [textContent]="properties.BANNER" [permanent]="true"> </banner>
-                }
             </div>
             <div class="main-content">
-                @if (!isBrowserSupported) {
+                @if (properties.BANNER) {
+                <banner [type]="BannerTypes.warning" [id]="'notification-1'" [textContent]="properties.BANNER"> </banner>
+                } @if (!isBrowserSupported) {
                 <banner [type]="BannerTypes.warning" [id]="'notification-browser'" [textContent]="browserUnsuportedText"> </banner>
                 } @if (showSessionExpireBanner) {
                 <banner
