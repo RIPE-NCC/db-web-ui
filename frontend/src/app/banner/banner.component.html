@@ -23,11 +23,11 @@
     </div>
     <div class="content">
         @if (buttonText) {
-        <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="navigateToButtonUrl()">
+        <button mat-stroked-button color="primary" class="no-shrink custom-border" mat-dialog-close (click)="navigateToButtonUrl()">
             {{ buttonText }}
         </button>
         } @if (!permanent) {
-        <button mat-stroked-button color="primary" class="no-shrink" mat-dialog-close (click)="closeBanner()">Dismiss</button>
+        <button mat-stroked-button color="primary" class="no-shrink custom-border" mat-dialog-close (click)="closeBanner()">Dismiss</button>
         }
     </div>
 </div>
