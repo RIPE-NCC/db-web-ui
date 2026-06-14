@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IUserInfoResponseData } from '../../dropdown/org-data-type.model';
+import { UserOrgsAndRegistrations } from '../../dropdown/org-data-type.model';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
 import { DescriptionSyntaxComponent } from '../../shared/descriptionsyntax/description-syntax.component';
@@ -81,7 +81,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         this.showMntAttrsHelp = this.mntnerAttributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
         this.userInfoService.getUserOrgsAndRoles().subscribe({
-            next: (result: IUserInfoResponseData) => {
+            next: (result: UserOrgsAndRegistrations) => {
                 this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'auth', 'SSO ' + result.user.username);
                 this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'upd-to', result.user.username);
             },

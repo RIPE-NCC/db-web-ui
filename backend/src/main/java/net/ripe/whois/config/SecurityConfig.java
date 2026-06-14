@@ -2,6 +2,7 @@ package net.ripe.whois.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -13,6 +14,8 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
@@ -23,9 +26,35 @@ public class SecurityConfig {
                                             DefaultOAuth2AuthorizationRequestResolver pkceResolver,
                                             AuthenticationSuccessHandler successHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler) throws Exception {
+
+        PathPatternRequestMatcher.Builder requestMatcherBuilder = PathPatternRequestMatcher.withDefaults();
+
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/",
+                        "/assets/**",
+                        "/media/**", // fontawesome
+                        "/*.js",
+                        "/*.svg",
+                        "/*.css",
+                        "/api/.*", /* let rest-operation itself decide about authentication */
+                        "/app.constants.json",
+                        "/webupdates/select",
+                        "/webupdates/display",
+                        "/forceDelete",
+                        "/query",
+                        "/fulltextsearch",
+                        "/syncupdates",
+                        "/lookup",
+                        "/fmp",
+                        "/fmp/requireLogin",
+                        "/unsubscribe.*",
+                        "/unsubscribe-confirm.*",
+                        "/myresources/overview",
+                        "/legal",
+                        "/error",
+                        "/not-found").permitAll()
+                .requestMatchers("/public/**", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> {
@@ -33,8 +62,12 @@ public class SecurityConfig {
                     oauth.successHandler(successHandler);
                 })
             .logout(logout -> logout
-                .logoutSuccessHandler(logoutSuccessHandler)
-            );;
+                .deleteCookies()
+                .logoutRequestMatcher(new OrRequestMatcher(
+                    requestMatcherBuilder.matcher(HttpMethod.GET, "/logout"),
+                    requestMatcherBuilder.matcher(HttpMethod.POST, "/logout")))
+                .logoutSuccessHandler(logoutSuccessHandler))
+        ;
 
         return http.build();
     }
@@ -92,7 +125,7 @@ public class SecurityConfig {
             new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
 
-        handler.setPostLogoutRedirectUri("{baseUrl}");
+        handler.setPostLogoutRedirectUri("/db-web-ui/query");
 
         return handler;
     }

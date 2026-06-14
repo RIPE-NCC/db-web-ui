@@ -1,7 +1,8 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Observable, Subscription } from 'rxjs';
+import { UserOidc } from './dropdown/org-data-type.model';
 import { FeedbackSupportDialogComponent } from './feedbacksupport/feedback-support-dialog.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { dbMenuObject } from './menu/db-menu.json';
@@ -34,7 +35,7 @@ const envDisplayMap: Record<string, string> = {
     imports: [RouterModule, MainContainerComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
     activeMenu: ActiveMenu;
     activeSidebarItem: string;
     sidebarMenu: SidebarMenu;
@@ -52,6 +53,11 @@ export class AppComponent implements OnDestroy {
     labelEnv: string;
     labelEnvImg: string;
 
+    userOidc: UserOidc;
+    usernameOidc: string;
+    isLoggedInUser: boolean = false;
+    isComponentLoaded: boolean = false;
+
     //currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
     currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
 
@@ -62,11 +68,32 @@ export class AppComponent implements OnDestroy {
             this.setActiveSidebarItem(evt.url);
             //this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
             this.currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
-            this.userInfoService.getLoggedInOidc();
         });
         effect(() => {
             this.onActiveMenuChange();
+            // this.isLoggedInUser = this.userInfoService.isLoggedIn();
+            // const user = this.userInfoService.user();
+            //
+            // if (this.isLoggedInUser) {
+            //     this.userOidc = user;
+            //     this.usernameOidc = user.name;
+            // }
         });
+    }
+
+    ngOnInit(): void {
+        this.isComponentLoaded = false;
+        this.userInfoService.getLoggedInOidc().subscribe(
+            (response: UserOidc) => {
+                this.userOidc = response;
+                this.usernameOidc = this.userOidc.name;
+                this.isLoggedInUser = true;
+                this.isComponentLoaded = true;
+            },
+            (_err) => {
+                this.isComponentLoaded = true;
+            },
+        );
     }
 
     onActiveMenuChange() {

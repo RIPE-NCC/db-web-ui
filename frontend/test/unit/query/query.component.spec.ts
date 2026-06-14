@@ -193,7 +193,7 @@ describe('QueryComponent', () => {
                         getUserOrgsAndRoles: () => of(),
                         isLoggedIn: () => true,
                         getSelectedOrganisation: () => of(),
-                        userLoggedIn$: of(),
+                        userOrgsAndRoles$: of(),
                     },
                 },
                 provideHttpClient(withInterceptorsFromDi()),

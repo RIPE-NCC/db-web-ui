@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { IUserInfoResponseData } from './dropdown/org-data-type.model';
+import { UserOidc } from './dropdown/org-data-type.model';
 import { PropertiesService } from './properties.service';
 import { UserInfoService } from './userinfo/user-info.service';
 
@@ -12,13 +12,20 @@ export class AuthenticationGuard {
     private properties = inject(PropertiesService);
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        return this.userInfoService.getUserOrgsAndRoles().pipe(
-            map((userInfo: IUserInfoResponseData) => true),
+        return this.userInfoService.getLoggedInOidc().pipe(
+            map((userOidc: UserOidc) => true),
             catchError(() => {
                 this.redirectToLogin(state.url);
                 return of(false);
             }),
         );
+        // return this.userInfoService.getUserOrgsAndRoles().pipe(
+        //     map((userInfo: IUserInfoResponseData) => true),
+        //     catchError(() => {
+        //         this.redirectToLogin(state.url);
+        //         return of(false);
+        //     }),
+        // );
     }
 
     private redirectToLogin(originalPath: string) {

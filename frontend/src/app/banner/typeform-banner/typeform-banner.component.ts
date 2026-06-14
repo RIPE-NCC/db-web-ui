@@ -19,7 +19,7 @@ export class TypeformBannerComponent implements OnInit {
     public loggedInUser: boolean;
 
     constructor() {
-        this.userInfoService.userLoggedIn$.subscribe(() => {
+        this.userInfoService.getLoggedInOidc().subscribe(() => {
             this.loggedInUser = true;
         });
     }

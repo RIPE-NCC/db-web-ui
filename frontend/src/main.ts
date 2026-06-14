@@ -32,7 +32,7 @@ import { UnsubscribeService } from './app/unsubscribe/unsubscribe.service';
 import { ErrorInterceptor } from './app/interceptor/error.interceptor';
 import { HeaderInterceptor } from './app/interceptor/header.interceptor';
 import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.interceptor';
-import { SessionInterceptor } from './app/sessioninfo/session.interceptor';
+// import { SessionInterceptor } from './app/sessioninfo/session.interceptor';
 
 import '@lir-portal/web-components';
 
@@ -46,7 +46,7 @@ bootstrapApplication(AppComponent, {
         provideRouter(appRoutes),
 
         // HTTP with interceptors
-        provideHttpClient(withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, SessionInterceptor])),
+        provideHttpClient(withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor])),
 
         // Animations
         provideAnimations(),

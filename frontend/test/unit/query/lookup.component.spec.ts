@@ -21,7 +21,7 @@ describe('LookupComponent', () => {
                     provide: UserInfoService,
                     useValue: {
                         isLoggedIn: () => true,
-                        userLoggedIn$: of(),
+                        userOrgsAndRoles$: of(),
                     },
                 },
                 provideHttpClient(withInterceptorsFromDi()),

@@ -4,7 +4,7 @@ import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-sele
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { UserInfoService } from '../userinfo/user-info.service';
-import { IUserInfoOrganisation, IUserInfoResponseData } from './org-data-type.model';
+import { IUserInfoOrganisation, UserOrgsAndRegistrations } from './org-data-type.model';
 import { OrgDropDownSharedService } from './org-drop-down-shared.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class OrgDropDownComponent implements OnInit {
     public sessionExpire: boolean = false;
 
     constructor() {
-        this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
+        this.userInfoService.userOrgsAndRoles$.subscribe((userInfo: UserOrgsAndRegistrations) => {
             this.initOrgsAndMemebers(userInfo);
         });
         this.sessionInfoService.expiredSession$.subscribe((isSessionExpired: boolean) => {
@@ -37,7 +37,7 @@ export class OrgDropDownComponent implements OnInit {
     public ngOnInit() {
         this.trainingEnv = this.properties.isTrainingEnv();
         this.userInfoService.getUserOrgsAndRoles().subscribe({
-            next: (userInfo: IUserInfoResponseData): void => {
+            next: (userInfo: UserOrgsAndRegistrations): void => {
                 if (!userInfo) {
                     return;
                 }
@@ -70,7 +70,7 @@ export class OrgDropDownComponent implements OnInit {
         });
     }
 
-    private initOrgsAndMemebers(userInfo: IUserInfoResponseData) {
+    private initOrgsAndMemebers(userInfo: UserOrgsAndRegistrations) {
         const orgs: IUserInfoOrganisation[] = [];
         const members: IUserInfoOrganisation[] = [];
         if (Array.isArray(userInfo.organisations)) {

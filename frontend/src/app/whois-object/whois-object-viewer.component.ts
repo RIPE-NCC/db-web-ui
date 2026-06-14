@@ -1,5 +1,5 @@
 import { NgClass, SlicePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -19,7 +19,7 @@ import { UserInfoService } from '../userinfo/user-info.service';
     standalone: true,
     imports: [MatCheckbox, NgClass, MatTooltip, RouterLink, MatButton, SlicePipe, LabelPipe],
 })
-export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
+export class WhoisObjectViewerComponent implements OnChanges {
     private userInfoService = inject(UserInfoService);
     private sessionInfoService = inject(SessionInfoService);
     private properties = inject(PropertiesService);
@@ -55,12 +55,12 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     private readonly HAS_RIPE_STAT_LINK = ['aut-num', 'route', 'route6', 'inetnum', 'inet6num'];
 
     constructor() {
-        this.subscription = this.sessionInfoService.expiredSession$.subscribe(
-            (expired: boolean) => {
-                this.setButtonText(!expired);
-            },
-            () => this.showLoginButton(),
-        );
+        // this.subscription = this.sessionInfoService.expiredSession$.subscribe(
+        //     (expired: boolean) => {
+        //         this.setButtonText(!expired);
+        //     },
+        //     () => this.showLoginButton(),
+        // );
     }
 
     ngOnChanges() {
@@ -79,9 +79,9 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         this.show.ripeManagedToggleControl = this.model.managed;
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
+    // ngOnDestroy() {
+    // //     this.subscription.unsubscribe();
+    // }
 
     clickShowMoreLines() {
         this.nrLinesToShow = this.objLength;
