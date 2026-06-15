@@ -7,7 +7,7 @@
     [menu]="sidebarMenu"
     (:ripe-unified-sidebar:item-clicked)="onSidebarItemClick($event)"
     [attr.active-route]="activeSidebarItem"
-    [attr.env]="'prepdev'"
+    [attr.env]="envNameInRipeWebComponents"
     [attr.env-label-img]="labelEnvImg"
     [attr.env-label-title]="labelEnv"
     [attr.user-logged-in]="isLoggedInUser"
