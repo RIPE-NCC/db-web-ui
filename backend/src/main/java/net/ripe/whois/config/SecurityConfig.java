@@ -54,7 +54,7 @@ public class SecurityConfig {
                         "/legal",
                         "/error",
                         "/not-found").permitAll()
-                .requestMatchers("/public/**", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search").permitAll()
+                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> {
