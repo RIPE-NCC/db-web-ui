@@ -13,22 +13,10 @@ export class UserInfoService {
     private userInfo: UserOrgsAndRegistrations;
     private selectedOrganisation: IUserInfoOrganisation;
     userOrgsAndRoles$: EventEmitter<UserOrgsAndRegistrations>;
-    // private userLoggedInSubject = new BehaviorSubject<UserOidc | null>(null);
-
-    // user = toSignal(
-    //     this.userLoggedInSubject.asObservable(),
-    //     { initialValue: null }
-    // );
 
     user = signal<UserOidc | null>(null);
 
     isLoggedIn = computed(() => !!this.user());
-
-    // getLoggedInOidc() {
-    //     return this.http.get<UserOidc>('api/user-oidc/me').pipe(
-    //         tap(user => this.user.set(user))
-    //     );
-    // }
 
     constructor() {
         this.userOrgsAndRoles$ = new EventEmitter();

@@ -12,7 +12,7 @@ import { PropertiesService } from './properties.service';
 import { UserInfoService } from './userinfo/user-info.service';
 
 export const EnvNamesInRipeWebComponents = {
-    local: 'local',
+    local: 'prepdev',
     dev: 'development',
     prepdev: 'prepdev',
     prod: 'production',
@@ -58,16 +58,15 @@ export class AppComponent implements OnInit, OnDestroy {
     isLoggedInUser: boolean = false;
     isComponentLoaded: boolean = false;
 
-    //currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
-    currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
+    currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
 
     constructor() {
         this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV];
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
             this.setActiveSidebarItem(evt.url);
-            //this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
-            this.currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
+            this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
+            // this.currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
         });
         effect(() => {
             this.onActiveMenuChange();

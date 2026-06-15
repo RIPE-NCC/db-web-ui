@@ -11,12 +11,16 @@ import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInit
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
+import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.web.client.RestTemplate;
+
+import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 
 @Configuration
 public class SecurityConfig {
@@ -28,6 +32,7 @@ public class SecurityConfig {
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler) throws Exception {
 
         PathPatternRequestMatcher.Builder requestMatcherBuilder = PathPatternRequestMatcher.withDefaults();
+
 
         http
             .authorizeHttpRequests(auth -> auth
@@ -69,6 +74,9 @@ public class SecurityConfig {
                 .logoutSuccessHandler(logoutSuccessHandler))
         ;
 
+        http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
+
+
         return http.build();
     }
 
@@ -84,8 +92,18 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService, RestTemplate restTemplate) {
-
+        DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
         SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
+        delegate.setRedirectStrategy((request, response, url) -> {
+            String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+
+            if (next != null) {
+                request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+                response.sendRedirect(next);
+            } else {
+                defaultRedirectStrategy.sendRedirect(request, response, url);
+            }
+        });
 
         return (request, response, authentication) -> {
 
@@ -107,8 +125,6 @@ public class SecurityConfig {
             System.out.println("Access token: " + accessToken);
             System.out.println("RefreshToken: " + client.getRefreshToken().getTokenValue());
 
-          // TODO redirect to proper url
-
             delegate.onAuthenticationSuccess(
                 request,
                 response,
@@ -125,7 +141,7 @@ public class SecurityConfig {
             new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
 
-        handler.setPostLogoutRedirectUri("/db-web-ui/query");
+        handler.setPostLogoutRedirectUri("https://localhost.ripe.net:8443/db-web-ui/query");
 
         return handler;
     }

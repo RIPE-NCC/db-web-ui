@@ -33,6 +33,6 @@ export class AuthenticationGuard {
         // const ssoUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
         // console.info('Force SSO login:' + ssoUrl);
         // window.location.href = ssoUrl;
-        window.location.href = '/oauth2/authorization/keycloak';
+        window.location.href = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
     }
 }
