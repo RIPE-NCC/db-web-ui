@@ -141,7 +141,7 @@ public class SecurityConfig {
             new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
 
-        handler.setPostLogoutRedirectUri("https://localhost.ripe.net:8443/db-web-ui/query");
+        handler.setPostLogoutRedirectUri("{baseUrl}/query");
 
         return handler;
     }
