@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -153,14 +155,15 @@ public class WhoisInternalProxyController extends ApiController {
 
     @GetMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request,
-                                                   @CookieValue(value = SSO_TOKEN_KEY, required=false) final String ssoToken) {
+                                                   @RegisteredOAuth2AuthorizedClient("keycloak")
+                                                   OAuth2AuthorizedClient authorizedClient) {
 
-        if (Strings.isNullOrEmpty(ssoToken)){
+        if (authorizedClient.getAccessToken() == null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         try{
-            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr()));
+            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr()));
         } catch (RestClientException re){
             return new ResponseEntity<>(re.getMessage(), HttpStatus.valueOf(re.getStatus()));
         }

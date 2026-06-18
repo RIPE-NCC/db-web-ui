@@ -1,9 +1,11 @@
 package net.ripe.whois.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -23,7 +25,20 @@ import org.springframework.web.client.RestTemplate;
 import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
+//
+//    @Value("${spring.security.oauth2.client.registration.keycloak.client-id}")
+//    private String clientId;
+//
+//    @Value("${spring.security.oauth2.client.registration.keycloak.client-secret}")
+//    private String clientSecret;
+//
+//    @Value("${spring.security.oauth2.client.registration.keycloak.scope}")
+//    private String scope;
+//
+//    @Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
+//    private String issuerUri;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -124,6 +139,7 @@ public class SecurityConfig {
 //                Void.class);
             System.out.println("Access token: " + accessToken);
             System.out.println("RefreshToken: " + client.getRefreshToken().getTokenValue());
+            System.out.println("scope: " + client.getClientRegistration().getScopes());
 
             delegate.onAuthenticationSuccess(
                 request,

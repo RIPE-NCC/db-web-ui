@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,27 +44,29 @@ public class BaAppsController {
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}/{prefix:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTicketsPrefix(final HttpServletRequest request,
-                                           @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken,
+                                           @RegisteredOAuth2AuthorizedClient("keycloak")
+                                           OAuth2AuthorizedClient authorizedClient,
                                            @PathVariable(name = "orgId") String orgIdIn,
                                            @PathVariable(name = "resource") String resourceIn,
                                            @PathVariable(name = "prefix") String prefix) {
-        return getTickets(request, ssoToken, orgIdIn, resourceIn + "/" + prefix);
+        return getTickets(request, authorizedClient, orgIdIn, resourceIn + "/" + prefix);
     }
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTickets(final HttpServletRequest request,
-                                     @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken,
+                                     @RegisteredOAuth2AuthorizedClient("keycloak")
+                                     OAuth2AuthorizedClient authorizedClient,
                                      @PathVariable(name = "orgId") String orgId,
                                      @PathVariable(name = "resource") String resource) {
 
-        if (Strings.isNullOrEmpty(ssoToken)){
+        if (authorizedClient.getAccessToken() == null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         try {
             validateOrgId(orgId);
             validateResource(resource);
-            final UserInfoResponse userInfo = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
+            final UserInfoResponse userInfo = whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr());
             // orgObjectId can be null in FYI pseudo-LIRs objects
             final Optional<UserInfoResponse.Member> member = userInfo.members.stream()
                 .filter(searchMember -> searchMember.orgObjectId != null && searchMember.orgObjectId.equals(orgId))

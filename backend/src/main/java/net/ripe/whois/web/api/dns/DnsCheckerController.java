@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,11 +52,12 @@ public class DnsCheckerController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<Response> status(final HttpServletRequest request,
-                                           @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken,
+                                           @RegisteredOAuth2AuthorizedClient("keycloak")
+                                           OAuth2AuthorizedClient authorizedClient,
                                            @RequestParam(value = "ns") final String inNs,
                                            @RequestParam(value = "record") final String inRecord) {
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr());
         LOGGER.debug("DNS check for user {}", userInfoResponse.user.username);
         // tidy up a bit
         final String ns = inNs.trim();

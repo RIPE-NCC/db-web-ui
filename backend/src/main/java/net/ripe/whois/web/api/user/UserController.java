@@ -8,8 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
-
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/user")
@@ -34,9 +33,10 @@ public class UserController {
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getMaintainersCompact(final HttpServletRequest request,
-                                                @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken) {
+                                                @RegisteredOAuth2AuthorizedClient("keycloak")
+                                                OAuth2AuthorizedClient authorizedClient) {
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr());
 
         try {
             final List<Map<String,Object>> response = whoisInternalService
@@ -56,8 +56,9 @@ public class UserController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUserInfo(final HttpServletRequest request,
-                                      @CookieValue(value = SSO_TOKEN_KEY, required = false) final String ssoToken) {
-        return new ResponseEntity<>(whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr()), HttpStatus.OK);
+                                      @RegisteredOAuth2AuthorizedClient("keycloak")
+                                      OAuth2AuthorizedClient authorizedClient) {
+        return new ResponseEntity<>(whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr()), HttpStatus.OK);
     }
 }
 
