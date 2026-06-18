@@ -7,15 +7,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -85,7 +85,13 @@ public class WhoisInternalServiceTest {
     private static final UUID USER_UUID = UUID.randomUUID();
     private static final String API_KEY = "DB-WHOIS-4a471957e3c7";
     public static final String URL = "/api/user/" + USER_UUID + "/maintainers";
-    private static final String SSO_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
+
+    private static final OAuth2AccessToken ACCESS_TOKEN = new OAuth2AccessToken(
+        OAuth2AccessToken.TokenType.BEARER,
+        "mock-access-token",
+        Instant.now(),
+        Instant.now().plusSeconds(3600)
+    );
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("");
@@ -154,7 +160,7 @@ public class WhoisInternalServiceTest {
             .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
                 .body(AbstractIntegrationTest.getResource("mock/user-info.json")));
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(SSO_TOKEN, "127.0.0.1");
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ACCESS_TOKEN, "127.0.0.1");
 
         assertEquals("TSTADMINC-RIPE", userInfoResponse.user.username);
     }
@@ -165,7 +171,7 @@ public class WhoisInternalServiceTest {
             .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
 
         try{
-            whoisInternalService.getUserInfo(SSO_TOKEN, "127.0.0.1");
+            whoisInternalService.getUserInfo(ACCESS_TOKEN, "127.0.0.1");
         }catch (RestClientException e){
             assertEquals(500, e.getStatus());
             assertEquals("Internal server error", e.getErrorMessages().stream().findFirst().get().getText());
@@ -178,7 +184,7 @@ public class WhoisInternalServiceTest {
             .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
         try{
-            whoisInternalService.getUserInfo(SSO_TOKEN, "127.0.0.1");
+            whoisInternalService.getUserInfo(ACCESS_TOKEN, "127.0.0.1");
         }catch (RestClientException e){
             assertEquals(401, e.getStatus());
             assertEquals("", e.getErrorMessages().stream().findFirst().get().getText());
@@ -192,24 +198,5 @@ public class WhoisInternalServiceTest {
         } catch (RestClientException e){
             assertEquals(401, e.getStatus());
         }
-    }
-
-    @Test
-    public void shouldThrow503WhenWhoisInternalIsDown(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active?clientIp=127.0.0.1"))
-                .andRespond(withStatus(HttpStatus.SERVICE_UNAVAILABLE));
-        try {
-            whoisInternalService.getActiveToken(SSO_TOKEN, "127.0.0.1");
-        } catch (RestClientException e){
-            assertEquals(503, e.getStatus());
-        }
-    }
-
-    @Test
-    public void shouldReturnFalseWhenActiveTokenUnauthorized(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/active?clientIp=127.0.0.1"))
-                .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
-
-        assertThat(whoisInternalService.getActiveToken(SSO_TOKEN, "127.0.0.1"), is(false));
     }
 }

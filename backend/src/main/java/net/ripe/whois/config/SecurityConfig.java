@@ -1,6 +1,5 @@
 package net.ripe.whois.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,18 +26,6 @@ import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-//
-//    @Value("${spring.security.oauth2.client.registration.keycloak.client-id}")
-//    private String clientId;
-//
-//    @Value("${spring.security.oauth2.client.registration.keycloak.client-secret}")
-//    private String clientSecret;
-//
-//    @Value("${spring.security.oauth2.client.registration.keycloak.scope}")
-//    private String scope;
-//
-//    @Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
-//    private String issuerUri;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,

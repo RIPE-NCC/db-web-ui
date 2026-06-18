@@ -13,17 +13,26 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import java.io.IOException;
+import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class WhoisInternalProxyControllerTest {
 
-    private static final String SSO_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
+    private static final OAuth2AuthorizedClient authorizedClient = mock(OAuth2AuthorizedClient.class);
+
+    private static final OAuth2AccessToken ACCESS_TOKEN = new OAuth2AccessToken(
+        OAuth2AccessToken.TokenType.BEARER,
+        "mock-access-token",
+        Instant.now(),
+        Instant.now().plusSeconds(3600)
+    );
 
     @Mock
     private HttpServletRequest request;
@@ -38,22 +47,23 @@ public class WhoisInternalProxyControllerTest {
     public void whoisInternalUserInfoMustReturnValue() throws IOException {
         final UserInfoResponse mockedUserInfoData = AbstractIntegrationTest.getResource("mock/user-info.json", UserInfoResponse.class);
 
+        when(authorizedClient.getAccessToken()).thenReturn(ACCESS_TOKEN);
         when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(SSO_TOKEN, "")).thenReturn(mockedUserInfoData);
+        when(whoisInternalService.getUserInfo(ACCESS_TOKEN, "")).thenReturn(mockedUserInfoData);
 
-        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, SSO_TOKEN);
+        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, authorizedClient);
 
-        verify(whoisInternalService, Mockito.times(1)).getUserInfo(SSO_TOKEN, "");
+        verify(whoisInternalService, Mockito.times(1)).getUserInfo(ACCESS_TOKEN, "");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockedUserInfoData, response.getBody());
     }
 
     @Test
     public void whoisInternalUserInfoMustReturnUnAuthorisedIfCookieIsEmpty() {
-        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, "");
+        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, null);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        verify(whoisInternalService, Mockito.never()).getUserInfo("", "");
+        verify(whoisInternalService, Mockito.never()).getUserInfo(null, "");
     }
 
     @Test
@@ -61,7 +71,7 @@ public class WhoisInternalProxyControllerTest {
         final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, null);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        verify(whoisInternalService, Mockito.never()).getUserInfo("", "");
+        verify(whoisInternalService, Mockito.never()).getUserInfo(null, "");
     }
 
     @Test

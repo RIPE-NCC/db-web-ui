@@ -46,40 +46,40 @@ public class SsoTokenFilterTest {
         ssoInterceptor = new SsoTokenFilter("https://access.url", sessionChecker);
     }
 
-    @Test
-    public void response_302_if_no_sso_cookie_present() throws Exception {
-        request.setCookies();
-
-        ssoInterceptor.doFilter(request, response, filterChain);
-
-        verify(sessionChecker, never()).hasActiveToken(anyString(), anyString());
-
-        assertThat(response.getStatus(), is(302));
-        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit"));
-    }
-
-    @Test
-    public void response_302_if_expired_sso_cookie_present() throws Exception {
-        request.setCookies(new Cookie(SsoTokenFilter.SSO_TOKEN_KEY, "value"));
-
-        when(sessionChecker.hasActiveToken(eq("value"), anyString())).thenReturn(false);
-
-        ssoInterceptor.doFilter(request, response, filterChain);
-
-        assertThat(response.getStatus(), is(302));
-        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit"));
-    }
-
-    @Test
-    public void proceed_if_valid_sso_cookie_present() throws Exception {
-        request.setCookies(new Cookie(SsoTokenFilter.SSO_TOKEN_KEY, "value"));
-
-        when(sessionChecker.hasActiveToken(eq("value"), anyString())).thenReturn(true);
-
-        ssoInterceptor.doFilter(request, response, filterChain);
-
-        verify(filterChain).doFilter(request, response);
-    }
+//    @Test
+//    public void response_302_if_no_sso_cookie_present() throws Exception {
+//        request.setCookies();
+//
+//        ssoInterceptor.doFilter(request, response, filterChain);
+//
+//        verify(sessionChecker, never()).hasActiveToken(anyString(), anyString());
+//
+//        assertThat(response.getStatus(), is(302));
+//        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit"));
+//    }
+//
+//    @Test
+//    public void response_302_if_expired_sso_cookie_present() throws Exception {
+//        request.setCookies(new Cookie(SsoTokenFilter.SSO_TOKEN_KEY, "value"));
+//
+//        when(sessionChecker.hasActiveToken(eq("value"), anyString())).thenReturn(false);
+//
+//        ssoInterceptor.doFilter(request, response, filterChain);
+//
+//        assertThat(response.getStatus(), is(302));
+//        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit"));
+//    }
+//
+//    @Test
+//    public void proceed_if_valid_sso_cookie_present() throws Exception {
+//        request.setCookies(new Cookie(SsoTokenFilter.SSO_TOKEN_KEY, "value"));
+//
+//        when(sessionChecker.hasActiveToken(eq("value"), anyString())).thenReturn(true);
+//
+//        ssoInterceptor.doFilter(request, response, filterChain);
+//
+//        verify(filterChain).doFilter(request, response);
+//    }
 
     @Test
     public void proceed_for_css_resources() throws Exception {
@@ -168,16 +168,16 @@ public class SsoTokenFilterTest {
         assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit?param%3Dtest"));
     }
 
-    @Test
-    public void respond_with_error_when_already_called_redirected_once_to_access_page() throws Exception {
-        request = new MockHttpServletRequest("GET", "/db-web-ui/webupdates/create/RIPE/role/self");
-        request.setCookies(new Cookie(SsoTokenFilter.SSO_TOKEN_KEY, "value"));
-
-        when(sessionChecker.hasActiveToken(eq("value"), anyString())).thenThrow(new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), ""));
-
-        ssoInterceptor.doFilter(request, response, filterChain);
-
-        assertThat(response.getStatus(), is(302));
-        assertThat(response.getHeader("Location"), is("http://localhost/error"));
-    }
+//    @Test
+//    public void respond_with_error_when_already_called_redirected_once_to_access_page() throws Exception {
+//        request = new MockHttpServletRequest("GET", "/db-web-ui/webupdates/create/RIPE/role/self");
+//        request.setCookies(new Cookie(SsoTokenFilter.SSO_TOKEN_KEY, "value"));
+//
+//        when(sessionChecker.hasActiveToken(eq("value"), anyString())).thenThrow(new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), ""));
+//
+//        ssoInterceptor.doFilter(request, response, filterChain);
+//
+//        assertThat(response.getStatus(), is(302));
+//        assertThat(response.getHeader("Location"), is("http://localhost/error"));
+//    }
 }

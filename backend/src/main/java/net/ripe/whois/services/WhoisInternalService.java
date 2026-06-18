@@ -161,32 +161,6 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         }
     }
 
-    public boolean getActiveToken(final String ssoToken, final String clientIp) {
-        if (StringUtils.isEmpty(ssoToken)) {
-            throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        }
-
-        final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Cookie", SSO_TOKEN_KEY + "=" + ssoToken);
-        httpHeaders.add(API_KEY_HEADER, apiKey);
-        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/active", "clientIp=" + clientIp, "", apiUrl);
-        LOGGER.debug("Calling Whois InternalService to retrieve user active {}", uri);
-        try {
-            return restTemplate.exchange(uri, HttpMethod.GET,
-                new HttpEntity<>("", httpHeaders), Boolean.class).getBody();
-        } catch (RestClientResponseException e) {
-            if (e.getRawStatusCode() == HttpStatus.UNAUTHORIZED.value()) {
-                return false;
-            }
-            LOGGER.warn("Exception: Failed to parse user active from whois internal {}", e.getMessage());
-            throw new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
-        } catch (Exception e) {
-            LOGGER.warn("Exception: Failed to parse user active from whois internal {}", e.getMessage());
-            throw new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
-        }
-
-    }
-
     public ResponseEntity<String> callPublicPath(final String path, final HttpHeaders httpHeaders, final HashMap<String, Object> params) {
         try {
             final URI uri = buildUrl("/public/" + path, params);

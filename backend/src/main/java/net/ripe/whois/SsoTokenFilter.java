@@ -75,7 +75,8 @@ public class SsoTokenFilter implements Filter {
 
         boolean shouldFilter;
         try {
-            shouldFilter = isStaticResource(request) || isUnprotectedUrl(request) || hasSsoCookie(request);
+            shouldFilter = isStaticResource(request) || isUnprotectedUrl(request);
+//            shouldFilter = isStaticResource(request) || isUnprotectedUrl(request) || hasSsoCookie(request);
         } catch (RestClientException e) {
             // whoisInternal is not available, we can't redirect to login page as it loops
             response.setHeader(HttpHeaders.LOCATION, generateErrorLocationHeader(request));
@@ -129,16 +130,16 @@ public class SsoTokenFilter implements Filter {
         return false;
     }
 
-    private boolean hasSsoCookie(final HttpServletRequest request) {
-        if (request.getCookies() != null) {
-            for (Cookie c : request.getCookies()) {
-                if (SSO_TOKEN_KEY.equals(c.getName())) {
-                    return sessionChecker.hasActiveToken(c.getValue(), request.getRemoteAddr());
-                }
-            }
-        }
-        return false;
-    }
+//    private boolean hasSsoCookie(final HttpServletRequest request) {
+//        if (request.getCookies() != null) {
+//            for (Cookie c : request.getCookies()) {
+//                if (SSO_TOKEN_KEY.equals(c.getName())) {
+//                    return sessionChecker.hasActiveToken(c.getValue(), request.getRemoteAddr());
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     private void reportAuthorisationError(final HttpServletRequest request, final HttpServletResponse response) {
         boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
