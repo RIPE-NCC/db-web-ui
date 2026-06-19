@@ -246,6 +246,7 @@ browserstack:
                          SENTRY_DSN
                          WHOIS_OVERRIDE_PASSWORD
                          WHOIS_OVERRIDE_USERNAME
+                         OIDC_CLIENT_KEY
                          )
                for variable in "${variables[@]}"; do
                  sed -i "s|\${$variable}|${!variable}|g" "$properties_file"
