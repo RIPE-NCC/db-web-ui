@@ -115,10 +115,12 @@
         "minimist": "1.2.8",
         "uri-js": "npm:uri-js-replace",
         "tar": "7.5.11",
-        "undici": "7.24.0",
+        "undici": "7.28.0",
         "rollup": "4.59.0",
+        "piscina": "4.9.3",
         "picomatch": "4.0.4",
-        "tmp": "0.2.6"
+        "tmp": "0.2.7",
+        "vite": "7.3.5"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
