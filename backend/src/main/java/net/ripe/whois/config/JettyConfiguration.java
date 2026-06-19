@@ -19,12 +19,8 @@ import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.RequestLogWriter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.session.DefaultSessionIdManager;
-import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,6 +111,7 @@ public class JettyConfiguration  {
             // --- Logging + remote address customizer
             server.setRequestLog(createRequestLog());
             addForwardedRequestCustomizerToAllConnectors(server);
+            disableServerHeader(server);
         });
 
         return factory;
@@ -146,7 +143,16 @@ public class JettyConfiguration  {
             }
         }
     }
-    
+
+    private void disableServerHeader(final Server server) {
+        for (final Connector connector : server.getConnectors()) {
+            final ConnectionFactory defaultConnectionFactory = connector.getDefaultConnectionFactory();
+            if (defaultConnectionFactory instanceof HttpConnectionFactory) {
+                ((HttpConnectionFactory) defaultConnectionFactory).getHttpConfiguration().setSendServerVersion(false);
+            }
+        }
+    }
+
     private RewriteHandler rewriteHandler() {
         final RewriteHandler rewriteHandler = new RewriteHandler();
         redirectRules(rewriteHandler);
