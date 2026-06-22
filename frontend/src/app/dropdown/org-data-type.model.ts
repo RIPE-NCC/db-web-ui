@@ -14,6 +14,7 @@ export type UserOidc = {
     name: string;
     email: string;
     username: string;
+    photo: string;
 };
 
 export interface UserOrgsAndRegistrations {

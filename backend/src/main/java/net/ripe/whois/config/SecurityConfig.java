@@ -126,7 +126,6 @@ public class SecurityConfig {
 //                Void.class);
             System.out.println("Access token: " + accessToken);
             System.out.println("RefreshToken: " + client.getRefreshToken().getTokenValue());
-            System.out.println("scope: " + client.getClientRegistration().getScopes());
 
             delegate.onAuthenticationSuccess(
                 request,

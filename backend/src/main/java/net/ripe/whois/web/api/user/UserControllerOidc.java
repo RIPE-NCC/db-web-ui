@@ -19,7 +19,8 @@ public class UserControllerOidc {
         return Map.of(
             "name", user.getFullName(),
             "email", user.getEmail(),
-            "username", user.getPreferredUsername()
+            "username", user.getPreferredUsername(),
+            "photo", user.getClaimAsString("ripe_user_id")
         );
     }
 }

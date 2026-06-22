@@ -57,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
     usernameOidc: string;
     isLoggedInUser: boolean = false;
     isComponentLoaded: boolean = false;
+    profilePhotoId: string;
 
     currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
 
@@ -66,7 +67,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.navigationEnd = event.subscribe((evt) => {
             this.setActiveSidebarItem(evt.url);
             this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
-            // this.currentHref = `/db-web-ui/oauth2/authorization/keycloak`;
         });
         effect(() => {
             this.onActiveMenuChange();
@@ -88,6 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.usernameOidc = this.userOidc.name;
                 this.isLoggedInUser = true;
                 this.isComponentLoaded = true;
+                this.profilePhotoId = this.userOidc.photo;
             },
             (_err) => {
                 this.isComponentLoaded = true;
