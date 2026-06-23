@@ -120,10 +120,7 @@ public class SecurityConfig {
             String accessToken = client.getAccessToken().getTokenValue();
 
             // Call your API
-//            restTemplate.postForObject(
-//                "https://my-api.example.com/store-token",
-//                Map.of("token", accessToken),
-//                Void.class);
+
             System.out.println("Access token: " + accessToken);
             System.out.println("RefreshToken: " + client.getRefreshToken().getTokenValue());
 
