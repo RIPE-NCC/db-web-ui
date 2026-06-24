@@ -39,6 +39,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/",
+                        "/index.html",
                         "/assets/**",
                         "/media/**", // fontawesome
                         "/*.js",
@@ -61,7 +62,7 @@ public class SecurityConfig {
                         "/legal",
                         "/error",
                         "/not-found").permitAll()
-                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search").permitAll()
+                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search", "/api/whois/ripe/mntner/*").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> {
