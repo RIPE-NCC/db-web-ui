@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -45,7 +46,7 @@ public class SecurityConfig {
                         "/*.js",
                         "/*.svg",
                         "/*.css",
-                        "/api/.*", /* let rest-operation itself decide about authentication */
+                        "/api/**", /* let rest-operation itself decide about authentication */
                         "/app.constants.json",
                         "/webupdates/select",
                         "/webupdates/display",
@@ -62,9 +63,10 @@ public class SecurityConfig {
                         "/legal",
                         "/error",
                         "/not-found").permitAll()
-                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search", "/api/whois/ripe/mntner/*").permitAll()
+                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
                 .anyRequest().authenticated()
             )
+            .csrf(AbstractHttpConfigurer::disable)
             .oauth2Login(oauth -> {
                     oauth.authorizationEndpoint(auth -> auth.authorizationRequestResolver(pkceResolver));
                     oauth.successHandler(successHandler);
