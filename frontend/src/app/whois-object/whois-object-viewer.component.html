@@ -8,8 +8,8 @@
 <ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
     @for (attr of (model.attributes.attribute | slice: 0 : nrLinesToShow); track attr) {
     <li [ngClass]="{ ripemanaged: attr.managed }">
-        <span class="tooltip-hint" [matTooltip]="getDescription(attr.name)">{{ attr.name }}</span
-        >:{{ padding(attr) }}
+        <span class="tooltip-hint" [matTooltip]="this.whoisObjectVisualiser.getDescription(this.model.type, attr.name)">{{ attr.name }}</span
+        >:{{ this.whoisObjectVisualiser.padding(attr) }}
 
         @if (attr.link?.type === 'locator') {
         <a [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)" class="link-color">{{ attr.value }}</a>
@@ -42,8 +42,19 @@
     }}</a>
     } @if (show.updateButton && !linkable) {
     <a mat-flat-button color="primary" class="uppercase" (click)="emitUpdateClicked()">{{ 'lookup.updateObjectButton.text' | label }}</a>
+    } @if (show.viewVersionsButton) {
+    <button mat-flat-button color="secondary" style="border: 1px solid #080037" class="margin-left" (click)="navigateToVersions()">
+        <span>Version History</span>
+    </button>
     } @if (show.ripeStatButton) {
-    <a mat-stroked-button color="primary" class="float-end margin-left" href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb" target="_blank">
+    <a
+        mat-stroked-button
+        color="primary"
+        style="border: none"
+        class="float-end margin-left"
+        href="https://stat.ripe.net/{{ ripeStatLink }}?sourceapp=ripedb"
+        target="_blank"
+    >
         {{ 'lookup.ripestatLink.text' | label }} <em class="fa-light fa-arrow-up-right-from-square"></em>
     </a>
     }

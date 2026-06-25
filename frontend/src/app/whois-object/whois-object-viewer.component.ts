@@ -1,17 +1,17 @@
 import { NgClass, SlicePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
 import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { LabelPipe } from '../shared/label.pipe';
-import { WhoisMetaService } from '../shared/whois-meta.service';
-import { IAttributeModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
+import { IAttributeModel, IObjectVersionPreviewModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
+import { WhoisObjectVisualiser } from './whois-object-visualiser';
 
 @Component({
     selector: 'whois-object-viewer',
@@ -23,8 +23,10 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     private userInfoService = inject(UserInfoService);
     private sessionInfoService = inject(SessionInfoService);
     private properties = inject(PropertiesService);
-    private whoisMetaService = inject(WhoisMetaService);
+    activatedRoute = inject(ActivatedRoute);
+    whoisObjectVisualiser = inject(WhoisObjectVisualiser);
     menuService = inject(MenuService);
+    router = inject(Router);
 
     @Input()
     model: IWhoisObjectModel;
@@ -40,7 +42,10 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
     pkLink: string;
     ripeStatLink: string;
     subscription: any;
+    from?: string;
+    searchText?: string;
 
+    versions: IObjectVersionPreviewModel[];
     showRipeManagedAttrs = true;
 
     show = {
@@ -48,11 +53,12 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         ripeManagedToggleControl: false,
         ripeStatButton: false,
         updateButton: false,
+        viewVersionsButton: false,
     };
 
     private objLength: number;
-    private readonly MAX_ATTR_NAME_MASK = '                ';
     private readonly HAS_RIPE_STAT_LINK = ['aut-num', 'route', 'route6', 'inetnum', 'inet6num'];
+    private readonly HAS_VIEW_VERSIONS_TYPE = ['mntner', 'aut-num', 'route', 'route6', 'inetnum', 'inet6num', 'organisation'];
 
     constructor() {
         this.subscription = this.sessionInfoService.expiredSession$.subscribe(
@@ -61,6 +67,12 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
             },
             () => this.showLoginButton(),
         );
+    }
+
+    ngOnInit() {
+        const route = this.activatedRoute.snapshot;
+        this.from = route.url[0].path;
+        this.searchText = route.queryParams.searchtext;
     }
 
     ngOnChanges() {
@@ -72,6 +84,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         this.objectPrimaryKey = this.model['primary-key'].attribute.map((attr) => attr.value).join('');
         this.pkLink = this.model['primary-key'].attribute[0].name;
         this.show.ripeStatButton = this.HAS_RIPE_STAT_LINK.indexOf(this.model.type.toLowerCase()) > -1;
+        this.show.viewVersionsButton = this.HAS_VIEW_VERSIONS_TYPE.indexOf(this.model.type.toLowerCase()) > -1;
         if (this.show.ripeStatButton) {
             this.ripeStatLink = this.getRipeStatLink();
         }
@@ -88,9 +101,19 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
         this.showMoreButton = this.objLength > this.nrLinesToShow;
     }
 
-    padding(attr: IAttributeModel): string {
-        const numLeftPads = attr.name.length - this.MAX_ATTR_NAME_MASK.length;
-        return this.MAX_ATTR_NAME_MASK.slice(numLeftPads);
+    navigateToVersions() {
+        const queryParams: any = {
+            source: this.properties.SOURCE,
+            type: this.model.type,
+            key: this.objectPrimaryKey,
+            from: this.from,
+        };
+
+        if (this.from === 'query') {
+            queryParams.searchtext = this.searchText;
+        }
+
+        void this.router.navigate(['versions'], { queryParams });
     }
 
     getRipeStatLink(): string {
@@ -118,10 +141,6 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
             key: attr.value,
             type: attr['referenced-type'],
         };
-    }
-
-    getDescription(attributeName: string) {
-        return this.whoisMetaService.getAttributeShortDescription(this.model.type, attributeName);
     }
 
     trim(value: string) {

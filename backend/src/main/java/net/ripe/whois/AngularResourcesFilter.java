@@ -51,6 +51,8 @@ public class AngularResourcesFilter implements Filter {
     private boolean isAngularPath(final String uri) {
         return uri.startsWith("/webupdates") ||
                 uri.startsWith("/query") ||
+                uri.startsWith("/versions") ||
+                uri.startsWith("/version-diff") ||
                 uri.startsWith("/fulltextsearch") ||
                 uri.startsWith("/syncupdates") ||
                 uri.startsWith("/myresources") ||

@@ -1,0 +1,20 @@
+@use '../versions-shared' as *;
+
+.diff {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: fit-content;
+}
+
+.version-select {
+    min-width: 230px;
+    font-family: monospace;
+
+    ::ng-deep .mat-mdc-select-trigger {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        padding: 4px 12px;
+        height: 36px;
+    }
+}

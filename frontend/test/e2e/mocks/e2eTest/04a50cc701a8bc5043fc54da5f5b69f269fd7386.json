@@ -1,0 +1,92 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/ripe/inetnum/80.79.36.128%20-%2080.79.36.159/versions/3.json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/80.79.36.128 - 80.79.36.159"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.36.128 - 80.79.36.159"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.36.128 - 80.79.36.159"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "NL"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/NOB-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "NOB-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/EBMSMT-ripe"
+                                },
+                                "name": "mnt-by",
+                                "value": "EBMSMT-ripe",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2005-03-14T09:52:03Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2018-01-17T16:57:44Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "version": 3
+                }
+            ]
+        },
+        "errormessages": {
+            "errormessage": []
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://docs.db.ripe.net/terms-conditions.html"
+        }
+    }
+}

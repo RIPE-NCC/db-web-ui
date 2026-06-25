@@ -1,0 +1,11 @@
+@if (from && (from === "lookup" || from === "query")) {
+<nav class="breadcrumbs">
+    @if (from === "lookup") {
+    <a (click)="navigateBack()">Object</a>
+    } @else if (from === "query") {
+    <a (click)="navigateBack()">Query Database</a>
+    }
+    <span class="separator">/</span>
+    <a style="color: black" (click)="navigate()">Object History </a>
+</nav>
+}

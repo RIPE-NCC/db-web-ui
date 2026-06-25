@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { WebAppVersionComponent } from '../../../src/app/application-version/web-app-version.component';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { WebAppVersionComponent } from '../../../src/app/version/web-app-version.component';
 
 describe('WebAppVersionComponent', () => {
     let component: WebAppVersionComponent;

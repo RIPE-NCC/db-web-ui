@@ -15,6 +15,32 @@ export interface IWhoisLinkModel {
     href: string;
 }
 
+export interface IObjectVersionsModel {
+    errormessages?: {
+        errormessage: IObjectMessageModel[];
+    };
+    versions: {
+        type: string;
+        key: string;
+        version: IObjectVersionPreviewModel[];
+    };
+}
+
+export interface IObjectVersionPreviewModel {
+    revision: number;
+    date: Date;
+    operation: string;
+}
+
+export interface IObjectVersionResponse {
+    objects: {
+        object: IWhoisObjectModel[];
+    };
+    errormessages?: {
+        errormessage: IObjectMessageModel[];
+    };
+}
+
 export interface IAttributeModel {
     name: string;
     value?: string | any;
@@ -72,7 +98,7 @@ export interface IWhoisObjectModel {
     };
     'abuse-contact'?: IAbuseCModel;
     managed?: boolean;
-    version?: IVersion;
+    version?: IVersion | number;
 }
 
 interface IAbuseCModel {

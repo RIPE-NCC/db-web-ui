@@ -41,6 +41,8 @@ public class SsoTokenFilter implements Filter {
             ".*/db-web-ui/fulltextsearch",
             ".*/db-web-ui/syncupdates",
             ".*/db-web-ui/lookup",
+            ".*/db-web-ui/version-diff",
+            ".*/db-web-ui/versions",
             ".*/db-web-ui/fmp",
             ".*/db-web-ui/fmp/requireLogin",
             ".*/db-web-ui/unsubscribe.*",

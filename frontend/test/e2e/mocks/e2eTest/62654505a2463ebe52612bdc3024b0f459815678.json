@@ -1,0 +1,2023 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=ripe",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "service": {
+            "name": "search"
+        },
+        "parameters": {
+            "inverse-lookup": {},
+            "type-filters": {},
+            "flags": {
+                "flag": [
+                    {
+                        "value": "no-referenced"
+                    }
+                ]
+            },
+            "query-strings": {
+                "query-string": [
+                    {
+                        "value": "ripe"
+                    }
+                ]
+            },
+            "sources": {}
+        },
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/80.79.36.128 - 80.79.36.159"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.36.128 - 80.79.36.159"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.36.128 - 80.79.36.159"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "NL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/EBMS2-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "EBMS2-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/EBMS1-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "EBMS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/EBMSMT-ripe"
+                                },
+                                "name": "mnt-by",
+                                "value": "EBMSMT-ripe",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2005-03-14T09:52:03Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2018-01-17T17:06:13Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-RBMB1-RIPE",
+                        "name": "Romeo Bravo Mike Bravo"
+                    },
+                    "abuse-contact": {
+                        "key": "AR53701-RIPE",
+                        "email": "noc.bms@ericsson.com",
+                        "suspect": false,
+                        "org-id": "ORG-RBMB1-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/80.79.44.244 - 80.79.44.247"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.44.244 - 80.79.44.247"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.44.244 - 80.79.44.247"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "NL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/EBMS2-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "EBMS2-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/EBMS1-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "EBMS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/EBMSMT-ripe"
+                                },
+                                "name": "mnt-by",
+                                "value": "EBMSMT-ripe",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2005-11-28T12:48:16Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2018-01-17T17:06:17Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-RBMB1-RIPE",
+                        "name": "Romeo Bravo Mike Bravo"
+                    },
+                    "abuse-contact": {
+                        "key": "AR53701-RIPE",
+                        "email": "noc.bms@ericsson.com",
+                        "suspect": false,
+                        "org-id": "ORG-RBMB1-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/80.79.44.252 - 80.79.44.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.44.252 - 80.79.44.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "80.79.44.252 - 80.79.44.255"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "NL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/EBMS2-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "EBMS2-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/EBMS1-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "EBMS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/EBMSMT-ripe"
+                                },
+                                "name": "mnt-by",
+                                "value": "EBMSMT-ripe",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2005-11-28T12:48:16Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2018-01-17T17:06:18Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-RBMB1-RIPE",
+                        "name": "Romeo Bravo Mike Bravo"
+                    },
+                    "abuse-contact": {
+                        "key": "AR53701-RIPE",
+                        "email": "noc.bms@ericsson.com",
+                        "suspect": false,
+                        "org-id": "ORG-RBMB1-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/91.123.160.0 - 91.123.175.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "91.123.160.0 - 91.123.175.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "91.123.160.0 - 91.123.175.255",
+                                "managed": true
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "country",
+                                "value": "PL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-TASD1-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-TASD1-RIPE",
+                                "referenced-type": "organisation",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/VTA16-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "VTA16-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/VTA16-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "VTA16-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PI",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-END-MNT",
+                                "referenced-type": "mntner",
+                                "managed": true
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/MNT-VIRTUALTELECOM"
+                                },
+                                "name": "mnt-by",
+                                "value": "MNT-VIRTUALTELECOM",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/MNT-VIRTUALTELECOM"
+                                },
+                                "name": "mnt-routes",
+                                "value": "MNT-VIRTUALTELECOM",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/MNT-VIRTUALTELECOM"
+                                },
+                                "name": "mnt-domains",
+                                "value": "MNT-VIRTUALTELECOM",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2007-03-19T13:12:38Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2022-11-09T15:40:12Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "managed": true,
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-TASD1-RIPE",
+                        "name": "Victor Tango Sierra Zulu"
+                    },
+                    "abuse-contact": {
+                        "key": "VTA16-RIPE",
+                        "email": "abuse@vtelecom.pl",
+                        "suspect": false,
+                        "org-id": "ORG-TASD1-RIPE"
+                    },
+                    "managed": true
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/195.58.176.168 - 195.58.176.175"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "195.58.176.168 - 195.58.176.175"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "195.58.176.168 - 195.58.176.175"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "AT"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TMA5-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TMA5-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TMA5-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TMA5-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/AT-INODE-DOM"
+                                },
+                                "name": "mnt-by",
+                                "value": "AT-INODE-DOM",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2001-10-08T15:30:09Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2021-12-14T08:56:06Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-iI1-RIPE",
+                        "name": "Tango Alpha Golf"
+                    },
+                    "abuse-contact": {
+                        "key": "UAA14-RIPE",
+                        "email": "abuse@magenta.at",
+                        "suspect": false,
+                        "org-id": "ORG-iI1-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/195.58.176.224 - 195.58.176.231"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "195.58.176.224 - 195.58.176.231"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "195.58.176.224 - 195.58.176.231"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "AT"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TMA5-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "TMA5-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/TMA5-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "TMA5-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/AT-INODE-DOM"
+                                },
+                                "name": "mnt-by",
+                                "value": "AT-INODE-DOM",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2006-07-24T11:17:57Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2021-12-14T08:56:06Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-iI1-RIPE",
+                        "name": "Tango Alpha Golf"
+                    },
+                    "abuse-contact": {
+                        "key": "UAA14-RIPE",
+                        "email": "abuse@magenta.at",
+                        "suspect": false,
+                        "org-id": "ORG-iI1-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/212.118.201.104 - 212.118.201.111"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.201.104 - 212.118.201.111"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.201.104 - 212.118.201.111"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "DE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/BG4979-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "BG4979-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/LK1936-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "LK1936-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-lower",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-domains",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2007-05-14T12:57:57Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-03-15T09:13:05Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-LA2-RIPE",
+                        "name": "Lima Tango Golf"
+                    },
+                    "abuse-contact": {
+                        "key": "AR14646-RIPE",
+                        "email": "abuse@lewtelnet.de",
+                        "suspect": false,
+                        "org-id": "ORG-LA2-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/212.118.204.128 - 212.118.204.135"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.204.128 - 212.118.204.135"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.204.128 - 212.118.204.135"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "DE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/GF10291-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "GF10291-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/LK1936-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "LK1936-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-lower",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-domains",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2016-02-04T09:10:56Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-02-04T09:10:56Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-LA2-RIPE",
+                        "name": "Lima Tango Golf"
+                    },
+                    "abuse-contact": {
+                        "key": "AR14646-RIPE",
+                        "email": "abuse@lewtelnet.de",
+                        "suspect": false,
+                        "org-id": "ORG-LA2-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/212.118.204.184 - 212.118.204.184"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.204.184 - 212.118.204.184"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.204.184 - 212.118.204.184"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "DE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/WH7008-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "WH7008-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/LK1936-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "LK1936-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-lower",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-domains",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2016-04-21T08:56:37Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-04-21T08:56:37Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-LA2-RIPE",
+                        "name": "Lima Tango Golf"
+                    },
+                    "abuse-contact": {
+                        "key": "AR14646-RIPE",
+                        "email": "abuse@lewtelnet.de",
+                        "suspect": false,
+                        "org-id": "ORG-LA2-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/212.118.204.192 - 212.118.204.199"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.204.192 - 212.118.204.199"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.118.204.192 - 212.118.204.199"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "DE"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/RS20680-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "RS20680-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/LK1936-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "LK1936-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-lower",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/LEWTELNET-MNT"
+                                },
+                                "name": "mnt-domains",
+                                "value": "LEWTELNET-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2016-04-26T13:41:14Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2016-04-26T13:41:14Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-LA2-RIPE",
+                        "name": "Lima Tango Golf"
+                    },
+                    "abuse-contact": {
+                        "key": "AR14646-RIPE",
+                        "email": "abuse@lewtelnet.de",
+                        "suspect": false,
+                        "org-id": "ORG-LA2-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/inetnum/212.150.36.200 - 212.150.36.207"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.150.36.200 - 212.150.36.207"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "212.150.36.200 - 212.150.36.207"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "ripe"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "name": "country",
+                                "value": "IL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/NV2035-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "NV2035-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/NN105-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "NN105-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ASSIGNED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/NV-MNT-RIPE"
+                                },
+                                "name": "mnt-by",
+                                "value": "NV-MNT-RIPE",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/NV-MNT-RIPE"
+                                },
+                                "name": "mnt-lower",
+                                "value": "NV-MNT-RIPE",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2009-09-08T04:27:41Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2009-09-08T04:27:41Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        "key": "ORG-NL5-RIPE",
+                        "name": "Charlie Foxtrot Lima Charlie"
+                    },
+                    "abuse-contact": {
+                        "key": "AR15573-RIPE",
+                        "email": "nvabuse@cellcom.co.il",
+                        "suspect": false,
+                        "org-id": "ORG-NL5-RIPE"
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "RIPE"
+                            },
+                            {
+                                "name": "descr",
+                                "value": "***"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/person/JC1615-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "JC1615-RIPE",
+                                "referenced-type": "person"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "name": "remarks",
+                                "value": "***"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2005-03-09T14:58:55Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2025-08-19T10:42:04Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-EPR1-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-EPR1-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-EPR1-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Echo Papa Romeo"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "BR"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+55.119........"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ACRO59422-RIPE"
+                                },
+                                "name": "abuse-c",
+                                "value": "ACRO59422-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2025-02-24T13:29:12Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2025-02-24T13:29:12Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "abuse-contact": {
+                        "key": "ACRO59422-RIPE",
+                        "email": "edinei@sitedefender.com.br",
+                        "suspect": false
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-HR102-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-HR102-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-HR102-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Hotel Romeo"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "CA"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+1.604......."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ACRO59738-RIPE"
+                                },
+                                "name": "abuse-c",
+                                "value": "ACRO59738-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2025-03-20T16:56:12Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2025-03-20T16:56:12Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "abuse-contact": {
+                        "key": "ACRO59738-RIPE",
+                        "email": "abuse@hostandtech.com",
+                        "suspect": false
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-NCC1-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-NCC1-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-NCC1-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Romeo November Charlie Charlie"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "RIR"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "NETHERLANDS"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+31 20 ... ...."
+                            },
+                            {
+                                "name": "fax-no",
+                                "value": "+31 20 ... ...."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ops4-ripe"
+                                },
+                                "name": "abuse-c",
+                                "value": "ops4-ripe",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/CREW-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "CREW-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/CREW-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "CREW-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-RIS-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "RIPE-NCC-RIS-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "RIPE-NCC-HM-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-HM-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2004-04-17T09:55:47Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2024-06-27T07:14:46Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "abuse-contact": {
+                        "key": "OPS4-RIPE",
+                        "email": "abuse@ripe.net",
+                        "suspect": false
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-NKR2-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-NKR2-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-NKR2-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Hotel Romeo"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "CA"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+1.604......."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ACRO52797-RIPE"
+                                },
+                                "name": "abuse-c",
+                                "value": "ACRO52797-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2021-09-19T13:39:12Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2023-05-13T22:52:12Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "abuse-contact": {
+                        "key": "ACRO52797-RIPE",
+                        "email": "abuse@hostandtech.com",
+                        "suspect": false
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-OR36-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-OR36-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-OR36-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Oscar Romeo"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "FR"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+33.32......."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2016-02-17T11:52:09Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2017-10-30T16:47:06Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-RACS1-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-RACS1-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-RACS1-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Romeo Alpha Charlie Sierra"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "GB"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+44.800......."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ACRO58348-RIPE"
+                                },
+                                "name": "abuse-c",
+                                "value": "ACRO58348-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2024-11-25T01:33:12Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2024-11-25T01:33:12Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "abuse-contact": {
+                        "key": "ACRO58348-RIPE",
+                        "email": "abuse@coherent.net",
+                        "suspect": false
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-RR29-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-RR29-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-RR29-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "Romeo Romeo"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "ES"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+33.93......."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2014-12-02T14:42:07Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2017-10-30T16:34:28Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "managed": false
+                },
+                {
+                    "type": "organisation",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-prepdev.db.ripe.net/ripe/organisation/ORG-XR2-RIPE"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-XR2-RIPE"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "organisation",
+                                "value": "ORG-XR2-RIPE"
+                            },
+                            {
+                                "name": "org-name",
+                                "value": "X-ray Romeo"
+                            },
+                            {
+                                "name": "org-type",
+                                "value": "OTHER"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "***"
+                            },
+                            {
+                                "name": "address",
+                                "value": "SA"
+                            },
+                            {
+                                "name": "phone",
+                                "value": "+966.50......."
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/role/ACRO9100-RIPE"
+                                },
+                                "name": "abuse-c",
+                                "value": "ACRO9100-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-ref",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-prepdev.db.ripe.net/ripe/mntner/OVH-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "OVH-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2017-08-19T22:40:13Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2017-10-30T14:42:39Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "abuse-contact": {
+                        "key": "ACRO9100-RIPE",
+                        "email": "abuse@xsofthost.com",
+                        "suspect": false
+                    },
+                    "managed": false
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://docs.db.ripe.net/terms-conditions.html"
+        },
+        "version": {
+            "version": "1.123-SNAPSHOT",
+            "timestamp": "2026-06-19T14:46:08Z",
+            "commit-id": "d75e67c"
+        }
+    }
+}
