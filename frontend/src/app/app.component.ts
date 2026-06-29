@@ -59,7 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
     isComponentLoaded: boolean = false;
     profilePhotoId: string;
 
-    currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
+    currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
 
     constructor() {
         this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV];

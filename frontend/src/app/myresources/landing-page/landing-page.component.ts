@@ -18,6 +18,7 @@ export class LandingPageComponent implements OnInit {
     description: string =
         'View and manage your IPv4, IPv6 and AS Numbers in one place. RIPE NCC members can view and manage their resources. Holders of Provider Independent (PI) assignments can also view their resources. \n\nTo access the Resources page, you need to have a RIPE NCC Access account. Each user needs their own personal account.';
     loggedIn: boolean;
+    currentHref = `${window.location.origin}/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
 
     ngOnInit() {
         this.loggedIn = this.userInfoService.isLoggedIn();
