@@ -1,0 +1,46 @@
+<section class="result-content" style="margin-bottom: 16px">
+    <breadcrumbs></breadcrumbs>
+    <div class="historySection">
+        <h1>Object History</h1>
+        <div class="historySelector">
+            <div class="diff">
+                <span>Comparing</span>
+                <mat-select [(ngModel)]="leftVersionId" (ngModelChange)="onLeftVersionSelect($event)" class="version-select">
+                    @for (v of versions; track v.revision) {
+                    <mat-option [value]="v.revision">{{ v.date | date : 'yyyy-MM-dd HH:mm:ss' }}</mat-option>
+                    }
+                </mat-select>
+                @if (isLeftLatest) {
+                <div class="latest-badge">
+                    <span>Latest</span>
+                </div>
+                }
+                <span class="version-label">with</span>
+                <mat-select [(ngModel)]="diffVersionId" (ngModelChange)="onRightVersionSelect($event)" class="version-select" placeholder="Select a version">
+                    @for (v of versions; track v.revision) {
+                    <mat-option [value]="v.revision">{{ v.date | date : 'yyyy-MM-dd HH:mm:ss' }}</mat-option>
+                    }
+                </mat-select>
+                @if (isRightLatest) {
+                <div class="latest-badge">
+                    <span>Latest</span>
+                </div>
+                }
+            </div>
+            <div class="viewerbuttons">
+                <button (click)="navigateBack()" mat-flat-button color="primary">
+                    <span>Exit comparison</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="resultpane">
+    @if (rightDiff){
+    <pre whoisLineDiff [left]="leftDiff" [right]="rightDiff" class="textdiff"></pre>
+    } @else {
+    <pre class="textdiff" style="padding-inline: 29px">{{ leftDiff }}</pre>
+    }
+</div>
+<whois-version [version]="whoisVersion"></whois-version>

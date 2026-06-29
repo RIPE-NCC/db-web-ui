@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
@@ -9,6 +10,7 @@ import { PropertiesService } from '../../../src/app/properties.service';
 import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
+import { WhoisObjectVisualiser } from '../../../src/app/whois-object/whois-object-visualiser';
 
 describe('WhoisObjectViewerComponent', () => {
     let component: WhoisObjectViewerComponent;
@@ -23,6 +25,19 @@ describe('WhoisObjectViewerComponent', () => {
                     SessionInfoService,
                     CookieService,
                     PropertiesService,
+                    {
+                        provide: ActivatedRoute,
+                        useValue: {
+                            snapshot: {
+                                url: [new UrlSegment('query', {})],
+                                queryParams: {
+                                    type: 'inetnum',
+                                    sponsored: 'false',
+                                    ipanalyserRedirect: false,
+                                },
+                            },
+                        },
+                    },
                 ],
             });
 
@@ -62,6 +77,20 @@ describe('WhoisObjectViewerComponent', () => {
                     SessionInfoService,
                     CookieService,
                     PropertiesService,
+                    WhoisObjectVisualiser,
+                    {
+                        provide: ActivatedRoute,
+                        useValue: {
+                            snapshot: {
+                                url: [new UrlSegment('query', {})],
+                                queryParams: {
+                                    type: 'inetnum',
+                                    sponsored: 'false',
+                                    ipanalyserRedirect: false,
+                                },
+                            },
+                        },
+                    },
                 ],
             });
 

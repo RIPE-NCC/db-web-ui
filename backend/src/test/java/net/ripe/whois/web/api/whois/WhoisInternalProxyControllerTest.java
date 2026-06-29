@@ -25,8 +25,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class WhoisInternalProxyControllerTest {
 
-    private static final OAuth2AuthorizedClient authorizedClient = mock(OAuth2AuthorizedClient.class);
-
     private static final OAuth2AccessToken ACCESS_TOKEN = new OAuth2AccessToken(
         OAuth2AccessToken.TokenType.BEARER,
         "mock-access-token",
@@ -42,6 +40,8 @@ public class WhoisInternalProxyControllerTest {
     private WhoisInternalService whoisInternalService;
     @InjectMocks
     private WhoisInternalProxyController subject;
+    @Mock
+    private OAuth2AuthorizedClient authorizedClient;
 
     @Test
     public void whoisInternalUserInfoMustReturnValue() throws IOException {
@@ -60,7 +60,7 @@ public class WhoisInternalProxyControllerTest {
 
     @Test
     public void whoisInternalUserInfoMustReturnUnAuthorisedIfCookieIsEmpty() {
-        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, null);
+        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, authorizedClient);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         verify(whoisInternalService, Mockito.never()).getUserInfo(null, "");
@@ -68,7 +68,7 @@ public class WhoisInternalProxyControllerTest {
 
     @Test
     public void whoisInternalUserInfoMustReturnUnAuthorisedIfCookieIsNull() {
-        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, null);
+        final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, authorizedClient);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         verify(whoisInternalService, Mockito.never()).getUserInfo(null, "");
@@ -94,8 +94,9 @@ public class WhoisInternalProxyControllerTest {
     }
     @Test
     public void whoisInternalGetIpAnalyser() {
+        when(authorizedClient.getAccessToken()).thenReturn(ACCESS_TOKEN);
         when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
-        final ResponseEntity<?> response = subject.getIpAnalyser(request, "", "", httpHeaders);
+        final ResponseEntity<?> response = subject.getIpAnalyser(request, "", "", httpHeaders, authorizedClient);
         verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
     }
 }

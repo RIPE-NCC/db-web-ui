@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { WhoisVersionComponent } from '../application-version/whois-version.component';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -13,7 +14,6 @@ import { SearchFieldComponent } from '../shared/sreachfield/search-field.compone
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { IAttributeModel, IVersion } from '../shared/whois-response-type.model';
-import { WhoisVersionComponent } from '../version/whois-version.component';
 import { FullTextResponseService } from './full-text-response.service';
 import { FullTextResultSummaryComponent } from './full-text-result-summary.component';
 import { FullTextSearchService } from './full-text-search.service';

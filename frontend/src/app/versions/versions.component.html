@@ -1,0 +1,67 @@
+<script src="/src/app/versions/diff/diff.component"></script>
+<section class="result-content" style="margin-bottom: 16px">
+    <breadcrumbs></breadcrumbs>
+    <div class="historySection">
+        <div class="resultsSection">
+            <h1>Object History</h1>
+            @if (!error) {
+            <div class="resultlinks">
+                <a
+                    href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}/versions/{{ selectedVersionId }}.xml"
+                    rel="noopener"
+                    target="_blank"
+                >
+                    <em class="fa-light fa-file-code"></em>
+                    XML </a
+                >&nbsp;
+                <a
+                    href="{{ properties.REST_SEARCH_URL }}{{ source }}/{{ objectType }}/{{ objectName }}/versions/{{ selectedVersionId }}.json"
+                    rel="noopener"
+                    target="_blank"
+                >
+                    <em class="fa-light fa-file-lines"></em>
+                    JSON
+                </a>
+            </div>
+            }
+        </div>
+        <div class="historySelector">
+            <div class="version-wrapper">
+                <span>Viewing</span>
+                <mat-select [(ngModel)]="selectedVersionId" (ngModelChange)="onVersionSelect($event)" class="version-select">
+                    @for (attr of versions; track attr.revision) {
+                    <mat-option [value]="attr.revision">{{ attr.date | date : 'yyyy-MM-dd HH:mm:ss' }}</mat-option>
+                    }
+                </mat-select>
+                @if (isLatest) {
+                <div class="latest-badge">
+                    <span>Latest</span>
+                </div>
+                }
+            </div>
+            <div class="viewerbuttons">
+                <button (click)="navigateToVersionDiff()" mat-flat-button color="primary">
+                    <span>Compare</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (versions) {
+<div class="resultpane">
+    <ul [ngClass]="{ showripemanaged: showRipeManagedAttrs }">
+        @for (attr of selectedVersion; track attr) {
+        <li [ngClass]="{ ripemanaged: attr.managed }">
+            <div>
+                <span class="tooltip-hint" [matTooltip]="this.versionsUtilsService.getDescription(this.objectType, attr.name)">{{ attr.name }}</span
+                >:{{ this.versionsUtilsService.padding(attr) }}
+                <span>{{ attr.name === 'date' ? (attr.value | date : 'yyyy-MM-dd HH:mm:ss') : attr.value }}</span>
+            </div>
+        </li>
+        }
+    </ul>
+</div>
+} @if (!versions) {
+<div class="no-result-msg">No versions found.</div>
+} <whois-version [version]="whoisVersion"></whois-version>

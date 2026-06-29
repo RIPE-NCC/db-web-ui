@@ -1,0 +1,44 @@
+.version-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.latest-badge {
+    background-color: #080037;
+    border-radius: 15px;
+    color: white;
+    padding-inline: 10px;
+    font-size: 13px;
+}
+
+.historySection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.historySelector {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 8px;
+    background-color: white;
+    padding: 16px;
+    box-shadow: 0 2px 8px #0d0d0d1f;
+}
+
+.version-label {
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+h1 {
+    margin: 0;
+}
+
+.result-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}

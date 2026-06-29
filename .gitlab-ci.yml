@@ -120,6 +120,16 @@ spotbugs-sast:
         MAVEN_REPO_PATH: $CI_PROJECT_DIR/.m2/repository
         COMPILE: "false"
 
+analyze-frontend:
+    stage: test
+    extends: .default_rules
+    script:
+        - cd frontend && npm run analyze-bundle
+    artifacts:
+        paths:
+            - frontend/results.json
+        expire_in: 3 months
+
 backend:
     stage: test
     extends: .default_rules

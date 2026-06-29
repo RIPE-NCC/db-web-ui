@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { WhoisVersionComponent } from '../application-version/whois-version.component';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { IVersion } from '../shared/whois-response-type.model';
-import { WhoisVersionComponent } from '../version/whois-version.component';
 import { LookupComponent } from './lookup.component';
 import { LookupService } from './lookup.service';
 

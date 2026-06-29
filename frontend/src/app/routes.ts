@@ -120,6 +120,14 @@ export const appRoutes: Routes = [
         loadComponent: () => import('./updatestext/text-modify.component').then((m) => m.TextModifyComponent),
         canActivate: [AuthenticationGuard],
     },
+    {
+        path: 'versions',
+        loadComponent: () => import('./versions/versions.component').then((m) => m.VersionsComponent),
+    },
+    {
+        path: 'version-diff',
+        loadComponent: () => import('./versions/diff/diff.component').then((m) => m.DiffComponent),
+    },
 
     // syncupdates BETA was removed so redirect to syncupdates
     { path: 'textupdates/multiDecision', redirectTo: 'syncupdates', pathMatch: 'full' },

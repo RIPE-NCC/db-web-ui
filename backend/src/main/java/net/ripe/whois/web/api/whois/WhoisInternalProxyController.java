@@ -1,6 +1,5 @@
 package net.ripe.whois.web.api.whois;
 
-import com.google.common.base.Strings;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;

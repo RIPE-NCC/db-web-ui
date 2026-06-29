@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { WhoisVersionComponent } from '../../../src/app/version/whois-version.component';
+import { WhoisVersionComponent } from '../../../src/app/application-version/whois-version.component';
 
 describe('WhoisVersionComponent', () => {
     let component: WhoisVersionComponent;

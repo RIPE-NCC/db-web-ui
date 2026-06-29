@@ -1,0 +1,48 @@
+@use './versions-shared' as *;
+
+.showripemanaged {
+    & > .ripemanaged {
+        background: #dae4f1;
+    }
+
+    li {
+        white-space: break-spaces;
+    }
+}
+
+.version-select {
+    min-width: 230px;
+    font-family: monospace;
+
+    ::ng-deep .mat-mdc-select-trigger {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        padding: 4px 12px;
+        height: 36px;
+    }
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        white-space: pre;
+        font-family: monospace;
+        font-size: 0.875em;
+        line-height: 32px;
+    }
+}
+
+.viewerbuttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+@media screen and (max-width: 700px) {
+    .viewerbuttons {
+        position: inherit !important;
+    }
+}
