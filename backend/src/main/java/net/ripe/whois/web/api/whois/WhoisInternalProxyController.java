@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
-
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/whois-internal")
@@ -108,7 +105,10 @@ public class WhoisInternalProxyController extends ApiController {
         final HttpServletRequest request,
         @Nullable @RequestBody(required = false) final String body,
         @PathVariable final String ipv,
-        @RequestHeader final HttpHeaders headers) {
+        @RequestHeader final HttpHeaders headers,
+        @RegisteredOAuth2AuthorizedClient("keycloak")
+        OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 
@@ -116,7 +116,10 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<String> findMyResources(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) {
+            @RequestHeader final HttpHeaders headers,
+            @RegisteredOAuth2AuthorizedClient("keycloak")
+            OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 
@@ -190,7 +193,10 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<String> whoisInternalCreateMntnerPair(
                 final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) {
+            @RequestHeader final HttpHeaders headers,
+            @RegisteredOAuth2AuthorizedClient("keycloak")
+                OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 

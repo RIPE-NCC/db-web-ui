@@ -36,17 +36,30 @@ export class OrgDropDownComponent implements OnInit {
 
     public ngOnInit() {
         this.trainingEnv = this.properties.isTrainingEnv();
-        this.userInfoService.getUserOrgsAndRoles().subscribe({
-            next: (userInfo: UserOrgsAndRegistrations): void => {
-                if (!userInfo) {
-                    return;
-                }
-                this.initOrgsAndMemebers(userInfo);
-            },
-            error: (err: Error): void => {
-                console.warn('err', err);
-            },
-        });
+        if (this.userInfoService.isLoggedIn()) {
+            this.userInfoService.getUserOrgsAndRoles().subscribe({
+                next: (userInfo: UserOrgsAndRegistrations): void => {
+                    if (!userInfo) {
+                        return;
+                    }
+                    this.initOrgsAndMemebers(userInfo);
+                },
+                error: (err: Error): void => {
+                    console.warn('err', err);
+                },
+            });
+        }
+        // this.userInfoService.getUserOrgsAndRoles().subscribe({
+        //     next: (userInfo: UserOrgsAndRegistrations): void => {
+        //         if (!userInfo) {
+        //             return;
+        //         }
+        //         this.initOrgsAndMemebers(userInfo);
+        //     },
+        //     error: (err: Error): void => {
+        //         console.warn('err', err);
+        //     },
+        // });
     }
 
     public organisationSelected(event: any): void {

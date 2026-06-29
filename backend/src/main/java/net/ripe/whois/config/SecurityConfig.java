@@ -60,10 +60,11 @@ public class SecurityConfig {
                         "/unsubscribe.*",
                         "/unsubscribe-confirm.*",
                         "/myresources/overview",
+                        "/ip-analyser",
                         "/legal",
                         "/error",
                         "/not-found").permitAll()
-                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
+                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info","/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)

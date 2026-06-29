@@ -104,14 +104,16 @@ export class AppComponent implements OnInit, OnDestroy {
             this.sidebarMenu = dbMenuObject.menu;
         } else {
             this.icon = 'assets/images/Resources_2025-05.svg';
-            this.userInfoService.getUserOrgsAndRoles().subscribe({
-                next: (response) => {
-                    this.sidebarMenu = getResourceMenu(!!response);
-                },
-                error: () => {
-                    this.sidebarMenu = getResourceMenu(false);
-                },
-            });
+            this.userInfoService.isLoggedIn() ? (this.sidebarMenu = getResourceMenu(true)) : (this.sidebarMenu = getResourceMenu(false));
+            //
+            // this.userInfoService.getUserOrgsAndRoles().subscribe({
+            //     next: (response) => {
+            //
+            //     },
+            //     error: () => {
+            //         this.sidebarMenu = getResourceMenu(false);
+            //     },
+            // });
         }
         const env = this.properties.ENV?.toLowerCase();
         this.labelEnv = envDisplayMap[env] ?? `${this.properties.ENV} Database`;

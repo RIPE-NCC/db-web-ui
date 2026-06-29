@@ -29,13 +29,21 @@ export class UserInfoService {
             tap((user: UserOidc) => this.user.set(user)),
             catchError((error: any) => {
                 console.error('authenticate error:' + JSON.stringify(error));
-                return throwError(error);
+                if (error.status === 401) {
+                    // User is not logged in
+                    this.user.set(null);
+                }
+                return throwError(() => error);
             }),
         );
     }
 
     removeUserInfo() {
         this.userInfo = undefined;
+    }
+
+    isUserLoggedIn() {
+        return this.http.get('api/user-oidc/info');
     }
 
     getUserOrgsAndRoles(): Observable<UserOrgsAndRegistrations> {
