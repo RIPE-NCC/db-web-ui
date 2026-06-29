@@ -24,7 +24,7 @@
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
         <httpclient.version>5.4.3</httpclient.version>
         <jackson-annotations.version>2.21</jackson-annotations.version>
-        <jackson.version>2.21.2</jackson.version>
+        <jackson.version>2.21.4</jackson.version>
         <jaxb.api.version>4.0.5</jaxb.api.version>
         <jaxb.impl.version>4.0.6</jaxb.impl.version>
         <javax.inject.version>1</javax.inject.version>
