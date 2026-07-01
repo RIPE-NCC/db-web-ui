@@ -19,8 +19,7 @@ export class RequireLoginComponent implements OnInit {
 
     private getLoginUrl(): string {
         return (
-            this.properties.LOGIN_URL +
-            '?originalUrl=' +
+            '/db-web-ui/oauth2/authorization/keycloak?next=' +
             encodeURIComponent(location.origin + '/db-web-ui/fmp/' + this.getReturnUrlForForgotMaintainerPassword())
         );
     }
