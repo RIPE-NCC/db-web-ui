@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
+//import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 
 @RestController

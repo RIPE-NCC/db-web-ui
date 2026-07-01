@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
+//import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @Service
 public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceBase {

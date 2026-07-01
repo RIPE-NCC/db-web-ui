@@ -23,7 +23,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
+//import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/dns")
