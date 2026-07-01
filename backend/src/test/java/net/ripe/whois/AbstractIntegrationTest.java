@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 @DirtiesContext
 public abstract class AbstractIntegrationTest {
 
-    protected static final String SSO_COOKIE_VALUE = "aabbccdd";
+    protected static final String ACCESS_TOKEN = "aabbccdd";
 
     @Autowired
     protected Environment environment;
@@ -210,13 +210,13 @@ public abstract class AbstractIntegrationTest {
 
     public HttpEntity validSsoCookie() {
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=" + SSO_COOKIE_VALUE);
+        requestHeaders.setBearerAuth(ACCESS_TOKEN);
         return new HttpEntity<>(null, requestHeaders);
     }
 
     public HttpEntity invalidSsoCookie() {
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=invalid");
+        requestHeaders.setBearerAuth(null);
         return new HttpEntity<>(null, requestHeaders);
     }
 

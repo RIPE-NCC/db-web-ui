@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,6 +33,8 @@ public class WhoisProxyController extends ApiController {
     private final WhoisService whoisService;
 
     @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
+    @Autowired
     public WhoisProxyController(final WhoisService whoisService) {
         this.whoisService = whoisService;
     }
@@ -37,17 +44,32 @@ public class WhoisProxyController extends ApiController {
             final HttpServletRequest request,
             final HttpServletResponse response,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) {
-        return this.proxyRestCalls(request, response, body, headers);
+            @RequestHeader final HttpHeaders headers,
+            Authentication authentication) {
+
+        return this.proxyRestCalls(request, response, body, headers, authentication);
     }
     @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> proxyRestCalls(
             final HttpServletRequest request,
             final HttpServletResponse response,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) {
+            @RequestHeader final HttpHeaders headers,
+            Authentication authentication) {
 
         removeUnnecessaryHeaders(headers);
+        OAuth2AuthorizedClient authorizedClient = null;
+
+        if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+            authorizedClient = authorizedClientService.loadAuthorizedClient(
+                oauthToken.getAuthorizedClientRegistrationId(),
+                oauthToken.getName());
+        }
+
+        if (authorizedClient != null) {
+            String accessToken = authorizedClient.getAccessToken().getTokenValue();
+            headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        }
 
         return whoisService.bypass(request, response, body, headers);
     }

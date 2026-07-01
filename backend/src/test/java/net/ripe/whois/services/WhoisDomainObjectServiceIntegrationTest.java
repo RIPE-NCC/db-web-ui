@@ -2,7 +2,6 @@ package net.ripe.whois.services;
 
 import com.google.common.collect.Lists;
 import net.ripe.whois.AbstractIntegrationTest;
-import net.ripe.whois.SsoTokenFilter;
 import net.ripe.whois.web.api.whois.domain.NameValuePair;
 import net.ripe.whois.web.api.whois.domain.WhoisWebDTO;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
 
     private HttpHeaders ssoTokenKey() {
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", SsoTokenFilter.SSO_TOKEN_KEY + "=aabbccdd");
+        requestHeaders.setBearerAuth("aabbccdd");
         return requestHeaders;
     }
 }

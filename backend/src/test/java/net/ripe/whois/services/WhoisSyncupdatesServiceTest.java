@@ -1,7 +1,6 @@
 package net.ripe.whois.services;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.ripe.whois.SsoTokenFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -116,9 +115,9 @@ public class WhoisSyncupdatesServiceTest {
     public void shouldForLoggedInMntReturnSuccessMessage() {
         httpHeaders.add("Cookie", "pref-ui-mode=textupdates; _ga=GA1.3.1221467399.1496843568; " +
                 "pref-syncupdates-mode=rich; uslk_e=MjFiZjlkMWYtYTE1Mi1hNmFiLWZmOGUtMDFkNTYyYWRiMzIz~~~~~~~2~; " +
-                "activeMembershipId=org%3AORG-TEST1234-RIPE; cookies-accepted=accepted; " + SsoTokenFilter.SSO_TOKEN_KEY + "=u00dCkpOmYzHek0GegdqFA00; " +
+                "activeMembershipId=org%3AORG-TEST1234-RIPE; cookies-accepted=accepted; " +
                 "crowd.ripe.hint=true; uslk_s=Idle%3B0~~0~0~0~~\n");
-
+        httpHeaders.setBearerAuth("u00dCkpOmYzHek0GegdqFA00");
         final String rpslObjectIsvMnt =
                 "organisation:    ORG-TEST1234-RIPE\n" +
                 "org-name:        Shw\n" +

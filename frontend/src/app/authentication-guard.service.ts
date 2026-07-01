@@ -20,6 +20,6 @@ export class AuthenticationGuard {
     }
 
     private redirectToLogin(stateUrl: string) {
-        window.location.href = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.origin}/db-web-ui/${stateUrl}`;
+        window.location.href = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.origin}/db-web-ui${stateUrl}`;
     }
 }
