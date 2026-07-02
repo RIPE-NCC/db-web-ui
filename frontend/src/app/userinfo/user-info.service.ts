@@ -50,7 +50,7 @@ export class UserInfoService {
         if (this.userInfo) {
             return of(this.userInfo);
         } else {
-            //send accerst token
+            //send access token
             return this.http.get('api/whois-internal/api/user/info').pipe(
                 timeout(30000),
                 share(),

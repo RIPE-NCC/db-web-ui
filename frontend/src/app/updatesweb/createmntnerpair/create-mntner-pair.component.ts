@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { UserOrgsAndRegistrations } from '../../dropdown/org-data-type.model';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
 import { DescriptionSyntaxComponent } from '../../shared/descriptionsyntax/description-syntax.component';
@@ -80,15 +79,14 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'source', this.source);
         this.showMntAttrsHelp = this.mntnerAttributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
-        this.userInfoService.getUserOrgsAndRoles().subscribe({
-            next: (result: UserOrgsAndRegistrations) => {
-                this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'auth', 'SSO ' + result.user.username);
-                this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'upd-to', result.user.username);
-            },
-            error: () => {
-                this.alertsService.setGlobalError('Error fetching SSO information');
-            },
-        });
+        const user = this.userInfoService.user();
+
+        if (this.userInfoService.isLoggedIn) {
+            this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'auth', 'SSO ' + user.email);
+            this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'upd-to', user.email);
+        } else {
+            this.alertsService.setGlobalError('Error fetching SSO information');
+        }
     }
 
     public submit() {
