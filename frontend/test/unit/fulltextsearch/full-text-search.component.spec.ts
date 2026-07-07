@@ -2,6 +2,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { FullTextResponseService } from '../../../src/app/fulltextsearch/full-text-response.service';
@@ -34,6 +35,114 @@ describe('FullTextSearchComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(FullTextSearchComponent);
         component = fixture.componentInstance;
+    });
+
+    describe('persisting search options to query params', () => {
+        let router: Router;
+
+        beforeEach(() => {
+            fixture.detectChanges();
+            router = TestBed.inject(Router);
+            spyOn(router, 'navigate');
+        });
+
+        it('writes selected object types under the objectTypes param, with merge + replaceUrl', () => {
+            component.selectedObjectTypes = ['inetnum', 'person'];
+            component.objectTypeChanged();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ objectTypes: ['inetnum', 'person'] }),
+                    queryParamsHandling: 'merge',
+                    replaceUrl: true,
+                }),
+            );
+        });
+
+        it('clears the objectTypes param (null) when nothing is selected', () => {
+            component.selectedObjectTypes = [];
+            component.objectTypeChanged();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ objectTypes: null }),
+                }),
+            );
+        });
+
+        it('writes every type on selectAll', () => {
+            component.selectAll();
+
+            const args = (router.navigate as jasmine.Spy).calls.mostRecent().args;
+            expect(args[1].queryParams.objectTypes.length).toEqual(component.objectTypes.length);
+        });
+
+        it('writes advmode when it is not the default', () => {
+            component.changeAdvmode('any');
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ advmode: 'any' }),
+                }),
+            );
+        });
+
+        it('omits advmode (null) when it is the default "all"', () => {
+            component.advmode = 'all';
+            component.selectedAttrsChanged();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ advmode: null }),
+                }),
+            );
+        });
+
+        it('writes selected attrs under the attrs param', () => {
+            component.selectedAttrs = ['country'];
+            component.selectedAttrsChanged();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ attrs: ['country'] }),
+                }),
+            );
+        });
+
+        it('writes the query text on an advanced search', () => {
+            fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ query: 'etch-mnt' }),
+                }),
+            );
+        });
+
+        it('clears objectTypes and attrs on a basic-mode search but keeps the query', () => {
+            fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
+            component.advancedSearch = false;
+            component.selectedObjectTypes = ['inetnum'];
+            component.selectedAttrs = ['country'];
+            component.ftquery = 'etch-mnt';
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ objectTypes: null, attrs: null, query: 'etch-mnt' }),
+                }),
+            );
+        });
     });
 
     it('should create', () => {
@@ -93,7 +202,7 @@ describe('FullTextSearchComponent', () => {
             'alltrueas-blockas-setaut-numdomainfilter-setinet-rtrinet6numinetnumirtkey-certmntnerorganisationpeering-setpersonpoempoetic-formrolerouteroute-setroute6rtr-set',
         );
 
-        component.selectNone();
+        component.selectNone(true);
         expect(component.selectedObjectTypes.length).toEqual(0);
         expect(component.selectableAttributes.length).toEqual(0);
         expect(component.selectedAttrs.length).toEqual(0);

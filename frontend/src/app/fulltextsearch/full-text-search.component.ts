@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { WhoisVersionComponent } from '../application-version/whois-version.component';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
@@ -42,8 +43,11 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
     private searchService = inject(FullTextSearchService);
     private fullTextResponseService = inject(FullTextResponseService);
     private whoisMetaService = inject(WhoisMetaService);
+    private destroyRef = inject(DestroyRef);
+    private router = inject(Router);
     properties = inject(PropertiesService);
     alertsService = inject(AlertsService);
+    activatedRoute = inject(ActivatedRoute);
 
     // In
     public ftquery: string;
@@ -80,6 +84,22 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         this.objectMetadata = FullTextSearchComponent.parseMetadataToLists(this.whoisMetaService.objectTypesMap);
         this.numResultsPerPage = 10;
         this.titleEnvironment = this.properties.getTitleEnvironment();
+        this.activatedRoute.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
+            this.selectedObjectTypes = params.getAll('objectTypes');
+            this.selectedAttrs = params.getAll('attrs');
+            this.advmode = params.get('advmode') || 'all';
+
+            if (this.selectedObjectTypes.length > 0 || this.advmode !== 'all') {
+                this.advancedSearch = true;
+                this.selectableAttributes = this.refreshAttributeList();
+            }
+
+            const restoredQuery = params.get('query');
+            if (restoredQuery) {
+                this.ftquery = restoredQuery;
+                this.searchClicked();
+            }
+        });
     }
 
     public ngOnDestroy() {
@@ -105,16 +125,21 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     public objectTypeChanged() {
         this.selectableAttributes = this.refreshAttributeList();
+        this.persistSearchToUrl();
     }
 
     public selectAll() {
         this.selectedObjectTypes = this.objectTypes;
+        this.persistSearchToUrl();
         this.objectTypeChanged();
     }
 
-    public selectNone() {
+    public selectNone(isFromSearch: boolean) {
         this.selectedObjectTypes = this.selectableAttributes = [];
         this.selectedAttrs = [];
+        if (!isFromSearch) {
+            this.persistSearchToUrl();
+        }
         this.objectTypeChanged();
     }
 
@@ -140,11 +165,35 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         return text;
     }
 
+    public changeAdvmode(mode: string) {
+        this.advmode = mode;
+        this.persistSearchToUrl();
+    }
+
+    public selectedAttrsChanged() {
+        this.persistSearchToUrl();
+    }
+
+    private persistSearchToUrl() {
+        this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: {
+                query: this.ftquery?.trim() || null,
+                objectTypes: this.selectedObjectTypes.length ? this.selectedObjectTypes : null,
+                attrs: this.selectedAttrs.length ? this.selectedAttrs : null,
+                advmode: this.advmode !== 'all' ? this.advmode : null,
+            },
+            queryParamsHandling: 'merge',
+            replaceUrl: true,
+        });
+    }
+
     private performSearch(start: number) {
         this.alertsService.clearAlertMessages();
         if (!this.advancedSearch) {
-            this.selectNone();
+            this.selectNone(true);
         }
+        this.persistSearchToUrl();
         this.searchService
             .doSearch(this.ftquery.trim(), start, this.advancedSearch, this.advmode, this.selectedObjectTypes || [], this.selectedAttrs || [])
             .subscribe({
