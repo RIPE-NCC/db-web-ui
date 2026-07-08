@@ -1,6 +1,5 @@
 package net.ripe.whois.web.api.baapps;
 
-import com.google.common.base.Strings;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.common.ip.IpInterval;
@@ -16,16 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Optional;
-
-//import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
-
 
 @RestController
 @RequestMapping("/api/ba-apps")
