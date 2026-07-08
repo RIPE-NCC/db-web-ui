@@ -21,43 +21,19 @@
                 <tbody>
                     <tr>
                         <td>
-                            <input
-                                name="all"
-                                type="radio"
-                                id="fullTextAdvancedTypeAll"
-                                value="all"
-                                (ngModelChange)="changeAdvmode($event)"
-                                class="checkbox-all"
-                                [(ngModel)]="advmode"
-                            />
+                            <input name="all" type="radio" id="fullTextAdvancedTypeAll" value="all" class="checkbox-all" [(ngModel)]="advmode" />
                             <label for="fullTextAdvancedTypeAll" class="checkbox-all">&nbsp;All</label>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <input
-                                name="any"
-                                type="radio"
-                                id="fullTextAdvancedTypeAny"
-                                value="any"
-                                (ngModelChange)="changeAdvmode($event)"
-                                class="checkbox-any"
-                                [(ngModel)]="advmode"
-                            />
+                            <input name="any" type="radio" id="fullTextAdvancedTypeAny" value="any" class="checkbox-any" [(ngModel)]="advmode" />
                             <label for="fullTextAdvancedTypeAny" class="checkbox-any">&nbsp;Any</label>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <input
-                                name="exact"
-                                type="radio"
-                                id="fullTextAdvancedTypeExact"
-                                value="exact"
-                                (ngModelChange)="changeAdvmode($event)"
-                                class="checkbox-exact"
-                                [(ngModel)]="advmode"
-                            />
+                            <input name="exact" type="radio" id="fullTextAdvancedTypeExact" value="exact" class="checkbox-exact" [(ngModel)]="advmode" />
                             <label for="fullTextAdvancedTypeExact" class="checkbox-exact">&nbsp;Exact Match</label>
                         </td>
                     </tr>
@@ -81,7 +57,7 @@
                     </select>
                     <span class="small link-pointer">
                         <a class="inner-link-color" (click)="selectAll()">Select all</a> |
-                        <a class="inner-link-color" (click)="selectNone(false)">Select none</a>
+                        <a class="inner-link-color" (click)="selectNone()">Select none</a>
                     </span>
                 </div>
                 <div class="p-4 flex-grow-1">
@@ -94,7 +70,6 @@
                         multiple
                         [disabled]="!selectedObjectTypes || selectedObjectTypes.length < 1"
                         size="{{ objectTypes.length }}"
-                        (change)="selectedAttrsChanged()"
                         [(ngModel)]="selectedAttrs"
                     >
                         @for (attr of selectableAttributes; track attr) {

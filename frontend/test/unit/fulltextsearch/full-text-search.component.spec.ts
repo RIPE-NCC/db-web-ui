@@ -41,14 +41,17 @@ describe('FullTextSearchComponent', () => {
         let router: Router;
 
         beforeEach(() => {
-            fixture.detectChanges();
+            fixture.detectChanges(); // ngOnInit; empty query → searchClicked early-returns
             router = TestBed.inject(Router);
             spyOn(router, 'navigate');
+            fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
         });
 
-        it('writes selected object types under the objectTypes param, with merge + replaceUrl', () => {
+        it('writes selected object types on an advanced search, with merge + replaceUrl', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
             component.selectedObjectTypes = ['inetnum', 'person'];
-            component.objectTypeChanged();
+            component.searchClicked();
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
@@ -60,27 +63,11 @@ describe('FullTextSearchComponent', () => {
             );
         });
 
-        it('clears the objectTypes param (null) when nothing is selected', () => {
-            component.selectedObjectTypes = [];
-            component.objectTypeChanged();
-
-            expect(router.navigate).toHaveBeenCalledWith(
-                [],
-                jasmine.objectContaining({
-                    queryParams: jasmine.objectContaining({ objectTypes: null }),
-                }),
-            );
-        });
-
-        it('writes every type on selectAll', () => {
-            component.selectAll();
-
-            const args = (router.navigate as jasmine.Spy).calls.mostRecent().args;
-            expect(args[1].queryParams.objectTypes.length).toEqual(component.objectTypes.length);
-        });
-
         it('writes advmode when it is not the default', () => {
-            component.changeAdvmode('any');
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.advmode = 'any';
+            component.searchClicked();
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
@@ -91,8 +78,10 @@ describe('FullTextSearchComponent', () => {
         });
 
         it('omits advmode (null) when it is the default "all"', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
             component.advmode = 'all';
-            component.selectedAttrsChanged();
+            component.searchClicked();
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
@@ -102,9 +91,12 @@ describe('FullTextSearchComponent', () => {
             );
         });
 
-        it('writes selected attrs under the attrs param', () => {
+        it('writes selected attrs on an advanced search', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.selectedObjectTypes = ['inetnum'];
             component.selectedAttrs = ['country'];
-            component.selectedAttrsChanged();
+            component.searchClicked();
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
@@ -115,7 +107,6 @@ describe('FullTextSearchComponent', () => {
         });
 
         it('writes the query text on an advanced search', () => {
-            fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
             component.advancedSearch = true;
             component.ftquery = 'etch-mnt';
             component.searchClicked();
@@ -129,7 +120,6 @@ describe('FullTextSearchComponent', () => {
         });
 
         it('clears objectTypes and attrs on a basic-mode search but keeps the query', () => {
-            fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
             component.advancedSearch = false;
             component.selectedObjectTypes = ['inetnum'];
             component.selectedAttrs = ['country'];
@@ -202,7 +192,7 @@ describe('FullTextSearchComponent', () => {
             'alltrueas-blockas-setaut-numdomainfilter-setinet-rtrinet6numinetnumirtkey-certmntnerorganisationpeering-setpersonpoempoetic-formrolerouteroute-setroute6rtr-set',
         );
 
-        component.selectNone(true);
+        component.selectNone();
         expect(component.selectedObjectTypes.length).toEqual(0);
         expect(component.selectableAttributes.length).toEqual(0);
         expect(component.selectedAttrs.length).toEqual(0);

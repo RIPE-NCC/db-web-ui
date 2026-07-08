@@ -97,9 +97,11 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
             const restoredQuery = params.get('query');
             if (restoredQuery) {
                 this.ftquery = restoredQuery;
-                this.searchClicked();
             }
         });
+        if (this.ftquery.length > 0) {
+            this.searchClicked();
+        }
     }
 
     public ngOnDestroy() {
@@ -111,6 +113,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
             this.alertsService.setGlobalWarning(Labels['fullText.emptyQueryText.text']);
             return;
         }
+        this.persistSearchToUrl();
         this.performSearch(0);
     }
 
@@ -125,21 +128,16 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
 
     public objectTypeChanged() {
         this.selectableAttributes = this.refreshAttributeList();
-        this.persistSearchToUrl();
     }
 
     public selectAll() {
         this.selectedObjectTypes = this.objectTypes;
-        this.persistSearchToUrl();
         this.objectTypeChanged();
     }
 
-    public selectNone(isFromSearch: boolean) {
+    public selectNone() {
         this.selectedObjectTypes = this.selectableAttributes = [];
         this.selectedAttrs = [];
-        if (!isFromSearch) {
-            this.persistSearchToUrl();
-        }
         this.objectTypeChanged();
     }
 
@@ -165,15 +163,6 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
         return text;
     }
 
-    public changeAdvmode(mode: string) {
-        this.advmode = mode;
-        this.persistSearchToUrl();
-    }
-
-    public selectedAttrsChanged() {
-        this.persistSearchToUrl();
-    }
-
     private persistSearchToUrl() {
         this.router.navigate([], {
             relativeTo: this.activatedRoute,
@@ -191,7 +180,7 @@ export class FullTextSearchComponent implements OnInit, OnDestroy {
     private performSearch(start: number) {
         this.alertsService.clearAlertMessages();
         if (!this.advancedSearch) {
-            this.selectNone(true);
+            this.selectNone();
         }
         this.persistSearchToUrl();
         this.searchService
