@@ -76,20 +76,23 @@ public class WhoisInternalProxyControllerTest {
 
     @Test
     public void whoisInternalGetApiKeys() {
+        when(authorizedClient.getAccessToken()).thenReturn(ACCESS_TOKEN);
         when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
-        final ResponseEntity<?> response = subject.getApiKeys(request, "", httpHeaders);
+        final ResponseEntity<?> response = subject.getApiKeys(request, "", httpHeaders, authorizedClient);
         verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
     }
     @Test
     public void whoisInternalSaveApiKey() {
+        when(authorizedClient.getAccessToken()).thenReturn(ACCESS_TOKEN);
         when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
-        final ResponseEntity<?> response = subject.saveApiKey(request, "", httpHeaders);
+        final ResponseEntity<?> response = subject.saveApiKey(request, "", httpHeaders, authorizedClient, null);
         verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
     }
     @Test
     public void whoisInternalDeleteApiKeys() {
+        when(authorizedClient.getAccessToken()).thenReturn(ACCESS_TOKEN);
         when(whoisInternalService.bypass(request, "", httpHeaders)).thenReturn(ResponseEntity.ok().build());
-        final ResponseEntity<?> response = subject.deleteApiKeys(request, "", httpHeaders);
+        final ResponseEntity<?> response = subject.deleteApiKeys(request, "", httpHeaders, authorizedClient);
         verify(whoisInternalService, Mockito.times(1)).bypass(request, "", httpHeaders);
     }
     @Test
