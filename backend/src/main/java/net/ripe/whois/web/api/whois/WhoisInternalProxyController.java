@@ -74,7 +74,10 @@ public class WhoisInternalProxyController extends ApiController {
         @RequestParam("origin") final String origin,
         @RequestParam("route") final String route,
         @Nullable @RequestBody(required = false) final String body,
-        @RequestHeader final HttpHeaders headers) {
+        @RequestHeader final HttpHeaders headers,
+        @RegisteredOAuth2AuthorizedClient("keycloak")
+            OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 
