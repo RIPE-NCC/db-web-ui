@@ -45,7 +45,10 @@ public class WhoisInternalProxyController extends ApiController {
             final HttpServletRequest request,
             @PathVariable final String orgId,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) {
+            @RequestHeader final HttpHeaders headers,
+            @RegisteredOAuth2AuthorizedClient("keycloak")
+                OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 
@@ -79,7 +82,10 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<?> getApiKeys(
         final HttpServletRequest request,
         @Nullable @RequestBody(required = false) final String body,
-        @RequestHeader final HttpHeaders headers) {
+        @RequestHeader final HttpHeaders headers,
+        @RegisteredOAuth2AuthorizedClient("keycloak")
+        OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 
@@ -87,7 +93,10 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<?> saveApiKey(
         final HttpServletRequest request,
         @Nullable @RequestBody(required = false) final String body,
-        @RequestHeader final HttpHeaders headers) {
+        @RequestHeader final HttpHeaders headers,
+        @RegisteredOAuth2AuthorizedClient("keycloak")
+            OAuth2AuthorizedClient authorizedClient, @PathVariable String keyType) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 
@@ -95,7 +104,10 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<?> deleteApiKeys(
         final HttpServletRequest request,
         @PathVariable final String key,
-        @RequestHeader final HttpHeaders headers) {
+        @RequestHeader final HttpHeaders headers,
+        @RegisteredOAuth2AuthorizedClient("keycloak")
+            OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, "", headers);
     }
 
@@ -143,7 +155,10 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<String> getForgotMaintainerPassword(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) {
+            @RequestHeader final HttpHeaders headers,
+            @RegisteredOAuth2AuthorizedClient("keycloak")
+            OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 
@@ -151,7 +166,10 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<String> forgotMaintainerPassword(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) {
+            @RequestHeader final HttpHeaders headers,
+            @RegisteredOAuth2AuthorizedClient("keycloak")
+            OAuth2AuthorizedClient authorizedClient) {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return proxyRestCalls(request, body, headers);
     }
 

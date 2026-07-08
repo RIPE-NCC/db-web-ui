@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,11 +31,11 @@ public class WhoisProxyController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
     private final WhoisService whoisService;
 
+    private final OAuth2AuthorizedClientService authorizedClientService;
     @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
-    @Autowired
-    public WhoisProxyController(final WhoisService whoisService) {
+    public WhoisProxyController(final WhoisService whoisService, OAuth2AuthorizedClientService authorizedClientService) {
         this.whoisService = whoisService;
+        this.authorizedClientService = authorizedClientService;
     }
 
     @GetMapping(value = "/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -67,7 +66,6 @@ public class WhoisProxyController extends ApiController {
         }
 
         if (authorizedClient != null) {
-            String accessToken = authorizedClient.getAccessToken().getTokenValue();
             headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         }
 

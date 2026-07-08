@@ -18,7 +18,7 @@ export class SessionInfoService {
     private readonly onSessionManager;
 
     constructor() {
-        SessionInfoService.propagateCurrentCookieStatus();
+        // SessionInfoService.propagateCurrentCookieStatus();
         this.onSessionManager = (e) => {
             if (e.key === localStorageSessionExpiredKey && e.newValue) {
                 //if we logged out from the current window, in other window we will rise
