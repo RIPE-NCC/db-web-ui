@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -22,6 +22,7 @@ import { VersionsLookupService } from '../versions-lookup.service';
     templateUrl: './diff.component.html',
     standalone: true,
     styleUrl: 'diff.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatSelect, MatOption, FormsModule, DatePipe, WhoisLineDiffDirective, WhoisVersionComponent, BreadcrumbsComponent, MatButton],
 })
 export class DiffComponent implements OnInit {

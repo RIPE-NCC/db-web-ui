@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +11,7 @@ import { ResourcesDataService } from '../resources-data.service';
     selector: 'alerts-drop-down',
     templateUrl: './alerts-drop-down.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgbDropdown, MatButton, NgbPopover, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem],
 })
 export class AlertsDropDownComponent implements OnChanges {

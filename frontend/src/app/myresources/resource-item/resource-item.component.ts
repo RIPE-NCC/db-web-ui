@@ -1,5 +1,5 @@
 import { DecimalPipe, NgClass } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
@@ -13,6 +13,7 @@ import { ResourceStatusService } from '../resource-status.service';
     templateUrl: './resource-item.component.html',
     styleUrl: './resource-item.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RouterLink, NameFormatterComponent, FlagComponent, NgClass, DecimalPipe, MatProgressBar, MatTooltip],
 })
 export class ResourceItemComponent implements OnInit {

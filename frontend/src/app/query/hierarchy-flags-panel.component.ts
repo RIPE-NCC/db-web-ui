@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
@@ -11,6 +11,7 @@ import { IQueryParameters } from './query-parameters.service';
     selector: 'hierarchy-flags',
     templateUrl: './hierarchy-flags-panel.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatSlider, MatSliderThumb, FormsModule, MatCheckbox, LabelPipe],
 })
 export class HierarchyFlagsPanelComponent implements OnInit, OnChanges {

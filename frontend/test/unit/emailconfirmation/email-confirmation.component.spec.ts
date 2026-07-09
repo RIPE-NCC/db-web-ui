@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -23,7 +23,7 @@ describe('Testing EmailConfirmation with logged in user', () => {
                 EmailConfirmationService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: of(200) } },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
@@ -74,7 +74,7 @@ describe('Testing EmailConfirmation with not logged in user', () => {
                 EmailConfirmationService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: throwError(() => 401) } },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

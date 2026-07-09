@@ -1,10 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PropertiesService } from '../properties.service';
 
 @Component({
     selector: 'require-login',
     templateUrl: './require-login.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class RequireLoginComponent implements OnInit {

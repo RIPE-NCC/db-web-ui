@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { PropertiesService } from '../properties.service';
@@ -11,6 +11,7 @@ import { OrgDropDownSharedService } from './org-drop-down-shared.service';
     selector: 'org-drop-down',
     templateUrl: './org-drop-down.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgSelectComponent, FormsModule, NgOptionTemplateDirective],
 })
 export class OrgDropDownComponent implements OnInit {

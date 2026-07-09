@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LabelPipe } from './label.pipe';
 
 @Component({
@@ -9,6 +9,7 @@ import { LabelPipe } from './label.pipe';
         </section>
     </div>`,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [LabelPipe],
 })
 export class SubmittingAgreementComponent {}

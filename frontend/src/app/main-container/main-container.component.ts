@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import supportedBrowsers from '../../assets/supportedBrowsers.js';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
@@ -17,6 +17,7 @@ import { ReleaseNotificationService } from '../shared/release-notification.servi
     templateUrl: './main-container.component.html',
     styleUrl: 'main-container.component.scss',
     imports: [RouterModule, BannerComponent, LabelPipe, AlertBannersComponent, OrgDropDownComponent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MainContainerComponent implements OnInit {

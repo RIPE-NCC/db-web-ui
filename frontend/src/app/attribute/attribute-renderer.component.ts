@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
@@ -23,6 +23,7 @@ import { AttributeReverseZonesComponent } from './attribute-reverse-zones.compon
     selector: 'attribute-renderer',
     templateUrl: './attribute-renderer.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, AttributeReverseZonesComponent, DescriptionSyntaxComponent, FormsModule, NgbTypeahead, NgSelectComponent, NgOptionTemplateDirective],
 })
 export class AttributeRendererComponent implements OnInit {

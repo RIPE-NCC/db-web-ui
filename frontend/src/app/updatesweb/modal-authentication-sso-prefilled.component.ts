@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { IUserInfoResponseData } from '../dropdown/org-data-type.model';
@@ -18,6 +18,7 @@ import { RestService } from './rest.service';
     selector: 'modal-authentication-sso-prefilled',
     templateUrl: './modal-authentication-sso-prefilled.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, BannerComponent, MatButton],
 })
 export class ModalAuthenticationSSOPrefilledComponent implements OnInit {

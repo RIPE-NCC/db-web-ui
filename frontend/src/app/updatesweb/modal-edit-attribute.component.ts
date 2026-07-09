@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PropertiesService } from '../properties.service';
@@ -8,6 +8,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
     selector: 'modal-edit-attribute',
     templateUrl: './modal-edit-attribute.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton],
 })
 export class ModalEditAttributeComponent {

@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -55,7 +55,7 @@ describe('DisplayComponent', () => {
                         queryParams: of({}),
                     },
                 },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
@@ -267,7 +267,7 @@ describe('DisplayComponent with object containing slash', () => {
                         queryParams: of({}),
                     },
                 },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
@@ -403,7 +403,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
                         queryParams: of({}),
                     },
                 },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

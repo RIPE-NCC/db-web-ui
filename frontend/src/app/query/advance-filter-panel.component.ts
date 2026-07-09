@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
@@ -10,6 +10,7 @@ import { IQueryParameters } from './query-parameters.service';
     selector: 'advance-filter-panel',
     templateUrl: './advance-filter-panel.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatRadioModule, MatCheckboxModule, LabelPipe],
 })
 export class AdvanceFilterPanelComponent implements OnChanges {

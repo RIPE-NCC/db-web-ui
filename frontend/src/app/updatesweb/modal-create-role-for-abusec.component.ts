@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,6 +17,7 @@ interface IModalCreateRoleForAbuceC {
     selector: 'modal-create-role-for-abusec',
     templateUrl: './modal-create-role-for-abusec.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatButton],
 })
 export class ModalCreateRoleForAbuseCComponent {

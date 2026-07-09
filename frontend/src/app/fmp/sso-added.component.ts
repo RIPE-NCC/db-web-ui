@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 
 @Component({
     selector: 'sso-added',
     templateUrl: './sso-added.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class SsoAddedComponent implements OnInit, OnDestroy {

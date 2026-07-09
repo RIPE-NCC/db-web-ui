@@ -1,9 +1,10 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "es5",
-        "lib": ["es5", "dom"],
-        "types": ["cypress", "./support"]
+        "target": "ES2022",
+        "lib": ["ES2022", "dom"],
+        "types": ["cypress", "./support"],
+        "rootDir": "."
     },
     "include": ["**/*.ts"]
 }

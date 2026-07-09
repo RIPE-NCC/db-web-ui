@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
@@ -31,6 +31,7 @@ export enum ResourceType {
     styleUrl: './resources.component.scss',
     encapsulation: ViewEncapsulation.None,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatButton,
         ManageResourcesComponent,

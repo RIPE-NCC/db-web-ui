@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
     templateUrl: './full-text-search.component.html',
     styleUrl: 'full-text-search.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         FormsModule,
         SearchFieldComponent,

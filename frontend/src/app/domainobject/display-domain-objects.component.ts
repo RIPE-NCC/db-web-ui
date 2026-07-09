@@ -1,5 +1,5 @@
 import { SlicePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -11,6 +11,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
     selector: 'display-domain-objects',
     templateUrl: './display-domain-objects.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton, SlicePipe],
 })
 export class DisplayDomainObjectsComponent implements OnInit {

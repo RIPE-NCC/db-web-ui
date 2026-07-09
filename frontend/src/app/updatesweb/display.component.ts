@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -15,6 +15,7 @@ import { WebUpdatesCommonsService } from './web-updates-commons.service';
     selector: 'display',
     templateUrl: './display.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [WhoisLineDiffDirective, MatButton, SanitizeHtmlPipe],
 })
 export class DisplayComponent implements OnInit, OnDestroy {

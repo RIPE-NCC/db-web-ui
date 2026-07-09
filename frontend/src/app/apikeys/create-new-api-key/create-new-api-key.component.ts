@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { isKeyDisabled, isMemberOrg, KeyType } from '../utils';
     templateUrl: './create-new-api-key.component.html',
     styleUrl: './create-new-api-key.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatFormField,
         MatLabel,
@@ -53,16 +54,16 @@ export class CreateNewApiKeyComponent implements OnInit, OnChanges {
     initialCreateKeyType?: KeyType;
 
     @Input()
-    selectedOrg: IUserInfoOrganisation;
+    selectedOrg: IUserInfoOrganisation | undefined;
 
     @Output()
     created = new EventEmitter();
     keyTypes = Object.values(KeyType) as KeyType[];
     selectedKeyType!: KeyType;
-    apiKeyName: string;
-    expiresAt: Date;
+    apiKeyName!: string | undefined;
+    expiresAt!: Date | undefined;
     maintainers: { key: string }[] = [{ key: '' }];
-    maintainersOptions: IMntByModel[];
+    maintainersOptions: IMntByModel[] | undefined;
     minDate: Date = new Date();
     maxDate: Date = new Date();
 

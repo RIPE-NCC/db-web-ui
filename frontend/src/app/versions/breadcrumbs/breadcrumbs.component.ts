@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'breadcrumbs',
     standalone: true,
     templateUrl: './breadcrumbs.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './breadcrumbs.component.scss',
 })
-export class BreadcrumbsComponent {
+export class BreadcrumbsComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
 

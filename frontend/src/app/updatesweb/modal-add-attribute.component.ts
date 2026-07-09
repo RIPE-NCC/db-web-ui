@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +8,7 @@ import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-n
     selector: 'modal-add-attribute',
     templateUrl: './modal-add-attribute.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatButton, FilteroutAttributeByNamePipe],
 })
 export class ModalAddAttributeComponent implements OnInit {

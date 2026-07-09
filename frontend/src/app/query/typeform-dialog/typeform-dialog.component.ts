@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { createPopup } from '@typeform/embed';
 
@@ -6,6 +6,7 @@ import { createPopup } from '@typeform/embed';
     selector: 'typeform-dialog',
     templateUrl: 'typeform-dialog.component.html',
     styleUrl: 'typeform-dialog.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class TypeformDialogComponent implements OnInit {

@@ -26,7 +26,7 @@
         placeholder="{{ getAttributeShortDescription(attribute.name) }}"
         autocomplete="off"
         [(ngModel)]="attribute.value"
-        [required]="attribute.$$meta?.$$mandatory"
+        [required]="$safeNavigationMigration(attribute.$$meta?.$$mandatory)"
         [disabled]="attribute.$$disable"
         (blur)="valueTypeAheadChanged(objectType, attribute)"
         [ngbTypeahead]="autocompleteList"
@@ -41,7 +41,7 @@
         placeholder="{{ getAttributeShortDescription(attribute.name) }}"
         autocomplete="off"
         [(ngModel)]="attribute.value"
-        [required]="attribute.$$meta?.$$mandatory"
+        [required]="$safeNavigationMigration(attribute.$$meta?.$$mandatory)"
         [disabled]="attribute.$$disable"
         (change)="valueChanged(objectType, attributes)"
     />
@@ -52,7 +52,7 @@
         bindLabel="key"
         bindValue="key"
         [placeholder]="getAttributeShortDescription(attribute.name)"
-        [disabled]="attribute.$$meta?.$$disable"
+        [disabled]="$safeNavigationMigration(attribute.$$meta?.$$disable)"
         [(ngModel)]="attribute.value"
     >
         <ng-template ng-option-tmp let-item="item">

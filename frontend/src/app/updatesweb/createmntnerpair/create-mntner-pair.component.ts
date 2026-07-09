@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -24,6 +24,7 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
     selector: 'create-mntner-pair',
     templateUrl: './create-mntner-pair.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, DescriptionSyntaxComponent, RouterLink, SubmittingAgreementComponent, MatButton, FilteroutAttributeByNamePipe, SanitizeImgHtmlPipe],
 })
 export class CreateMntnerPairComponent implements OnInit, OnDestroy {

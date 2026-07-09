@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -11,6 +11,7 @@ import { SyncupdatesService } from './syncupdates.service';
     selector: 'syncupdates',
     templateUrl: './syncupdates.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, AutoFocusDirective, SubmittingAgreementComponent, MatButton],
 })
 export class SyncupdatesComponent {

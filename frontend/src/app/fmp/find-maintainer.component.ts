@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { FmpErrorService } from './fmp-error.service';
     selector: 'find-maintainer',
     templateUrl: './find-maintainer.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatButton],
 })
 export class FindMaintainerComponent implements OnInit {

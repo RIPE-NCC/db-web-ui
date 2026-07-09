@@ -1,9 +1,10 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
     selector: 'legal',
     template: `<legal-accordion appname="database"></legal-accordion>`,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     schemas: [CUSTOM_ELEMENTS_SCHEMA], // web component
 })
 export class LegalComponent {}

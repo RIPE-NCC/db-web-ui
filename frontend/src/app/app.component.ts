@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Observable, Subscription } from 'rxjs';
@@ -32,13 +32,14 @@ const envDisplayMap: Record<string, string> = {
     templateUrl: './app.component.html',
     styleUrl: 'app.component.scss',
     imports: [RouterModule, MainContainerComponent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnDestroy {
-    activeMenu: ActiveMenu;
-    activeSidebarItem: string;
-    sidebarMenu: SidebarMenu;
-    icon: string;
+    activeMenu!: ActiveMenu | null;
+    activeSidebarItem!: string;
+    sidebarMenu!: SidebarMenu;
+    icon!: string;
     envNameInRipeWebComponents: string;
 
     properties = inject(PropertiesService);
@@ -49,11 +50,11 @@ export class AppComponent implements OnDestroy {
 
     private readonly navigationEnd: Subscription;
 
-    labelEnv: string;
-    labelEnvImg: string;
+    labelEnv!: string;
+    labelEnvImg!: string;
 
     constructor() {
-        this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV];
+        this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV as keyof typeof EnvNamesInRipeWebComponents];
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
             this.setActiveSidebarItem(evt.url);
@@ -91,7 +92,7 @@ export class AppComponent implements OnDestroy {
         }
     }
 
-    onSidebarItemClick(event) {
+    onSidebarItemClick(event: CustomEvent) {
         event.preventDefault();
         this.setActiveSidebarItem(event.detail.url);
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
@@ -7,6 +7,7 @@ import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 @Component({
     templateUrl: './unsubscribe-confirm.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [LoadingIndicatorComponent, MatButton],
 })
 export class UnsubscribeConfirmComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { Location, NgStyle } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NameFormatterComponent } from '../../shared/name-formatter.component';
@@ -11,6 +11,7 @@ import { IMoreSpecificsApiResult, MoreSpecificsService } from './more-specifics.
     selector: 'more-specifics',
     templateUrl: './more-specifics.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, TableScrollerDirective, NgStyle, RouterLink, NameFormatterComponent, RefreshComponent],
 })
 export class MoreSpecificsComponent implements OnChanges {

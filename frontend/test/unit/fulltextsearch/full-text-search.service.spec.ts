@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FullTextSearchService } from '../../../src/app/fulltextsearch/full-text-search.service';
@@ -13,7 +13,7 @@ describe('FullTextSearchService', () => {
             providers: [
                 FullTextSearchService,
                 { provide: '$log', useValue: { error: () => {} } },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

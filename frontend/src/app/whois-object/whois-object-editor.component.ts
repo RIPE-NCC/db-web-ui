@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { AttributeRendererComponent } from '../attribute/attribute-renderer.component';
@@ -14,6 +14,7 @@ import { MessageStoreService } from '../updatesweb/message-store.service';
     selector: 'whois-object-editor',
     templateUrl: './whois-object-editor.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AttributeRendererComponent, SubmittingAgreementComponent, MatButton, FilteroutAttributeByHiddenPipe, FilteroutAttributeByNamePipe],
 })
 export class WhoisObjectEditorComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { SessionInfoService } from '../../sessioninfo/session-info.service';
 import { UserInfoService } from '../../userinfo/user-info.service';
 import { ResourcesComponent } from '../resources.component';
@@ -9,6 +9,7 @@ import { ResourcesComponent } from '../resources.component';
     styleUrl: 'landing-page.component.scss',
     standalone: true,
     imports: [ResourcesComponent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LandingPageComponent implements OnInit {

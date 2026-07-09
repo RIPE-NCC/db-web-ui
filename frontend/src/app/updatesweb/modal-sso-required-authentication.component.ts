@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
@@ -20,6 +20,7 @@ export interface IModalAuthentication {
     selector: 'modal-authentication',
     templateUrl: './modal-sso-required-authentication.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, BannerComponent, RouterLink, MatButton],
 })
 export class ModalSsoRequiredAuthenticationComponent implements OnInit {

@@ -484,9 +484,9 @@ export class WhoisResourcesService {
     }
 
     public isSelfMntnerUpdate(response: any, primaryKey: string) {
-        let whoisResources = this.validateWhoisResources(response);
+        const whoisResources = this.validateWhoisResources(response);
         if (whoisResources) {
-            let responsePrimaryKey = this.getPrimaryKey(whoisResources);
+            const responsePrimaryKey = this.getPrimaryKey(whoisResources);
             if (responsePrimaryKey.toLowerCase() === primaryKey.toLowerCase()) {
                 return true;
             }
@@ -596,7 +596,7 @@ export class WhoisResourcesService {
         // Enable delete objects maintained by owner only if not RS status.
         // In case RS status, the resource needs a comaintained mntner and sso needs to be logged in (only by RIPE
         // NCC (RS mntners))
-        let isRsStatus = ResourceStatusService.isRsStatus(attributes, objectType);
+        const isRsStatus = ResourceStatusService.isRsStatus(attributes, objectType);
         if (!isRsStatus) {
             return true;
         }
@@ -605,9 +605,9 @@ export class WhoisResourcesService {
 
     public isComaintainedAndLoggedIn(attributes: IAttributeModel[], ssoMaintainers: IMntByModel[], maintainers?: Array<IMntByModel | IAttributeModel>) {
         // Is comaintained and SSO is logged in that mntner
-        maintainers = !!maintainers ? maintainers : WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by');
+        maintainers = maintainers ? maintainers : WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by');
         return maintainers.some((att: IMntByModel | IAttributeModel) => {
-            let value = this.extractValue(att);
+            const value = this.extractValue(att);
             if (this.propertiesService.isAnyNccMntner(value)) {
                 // check if not logged into the NCC Mntner
                 return ssoMaintainers.some((ssoAtt: IMntByModel) => {
@@ -620,7 +620,7 @@ export class WhoisResourcesService {
 
     // Resource is with Ncc Mntner
     public isComaintained(attributes: IAttributeModel[], maintainers?: Array<IMntByModel | IAttributeModel>) {
-        maintainers = !!maintainers ? maintainers : WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by');
+        maintainers = maintainers ? maintainers : WhoisResourcesService.getAllAttributesOnName(attributes, 'mnt-by');
         return maintainers.some((att: IMntByModel | IAttributeModel) => {
             return this.propertiesService.isAnyNccMntner(this.extractValue(att));
         });

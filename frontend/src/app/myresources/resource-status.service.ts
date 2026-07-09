@@ -82,7 +82,7 @@ export class ResourceStatusService {
         },
     };
 
-    private static readonly rsMntnerStatuses = new Map<String, string[]>([
+    private static readonly rsMntnerStatuses = new Map<string, string[]>([
         ['inetnum', ['ALLOCATED PA', 'ALLOCATED UNSPECIFIED', 'ALLOCATED ASSIGNED PA', 'ASSIGNED ANYCAST']],
         ['inet6num', ['ASSIGNED PI', 'ASSIGNED ANYCAST', 'ALLOCATED-BY-RIR']],
     ]);
@@ -112,7 +112,7 @@ export class ResourceStatusService {
     }
 
     public filterNonRsStatuses(objectType: string, parentState?: string) {
-        let list = this.get(objectType, parentState);
+        const list = this.get(objectType, parentState);
         return list.filter((status) => !ResourceStatusService.rsMntnerStatuses.get(objectType.toLowerCase()).includes(status.key));
     }
 

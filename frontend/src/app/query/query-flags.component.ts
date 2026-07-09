@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
 import { FlagComponent } from '../shared/flag/flag.component';
 import { LabelPipe } from '../shared/label.pipe';
 import { IQueryFlag, QueryFlagsService } from './query-flags.service';
@@ -7,6 +7,7 @@ import { IQueryFlag, QueryFlagsService } from './query-flags.service';
     selector: 'query-flags',
     templateUrl: './query-flags.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlagComponent, LabelPipe],
 })
 export class QueryFlagsComponent implements OnChanges {

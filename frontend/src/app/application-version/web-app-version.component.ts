@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { PropertiesService } from '../properties.service';
 
 @Component({
@@ -9,6 +9,7 @@ import { PropertiesService } from '../properties.service';
         }
     </div>`,
     styles: ['span { color: grey; }'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class WebAppVersionComponent implements OnInit {

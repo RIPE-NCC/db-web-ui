@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -35,7 +35,7 @@ describe('primitives of modalDeleteObject', () => {
                 { provide: RestService, useValue: restServiceMock },
                 RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
@@ -151,7 +151,7 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
                 { provide: RestService, useValue: restServiceMock },
                 RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
@@ -234,7 +234,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
                 { provide: RpkiValidatorService, useValue: rpkiValidatorServiceMock },
                 { provide: OverrideCredentialsService, useValue: credentialsServiceMock },
                 { provide: Router, useValue: routerMock },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
@@ -388,7 +388,7 @@ describe('ModalDeleteObjectComponent loading references failures ', () => {
                 { provide: RestService, useValue: restServiceMock },
                 RpkiValidatorService,
                 { provide: Router, useValue: routerMock },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

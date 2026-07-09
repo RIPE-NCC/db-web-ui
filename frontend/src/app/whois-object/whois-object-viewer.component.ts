@@ -1,5 +1,5 @@
 import { NgClass, SlicePipe } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -17,9 +17,10 @@ import { WhoisObjectVisualiser } from './whois-object-visualiser';
     selector: 'whois-object-viewer',
     templateUrl: './whois-object-viewer.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCheckbox, NgClass, MatTooltip, RouterLink, MatButton, SlicePipe, LabelPipe],
 })
-export class WhoisObjectViewerComponent implements OnChanges, OnDestroy {
+export class WhoisObjectViewerComponent implements OnChanges, OnDestroy, OnInit {
     private userInfoService = inject(UserInfoService);
     private sessionInfoService = inject(SessionInfoService);
     private properties = inject(PropertiesService);

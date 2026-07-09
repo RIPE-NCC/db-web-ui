@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { RouterLink } from '@angular/router';
 import { KeyType } from '../../apikeys/utils';
@@ -9,6 +9,7 @@ import { PropertiesService } from '../../properties.service';
     templateUrl: './apikeys-dropdown.component.html',
     styleUrl: './apikeys-dropdown.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelTitle, MatExpansionPanelHeader, RouterLink],
 })
 export class ApikeysDropdownComponent {

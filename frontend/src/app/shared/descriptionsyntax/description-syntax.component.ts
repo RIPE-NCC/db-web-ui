@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeInfoComponent } from './attr-info.component';
 
@@ -11,6 +11,7 @@ import { AttributeInfoComponent } from './attr-info.component';
         <attr-info [objectType]="objectType" [syntax]="attrName"></attr-info>
     </div>`,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgbCollapse, AttributeInfoComponent],
 })
 export class DescriptionSyntaxComponent {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
         <a mat-flat-button color="primary" routerLink="/">BACK TO THE QUERY PAGE</a>
     </section>`,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton, RouterLink],
 })
 export class ErrorPageComponent {}

@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { concat, of, Subject } from 'rxjs';
@@ -24,6 +24,7 @@ import { IDefaultMaintainer, IWhoisObject } from './types';
     selector: 'maintainers-editor',
     templateUrl: './maintainers-editor.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgSelectComponent, FormsModule, NgLabelTemplateDirective, NgClass, NgOptionTemplateDirective, DescriptionSyntaxComponent, AsyncPipe],
 })
 export class MaintainersEditorComponent implements OnInit, OnDestroy {

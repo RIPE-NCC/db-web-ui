@@ -1,5 +1,5 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { ForgotMaintainerPasswordService, IForgotMaintainerPassword } from './fo
     selector: 'fmp',
     templateUrl: './forgot-maintainer-password.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatButton, UpperCasePipe],
 })
 export class ForgotMaintainerPasswordComponent implements OnInit, OnDestroy {

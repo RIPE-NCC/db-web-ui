@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RpslService } from '../../../src/app/updatestext/rpsl.service';
@@ -9,7 +9,7 @@ describe('RpslService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [RpslService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [RpslService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         rpslService = TestBed.inject(RpslService);
     });

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -41,6 +41,7 @@ export enum BannerTypes {
     templateUrl: './banner.component.html',
     styleUrl: 'banner.component.scss',
     imports: [MatButton, MatDialogClose],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class BannerComponent implements OnInit {

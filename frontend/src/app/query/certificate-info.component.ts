@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
@@ -6,6 +6,7 @@ import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.servi
 @Component({
     selector: 'certificate-info',
     templateUrl: './certificate-info.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class CertificateInfoComponent implements OnDestroy {

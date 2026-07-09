@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
         <a mat-flat-button class="margin-left" color="primary" [routerLink]="['/webupdates/select']" id="btnNavigateToCreate">Create an object</a>
     </section> `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton, RouterLink],
 })
 export class NotFoundPageComponent {}

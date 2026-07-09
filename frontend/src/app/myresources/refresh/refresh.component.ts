@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 
 @Component({
@@ -10,6 +10,7 @@ import { MatMiniFabButton } from '@angular/material/button';
         </button>
     </p>`,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatMiniFabButton],
 })
 export class RefreshComponent {

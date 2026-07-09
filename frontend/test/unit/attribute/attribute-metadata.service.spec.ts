@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
@@ -62,7 +62,7 @@ describe('AttributeMetadataService', () => {
                 { provide: Location, useValue: {} },
                 { provide: PropertiesService, useValue: MockPropertiesService },
                 { provide: 'ModalService', useValue: {} },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

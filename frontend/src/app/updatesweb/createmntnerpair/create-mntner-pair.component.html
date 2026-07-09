@@ -18,7 +18,7 @@
                     class="form-control"
                     placeholder="{{ attribute.$$meta?.$$short }}"
                     autocomplete="off"
-                    [required]="attribute.$$meta?.$$mandatory"
+                    [required]="$safeNavigationMigration(attribute.$$meta?.$$mandatory)"
                     (blur)="fieldVisited(attribute)"
                 />
                 <description-syntax [showComponent]="showMntAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="'mntner'"></description-syntax>
@@ -52,7 +52,7 @@
                     class="form-control"
                     placeholder="{{ attribute.$$meta?.$$short }}"
                     autocomplete="off"
-                    [required]="attribute.$$meta?.$$mandatory"
+                    [required]="$safeNavigationMigration(attribute.$$meta?.$$mandatory)"
                     (blur)="fieldVisited(attribute)"
                 />
                 <description-syntax [showComponent]="showAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>

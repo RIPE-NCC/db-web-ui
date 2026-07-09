@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { WhoisMetaService } from '../whois-meta.service';
 
 @Component({
     selector: 'attr-info',
     template: `<span [innerHTML]="text"></span>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class AttributeInfoComponent implements OnInit {

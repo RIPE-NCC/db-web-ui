@@ -1,5 +1,5 @@
 import { SlicePipe } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
@@ -19,6 +19,7 @@ interface IModalDelete {
     selector: 'modal-delete-object',
     templateUrl: './modal-delete-object.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatButton, SlicePipe],
 })
 export class ModalDeleteObjectComponent implements OnInit, OnDestroy {

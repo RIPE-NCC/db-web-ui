@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
@@ -10,6 +10,7 @@ import { FmpErrorService } from './fmp-error.service';
     selector: 'confirm-maintainer',
     templateUrl: './confirm-maintainer.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton],
 })
 export class ConfirmMaintainerComponent implements OnInit {

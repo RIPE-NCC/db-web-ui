@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -22,7 +22,7 @@ describe('ReleaseNotificationService', () => {
                     useValue: { DB_WEB_UI_BUILD_TIME: '0', RELEASE_NOTIFICATION_POLLING: pollInterval },
                 },
                 { provide: AlertsService, useValue: alertServiceSpy },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

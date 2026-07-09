@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SyncupdatesService } from '../../../src/app/syncupdates/syncupdates.service';
@@ -10,7 +10,7 @@ describe('SyncupdatesService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [SyncupdatesService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [SyncupdatesService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         service = TestBed.inject(SyncupdatesService);

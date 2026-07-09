@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Labels } from '../label.constants';
 
@@ -12,6 +12,7 @@ import { Labels } from '../label.constants';
         }
     </span>`,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgbPopover],
 })
 export class HelpMarkerComponent implements OnInit {
