@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import { LandingPageComponent } from 'src/app/myresources/landing-page/landing-page.component';
-import { SessionInfoService } from 'src/app/sessioninfo/session-info.service';
+import { SessionService } from 'src/app/sessioninfo/session.service';
 import { UserInfoService } from 'src/app/userinfo/user-info.service';
 import { ResourcesComponent } from '../../../src/app/myresources/resources.component';
 
@@ -11,13 +11,13 @@ describe('LandingPageComponent', () => {
     let fixture: ComponentFixture<LandingPageComponent>;
 
     let mockUserInfoService: jasmine.SpyObj<UserInfoService>;
-    let mockSessionInfoService: {
+    let mockSessionService: {
         expiredSession$: Subject<boolean>;
     };
 
     beforeEach(async () => {
         mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['isLoggedIn']);
-        mockSessionInfoService = {
+        mockSessionService = {
             expiredSession$: new Subject<boolean>(),
         };
 
@@ -25,7 +25,7 @@ describe('LandingPageComponent', () => {
             imports: [LandingPageComponent],
             providers: [
                 { provide: UserInfoService, useValue: mockUserInfoService },
-                { provide: SessionInfoService, useValue: mockSessionInfoService },
+                { provide: SessionService, useValue: mockSessionService },
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         })
@@ -44,7 +44,7 @@ describe('LandingPageComponent', () => {
 
     it('should set loggedIn = false when session is expired', () => {
         component.ngOnInit();
-        mockSessionInfoService.expiredSession$.next(true);
+        mockSessionService.expiredSession$.next(true);
 
         expect(component.loggedIn).toBeFalse();
     });

@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { PropertiesService } from '../properties.service';
-import { SessionInfoService } from '../sessioninfo/session-info.service';
+import { SessionService } from '../sessioninfo/session.service';
 import { UserInfoService } from '../userinfo/user-info.service';
 import { IUserInfoOrganisation, UserOrgsAndRegistrations } from './org-data-type.model';
 import { OrgDropDownSharedService } from './org-drop-down-shared.service';
@@ -17,7 +17,7 @@ export class OrgDropDownComponent implements OnInit {
     private userInfoService = inject(UserInfoService);
     private orgDropDownSharedService = inject(OrgDropDownSharedService);
     private properties = inject(PropertiesService);
-    private sessionInfoService = inject(SessionInfoService);
+    private sessionService = inject(SessionService);
 
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];
@@ -29,8 +29,8 @@ export class OrgDropDownComponent implements OnInit {
         this.userInfoService.userOrgsAndRoles$.subscribe((userInfo: UserOrgsAndRegistrations) => {
             this.initOrgsAndMemebers(userInfo);
         });
-        this.sessionInfoService.expiredSession$.subscribe((isSessionExpired: boolean) => {
-            this.sessionExpire = isSessionExpired;
+        this.sessionService.expiredSession$.subscribe(() => {
+            this.sessionExpire = true;
         });
     }
 

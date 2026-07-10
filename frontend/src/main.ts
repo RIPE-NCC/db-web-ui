@@ -24,7 +24,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationGuard } from './app/authentication-guard.service';
 import { EmailConfirmationService } from './app/emailconfirmation/email-confirmation.service';
 import { PropertiesService } from './app/properties.service';
-import { SessionInfoService } from './app/sessioninfo/session-info.service';
 import { SyncupdatesService } from './app/syncupdates/syncupdates.service';
 import { UnsubscribeService } from './app/unsubscribe/unsubscribe.service';
 
@@ -32,11 +31,11 @@ import { UnsubscribeService } from './app/unsubscribe/unsubscribe.service';
 import { ErrorInterceptor } from './app/interceptor/error.interceptor';
 import { HeaderInterceptor } from './app/interceptor/header.interceptor';
 import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.interceptor';
-// import { SessionInterceptor } from './app/sessioninfo/session.interceptor';
 
 import '@lir-portal/web-components';
 
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { AuthInterceptor } from './app/interceptor/auth.interceptor';
 import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.providers';
 
 bootstrapApplication(AppComponent, {
@@ -46,7 +45,7 @@ bootstrapApplication(AppComponent, {
         provideRouter(appRoutes),
 
         // HTTP with interceptors
-        provideHttpClient(withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor])),
+        provideHttpClient(withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, AuthInterceptor])),
 
         // Animations
         provideAnimations(),
@@ -62,7 +61,6 @@ bootstrapApplication(AppComponent, {
         EmailConfirmationService,
         UnsubscribeService,
         PropertiesService,
-        SessionInfoService,
 
         provideNativeDateAdapter(),
 

@@ -6,7 +6,7 @@ import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { ActiveMenu, MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
-import { SessionInfoService } from '../sessioninfo/session-info.service';
+import { SessionService } from '../sessioninfo/session.service.js';
 import { AlertBannersComponent } from '../shared/alert/alert-banners.component';
 import { LabelPipe } from '../shared/label.pipe';
 import { ReleaseNotificationService } from '../shared/release-notification.service';
@@ -24,7 +24,7 @@ export class MainContainerComponent implements OnInit {
     private releaseNotificationService = inject(ReleaseNotificationService);
     private router = inject(Router);
     private location = inject(Location);
-    private sessionInfoService = inject(SessionInfoService);
+    private sessionService = inject(SessionService);
     private menuService = inject(MenuService);
 
     isDesktopView: boolean;
@@ -38,14 +38,10 @@ export class MainContainerComponent implements OnInit {
     browserUnsuportedText = `Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.`;
 
     constructor() {
-        this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner: boolean) => {
-            this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
-            this.showSessionExpireBanner = raiseSessionExpireBanner;
+        this.sessionService.expiredSession$.subscribe(() => {
+            this.loginUrl = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
 
-            if (raiseSessionExpireBanner) {
-                const userLogin = document.querySelector('user-login');
-                userLogin?.dispatchEvent(new Event('access-logout'));
-            }
+            this.showSessionExpireBanner = true;
         });
 
         this.skipHash();

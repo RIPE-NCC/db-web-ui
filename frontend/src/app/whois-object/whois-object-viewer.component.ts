@@ -7,7 +7,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
 import { MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
-import { SessionInfoService } from '../sessioninfo/session-info.service';
+import { SessionService } from '../sessioninfo/session.service';
 import { LabelPipe } from '../shared/label.pipe';
 import { IAttributeModel, IObjectVersionPreviewModel, IWhoisObjectModel } from '../shared/whois-response-type.model';
 import { UserInfoService } from '../userinfo/user-info.service';
@@ -21,7 +21,7 @@ import { WhoisObjectVisualiser } from './whois-object-visualiser';
 })
 export class WhoisObjectViewerComponent implements OnChanges {
     private userInfoService = inject(UserInfoService);
-    private sessionInfoService = inject(SessionInfoService);
+    private sessionService = inject(SessionService);
     private properties = inject(PropertiesService);
     activatedRoute = inject(ActivatedRoute);
     whoisObjectVisualiser = inject(WhoisObjectVisualiser);
@@ -61,12 +61,10 @@ export class WhoisObjectViewerComponent implements OnChanges {
     private readonly HAS_VIEW_VERSIONS_TYPE = ['mntner', 'aut-num', 'route', 'route6', 'inetnum', 'inet6num', 'organisation'];
 
     constructor() {
-        // this.subscription = this.sessionInfoService.expiredSession$.subscribe(
-        //     (expired: boolean) => {
-        //         this.setButtonText(!expired);
-        //     },
-        //     () => this.showLoginButton(),
-        // );
+        this.subscription = this.sessionService.expiredSession$.subscribe({
+            next: () => this.setButtonText(false),
+            error: () => this.showLoginButton(),
+        });
     }
 
     ngOnInit() {

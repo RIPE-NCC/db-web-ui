@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { AppComponent } from '../../src/app/app.component';
 import { BannerComponent } from '../../src/app/banner/banner.component';
 import { PropertiesService } from '../../src/app/properties.service';
-import { SessionInfoService } from '../../src/app/sessioninfo/session-info.service';
+import { SessionService } from '../../src/app/sessioninfo/session.service';
 import { LabelPipe } from '../../src/app/shared/label.pipe';
 import { ReleaseNotificationService } from '../../src/app/shared/release-notification.service';
 
@@ -48,7 +48,7 @@ describe('AppComponent', () => {
                     },
                 },
                 {
-                    provide: SessionInfoService,
+                    provide: SessionService,
                     useValue: {
                         expiredSession$: of(false),
                         showUserLoggedIcon$: of(false),
