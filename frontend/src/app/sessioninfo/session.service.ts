@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SessionInfo } from './types';
 
@@ -7,13 +7,15 @@ import { SessionInfo } from './types';
     providedIn: 'root',
 })
 export class SessionService {
+    private http = inject(HttpClient);
+
     private readonly expiredSessionSubject = new Subject<void>();
 
     private expired = false;
 
     readonly expiredSession$ = this.expiredSessionSubject.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor() {}
 
     initialize() {
         this.http.get<SessionInfo>('api/session').subscribe((info) => {

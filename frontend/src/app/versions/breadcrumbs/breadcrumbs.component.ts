@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     templateUrl: './breadcrumbs.component.html',
     styleUrl: './breadcrumbs.component.scss',
 })
-export class BreadcrumbsComponent {
+export class BreadcrumbsComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
 
