@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ForgotMaintainerPasswordService } from '../../../src/app/fmp/forgot-maintainer-password.service';
@@ -10,7 +10,7 @@ describe('ForgotMaintainerPasswordService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [ForgotMaintainerPasswordService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [ForgotMaintainerPasswordService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         forgotMaintainerPasswordService = TestBed.inject(ForgotMaintainerPasswordService);

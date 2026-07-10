@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PropertiesService } from '../properties.service';
@@ -15,6 +15,7 @@ import { ITextObject } from './text-create.component';
     selector: 'text-modify',
     templateUrl: './text-modify.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton, WhoisObjectTextEditorComponent],
 })
 export class TextModifyComponent implements OnInit {

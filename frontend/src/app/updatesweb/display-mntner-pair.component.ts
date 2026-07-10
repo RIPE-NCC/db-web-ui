@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
@@ -11,6 +11,7 @@ import { RestService } from './rest.service';
     selector: 'display-mntner-pair',
     templateUrl: './display-mntner-pair.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton],
 })
 export class DisplayMntnerPairComponent implements OnInit, OnDestroy {

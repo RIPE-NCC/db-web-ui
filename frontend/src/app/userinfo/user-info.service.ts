@@ -67,7 +67,7 @@ export class UserInfoService {
         }
     }
 
-    pingUserInfo(): Observable<Object> {
+    public pingUserInfo(): Observable<Object> {
         return this.http.get('api/whois-internal/api/user/info');
     }
 

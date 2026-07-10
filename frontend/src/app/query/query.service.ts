@@ -95,7 +95,7 @@ export class QueryService {
         }
 
         if (qp.otherFlags) {
-            for (let flag of qp.otherFlags) {
+            for (const flag of qp.otherFlags) {
                 params = params.append('flags', flag);
             }
         }
@@ -239,7 +239,7 @@ export class QueryService {
     }
 
     public getTypeOfSearchedTerm(searchText: string): string[] {
-        let typesOfSearchedTerm: string[] = [];
+        const typesOfSearchedTerm: string[] = [];
         const searchTerm = searchText.trim();
         const emailRegexp = new RegExp('.+\\@.+\\..+');
         const nserverRegexp = new RegExp('^(([A-Za-z][\\w\\-]*)\\.){2,4}(\\w+)$');

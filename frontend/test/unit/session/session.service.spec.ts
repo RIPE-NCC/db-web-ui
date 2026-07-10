@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { EMPTY } from 'rxjs';
@@ -18,7 +18,7 @@ describe('SessionService', () => {
                 { provide: PropertiesService, useValue: { SESSION_TTL: 20, USER_LOGGED_INTERVAL: 20 } },
                 SessionService,
                 { provide: UserInfoService, useValue: userInfoService },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

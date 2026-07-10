@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertsService } from '../shared/alert/alerts.service';
 
 @Component({
     selector: 'mail-sent',
     templateUrl: './mail-sent.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class MailSentComponent implements OnInit, OnDestroy {

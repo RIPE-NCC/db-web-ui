@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
     selector: 'ie-banner',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
         The Internet Explorer (IE11) browser is not supported by this application. Some features may not display or function properly. Please upgrade to a
         <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.
     </p>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class IeBannerComponent {}

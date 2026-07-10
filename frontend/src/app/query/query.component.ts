@@ -1,5 +1,5 @@
 import { NgClass, ViewportScroller } from '@angular/common';
-import { Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatSuffix } from '@angular/material/form-field';
@@ -57,6 +57,7 @@ export type ShareLink = {
     selector: 'query',
     templateUrl: './query.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         BannerComponent,
         OrgDropDownComponent,

@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
 import { ITemplateTerm } from '../query-parameters.service';
 import { QueryService } from '../query.service';
 
 @Component({
     selector: 'lookup-template',
     template: `<pre>{{ response }}</pre>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class TemplateComponent implements OnChanges {

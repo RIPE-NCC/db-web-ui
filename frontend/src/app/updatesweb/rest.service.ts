@@ -169,7 +169,7 @@ export class RestService {
     }
 
     public createObject(source: string, objectType: string, attributes: any, overrides?: any, unformatted?: any) {
-        let params = this.setParams(overrides, unformatted);
+        const params = this.setParams(overrides, unformatted);
         return this.http.post(`api/whois/${source}/${objectType}`, attributes, { params }).pipe(
             map((result: any) => {
                 console.debug('createObject success:' + JSON.stringify(result));
@@ -187,7 +187,7 @@ export class RestService {
     }
 
     public modifyObject(source: string, objectType: string, objectName: any, attributes: any, overrides?: any, unformatted?: any) {
-        let params = this.setParams(overrides, unformatted);
+        const params = this.setParams(overrides, unformatted);
         const name = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.put(`api/whois/${source.toUpperCase()}/${objectType}/${name}`, attributes, { params }).pipe(
             map((result: any) => {
@@ -230,7 +230,7 @@ export class RestService {
 
     public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, dryRun: boolean = false) {
         const service = withReferences ? 'references' : 'whois';
-        let params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('dry-run', String(!!dryRun)).set('reason', reason);
+        const params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('dry-run', String(!!dryRun)).set('reason', reason);
         return this.http.delete(`api/${service}/${source.toUpperCase()}/${objectType}/${encodeURIComponent(name)}`, { params }).pipe(
             map((result: any) => {
                 console.debug('deleteObject success:' + JSON.stringify(result));

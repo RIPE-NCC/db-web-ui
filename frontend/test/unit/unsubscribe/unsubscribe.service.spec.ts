@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UnsubscribeService } from '../../../src/app/unsubscribe/unsubscribe.service';
@@ -10,7 +10,7 @@ describe('UnsubscribeService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [UnsubscribeService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [UnsubscribeService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         unsubscribeService = TestBed.inject(UnsubscribeService);

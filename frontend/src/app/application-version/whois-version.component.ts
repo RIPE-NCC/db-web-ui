@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IVersion } from '../shared/whois-response-type.model';
 
 @Component({
@@ -9,6 +9,7 @@ import { IVersion } from '../shared/whois-response-type.model';
         }
     </div>`,
     styles: ['span { color: grey; }'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class WhoisVersionComponent {

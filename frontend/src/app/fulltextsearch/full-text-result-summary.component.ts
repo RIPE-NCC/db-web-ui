@@ -1,11 +1,12 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IResultSummary } from './types.model';
 
 @Component({
     selector: 'full-text-result-summary',
     templateUrl: './full-text-result-summary.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DecimalPipe],
 })
 export class FullTextResultSummaryComponent implements OnChanges {

@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -45,7 +45,7 @@ bootstrapApplication(AppComponent, {
         provideRouter(appRoutes),
 
         // HTTP with interceptors
-        provideHttpClient(withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, AuthInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, AuthInterceptor])),
 
         // Animations
         provideAnimations(),

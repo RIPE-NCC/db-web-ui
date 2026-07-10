@@ -1,5 +1,5 @@
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -22,6 +22,7 @@ export const DOCUMENT_TYPE = {
     templateUrl: './examples-api-keys.component.html',
     styleUrl: './examples-api-keys.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatFormField, FormsModule, MatOption, MatButton, MatSelect, CdkCopyToClipboard],
 })
 export class ExamplesApiKeysComponent implements OnChanges {
@@ -29,37 +30,37 @@ export class ExamplesApiKeysComponent implements OnChanges {
     propertiesService = inject(PropertiesService);
 
     @Input()
-    selectedOrg: IUserInfoOrganisation;
+    selectedOrg!: IUserInfoOrganisation;
 
     keyTypes = Object.values(KeyType) as KeyType[];
     selectedKeyType: KeyType = KeyType.MAINTAINER;
-    docFormatOptions: string[];
+    docFormatOptions!: string[];
     readonly ipAnalyzerDocFormats = [DOCUMENT_TYPE.JSON, DOCUMENT_TYPE.PLAIN_TEXT];
     readonly myResourcesDocFormats = [DOCUMENT_TYPE.JSON, DOCUMENT_TYPE.XML];
     selectedDocType: string = 'JSON';
 
-    docTypeForView: string;
+    docTypeForView: string | undefined;
 
     // KeyType.MAINTAINER
-    readAnObject: string;
-    createAnObject: string;
-    updateAnObject: string;
-    deleteAnObject: string;
+    readAnObject!: string;
+    createAnObject!: string;
+    updateAnObject!: string;
+    deleteAnObject!: string;
 
     // KeyType.IP_ANALYSER
-    ipv6Analyser: string;
-    ipv4Analyser: string;
+    ipv6Analyser!: string;
+    ipv4Analyser!: string;
 
     // KeyType.MY_RESOURCES
-    allResourcesMyResources: string;
-    asnsMyResources: string;
-    ipv4MyResources: string;
-    ipv6MyResources: string;
-    ipv4NAllocationMyResources: string;
-    ipv4NAssignmentMyResources: string;
-    ipv4NLegacyMyResources: string;
-    ipv6NAllocationMyResources: string;
-    ipv6NAssignmentMyResources: string;
+    allResourcesMyResources!: string;
+    asnsMyResources!: string;
+    ipv4MyResources!: string;
+    ipv6MyResources!: string;
+    ipv4NAllocationMyResources!: string;
+    ipv4NAssignmentMyResources!: string;
+    ipv4NLegacyMyResources!: string;
+    ipv6NAllocationMyResources!: string;
+    ipv6NAssignmentMyResources!: string;
 
     ngOnChanges(): void {
         if (!isMemberOrg(this.selectedOrg as IUserInfoRegistration)) {
@@ -73,8 +74,10 @@ export class ExamplesApiKeysComponent implements OnChanges {
         if (!this.docFormatOptions.includes(this.selectedDocType)) {
             this.selectedDocType = this.docFormatOptions[0];
         }
-        const keyOfDocumentType = Object.keys(DOCUMENT_TYPE).find((k) => DOCUMENT_TYPE[k].name === this.selectedDocType);
-        this.docTypeForView = DOCUMENT_TYPE[keyOfDocumentType].type;
+
+        const documentType = Object.values(DOCUMENT_TYPE).find((value) => value.name === this.selectedDocType);
+
+        this.docTypeForView = documentType?.type;
 
         switch (this.selectedKeyType) {
             case KeyType.MAINTAINER: {

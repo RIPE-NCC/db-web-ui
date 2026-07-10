@@ -360,7 +360,7 @@ export class AttributeMetadataService {
             target = (attributes ?? []).filter((o) => {
                 return o.name === attrMetadata.invalid;
             });
-            for (let i in target) {
+            for (const i in target) {
                 target[i].$$invalid = this.isInvalid(objectType, attributes, target[i]);
                 if (target[i].$$invalid) {
                     return true;
@@ -374,7 +374,7 @@ export class AttributeMetadataService {
                     target = (attributes ?? []).filter((o) => {
                         return o.name === attrName;
                     });
-                    for (let i in target) {
+                    for (const i in target) {
                         target[i].$$invalid = this.isInvalid(objectType, attributes, target[i]);
                         if (target[i].$$invalid) {
                             return true;
@@ -515,7 +515,6 @@ export class AttributeMetadataService {
         // add some custom wizard-related attributes hostname
         metadata.domain.nserver = { minOccurs: 2 };
 
-        /* eslint-disable */
         metadata.prefix = {
             prefix: {
                 hidden: { invalid: ['mnt-by'] },
@@ -539,7 +538,6 @@ export class AttributeMetadataService {
             'last-modified': { minOccurs: 0, maxOccurs: 1 },
             source: { readOnly: true, minOccurs: 1, maxOccurs: 1, hidden: { invalid: ['mnt-by'] } },
         };
-        /* eslint-enable */
 
         // Here we assume that the basic rules are the same for these attributes
         const attrs = ['aut-num', 'inetnum', 'inet6num'];

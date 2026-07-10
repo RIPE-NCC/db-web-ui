@@ -458,7 +458,7 @@ export class ScreenLogicInterceptorService {
 
         if (method === 'Modify' && !this.organisationHelperService.containsAttribute(attributes, 'abuse-c')) {
             attributes = this.organisationHelperService.addAbuseC(objectType, attributes);
-            let abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'abuse-c');
+            const abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, 'abuse-c');
             // abuseC.$$meta.$$missing = true;
             warnings.push(`<p>There is currently no abuse contact set up for your organisation, which is required under
                 <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>

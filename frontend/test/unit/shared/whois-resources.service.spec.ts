@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { PropertiesService } from '../../../src/app/properties.service';
@@ -11,7 +11,13 @@ describe('WhoisResourcesService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [WhoisResourcesService, WhoisMetaService, PropertiesService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [
+                WhoisResourcesService,
+                WhoisMetaService,
+                PropertiesService,
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+            ],
         });
         whoisResourcesService = TestBed.inject(WhoisResourcesService);
         const propertiesService = TestBed.inject(PropertiesService);

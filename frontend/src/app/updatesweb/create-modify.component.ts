@@ -1,5 +1,5 @@
 import { SlicePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -56,6 +56,7 @@ export interface IMaintainers {
     selector: 'create-modify',
     templateUrl: './create-modify.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatButton,
         MaintainersEditorComponent,
@@ -428,7 +429,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
     }
 
     public displayAddAttributeDialog(attr: any) {
-        let originalAddableAttributes = this.whoisResourcesService.getAddableAttributes(this.attributes, this.objectType, this.attributes);
+        const originalAddableAttributes = this.whoisResourcesService.getAddableAttributes(this.attributes, this.objectType, this.attributes);
 
         const addableAttributes = this.screenLogicInterceptorService
             .beforeAddAttribute(this.operation, this.source, this.objectType, this.attributes, originalAddableAttributes)
@@ -472,7 +473,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
 
             // add pgp line by line starting from edited position in object
             const pgpByLines = pgp.split('\n');
-            for (let line of pgpByLines) {
+            for (const line of pgpByLines) {
                 const attrPrevious = this.attributes[foundIdx++];
                 this.addSelectedAttribute({ name: 'certif' }, attrPrevious);
                 this.attributes[foundIdx].value = line;
@@ -641,7 +642,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                 this.maintainers.sso = results;
                 // set the statuses which apply to the objectType (if any)
                 this.setStatusOptions();
-                let attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
+                const attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes);
                 // Post-process attributes before showing using screen-logic-interceptor
                 this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
             },
@@ -796,7 +797,7 @@ export class CreateModifyComponent implements OnInit, OnDestroy {
                     this.restService.fetchParentResource(this.objectType, inetnumAttr.value).subscribe({
                         next: (result: any) => {
                             if (result && result.objects && Array.isArray(result.objects.object)) {
-                                let parent = result.objects.object[0];
+                                const parent = result.objects.object[0];
                                 this.setStatusOptions(parent.attributes.attribute);
                             }
                         },

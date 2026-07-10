@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { IpAnalyserService } from '../../../src/app/ip-analyser/ip-analyser.service';
 
@@ -11,7 +11,7 @@ describe('IpAnalyserService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [IpAnalyserService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [IpAnalyserService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         service = TestBed.inject(IpAnalyserService);

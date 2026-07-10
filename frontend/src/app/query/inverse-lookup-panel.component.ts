@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { PropertiesService } from '../properties.service';
@@ -12,6 +12,7 @@ import { TypeOfSearchTermEnum } from './type-of-search-term.enum';
     selector: 'inverse-lookup-panel',
     templateUrl: './inverse-lookup-panel.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCheckbox, FormsModule, LabelPipe],
 })
 export class InverseLookupPanelComponent implements OnInit, OnChanges {
@@ -42,7 +43,7 @@ export class InverseLookupPanelComponent implements OnInit, OnChanges {
     }
 
     public isDisabled(attribute: InverseAttrsEnum) {
-        let attrVisibleForTypes: string[] = this.mapInverseLookupAttributesWithTypes.get(attribute);
+        const attrVisibleForTypes: string[] = this.mapInverseLookupAttributesWithTypes.get(attribute);
         if (this.typeOfSearchedTerm.length > 0) {
             // email, neserver, any from TypeOfSearchTermEnum
             return !this.typeOfSearchedTerm.some((type) => attrVisibleForTypes.includes(type));

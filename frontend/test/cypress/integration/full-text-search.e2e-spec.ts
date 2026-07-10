@@ -9,6 +9,86 @@ describe('The full text search', () => {
         fullTextSearchPage.visit();
     });
 
+    it('should put the query text in the URL after searching', () => {
+        fullTextSearchPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().expectNumberOfResults(7);
+        cy.url().should('include', 'query=193.0.0.0');
+    });
+
+    it('should persist advmode in the URL when it is not the default', () => {
+        fullTextSearchPage
+            .typeSearchTerm('193.0.0.0 ripe')
+            .clickOnSearchButton()
+            .clickOnAdvanceSearchOption()
+            .clickOnAdvancedTypeAnySelected()
+            .clickOnSearchButton();
+        cy.url().should('include', 'advmode=any');
+    });
+
+    it('should not put advmode in the URL when it is the default "all"', () => {
+        fullTextSearchPage
+            .typeSearchTerm('193.0.0.0 ripe')
+            .clickOnSearchButton()
+            .clickOnAdvanceSearchOption()
+            .clickOnAdvancedTypeAllSelected()
+            .clickOnSearchButton();
+        cy.url().should('not.include', 'advmode');
+    });
+
+    it('should persist selected object types in the URL', () => {
+        fullTextSearchPage
+            .typeSearchTerm('193.0.0.0 ripe')
+            .clickOnSearchButton()
+            .clickOnAdvanceSearchOption()
+            .selectObjectType('inetnum')
+            .clickOnSearchButton();
+        cy.url().should('include', 'objectTypes=inetnum');
+    });
+
+    it('should restore the search from the URL on reload (query only)', () => {
+        fullTextSearchPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().expectNumberOfResults(7);
+
+        cy.reload();
+
+        fullTextSearchPage.expectValueInSearchField('193.0.0.0').expectNumberOfResults(7);
+    });
+
+    it('should restore advanced mode and re-run the search on reload', () => {
+        fullTextSearchPage
+            .typeSearchTerm('193.0.0.0 ripe')
+            .clickOnSearchButton()
+            .clickOnAdvanceSearchOption()
+            .clickOnAdvancedTypeAnySelected()
+            .clickOnSearchButton()
+            .expectNumberOfResults(10);
+        cy.url().should('include', 'advmode=any');
+
+        cy.reload();
+
+        fullTextSearchPage.expectValueInSearchField('193.0.0.0 ripe').expectAdvancedSearchOpen(true).expectAdvancedTypeAnySelected().expectNumberOfResults(10);
+    });
+
+    it('should restore selected object types on reload', () => {
+        fullTextSearchPage
+            .typeSearchTerm('193.0.0.0 ripe')
+            .clickOnSearchButton()
+            .clickOnAdvanceSearchOption()
+            .selectObjectType('inetnum')
+            .clickOnSearchButton();
+        cy.url().should('include', 'objectTypes=inetnum');
+
+        cy.reload();
+
+        fullTextSearchPage.expectAdvancedSearchOpen(true).expectObjectTypeSelected('inetnum');
+    });
+
+    it('should replace the query param when a new search is run', () => {
+        fullTextSearchPage.typeSearchTerm('193.0.0.0').clickOnSearchButton();
+        cy.url().should('include', 'query=193.0.0.0');
+
+        fullTextSearchPage.typeSearchTerm('{selectall}{del}nemam').clickOnSearchButton();
+        cy.url().should('include', 'query=nemam').and('not.include', '193.0.0.0');
+    });
+
     it('should be able to search using the text box', () => {
         fullTextSearchPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().expectNumberOfResults(7).expectValueInSearchField('193.0.0.0');
     });

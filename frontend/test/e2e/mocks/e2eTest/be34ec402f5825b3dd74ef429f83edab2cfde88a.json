@@ -1,0 +1,767 @@
+{
+    "requestUrl": "/db-web-ui/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(%22193.0.0.0%22%20AND%20%22ripe%22)%20AND%20(object-type:inetnum)&start=0&wt=json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "result": {
+            "name": "response",
+            "numFound": 4,
+            "start": 0,
+            "docs": [
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "10777683"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 193.0.23.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 193.0.23.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "NL-RIPENCC-OPS-990305"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "NL"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-RIEN1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "MDIR-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "OPS4-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ALLOCATED PA"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Amsterdam, Netherlands"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-HM-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-routes",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-routes",
+                                    "value": "RIPE-NCC-DNS-MNT { 193.0.8.0/23 }"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2012-03-09T15:03:38Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2026-03-19T09:07:43Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "2084439"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "193.0.0.0 - 193.0.7.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "193.0.0.0 - 193.0.7.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "RIPE-NCC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "RIPE Network Coordination Centre"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Amsterdam, Netherlands"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "NL"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "org",
+                                    "value": "ORG-RIEN1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "MDIR-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "OPS4-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED PA"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "remarks",
+                                    "value": "Used for RIPE NCC infrastructure."
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "RIPE-NCC-MNT"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2003-03-17T12:15:57Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2026-03-19T09:08:35Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "3764421"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "213.182.167.0 - 213.182.167.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "213.182.167.0 - 213.182.167.255"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "KATRAN-NET"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Game Club Network"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Tihoretrsky, 7/6"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "193000 St.Petersburg Russia"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "RU"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "MNOC1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "MNOC1-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED PA"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "MNT-MF-NWGSM"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2005-06-15T16:02:40Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2022-11-29T09:18:07Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "doc": {
+                        "strs": [
+                            {
+                                "str": {
+                                    "name": "primary-key",
+                                    "value": "3967764"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "object-type",
+                                    "value": "inetnum"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "lookup-key",
+                                    "value": "82.153.228.40 - 82.153.228.47"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "inetnum",
+                                    "value": "82.153.228.40 - 82.153.228.47"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "netname",
+                                    "value": "ECL-O27SSNP8OLK0AM2F-193000"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "descr",
+                                    "value": "Spectrum Interactive"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "country",
+                                    "value": "GB"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "admin-c",
+                                    "value": "EIR3-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "tech-c",
+                                    "value": "EIR3-RIPE"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "status",
+                                    "value": "ASSIGNED PA"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "notify",
+                                    "value": "as-guardian@eclipse.net.uk"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "mnt-by",
+                                    "value": "ECLINET-NMC"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "created",
+                                    "value": "2005-10-06T12:30:03Z"
+                                }
+                            },
+                            {
+                                "str": {
+                                    "name": "last-modified",
+                                    "value": "2009-03-05T11:40:29Z"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "lsts": [
+            {
+                "lst": {
+                    "name": "responseHeader",
+                    "ints": [
+                        {
+                            "int": {
+                                "name": "status",
+                                "value": "0"
+                            }
+                        },
+                        {
+                            "int": {
+                                "name": "QTime",
+                                "value": "330"
+                            }
+                        }
+                    ],
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "params",
+                                "strs": [
+                                    {
+                                        "str": {
+                                            "name": "q",
+                                            "value": "(\"193.0.0.0\" AND \"ripe\") AND (object-type:inetnum)"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "rows",
+                                            "value": "10"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "start",
+                                            "value": "0"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl",
+                                            "value": "true"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.simple.pre",
+                                            "value": "<b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "hl.simple.post",
+                                            "value": "</b>"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "wt",
+                                            "value": "json"
+                                        }
+                                    },
+                                    {
+                                        "str": {
+                                            "name": "facet",
+                                            "value": "true"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "lst": {
+                    "name": "highlighting",
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "10777683",
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "value": "OPS4-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "org",
+                                            "str": {
+                                                "value": "ORG-RIEN1-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-routes",
+                                            "str": {
+                                                "value": "<b>RIPE</b>-NCC-MNT,<b>RIPE</b>-NCC-DNS-MNT { 193.0.8.0/23 }"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "value": "<b>193.0</b>.<b>0</b>.<b>0</b> - 193.0.23.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "value": "<b>RIPE</b>-NCC-HM-MNT,<b>RIPE</b>-NCC-MNT"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "value": "MDIR-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "value": "<b>inetnum</b>"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "2084439",
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "value": "OPS4-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "org",
+                                            "str": {
+                                                "value": "ORG-RIEN1-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "remarks",
+                                            "str": {
+                                                "value": "Used for <b>RIPE</b> NCC infrastructure."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "inetnum",
+                                            "str": {
+                                                "value": "<b>193.0</b>.<b>0</b>.<b>0</b> - 193.0.7.255"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "mnt-by",
+                                            "str": {
+                                                "value": "<b>RIPE</b>-NCC-MNT"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "value": "<b>RIPE</b> Network Coordination Centre"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "value": "MDIR-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "netname",
+                                            "str": {
+                                                "value": "<b>RIPE</b>-NCC"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "value": "<b>inetnum</b>"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "3764421",
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "descr",
+                                            "str": {
+                                                "value": "<b>193000</b> St.Petersburg Russia"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "value": "MNOC1-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "value": "MNOC1-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "value": "<b>inetnum</b>"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "lst": {
+                                "name": "3967764",
+                                "arrs": [
+                                    {
+                                        "arr": {
+                                            "name": "admin-c",
+                                            "str": {
+                                                "value": "EIR3-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "tech-c",
+                                            "str": {
+                                                "value": "EIR3-<b>RIPE</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "netname",
+                                            "str": {
+                                                "value": "ECL-O27SSNP8OLK0AM2F-<b>193000</b>"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "arr": {
+                                            "name": "object-type",
+                                            "str": {
+                                                "value": "<b>inetnum</b>"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "lst": {
+                    "name": "facet_counts",
+                    "lsts": [
+                        {
+                            "lst": {
+                                "name": "facet_fields",
+                                "lsts": [
+                                    {
+                                        "lst": {
+                                            "name": "object-type",
+                                            "ints": [
+                                                {
+                                                    "int": {
+                                                        "name": "inetnum",
+                                                        "value": "4"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "lst": {
+                    "name": "version",
+                    "strs": [
+                        {
+                            "str": {
+                                "name": "version",
+                                "value": "1.122.1"
+                            }
+                        },
+                        {
+                            "str": {
+                                "name": "timestamp",
+                                "value": "2026-05-14T14:56:08Z"
+                            }
+                        },
+                        {
+                            "str": {
+                                "name": "commit_id",
+                                "value": "22838be"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

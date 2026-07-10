@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingIndicatorComponent } from '../shared/loadingindicator/loading-indicator.component';
 import { EmailConfirmationService } from './email-confirmation.service';
@@ -7,6 +7,7 @@ import { EmailConfirmationService } from './email-confirmation.service';
     selector: 'email-confirmation',
     templateUrl: './email-confirm.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [LoadingIndicatorComponent],
 })
 export class EmailConfirmationComponent implements OnInit {

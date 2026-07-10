@@ -1,6 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DropdownOption } from './types';
 
 @Component({
@@ -8,6 +8,7 @@ import { DropdownOption } from './types';
     standalone: true,
     imports: [OverlayModule, PortalModule],
     templateUrl: './dropdown.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./dropdown.component.scss'],
 })
 export class DropdownComponent {

@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,7 +31,7 @@ describe('ConfirmMaintainerComponent', () => {
                 { provide: EmailLinkService, useValue: mockEmailLinkService },
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParams: {} } } },
                 { provide: Router, useValue: { navigate: () => {} } },
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });

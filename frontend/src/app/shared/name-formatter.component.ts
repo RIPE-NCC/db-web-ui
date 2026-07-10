@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { IpAddressService } from '../myresources/ip-address.service';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 
 @Component({
     selector: 'name-formatter',
     template: `{{ formatted }}`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class NameFormatterComponent implements OnInit, OnChanges {

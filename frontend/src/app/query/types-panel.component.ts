@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { PropertiesService } from '../properties.service';
@@ -10,6 +10,7 @@ import { IQueryParameters, QueryParametersService } from './query-parameters.ser
     selector: 'types-panel',
     templateUrl: './types-panel.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCheckbox, FormsModule, LabelPipe],
 })
 export class TypesPanelComponent implements OnChanges {
@@ -37,7 +38,7 @@ export class TypesPanelComponent implements OnChanges {
         if (QueryParametersService.inverseAsList(this.queryParameters).length > 0) {
             return false;
         }
-        let disabled = !this.availableTypes.includes(type);
+        const disabled = !this.availableTypes.includes(type);
         if (disabled) {
             this.uncheckDisabledCheckbox(type);
         }
@@ -45,7 +46,7 @@ export class TypesPanelComponent implements OnChanges {
     }
 
     private uncheckDisabledCheckbox(attribute: ObjectTypesEnum) {
-        let enumKey = Object.keys(ObjectTypesEnum)[Object.values(ObjectTypesEnum).indexOf(attribute)];
+        const enumKey = Object.keys(ObjectTypesEnum)[Object.values(ObjectTypesEnum).indexOf(attribute)];
         this.queryParameters.types[enumKey] = false;
     }
 }

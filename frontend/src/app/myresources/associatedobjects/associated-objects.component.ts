@@ -1,5 +1,5 @@
 import { NgStyle, SlicePipe } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../../properties.service';
@@ -17,6 +17,7 @@ import {
     selector: 'associated-objects',
     templateUrl: './associated-objects.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, TableScrollerDirective, NgStyle, RouterLink, NameFormatterComponent, SlicePipe],
 })
 export class AssociatedObjectsComponent implements OnChanges {
@@ -107,7 +108,7 @@ export class AssociatedObjectsComponent implements OnChanges {
         this.lastPage = pageNr;
 
         // for aut-num there is no associated domains, so no need to call service
-        if ((this.objectType === 'inetnum' || 'inet6num' || 'aut-num') && !(this.associatedType === 'domain' && this.objectType === 'aut-num')) {
+        if (['inetnum', 'inet6num', 'aut-num'].includes(this.objectType) && !(this.associatedType === 'domain' && this.objectType === 'aut-num')) {
             this.associatedObjectService.getAssociatedObjects(this.associatedType, this.objectName, this.objectType, pageNr, associatedPrefixFilter).subscribe({
                 next: (response: IAssociatedObjectApiResult) => {
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous

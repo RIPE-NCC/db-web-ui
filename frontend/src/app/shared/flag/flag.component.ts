@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 export interface IFlag {
@@ -11,6 +11,7 @@ export interface IFlag {
     selector: 'flag',
     templateUrl: './flag.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgbPopover],
 })
 export class FlagComponent implements OnInit {

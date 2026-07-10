@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ describe('AssociatedObjectsComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [FormsModule, RouterTestingModule, AssociatedObjectsComponent],
-            providers: [AssociatedObjectsService, PropertiesService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [AssociatedObjectsService, PropertiesService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         fixture = TestBed.createComponent(AssociatedObjectsComponent);

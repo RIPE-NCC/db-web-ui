@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-declare var loadMatomo: (matomoId: string) => any;
+declare let loadMatomo: (matomoId: string) => any;
 
 export interface IProperties {
     ENV: string;

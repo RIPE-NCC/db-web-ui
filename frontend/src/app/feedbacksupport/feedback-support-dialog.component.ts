@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatLine } from '@angular/material/core';
 import { MatDialogActions, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatActionList, MatListItem } from '@angular/material/list';
@@ -8,6 +8,7 @@ import { PropertiesService } from '../properties.service';
     selector: 'feedback-support-dialog',
     templateUrl: './feedback-support-dialog.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogTitle, MatDialogActions, MatActionList, MatListItem, MatLine],
 })
 export class FeedbackSupportDialogComponent implements OnInit {

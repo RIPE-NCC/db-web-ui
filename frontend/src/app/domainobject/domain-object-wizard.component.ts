@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
@@ -32,6 +32,7 @@ interface IDomainObject {
 @Component({
     selector: 'domain-object-wizard',
     templateUrl: './domain-object-wizard.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MaintainersEditorComponent, WhoisObjectEditorComponent],
 })
 export class DomainObjectWizardComponent implements OnInit, OnDestroy {

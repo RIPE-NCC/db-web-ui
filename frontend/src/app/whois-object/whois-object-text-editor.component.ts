@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { forkJoin } from 'rxjs';
@@ -16,6 +16,7 @@ import { ScreenLogicInterceptorService } from '../updatesweb/screen-logic-interc
     selector: 'whois-object-text-editor',
     templateUrl: './whois-object-text-editor.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, SubmittingAgreementComponent, MatButton],
 })
 export class WhoisObjectTextEditorComponent implements OnInit {

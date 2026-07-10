@@ -1,7 +1,8 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { FullTextResponseService } from '../../../src/app/fulltextsearch/full-text-response.service';
@@ -25,7 +26,7 @@ describe('FullTextSearchComponent', () => {
                 FullTextResponseService,
                 WhoisMetaService,
                 PropertiesService,
-                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         }).compileComponents();
@@ -34,6 +35,104 @@ describe('FullTextSearchComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(FullTextSearchComponent);
         component = fixture.componentInstance;
+    });
+
+    describe('persisting search options to query params', () => {
+        let router: Router;
+
+        beforeEach(() => {
+            fixture.detectChanges(); // ngOnInit; empty query → searchClicked early-returns
+            router = TestBed.inject(Router);
+            spyOn(router, 'navigate');
+            fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
+        });
+
+        it('writes selected object types on an advanced search, with merge + replaceUrl', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.selectedObjectTypes = ['inetnum', 'person'];
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ objectTypes: ['inetnum', 'person'] }),
+                    queryParamsHandling: 'merge',
+                    replaceUrl: true,
+                }),
+            );
+        });
+
+        it('writes advmode when it is not the default', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.advmode = 'any';
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ advmode: 'any' }),
+                }),
+            );
+        });
+
+        it('omits advmode (null) when it is the default "all"', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.advmode = 'all';
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ advmode: null }),
+                }),
+            );
+        });
+
+        it('writes selected attrs on an advanced search', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.selectedObjectTypes = ['inetnum'];
+            component.selectedAttrs = ['country'];
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ attrs: ['country'] }),
+                }),
+            );
+        });
+
+        it('writes the query text on an advanced search', () => {
+            component.advancedSearch = true;
+            component.ftquery = 'etch-mnt';
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ query: 'etch-mnt' }),
+                }),
+            );
+        });
+
+        it('clears objectTypes and attrs on a basic-mode search but keeps the query', () => {
+            component.advancedSearch = false;
+            component.selectedObjectTypes = ['inetnum'];
+            component.selectedAttrs = ['country'];
+            component.ftquery = 'etch-mnt';
+            component.searchClicked();
+
+            expect(router.navigate).toHaveBeenCalledWith(
+                [],
+                jasmine.objectContaining({
+                    queryParams: jasmine.objectContaining({ objectTypes: null, attrs: null, query: 'etch-mnt' }),
+                }),
+            );
+        });
     });
 
     it('should create', () => {

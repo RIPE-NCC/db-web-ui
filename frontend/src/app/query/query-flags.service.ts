@@ -67,9 +67,9 @@ export class QueryFlagsService {
     }
 
     private findFlags(flags: string[]): IQueryFlag[] {
-        for (let flag of flags) {
+        for (const flag of flags) {
             const queryFlag = this.findFlag(flag);
-            if (!!queryFlag) {
+            if (queryFlag) {
                 this.detectedQueryFlags.push(queryFlag);
             } else if (flag.length > 2 && flag.indexOf('--') !== 0) {
                 // grouped flags "-i" = 2

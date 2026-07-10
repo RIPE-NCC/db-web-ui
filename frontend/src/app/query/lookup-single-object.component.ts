@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WhoisVersionComponent } from '../application-version/whois-version.component';
@@ -13,6 +13,7 @@ import { LookupService } from './lookup.service';
     selector: 'lookup-single',
     templateUrl: './lookup-single-object.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [LookupComponent, WhoisVersionComponent],
 })
 export class LookupSingleObjectComponent implements OnInit, OnDestroy {

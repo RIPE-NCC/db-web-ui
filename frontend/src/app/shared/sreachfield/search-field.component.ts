@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusDirective } from '../autofocus.directive';
 
@@ -7,6 +7,7 @@ import { AutoFocusDirective } from '../autofocus.directive';
     templateUrl: './search-field.component.html',
     styleUrl: 'search-field.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, AutoFocusDirective],
 })
 export class SearchFieldComponent {

@@ -13,7 +13,7 @@
                     {{ attribute.value }}
                 </p>
                 <p [hidden]="!attribute.link">
-                    <a [href]="attribute.link?.href">{{ attribute.value }}</a>
+                    <a [href]="$safeNavigationMigration(attribute.link?.href)">{{ attribute.value }}</a>
                 </p>
                 <div [hidden]="!attribute.$$error">
                     <span>{{ attribute.$$error }}</span>

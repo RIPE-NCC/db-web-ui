@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, of, throwError } from 'rxjs';
@@ -23,6 +23,7 @@ interface IObjectFromParameters {
     selector: 'force-delete',
     templateUrl: './force-delete.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton],
 })
 export class ForceDeleteComponent implements OnInit {

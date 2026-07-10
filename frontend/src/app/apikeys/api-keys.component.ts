@@ -1,7 +1,5 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IUserInfoOrganisation } from '../dropdown/org-data-type.model';
@@ -15,6 +13,7 @@ import { KeyType } from './utils';
     templateUrl: './api-keys.component.html',
     styleUrl: './api-keys.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, CreateNewApiKeyComponent, ExamplesApiKeysComponent],
 })
 export class ApiKeysComponent implements OnInit, OnDestroy {
@@ -25,16 +24,13 @@ export class ApiKeysComponent implements OnInit, OnDestroy {
     subscription: Subscription;
 
     environment: string = this.properties.getTitleEnvironment();
-    createPanelOpenState: boolean;
-    examplePanelOpenState: boolean;
+    createPanelOpenState: boolean = false;
+    examplePanelOpenState: boolean = false;
 
     initialCreateKeyType?: KeyType;
-    selectedOrg: IUserInfoOrganisation;
+    selectedOrg: IUserInfoOrganisation | undefined;
 
     linkToManageApiKeysInAccess: string;
-
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
 
     constructor() {
         const propertiesService = inject(PropertiesService);
@@ -49,7 +45,9 @@ export class ApiKeysComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.initialCreateKeyType = KeyType[this.activatedRoute.snapshot.paramMap.get('apiKeyType')?.toUpperCase()];
+        const apiKeyType = this.activatedRoute.snapshot.paramMap.get('apiKeyType');
+
+        this.initialCreateKeyType = apiKeyType ? KeyType[apiKeyType.toUpperCase() as keyof typeof KeyType] : undefined;
         this.createPanelOpenState = this.initialCreateKeyType !== undefined;
         this.selectedOrg = this.orgDropDownSharedService.getSelectedOrg();
     }

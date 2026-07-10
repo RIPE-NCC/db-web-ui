@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { AlertsService } from '../../shared/alert/alerts.service';
     selector: 'force-delete-select',
     templateUrl: './force-delete-select.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatButton],
 })
 export class ForceDeleteSelectComponent implements OnInit {

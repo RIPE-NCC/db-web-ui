@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { PropertiesService } from '../../properties.service';
 
@@ -7,6 +7,7 @@ import { PropertiesService } from '../../properties.service';
     templateUrl: './manage-resources.component.html',
     styleUrl: './manage-resources.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelTitle, MatExpansionPanelHeader],
 })
 export class ManageResourcesComponent {

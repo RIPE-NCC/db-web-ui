@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,6 +29,7 @@ export interface ITextObject {
     selector: 'text-create',
     templateUrl: './text-create.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton, FormsModule, SubmittingAgreementComponent],
 })
 export class TextCreateComponent implements OnInit {

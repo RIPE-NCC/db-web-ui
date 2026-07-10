@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PropertiesService } from '../properties.service';
 import { LabelPipe } from '../shared/label.pipe';
@@ -10,6 +10,7 @@ import { WhoisObjectViewerComponent } from '../whois-object/whois-object-viewer.
     selector: 'lookup',
     templateUrl: './lookup.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RouterLink, WhoisObjectViewerComponent, LabelPipe],
 })
 export class LookupComponent implements OnChanges {

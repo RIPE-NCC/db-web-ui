@@ -56,7 +56,7 @@
                         bindLabel="key"
                         bindValue="key"
                         placeholder="{{ getAttributeShortDescription(attribute.name) }}"
-                        [disabled]="attribute.$$meta?.$$disable"
+                        [disabled]="$safeNavigationMigration(attribute.$$meta?.$$disable)"
                         [(ngModel)]="attribute.value"
                     >
                         <ng-template ng-option-tmp let-item="item">

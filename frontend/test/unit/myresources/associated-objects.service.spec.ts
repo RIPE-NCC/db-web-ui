@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AssociatedObjectsService } from '../../../src/app/myresources/associatedobjects/associated-objects.service';
@@ -10,7 +10,7 @@ describe('AssociatedObjectsService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [AssociatedObjectsService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+            providers: [AssociatedObjectsService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
         });
         httpMock = TestBed.inject(HttpTestingController);
         associatedObjectsService = TestBed.inject(AssociatedObjectsService);

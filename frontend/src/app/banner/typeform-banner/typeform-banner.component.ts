@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { TypeformDialogComponent } from '../../query/typeform-dialog/typeform-dialog.component';
@@ -9,6 +9,7 @@ import { UserInfoService } from '../../userinfo/user-info.service';
     templateUrl: './typeform-banner.component.html',
     styleUrl: './typeform-banner.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButton],
 })
 export class TypeformBannerComponent implements OnInit {

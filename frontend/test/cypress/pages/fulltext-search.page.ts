@@ -9,6 +9,36 @@ export class FullTextSearchPage {
         return this;
     }
 
+    expectAdvancedTypeAllSelected() {
+        cy.get('#fullTextAdvancedTypeAll').should('be.checked');
+        return this;
+    }
+
+    expectAdvancedTypeAnySelected() {
+        cy.get('#fullTextAdvancedTypeAny').should('be.checked');
+        return this;
+    }
+
+    expectAdvancedTypeExactSelected() {
+        cy.get('#fullTextAdvancedTypeExact').should('be.checked');
+        return this;
+    }
+
+    expectAdvancedSearchOpen(open: boolean) {
+        cy.get('#selectedObjectTypes').should(open ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectObjectTypeSelected(type: string) {
+        cy.get('#selectedObjectTypes option:selected').should('contain.text', type);
+        return this;
+    }
+
+    selectObjectType(type: string) {
+        cy.get('#selectedObjectTypes').select(type, { force: true });
+        return this;
+    }
+
     clickOnSearchButton() {
         cy.get('search-field button .fa-magnifying-glass').click({ force: true });
         return this;

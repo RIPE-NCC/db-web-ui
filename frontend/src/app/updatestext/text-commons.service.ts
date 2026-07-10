@@ -99,7 +99,7 @@ export class TextCommonsService {
     }
 
     public authenticate(method: string, objectSource: string, objectType: string, objectName: string, ssoMaintainers: any, attributes: any, override: string) {
-        let needsAuth = false;
+        const needsAuth = false;
         if (override === undefined) {
             // show SSO popup if needed
             const objectMntners = this._getObjectMntners(attributes);

@@ -34,8 +34,8 @@ export class WhoisLineDiffDirective implements OnInit, OnChanges {
     }
 
     private getLineDiff(left: string, right: string) {
-        var chars = this.dmp.diff_linesToChars_(left, right);
-        var diffs: DiffMatchPatch.Diff[] = this.dmp.diff_main(chars.chars1, chars.chars2, false);
+        const chars = this.dmp.diff_linesToChars_(left, right);
+        const diffs: DiffMatchPatch.Diff[] = this.dmp.diff_main(chars.chars1, chars.chars2, false);
         this.dmp.diff_charsToLines_(diffs, chars.lineArray);
         return diffs;
     }
@@ -43,21 +43,21 @@ export class WhoisLineDiffDirective implements OnInit, OnChanges {
     private createHtml(diffs: Array<Diff>): string {
         let html: string;
         html = '<div>';
-        for (let diff of diffs) {
+        for (const diff of diffs) {
             if (diff[0] === DiffMatchPatch.DIFF_EQUAL) {
                 html += `<span class="equal">${diff[1]}</span>`;
             }
             if (diff[0] === DiffMatchPatch.DIFF_DELETE) {
                 const rowsDiff = diff[1].split(/\r\n|\r|\n/);
                 rowsDiff.pop();
-                for (let row of rowsDiff) {
+                for (const row of rowsDiff) {
                     html += `<div class=\"del\"><del> - ${row} </del></div>\n`;
                 }
             }
             if (diff[0] === DiffMatchPatch.DIFF_INSERT) {
                 const rowsDiff = diff[1].split(/\r\n|\r|\n/);
                 rowsDiff.pop();
-                for (let row of rowsDiff) {
+                for (const row of rowsDiff) {
                     html += `<div class=\"ins\"><ins> + ${row} </ins></div>\n`;
                 }
             }

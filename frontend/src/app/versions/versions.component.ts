@@ -1,5 +1,5 @@
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -21,6 +21,7 @@ import { VersionsLookupService } from './versions-lookup.service';
     templateUrl: './versions.component.html',
     styleUrl: './versions.component.scss',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatSelect, MatOption, FormsModule, NgClass, MatButton, WhoisVersionComponent, DatePipe, MatTooltip, BreadcrumbsComponent],
 })
 export class VersionsComponent implements OnInit {

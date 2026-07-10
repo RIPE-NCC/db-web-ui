@@ -1,7 +1,7 @@
 {
     "compileOnSave": true,
+
     "compilerOptions": {
-        "baseUrl": "./",
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "esModuleInterop": true,
@@ -9,10 +9,15 @@
         "experimentalDecorators": true,
         "module": "esnext",
         "moduleResolution": "bundler",
+        "paths": {
+            "src/*": ["./src/*"]
+        },
         "importHelpers": true,
         "target": "ES2022",
         "typeRoots": ["node_modules/@types"],
-        "useDefineForClassFields": false
+        // TODO remove this ASAP, from here to bottom of compilerOptions
+        "strict": false,
+        "noImplicitAny": false
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,

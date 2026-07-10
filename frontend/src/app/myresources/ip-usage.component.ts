@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { IpUsageService } from './ip-usage.service';
 import { IUsage } from './resource-type.model';
 
@@ -7,6 +7,7 @@ import { IUsage } from './resource-type.model';
     selector: 'ip-usage',
     templateUrl: './ip-usage.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DecimalPipe],
 })
 export class IpUsageComponent implements OnChanges {

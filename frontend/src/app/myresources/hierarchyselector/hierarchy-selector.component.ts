@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap';
 import { NameFormatterComponent } from '../../shared/name-formatter.component';
@@ -10,6 +10,7 @@ import { HierarchySelectorService } from './hierarchy-selector.service';
     selector: 'hierarchy-selector',
     templateUrl: './hierarchy-selector.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NameFormatterComponent],
 })
 export class HierarchySelectorComponent implements OnChanges {
