@@ -34,7 +34,6 @@ public class Application implements AsyncConfigurer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private final Environment environment;
-//    private final SsoTokenFilter ssoTokenFilter;
     private final CustomCacheFilter cacheFilter;
     private final RemoteAddressFilter remoteAddressFilter;
 
@@ -92,11 +91,6 @@ public class Application implements AsyncConfigurer {
 
         logProperties();
     }
-
-//    @Bean
-//    public FilterRegistrationBean ssoFilter() {
-//        return getFilterRegistrationBeanFor(ssoTokenFilter);
-//    }
 
     @Bean
     public FilterRegistrationBean cacheFilter() {

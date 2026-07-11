@@ -123,13 +123,6 @@ public class SecurityConfig {
                     oauthToken.getAuthorizedClientRegistrationId(),
                     oauthToken.getName());
 
-            String accessToken = client.getAccessToken().getTokenValue();
-
-            // Call your API
-
-            System.out.println("Access token: " + accessToken);
-            System.out.println("RefreshToken: " + client.getRefreshToken().getTokenValue());
-
             delegate.onAuthenticationSuccess(
                 request,
                 response,

@@ -8,7 +8,6 @@ public class UserInfoResponse {
     public List<Organisation> organisations;
     public List<Member> members;
 
-    //TODO check this user if is still correct
     public static class User {
         public String username;
         public String uuid;

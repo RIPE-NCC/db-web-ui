@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +21,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-//import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/dns")
