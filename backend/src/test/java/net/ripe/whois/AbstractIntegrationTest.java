@@ -94,10 +94,6 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("lir.tickets.url", "https://lirportal.prepdev.ripe.net/tickets/");
         System.setProperty("lir.training.url", "https://lirportal.prepdev.ripe.net/training/");
         System.setProperty("lir.api.access.keys.url", "https://lirportal.prepdev.ripe.net/api/");
-        System.setProperty("request.resources.url", "https://my.prepdev.ripe.net/#/request");
-        System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
-        System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
-        System.setProperty("rpki.dashboard.url", "https://dashboard.rpki.prepdev.ripe.net/");
         System.setProperty("spring.profiles.active", "test");
         System.setProperty("git.commit.id.abbrev", "0");
         System.setProperty("shutdown.pause.sec", "0");

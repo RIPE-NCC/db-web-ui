@@ -3,7 +3,6 @@ package net.ripe.whois.web.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
-import net.ripe.whois.config.LeftMenuConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,12 +85,10 @@ public class AngularConstantsController {
 
     private AppConstants appConstants;
 
-    private final LeftMenuConfiguration leftMenuConfiguration;
     private BuildProperties buildProperties;
 
     @Autowired
-    public AngularConstantsController(final LeftMenuConfiguration leftMenuConfiguration, BuildProperties buildProperties) {
-        this.leftMenuConfiguration = leftMenuConfiguration;
+    public AngularConstantsController(BuildProperties buildProperties) {
         this.buildProperties = buildProperties;
     }
 
@@ -121,11 +118,6 @@ public class AngularConstantsController {
         constants.setNewestPortalUrl(newestPortalUrl);
         constants.setBanner(frontendBanner);
         constants.setMatomoId(frontendMatomoId);
-        constants.setRequestResourcesUrl(leftMenuConfiguration.getRequestResourcesUrl());
-        constants.setRequestUpdateUrl(leftMenuConfiguration.getRequestUpdateUrl());
-        constants.setOpenAcquisitionUrl(leftMenuConfiguration.getOpenAcquisitionUrl());
-        constants.setRequestTransferUrl(leftMenuConfiguration.getRequestTransferUrl());
-        constants.setRpkiDashboardUrl(leftMenuConfiguration.getRpkiDashboardUrl());
         constants.setRestSearchUrl(restSearchUrl);
         constants.setQueryPageLinkToOtherDb(queryPageLinkToOtherDb);
         constants.setDbWebUiBuildTime(buildProperties.getTime().toString());
@@ -167,16 +159,6 @@ public class AngularConstantsController {
         private String banner;
         @JsonProperty("MATOMO_ID")
         private String frontendMatomoId;
-        @JsonProperty("REQUEST_RESOURCES_URL")
-        private String requestResourcesUrl;
-        @JsonProperty("REQUEST_UPDATE_URL")
-        private String requestUpdateUrl;
-        @JsonProperty("OPEN_ACQUISITION_URL")
-        private String openAcquisitionUrl;
-        @JsonProperty("REQUEST_TRANSFER_URL")
-        private String requestTransferUrl;
-        @JsonProperty("RPKI_DASHBOARD_URL")
-        private String rpkiDashboardUrl;
         @JsonProperty("REST_SEARCH_URL")
         private String restSearchUrl;
         @JsonProperty("QUERY_PAGE_LINK_TO_OTHER_DB")
@@ -250,26 +232,6 @@ public class AngularConstantsController {
 
         public void setMatomoId(String matomoId) {
             this.frontendMatomoId = matomoId;
-        }
-
-        public void setRequestResourcesUrl(String requestResourcesUrl) {
-            this.requestResourcesUrl = requestResourcesUrl;
-        }
-
-        public void setRequestUpdateUrl(String requestUpdateUrl) {
-            this.requestUpdateUrl = requestUpdateUrl;
-        }
-
-        public void setOpenAcquisitionUrl(String openAcquisitionUrl) {
-            this.openAcquisitionUrl = openAcquisitionUrl;
-        }
-
-        public void setRequestTransferUrl(String requestTransferUrl) {
-            this.requestTransferUrl = requestTransferUrl;
-        }
-
-        public void setRpkiDashboardUrl(String rpkiDashboardUrl) {
-            this.rpkiDashboardUrl = rpkiDashboardUrl;
         }
 
         public void setRestSearchUrl(String restSearchUrl) {
