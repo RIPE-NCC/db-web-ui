@@ -5,16 +5,16 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
-import { AppComponent } from '../../src/app/app.component';
-import { BannerComponent } from '../../src/app/banner/banner.component';
-import { PropertiesService } from '../../src/app/properties.service';
-import { SessionService } from '../../src/app/sessioninfo/session.service';
-import { LabelPipe } from '../../src/app/shared/label.pipe';
-import { ReleaseNotificationService } from '../../src/app/shared/release-notification.service';
+import { MainContainerComponent } from 'src/app/main-container/main-container.component';
+import { BannerComponent } from '../../../src/app/banner/banner.component';
+import { PropertiesService } from '../../../src/app/properties.service';
+import { SessionService } from '../../../src/app/sessioninfo/session.service';
+import { LabelPipe } from '../../../src/app/shared/label.pipe';
+import { ReleaseNotificationService } from '../../../src/app/shared/release-notification.service';
 
-describe('AppComponent', () => {
-    let component: AppComponent;
-    let fixture: ComponentFixture<AppComponent>;
+describe('MainContainerComponent', () => {
+    let component: MainContainerComponent;
+    let fixture: ComponentFixture<MainContainerComponent>;
     let routerMock: any;
     let releaseNotificationService: ReleaseNotificationService;
 
@@ -23,13 +23,11 @@ describe('AppComponent', () => {
         releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [AppComponent, CommonModule, RouterModule, BannerComponent, LabelPipe],
+            imports: [CommonModule, RouterModule, BannerComponent, LabelPipe],
             providers: [
                 {
                     provide: PropertiesService,
                     useValue: {
-                        LOGIN_URL: 'https://access.prepdev.ripe.net/',
-                        LOGOUT_URL: 'https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query',
                         RIPE_APP_WEBCOMPONENTS_ENV: 'pre',
                         BREAKPOINTS_MOBILE_VIEW: 1025,
                         isTestEnv: () => false,
@@ -51,9 +49,7 @@ describe('AppComponent', () => {
                     provide: SessionService,
                     useValue: {
                         expiredSession$: of(false),
-                        showUserLoggedIcon$: of(false),
-                        authenticationFailure: jasmine.createSpy('authenticationFailure'),
-                        startCheckingSession: jasmine.createSpy('startCheckingSession'),
+                        initialize: () => of(),
                     },
                 },
                 {
@@ -67,7 +63,7 @@ describe('AppComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(AppComponent);
+        fixture = TestBed.createComponent(MainContainerComponent);
         component = fixture.componentInstance;
     });
 

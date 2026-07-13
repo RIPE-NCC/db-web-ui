@@ -17,7 +17,7 @@ describe('RequireLoginComponent', () => {
         TestBed.configureTestingModule({
             imports: [RequireLoginComponent],
             providers: [
-                { provide: PropertiesService, useValue: { LOGIN_URL: 'https://access.prepdev.ripe.net/' } },
+                PropertiesService,
                 { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: queryParamMock } } },
                 provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
@@ -38,14 +38,14 @@ describe('RequireLoginComponent', () => {
             mockLocation.absUrl.and.returnValue('http://server/fmp/requireLogin');
             fixture.detectChanges();
             const expectedUrl = encodeURIComponent(window.location.origin + '/db-web-ui/fmp/');
-            expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
+            expect(component.loginUrl).toBe(`/db-web-ui/oauth2/authorization/keycloak?next=${expectedUrl}`);
         });
 
         it('should not extract return url for forgot maintainer page', () => {
             spyOn(queryParamMock, 'has').and.returnValue(false);
             fixture.detectChanges();
             const expectedUrl = encodeURIComponent(window.location.origin + '/db-web-ui/fmp/');
-            expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
+            expect(component.loginUrl).toBe(`/db-web-ui/oauth2/authorization/keycloak?next=${expectedUrl}`);
         });
 
         it('should extract return url for forgot maintainer page', () => {
@@ -60,7 +60,7 @@ describe('RequireLoginComponent', () => {
             });
             fixture.detectChanges();
             const expectedUrl = encodeURIComponent(window.location.origin + '/db-web-ui/fmp/change-auth?mntnerKey=mnt-key&voluntary=true');
-            expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
+            expect(component.loginUrl).toBe(`/db-web-ui/oauth2/authorization/keycloak?next=${expectedUrl}`);
         });
 
         it('should extract return url for forgot maintainer page with voluntary undefined', () => {
@@ -76,7 +76,7 @@ describe('RequireLoginComponent', () => {
 
             fixture.detectChanges();
             const expectedUrl = encodeURIComponent(window.location.origin + '/db-web-ui/fmp/change-auth?mntnerKey=mnt-key&voluntary=false');
-            expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
+            expect(component.loginUrl).toBe(`/db-web-ui/oauth2/authorization/keycloak?next=${expectedUrl}`);
         });
 
         it('should extract return url for forgot maintainer page with voluntary false', () => {
@@ -91,7 +91,7 @@ describe('RequireLoginComponent', () => {
             });
             fixture.detectChanges();
             const expectedUrl = encodeURIComponent(window.location.origin + '/db-web-ui/fmp/change-auth?mntnerKey=mnt-key&voluntary=false');
-            expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
+            expect(component.loginUrl).toBe(`/db-web-ui/oauth2/authorization/keycloak?next=${expectedUrl}`);
         });
     });
 });

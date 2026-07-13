@@ -67,10 +67,6 @@ export class UserInfoService {
         }
     }
 
-    public pingUserInfo(): Observable<Object> {
-        return this.http.get('api/whois-internal/api/user/info');
-    }
-
     getSelectedOrganisation(): Observable<IUserInfoOrganisation> {
         const storedSelectionId = this.getSelectedOrgFromCookie();
         return this.getUserOrgsAndRoles().pipe(

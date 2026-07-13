@@ -50,17 +50,6 @@ export class OrgDropDownComponent implements OnInit {
                 },
             });
         }
-        // this.userInfoService.getUserOrgsAndRoles().subscribe({
-        //     next: (userInfo: UserOrgsAndRegistrations): void => {
-        //         if (!userInfo) {
-        //             return;
-        //         }
-        //         this.initOrgsAndMemebers(userInfo);
-        //     },
-        //     error: (err: Error): void => {
-        //         console.warn('err', err);
-        //     },
-        // });
     }
 
     public organisationSelected(event: any): void {

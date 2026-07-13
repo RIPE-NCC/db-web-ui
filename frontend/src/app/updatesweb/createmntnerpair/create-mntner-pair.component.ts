@@ -81,8 +81,7 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
         this.showMntAttrsHelp = this.mntnerAttributes.map((attr: IAttributeModel) => ({ [attr.name]: true }));
 
         const user = this.userInfoService.user();
-
-        if (this.userInfoService.isLoggedIn) {
+        if (this.userInfoService.isLoggedIn()) {
             this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'auth', 'SSO ' + user.email);
             this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, 'upd-to', user.email);
         } else {
@@ -91,8 +90,6 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     }
 
     public submit() {
-        console.log('ERROR', this.objectTypeAttributes);
-
         this.populateMissingAttributes();
 
         const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.mntnerAttributes, 'mntner');

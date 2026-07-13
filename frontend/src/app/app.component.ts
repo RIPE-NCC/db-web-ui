@@ -73,30 +73,23 @@ export class AppComponent implements OnInit, OnDestroy {
         });
         effect(() => {
             this.onActiveMenuChange();
-            // this.isLoggedInUser = this.userInfoService.isLoggedIn();
-            // const user = this.userInfoService.user();
-            //
-            // if (this.isLoggedInUser) {
-            //     this.userOidc = user;
-            //     this.usernameOidc = user.name;
-            // }
         });
     }
 
     ngOnInit(): void {
         this.isComponentLoaded = false;
-        this.userInfoService.getLoggedInOidc().subscribe(
-            (response: UserOidc) => {
+        this.userInfoService.getLoggedInOidc().subscribe({
+            next: (response: UserOidc) => {
                 this.userOidc = response;
                 this.usernameOidc = this.userOidc.name;
                 this.isLoggedInUser = true;
                 this.isComponentLoaded = true;
                 this.profilePhotoId = this.userOidc.photo;
             },
-            (_err) => {
+            error: (_err) => {
                 this.isComponentLoaded = true;
             },
-        );
+        });
         this.sessionService.initialize();
     }
 
@@ -109,15 +102,6 @@ export class AppComponent implements OnInit, OnDestroy {
         } else {
             this.icon = 'assets/images/Resources_2025-05.svg';
             this.userInfoService.isLoggedIn() ? (this.sidebarMenu = getResourceMenu(true)) : (this.sidebarMenu = getResourceMenu(false));
-            //
-            // this.userInfoService.getUserOrgsAndRoles().subscribe({
-            //     next: (response) => {
-            //
-            //     },
-            //     error: () => {
-            //         this.sidebarMenu = getResourceMenu(false);
-            //     },
-            // });
         }
         const env = this.properties.ENV?.toLowerCase();
         this.labelEnv = envDisplayMap[env] ?? `${this.properties.ENV} Database`;

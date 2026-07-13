@@ -38,14 +38,6 @@ describe('UserInfoService', () => {
         req.flush(mockUserInfo);
     });
 
-    it('should check session status', () => {
-        userInfoService.pingUserInfo().subscribe((respons: UserOrgsAndRegistrations) => {
-            expect(respons).toBe(mockUserInfo);
-        });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
-        expect(req.request.method).toBe('GET');
-    });
-
     it('should not provide user-info on failure', () => {
         userInfoService.getSelectedOrganisation().subscribe({
             next: (result: IUserInfoOrganisation) => {
@@ -85,10 +77,10 @@ describe('UserInfoService', () => {
 
 export const mockUserInfo: UserOrgsAndRegistrations = {
     user: {
+        name: 'Test User',
+        email: '',
         username: 'TSTADMINC-RIPE',
-        displayName: 'Test User',
-        uuid: 'aaaa-bbbb-cccc-dddd',
-        active: true,
+        photo: '',
     },
     members: [
         {
