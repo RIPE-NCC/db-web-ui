@@ -1,0 +1,11 @@
+{
+    "requestUrl": "/db-web-ui/api/user-oidc/info",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "name": "tdacruzper@ripe.net",
+        "email": "tdacruzper@ripe.net",
+        "username": "Fred Astaire",
+        "photo": "938c6a59-5302-4953-974e-686567eac074"
+    }
+}
