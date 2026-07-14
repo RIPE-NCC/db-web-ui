@@ -10,10 +10,6 @@ describe('Query scenario', () => {
         queryPage.visit();
     });
 
-    after(() => {
-        cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
-    });
-
     it('should set focus on search field when visiting the page', () => {
         queryPage.expectSearchToHaveFocus();
     });
@@ -127,7 +123,15 @@ describe('Query scenario', () => {
     });
 
     it('should show "Login to update" when user is not logged', () => {
-        cy.changeJsonResponseFile(userNotLoggedIn, userInfoFile);
+        cy.intercept('GET', 'db-web-ui/api/user-oidc/me', {
+            statusCode: 401,
+            body: {
+                response: {
+                    status: 401,
+                    message: 'Unauthorized',
+                },
+            },
+        }).as('getProfile');
         queryPage.visit();
         queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
         queryPage.clickOnSearchButton();
@@ -135,7 +139,6 @@ describe('Query scenario', () => {
     });
 
     it('should show "Update object" when user is logged', () => {
-        cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
         queryPage.visit();
         queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
         queryPage.clickOnSearchButton();
