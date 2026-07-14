@@ -9,8 +9,6 @@ import { SessionInfo } from './types';
 export class SessionService {
     private http = inject(HttpClient);
 
-    private sessionTimer?: number;
-
     private readonly expiredSessionSubject = new Subject<void>();
 
     private expired = false;
@@ -35,7 +33,11 @@ export class SessionService {
             return;
         }
 
-        this.sessionTimer = window.setTimeout(() => {
+        console.log('expiresAt:', expiresAt);
+        console.log('expiresAt.getTime():', expiresAt.getTime());
+        console.log('Date.now():', Date.now());
+        console.log('timeout:', timeout);
+        window.setTimeout(() => {
             this.showSessionExpired();
         }, timeout);
     }
