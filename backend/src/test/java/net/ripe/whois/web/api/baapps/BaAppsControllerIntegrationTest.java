@@ -29,7 +29,7 @@ public class BaAppsControllerIntegrationTest extends AbstractIntegrationTest {
         mock("/api/user/info?clientIp=127.0.0.1", getResource("mock/user-info.json"));
         mock("/resource-services/member-resources/7347", getResource("mock/member-resources-7347.json"));
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", String.class);
+        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", String.class, invalidOAuth2Client());
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(
@@ -63,7 +63,7 @@ public class BaAppsControllerIntegrationTest extends AbstractIntegrationTest {
         mock("/api/user/info?clientIp=127.0.0.1", "{}");
         mock("/resource-services/member-resources/7347", "{}");
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/INVALID/192.0.0.0/20", String.class, invalidSsoCookie());
+        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/INVALID/192.0.0.0/20", String.class, validOAuth2Client());
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));
@@ -74,7 +74,7 @@ public class BaAppsControllerIntegrationTest extends AbstractIntegrationTest {
         mock("/api/user/info?clientIp=127.0.0.1", "{}");
         mock("/resource-services/member-resources/7347", "{}");
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/INVALID", String.class, invalidSsoCookie());
+        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/INVALID", String.class, invalidOAuth2Client());
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));
@@ -85,7 +85,7 @@ public class BaAppsControllerIntegrationTest extends AbstractIntegrationTest {
         mock("/api/user/info?clientIp=127.0.0.1", "{\"errormessages\":{\"errormessage\":[{\"severity\":\"Error\",\"text\":\"Invalid token.\"}]}}", MediaType.APPLICATION_JSON_VALUE, HttpStatus.UNAUTHORIZED.value());
         mock("/resource-services/member-resources/7347", "{}");
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", String.class, invalidSsoCookie());
+        final ResponseEntity<String> response = get("/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20", String.class, invalidOAuth2Client());
 
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody(), is(nullValue()));

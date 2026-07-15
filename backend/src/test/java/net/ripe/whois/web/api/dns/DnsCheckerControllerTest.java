@@ -49,6 +49,7 @@ public class DnsCheckerControllerTest {
     @BeforeEach
     public void setup() throws IOException {
         subject = new DnsCheckerController(whoisInternalService, dnsClient, false);
+        when(authorizedClient.getAccessToken()).thenReturn(ACCESS_TOKEN);
         when(request.getRemoteAddr()).thenReturn("");
         when(whoisInternalService.getUserInfo(ACCESS_TOKEN, ""))
             .thenReturn(getResource("mock/user-info.json", UserInfoResponse.class));

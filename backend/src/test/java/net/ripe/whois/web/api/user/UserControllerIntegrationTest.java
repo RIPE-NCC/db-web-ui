@@ -32,7 +32,7 @@ public class UserControllerIntegrationTest extends AbstractIntegrationTest {
     public void get_maintainers_invalid_cookie() {
         mock("/api/user/info?clientIp=127.0.0.1", "", MediaType.APPLICATION_JSON, HttpStatus.UNAUTHORIZED.value());
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/user/mntners", String.class, invalidSsoCookie());
+        final ResponseEntity<String> response = get("/db-web-ui/api/user/mntners", String.class, invalidOAuth2Client());
 
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }

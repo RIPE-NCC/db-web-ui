@@ -189,7 +189,7 @@ public abstract class AbstractIntegrationTest {
     // HTTP requests
 
     public <T> ResponseEntity<T> get(final String path, final Class<T> type) {
-        return get(path, type, validSsoCookie());
+        return get(path, type, validOAuth2Client());
     }
 
     public <T> ResponseEntity<T> get(final String path, final Class<T> type, final HttpEntity httpEntity) {
@@ -204,13 +204,13 @@ public abstract class AbstractIntegrationTest {
         return restTemplate.exchange("http://localhost:" + getLocalServerPort() + path, HttpMethod.DELETE, httpEntity, type);
     }
 
-    public HttpEntity validSsoCookie() {
+    public HttpEntity validOAuth2Client() {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setBearerAuth(ACCESS_TOKEN);
         return new HttpEntity<>(null, requestHeaders);
     }
 
-    public HttpEntity invalidSsoCookie() {
+    public HttpEntity invalidOAuth2Client() {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setBearerAuth(null);
         return new HttpEntity<>(null, requestHeaders);
