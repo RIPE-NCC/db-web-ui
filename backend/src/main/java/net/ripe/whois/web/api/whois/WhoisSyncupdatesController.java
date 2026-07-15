@@ -6,6 +6,8 @@ import net.ripe.whois.web.api.ApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +31,10 @@ public class WhoisSyncupdatesController extends ApiController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> proxyRestCalls(@RequestBody(required = true) final String body,
                                                  final HttpServletRequest request,
-                                                 @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+                                                 @RequestHeader final HttpHeaders headers,
+                                                 @RegisteredOAuth2AuthorizedClient("keycloak")
+                                                     OAuth2AuthorizedClient authorizedClient) throws URISyntaxException {
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         return whoisSyncupdatesService.proxy(body, request, headers);
     }
 
