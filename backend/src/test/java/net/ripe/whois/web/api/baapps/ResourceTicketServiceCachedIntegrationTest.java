@@ -1,9 +1,11 @@
 package net.ripe.whois.web.api.baapps;
 
 import net.ripe.whois.AbstractIntegrationTest;
+import net.ripe.whois.OAuth2TestConfig;
 import net.ripe.whois.services.RsngService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -14,6 +16,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Import(OAuth2TestConfig.class)
 class ResourceTicketServiceCachedIntegrationTest extends AbstractIntegrationTest {
 
     @MockitoBean

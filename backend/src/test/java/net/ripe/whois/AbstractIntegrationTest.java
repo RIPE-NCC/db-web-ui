@@ -104,6 +104,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("ripe.ncc.hm.mnt","RIPE-NCC-HM-MNT");
         System.setProperty("rpki-validator.api.url","https://rpki-validator.ripe.net/api/v1/validity/");
         System.setProperty("show.api.key.menu","false");
+        System.setProperty("OIDC_CLIENT_KEY","OIDC_CLIENT_KEY");
     }
 
     @AfterAll
