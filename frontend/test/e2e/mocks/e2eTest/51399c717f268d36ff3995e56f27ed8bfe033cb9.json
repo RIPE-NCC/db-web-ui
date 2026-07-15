@@ -1,0 +1,28 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=show-version&offset=0&limit=20&query-string=AS9777",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "link": {
+            "type": "locator",
+            "href": "http://sussex.prepdev.ripe.net:1080/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=show-version&offset=0&limit=20&query-string=AS9777&clientIp=192.168.65.1&roa-check=true"
+        },
+        "errormessages": {
+            "errormessage": [
+                {
+                    "severity": "Error",
+                    "text": "Disallowed search flag '%s'",
+                    "args": [
+                        {
+                            "value": "show-version"
+                        }
+                    ]
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://docs.db.ripe.net/terms-conditions.html"
+        }
+    }
+}
