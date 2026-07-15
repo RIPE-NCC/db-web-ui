@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap, reduce } from 'rxjs/operators';
@@ -113,7 +113,20 @@ export class QueryService {
         return of(...terms).pipe(
             mergeMap((term) => {
                 params = params.set('query-string', term);
-                return this.http.get<IWhoisResponseModel>('api/whois/search', { params }).pipe(catchError((err) => of(err.error)));
+                return this.http.get<IWhoisResponseModel>('api/whois/search', { params }).pipe(
+                    catchError((err: HttpErrorResponse) => {
+                        const VERSION_FLAGS = ['list-versions', 'show-version', 'diff-versions'];
+                        const error = err.error;
+
+                        error?.errormessages?.errormessage?.forEach((message) => {
+                            if (message.text?.includes('Disallowed search flag') && VERSION_FLAGS.includes(message.args?.[0]?.value ?? '')) {
+                                message.text += '. Please use the Versions button in the query response.';
+                            }
+                        });
+
+                        return of(error);
+                    }),
+                );
             }, 5),
             reduce((acc, result) => this.accumulate(result, acc), acc),
         );

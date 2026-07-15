@@ -9,7 +9,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { WebAppVersionComponent } from '../application-version/web-app-version.component';
 import { WhoisVersionComponent } from '../application-version/whois-version.component';
-import { BannerComponent, BannerTypes } from '../banner/banner.component';
+import { BannerTypes } from '../banner/banner.component';
 import { TypeformBannerComponent } from '../banner/typeform-banner/typeform-banner.component';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { PropertiesService } from '../properties.service';
@@ -59,7 +59,6 @@ export type ShareLink = {
     standalone: true,
     changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
-        BannerComponent,
         OrgDropDownComponent,
         FormsModule,
         NgClass,

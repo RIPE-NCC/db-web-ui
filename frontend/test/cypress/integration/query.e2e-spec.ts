@@ -14,6 +14,37 @@ describe('Query scenario', () => {
         cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
     });
 
+    ['--list-versions', '--show-version', '--diff-versions'].forEach((flag) => {
+        it(`should show a single error banner for ${flag} and not stack`, () => {
+            queryPage.typeSearchTerm(`${flag} AS9777`).clickOnSearchButton();
+            queryPage.expectErrorMessagesToContain('Disallowed search flag', 1);
+
+            queryPage.clickOnSearchButton();
+            queryPage.expectErrorMessagesToContain('Disallowed search flag', 1);
+
+            queryPage.clickOnSearchButton();
+            queryPage.expectErrorMessagesToContain('Disallowed search flag', 1).expectErrorMessageToContain(flag.substring(2)).expectShowShareButton(false);
+        });
+    });
+
+    it('should replace the disallowed-flag error when switching to another versions flag', () => {
+        queryPage.typeSearchTerm('--list-versions AS9777').clickOnSearchButton().expectErrorMessageToContain('list-versions');
+
+        queryPage
+            .typeSearchTerm('--diff-versions AS9777')
+            .clickOnSearchButton()
+            .expectErrorMessagesToContain('Disallowed search flag', 1)
+            .expectErrorMessageToContain('diff-versions');
+
+        cy.get('.error-banner').should('not.contain.text', 'list-versions');
+    });
+
+    it('should clear the disallowed-flag error when a valid search follows', () => {
+        queryPage.typeSearchTerm('--diff-versions AS9777').clickOnSearchButton().expectErrorMessagesToContain('Disallowed search flag', 1);
+
+        queryPage.typeSearchTerm('AS9777').clickOnSearchButton().expectErrorMessageCount(0).expectShowShareButton(true);
+    });
+
     it('should set focus on search field when visiting the page', () => {
         queryPage.expectSearchToHaveFocus();
     });

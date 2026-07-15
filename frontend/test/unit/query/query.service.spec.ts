@@ -52,6 +52,25 @@ describe('QueryService', () => {
         expect(queryService.buildQueryStringForLink(qp)).toEqual('');
     });
 
+    it('appends Versions-button guidance to disallowed-flag errors', (done) => {
+        const searchQp = { ...qp, queryText: 'ripe' };
+
+        queryService.searchWhoisObjects(searchQp, 0).subscribe((resp) => {
+            expect(resp.errormessages.errormessage[0].text).toContain('Please use the Versions button in the query response.');
+            done();
+        });
+
+        const req = httpMock.expectOne((r) => r.url === 'api/whois/search');
+        req.flush(
+            {
+                errormessages: {
+                    errormessage: [{ severity: 'Error', text: "Disallowed search flag '%s'", args: [{ value: 'list-versions' }] }],
+                },
+            },
+            { status: 400, statusText: 'Bad Request' },
+        );
+    });
+
     it('should generate a link for text search', () => {
         qp.types = null;
         qp.inverse = null;

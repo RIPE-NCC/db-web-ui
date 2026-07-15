@@ -540,6 +540,69 @@ describe('QueryComponent', () => {
         });
     });
 
+    describe('with a disallowed versions flag (backend rejection)', () => {
+        beforeEach(() => {
+            spyOn(queryParametersService, 'validate').and.returnValue({ errors: [], warnings: [] });
+        });
+
+        const disallowedFlagError = (flag: string) => ({
+            errormessages: {
+                errormessage: [
+                    {
+                        severity: 'Error',
+                        text: "Disallowed search flag '%s'",
+                        args: [{ value: flag }],
+                    },
+                ],
+            },
+        });
+
+        it('does not stack the error across repeated searches', () => {
+            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(() => disallowedFlagError('diff-versions')));
+
+            component.qp.queryText = '--diff-versions ripe';
+            component.doSearch();
+            component.doSearch();
+            component.doSearch();
+
+            expect(component.alertsService.alerts.errors.length).toEqual(1);
+        });
+
+        it('replaces the flag error when switching to a valid search', () => {
+            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(() => disallowedFlagError('list-versions')));
+            component.qp.queryText = '--list-versions ripe';
+            component.doSearch();
+            expect(component.alertsService.alerts.errors.length).toEqual(1);
+
+            queryServiceSpy.searchWhoisObjects.and.returnValue(of({ objects: { object: [{}, {}] } } as any));
+            component.qp.queryText = '193.0.0.0';
+            component.doSearch();
+
+            expect(component.alertsService.alerts.errors.some((e) => e.plainText?.includes('Disallowed'))).toBeFalsy();
+        });
+
+        it('stacks multiple disallowed-flag errors when the backend returns several', () => {
+            queryServiceSpy.searchWhoisObjects.and.returnValue(
+                throwError(() => ({
+                    errormessages: {
+                        errormessage: [
+                            { severity: 'Error', text: "Disallowed search flag '%s'", args: [{ value: 'list-versions' }] },
+                            { severity: 'Error', text: "Disallowed search flag '%s'", args: [{ value: 'diff-versions' }] },
+                        ],
+                    },
+                })),
+            );
+
+            component.qp.queryText = '--list-versions --diff-versions ripe';
+            component.doSearch();
+
+            expect(component.alertsService.alerts.errors.length).toEqual(2);
+            const msgs = component.alertsService.alerts.errors.map((e) => component.formatError(e));
+            expect(msgs.some((m) => m.includes('list-versions'))).toBeTrue();
+            expect(msgs.some((m) => m.includes('diff-versions'))).toBeTrue();
+        });
+    });
+
     describe('with a failed query', () => {
         const errorResponse = {
             errormessages: {

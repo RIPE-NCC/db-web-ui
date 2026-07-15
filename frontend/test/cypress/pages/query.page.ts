@@ -178,10 +178,22 @@ export class QueryPage {
 
     expectNoErrorMessage() {
         cy.get('.error-banner').should('not.exist');
+        return this;
     }
 
     expectErrorMessageToContain(text: string) {
         cy.get('.error-banner').should('contain', text);
+        return this;
+    }
+
+    expectErrorMessageCount(count: number) {
+        cy.get('.error-banner').should('have.length', count);
+        return this;
+    }
+
+    expectErrorMessagesToContain(text: string, count: number) {
+        cy.get('.error-banner').filter(`:contains("${text}")`).should('have.length', count);
+        return this;
     }
 
     expectNumberOfResults(count: number) {
