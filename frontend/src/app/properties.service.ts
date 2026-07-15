@@ -15,11 +15,6 @@ export interface IProperties {
     NEWEST_PORTAL_URL: string;
     BANNER: string;
     MATOMO_ID: string;
-    REQUEST_RESOURCES_URL: string;
-    REQUEST_UPDATE_URL: string;
-    OPEN_ACQUISITION_URL: string;
-    REQUEST_TRANSFER_URL: string;
-    RPKI_DASHBOARD_URL: string;
     REST_SEARCH_URL: string;
     QUERY_PAGE_LINK_TO_OTHER_DB: string;
     DB_WEB_UI_BUILD_TIME: string;
@@ -104,11 +99,6 @@ export class PropertiesService {
                     this.NEWEST_PORTAL_URL = response.NEWEST_PORTAL_URL;
                     this.BANNER = response.BANNER;
                     this.MATOMO_ID = response.MATOMO_ID;
-                    this.REQUEST_RESOURCES_URL = response.REQUEST_RESOURCES_URL;
-                    this.REQUEST_UPDATE_URL = response.REQUEST_UPDATE_URL;
-                    this.OPEN_ACQUISITION_URL = response.OPEN_ACQUISITION_URL;
-                    this.REQUEST_TRANSFER_URL = response.REQUEST_TRANSFER_URL;
-                    this.RPKI_DASHBOARD_URL = response.RPKI_DASHBOARD_URL;
                     this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                     this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
                     this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
