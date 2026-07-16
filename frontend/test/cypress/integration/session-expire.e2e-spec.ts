@@ -5,11 +5,7 @@ describe('Session expire', () => {
     const queryPage = new QueryPage();
     const webupdatesPage = new WebupdatesPage();
     const personAuthError = './test/e2e/mocks/e2eTest/person-auth-error.json';
-    const personCreation = './test/e2e/mocks/e2eTest/d7ae9b71eb48edb1ed1bb684fb8c615ac6f1c7ee.json';
 
-    const userNotLoggedIn = './test/e2e/mocks/e2eTest/user-not-logged-in.json';
-    const userInfoFile = './test/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json';
-    const userWithAllRoles = './test/e2e/mocks/e2eTest/user-with-all-role.json';
     const mockProfile = {
         name: 'Big Wolf',
         email: 'test@ripe.net',
