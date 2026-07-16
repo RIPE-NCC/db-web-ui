@@ -45,11 +45,6 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
                                         final HttpHeaders headers) {
         final HttpHeaders proxyHeaders = new HttpHeaders();
 
-        final List<String> cookie = headers.get(HttpHeaders.COOKIE);
-        if (cookie != null) {
-            proxyHeaders.put(HttpHeaders.COOKIE, cookie);
-        }
-
         final List<String> forwardedFor = headers.get(X_FORWARDED_FOR);
         if (forwardedFor != null) {
             proxyHeaders.put(X_FORWARDED_FOR, forwardedFor);
