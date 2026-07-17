@@ -33,7 +33,8 @@ export class WebupdatesPage {
     }
 
     typeOnField(fieldName: string, text: string) {
-        cy.get(`#createForm [name^='${fieldName}']`).clear().type(text, { force: true });
+        cy.get(`#createForm [name^='${fieldName}']`).clear();
+        cy.get(`#createForm [name^='${fieldName}']`).type(text);
         return this;
     }
 
@@ -48,7 +49,8 @@ export class WebupdatesPage {
     }
 
     typeOnNgSelect(fieldName: string, text: string) {
-        cy.get(`#createForm [name^='${fieldName}'] input`).clear({ force: true }).type(text, { force: true });
+        cy.get(`#createForm [name^='${fieldName}'] input`).clear();
+        cy.get(`#createForm [name^='${fieldName}'] input`).type(text);
         return this;
     }
 
