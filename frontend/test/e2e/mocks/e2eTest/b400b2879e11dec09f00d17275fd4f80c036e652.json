@@ -4,6 +4,6 @@
     "statusCode": 200,
     "data": {
         "authenticated": true,
-        "expiresAt": "2126-07-17T08:27:09.569Z"
+        "expiresAt": "2050-07-17T08:27:09.569Z"
     }
 }
