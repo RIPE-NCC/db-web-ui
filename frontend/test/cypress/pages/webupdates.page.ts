@@ -219,12 +219,12 @@ export class WebupdatesPage {
     }
 
     clickEditOnField(fieldName: string) {
-        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-pencil`).eq(0).click({ force: true });
+        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-pencil`).eq(0).click();
         return new ModalEditAttribute();
     }
 
     clickHelpOnField(fieldName: string) {
-        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-question`).eq(0).click({ force: true });
+        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-question`).eq(0).click();
         return this;
     }
 
