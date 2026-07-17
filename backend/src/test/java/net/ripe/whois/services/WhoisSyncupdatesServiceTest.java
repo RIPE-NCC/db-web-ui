@@ -19,6 +19,8 @@ public class WhoisSyncupdatesServiceTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private static final String ACCESS_TOKEN = "u00dCkpOmYzHek0GegdqFA00";
+
     private static final String MOCK_SYNCUPDATE_URL = "http://localhost:8090";
 
     private static final String EXPECTED_MOCK_SYNCUPDATE_URL = "http://localhost:8090?clientIp=127.0.0.1";
@@ -72,7 +74,7 @@ public class WhoisSyncupdatesServiceTest {
         mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy("something", request, httpHeaders, "u00dCkpOmYzHek0GegdqFA00").toString();
+        final String response = whoisSyncupdatesService.proxy("something", request, httpHeaders, ACCESS_TOKEN).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
@@ -86,7 +88,7 @@ public class WhoisSyncupdatesServiceTest {
         mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy(rpslObject, request, httpHeaders, "u00dCkpOmYzHek0GegdqFA00").toString();
+        final String response = whoisSyncupdatesService.proxy(rpslObject, request, httpHeaders, ACCESS_TOKEN).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
@@ -106,7 +108,7 @@ public class WhoisSyncupdatesServiceTest {
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
         final String response = whoisSyncupdatesService.proxy(rpslObject, request,
-                httpHeaders, "u00dCkpOmYzHek0GegdqFA00").toString();
+                httpHeaders, ACCESS_TOKEN).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
@@ -143,7 +145,7 @@ public class WhoisSyncupdatesServiceTest {
         mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy(rpslObjectIsvMnt, request, httpHeaders, "u00dCkpOmYzHek0GegdqFA00").toString();
+        final String response = whoisSyncupdatesService.proxy(rpslObjectIsvMnt, request, httpHeaders, ACCESS_TOKEN).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
