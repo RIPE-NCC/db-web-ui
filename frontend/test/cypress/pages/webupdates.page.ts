@@ -33,11 +33,7 @@ export class WebupdatesPage {
     }
 
     typeOnField(fieldName: string, text: string) {
-        const selector = `#createForm [name^='${fieldName}']`;
-
-        cy.get(selector).clear({ force: true });
-        cy.get(selector).type(text, { force: true });
-
+        cy.get(`#createForm [name^='${fieldName}']`).clear({ force: true }).type(text, { force: true });
         return this;
     }
 
