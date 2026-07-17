@@ -33,7 +33,7 @@ export class WebupdatesPage {
     }
 
     typeOnField(fieldName: string, text: string) {
-        cy.get(`#createForm [name^='${fieldName}']`).clear({ force: true }).type(text, { force: true, delay: 10 });
+        cy.get(`#createForm [name^='${fieldName}']`).clear({ force: true }).type(text, { force: true });
         return this;
     }
 
