@@ -35,7 +35,7 @@ public class WhoisSyncupdatesController extends ApiController {
                                                  @RegisteredOAuth2AuthorizedClient("keycloak")
                                                      OAuth2AuthorizedClient authorizedClient) throws URISyntaxException {
         headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
-        return whoisSyncupdatesService.proxy(body, request, headers);
+        return whoisSyncupdatesService.proxy(body, request, headers, authorizedClient.getAccessToken().getTokenValue());
     }
 
 }

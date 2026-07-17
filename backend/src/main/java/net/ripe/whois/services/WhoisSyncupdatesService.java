@@ -42,7 +42,7 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
     }
 
     public ResponseEntity<String> proxy(final String rpslObject, final HttpServletRequest request,
-                                        final HttpHeaders headers) {
+                                        final HttpHeaders headers, final String accessToken) {
         final HttpHeaders proxyHeaders = new HttpHeaders();
 
         final List<String> forwardedFor = headers.get(X_FORWARDED_FOR);
@@ -61,6 +61,7 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         proxyHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
         proxyHeaders.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
         proxyHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
+        proxyHeaders.setBearerAuth(accessToken);
 
         final URI uri = composeSyncupdatesUrl(request);
 
