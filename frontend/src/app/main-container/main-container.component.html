@@ -35,7 +35,11 @@
                         }
                     </div>
                     <div class="space-bottom-for-livechat"></div>
-                    <live-chat style="right: 20px; bottom: 20px" chatkey="{{ properties.LIVE_CHAT_KEY }}" accessurl="{{ properties.LOGIN_URL }}"></live-chat>
+                    <live-chat
+                        style="right: 20px; bottom: 20px"
+                        chatkey="{{ properties.LIVE_CHAT_KEY }}"
+                        tokenurl="/db-web-ui/api/zendesk-chat-token"
+                    ></live-chat>
                 </section>
             </div>
         </main>
