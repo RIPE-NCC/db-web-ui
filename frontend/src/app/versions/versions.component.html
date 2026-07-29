@@ -30,7 +30,7 @@
                 <span>Viewing</span>
                 <mat-select [(ngModel)]="selectedVersionId" (ngModelChange)="onVersionSelect($event)" class="version-select">
                     @for (attr of versions; track attr.revision) {
-                    <mat-option [value]="attr.revision">{{ attr.date | date : 'yyyy-MM-dd HH:mm:ss' }}</mat-option>
+                    <mat-option [value]="attr.revision">{{ attr.date | date : 'yyyy-MM-dd HH:mm:ss' : 'UTC' }}</mat-option>
                     }
                 </mat-select>
                 @if (isLatest) {
@@ -56,7 +56,7 @@
             <div>
                 <span class="tooltip-hint" [matTooltip]="this.versionsUtilsService.getDescription(this.objectType, attr.name)">{{ attr.name }}</span
                 >:{{ this.versionsUtilsService.padding(attr) }}
-                <span>{{ attr.name === 'date' ? (attr.value | date : 'yyyy-MM-dd HH:mm:ss') : attr.value }}</span>
+                <span>{{ attr.name === 'date' ? (attr.value | date : 'yyyy-MM-dd HH:mm:ss' : 'UTC') : attr.value }}</span>
             </div>
         </li>
         }
