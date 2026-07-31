@@ -169,7 +169,7 @@ backend:
     stage: test
     extends: .default_rules
     script:
-        - cd backend && mvn test
+        - mvn -f backend/pom.xml test
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
           when: always
