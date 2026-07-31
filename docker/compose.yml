@@ -4,9 +4,13 @@ services:
             context: ../
             dockerfile: ${PWD}/docker/Dockerfile
             args:
+                # Same CI image as the pipeline build/test jobs
+                - BUILD_IMAGE=${WHOIS_BUILD_IMAGE:-docker-registry.ripe.net/swe-database-team/gitlab-ci/whois-build:v0.0.15}
                 - CI_COMMIT_SHA=local
         environment:
             - PROFILE=local
+            # http2 off: conscrypt (ALPN) ships no arm64 native; alternatively set platform: linux/amd64
+            - SERVER_HTTP2_ENABLED=false
             - START_HEAP_SIZE=256m
             - MAX_HEAP_SIZE=2g
             # - LOGGING_CONFIG=/app/resources/logback.xml

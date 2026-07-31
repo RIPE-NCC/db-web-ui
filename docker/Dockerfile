@@ -1,14 +1,9 @@
-# TODO: [ES] switch to common gitlab-ci image
-# Build
-FROM maven:3.9-amazoncorretto-21-al2023 AS build
+# Build — BUILD_IMAGE is the shared whois-build CI image, same toolchain the tests run on
+ARG BUILD_IMAGE
+FROM ${BUILD_IMAGE} AS build
 WORKDIR /src
-# INSTALL: node 24
-RUN curl -sL https://rpm.nodesource.com/setup_24.x | bash - && \
-    dnf install -y nodejs && \
-    dnf clean all && \
-    rm -rf /var/cache/dnf
-RUN node --version && npm --version && java -version && mvn --version
 COPY . /src
+RUN node --version && npm --version && java -version && mvn --version
 ARG CI_COMMIT_SHA
 RUN mvn clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
 
@@ -23,6 +18,9 @@ ENV START_HEAP_SIZE=256m
 ENV MAX_HEAP_SIZE=2g
 ENV ENABLE_JMX_EXPORTER=false
 ENV JMX_EXPORTER_PORT=9090
+
+# glibc shim for conscrypt natives (ALPN for ssl+http2)
+RUN apk add --no-cache gcompat libstdc++
 
 # Create non-root user and group
 RUN addgroup -g ${PGID} app && \
