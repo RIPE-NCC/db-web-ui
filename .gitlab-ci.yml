@@ -130,6 +130,31 @@ spotbugs-sast:
         MAVEN_REPO_PATH: $CI_PROJECT_DIR/.m2/repository
         COMPILE: "false"
 
+# Boot the built image and wait for the healthcheck
+smoke:
+    stage: test
+    extends: .default_rules
+    cache: []
+    needs:
+        - build-container
+    variables:
+        SMOKE_CONTAINER: smoke-$CI_JOB_ID
+    script:
+        - docker run --detach --name $SMOKE_CONTAINER --env PROFILE=dummy $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+        - |
+            for i in $(seq 1 30); do
+              sleep 2
+              if docker exec $SMOKE_CONTAINER wget --quiet --output-document=- http://localhost:1082/db-web-ui/api/healthcheck; then
+                echo "healthcheck OK"
+                exit 0
+              fi
+            done
+            echo "healthcheck FAILED after 60s, container logs:"
+            docker logs $SMOKE_CONTAINER
+            exit 1
+    after_script:
+        - docker rm --force $SMOKE_CONTAINER
+
 analyze-frontend:
     stage: test
     extends: .default_rules
