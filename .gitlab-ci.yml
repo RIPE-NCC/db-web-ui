@@ -1,6 +1,8 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:v0.0.15
+image: $WHOIS_BUILD_IMAGE
 
 variables:
+    # Runs all jobs and is the build-stage base in docker/Dockerfile (single pin)
+    WHOIS_BUILD_IMAGE: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:v0.0.15
     MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
     PROJECT_NAME: "db-web-ui"
     ARTIFACT_NAME: "db-web-ui"
@@ -14,7 +16,7 @@ include:
       file: /templates/security.yml
       inputs:
           stage: security
-          needs: [build]
+          needs: [build-container]
           scan-mrs: false
     # Container scanning
     - project: swe/gitlab-support
@@ -38,8 +40,8 @@ workflow:
 
 stages:
     - build
-    - security
     - test
+    - security
     - sonar
     - deploy
     - browserstack
@@ -60,26 +62,13 @@ cache:
         - if: "$CI_COMMIT_TAG"
         - if: "$CI_COMMIT_BRANCH"
 
-build:
-    stage: build
-    extends: .default_rules
-    script:
-        - node --version
-        - npm --version
-        - java -version
-        - mvn --version
-        - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
-        - mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.1:tree -DoutputType=json -DoutputFile=maven.graph.json
-    artifacts:
-        paths:
-            - "**/maven.graph.json"
-            - backend/target/db-web-ui*.jar
-            - frontend/package-lock.json
-        expire_in: 6 months
-
 build-container:
     stage: build
     extends: .default_rules
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-m2
+        paths:
+            - .m2/repository
     before_script:
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     script:
@@ -87,11 +76,23 @@ build-container:
             docker build
             --file ./docker/Dockerfile
             --pull
+            --build-arg BUILD_IMAGE=$WHOIS_BUILD_IMAGE
             --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
             --build-arg PUID=$PUID
             --build-arg PGID=$PGID
             --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
             .
+        # Extract npm lockfile for the test jobs' npm ci (pure cache hit of the build above)
+        - >
+            docker build
+            --file ./docker/Dockerfile
+            --target build
+            --build-arg BUILD_IMAGE=$WHOIS_BUILD_IMAGE
+            --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA
+            --tag db-web-ui-build-stage:$CI_JOB_ID
+            .
+        - docker run --rm db-web-ui-build-stage:$CI_JOB_ID cat /src/frontend/package-lock.json > frontend/package-lock.json
+        - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS org.apache.maven.plugins:maven-dependency-plugin:3.8.1:tree -DoutputType=json -DoutputFile=maven.graph.json
         - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
         # Tag and push version tags
         - |
@@ -106,12 +107,21 @@ build-container:
               docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_DEFAULT_BRANCH
               docker push $CI_REGISTRY_IMAGE:$CI_DEFAULT_BRANCH
             fi
+    artifacts:
+        paths:
+            - "**/maven.graph.json"
+            - frontend/package-lock.json
+        expire_in: 6 months
 
 gitlab-advanced-sast:
+    needs: []
     rules:
         - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
 
 spotbugs-sast:
+    # COMPILE=false: bytecode comes from the backend job's target/ artifact
+    needs:
+        - backend
     rules:
         - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
     variables:
@@ -120,11 +130,36 @@ spotbugs-sast:
         MAVEN_REPO_PATH: $CI_PROJECT_DIR/.m2/repository
         COMPILE: "false"
 
+# Boot the built image and wait for the healthcheck
+smoke:
+    stage: test
+    extends: .default_rules
+    cache: []
+    needs:
+        - build-container
+    variables:
+        SMOKE_CONTAINER: smoke-$CI_JOB_ID
+    script:
+        - docker run --detach --name $SMOKE_CONTAINER --env PROFILE=dummy $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+        - |
+            for i in $(seq 1 30); do
+              sleep 2
+              if docker exec $SMOKE_CONTAINER wget --quiet --output-document=- http://localhost:1082/db-web-ui/api/healthcheck; then
+                echo "healthcheck OK"
+                exit 0
+              fi
+            done
+            echo "healthcheck FAILED after 60s, container logs:"
+            docker logs $SMOKE_CONTAINER
+            exit 1
+    after_script:
+        - docker rm --force $SMOKE_CONTAINER
+
 analyze-frontend:
     stage: test
     extends: .default_rules
     script:
-        - cd frontend && npm run analyze-bundle
+        - cd frontend && npm ci && npm run analyze-bundle
     artifacts:
         paths:
             - frontend/results.json
@@ -134,7 +169,7 @@ backend:
     stage: test
     extends: .default_rules
     script:
-        - cd backend && mvn test
+        - mvn -f backend/pom.xml test
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
           when: always
@@ -272,7 +307,7 @@ browserstack:
 deploy_docker_dev:
     <<: *deploy_docker_env
     needs:
-        - job: build
+        - job: build-container
     environment:
         name: dev/docker
     rules:
@@ -281,7 +316,7 @@ deploy_docker_dev:
 deploy_docker_prepdev:
     <<: *deploy_docker_env
     needs:
-        - job: build
+        - job: build-container
     environment:
         name: prepdev/docker
     rules:

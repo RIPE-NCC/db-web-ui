@@ -15,7 +15,7 @@ JAVA_OPTS="
     -Dorg.eclipse.jetty.LEVEL=INFO
     -XX:-OmitStackTraceInFastThrow
     -Dspring.profiles.active=${PROFILE}
-    -Dspring.config.location=classpath:/config/,file:///app/resources/,file:///app/resources/menu.properties"
+    -Dspring.config.location=classpath:/config/,optional:file:///app/resources/,optional:file:///app/resources/menu.properties"
 
 # Add JMX exporter if enabled
 if [ "${ENABLE_JMX_EXPORTER}" = "true" ]; then
