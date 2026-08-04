@@ -48,6 +48,7 @@ public class WhoisRestController extends ApiController {
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
+            @RegisteredOAuth2AuthorizedClient("keycloak")
             OAuth2AuthorizedClient authorizedClient) throws Exception {
         removeUnnecessaryHeaders(headers);
         setHeadersForUnfilteredResponse(request, headers, authorizedClient);
