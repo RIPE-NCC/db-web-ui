@@ -51,13 +51,8 @@ public class WhoisRestController extends ApiController {
             @RegisteredOAuth2AuthorizedClient("keycloak")
             OAuth2AuthorizedClient authorizedClient) throws Exception {
         removeUnnecessaryHeaders(headers);
-        setHeadersForUnfilteredResponse(request, headers, authorizedClient);
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        LOGGER.info("Calling WhoisRestController");
         return whoisRestService.bypass(request, body, headers);
-    }
-
-    private void setHeadersForUnfilteredResponse(final HttpServletRequest request, final HttpHeaders headers, final OAuth2AuthorizedClient authorizedClient) {
-        if (request.getQueryString().contains("unfiltered")) {
-            headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
-        }
     }
 }
