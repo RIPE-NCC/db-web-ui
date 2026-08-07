@@ -55,7 +55,6 @@ public class WhoisProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
             Authentication authentication) {
-        LOGGER.info("Calling WhoisProxyController");
         removeUnnecessaryHeaders(headers);
         OAuth2AuthorizedClient authorizedClient = null;
 
