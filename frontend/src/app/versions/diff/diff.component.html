@@ -7,7 +7,7 @@
                 <span>Comparing</span>
                 <mat-select [(ngModel)]="leftVersionId" (ngModelChange)="onLeftVersionSelect($event)" class="version-select">
                     @for (v of versions; track v.revision) {
-                    <mat-option [value]="v.revision">{{ v.date | date : 'yyyy-MM-dd HH:mm:ss' }}</mat-option>
+                    <mat-option [value]="v.revision">{{ v.date | date : 'yyyy-MM-dd HH:mm:ss' : 'UTC' }}</mat-option>
                     }
                 </mat-select>
                 @if (isLeftLatest) {
@@ -18,7 +18,7 @@
                 <span class="version-label">with</span>
                 <mat-select [(ngModel)]="diffVersionId" (ngModelChange)="onRightVersionSelect($event)" class="version-select" placeholder="Select a version">
                     @for (v of versions; track v.revision) {
-                    <mat-option [value]="v.revision">{{ v.date | date : 'yyyy-MM-dd HH:mm:ss' }}</mat-option>
+                    <mat-option [value]="v.revision">{{ v.date | date : 'yyyy-MM-dd HH:mm:ss' : 'UTC' }}</mat-option>
                     }
                 </mat-select>
                 @if (isRightLatest) {
