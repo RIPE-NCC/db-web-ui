@@ -29,7 +29,7 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
         final ResponseEntity<String> response = post("/db-web-ui/api/whois/domain-objects/TEST", String.class, postEntity(dto));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getHeaders().get("Set-Cookie").get(0), containsString("DBSESSIONID"));
+        assertThat(response.getHeaders().get("Set-Cookie").getFirst(), containsString("DBSESSIONID"));
     }
 
     // helper methods

@@ -37,28 +37,29 @@ public class WhoisDomainObjectController extends ApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectController.class);
 
-    private final BatchUpdateSession batchUpdateSession;
+    private final BatchUpdateService batchUpdateService;
 
     private final WhoisDomainObjectService whoisDomainObjectService;
 
     @Autowired
-    public WhoisDomainObjectController(final BatchUpdateSession batchUpdateSession, final WhoisDomainObjectService whoisDomainObjectService) {
-        this.batchUpdateSession = batchUpdateSession;
+    public WhoisDomainObjectController(final BatchUpdateService batchUpdateService, final WhoisDomainObjectService whoisDomainObjectService) {
+        this.batchUpdateService = batchUpdateService;
         this.whoisDomainObjectService = whoisDomainObjectService;
     }
 
     @RequestMapping(value = "/{source}/status", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity getStatus(@PathVariable final String source) {
-        switch (batchUpdateSession.getStatus()) {
-            case DONE:
+    public ResponseEntity getStatus(@PathVariable final String source, final HttpServletRequest request) {
+        final String sessionId = request.getSession().getId();
+        return switch (batchUpdateService.getStatus(sessionId)) {
+            case DONE -> {
                 // can't return the original response as it can container wrong headers for HTTP2
-                ResponseEntity response = batchUpdateSession.getResponse();
-                return new ResponseEntity<>(response.getBody(), response.getStatusCode());
-            case WAITING_FOR_RESPONSE:
-                return new ResponseEntity<>(PARTIAL_CONTENT);
-            default: // case IDLE:
-                return new ResponseEntity<>(NO_CONTENT);
-        }
+                ResponseEntity response = batchUpdateService.getResponse(sessionId);
+                yield new ResponseEntity<>(response.getBody(), response.getStatusCode());
+            }
+            case WAITING_FOR_RESPONSE -> new ResponseEntity<>(PARTIAL_CONTENT);
+            default -> // case IDLE:
+                    new ResponseEntity<>(NO_CONTENT);
+        };
     }
 
     @RequestMapping(value = "/{source}", method = RequestMethod.POST)
@@ -69,8 +70,8 @@ public class WhoisDomainObjectController extends ApiController {
             @PathVariable final String source) {
 
         LOGGER.debug("create domain objects {}", source);
-
-        if (batchUpdateSession.getStatus() == WAITING_FOR_RESPONSE) {
+        final String sessionId = request.getSession().getId();
+        if (batchUpdateService.getStatus(sessionId) == WAITING_FOR_RESPONSE) {
             return new ResponseEntity<>("Still busy processing a previous request!", HttpStatus.TOO_MANY_REQUESTS);
         }
 
@@ -85,7 +86,7 @@ public class WhoisDomainObjectController extends ApiController {
             domainObjects.add(domainObject);
         }
 
-        batchUpdateSession.setResponseFuture(
+        batchUpdateService.setResponseFuture(sessionId,
             whoisDomainObjectService.createDomainObjects(
                 source,
                 domainObjects,

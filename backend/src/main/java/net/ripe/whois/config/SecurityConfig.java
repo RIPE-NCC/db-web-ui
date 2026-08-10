@@ -1,5 +1,10 @@
 package net.ripe.whois.config;
 
+import com.hazelcast.core.HazelcastInstance;
+import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
+import net.ripe.whois.config.hazelcast.HazelcastSessionConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,9 +18,11 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,6 +38,8 @@ import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastSessionConfig.class);
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -161,11 +170,14 @@ public class SecurityConfig {
 
         return handler;
     }
+    
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService(HazelcastInstance hazelcastInstance) {
+        return new HazelcastOAuth2AuthorizedClientService(hazelcastInstance);
+    }
 
-    // Logout from the application when a user logout from the provider
-    /*@Bean
-    OidcBackChannelServerLogoutHandler oidcLogoutHandler(ReactiveOidcSessionRegistry sessionRegistry) {
-        return new OidcBackChannelServerLogoutHandler(sessionRegistry);
-    }*/
-
+    @Bean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(OAuth2AuthorizedClientService authorizedClientService) {
+        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
+    }
 }
