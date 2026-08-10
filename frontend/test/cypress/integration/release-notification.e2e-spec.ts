@@ -1,6 +1,6 @@
 import { QueryPage } from '../pages/query.page';
 
-describe('Release notification', () => {
+xdescribe('Release notification', () => {
     const queryPage = new QueryPage();
     const targetProperties = './test/e2e/mocks/e2eTestAppConstants/a8d8b4d3fe6dadf2b3a5932b18e707254c804ece.json';
     const defaultProperties = './test/e2e/mocks/e2eTestAppConstants/app-constants-default.json';

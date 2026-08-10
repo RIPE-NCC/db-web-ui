@@ -3,13 +3,16 @@ package net.ripe.whois.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.web.server.OidcBackChannelServerLogoutHandler;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.oidc.server.session.ReactiveOidcSessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
@@ -83,7 +86,9 @@ public class SecurityConfig {
                     requestMatcherBuilder.matcher(HttpMethod.GET, "/logout"),
                     requestMatcherBuilder.matcher(HttpMethod.POST, "/logout")))
                 .logoutSuccessHandler(logoutSuccessHandler))
-        ;
+            .oidcLogout(logout -> logout
+                    .backChannel(Customizer.withDefaults())          // new: provider-initiated back-channel logout
+            );
 
         http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
 
@@ -145,7 +150,7 @@ public class SecurityConfig {
                 .build();
     }
 
-    // Logout
+    // Logout from the provider when a user logout from the application
     @Bean
     OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler(
         ClientRegistrationRepository clientRegistrationRepository) {
@@ -157,6 +162,12 @@ public class SecurityConfig {
         handler.setPostLogoutRedirectUri("{baseUrl}/query");
 
         return handler;
+    }
+
+    // Logout from the application when a user logout from the provider
+    @Bean
+    OidcBackChannelServerLogoutHandler oidcLogoutHandler(ReactiveOidcSessionRegistry sessionRegistry) {
+        return new OidcBackChannelServerLogoutHandler(sessionRegistry);
     }
 
 }
