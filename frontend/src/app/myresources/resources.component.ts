@@ -57,28 +57,28 @@ export class ResourcesComponent implements OnDestroy {
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
 
-    public ipv4Resources: IIPv4ResourceDetails[] = [];
-    public ipv6Resources: IIPv6ResourceDetails[] = [];
-    public asnResources: IAsnResourceDetails[] = [];
-    public selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
-    public loading: boolean = false; // true until resources are loaded to tabs
-    public reason: string = 'No resources found';
-    public explanation =
+    ipv4Resources: IIPv4ResourceDetails[] = [];
+    ipv6Resources: IIPv6ResourceDetails[] = [];
+    asnResources: IAsnResourceDetails[] = [];
+    selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
+    loading: boolean = false; // true until resources are loaded to tabs
+    reason: string = 'No resources found';
+    explanation =
         'If you hold Provider Independent (PI) resources through a sponsoring LIR and want to view them on this page, your maintainer must be registered in your organisation object in the RIPE Database.';
-    public fail: boolean;
-    public isRedirectedFromIpAnalyser: boolean = false;
-    public lastTab: string;
-    public lastTabIndex: number = 0;
+    fail: boolean;
+    isRedirectedFromIpAnalyser: boolean = false;
+    lastTab: string;
+    lastTabIndex: number = 0;
 
-    public isShowingSponsored: boolean = false;
-    public activeToggleButton = 'resources';
-    public showAlerts: boolean = true;
+    isShowingSponsored: boolean = false;
+    activeToggleButton = 'resources';
+    showAlerts: boolean = true;
     private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
-    public readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
+    readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
 
     @ViewChild(AlertsDropDownComponent, { static: true })
-    public alertsDropDownComponent: AlertsDropDownComponent;
+    alertsDropDownComponent: AlertsDropDownComponent;
 
     constructor() {
         const orgSub = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
@@ -100,12 +100,19 @@ export class ResourcesComponent implements OnDestroy {
         this.subscriptions.push(queryParamSub);
     }
 
-    public ngOnDestroy() {
+    ngOnDestroy() {
         this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
-    public init() {
+    init() {
         this.isShowingSponsored = this.activatedRoute.snapshot.queryParamMap.get('sponsored') === 'true';
+        if (this.activatedRoute.snapshot.queryParamMap.has('org')) {
+            //@ts-ignore
+            this.selectedOrg = {
+                orgObjectId: this.activatedRoute.snapshot.queryParamMap.get('org'),
+                roles: ['lir'],
+            };
+        }
         this.activeToggleButton = this.isShowingSponsored ? ResourceType.SPONSORED : ResourceType.RESOURCES;
 
         this.showTheIpAnalyserBanner();
@@ -120,7 +127,7 @@ export class ResourcesComponent implements OnDestroy {
         this.showAlerts = !this.isShowingSponsored && this.lastTab === ObjectTypesEnum.INETNUM;
     }
 
-    public tabClicked($event: MatTabChangeEvent) {
+    tabClicked($event: MatTabChangeEvent) {
         this.lastTab = $event.tab.id;
         this.lastTabIndex = $event.tab.position;
         const params = {
@@ -155,7 +162,7 @@ export class ResourcesComponent implements OnDestroy {
         }
     }
 
-    public refreshPage() {
+    refreshPage() {
         if (!this.selectedOrg) {
             this.userInfoService.getSelectedOrganisation().subscribe((org: IUserInfoOrganisation) => {
                 this.selectedOrg = org;
@@ -170,11 +177,11 @@ export class ResourcesComponent implements OnDestroy {
         }
     }
 
-    public isMemberOrg(): boolean {
+    isMemberOrg(): boolean {
         return this.isUserInfoRegistration(this.selectedOrg);
     }
 
-    public navigateToCreateAssignments() {
+    navigateToCreateAssignments() {
         void this.router.navigate(['webupdates/create', this.properties.SOURCE, this.lastTab]);
     }
 

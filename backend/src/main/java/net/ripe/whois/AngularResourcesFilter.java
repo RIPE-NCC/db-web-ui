@@ -66,6 +66,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/unsubscribe") ||
                 uri.startsWith("/unsubscribe-confirm") ||
                 uri.startsWith("/legal") ||
-                uri.startsWith("/api-keys") ;
+                uri.startsWith("/api-keys") ||
+                uri.startsWith("/embed") ;
     }
 }

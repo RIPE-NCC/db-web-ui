@@ -21,7 +21,9 @@ export class LandingPageComponent implements OnInit {
     loggedIn: boolean;
 
     ngOnInit() {
-        this.loggedIn = this.userInfoService.isLoggedIn();
+        this.userInfoService.getUserOrgsAndRoles().subscribe((userInfo) => {
+            this.loggedIn = !!userInfo;
+        });
         this.sessionInfoService.expiredSession$.subscribe((isSessionExpired: boolean) => {
             this.loggedIn = !isSessionExpired;
         });
