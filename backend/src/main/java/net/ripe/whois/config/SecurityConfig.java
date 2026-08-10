@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -92,7 +91,7 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new OrRequestMatcher(
                     requestMatcherBuilder.matcher(HttpMethod.GET, "/logout"),
                     requestMatcherBuilder.matcher(HttpMethod.POST, "/logout")))
-                .logoutSuccessHandler(logoutSuccessHandler))
+                .logoutSuccessHandler(logoutSuccessHandler));
 
         http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
 
