@@ -93,9 +93,6 @@ public class SecurityConfig {
                     requestMatcherBuilder.matcher(HttpMethod.GET, "/logout"),
                     requestMatcherBuilder.matcher(HttpMethod.POST, "/logout")))
                 .logoutSuccessHandler(logoutSuccessHandler))
-            .oidcLogout(logout -> logout
-                    .backChannel(Customizer.withDefaults())          // new: provider-initiated back-channel logout
-            );
 
         http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
 
@@ -170,7 +167,7 @@ public class SecurityConfig {
 
         return handler;
     }
-    
+
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService(HazelcastInstance hazelcastInstance) {
         return new HazelcastOAuth2AuthorizedClientService(hazelcastInstance);
