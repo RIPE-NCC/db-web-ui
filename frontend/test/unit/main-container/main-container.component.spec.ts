@@ -8,7 +8,6 @@ import { of } from 'rxjs';
 import { MainContainerComponent } from 'src/app/main-container/main-container.component';
 import { BannerComponent } from '../../../src/app/banner/banner.component';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SessionService } from '../../../src/app/sessioninfo/session.service';
 import { LabelPipe } from '../../../src/app/shared/label.pipe';
 import { ReleaseNotificationService } from '../../../src/app/shared/release-notification.service';
 
@@ -43,13 +42,6 @@ describe('MainContainerComponent', () => {
                         navigateByUrl: () => {},
                         url: '/not-query',
                         events: of(),
-                    },
-                },
-                {
-                    provide: SessionService,
-                    useValue: {
-                        expiredSession$: of(false),
-                        initialize: () => of(),
                     },
                 },
                 {

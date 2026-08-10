@@ -35,7 +35,6 @@ import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.
 import '@lir-portal/web-components';
 
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
-import { AuthInterceptor } from './app/interceptor/auth.interceptor';
 import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.providers';
 
 bootstrapApplication(AppComponent, {
@@ -45,7 +44,7 @@ bootstrapApplication(AppComponent, {
         provideRouter(appRoutes),
 
         // HTTP with interceptors
-        provideHttpClient(withXhr(), withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, AuthInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor])),
 
         // Animations
         provideAnimations(),
