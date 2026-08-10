@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
+import { SessionService } from '../../sessioninfo/session.service';
 import { UserInfoService } from '../../userinfo/user-info.service';
 import { ResourcesComponent } from '../resources.component';
 
@@ -13,6 +14,7 @@ import { ResourcesComponent } from '../resources.component';
 })
 export class LandingPageComponent implements OnInit {
     private userInfoService = inject(UserInfoService);
+    private sessionService = inject(SessionService);
 
     description: string =
         'View and manage your IPv4, IPv6 and AS Numbers in one place. RIPE NCC members can view and manage their resources. Holders of Provider Independent (PI) assignments can also view their resources. \n\nTo access the Resources page, you need to have a RIPE NCC Access account. Each user needs their own personal account.';
@@ -21,5 +23,8 @@ export class LandingPageComponent implements OnInit {
 
     ngOnInit() {
         this.loggedIn = this.userInfoService.isLoggedIn();
+        this.sessionService.expiredSession$.subscribe(() => {
+            this.loggedIn = false;
+        });
     }
 }

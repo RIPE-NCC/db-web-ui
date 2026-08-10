@@ -7,6 +7,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
+import { SessionService } from '../../../src/app/sessioninfo/session.service';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
 import { WhoisObjectVisualiser } from '../../../src/app/whois-object/whois-object-visualiser';
@@ -21,6 +22,7 @@ describe('WhoisObjectViewerComponent', () => {
                 imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, WhoisObjectViewerComponent],
                 providers: [
                     { provide: UserInfoService, useValue: { isLoggedIn: () => true, userOrgsAndRoles$: of() } },
+                    SessionService,
                     CookieService,
                     PropertiesService,
                     {
@@ -72,6 +74,7 @@ describe('WhoisObjectViewerComponent', () => {
                         provide: UserInfoService,
                         useValue: { isLoggedIn: () => false, userOrgsAndRoles$: of() },
                     },
+                    SessionService,
                     CookieService,
                     PropertiesService,
                     WhoisObjectVisualiser,
