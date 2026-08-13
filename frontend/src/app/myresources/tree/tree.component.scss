@@ -1,0 +1,19 @@
+.node-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.node-content mat-icon {
+    font-size: 8px;
+    width: 8px;
+    height: 8px;
+}
+
+.node-content mat-icon.ok {
+    color: #3d3d3d;
+}
+
+.node-content mat-icon.issue {
+    color: #f36b21;
+}

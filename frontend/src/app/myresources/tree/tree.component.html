@@ -1,20 +1,29 @@
 <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <button matIconButton disabled></button>
-        <name-formatter [name]="node.resourceName" [type]="node.type"></name-formatter>
+        <div class="node-content">
+            <mat-icon matSuffix class="fa-solid fa-circle-small ok" [class.issue]="true"></mat-icon>
+            <name-formatter [name]="node.resource" [type]="node.type"></name-formatter>
+            {{ node.netname }}
+        </div>
     </mat-tree-node>
     <mat-tree-node
         *matTreeNodeDef="let node; when: hasChild"
         matTreeNodePadding
         matTreeNodeToggle
-        [cdkTreeNodeTypeaheadLabel]="node.resourceName"
+        [cdkTreeNodeTypeaheadLabel]="node.resource"
         (expandedChange)="onNodeExpanded(node, $event)"
     >
-        <button matIconButton [attr.aria-label]="'Toggle ' + node.resourceName" matTreeNodeToggle>
+        <button matIconButton [attr.aria-label]="'Toggle ' + node.resource" matTreeNodeToggle>
             @if (tree.isExpanded(node)) {
             <mat-icon matSuffix class="fa-light fa-minus"></mat-icon> } @else { <mat-icon matSuffix class="fa-light fa-plus"></mat-icon> }
         </button>
-        <name-formatter [name]="node.resourceName" [type]="node.type"></name-formatter>
+        <div class="node-content">
+            <mat-icon class="fa-solid fa-circle-small ok" [class.issue]="false"></mat-icon>
+            <name-formatter [name]="node.resource" [type]="node.type"></name-formatter>
+            {{ node.netname }}
+            ({{ node.used }}% used)
+        </div>
         @if (node.isLoading()) {
         <mat-progress-bar mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
         }

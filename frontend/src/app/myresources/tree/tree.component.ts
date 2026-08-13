@@ -4,13 +4,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSuffix } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTreeModule } from '@angular/material/tree';
-import { IMoreSpecificsApiResult, MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
+import { IMoreSpecificResource, IMoreSpecificsApiResult, MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
 import { IResourceScreenItem, IUsage } from 'src/app/myresources/resource-type.model';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 
 export interface TreeNode {
-    resourceName: string;
+    resource: string;
+    netname: string;
     type: string;
+    used: number;
     level: number;
     expandable: boolean;
     isLoading: WritableSignal<boolean>;
@@ -38,13 +40,15 @@ export class Tree implements OnInit {
 
     /** Initial data from database */
     initialData(): TreeNode[] {
-        return this.rootLevelNodes.map((item) => this.createNode(item.resource, item.type, 0, this.isExpandable(item.status, item.usage)));
+        return this.rootLevelNodes.map((item) => this.createNode(item, 0, this.isExpandable(item.status, item.usage)));
     }
 
-    createNode(resourceName: string, type: string, level: number, expandable: boolean): TreeNode {
+    createNode(resource: IResourceScreenItem | IMoreSpecificResource, level: number, expandable: boolean): TreeNode {
         return {
-            resourceName,
-            type,
+            resource: resource.resource,
+            type: resource.type,
+            netname: resource.netname,
+            used: Math.round((resource.usage.used * 100) / resource.usage.total),
             level,
             expandable,
             isLoading: signal(false),
@@ -66,21 +70,23 @@ export class Tree implements OnInit {
             return;
         }
 
-        this.moreSpecificsService.getSpecifics(node.resourceName, node.type).subscribe({
+        node.isLoading.set(true);
+
+        this.moreSpecificsService.getSpecifics(node.resource, node.type).subscribe({
             next: (response: IMoreSpecificsApiResult) => {
                 if (!response.resources) {
                     return;
                 }
 
-                node.isLoading.set(true);
-
                 node.children = response.resources.map((resource) =>
-                    this.createNode(resource.resource, resource.type, node.level + 1, this.isExpandable(resource.status, resource.usage)),
+                    this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage)),
                 );
-                node.isLoading.set(false);
                 this.dataSource.set([...this.dataSource()]);
             },
             error: () => {
+                //
+            },
+            complete: () => {
                 node.isLoading.set(false);
             },
         });
