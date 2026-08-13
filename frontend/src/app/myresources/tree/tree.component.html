@@ -1,4 +1,5 @@
 <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
+    <!--  Node without children  -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <button matIconButton disabled></button>
         <div class="node-content">
@@ -7,6 +8,16 @@
             {{ node.netname }}
         </div>
     </mat-tree-node>
+    <!--  Node with 'show more' button, more then 10 children  -->
+    <mat-tree-node *matTreeNodeDef="let node; when: isShowMore">
+        <button matIconButton disabled></button>
+
+        <button type="button" matButton (click)="showMore(node)">
+            <mat-icon class="fa-light fa-chevron-right"></mat-icon>
+            Show {{ node.remaining }} more assignments
+        </button>
+    </mat-tree-node>
+    <!--  Node with all children  -->
     <mat-tree-node
         *matTreeNodeDef="let node; when: hasChild"
         matTreeNodePadding

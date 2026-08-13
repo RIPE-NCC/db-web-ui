@@ -15,8 +15,18 @@ export interface TreeNode {
     used: number;
     level: number;
     expandable: boolean;
-    isLoading: WritableSignal<boolean>;
+
     children?: TreeNode[];
+    allChildren?: TreeNode[];
+
+    showAllChildren?: boolean;
+
+    // Only used by the "Show more" pseudo-node
+    isShowMore?: boolean;
+    remaining?: number;
+    parent?: TreeNode;
+
+    isLoading: WritableSignal<boolean>;
 }
 
 @Component({
@@ -29,7 +39,8 @@ export class Tree implements OnInit {
     private moreSpecificsService = inject(MoreSpecificsService);
     dataSource = signal<TreeNode[]>([]);
     readonly childrenAccessor = (node: TreeNode) => node.children ?? [];
-    readonly hasChild = (_: number, node: TreeNode) => node.expandable;
+    readonly hasChild = (_: number, node: TreeNode) => !node.isShowMore && node.expandable;
+    readonly isShowMore = (_: number, node: TreeNode): boolean => node.isShowMore === true;
 
     @Input()
     rootLevelNodes: IResourceScreenItem[];
@@ -78,9 +89,10 @@ export class Tree implements OnInit {
                     return;
                 }
 
-                node.children = response.resources.map((resource) =>
+                node.allChildren = response.resources.map((resource) =>
                     this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage)),
                 );
+                node.children = this.getVisibleChildren(node);
                 this.dataSource.set([...this.dataSource()]);
             },
             error: () => {
@@ -90,5 +102,33 @@ export class Tree implements OnInit {
                 node.isLoading.set(false);
             },
         });
+    }
+
+    private getVisibleChildren(node: TreeNode): TreeNode[] {
+        const children = node.allChildren ?? [];
+
+        if (node.showAllChildren || children.length <= 10) {
+            return children;
+        }
+
+        return [
+            ...children.slice(0, 10),
+            {
+                isShowMore: true,
+                remaining: children.length - 10,
+                parent: node,
+            } as TreeNode,
+        ];
+    }
+
+    showMore(node: TreeNode): void {
+        if (!node.parent) {
+            return;
+        }
+
+        node.parent.showAllChildren = true;
+        node.parent.children = this.getVisibleChildren(node.parent);
+
+        this.dataSource.set([...this.dataSource()]);
     }
 }
