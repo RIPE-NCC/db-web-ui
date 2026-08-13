@@ -3,6 +3,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Tree } from 'src/app/myresources/tree/tree.component';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
@@ -16,8 +17,7 @@ import { ApikeysDropdownComponent } from './apikeys-dropdown/apikeys-dropdown.co
 import { IpUsageOfAllResourcesComponent } from './ip-usage-of-all-resources.component';
 import { ManageResourcesComponent } from './manage-resources/manage-resources.component';
 import { RefreshComponent } from './refresh/refresh.component';
-import { ResourceItemComponent } from './resource-item/resource-item.component';
-import { IAsnResourceDetails, IIPv4ResourceDetails, IIPv6ResourceDetails, IResourceOverviewResponseModel } from './resource-type.model';
+import { IResourceOverviewResponseModel, IResourceScreenItem } from './resource-type.model';
 import { ResourcesDataService } from './resources-data.service';
 
 export enum ResourceType {
@@ -38,7 +38,6 @@ export enum ResourceType {
         AlertsDropDownComponent,
         IpUsageOfAllResourcesComponent,
         LoadingIndicatorComponent,
-        ResourceItemComponent,
         RefreshComponent,
         LabelPipe,
         ApikeysDropdownComponent,
@@ -46,6 +45,7 @@ export enum ResourceType {
         MatTab,
         MatButtonModule,
         MatButtonToggleModule,
+        Tree,
     ],
 })
 export class ResourcesComponent implements OnDestroy {
@@ -57,9 +57,9 @@ export class ResourcesComponent implements OnDestroy {
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
 
-    ipv4Resources: IIPv4ResourceDetails[] = [];
-    ipv6Resources: IIPv6ResourceDetails[] = [];
-    asnResources: IAsnResourceDetails[] = [];
+    ipv4Resources: IResourceScreenItem[] = [];
+    ipv6Resources: IResourceScreenItem[] = [];
+    asnResources: IResourceScreenItem[] = [];
     selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
     loading: boolean = false; // true until resources are loaded to tabs
     reason: string = 'No resources found';
@@ -107,6 +107,7 @@ export class ResourcesComponent implements OnDestroy {
     init() {
         this.isShowingSponsored = this.activatedRoute.snapshot.queryParamMap.get('sponsored') === 'true';
         if (this.activatedRoute.snapshot.queryParamMap.has('org')) {
+            // FIXME
             //@ts-ignore
             this.selectedOrg = {
                 orgObjectId: this.activatedRoute.snapshot.queryParamMap.get('org'),

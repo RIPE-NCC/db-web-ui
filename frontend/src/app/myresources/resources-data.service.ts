@@ -2,23 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
-import { IMoreSpecificsApiResult } from './morespecifics/more-specifics.service';
-import { IIPv4ResourcesResponse, IIPv6ResourcesResponse, IIpv4Analysis, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
+import { IIpv4Analysis, IResourceDetailsResponseModel, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class ResourcesDataService {
     private http = inject(HttpClient);
 
-    public fetchResource(objectName: string, type: string): Observable<IMoreSpecificsApiResult> {
-        return this.http.get<IMoreSpecificsApiResult>(`api/whois-internal/api/resources/${type}/${objectName}`);
-    }
-
-    public fetchIpv4Resource(objectName: string): Observable<IIPv4ResourcesResponse> {
-        return this.http.get<IIPv4ResourcesResponse>(`api/whois-internal/api/resources/inetnum/${objectName}`);
-    }
-
-    public fetchIpv6Resource(objectName: string): Observable<IIPv6ResourcesResponse> {
-        return this.http.get<IIPv4ResourcesResponse>(`api/whois-internal/api/resources/inet6num/${objectName}`);
+    public fetchResource(objectName: string, type: string): Observable<IResourceDetailsResponseModel> {
+        return this.http.get<IResourceDetailsResponseModel>(`api/whois-internal/api/resources/${type}/${objectName}`);
     }
 
     public fetchResources(orgId: string, resourceType: string, sponsored: boolean): Observable<IResourceOverviewResponseModel> {

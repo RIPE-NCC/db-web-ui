@@ -21,15 +21,22 @@ export interface IMoreSpecificResource {
 export class MoreSpecificsService {
     private http = inject(HttpClient);
 
-    public getSpecifics(objectName: string, objectType: string, page: number, filter: string): Observable<IMoreSpecificsApiResult> {
+    public getSpecifics(objectName: string, objectType: string, page?: number, filter?: string): Observable<IMoreSpecificsApiResult> {
         if (!objectType) {
             return throwError(() => 'objectType is empty. more-specifics not available');
         }
         if (!objectName) {
             return throwError(() => 'objectName is empty. more-specifics not available');
         }
-        filter = filter ? filter.replace(/\s/g, '') : '';
-        const params = new HttpParams().set('filter', filter).set('page', String(page));
-        return this.http.get<IMoreSpecificsApiResult>(`api/whois-internal/api/resources/${objectType}/${objectName}/more-specifics.json`, { params });
+
+        const url = `api/whois-internal/api/resources/${objectType}/${objectName}/more-specifics.json`;
+        let params = new HttpParams();
+        if (filter !== undefined) {
+            params = params.set('filter', filter.replace(/\s/g, ''));
+        }
+        if (page !== undefined) {
+            params = params.set('page', String(page));
+        }
+        return this.http.get<IMoreSpecificsApiResult>(url, { params });
     }
 }

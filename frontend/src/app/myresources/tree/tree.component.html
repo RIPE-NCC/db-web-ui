@@ -1,0 +1,22 @@
+<mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <button matIconButton disabled></button>
+        <name-formatter [name]="node.resourceName" [type]="node.type"></name-formatter>
+    </mat-tree-node>
+    <mat-tree-node
+        *matTreeNodeDef="let node; when: hasChild"
+        matTreeNodePadding
+        matTreeNodeToggle
+        [cdkTreeNodeTypeaheadLabel]="node.resourceName"
+        (expandedChange)="onNodeExpanded(node, $event)"
+    >
+        <button matIconButton [attr.aria-label]="'Toggle ' + node.resourceName" matTreeNodeToggle>
+            @if (tree.isExpanded(node)) {
+            <mat-icon matSuffix class="fa-light fa-minus"></mat-icon> } @else { <mat-icon matSuffix class="fa-light fa-plus"></mat-icon> }
+        </button>
+        <name-formatter [name]="node.resourceName" [type]="node.type"></name-formatter>
+        @if (node.isLoading()) {
+        <mat-progress-bar mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
+        }
+    </mat-tree-node>
+</mat-tree>

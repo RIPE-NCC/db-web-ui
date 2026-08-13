@@ -2,7 +2,7 @@ import { DecimalPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatTooltip } from '@angular/material/tooltip';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Labels } from '../../label.constants';
 import { FlagComponent, IFlag } from '../../shared/flag/flag.component';
 import { NameFormatterComponent } from '../../shared/name-formatter.component';
@@ -17,7 +17,6 @@ import { ResourceStatusService } from '../resource-status.service';
     imports: [RouterLink, NameFormatterComponent, FlagComponent, NgClass, DecimalPipe, MatProgressBar, MatTooltip],
 })
 export class ResourceItemComponent implements OnInit {
-    private router = inject(Router);
     private resourceStatusService = inject(ResourceStatusService);
 
     @Input()
