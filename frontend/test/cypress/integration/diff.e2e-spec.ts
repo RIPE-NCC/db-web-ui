@@ -47,4 +47,10 @@ describe('version diff', () => {
             diffPage.expectDiffToExist(true);
         });
     });
+
+    describe('The diff page with XSS attack', () => {
+        it('should sanitized img and script tag - XSS attack', () => {
+            diffPage.visit('ripe', 'inetnum', '80.79.36.128 - 80.79.36.159', 4, 'query', 1).expectedNoImgTag().expectedNoScriptTag();
+        });
+    });
 });

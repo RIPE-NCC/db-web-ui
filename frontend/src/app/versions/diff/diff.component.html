@@ -38,7 +38,7 @@
 
 <div class="resultpane">
     @if (rightDiff){
-    <pre whoisLineDiff [left]="leftDiff" [right]="rightDiff" class="textdiff"></pre>
+    <pre whoisLineDiff [left]="leftDiff | sanitizeHtml" [right]="rightDiff | sanitizeHtml" class="textdiff"></pre>
     } @else {
     <pre class="textdiff" style="padding-inline: 29px">{{ leftDiff }}</pre>
     }

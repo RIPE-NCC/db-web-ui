@@ -35,10 +35,11 @@ export class WhoisLineDiffDirective implements OnInit, OnChanges {
         const html = this.createHtml(this.getLineDiff(this.left, this.right));
 
         this.el.nativeElement.innerHTML = sanitizeHtml(html, {
-            allowedTags: ['div', 'span', 'del', 'ins'],
+            allowedTags: ['div', 'span', 'pre', 'del', 'ins'],
             allowedAttributes: {
                 span: ['class'],
                 div: ['class'],
+                pre: ['class'],
             },
         });
     }
