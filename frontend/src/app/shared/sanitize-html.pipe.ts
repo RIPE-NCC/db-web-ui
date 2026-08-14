@@ -6,8 +6,8 @@ import sanitizeHtml from 'sanitize-html';
     standalone: true,
 })
 export class SanitizeHtmlPipe implements PipeTransform {
-    transform(value: string): string {
-        return sanitizeHtml(value, {
+    transform(value: string | null | undefined): string {
+        return sanitizeHtml(value ?? '', {
             allowedTags: sanitizeHtml.defaults.allowedTags.filter((tag) => tag !== 'img'),
             allowedAttributes: {
                 a: ['href', 'target', 'rel'],
