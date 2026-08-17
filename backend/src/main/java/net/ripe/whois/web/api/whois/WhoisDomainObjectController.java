@@ -18,13 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 import static net.ripe.whois.web.api.whois.BatchStatus.WAITING_FOR_RESPONSE;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -37,23 +35,23 @@ public class WhoisDomainObjectController extends ApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectController.class);
 
-    private final BatchUpdateService batchUpdateService;
+    private final BatchUpdateSession batchUpdateSession;
 
     private final WhoisDomainObjectService whoisDomainObjectService;
 
     @Autowired
-    public WhoisDomainObjectController(final BatchUpdateService batchUpdateService, final WhoisDomainObjectService whoisDomainObjectService) {
-        this.batchUpdateService = batchUpdateService;
+    public WhoisDomainObjectController(final BatchUpdateSession batchUpdateSession, final WhoisDomainObjectService whoisDomainObjectService) {
+        this.batchUpdateSession = batchUpdateSession;
         this.whoisDomainObjectService = whoisDomainObjectService;
     }
 
     @RequestMapping(value = "/{source}/status", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity getStatus(@PathVariable final String source, final HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
-        return switch (batchUpdateService.getStatus(sessionId)) {
+        return switch (batchUpdateSession.getStatus(sessionId)) {
             case DONE -> {
                 // can't return the original response as it can container wrong headers for HTTP2
-                ResponseEntity response = batchUpdateService.getResponse(sessionId);
+                ResponseEntity response = batchUpdateSession.getResponse(sessionId);
                 yield new ResponseEntity<>(response.getBody(), response.getStatusCode());
             }
             case WAITING_FOR_RESPONSE -> new ResponseEntity<>(PARTIAL_CONTENT);
@@ -71,7 +69,7 @@ public class WhoisDomainObjectController extends ApiController {
 
         LOGGER.debug("create domain objects {}", source);
         final String sessionId = request.getSession().getId();
-        if (batchUpdateService.getStatus(sessionId) == WAITING_FOR_RESPONSE) {
+        if (batchUpdateSession.getStatus(sessionId) == WAITING_FOR_RESPONSE) {
             return new ResponseEntity<>("Still busy processing a previous request!", HttpStatus.TOO_MANY_REQUESTS);
         }
 
@@ -86,7 +84,7 @@ public class WhoisDomainObjectController extends ApiController {
             domainObjects.add(domainObject);
         }
 
-        batchUpdateService.setResponseFuture(sessionId,
+        batchUpdateSession.setResponseFuture(sessionId,
             whoisDomainObjectService.createDomainObjects(
                 source,
                 domainObjects,

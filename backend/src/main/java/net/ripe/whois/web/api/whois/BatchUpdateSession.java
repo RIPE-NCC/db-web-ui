@@ -2,9 +2,11 @@ package net.ripe.whois.web.api.whois;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -15,13 +17,11 @@ import java.util.concurrent.Future;
 import static net.ripe.whois.web.api.whois.BatchStatus.DONE;
 import static net.ripe.whois.web.api.whois.BatchStatus.IDLE;
 import static net.ripe.whois.web.api.whois.BatchStatus.WAITING_FOR_RESPONSE;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-@Service
-public class BatchUpdateService {
+@Component
+public class BatchUpdateSession {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BatchUpdateService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchUpdateSession.class);
     private static final String RESULTS_MAP = "batch-update-results";
     private static final String PENDING_MAP = "batch-update-pending"; // just a marker, cross-node visible
 
@@ -31,7 +31,7 @@ public class BatchUpdateService {
     private final IMap<String, BatchUpdateResult> results;
     private final IMap<String, Boolean> pendingMarkers;
 
-    public BatchUpdateService(final HazelcastInstance hazelcastInstance) {
+    public BatchUpdateSession(final HazelcastInstance hazelcastInstance) {
         this.results = hazelcastInstance.getMap(RESULTS_MAP);
         this.pendingMarkers = hazelcastInstance.getMap(PENDING_MAP);
     }
