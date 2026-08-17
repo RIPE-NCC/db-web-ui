@@ -5,15 +5,15 @@
     <label>{{ attribute.name }}</label>
     @if (attribute.$$error) {
     <div>
-        <span class="text-error" [innerHTML]="attribute.$$error"></span>
+        <span class="text-error" [innerHTML]="attribute.$$error | sanitizeHtml"></span>
     </div>
     } @if (attribute.$$info) {
     <div>
-        <span class="text-info" [innerHTML]="attribute.$$info"></span>
+        <span class="text-info" [innerHTML]="attribute.$$info | sanitizeHtml"></span>
     </div>
     } @if (attribute.$$success) {
     <div>
-        <span class="text-success" [innerHTML]="attribute.$$success"></span>
+        <span class="text-success" [innerHTML]="attribute.$$success | sanitizeHtml"></span>
     </div>
     }
 
@@ -56,7 +56,7 @@
         [(ngModel)]="attribute.value"
     >
         <ng-template ng-option-tmp let-item="item">
-            <div [innerHTML]="displayEnumValue(item)">{{ item.key }}</div>
+            <div [innerHTML]="displayEnumValue(item) | sanitizeHtml">{{ item.key }}</div>
         </ng-template>
     </ng-select>
     } }

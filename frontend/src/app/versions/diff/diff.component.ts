@@ -8,6 +8,7 @@ import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable, of, Subject, switchMap } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { WhoisVersionComponent } from '../../application-version/whois-version.component';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
@@ -23,7 +24,7 @@ import { VersionsLookupService } from '../versions-lookup.service';
     standalone: true,
     styleUrl: 'diff.component.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [MatSelect, MatOption, FormsModule, DatePipe, WhoisLineDiffDirective, WhoisVersionComponent, BreadcrumbsComponent, MatButton],
+    imports: [MatSelect, MatOption, FormsModule, DatePipe, WhoisLineDiffDirective, WhoisVersionComponent, BreadcrumbsComponent, MatButton, SanitizeHtmlPipe],
 })
 export class DiffComponent implements OnInit {
     private destroyRef = inject(DestroyRef);

@@ -86,6 +86,6 @@ describe('The CreateMntnerPairComponent', () => {
             .typeOnField('e-mail', 'isvonja@ripe.net')
             .expectDisabledSubmitCreate(false)
             .submitForm()
-            .expectErrorOnField('mntner', 'Syntax error in img src=');
+            .expectErrorOnField('mntner', 'Syntax error in');
     });
 });

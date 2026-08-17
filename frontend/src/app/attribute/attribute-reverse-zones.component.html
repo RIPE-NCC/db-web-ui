@@ -1,6 +1,6 @@
 @if (attribute.$$error) {
 <div class="text-error">
-    <span [innerHTML]="attribute.$$error"></span>
+    <span [innerHTML]="attribute.$$error | sanitizeHtml"></span>
 </div>
 }
 

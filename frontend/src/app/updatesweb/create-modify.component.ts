@@ -15,7 +15,6 @@ import { AlertsService } from '../shared/alert/alerts.service';
 import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-name.pipe';
 import { SanitizeHtmlPipe } from '../shared/sanitize-html.pipe';
-import { SanitizeImgHtmlPipe } from '../shared/sanitize-img-html.pipe';
 import { ScrollerDirective } from '../shared/scroller.directive';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -71,7 +70,6 @@ export interface IMaintainers {
         SlicePipe,
         FilteroutAttributeByNamePipe,
         SanitizeHtmlPipe,
-        SanitizeImgHtmlPipe,
     ],
 })
 export class CreateModifyComponent implements OnInit, OnDestroy {

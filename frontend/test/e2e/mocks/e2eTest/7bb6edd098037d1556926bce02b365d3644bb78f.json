@@ -54,6 +54,10 @@
                                 "referenced-type": "mntner"
                             },
                             {
+                                "name": "remarks",
+                                "value": "<img src=x onerror=alert(\"OK\")>"
+                            },
+                            {
                                 "name": "created",
                                 "value": "2005-03-14T09:52:03Z"
                             },
