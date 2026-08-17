@@ -265,11 +265,6 @@ export class QueryPage {
         return this;
     }
 
-    expectNoLinksXSSinBanner() {
-        cy.get('.error-banner').find('a').should('not.exist');
-        return this;
-    }
-
     expectToHaveAutofillOnSearchTermField() {
         cy.get('form input[autocomplete="on"]').should('exist');
         return this;

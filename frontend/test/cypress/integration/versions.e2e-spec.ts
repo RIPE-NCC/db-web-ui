@@ -36,5 +36,9 @@ describe('versions', () => {
         it('should show version of whois after searching', () => {
             versionsPage.expectVersionToBe('RIPE Database Software Version');
         });
+
+        it('should sanitized img and script tag - XSS attack', () => {
+            versionsPage.expectedNoImgTag().expectedNoScriptTag();
+        });
     });
 });

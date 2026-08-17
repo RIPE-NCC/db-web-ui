@@ -87,7 +87,7 @@
 <section>
     <div class="grey padding" id="resultsAnchor">
         <h2>Search results</h2>
-        <p [innerHTML]="'msg.searchResultsFullTextTandCLink.text' | label"></p>
+        <p [innerHTML]="'msg.searchResultsFullTextTandCLink.text' | label | sanitizeHtml"></p>
         @if (resultSummary) {
         <full-text-result-summary [tabledata]="resultSummary" (rowClicked)="addObjectToFilter($event)"></full-text-result-summary>
         } @if (results) {
@@ -107,7 +107,7 @@
                         >{{ result.name }}: {{ result.lookupKey }}</a
                     >
                 </div>
-                <div class="small" [innerHTML]="getResultText(result) | sanitizeImgHtml"></div>
+                <div class="small" [innerHTML]="getResultText(result) | sanitizeHtml"></div>
             </div>
             }
         </div>

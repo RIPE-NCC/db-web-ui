@@ -19,6 +19,6 @@
         </div>
         }
     </div>
-    <span [innerHTML]="'query.listOfAllQueryFlagsLabel.text' | label"></span>
+    <span [innerHTML]="'query.listOfAllQueryFlagsLabel.text' | label | sanitizeHtml"></span>
 </div>
 }

@@ -18,7 +18,7 @@
                 <strong>{{ title }}</strong>
             </div>
             }
-            <div [innerHTML]="textContent"></div>
+            <div [innerHTML]="textContent | sanitizeHtml"></div>
         </div>
     </div>
     <div class="content">

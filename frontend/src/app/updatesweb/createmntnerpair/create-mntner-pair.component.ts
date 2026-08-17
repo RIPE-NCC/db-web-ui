@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { PropertiesService } from '../../properties.service';
 import { AlertsService } from '../../shared/alert/alerts.service';
 import { DescriptionSyntaxComponent } from '../../shared/descriptionsyntax/description-syntax.component';
 import { FilteroutAttributeByNamePipe } from '../../shared/filterout-attribute-by-name.pipe';
-import { SanitizeImgHtmlPipe } from '../../shared/sanitize-img-html.pipe';
 import { SubmittingAgreementComponent } from '../../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../../shared/whois-meta.service';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
@@ -24,7 +24,7 @@ import { ScreenLogicInterceptorService } from '../screen-logic-interceptor.servi
     templateUrl: './create-mntner-pair.component.html',
     standalone: true,
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [FormsModule, DescriptionSyntaxComponent, RouterLink, SubmittingAgreementComponent, MatButton, FilteroutAttributeByNamePipe, SanitizeImgHtmlPipe],
+    imports: [FormsModule, DescriptionSyntaxComponent, RouterLink, SubmittingAgreementComponent, MatButton, FilteroutAttributeByNamePipe, SanitizeHtmlPipe],
 })
 export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     whoisResourcesService = inject(WhoisResourcesService);
