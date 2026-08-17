@@ -3,6 +3,7 @@ import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Labels } from 'src/app/label.constants';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { PropertiesService } from '../properties.service';
 
 /*  Usage
@@ -41,7 +42,7 @@ export enum BannerTypes {
     selector: 'banner',
     templateUrl: './banner.component.html',
     styleUrl: 'banner.component.scss',
-    imports: [MatButton, MatDialogClose],
+    imports: [MatButton, MatDialogClose, SanitizeHtmlPipe],
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
