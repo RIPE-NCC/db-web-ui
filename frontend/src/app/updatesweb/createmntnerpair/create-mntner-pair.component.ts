@@ -90,6 +90,8 @@ export class CreateMntnerPairComponent implements OnInit, OnDestroy {
     }
 
     public submit() {
+        console.log('ERROR', this.objectTypeAttributes);
+
         this.populateMissingAttributes();
 
         const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.mntnerAttributes, 'mntner');
