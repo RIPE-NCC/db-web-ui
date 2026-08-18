@@ -64,7 +64,7 @@ public class HazelcastSessionConfig {
                 new EntryAddedListener<Object, Object>() {
                     @Override
                     public void entryAdded(EntryEvent<Object, Object> event) {
-                        LOGGER.debug("AuthorizedClient ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("AuthorizedClient ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -72,7 +72,7 @@ public class HazelcastSessionConfig {
                 new EntryUpdatedListener<Object, Object>() {
                     @Override
                     public void entryUpdated(EntryEvent<Object, Object> event) {
-                        LOGGER.debug("AuthorizedClient UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("AuthorizedClient UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -80,7 +80,7 @@ public class HazelcastSessionConfig {
                 new EntryRemovedListener<Object, Object>() {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
-                        LOGGER.debug("AuthorizedClient REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("AuthorizedClient REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -89,10 +89,25 @@ public class HazelcastSessionConfig {
                 new EntryExpiredListener<Object, Object>() {
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
-                        LOGGER.debug("AuthorizedClient EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("AuthorizedClient EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
+
+        instance.getMap("spring:session:sessions").addEntryListener(
+                (EntryAddedListener<Object, Object>) event ->
+                        LOGGER.info("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
+                true
+        );
+        instance.getMap("spring:session:sessions").addEntryListener(
+                (EntryRemovedListener<Object, Object>) event ->
+                        LOGGER.info("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress()), true
+        );
+        instance.getMap("spring:session:sessions").addEntryListener(
+                (EntryExpiredListener<Object, Object>) event ->
+                        LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress()), true
+        );
+
     }
 
 
