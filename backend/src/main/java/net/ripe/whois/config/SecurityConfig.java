@@ -44,7 +44,8 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             DefaultOAuth2AuthorizationRequestResolver pkceResolver,
                                             AuthenticationSuccessHandler successHandler,
-                                            OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler) throws Exception {
+                                            OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
+                                            OAuth2AuthorizedClientRepository authorizedClientRepository) throws Exception {
 
         PathPatternRequestMatcher.Builder requestMatcherBuilder = PathPatternRequestMatcher.withDefaults();
 
@@ -82,7 +83,11 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
+            .oauth2Client(oauth2 -> oauth2
+                    .authorizedClientRepository(authorizedClientRepository)
+            )
             .oauth2Login(oauth -> {
+                    oauth.authorizedClientRepository(authorizedClientRepository);
                     oauth.authorizationEndpoint(auth -> auth.authorizationRequestResolver(pkceResolver));
                     oauth.successHandler(successHandler);
                 })

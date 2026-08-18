@@ -14,13 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.session.hazelcast.config.annotation.web.http.EnableHazelcastHttpSession;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableHazelcastHttpSession
 public class HazelcastSessionConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastSessionConfig.class);
