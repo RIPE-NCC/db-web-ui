@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSuffix } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTreeModule } from '@angular/material/tree';
+import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
 import { IMoreSpecificResource, IMoreSpecificsApiResult, MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
 import { IResourceScreenItem, IUsage } from 'src/app/myresources/resource-type.model';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
@@ -23,6 +24,7 @@ export interface TreeNode {
 
     // Only used by the "Show more" pseudo-node
     isShowMore?: boolean;
+    isScalabilityBanner?: boolean;
     remaining?: number;
     parent?: TreeNode;
 
@@ -33,7 +35,7 @@ export interface TreeNode {
     selector: 'tree',
     templateUrl: 'tree.component.html',
     styleUrl: 'tree.component.scss',
-    imports: [MatTreeModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatSuffix, NameFormatterComponent],
+    imports: [MatTreeModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatSuffix, NameFormatterComponent, BannerComponent],
 })
 export class Tree implements OnInit {
     private moreSpecificsService = inject(MoreSpecificsService);
@@ -41,7 +43,9 @@ export class Tree implements OnInit {
     readonly childrenAccessor = (node: TreeNode) => node.children ?? [];
     readonly hasChild = (_: number, node: TreeNode) => !node.isShowMore && node.expandable;
     readonly isShowMore = (_: number, node: TreeNode): boolean => node.isShowMore === true;
+    readonly isScalabilityBanner = (_: number, node: TreeNode): boolean => node.isScalabilityBanner === true;
 
+    readonly scalabilityMsg = 'Nodes with 10+ children show first 10 items. Click "Show more" to expand the full list.';
     @Input()
     rootLevelNodes: IResourceScreenItem[];
 
@@ -76,8 +80,18 @@ export class Tree implements OnInit {
      * Called from template via (expandedChange) output.
      */
     onNodeExpanded(node: TreeNode, expanded: boolean): void {
-        if (!expanded || node.children) {
-            // Don't reload if collapsing or already loaded
+        if (!expanded) {
+            // Reset "Show more" state every time the node is collapsed
+            node.showAllChildren = false;
+            if (node.allChildren) {
+                node.children = this.getVisibleChildren(node);
+                this.dataSource.set([...this.dataSource()]);
+            }
+            return;
+        }
+
+        if (node.children) {
+            // Already loaded, don't reload from API
             return;
         }
 
@@ -112,6 +126,10 @@ export class Tree implements OnInit {
         }
 
         return [
+            {
+                isScalabilityBanner: true,
+                parent: node,
+            } as TreeNode,
             ...children.slice(0, 10),
             {
                 isShowMore: true,
@@ -131,4 +149,6 @@ export class Tree implements OnInit {
 
         this.dataSource.set([...this.dataSource()]);
     }
+
+    protected readonly BannerTypes = BannerTypes;
 }

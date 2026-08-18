@@ -8,6 +8,11 @@
             {{ node.netname }}
         </div>
     </mat-tree-node>
+    <!--  Node with banner, more then 10 children  -->
+    <mat-tree-node *matTreeNodeDef="let node; when: isScalabilityBanner">
+        <button matIconButton disabled></button>
+        <banner [type]="BannerTypes.informational" [title]="'Scalability: Large allocations'" [textContent]="scalabilityMsg" [permanent]="true"></banner>
+    </mat-tree-node>
     <!--  Node with 'show more' button, more then 10 children  -->
     <mat-tree-node *matTreeNodeDef="let node; when: isShowMore">
         <button matIconButton disabled></button>
