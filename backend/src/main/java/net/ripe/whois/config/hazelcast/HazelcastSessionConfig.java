@@ -184,7 +184,7 @@ public class HazelcastSessionConfig {
         );
 
 
-        instance.getMap("spring:session:sessions").addEntryListener(
+        /*instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryAddedListener<Object, Object>) event ->
                         LOGGER.info("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
                 true
@@ -197,7 +197,7 @@ public class HazelcastSessionConfig {
                 (EntryExpiredListener<Object, Object>) event ->
                         LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress()), true
         );
-
+*/
 
     }
 
