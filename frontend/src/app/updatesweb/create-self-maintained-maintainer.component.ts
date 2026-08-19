@@ -9,7 +9,6 @@ import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators
 import { AlertsService } from '../shared/alert/alerts.service';
 import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { FilteroutAttributeByNamePipe } from '../shared/filterout-attribute-by-name.pipe';
-import { SanitizeImgHtmlPipe } from '../shared/sanitize-img-html.pipe';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -35,7 +34,6 @@ import { RestService } from './rest.service';
         MatButton,
         AsyncPipe,
         FilteroutAttributeByNamePipe,
-        SanitizeImgHtmlPipe,
     ],
 })
 export class CreateSelfMaintainedMaintainerComponent implements OnInit {

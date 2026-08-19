@@ -74,10 +74,10 @@ describe('The inetnum editor', () => {
             )
             .selectFromNgSelect('status', 'ASSIGNED PA')
             .submitForm()
-            .expectErrorOnField('inetnum', 'Syntax error in img src=')
-            .expectErrorOnField('netname', 'Syntax error in img src=')
-            .expectErrorOnField('admin-c', 'Syntax error in img src=')
-            .expectErrorOnField('tech-c', 'Syntax error in img src=');
+            .expectErrorOnField('inetnum', 'Syntax error in')
+            .expectErrorOnField('netname', 'Syntax error in')
+            .expectErrorOnField('admin-c', 'Syntax error in')
+            .expectErrorOnField('tech-c', 'Syntax error in');
     });
 
     it('should open description just under field on click on question mark', () => {

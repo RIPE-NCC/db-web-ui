@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { WebAppVersionComponent } from '../application-version/web-app-version.component';
 import { WhoisVersionComponent } from '../application-version/whois-version.component';
 import { BannerTypes } from '../banner/banner.component';
@@ -86,6 +87,7 @@ export type ShareLink = {
         WhoisVersionComponent,
         WebAppVersionComponent,
         LabelPipe,
+        SanitizeHtmlPipe,
     ],
 })
 export class QueryComponent implements OnDestroy {

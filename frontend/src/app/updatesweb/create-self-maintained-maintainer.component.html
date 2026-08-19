@@ -53,7 +53,7 @@
 
                 @if (attribute.$$error) {
                 <span class="text-error">
-                    <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
+                    <span [innerHTML]="attribute.$$error | sanitizeHtml"></span>
                 </span>
                 }
 

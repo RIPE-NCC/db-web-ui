@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { WhoisMetaService } from '../whois-meta.service';
 
 @Component({
     selector: 'attr-info',
-    template: `<span [innerHTML]="text"></span>`,
+    template: `<span [innerHTML]="text | sanitizeHtml"></span>`,
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
+    imports: [SanitizeHtmlPipe],
 })
 export class AttributeInfoComponent implements OnInit {
     private whoisMetaService = inject(WhoisMetaService);

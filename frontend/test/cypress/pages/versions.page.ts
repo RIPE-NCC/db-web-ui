@@ -17,4 +17,14 @@ export class VersionsPage {
         cy.get('whois-version').should('contain.text', version);
         return this;
     }
+
+    expectedNoImgTag() {
+        cy.get('whois-version img').should('not.exist');
+        return this;
+    }
+
+    expectedNoScriptTag() {
+        cy.get('whois-version script').should('not.exist');
+        return this;
+    }
 }

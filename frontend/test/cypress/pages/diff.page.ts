@@ -42,4 +42,14 @@ export class DiffPage {
         cy.get('button').contains('Exit').click();
         return this;
     }
+
+    expectedNoImgTag() {
+        cy.get('section.inner-container img').should('not.exist');
+        return this;
+    }
+
+    expectedNoScriptTag() {
+        cy.get('section.inner-container script').should('not.exist');
+        return this;
+    }
 }

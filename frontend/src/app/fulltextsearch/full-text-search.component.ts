@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { WhoisVersionComponent } from '../application-version/whois-version.component';
 import { Labels } from '../label.constants';
 import { PropertiesService } from '../properties.service';
@@ -10,7 +11,6 @@ import { AlertsService } from '../shared/alert/alerts.service';
 import { HelpMarkerComponent } from '../shared/help-marker.component';
 import { LabelPipe } from '../shared/label.pipe';
 import { PaginationComponent } from '../shared/paginator/pagination.component';
-import { SanitizeImgHtmlPipe } from '../shared/sanitize-img-html.pipe';
 import { SearchFieldComponent } from '../shared/sreachfield/search-field.component';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisMetaService } from '../shared/whois-meta.service';
@@ -37,7 +37,7 @@ import { IResultSummary, ISearchResponseModel } from './types.model';
         RouterLink,
         WhoisVersionComponent,
         LabelPipe,
-        SanitizeImgHtmlPipe,
+        SanitizeHtmlPipe,
     ],
 })
 export class FullTextSearchComponent implements OnInit, OnDestroy {

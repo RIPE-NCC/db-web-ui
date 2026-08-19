@@ -127,7 +127,7 @@
     <section class="resultsSection" id="resultsSection">
         @if (results?.length > 0) {
         <div class="full-width">
-            <p style="margin: 0" [innerHTML]="'msg.searchResults.text' | label"></p>
+            <p style="margin: 0" [innerHTML]="'msg.searchResults.text' | label | sanitizeHtml"></p>
             @for (whoisObject of results; track whoisObject) {
             <div class="clearfix">
                 <div class="resultpane">
@@ -146,7 +146,7 @@
     </section>
     @if (showTemplatePanel) {
     <section id="templateResultsSection">
-        <p [innerHTML]="'msg.searchResults.text' | label"></p>
+        <p [innerHTML]="'msg.searchResults.text' | label | sanitizeHtml"></p>
         <lookup-template [query]="queriedTemplateObject"></lookup-template>
     </section>
     } @if (showsDocsLink) {

@@ -5,6 +5,7 @@ import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
 import { OverrideCredentialsService } from '../shared/override-credentials-service';
@@ -24,7 +25,16 @@ import { AttributeReverseZonesComponent } from './attribute-reverse-zones.compon
     templateUrl: './attribute-renderer.component.html',
     standalone: true,
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [NgClass, AttributeReverseZonesComponent, DescriptionSyntaxComponent, FormsModule, NgbTypeahead, NgSelectComponent, NgOptionTemplateDirective],
+    imports: [
+        NgClass,
+        AttributeReverseZonesComponent,
+        DescriptionSyntaxComponent,
+        FormsModule,
+        NgbTypeahead,
+        NgSelectComponent,
+        NgOptionTemplateDirective,
+        SanitizeHtmlPipe,
+    ],
 })
 export class AttributeRendererComponent implements OnInit {
     private attributeMetadataService = inject(AttributeMetadataService);

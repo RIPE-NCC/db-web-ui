@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 
 @Component({
@@ -6,6 +7,7 @@ import { IAttributeModel } from '../shared/whois-response-type.model';
     templateUrl: './attribute-reverse-zones.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
+    imports: [SanitizeHtmlPipe],
 })
 export class AttributeReverseZonesComponent {
     @Input()
