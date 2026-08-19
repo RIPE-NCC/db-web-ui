@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -82,6 +83,11 @@ public class SecurityConfig {
                 .requestMatchers("/public/**", "/api/healthcheck", "/api/syncupdates", "/api/whois-internal/api/user/info","/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
                 .anyRequest().authenticated()
             )
+            // 1. Tell Spring to only create a session if it absolutely needs to (e.g., after login)
+            .sessionManagement(session -> session
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            )
+            // 2. Ensure CSRF does not force session creation for guests
             .csrf(csrf -> csrf
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             )
