@@ -110,6 +110,7 @@ public class HazelcastSessionConfig {
                         LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress()), true
         );
 
+
     }
 
 

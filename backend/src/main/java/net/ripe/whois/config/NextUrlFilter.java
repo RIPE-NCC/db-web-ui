@@ -26,7 +26,7 @@ public class NextUrlFilter extends OncePerRequestFilter {
             String next = request.getParameter("next");
 
             if (next != null) {
-                request.getSession().setAttribute(NEXT_URL_SESSION_ATTRIBUTE, next);
+                request.getSession(true).setAttribute(NEXT_URL_SESSION_ATTRIBUTE, next);
             }
         }
 
