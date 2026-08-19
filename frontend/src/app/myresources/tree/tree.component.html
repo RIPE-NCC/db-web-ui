@@ -14,10 +14,10 @@
         <banner [type]="BannerTypes.informational" [title]="'Scalability: Large allocations'" [textContent]="scalabilityMsg" [permanent]="true"></banner>
     </mat-tree-node>
     <!--  Node with 'show more' button, more then 10 children  -->
-    <mat-tree-node *matTreeNodeDef="let node; when: isShowMore">
-        <button matIconButton disabled></button>
+    <mat-tree-node *matTreeNodeDef="let node; when: isShowMore" matTreeNodePadding>
+        <button matIconButton disabled class="tree-indent-button"></button>
 
-        <button type="button" matButton (click)="showMore(node)">
+        <button type="button" matButton class="show-more-button" (click)="showMore(node)">
             <mat-icon class="fa-light fa-chevron-right"></mat-icon>
             Show {{ node.remaining }} more assignments
         </button>
@@ -32,7 +32,7 @@
     >
         <button matIconButton [attr.aria-label]="'Toggle ' + node.resource" matTreeNodeToggle>
             @if (tree.isExpanded(node)) {
-            <mat-icon matSuffix class="fa-light fa-minus"></mat-icon> } @else { <mat-icon matSuffix class="fa-light fa-plus"></mat-icon> }
+            <mat-icon class="fa-light fa-minus"></mat-icon> } @else { <mat-icon class="fa-light fa-plus"></mat-icon> }
         </button>
         <div class="node-content">
             <mat-icon class="fa-solid fa-circle-small ok" [class.issue]="false"></mat-icon>

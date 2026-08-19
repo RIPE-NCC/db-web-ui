@@ -1,13 +1,40 @@
+// +/- button
+mat-tree-node > button[matIconButton] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
+        margin: 0;
+    }
+}
+
 .node-content {
     display: flex;
     align-items: center;
-    gap: 8px;
-}
+    gap: 10px;
+    padding-left: 10px;
 
-.node-content mat-icon {
-    font-size: 8px;
-    width: 8px;
-    height: 8px;
+    mat-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 16px;
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
+    }
 }
 
 .node-content mat-icon.ok {
@@ -16,4 +43,30 @@
 
 .node-content mat-icon.issue {
     color: #f36b21;
+}
+
+.tree-indent-button {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 0;
+}
+
+.show-more-button {
+    color: #131f48;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: auto;
+
+    mat-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 14px;
+        line-height: 16px;
+        margin: 0;
+    }
 }
