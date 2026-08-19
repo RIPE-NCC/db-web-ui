@@ -24,7 +24,6 @@ export interface TreeNode {
 
     // Only used by the "Show more" pseudo-node
     isShowMore?: boolean;
-    isScalabilityBanner?: boolean;
     remaining?: number;
     parent?: TreeNode;
 
@@ -43,7 +42,6 @@ export class Tree implements OnInit {
     readonly childrenAccessor = (node: TreeNode) => node.children ?? [];
     readonly hasChild = (_: number, node: TreeNode) => !node.isShowMore && node.expandable;
     readonly isShowMore = (_: number, node: TreeNode): boolean => node.isShowMore === true;
-    readonly isScalabilityBanner = (_: number, node: TreeNode): boolean => node.isScalabilityBanner === true;
 
     readonly scalabilityMsg = 'Nodes with 10+ children show first 10 items. Click "Show more" to expand the full list.';
     @Input()
@@ -126,10 +124,6 @@ export class Tree implements OnInit {
         }
 
         return [
-            {
-                isScalabilityBanner: true,
-                parent: node,
-            } as TreeNode,
             ...children.slice(0, 10),
             {
                 isShowMore: true,
