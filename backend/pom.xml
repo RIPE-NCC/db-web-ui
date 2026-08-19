@@ -15,19 +15,19 @@
         <assertj-core.version>3.27.7</assertj-core.version>
         <awaitility.version>4.3.0</awaitility.version>
         <bucket4j.version>0.12.8</bucket4j.version>
-        <caffeine.version>3.1.8</caffeine.version>
+        <caffeine.version>3.2.4</caffeine.version>
         <commons-io.version>2.21.0</commons-io.version>
         <commons-ip-math.version>1.32</commons-ip-math.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
         <dnsjava.version>3.6.2</dnsjava.version>
-        <freemarker.version>2.3.33</freemarker.version>
+        <freemarker.version>2.3.34</freemarker.version>
         <google-guava.version>33.4.8-jre</google-guava.version>
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
-        <httpclient.version>5.4.3</httpclient.version>
+        <httpclient.version>5.5.2</httpclient.version>
         <jackson-annotations.version>2.21</jackson-annotations.version>
         <jackson.version>2.21.4</jackson.version>
         <jaxb.api.version>4.0.5</jaxb.api.version>
-        <jaxb.impl.version>4.0.6</jaxb.impl.version>
-        <javax.inject.version>1</javax.inject.version>
+        <jaxb.impl.version>4.0.9</jaxb.impl.version>
         <jcache.version>1.1.1</jcache.version>
         <!-- align jetty with spring-boot-starter-jetty -->
         <jetty.version>12.0.36</jetty.version>
@@ -37,11 +37,11 @@
         <maven.compiler.target>21</maven.compiler.target>
         <reflections.version>0.10.2</reflections.version>
         <sentry.version>8.33.0</sentry.version>
-        <selenium.version>4.27.0</selenium.version>
+        <selenium.version>4.31.0</selenium.version>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <sonar.sources>src/main</sonar.sources>
         <sonar.tests>src/test</sonar.tests>
-        <snakeyaml.version>2.3</snakeyaml.version>
+        <snakeyaml.version>2.4</snakeyaml.version>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>3.5.16</spring-boot.version>
         <!-- whois master 13-oct -->
@@ -271,11 +271,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax.inject.version}</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>net.ripe.db</groupId>
