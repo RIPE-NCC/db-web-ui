@@ -19,12 +19,10 @@ import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegist
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -130,11 +128,6 @@ public class SecurityConfig {
 
     @Bean
     public HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository(HazelcastInstance hazelcastInstance) {
-        return new HazelcastAuthorizationRequestRepository(hazelcastInstance);
-    }
-
-    @Bean
-    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository(HazelcastInstance hazelcastInstance) {
         return new HazelcastAuthorizationRequestRepository(hazelcastInstance);
     }
 
