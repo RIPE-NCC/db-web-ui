@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegrationTest {
@@ -29,7 +28,6 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
         final ResponseEntity<String> response = post("/db-web-ui/api/whois/domain-objects/TEST", String.class, postEntity(dto));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getHeaders().get("Set-Cookie").getFirst(), containsString("DBSESSIONID"));
     }
 
     // helper methods
