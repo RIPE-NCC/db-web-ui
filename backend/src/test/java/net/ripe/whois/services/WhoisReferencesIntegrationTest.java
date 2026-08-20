@@ -33,11 +33,11 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
     public void create_references() {
         mock("/references/RIPE", "test");
 
-        //final String xsrfToken = extractXsrfCookie();
+        final String xsrfToken = extractXsrfCookie();
 
         final HttpHeaders headers = new HttpHeaders();
-        /*headers.add(HttpHeaders.COOKIE, "XSRF-TOKEN=" + xsrfToken);
-        headers.add("X-XSRF-TOKEN", xsrfToken);*/
+        headers.add(HttpHeaders.COOKIE, "DBCSRFTOKEN=" + xsrfToken);
+        headers.add("X-XSRF-TOKEN", xsrfToken);
 
         final ResponseEntity<String> response = post("/db-web-ui/api/references/RIPE", String.class, entity("test", headers));
 
@@ -49,11 +49,11 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
     public void delete_references() {
         mock("/references/RIPE/inetnum/212.154.128.20%20-%20212.154.128.23?reason=delete%20reason", "test");
 
-        //final String xsrfToken = extractXsrfCookie();
+        final String xsrfToken = extractXsrfCookie();
 
         final HttpHeaders headers = new HttpHeaders();
-        /*headers.add(HttpHeaders.COOKIE, "XSRF-TOKEN=" + xsrfToken);
-        headers.add("X-XSRF-TOKEN", xsrfToken);*/
+        headers.add(HttpHeaders.COOKIE, "DBCSRFTOKEN=" + xsrfToken);
+        headers.add("X-XSRF-TOKEN", xsrfToken);
 
 
         final ResponseEntity<String> response = delete("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212" +

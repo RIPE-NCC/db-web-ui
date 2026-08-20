@@ -227,11 +227,11 @@ public abstract class AbstractIntegrationTest {
         return csrfResponse.getHeaders()
                 .getOrEmpty(HttpHeaders.SET_COOKIE)
                 .stream()
-                .filter(cookie -> cookie.startsWith("XSRF-TOKEN="))
+                .filter(cookie -> cookie.startsWith("DBCSRFTOKEN="))
                 .map(cookie -> {
                     final int end = cookie.indexOf(';');
                     return cookie.substring(
-                            "XSRF-TOKEN".length() + 1,
+                            "DBCSRFTOKEN".length() + 1,
                             end >= 0 ? end : cookie.length()
                     );
                 })

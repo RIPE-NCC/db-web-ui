@@ -63,14 +63,15 @@ export class AppComponent implements OnInit, OnDestroy {
     currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
 
     constructor() {
-        console.log('url', this.currentHref);
+        console.log('url1', this.currentHref);
+
         this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV as keyof typeof EnvNamesInRipeWebComponents];
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
             this.setActiveSidebarItem(evt.url);
 
             this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
-            console.log('url', this.currentHref);
+            console.log('url2', this.currentHref);
         });
         effect(() => {
             this.onActiveMenuChange();

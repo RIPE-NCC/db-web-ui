@@ -27,10 +27,12 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
             new NameValuePair("nserver", "ns1.test.nl"));
 
 
-        //final String xsrfToken = extractXsrfCookie();
+        final String xsrfToken = extractXsrfCookie();
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth("aabbccdd");
+        headers.add(HttpHeaders.COOKIE, "DBCSRFTOKEN=" + xsrfToken);
+        headers.add("X-XSRF-TOKEN", xsrfToken);
 
         final HttpEntity<WhoisWebDTO> entity = new HttpEntity<>(dto, headers);
 
