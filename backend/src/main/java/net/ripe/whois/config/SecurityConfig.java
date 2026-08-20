@@ -2,9 +2,6 @@ package net.ripe.whois.config;
 
 import com.hazelcast.core.HazelcastInstance;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
-import net.ripe.whois.config.hazelcast.HazelcastSessionConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,6 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.web.client.RestClient;
@@ -39,8 +37,6 @@ import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastSessionConfig.class);
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             DefaultOAuth2AuthorizationRequestResolver pkceResolver,
@@ -51,8 +47,16 @@ public class SecurityConfig {
         PathPatternRequestMatcher.Builder requestMatcherBuilder = PathPatternRequestMatcher.withDefaults();
 
 
-        http
-            .authorizeHttpRequests(auth -> auth
+        http    // 1. Tell Spring to only create a session if it absolutely needs to (e.g., after login)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                // 2. Ensure CSRF does not force session creation for guests
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // Uses cookies instead of HttpSession
+                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())    // Defers token loading
+                )
+                .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/",
                         "/index.html",
                         "/assets/**",
@@ -83,14 +87,7 @@ public class SecurityConfig {
                 .requestMatchers("/public/**", "/api/healthcheck", "/api/syncupdates", "/api/whois-internal/api/user/info","/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
                 .anyRequest().authenticated()
             )
-            // 1. Tell Spring to only create a session if it absolutely needs to (e.g., after login)
-            .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-            )
-            // 2. Ensure CSRF does not force session creation for guests
-            .csrf(csrf -> csrf
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            )
+
             .oauth2Client(oauth2 -> oauth2
                     .authorizedClientRepository(authorizedClientRepository)
             )
