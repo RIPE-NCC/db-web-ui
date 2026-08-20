@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -101,7 +100,11 @@ public class SecurityConfig {
                             .authorizationRequestRepository(authorizationRequestRepository));
                     oauth.successHandler(successHandler);
                 })
-                .oidcLogout(logout -> logout.backChannel(Customizer.withDefaults()))
+                .oidcLogout(logout -> logout
+                        .backChannel(backChannel -> backChannel
+                                .logoutHandler(backChannelLogoutLoggingHandler())
+                        )
+                )
                 .logout(logout -> logout
                         .addLogoutHandler(hazelcastLogoutHandler)
                         .deleteCookies("DBSESSIONID", "oauth2_auth_request")
@@ -234,6 +237,7 @@ public class SecurityConfig {
     OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler(
             ClientRegistrationRepository clientRegistrationRepository) {
 
+        LOGGER.info("OIDC Logout Success Handler");
         OidcClientInitiatedLogoutSuccessHandler handler =
                 new OidcClientInitiatedLogoutSuccessHandler(
                         clientRegistrationRepository);
@@ -241,6 +245,14 @@ public class SecurityConfig {
         handler.setPostLogoutRedirectUri("{baseUrl}/query");
 
         return handler;
+    }
+
+    @Bean
+    LogoutHandler backChannelLogoutLoggingHandler() {
+        return (request, response, authentication) -> {
+            String principal = authentication != null ? authentication.getName() : "unknown";
+            LOGGER.info("Back-channel logout processed for principal={}", principal);
+        };
     }
 
     @Bean
