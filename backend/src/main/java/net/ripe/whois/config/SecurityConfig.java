@@ -2,16 +2,16 @@ package net.ripe.whois.config;
 
 import com.hazelcast.core.HazelcastInstance;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
@@ -36,6 +36,8 @@ import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -122,10 +124,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService, RestTemplate restTemplate) {
         DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
+        LOGGER.info("DefaultRedirectStrategy: {}", defaultRedirectStrategy);
         SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
         delegate.setRedirectStrategy((request, response, url) -> {
             String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-
+            LOGGER.info("RedirectStrategy: next={} url={}", next, url);
             if (next != null) {
                 request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
                 response.sendRedirect(next);
@@ -134,21 +137,7 @@ public class SecurityConfig {
             }
         });
 
-        return (request, response, authentication) -> {
-
-            OAuth2AuthenticationToken oauthToken =
-                (OAuth2AuthenticationToken) authentication;
-
-            OAuth2AuthorizedClient client =
-                authorizedClientService.loadAuthorizedClient(
-                    oauthToken.getAuthorizedClientRegistrationId(),
-                    oauthToken.getName());
-
-            delegate.onAuthenticationSuccess(
-                request,
-                response,
-                authentication);
-        };
+        return delegate;
     }
 
     @Bean

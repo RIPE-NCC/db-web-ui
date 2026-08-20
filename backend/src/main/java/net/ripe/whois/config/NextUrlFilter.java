@@ -26,7 +26,6 @@ public class NextUrlFilter extends OncePerRequestFilter {
         FilterChain filterChain)
         throws ServletException, IOException {
 
-        LOGGER.info("NextUrlFilter: {}", request.getRequestURI());
         if (request.getRequestURI().equals("/db-web-ui/oauth2/authorization/keycloak")) {
             String next = request.getParameter("next");
             LOGGER.info("NextUrlFilter: next={}", next);
