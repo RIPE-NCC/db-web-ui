@@ -25,6 +25,21 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+
+/**
+ * Replaces HttpSessionSecurityContextRepository (the implicit default that
+ * @EnableHazelcastHttpSession used to back with Hazelcast). Auth state lives in Hazelcast
+ * keyed by an opaque DSESSIONID cookie — NOT in HttpSession. Any cluster node can serve
+ * any request once it can read the cookie and hit Hazelcast, so no sticky sessions are
+ * needed for authentication to work.
+ *
+ * Stores Spring's own OidcSessionInformation directly (no custom wrapper record). Tradeoff:
+ * OidcSessionInformation only carries the OidcIdToken, not OidcUserInfo — so on reload the
+ * rebuilt OidcUser only has ID-token claims (sub, email, name if present there), not any
+ * extra claims that came from a separate userinfo endpoint call. sessionId is set to our
+ * own DSESSIONID value (not a servlet session id), so this same map entry is already in the
+ * right shape if you later add back-channel-logout support via a custom OidcSessionRegistry.
+ */
 public class HazelcastSecurityContextRepository implements SecurityContextRepository {
 
     public static final String SID_COOKIE = "DBSESSIONID";

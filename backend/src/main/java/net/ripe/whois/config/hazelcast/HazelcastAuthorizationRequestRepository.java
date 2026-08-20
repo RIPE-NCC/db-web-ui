@@ -5,6 +5,8 @@ import com.hazelcast.map.IMap;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
@@ -22,6 +24,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class HazelcastAuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastAuthorizationRequestRepository.class);
 
     private static final String BINDING_COOKIE = "oauth2_auth_binding";
     private static final long TTL_SECONDS = 180; // matches the short login-handshake window
@@ -50,8 +54,10 @@ public class HazelcastAuthorizationRequestRepository implements AuthorizationReq
         if (authorizationRequest == null) {
             return;
         }
+
         final String nonce = generateNonce();
         final String nextUrl = request.getParameter("next");
+        LOGGER.info("Saving next {}", nextUrl);
         authorizationRequests.put(authorizationRequest.getState(),
                 new Entry(authorizationRequest, nonce, nextUrl), TTL_SECONDS, TimeUnit.SECONDS);
         setBindingCookie(response, nonce, request.isSecure(), (int) TTL_SECONDS);

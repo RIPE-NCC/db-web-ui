@@ -118,7 +118,7 @@ public class HazelcastSessionConfig {
                 new EntryAddedListener<Object, Object>() {
                     @Override
                     public void entryAdded(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("OIDC Map ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -126,7 +126,7 @@ public class HazelcastSessionConfig {
                 new EntryUpdatedListener<Object, Object>() {
                     @Override
                     public void entryUpdated(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("OIDC Map UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -134,7 +134,7 @@ public class HazelcastSessionConfig {
                 new EntryRemovedListener<Object, Object>() {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("OIDC Map REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -143,7 +143,7 @@ public class HazelcastSessionConfig {
                 new EntryExpiredListener<Object, Object>() {
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("OIDC Map EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -153,7 +153,7 @@ public class HazelcastSessionConfig {
                 new EntryAddedListener<Object, Object>() {
                     @Override
                     public void entryAdded(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("Temporal session ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -161,7 +161,7 @@ public class HazelcastSessionConfig {
                 new EntryUpdatedListener<Object, Object>() {
                     @Override
                     public void entryUpdated(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("Temporal session UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -169,7 +169,7 @@ public class HazelcastSessionConfig {
                 new EntryRemovedListener<Object, Object>() {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("Temporal session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );
@@ -178,7 +178,7 @@ public class HazelcastSessionConfig {
                 new EntryExpiredListener<Object, Object>() {
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
-                        LOGGER.info("AuthorizedClient EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        LOGGER.info("Temporal session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
                     }
                 }, true
         );

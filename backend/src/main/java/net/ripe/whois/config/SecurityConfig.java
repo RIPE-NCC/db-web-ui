@@ -5,6 +5,8 @@ import net.ripe.whois.config.hazelcast.HazelcastAuthorizationRequestRepository;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import net.ripe.whois.config.hazelcast.HazelcastSecurityContextRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,18 +17,20 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.NullRequestCache;
@@ -40,13 +44,17 @@ import java.util.Optional;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
+
+    private static final String POST_LOGIN_REDIRECT_URL = "/db-web-ui/query";
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             DefaultOAuth2AuthorizationRequestResolver pkceResolver,
                                             AuthenticationSuccessHandler successHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
                                             SecurityContextRepository securityContextRepository,
-                                            HazelcastAuthorizationRequestRepository authorizationRequestRepository,
+                                            AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository,
                                             LogoutHandler hazelcastLogoutHandler) throws Exception {
 
         PathPatternRequestMatcher.Builder requestMatcherBuilder = PathPatternRequestMatcher.withDefaults();
@@ -102,10 +110,6 @@ public class SecurityConfig {
                                 requestMatcherBuilder.matcher(HttpMethod.POST, "/logout")))
                         .logoutSuccessHandler(logoutSuccessHandler));
 
-        // NextUrlFilter's original purpose (writing NEXT_URL) is gone now that login
-        // always redirects to a fixed URL. If NextUrlFilter did nothing else, remove
-        // this line and delete the filter entirely.
-
         return http.build();
     }
 
@@ -127,15 +131,35 @@ public class SecurityConfig {
     }
 
     @Bean
-    public HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository(HazelcastInstance hazelcastInstance) {
+    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository(HazelcastInstance hazelcastInstance) {
         return new HazelcastAuthorizationRequestRepository(hazelcastInstance);
     }
 
+    @Bean
+    public HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository(HazelcastInstance hazelcastInstance) {
+        return new HazelcastAuthorizationRequestRepository(hazelcastInstance);
+    }
     @Bean
     public LogoutHandler hazelcastLogoutHandler(SecurityContextRepository securityContextRepository) {
         return (request, response, authentication) ->
                 ((HazelcastSecurityContextRepository) securityContextRepository).evict(request, response);
     }
+
+    /*@Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService) {
+        return (request, response, authentication) -> {
+
+            OAuth2AuthenticationToken oauthToken =
+                    (OAuth2AuthenticationToken) authentication;
+
+            authorizedClientService.loadAuthorizedClient(
+                    oauthToken.getAuthorizedClientRegistrationId(),
+                    oauthToken.getName());
+
+            response.sendRedirect(POST_LOGIN_REDIRECT_URL);
+        };
+    }
+
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(
@@ -161,6 +185,36 @@ public class SecurityConfig {
         });
 
         return delegate;
+    }*/
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler(
+            OAuth2AuthorizedClientService authorizedClientService,
+            HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository) {
+
+        DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
+
+        return (request, response, authentication) -> {
+            Optional<HazelcastAuthorizationRequestRepository.Entry> entry =
+                    hazelcastAuthorizationRequestRepository.loadAuthorizationEntry(request);
+
+            // Why this is needed?
+            OAuth2AuthenticationToken oauthToken =
+                    (OAuth2AuthenticationToken) authentication;
+
+            authorizedClientService.loadAuthorizedClient(
+                    oauthToken.getAuthorizedClientRegistrationId(),
+                    oauthToken.getName());
+
+            String next = entry.map(HazelcastAuthorizationRequestRepository.Entry::nextUrl).orElse(null);
+
+            if (next != null) {
+                hazelcastAuthorizationRequestRepository.removeAuthorizationRequest(request, response);
+                defaultRedirectStrategy.sendRedirect(request, response, next);
+            } else {
+                defaultRedirectStrategy.sendRedirect(request, response, POST_LOGIN_REDIRECT_URL);
+            }
+        };
     }
 
     @Bean
