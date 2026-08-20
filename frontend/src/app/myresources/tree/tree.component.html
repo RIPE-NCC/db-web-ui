@@ -11,7 +11,7 @@
 </div>
 <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
     <!--  Node without children  -->
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectNode(node)">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectNode(node)" [class.emphasized-node]="selectedNode === node">
         <button matIconButton disabled></button>
         <div class="node-content">
             <mat-icon matSuffix class="fa-solid fa-circle-small ok" [class.issue]="true"></mat-icon>
@@ -36,6 +36,7 @@
         [cdkTreeNodeTypeaheadLabel]="node.resource"
         (expandedChange)="onNodeExpanded(node, $event)"
         (click)="selectNode(node)"
+        [class.emphasized-node]="selectedNode === node"
     >
         <button matIconButton [attr.aria-label]="'Toggle ' + node.resource" matTreeNodeToggle>
             @if (tree.isExpanded(node)) {
