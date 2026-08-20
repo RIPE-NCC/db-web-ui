@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegrationTest {
@@ -26,12 +27,10 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
             new NameValuePair("nserver", "ns1.test.nl"));
 
 
-        final String xsrfToken = extractXsrfCookie();
+        //final String xsrfToken = extractXsrfCookie();
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth("aabbccdd");
-        headers.add(HttpHeaders.COOKIE, "XSRF-TOKEN=" + xsrfToken);
-        headers.add("X-XSRF-TOKEN", xsrfToken);
 
         final HttpEntity<WhoisWebDTO> entity = new HttpEntity<>(dto, headers);
 
@@ -42,6 +41,7 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
         );
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getHeaders().get("Set-Cookie").getFirst(), containsString("DBSESSIONID"));
     }
 
 }
