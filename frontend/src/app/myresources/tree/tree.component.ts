@@ -13,7 +13,6 @@ export interface TreeNode {
     resource: string;
     netname: string;
     type: string;
-    used: number;
     level: number;
     expandable: boolean;
 
@@ -46,6 +45,7 @@ export class Tree implements OnInit {
     readonly scalabilityMsg = 'Nodes with 10+ children show first 10 items. Click "Show more" to expand the full list.';
     @Input()
     rootLevelNodes: IResourceScreenItem[];
+    selectedNode: TreeNode;
 
     ngOnInit(): void {
         this.dataSource.set(this.initialData());
@@ -61,7 +61,6 @@ export class Tree implements OnInit {
             resource: resource.resource,
             type: resource.type,
             netname: resource.netname,
-            used: Math.round((resource.usage.used * 100) / resource.usage.total),
             level,
             expandable,
             isLoading: signal(false),
@@ -142,6 +141,10 @@ export class Tree implements OnInit {
         node.parent.children = this.getVisibleChildren(node.parent);
 
         this.dataSource.set([...this.dataSource()]);
+    }
+
+    selectNode(node: TreeNode) {
+        this.selectedNode = node;
     }
 
     protected readonly BannerTypes = BannerTypes;

@@ -5,14 +5,18 @@
     [permanent]="true"
     class="scalability-banner"
 ></banner>
+<div class="tree-header">
+    <span>IP Prefix</span>
+    <span>Netname</span>
+</div>
 <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
     <!--  Node without children  -->
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectNode(node)">
         <button matIconButton disabled></button>
         <div class="node-content">
             <mat-icon matSuffix class="fa-solid fa-circle-small ok" [class.issue]="true"></mat-icon>
-            <name-formatter [name]="node.resource" [type]="node.type"></name-formatter>
-            {{ node.netname }}
+            <name-formatter [name]="node.resource" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
+            <span class="netname">{{ node.netname }}</span>
         </div>
     </mat-tree-node>
     <!--  Node with 'show more' button, more then 10 children  -->
@@ -31,6 +35,7 @@
         matTreeNodeToggle
         [cdkTreeNodeTypeaheadLabel]="node.resource"
         (expandedChange)="onNodeExpanded(node, $event)"
+        (click)="selectNode(node)"
     >
         <button matIconButton [attr.aria-label]="'Toggle ' + node.resource" matTreeNodeToggle>
             @if (tree.isExpanded(node)) {
@@ -38,9 +43,8 @@
         </button>
         <div class="node-content">
             <mat-icon class="fa-solid fa-circle-small ok" [class.issue]="false"></mat-icon>
-            <name-formatter [name]="node.resource" [type]="node.type"></name-formatter>
-            {{ node.netname }}
-            ({{ node.used }}% used)
+            <name-formatter [name]="node.resource" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
+            <span class="netname">{{ node.netname }}</span>
         </div>
         @if (node.isLoading()) {
         <mat-progress-bar mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>

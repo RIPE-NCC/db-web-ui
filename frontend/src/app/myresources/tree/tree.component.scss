@@ -3,6 +3,18 @@ banner.scalability-banner {
     margin-top: 1em;
 }
 
+.tree-header {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    font-weight: 500;
+    gap: 120px;
+}
+
+mat-tree-node {
+    cursor: pointer;
+}
+
 // +/- button
 mat-tree-node > button[matIconButton] {
     width: 20px;
@@ -24,6 +36,14 @@ mat-tree-node > button[matIconButton] {
     }
 }
 
+.emphasized {
+    font-weight: 600;
+}
+
+.netname {
+    color: #626262;
+}
+
 .node-content {
     display: flex;
     align-items: center;
@@ -39,6 +59,10 @@ mat-tree-node > button[matIconButton] {
         height: 16px;
         font-size: 16px;
         line-height: 16px;
+    }
+
+    name-formatter {
+        color: #131f48;
     }
 }
 
