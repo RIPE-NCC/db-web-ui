@@ -3,6 +3,7 @@ package net.ripe.whois.services;
 import net.ripe.whois.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -32,7 +33,13 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
     public void create_references() {
         mock("/references/RIPE", "test");
 
-        final ResponseEntity<String> response = post("/db-web-ui/api/references/RIPE", String.class, entity("test"));
+        final String xsrfToken = extractXsrfCookie();
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "XSRF-TOKEN=" + xsrfToken);
+        headers.add("X-XSRF-TOKEN", xsrfToken);
+
+        final ResponseEntity<String> response = post("/db-web-ui/api/references/RIPE", String.class, entity("test", headers));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("test"));
@@ -42,7 +49,15 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
     public void delete_references() {
         mock("/references/RIPE/inetnum/212.154.128.20%20-%20212.154.128.23?reason=delete%20reason", "test");
 
-        final ResponseEntity<String> response = delete("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23?reason=delete reason", String.class, entity("test"));
+        final String xsrfToken = extractXsrfCookie();
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "XSRF-TOKEN=" + xsrfToken);
+        headers.add("X-XSRF-TOKEN", xsrfToken);
+
+
+        final ResponseEntity<String> response = delete("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212" +
+                ".154.128.23?reason=delete reason", String.class, entity("test", headers));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("test"));
@@ -50,8 +65,8 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
 
     //helper methods
 
-    private HttpEntity entity(Object body) {
-        return new HttpEntity(body);
+    private HttpEntity entity(final Object body, final HttpHeaders headers) {
+        return new HttpEntity(body, headers);
     }
 
 }

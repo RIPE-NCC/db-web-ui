@@ -9,7 +9,6 @@ import { dbMenuObject } from './menu/db-menu.json';
 import { ActiveMenu, MenuService, SidebarMenu } from './menu/menu.service';
 import { getResourceMenu } from './menu/resources-menu.json';
 import { PropertiesService } from './properties.service';
-import { SessionService } from './sessioninfo/session.service';
 import { UserInfoService } from './userinfo/user-info.service';
 
 export const EnvNamesInRipeWebComponents = {
@@ -49,7 +48,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private router = inject(Router);
     private menuService = inject(MenuService);
     private userInfoService = inject(UserInfoService);
-    private sessionService = inject(SessionService);
 
     private readonly navigationEnd: Subscription;
 
@@ -65,18 +63,17 @@ export class AppComponent implements OnInit, OnDestroy {
     currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
 
     constructor() {
+        console.log('url', this.currentHref);
         this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV as keyof typeof EnvNamesInRipeWebComponents];
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
             this.setActiveSidebarItem(evt.url);
+
             this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
-            console.log('currentHref', this.currentHref);
+            console.log('url', this.currentHref);
         });
         effect(() => {
             this.onActiveMenuChange();
-        });
-        this.sessionService.expiredSession$.subscribe(() => {
-            this.isLoggedInUser = false;
         });
     }
 
@@ -94,7 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.isComponentLoaded = true;
             },
         });
-        this.sessionService.initialize();
     }
 
     onActiveMenuChange() {

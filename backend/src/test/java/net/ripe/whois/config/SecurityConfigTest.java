@@ -1,6 +1,5 @@
 package net.ripe.whois.config;
 
-import net.ripe.whois.config.hazelcast.HazelcastAuthorizationRequestRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +13,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -35,16 +32,13 @@ class SecurityConfigTest {
     @Mock
     OAuth2AuthorizedClient authorizedClient;
 
-    @Mock
-    HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository;
-
     @Test
     void shouldLoadAuthorizedClientOnAuthenticationSuccess() throws Exception {
 
         SecurityConfig config = new SecurityConfig();
 
         AuthenticationSuccessHandler handler =
-            config.authenticationSuccessHandler(authorizedClientService, hazelcastAuthorizationRequestRepository);
+            config.authenticationSuccessHandler(authorizedClientService, restTemplate);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -76,9 +70,10 @@ class SecurityConfigTest {
     void shouldRedirectToNextUrlAfterSuccessfulAuthentication() throws Exception {
         SecurityConfig config = new SecurityConfig();
 
+
         AuthenticationSuccessHandler handler =
             config.authenticationSuccessHandler(
-                authorizedClientService, hazelcastAuthorizationRequestRepository);
+                authorizedClientService, restTemplate);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -87,11 +82,6 @@ class SecurityConfigTest {
         OAuth2AuthenticationToken authentication =
             mock(OAuth2AuthenticationToken.class);
 
-        HazelcastAuthorizationRequestRepository.Entry entry = new HazelcastAuthorizationRequestRepository.Entry(authorizationRequest,
-                "", "/query?test=true");
-
-        when(hazelcastAuthorizationRequestRepository.loadAuthorizationEntry(request))
-                .thenReturn(Optional.of(entry));
 
         when(authentication.getAuthorizedClientRegistrationId())
             .thenReturn("keycloak");
@@ -120,7 +110,7 @@ class SecurityConfigTest {
         SecurityConfig config = new SecurityConfig();
 
         AuthenticationSuccessHandler handler =
-            config.authenticationSuccessHandler(authorizedClientService, hazelcastAuthorizationRequestRepository);
+            config.authenticationSuccessHandler(authorizedClientService, restTemplate);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();

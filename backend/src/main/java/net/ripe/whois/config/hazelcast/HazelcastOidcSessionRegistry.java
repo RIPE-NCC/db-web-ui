@@ -1,5 +1,4 @@
 package net.ripe.whois.config.hazelcast;
-
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import org.slf4j.Logger;
@@ -7,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.oidc.authentication.logout.OidcLogoutToken;
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionInformation;
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegistry;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,50 +22,65 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastOidcSessionRegistry.class);
 
-    private final IMap<String, OidcSessionInformation> sessions;
+    public static final String OIDC_SESSIONS_MAP = "oidc-session-registry";
 
-    public static final String OIDC_SESSIONS_MAP = "oidc-sessions";
+    private final HazelcastInstance hazelcastInstance;
 
     public HazelcastOidcSessionRegistry(HazelcastInstance hazelcastInstance) {
-        this.sessions = hazelcastInstance.getMap(OIDC_SESSIONS_MAP);
+        this.hazelcastInstance = hazelcastInstance;
     }
 
+    private IMap<String, OidcSessionInformation> map() {
+        return hazelcastInstance.getMap(OIDC_SESSIONS_MAP);
+    }
+
+    /**
+     * Stores the correlation between this HttpSession's ID and the IdP's session claims
+     * so a later back-channel logout request can find which HttpSession to invalidate.
+     */
     @Override
-    public void saveSessionInformation(OidcSessionInformation information) {
-        // no-op — HazelcastSecurityContextRepository.saveContext() already persisted this.
+    public void saveSessionInformation(OidcSessionInformation info) {
+        map().set(info.getSessionId(), info);
+        LOGGER.info("HZ OIDC session SAVE clientSessionId={}", info.getSessionId());
     }
 
     @Override
     public OidcSessionInformation removeSessionInformation(String clientSessionId) {
-        final OidcSessionInformation removed = sessions.remove(clientSessionId);
-        LOGGER.warn("HZ REMOVE clientSessionId={} removed={}", clientSessionId, removed != null);
+        final OidcSessionInformation removed = map().remove(clientSessionId);
+        LOGGER.info("HZ OIDC session REMOVE clientSessionId={} found={}", clientSessionId, removed != null);
         return removed;
     }
-    @Override
-    public List<OidcSessionInformation> removeSessionInformation(OidcLogoutToken token) {
-        List<String> matchedKeys = sessions.entrySet().stream()
-                .filter(entry -> matches(entry.getValue(), token))
-                .map(Map.Entry::getKey)
-                .toList();
 
-        List<OidcSessionInformation> removed = new ArrayList<>();
-        for (String key : matchedKeys) {
-            OidcSessionInformation info = sessions.remove(key);
-            if (info != null) {
-                removed.add(info);
+    /**
+     * Finds and removes matching correlation entries (by sid, or by sub+iss) from this registry;
+     * the returned sessionIds are then used by OidcBackChannelLogoutHandler to invalidate the actual HttpSessions.
+     **/
+    @Override
+    public Iterable<OidcSessionInformation> removeSessionInformation(OidcLogoutToken token) {
+        final List<OidcSessionInformation> matches = new ArrayList<>();
+        for (Map.Entry<String, OidcSessionInformation> entry : map().entrySet()) {
+            if (matches(entry.getValue(), token)) {
+                matches.add(entry.getValue());
             }
         }
-        LOGGER.warn("HZ REMOVE removed={}", removed.stream().map( OidcSessionInformation::getSessionId).toList());
-
-        return removed;
+        matches.forEach(m -> map().remove(m.getSessionId()));
+        LOGGER.info("HZ OIDC session REMOVE by logout token, matched={}", matches.size());
+        return matches;
     }
 
     private boolean matches(OidcSessionInformation info, OidcLogoutToken token) {
-        boolean subMatches = info.getPrincipal().getSubject().equals(token.getSubject());
-        Object infoSid = info.getPrincipal().getClaim("sid");
-        Object tokenSid = token.getClaim("sid");
-        boolean sidMatches = tokenSid == null || infoSid == null || infoSid.equals(tokenSid);
-        return subMatches && sidMatches;
+        LOGGER.info("Logout token claims: iss={} sub={} sid={} aud={} jti={}",
+                token.getIssuer(), token.getSubject(), token.getSessionId(),
+                token.getAudience(), token.getId());
+        OidcUser oidcUser = info.getPrincipal();
+
+        final String sid = token.getSessionId();
+        if (sid != null) {
+            return sid.equals(oidcUser.getClaimAsString("sid"));
+        }
+        return token.getSubject() != null
+                && token.getSubject().equals(oidcUser.getSubject())
+                && token.getIssuer() != null
+                && token.getIssuer().toString().equals(String.valueOf(oidcUser.getIssuer()));
     }
 }
-

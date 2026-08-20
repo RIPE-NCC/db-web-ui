@@ -8,6 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 
+/**
+ * Needed for storing and sharing tokens and keeping access token fresh across nodes (separate from HttpSession).
+ */
 public class HazelcastOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastOAuth2AuthorizedClientService.class);

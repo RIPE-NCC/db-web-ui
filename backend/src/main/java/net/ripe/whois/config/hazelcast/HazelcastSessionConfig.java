@@ -14,11 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.session.SaveMode;
+import org.springframework.session.hazelcast.config.annotation.web.http.EnableHazelcastHttpSession;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@EnableHazelcastHttpSession(saveMode = SaveMode.ON_SET_ATTRIBUTE)
 public class HazelcastSessionConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastSessionConfig.class);
@@ -47,23 +50,12 @@ public class HazelcastSessionConfig {
 
         config.addMapConfig(authorizedClientMapConfig);
 
-        // NEW: replaces what @EnableHazelcastHttpSession used to give you for SecurityContext.
-        // Keyed by the DBSESSIONID cookie instead of a servlet session id.
         final MapConfig oidcSessionsMapConfig = new MapConfig(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP)
                 .setBackupCount(1)
                 .setAsyncBackupCount(0)
                 .setMaxIdleSeconds(8 * 60 * 60);
 
         config.addMapConfig(oidcSessionsMapConfig);
-
-        // Short-lived — only needed for the ~3 minute window between redirect-to-Keycloak
-        // and the callback. Replaces what used to be a cookie (state/nonce/PKCE verifier).
-        final MapConfig authorizationRequestsMapConfig = new MapConfig(HazelcastAuthorizationRequestRepository.AUTHORIZATION_REQUESTS_MAP)
-                .setBackupCount(1)
-                .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(180);
-
-        config.addMapConfig(authorizationRequestsMapConfig);
 
 
         final HazelcastInstance instance = Hazelcast.newHazelcastInstance(config);
@@ -149,42 +141,7 @@ public class HazelcastSessionConfig {
         );
 
 
-        instance.getMap(HazelcastAuthorizationRequestRepository.AUTHORIZATION_REQUESTS_MAP).addEntryListener(
-                new EntryAddedListener<Object, Object>() {
-                    @Override
-                    public void entryAdded(EntryEvent<Object, Object> event) {
-                        LOGGER.info("Temporal session ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    }
-                }, true
-        );
-        instance.getMap(HazelcastAuthorizationRequestRepository.AUTHORIZATION_REQUESTS_MAP).addEntryListener(
-                new EntryUpdatedListener<Object, Object>() {
-                    @Override
-                    public void entryUpdated(EntryEvent<Object, Object> event) {
-                        LOGGER.info("Temporal session UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    }
-                }, true
-        );
-        instance.getMap(HazelcastAuthorizationRequestRepository.AUTHORIZATION_REQUESTS_MAP).addEntryListener(
-                new EntryRemovedListener<Object, Object>() {
-                    @Override
-                    public void entryRemoved(EntryEvent<Object, Object> event) {
-                        LOGGER.info("Temporal session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    }
-                }, true
-        );
-
-        instance.getMap(HazelcastAuthorizationRequestRepository.AUTHORIZATION_REQUESTS_MAP).addEntryListener(
-                new EntryExpiredListener<Object, Object>() {
-                    @Override
-                    public void entryExpired(EntryEvent<Object, Object> event) {
-                        LOGGER.info("Temporal session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    }
-                }, true
-        );
-
-
-        /*instance.getMap("spring:session:sessions").addEntryListener(
+        instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryAddedListener<Object, Object>) event ->
                         LOGGER.info("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
                 true
@@ -197,7 +154,7 @@ public class HazelcastSessionConfig {
                 (EntryExpiredListener<Object, Object>) event ->
                         LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress()), true
         );
-*/
+
 
     }
 

@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 
@@ -10,8 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { MatLineModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components (standalone ones)
 import { AppComponent } from './app/app.component';
@@ -35,7 +33,6 @@ import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.
 import '@lir-portal/web-components';
 
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
-import { AuthInterceptor } from './app/interceptor/auth.interceptor';
 import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.providers';
 
 bootstrapApplication(AppComponent, {
@@ -45,7 +42,7 @@ bootstrapApplication(AppComponent, {
         provideRouter(appRoutes),
 
         // HTTP with interceptors
-        provideHttpClient(withXhr(), withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, AuthInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor])),
 
         // Animations
         provideAnimations(),

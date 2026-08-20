@@ -1,10 +1,9 @@
 package net.ripe.whois.config;
 
 import com.hazelcast.core.HazelcastInstance;
-import net.ripe.whois.config.hazelcast.HazelcastAuthorizationRequestRepository;
+import jakarta.servlet.http.HttpSession;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
-import net.ripe.whois.config.hazelcast.HazelcastSecurityContextRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OidcBackChannelLogoutHandler;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -21,23 +20,24 @@ import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegist
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
+import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 
 @Configuration
 @EnableWebSecurity
@@ -45,142 +45,104 @@ public class SecurityConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
-    private static final String POST_LOGIN_REDIRECT_URL = "/db-web-ui/query";
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             DefaultOAuth2AuthorizationRequestResolver pkceResolver,
                                             AuthenticationSuccessHandler successHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
-                                            SecurityContextRepository securityContextRepository,
-                                            AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository,
-                                            LogoutHandler hazelcastLogoutHandler) throws Exception {
+                                            OidcBackChannelLogoutHandler oidcLogoutHandler,
+                                            LogoutHandler removeAuthorizedClientOnBackChannelLogout,
+                                            OAuth2AuthorizedClientRepository authorizedClientRepository) throws Exception {
 
         PathPatternRequestMatcher.Builder requestMatcherBuilder = PathPatternRequestMatcher.withDefaults();
 
-        http
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .securityContext(sc -> sc.securityContextRepository(securityContextRepository))
-                .requestCache(cache -> cache.requestCache(new NullRequestCache())) // no saved-request redirect needed — fixed URL instead
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/",
-                                "/index.html",
-                                "/assets/**",
-                                "/media/**",
-                                "/*.js",
-                                "/*.svg",
-                                "/*.css",
-                                "/api/**",
-                                "/app.constants.json",
-                                "/webupdates/select",
-                                "/webupdates/display",
-                                "/webupdates/modify/**",
-                                "/forceDelete",
-                                "/query",
-                                "/fulltextsearch",
-                                "/syncupdates",
-                                "/lookup",
-                                "/fmp",
-                                "/fmp/requireLogin",
-                                "/unsubscribe.*",
-                                "/unsubscribe-confirm.*",
-                                "/myresources/overview",
-                                "/myresources/detail/**",
-                                "/ip-analyser",
-                                "/legal",
-                                "/error",
-                                "/not-found").permitAll()
-                        .requestMatchers("/public/**", "/api/healthcheck", "/api/syncupdates", "/api/whois-internal/api/user/info", "/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
-                        .anyRequest().authenticated()
+
+        http    // 1. Tell Spring to only create a session if it absolutely needs to (e.g., after login)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-                .csrf(AbstractHttpConfigurer::disable)
-                .oauth2Login(oauth -> {
-                    oauth.authorizationEndpoint(auth -> auth
-                            .authorizationRequestResolver(pkceResolver)
-                            .authorizationRequestRepository(authorizationRequestRepository));
+                // 2. Ensure CSRF does not force session creation for guests
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // Uses cookies instead of HttpSession
+                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())    // Defers token loading
+                )
+                .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/",
+                        "/index.html",
+                        "/assets/**",
+                        "/media/**", // fontawesome
+                        "/*.js",
+                        "/*.svg",
+                        "/*.css",
+                        "/api/**", /* let rest-operation itself decide about authentication */
+                        "/app.constants.json",
+                        "/webupdates/select",
+                        "/webupdates/display",
+                        "/webupdates/modify/**",
+                        "/forceDelete",
+                        "/query",
+                        "/fulltextsearch",
+                        "/syncupdates",
+                        "/lookup",
+                        "/fmp",
+                        "/fmp/requireLogin",
+                        "/unsubscribe.*",
+                        "/unsubscribe-confirm.*",
+                        "/myresources/overview",
+                        "/myresources/detail/**",
+                        "/ip-analyser",
+                        "/legal",
+                        "/error",
+                        "/not-found").permitAll()
+                .requestMatchers("/public/**", "/api/healthcheck", "/api/syncupdates", "/api/whois-internal/api/user/info","/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
+                .anyRequest().authenticated()
+            )
+
+            .oauth2Client(oauth2 -> oauth2
+                    .authorizedClientRepository(authorizedClientRepository)
+            )
+            .oauth2Login(oauth -> {
+                    oauth.authorizedClientRepository(authorizedClientRepository);
+                    oauth.authorizationEndpoint(auth -> auth.authorizationRequestResolver(pkceResolver));
                     oauth.successHandler(successHandler);
                 })
+            .logout(logout -> logout
+                .deleteCookies()
+                .logoutRequestMatcher(new OrRequestMatcher(
+                    requestMatcherBuilder.matcher(HttpMethod.GET, "/logout"),
+                    requestMatcherBuilder.matcher(HttpMethod.POST, "/logout")))
+                .logoutSuccessHandler(logoutSuccessHandler))
                 .oidcLogout(logout -> logout
                         .backChannel(backChannel -> backChannel
-                                .logoutHandler(backChannelLogoutLoggingHandler())
-                        )
-                )
-                .logout(logout -> logout
-                        .addLogoutHandler(hazelcastLogoutHandler)
-                        .deleteCookies("DBSESSIONID", "oauth2_auth_request")
-                        .logoutRequestMatcher(new OrRequestMatcher(
-                                requestMatcherBuilder.matcher(HttpMethod.GET, "/logout"),
-                                requestMatcherBuilder.matcher(HttpMethod.POST, "/logout")))
-                        .logoutSuccessHandler(logoutSuccessHandler));
+                                .logoutHandler(oidcLogoutHandler)
+                                .logoutHandler(removeAuthorizedClientOnBackChannelLogout)));
+
+        http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
+
 
         return http.build();
     }
 
     @Bean
     public DefaultOAuth2AuthorizationRequestResolver pkceResolver(ClientRegistrationRepository repo) {
+
         DefaultOAuth2AuthorizationRequestResolver resolver = new DefaultOAuth2AuthorizationRequestResolver(repo, "/oauth2/authorization");
+        // for code_challenge_method
         resolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce());
+
         return resolver;
     }
 
     @Bean
-    public SecurityContextRepository securityContextRepository(HazelcastInstance hazelcastInstance) {
-        return new HazelcastSecurityContextRepository(hazelcastInstance, "keycloak");
-    }
-
-    @Bean
-    public OidcSessionRegistry oidcSessionRegistry(HazelcastInstance hazelcastInstance) {
-        return new HazelcastOidcSessionRegistry(hazelcastInstance);
-    }
-
-    @Bean
-    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository(HazelcastInstance hazelcastInstance) {
-        return new HazelcastAuthorizationRequestRepository(hazelcastInstance);
-    }
-
-    @Bean
-    public HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository(HazelcastInstance hazelcastInstance) {
-        return new HazelcastAuthorizationRequestRepository(hazelcastInstance);
-    }
-    @Bean
-    public LogoutHandler hazelcastLogoutHandler(SecurityContextRepository securityContextRepository) {
-        return (request, response, authentication) ->
-                ((HazelcastSecurityContextRepository) securityContextRepository).evict(request, response);
-    }
-
-    /*@Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService) {
-        return (request, response, authentication) -> {
-
-            OAuth2AuthenticationToken oauthToken =
-                    (OAuth2AuthenticationToken) authentication;
-
-            authorizedClientService.loadAuthorizedClient(
-                    oauthToken.getAuthorizedClientRegistrationId(),
-                    oauthToken.getName());
-
-            response.sendRedirect(POST_LOGIN_REDIRECT_URL);
-        };
-    }
-
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler(
-            OAuth2AuthorizedClientService authorizedClientService,
-            HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository) {
-
+    public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService, RestTemplate restTemplate) {
         DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
+        LOGGER.info("DefaultRedirectStrategy: {}", defaultRedirectStrategy);
         SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
-
         delegate.setRedirectStrategy((request, response, url) -> {
-            // Fetch the entry from Hazelcast using the incoming 'state' parameter from Keycloak
-            Optional<HazelcastAuthorizationRequestRepository.Entry> entry = hazelcastAuthorizationRequestRepository.loadAuthorizationEntry(request);
-
-            String next = entry.map(HazelcastAuthorizationRequestRepository.Entry::nextUrl).orElse(null);
-
+            String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+            LOGGER.info("RedirectStrategy: next={} url={}", next, url);
             if (next != null) {
-                // Clean up the authorization state from Hazelcast manually since login succeeded
-                hazelcastAuthorizationRequestRepository.removeAuthorizationRequest(request, response);
+                request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
                 response.sendRedirect(next);
             } else {
                 defaultRedirectStrategy.sendRedirect(request, response, url);
@@ -188,36 +150,6 @@ public class SecurityConfig {
         });
 
         return delegate;
-    }*/
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler(
-            OAuth2AuthorizedClientService authorizedClientService,
-            HazelcastAuthorizationRequestRepository hazelcastAuthorizationRequestRepository) {
-
-        DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
-
-        return (request, response, authentication) -> {
-            Optional<HazelcastAuthorizationRequestRepository.Entry> entry =
-                    hazelcastAuthorizationRequestRepository.loadAuthorizationEntry(request);
-
-            // Why this is needed?
-            OAuth2AuthenticationToken oauthToken =
-                    (OAuth2AuthenticationToken) authentication;
-
-            authorizedClientService.loadAuthorizedClient(
-                    oauthToken.getAuthorizedClientRegistrationId(),
-                    oauthToken.getName());
-
-            String next = entry.map(HazelcastAuthorizationRequestRepository.Entry::nextUrl).orElse(null);
-
-            if (next != null) {
-                hazelcastAuthorizationRequestRepository.removeAuthorizationRequest(request, response);
-                defaultRedirectStrategy.sendRedirect(request, response, next);
-            } else {
-                defaultRedirectStrategy.sendRedirect(request, response, POST_LOGIN_REDIRECT_URL);
-            }
-        };
     }
 
     @Bean
@@ -235,12 +167,11 @@ public class SecurityConfig {
     // Logout from the provider when a user logout from the application
     @Bean
     OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler(
-            ClientRegistrationRepository clientRegistrationRepository) {
+        ClientRegistrationRepository clientRegistrationRepository) {
 
-        LOGGER.info("OIDC Logout Success Handler");
         OidcClientInitiatedLogoutSuccessHandler handler =
-                new OidcClientInitiatedLogoutSuccessHandler(
-                        clientRegistrationRepository);
+            new OidcClientInitiatedLogoutSuccessHandler(
+                clientRegistrationRepository);
 
         handler.setPostLogoutRedirectUri("{baseUrl}/query");
 
@@ -248,21 +179,52 @@ public class SecurityConfig {
     }
 
     @Bean
-    LogoutHandler backChannelLogoutLoggingHandler() {
-        return (request, response, authentication) -> {
-            String principal = authentication != null ? authentication.getName() : "unknown";
-            LOGGER.info("Back-channel logout processed for principal={}", principal);
-        };
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(OAuth2AuthorizedClientService authorizedClientService) {
+        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
     }
 
+
+    // Hazelcast instances
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService(HazelcastInstance hazelcastInstance) {
         return new HazelcastOAuth2AuthorizedClientService(hazelcastInstance);
     }
 
     @Bean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(OAuth2AuthorizedClientService authorizedClientService) {
-        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
+    public OidcSessionRegistry oidcSessionRegistry(HazelcastInstance hazelcastInstance) {
+        return new HazelcastOidcSessionRegistry(hazelcastInstance);
     }
 
+    // Logout from the application when a user logout from the provider
+    @Bean
+    LogoutHandler oidcSessionRegistryCleanupHandler(OidcSessionRegistry sessionRegistry) {
+        return (request, response, authentication) -> {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                sessionRegistry.removeSessionInformation(session.getId());
+            }
+        };
+    }
+    @Bean
+    OidcBackChannelLogoutHandler oidcLogoutHandler(OidcSessionRegistry sessionRegistry) {
+        OidcBackChannelLogoutHandler handler = new OidcBackChannelLogoutHandler(sessionRegistry);
+        handler.setSessionCookieName("DBSESSIONID");
+        return handler;
+    }
+
+    @Bean
+    LogoutHandler removeAuthorizedClientOnBackChannelLogout(
+            OAuth2AuthorizedClientService authorizedClientService) {
+        return (request, response, authentication) -> {
+            if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+                String registrationId = oauthToken.getAuthorizedClientRegistrationId();
+                String principalName = oauthToken.getName();
+
+                authorizedClientService.removeAuthorizedClient(registrationId, principalName);
+
+                LOGGER.debug("Removed authorized client on back-channel logout from HZ: registrationId={} principal={}",
+                        registrationId, principalName);
+            }
+        };
+    }
 }
