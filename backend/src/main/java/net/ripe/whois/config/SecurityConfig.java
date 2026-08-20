@@ -34,6 +34,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
@@ -63,7 +65,7 @@ public class SecurityConfig {
                 )
                 // 2. Ensure CSRF does not force session creation for guests
                 .csrf(csrf -> csrf
-                        .csrfTokenRepository(cookieCsrfTokenRepository()) // Uses cookies instead of HttpSession
+                        .csrfTokenRepository(cookieCsrfTokenRepository()) // Uses cookies insteadof HttpSession
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())    // Defers token loading
                 )
                 .authorizeHttpRequests(auth -> auth
@@ -94,7 +96,7 @@ public class SecurityConfig {
                         "/legal",
                         "/error",
                         "/not-found").permitAll()
-                .requestMatchers("/public/**", "/api/healthcheck", "/api/syncupdates", "/api/whois-internal/api/user/info","/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
+                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info","/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
                 .anyRequest().authenticated()
             )
 
@@ -153,6 +155,13 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieName("DBSESSIONID");
+        return serializer;
+    }
+
+    @Bean
     public RestClient oauth2RestClient(OAuth2AuthorizedClientManager authorizedClientManager,
                                        RestClient.Builder restClientBuilder) {
         final OAuth2ClientHttpRequestInterceptor requestInterceptor =
@@ -205,7 +214,7 @@ public class SecurityConfig {
             }
         };
     }
-    
+
     @Bean
     OidcBackChannelLogoutHandler oidcLogoutHandler(OidcSessionRegistry sessionRegistry) {
         OidcBackChannelLogoutHandler handler = new OidcBackChannelLogoutHandler(sessionRegistry);

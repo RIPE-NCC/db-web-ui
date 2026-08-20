@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr, withXsrfConfiguration } from '@angular/common/http';
 import { importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
@@ -33,6 +33,7 @@ import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.
 import '@lir-portal/web-components';
 
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { AuthInterceptor } from './app/interceptor/auth.interceptor';
 import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.providers';
 
 bootstrapApplication(AppComponent, {
@@ -42,7 +43,13 @@ bootstrapApplication(AppComponent, {
         provideRouter(appRoutes),
 
         // HTTP with interceptors
-        provideHttpClient(withXhr(), withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor])),
+        provideHttpClient(
+            withXhr(),
+            withXsrfConfiguration({
+                cookieName: 'DBCSRFTOKEN',
+            }),
+            withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, AuthInterceptor]),
+        ),
 
         // Animations
         provideAnimations(),

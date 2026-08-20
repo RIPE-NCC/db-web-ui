@@ -9,6 +9,7 @@ import { dbMenuObject } from './menu/db-menu.json';
 import { ActiveMenu, MenuService, SidebarMenu } from './menu/menu.service';
 import { getResourceMenu } from './menu/resources-menu.json';
 import { PropertiesService } from './properties.service';
+import { SessionService } from './sessioninfo/session.service';
 import { UserInfoService } from './userinfo/user-info.service';
 
 export const EnvNamesInRipeWebComponents = {
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private router = inject(Router);
     private menuService = inject(MenuService);
     private userInfoService = inject(UserInfoService);
+    private sessionService = inject(SessionService);
 
     private readonly navigationEnd: Subscription;
 
@@ -75,6 +77,9 @@ export class AppComponent implements OnInit, OnDestroy {
         });
         effect(() => {
             this.onActiveMenuChange();
+        });
+        this.sessionService.expiredSession$.subscribe(() => {
+            this.isLoggedInUser = false;
         });
     }
 

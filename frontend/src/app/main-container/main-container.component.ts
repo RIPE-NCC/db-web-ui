@@ -37,12 +37,6 @@ export class MainContainerComponent implements OnInit {
     browserUnsuportedText = `Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.`;
 
     constructor() {
-        /*this.sessionService.expiredSession$.subscribe(() => {
-            this.loginUrl = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
-
-            this.showSessionExpireBanner = true;
-        });*/
-
         this.skipHash();
     }
 

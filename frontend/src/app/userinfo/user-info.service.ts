@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, computed, inject, signal } from '@angular/core';
+import { computed, EventEmitter, inject, Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, share, tap, timeout } from 'rxjs/operators';
@@ -67,7 +67,11 @@ export class UserInfoService {
         }
     }
 
-    getSelectedOrganisation(): Observable<IUserInfoOrganisation> {
+    public pingUserInfo(): Observable<object> {
+        return this.http.get('api/whois-internal/api/user/info');
+    }
+
+    public getSelectedOrganisation(): Observable<IUserInfoOrganisation> {
         const storedSelectionId = this.getSelectedOrgFromCookie();
         return this.getUserOrgsAndRoles().pipe(
             map((userInfo: UserOrgsAndRegistrations) => {
