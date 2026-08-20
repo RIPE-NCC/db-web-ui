@@ -112,6 +112,8 @@ public abstract class AbstractIntegrationTest {
         httpServerMock.stop();
     }
 
+
+
     protected int getLocalServerPort() {
         return this.localServerPort;
     }
@@ -217,4 +219,25 @@ public abstract class AbstractIntegrationTest {
         return new HttpEntity<>(null, requestHeaders);
     }
 
+    protected String extractXsrfCookie() {
+
+        final ResponseEntity<String> csrfResponse =
+                get("/db-web-ui/api/csrf", String.class);
+
+        return csrfResponse.getHeaders()
+                .getOrEmpty(HttpHeaders.SET_COOKIE)
+                .stream()
+                .filter(cookie -> cookie.startsWith("XSRF-TOKEN="))
+                .map(cookie -> {
+                    final int end = cookie.indexOf(';');
+                    return cookie.substring(
+                            "XSRF-TOKEN".length() + 1,
+                            end >= 0 ? end : cookie.length()
+                    );
+                })
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalStateException(
+                                "Cookie XSRF-TOKEN not found in response"));
+    }
 }
