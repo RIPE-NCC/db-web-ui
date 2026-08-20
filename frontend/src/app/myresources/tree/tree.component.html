@@ -1,4 +1,10 @@
-<banner [type]="BannerTypes.informational" [title]="'Scalability: Large allocations'" [textContent]="scalabilityMsg" [permanent]="true"></banner>
+<banner
+    [type]="BannerTypes.informational"
+    [title]="'Scalability: Large allocations'"
+    [textContent]="scalabilityMsg"
+    [permanent]="true"
+    class="scalability-banner"
+></banner>
 <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
     <!--  Node without children  -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
@@ -9,11 +15,6 @@
             {{ node.netname }}
         </div>
     </mat-tree-node>
-    <!--    &lt;!&ndash;  Node with banner, more then 10 children  &ndash;&gt;-->
-    <!--    <mat-tree-node *matTreeNodeDef="let node; when: isScalabilityBanner">-->
-    <!--        <button matIconButton disabled></button>-->
-    <!--        <banner [type]="BannerTypes.informational" [title]="'Scalability: Large allocations'" [textContent]="scalabilityMsg" [permanent]="true"></banner>-->
-    <!--    </mat-tree-node>-->
     <!--  Node with 'show more' button, more then 10 children  -->
     <mat-tree-node *matTreeNodeDef="let node; when: isShowMore" matTreeNodePadding>
         <button matIconButton disabled class="tree-indent-button"></button>
