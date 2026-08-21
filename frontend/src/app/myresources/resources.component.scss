@@ -1,7 +1,13 @@
 @import '../../styles/scss/extend.scss';
 
+.mat-mdc-tab-body-content {
+    //
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 .my-resources {
-    background-color: #ffffff;
     padding: 25px;
 
     @media (max-width: 768px) {

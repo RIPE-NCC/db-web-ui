@@ -1,0 +1,14 @@
+@if (node()) {
+<div class="node-details">
+    <name-formatter [name]="node()?.resource" [type]="node()?.type" class="title"></name-formatter>
+    <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">View resource details <em class="fa-light fa-arrow-right"></em></button>
+    <span class="netname">{{ node()?.netname }}</span>
+    <span class="parent">Parent: </span>
+</div>
+} @else {
+<div class="no-resources-panel">
+    <span class="fa-light fa-sitemap"></span>
+    <strong>No resources selected</strong>
+    <span>Click a resource to see its assignments and any issues</span>
+</div>
+}

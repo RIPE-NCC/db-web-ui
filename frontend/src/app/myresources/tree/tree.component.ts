@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, Input, OnInit, output, signal, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSuffix } from '@angular/material/input';
@@ -45,6 +45,7 @@ export class Tree implements OnInit {
     readonly scalabilityMsg = 'Nodes with 10+ children show first 10 items. Click "Show more" to expand the full list.';
     @Input()
     rootLevelNodes: IResourceScreenItem[];
+    nodeSelected = output<TreeNode>();
     selectedNode: TreeNode;
 
     ngOnInit(): void {
@@ -145,6 +146,7 @@ export class Tree implements OnInit {
 
     selectNode(node: TreeNode) {
         this.selectedNode = node;
+        this.nodeSelected.emit(node);
     }
 
     protected readonly BannerTypes = BannerTypes;

@@ -78,6 +78,10 @@ mat-tree-node > button[matIconButton] {
     color: #f36b21;
 }
 
+.node-content mat-icon.failed {
+    color: #cfcfcf;
+}
+
 .tree-indent-button {
     width: 20px;
     height: 20px;

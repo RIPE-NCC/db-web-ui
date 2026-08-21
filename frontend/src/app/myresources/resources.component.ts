@@ -3,7 +3,8 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Tree } from 'src/app/myresources/tree/tree.component';
+import { NodePreviewComponent } from 'src/app/myresources/tree/node-preview.component';
+import { Tree, TreeNode } from 'src/app/myresources/tree/tree.component';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
@@ -46,6 +47,7 @@ export enum ResourceType {
         MatButtonModule,
         MatButtonToggleModule,
         Tree,
+        NodePreviewComponent,
     ],
 })
 export class ResourcesComponent implements OnDestroy {
@@ -73,6 +75,7 @@ export class ResourcesComponent implements OnDestroy {
     isShowingSponsored: boolean = false;
     activeToggleButton = 'resources';
     showAlerts: boolean = true;
+    selectedNode: TreeNode;
     private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
     readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
@@ -145,6 +148,11 @@ export class ResourcesComponent implements OnDestroy {
         } else {
             this.resourcesTabClicked();
         }
+    }
+
+    onNodeSelected(node: TreeNode): void {
+        this.selectedNode = node;
+        console.log('Selected node', node);
     }
 
     private sponsoredResourcesTabClicked() {

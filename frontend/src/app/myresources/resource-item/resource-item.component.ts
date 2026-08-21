@@ -7,7 +7,7 @@ import { Labels } from '../../label.constants';
 import { FlagComponent, IFlag } from '../../shared/flag/flag.component';
 import { NameFormatterComponent } from '../../shared/name-formatter.component';
 import { ResourceStatusService } from '../resource-status.service';
-
+//TODO Delete this component as soon as tree implementation is done
 @Component({
     selector: 'resource-item',
     templateUrl: './resource-item.component.html',

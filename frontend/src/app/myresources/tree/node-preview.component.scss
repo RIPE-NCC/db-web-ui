@@ -1,0 +1,52 @@
+.no-resources-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 400px;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 10px;
+    .fa-sitemap {
+        font-weight: 100;
+        font-size: 100px;
+    }
+}
+
+.node-details {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    background: white;
+    box-sizing: border-box;
+
+    .title {
+        grid-column: 1;
+        grid-row: 1;
+
+        font-size: 1.375em;
+        font-weight: 600;
+        color: #131f48;
+        align-self: center;
+    }
+
+    button {
+        grid-column: 2;
+        grid-row: 1;
+
+        height: 4rem;
+        padding: 0 2rem;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .netname,
+    .parent {
+        grid-column: 1;
+        color: #3d3d3d;
+    }
+}

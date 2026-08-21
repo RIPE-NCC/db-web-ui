@@ -39,14 +39,9 @@
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
                     } @else {
-                    <tree [rootLevelNodes]="ipv4Resources"></tree>
-                    }
-                    <!--                    @for (resource of ipv4Resources; track resource) {-->
-                    <!--                    <div class="resource-list">-->
-                    <!--                        <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>-->
-                    <!--                    </div>-->
-                    <!--                    } -->
-                    @if (loading === false && ipv4Resources.length === 0) {
+                    <tree [rootLevelNodes]="ipv4Resources" (nodeSelected)="onNodeSelected($event)"></tree>
+                    <node-preview [node]="selectedNode"></node-preview>
+                    } @if (loading === false && ipv4Resources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -62,14 +57,9 @@
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
                     } @else {
-                    <tree [rootLevelNodes]="ipv6Resources"></tree>
-                    }
-                    <!--                    @for (resource of ipv6Resources; track resource) {-->
-                    <!--                    <div class="resource-list">-->
-                    <!--                        <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>-->
-                    <!--                    </div>-->
-                    <!--                    } -->
-                    @if (loading === false && ipv6Resources.length === 0) {
+                    <tree [rootLevelNodes]="ipv6Resources" (nodeSelected)="onNodeSelected($event)"></tree>
+                    <node-preview [node]="selectedNode"></node-preview>
+                    } @if (loading === false && ipv6Resources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -85,14 +75,8 @@
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
                     } @else {
-                    <tree [rootLevelNodes]="asnResources"></tree>
-                    }
-                    <!--                    @for (resource of asnResources; track resource) {-->
-                    <!--                    <div class="resource-list">-->
-                    <!--                        <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>-->
-                    <!--                    </div>-->
-                    <!--                    } -->
-                    @if (loading === false && asnResources.length === 0) {
+                    <tree [rootLevelNodes]="asnResources" (nodeSelected)="onNodeSelected($event)"></tree>
+                    } @if (loading === false && asnResources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
