@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Observable, Subscription } from 'rxjs';
@@ -117,6 +117,19 @@ export class AppComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.navigationEnd) {
             this.navigationEnd.unsubscribe();
+        }
+    }
+
+    @HostListener('click', ['$event'])
+    onHostClick(event: MouseEvent) {
+        const path = event.composedPath() as HTMLElement[]; // Find elements even inside shadow DOM
+        const loginAnchor = path.find((el) => el instanceof HTMLAnchorElement && el.href.includes('oauth2/authorization/keycloak'));
+
+        if (loginAnchor) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            window.location.href = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
         }
     }
 

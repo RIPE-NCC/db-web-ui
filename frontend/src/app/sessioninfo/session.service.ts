@@ -13,11 +13,22 @@ export class SessionService {
     private expired = false;
 
     readonly expiredSession$ = this.expiredSessionSubject.asObservable();
+    private eventSource?: EventSource;
 
     constructor() {}
 
     initialize() {
-        this.startTimer(new Date(Date.now() + 8 * 60 * 60 * 1000)); //TODO: Use HZ
+        this.eventSource = new EventSource('/api/session/events', { withCredentials: true });
+
+        this.eventSource.addEventListener('session-expired', () => {
+            this.showSessionExpired();
+        });
+
+        this.eventSource.onerror = () => {
+            // Connection dropped (network blip, server restart, etc.).
+            // Browsers auto-retry EventSource by default; nothing to do here
+            // unless you want custom backoff/logging.
+        };
     }
 
     private startTimer(expiresAt: Date): void {

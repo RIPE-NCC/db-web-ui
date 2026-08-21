@@ -9,6 +9,7 @@ import com.hazelcast.map.listener.EntryAddedListener;
 import com.hazelcast.map.listener.EntryExpiredListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
+import net.ripe.whois.services.SessionExpirationNotifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,9 @@ public class HazelcastSessionConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastSessionConfig.class);
 
     @Bean
-    public HazelcastInstance hazelcastInstance(@Value("${hazelcast.config.members:localhost}") final String members, @Value("${hazelcast.port:5701}") final int port) {
+    public HazelcastInstance hazelcastInstance(@Value("${hazelcast.config.members:localhost}") final String members,
+                                               @Value("${hazelcast.port:5701}") final int port,
+                                               final SessionExpirationNotifier sessionExpirationNotifier) {
         final Config config = getGenericConfig();
         config.setProperty("hazelcast.prefer.ipv4.stack", "false");
 
@@ -57,9 +60,8 @@ public class HazelcastSessionConfig {
 
         config.addMapConfig(oidcSessionsMapConfig);
 
-
         final HazelcastInstance instance = Hazelcast.newHazelcastInstance(config);
-        addListeners(instance);
+        addListeners(instance, sessionExpirationNotifier);
 
         return instance;
     }
@@ -70,7 +72,7 @@ public class HazelcastSessionConfig {
                 .toList();
     }
 
-    private static void addListeners(final HazelcastInstance instance) {
+    private static void addListeners(final HazelcastInstance instance, final SessionExpirationNotifier sessionExpirationNotifier) {
         instance.getMap(HazelcastOAuth2AuthorizedClientService.MAP_NAME).addEntryListener(
                 new EntryAddedListener<Object, Object>() {
                     @Override
@@ -151,11 +153,12 @@ public class HazelcastSessionConfig {
                         LOGGER.info("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress()), true
         );
         instance.getMap("spring:session:sessions").addEntryListener(
-                (EntryExpiredListener<Object, Object>) event ->
-                        LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress()), true
+                (EntryExpiredListener<Object, Object>) event ->{
+                    LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                    sessionExpirationNotifier.notifyExpired(String.valueOf(event.getKey()));
+                }
+                , true
         );
-
-
     }
 
 

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -21,5 +21,6 @@ export class AuthenticationGuard {
 
     private redirectToLogin(stateUrl: string) {
         window.location.href = `/db-web-ui/oauth2/authorization/keycloak?next=${window.location.origin}/db-web-ui${stateUrl}`;
+        console.log('Redirecting to login ', window.location.href);
     }
 }
