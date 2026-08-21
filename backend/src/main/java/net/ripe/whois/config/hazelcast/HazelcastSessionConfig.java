@@ -138,7 +138,7 @@ public class HazelcastSessionConfig {
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
                         LOGGER.info("OIDC Map EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
-                        sessionCacheService.notifyExpired(String.valueOf(event.getKey()));
+                        sessionCacheService.removeAllCaches(String.valueOf(event.getKey()), true);
                     }
                 }, true
         );
@@ -156,6 +156,7 @@ public class HazelcastSessionConfig {
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryExpiredListener<Object, Object>) event ->{
                     LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                    sessionCacheService.removeAllCaches(String.valueOf(event.getKey()), true);
                 }
                 , true
         );
