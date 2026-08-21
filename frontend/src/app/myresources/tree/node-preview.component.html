@@ -1,12 +1,30 @@
 @if (node()) {
-<div class="node-details">
-    <name-formatter [name]="node()?.resource" [type]="node()?.type" class="title"></name-formatter>
-    <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">View resource details <em class="fa-light fa-arrow-right"></em></button>
-    <span class="netname">{{ node()?.netname }}</span>
-    <span class="parent">Parent: </span>
+<div class="preview">
+    <div class="panel node-details">
+        <name-formatter [name]="node()?.resource" [type]="node()?.type" class="title"></name-formatter>
+        <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">View resource details <em class="fa-light fa-arrow-right"></em></button>
+        <span class="netname">{{ node()?.netname }}</span>
+        <span class="parent">Parent: </span>
+    </div>
+    <div class="panel node-overview">
+        <span class="label">Type</span>
+        <span class="value">{{ node(). }}</span>
+
+        <span class="label">Status</span>
+        <span class="value status">assigned-pa</span>
+
+        <span class="label">Used</span>
+        <span class="value">0%</span>
+
+        <span class="label">Free</span>
+        <span class="value">100%</span>
+
+        <span class="label">More specific prefixes</span>
+        <span class="value">2</span>
+    </div>
 </div>
 } @else {
-<div class="no-resources-panel">
+<div class="panel no-resources-panel">
     <span class="fa-light fa-sitemap"></span>
     <strong>No resources selected</strong>
     <span>Click a resource to see its assignments and any issues</span>
