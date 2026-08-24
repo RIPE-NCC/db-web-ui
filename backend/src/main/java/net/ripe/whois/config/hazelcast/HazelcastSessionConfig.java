@@ -23,7 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableHazelcastHttpSession(saveMode = SaveMode.ON_SET_ATTRIBUTE)
+@EnableHazelcastHttpSession(
+        saveMode = SaveMode.ON_SET_ATTRIBUTE,
+        maxInactiveIntervalInSeconds = 8 * 60
+)
 public class HazelcastSessionConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastSessionConfig.class);
@@ -113,7 +116,14 @@ public class HazelcastSessionConfig {
                 new EntryAddedListener<Object, Object>() {
                     @Override
                     public void entryAdded(EntryEvent<Object, Object> event) {
-                        LOGGER.info("OIDC Map ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        LOGGER.info("OIDC Map ADDED key={} member={} oidcUserInfo{}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
+                    }
+                    private String extractOidcUserInfo(Object oldValue) {
+                        if (oldValue instanceof OidcSessionInformation info) {
+                            return info.getPrincipal().toString();
+                        }
+                        return "unknown";
                     }
                 }, true
         );
@@ -121,7 +131,14 @@ public class HazelcastSessionConfig {
                 new EntryUpdatedListener<Object, Object>() {
                     @Override
                     public void entryUpdated(EntryEvent<Object, Object> event) {
-                        LOGGER.info("OIDC Map UPDATED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        LOGGER.info("OIDC Map UPDATED key={} member={} oidcUserInfo{}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
+                    }
+                    private String extractOidcUserInfo(Object oldValue) {
+                        if (oldValue instanceof OidcSessionInformation info) {
+                            return info.getPrincipal().toString();
+                        }
+                        return "unknown";
                     }
                 }, true
         );
@@ -129,7 +146,14 @@ public class HazelcastSessionConfig {
                 new EntryRemovedListener<Object, Object>() {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
-                        LOGGER.info("OIDC Map REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        LOGGER.info("OIDC Map REMOVED key={} member={} oidcUserInfo={}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
+                    }
+                    private String extractOidcUserInfo(Object oldValue) {
+                        if (oldValue instanceof OidcSessionInformation info) {
+                            return info.getPrincipal().toString();
+                        }
+                        return "unknown";
                     }
                 }, true
         );
@@ -138,14 +162,14 @@ public class HazelcastSessionConfig {
                 new EntryExpiredListener<Object, Object>() {
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
-                        final String email = extractEmail(event.getOldValue());
-                        LOGGER.info("OIDC Map EXPIRED key={} member={} user={}", event.getKey(), event.getMember().getAddress(), email);
+                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        LOGGER.info("OIDC Map EXPIRED key={} member={} oidcUserInfo={}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
                         sessionCacheService.removeAllCaches(String.valueOf(event.getKey()), true);
                     }
 
-                    private String extractEmail(Object oldValue) {
+                    private String extractOidcUserInfo(Object oldValue) {
                         if (oldValue instanceof OidcSessionInformation info) {
-                            return info.getPrincipal().getEmail();
+                            return info.getPrincipal().toString();
                         }
                         return "unknown";
                     }
