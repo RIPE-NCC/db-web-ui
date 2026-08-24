@@ -33,6 +33,7 @@ public class SessionCacheService {
 
 
     public SseEmitter subscribe(final String sessionId) {
+        LOGGER.info("subscribe sessionId={}", sessionId);
         SseEmitter emitter = new SseEmitter(0L); // no timeout — closes only on completion/error
         emitters.put(sessionId, emitter);
 

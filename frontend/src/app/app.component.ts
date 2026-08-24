@@ -89,6 +89,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.isLoggedInUser = true;
                 this.isComponentLoaded = true;
                 this.profilePhotoId = this.userOidc.photo;
+
+                this.sessionService.initialize();
             },
             error: (_err) => {
                 this.isComponentLoaded = true;

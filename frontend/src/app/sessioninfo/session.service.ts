@@ -1,13 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SessionService {
-    private http = inject(HttpClient);
-
     private readonly expiredSessionSubject = new Subject<void>();
 
     private expired = false;
