@@ -15,7 +15,8 @@ export class SessionService {
     constructor() {}
 
     initialize() {
-        this.eventSource = new EventSource('/api/session/events', { withCredentials: true });
+        console.log('initialise session banner');
+        this.eventSource = new EventSource('/db-web-ui/api/session/events', { withCredentials: true });
 
         this.eventSource.addEventListener('session-expired', () => {
             console.log('session-events session has expired - show banner');
@@ -28,23 +29,6 @@ export class SessionService {
             // Browsers auto-retry EventSource by default; nothing to do here
             // unless you want custom backoff/logging.
         };
-    }
-
-    private startTimer(expiresAt: Date): void {
-        const timeout = expiresAt.getTime() - Date.now();
-
-        if (timeout <= 0) {
-            this.showSessionExpired();
-            return;
-        }
-
-        console.log('expiresAt:', expiresAt);
-        console.log('expiresAt.getTime():', expiresAt.getTime());
-        console.log('Date.now():', Date.now());
-        console.log('timeout:', timeout);
-        window.setTimeout(() => {
-            this.showSessionExpired();
-        }, timeout);
     }
 
     showSessionExpired() {
