@@ -21,10 +21,12 @@ export class SessionService {
         this.eventSource = new EventSource('/api/session/events', { withCredentials: true });
 
         this.eventSource.addEventListener('session-expired', () => {
+            console.log('session-events session has expired - show banner');
             this.showSessionExpired();
         });
 
         this.eventSource.onerror = () => {
+            console.log('session-events stream closed');
             // Connection dropped (network blip, server restart, etc.).
             // Browsers auto-retry EventSource by default; nothing to do here
             // unless you want custom backoff/logging.

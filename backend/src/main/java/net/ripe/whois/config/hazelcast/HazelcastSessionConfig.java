@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionInformation;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.session.SaveMode;
 import org.springframework.session.hazelcast.config.annotation.web.http.EnableHazelcastHttpSession;
 
@@ -116,14 +117,18 @@ public class HazelcastSessionConfig {
                 new EntryAddedListener<Object, Object>() {
                     @Override
                     public void entryAdded(EntryEvent<Object, Object> event) {
-                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
-                        LOGGER.info("OIDC Map ADDED key={} member={} oidcUserInfo{}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
-                    }
-                    private String extractOidcUserInfo(Object oldValue) {
-                        if (oldValue instanceof OidcSessionInformation info) {
-                            return info.getPrincipal().toString();
+                        final OidcUser oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        if (oidcUserInfo == null) {
+                            LOGGER.info("OIDC Map ADDED key={} member={} oidcUserInfo=null", event.getKey(), event.getMember().getAddress());
+                            return;
                         }
-                        return "unknown";
+                        LOGGER.info("OIDC Map ADDED key={} member={} oidcUserInfo{}", event.getKey(), event.getMember().getAddress(), oidcUserInfo.getIdToken().getClaims());
+                    }
+                    private OidcUser extractOidcUserInfo(Object oldValue) {
+                        if (oldValue instanceof OidcSessionInformation info) {
+                            return info.getPrincipal();
+                        }
+                       return null;
                     }
                 }, true
         );
@@ -131,14 +136,18 @@ public class HazelcastSessionConfig {
                 new EntryUpdatedListener<Object, Object>() {
                     @Override
                     public void entryUpdated(EntryEvent<Object, Object> event) {
-                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        final OidcUser oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        if (oidcUserInfo == null) {
+                            LOGGER.info("OIDC Map UPDATED key={} member={} oidcUserInfo=null", event.getKey(), event.getMember().getAddress());
+                            return;
+                        }
                         LOGGER.info("OIDC Map UPDATED key={} member={} oidcUserInfo{}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
                     }
-                    private String extractOidcUserInfo(Object oldValue) {
+                    private OidcUser extractOidcUserInfo(Object oldValue) {
                         if (oldValue instanceof OidcSessionInformation info) {
-                            return info.getPrincipal().toString();
+                            return info.getPrincipal();
                         }
-                        return "unknown";
+                        return null;
                     }
                 }, true
         );
@@ -146,14 +155,18 @@ public class HazelcastSessionConfig {
                 new EntryRemovedListener<Object, Object>() {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
-                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        final OidcUser oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        if (oidcUserInfo == null) {
+                            LOGGER.info("OIDC Map REMOVED key={} member={} oidcUserInfo=null", event.getKey(), event.getMember().getAddress());
+                            return;
+                        }
                         LOGGER.info("OIDC Map REMOVED key={} member={} oidcUserInfo={}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
                     }
-                    private String extractOidcUserInfo(Object oldValue) {
+                    private OidcUser extractOidcUserInfo(Object oldValue) {
                         if (oldValue instanceof OidcSessionInformation info) {
-                            return info.getPrincipal().toString();
+                            return info.getPrincipal();
                         }
-                        return "unknown";
+                        return null;
                     }
                 }, true
         );
@@ -162,16 +175,20 @@ public class HazelcastSessionConfig {
                 new EntryExpiredListener<Object, Object>() {
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
-                        final String oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        final OidcUser oidcUserInfo = extractOidcUserInfo(event.getOldValue());
+                        if (oidcUserInfo == null) {
+                            LOGGER.info("OIDC Map EXPIRED key={} member={} oidcUserInfo=null", event.getKey(), event.getMember().getAddress());
+                            return;
+                        }
                         LOGGER.info("OIDC Map EXPIRED key={} member={} oidcUserInfo={}", event.getKey(), event.getMember().getAddress(), oidcUserInfo);
-                        sessionCacheService.removeAllCaches(String.valueOf(event.getKey()), true);
+                        sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), true);
                     }
 
-                    private String extractOidcUserInfo(Object oldValue) {
+                    private OidcUser extractOidcUserInfo(Object oldValue) {
                         if (oldValue instanceof OidcSessionInformation info) {
-                            return info.getPrincipal().toString();
+                            return info.getPrincipal();
                         }
-                        return "unknown";
+                        return null;
                     }
                 }, true
         );
@@ -189,7 +206,7 @@ public class HazelcastSessionConfig {
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryExpiredListener<Object, Object>) event ->{
                     LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    sessionCacheService.removeAllCaches(String.valueOf(event.getKey()), true);
+                    sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), true);
                 }
                 , true
         );
