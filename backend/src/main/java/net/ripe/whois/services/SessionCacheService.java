@@ -31,6 +31,21 @@ public class SessionCacheService {
         this.hazelcastInstance = hazelcastInstance;
     }
 
+    /**
+     * Keep-alive ping for all active SSE connections.
+     */
+    public void pingAllEmitters() {
+        for (Map.Entry<String, SseEmitter> entry : emitters.entrySet()) {
+            final String sessionId = entry.getKey();
+            final SseEmitter emitter = entry.getValue();
+            try {
+                emitter.send(SseEmitter.event().comment("keep-alive"));
+            } catch (IOException e) {
+                LOGGER.debug("Keep-alive failed for sessionId={}, removing dead emitter: {}", sessionId, e.getMessage());
+                emitters.remove(sessionId, emitter);
+            }
+        }
+    }
 
     public SseEmitter subscribe(final String sessionId) {
         LOGGER.info("subscribe sessionId={}", sessionId);
