@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { SessionService } from 'src/app/sessioninfo/session.service';
 import supportedBrowsers from '../../assets/supportedBrowsers.js';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
@@ -25,6 +26,7 @@ export class MainContainerComponent implements OnInit {
     private router = inject(Router);
     private location = inject(Location);
     private menuService = inject(MenuService);
+    private sessionService = inject(SessionService);
 
     isDesktopView: boolean;
     collapsedMenu: boolean = false;
@@ -41,6 +43,10 @@ export class MainContainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.sessionService.expiredSession$.subscribe(() => {
+            this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
+            this.showSessionExpireBanner = true;
+        });
         this.activeMenu = this.menuService.activeMenu();
         this.isBrowserSupported = supportedBrowsers.test(navigator.userAgent);
         this.mobileOrDesktopView();
