@@ -77,13 +77,16 @@ public class SessionCacheService {
      * other two caches and pushes the SSE banner. Idempotent.
      */
     public void removeAllCaches(final String sessionId, final boolean notify) {
+        LOGGER.info("Removing all cache entries for sessionId={}", sessionId);
         AtomicBoolean guard = cleanupInProgress.computeIfAbsent(sessionId, k -> new AtomicBoolean(false));
         if (!guard.compareAndSet(false, true)) {
             return; // already being cleaned up by another trigger
         }
 
+        LOGGER.info("1 Removing all cache entries for sessionId={}", sessionId);
         try {
             IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
+            LOGGER.info("2 Removing all cache entries for sessionId={}", sessionId);
             Object oidcEntry = oidcMap.get(sessionId);
 
             if (oidcEntry instanceof OidcSessionInformation info) {
@@ -95,7 +98,9 @@ public class SessionCacheService {
             oidcMap.remove(sessionId);
             hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
 
+            LOGGER.info("3 Removing all cache entries for sessionId={}", sessionId);
             if (notify) {
+                LOGGER.info("4 Removing all cache entries for sessionId={} and notifying", sessionId);
                 notifyExpired(sessionId);
             }
             LOGGER.info("Removed all cache entries for sessionId={}", sessionId);
