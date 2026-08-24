@@ -17,6 +17,7 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.net.InetAddress;
@@ -29,6 +30,7 @@ import java.util.stream.StreamSupport;
 @SpringBootApplication(scanBasePackages = {"net.ripe.whois"}, exclude = {UserDetailsServiceAutoConfiguration.class})
 @EnableCaching
 @EnableAsync
+@EnableScheduling
 public class Application implements AsyncConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
