@@ -10,6 +10,7 @@ import { IResourceScreenItem, IUsage } from 'src/app/myresources/resource-type.m
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 
 export interface TreeNode {
+    parentResource: TreeNode;
     resource: IResourceScreenItem | IMoreSpecificResource;
     nodeName: string;
     netname: string;
@@ -25,7 +26,7 @@ export interface TreeNode {
     // Only used by the "Show more" pseudo-node
     isShowMore?: boolean;
     remaining?: number;
-    parent?: TreeNode;
+    showMoreParent?: TreeNode;
 
     isLoading: WritableSignal<boolean>;
 }
@@ -58,8 +59,9 @@ export class Tree implements OnInit {
         return this.rootLevelNodes.map((item) => this.createNode(item, 0, this.isExpandable(item.status, item.usage)));
     }
 
-    createNode(resource: IResourceScreenItem | IMoreSpecificResource, level: number, expandable: boolean): TreeNode {
+    createNode(resource: IResourceScreenItem | IMoreSpecificResource, level: number, expandable: boolean, parentNode?: TreeNode): TreeNode {
         return {
+            parentResource: parentNode,
             resource: resource,
             nodeName: resource.resource,
             type: resource.type,
@@ -104,7 +106,7 @@ export class Tree implements OnInit {
                 }
 
                 node.allChildren = response.resources.map((resource) =>
-                    this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage)),
+                    this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage), node),
                 );
                 node.children = this.getVisibleChildren(node);
                 this.dataSource.set([...this.dataSource()]);
@@ -130,18 +132,18 @@ export class Tree implements OnInit {
             {
                 isShowMore: true,
                 remaining: children.length - 10,
-                parent: node,
+                showMoreParent: node,
             } as TreeNode,
         ];
     }
 
     showMore(node: TreeNode): void {
-        if (!node.parent) {
+        if (!node.showMoreParent) {
             return;
         }
 
-        node.parent.showAllChildren = true;
-        node.parent.children = this.getVisibleChildren(node.parent);
+        node.showMoreParent.showAllChildren = true;
+        node.showMoreParent.children = this.getVisibleChildren(node.showMoreParent);
 
         this.dataSource.set([...this.dataSource()]);
     }

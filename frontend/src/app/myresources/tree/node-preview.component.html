@@ -2,9 +2,10 @@
 <div class="preview">
     <div class="panel node-details">
         <name-formatter [name]="node()?.nodeName" [type]="node()?.type" class="title"></name-formatter>
-        <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">View resource details <em class="fa-light fa-arrow-right"></em></button>
+        <button matButton (click)="navigateToDetailPage()">View resource details<em class="fa-light fa-arrow-right"></em></button>
         <span class="netname">{{ node()?.netname }}</span>
-        <span class="parent">Parent: </span>
+        <span class="parent">Parent: {{ node()?.parentResource?.nodeName }}</span>
+        <!--        <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">Refresh check <em class="fa-light fa-arrow-right"></em></button>-->
     </div>
     <div class="panel node-overview">
         <span class="panel-title">Overview</span>
