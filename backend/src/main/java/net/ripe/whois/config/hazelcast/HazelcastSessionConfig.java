@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.oidc.session.OidcSessionInformation;
 import org.springframework.session.SaveMode;
 import org.springframework.session.hazelcast.config.annotation.web.http.EnableHazelcastHttpSession;
 
@@ -137,8 +138,16 @@ public class HazelcastSessionConfig {
                 new EntryExpiredListener<Object, Object>() {
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
-                        LOGGER.info("OIDC Map EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                        final String email = extractEmail(event.getOldValue());
+                        LOGGER.info("OIDC Map EXPIRED key={} member={} user={}", event.getKey(), event.getMember().getAddress(), email);
                         sessionCacheService.removeAllCaches(String.valueOf(event.getKey()), true);
+                    }
+
+                    private String extractEmail(Object oldValue) {
+                        if (oldValue instanceof OidcSessionInformation info) {
+                            return info.getPrincipal().getEmail();
+                        }
+                        return "unknown";
                     }
                 }, true
         );
