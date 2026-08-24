@@ -50,14 +50,14 @@ public class HazelcastSessionConfig {
         final MapConfig authorizedClientMapConfig = new MapConfig(HazelcastOAuth2AuthorizedClientService.MAP_NAME)
                 .setBackupCount(1)
                 .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(8 * 60 * 60); // 8 hours to match IdP
+                .setMaxIdleSeconds(8 * 60); // 8 hours to match IdP
 
         config.addMapConfig(authorizedClientMapConfig);
 
         final MapConfig oidcSessionsMapConfig = new MapConfig(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP)
                 .setBackupCount(1)
                 .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(8 * 60 * 60);
+                .setMaxIdleSeconds(8 * 60);
 
         config.addMapConfig(oidcSessionsMapConfig);
 
