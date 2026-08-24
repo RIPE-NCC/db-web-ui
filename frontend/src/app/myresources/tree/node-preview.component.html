@@ -1,26 +1,49 @@
 @if (node()) {
 <div class="preview">
     <div class="panel node-details">
-        <name-formatter [name]="node()?.resource" [type]="node()?.type" class="title"></name-formatter>
+        <name-formatter [name]="node()?.nodeName" [type]="node()?.type" class="title"></name-formatter>
         <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">View resource details <em class="fa-light fa-arrow-right"></em></button>
         <span class="netname">{{ node()?.netname }}</span>
         <span class="parent">Parent: </span>
     </div>
     <div class="panel node-overview">
+        <span class="panel-title">Overview</span>
         <span class="label">Type</span>
-        <span class="value">{{ node(). }}</span>
+        <span class="value">{{ node().resource.status }}</span>
 
         <span class="label">Status</span>
-        <span class="value status">assigned-pa</span>
+        <span class="value status status-gray">{{ node().resource.status }}</span>
 
         <span class="label">Used</span>
-        <span class="value">0%</span>
+        <span class="value">{{ usedPercentage() }}%</span>
 
         <span class="label">Free</span>
-        <span class="value">100%</span>
+        <span class="value">{{ 100 - usedPercentage() }}%</span>
 
         <span class="label">More specific prefixes</span>
         <span class="value">2</span>
+    </div>
+    <div class="panel node-overview">
+        <span class="panel-title">RIPE Database objects</span>
+        <span class="label">Route object</span>
+        <span class="value present"><em class="fa-light fa-check"></em>Present</span>
+
+        <span class="label">Domain object</span>
+        <span class="value">-</span>
+
+        <span class="label">Maintainer</span>
+        <span class="value">-</span>
+    </div>
+    <div class="panel node-overview">
+        <span class="panel-title">Routing information</span>
+        <span class="label">Announcement status</span>
+        <span class="value status status-gray">Announced</span>
+
+        <span class="label">Origin ASN</span>
+        <span class="value">-</span>
+
+        <span class="label">Active announcements</span>
+        <span class="value">-</span>
     </div>
 </div>
 } @else {

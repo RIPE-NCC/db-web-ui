@@ -71,5 +71,48 @@
 
     .value {
         text-align: right;
+        justify-self: end;
     }
+
+    .panel-title {
+        grid-column: 1 / -1;
+
+        margin: 0 0 1rem 0;
+
+        font-size: 1rem;
+        font-weight: 700;
+        color: #131f48;
+    }
+
+    .present {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        color: #2e7d32;
+        font-weight: 500;
+
+        em {
+            font-size: 18px;
+        }
+    }
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+.status-gray {
+    background-color: #d0d2da;
+    color: #3d4868;
+}
+
+.status-green {
+    background-color: #cfebdd;
+    color: #286b4a;
 }

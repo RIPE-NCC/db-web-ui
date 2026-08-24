@@ -132,6 +132,7 @@ export class ResourcesComponent implements OnDestroy {
     }
 
     tabClicked($event: MatTabChangeEvent) {
+        this.selectedNode = undefined;
         this.lastTab = $event.tab.id;
         this.lastTabIndex = $event.tab.position;
         const params = {

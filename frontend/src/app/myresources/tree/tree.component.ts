@@ -10,7 +10,8 @@ import { IResourceScreenItem, IUsage } from 'src/app/myresources/resource-type.m
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 
 export interface TreeNode {
-    resource: string;
+    resource: IResourceScreenItem | IMoreSpecificResource;
+    nodeName: string;
     netname: string;
     type: string;
     level: number;
@@ -59,7 +60,8 @@ export class Tree implements OnInit {
 
     createNode(resource: IResourceScreenItem | IMoreSpecificResource, level: number, expandable: boolean): TreeNode {
         return {
-            resource: resource.resource,
+            resource: resource,
+            nodeName: resource.resource,
             type: resource.type,
             netname: resource.netname,
             level,
@@ -95,7 +97,7 @@ export class Tree implements OnInit {
 
         node.isLoading.set(true);
 
-        this.moreSpecificsService.getSpecifics(node.resource, node.type).subscribe({
+        this.moreSpecificsService.getSpecifics(node.nodeName, node.type).subscribe({
             next: (response: IMoreSpecificsApiResult) => {
                 if (!response.resources) {
                     return;

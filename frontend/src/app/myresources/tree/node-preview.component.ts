@@ -14,10 +14,21 @@ export class NodePreviewComponent implements OnInit {
     router = inject(Router);
 
     readonly node = input<TreeNode>();
+    readonly usedPercentage = (): number => {
+        const { usage } = this.node().resource;
+
+        if (!usage || usage.total === 0) {
+            return 0;
+        }
+
+        return Math.round((usage.used * 100) / usage.total);
+    };
 
     ngOnInit(): void {}
 
     navigateToDetailPage() {
-        void this.router.navigateByUrl(`/myresources/detail/${this.node().type}/${this.node().resource}/false`);
+        void this.router.navigateByUrl(`/myresources/detail/${this.node().type}/${this.node().nodeName}/false`);
     }
+
+    protected readonly Math = Math;
 }

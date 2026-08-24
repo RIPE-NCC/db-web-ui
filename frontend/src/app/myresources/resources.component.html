@@ -76,6 +76,7 @@
                     <loading-indicator class="resource-page-message"></loading-indicator>
                     } @else {
                     <tree [rootLevelNodes]="asnResources" (nodeSelected)="onNodeSelected($event)"></tree>
+                    <node-preview [node]="selectedNode"></node-preview>
                     } @if (loading === false && asnResources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {

@@ -15,7 +15,7 @@
         <button matIconButton disabled></button>
         <div class="node-content">
             <mat-icon matSuffix class="fa-solid fa-circle-small ok" [class.issue]="true"></mat-icon>
-            <name-formatter [name]="node.resource" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
+            <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
             <span class="netname">{{ node.netname }}</span>
         </div>
     </mat-tree-node>
@@ -33,18 +33,18 @@
         *matTreeNodeDef="let node; when: hasChild"
         matTreeNodePadding
         matTreeNodeToggle
-        [cdkTreeNodeTypeaheadLabel]="node.resource"
+        [cdkTreeNodeTypeaheadLabel]="node.nodeName"
         (expandedChange)="onNodeExpanded(node, $event)"
         (click)="selectNode(node)"
         [class.emphasized-node]="selectedNode === node"
     >
-        <button matIconButton [attr.aria-label]="'Toggle ' + node.resource" matTreeNodeToggle>
+        <button matIconButton [attr.aria-label]="'Toggle ' + node.nodeName" matTreeNodeToggle>
             @if (tree.isExpanded(node)) {
             <mat-icon class="fa-light fa-minus"></mat-icon> } @else { <mat-icon class="fa-light fa-plus"></mat-icon> }
         </button>
         <div class="node-content">
             <mat-icon class="fa-solid fa-circle-small ok" [class.issue]="false"></mat-icon>
-            <name-formatter [name]="node.resource" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
+            <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
             <span class="netname">{{ node.netname }}</span>
         </div>
         @if (node.isLoading()) {
