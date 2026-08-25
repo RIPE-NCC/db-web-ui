@@ -142,7 +142,7 @@ public class SecurityConfig {
         SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
         delegate.setRedirectStrategy((request, response, url) -> {
             String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-            LOGGER.info("RedirectStrategy: next={} url={}", next, url);
+            LOGGER.debug("RedirectStrategy: next={} url={}", next, url);
             if (next != null) {
                 request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
                 response.sendRedirect(next);

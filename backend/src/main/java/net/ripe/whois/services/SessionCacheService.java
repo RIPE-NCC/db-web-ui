@@ -39,16 +39,17 @@ public class SessionCacheService {
             final String sessionId = entry.getKey();
             final SseEmitter emitter = entry.getValue();
             try {
+                LOGGER.info("Keep-alive failed for sessionId={}", sessionId);
                 emitter.send(SseEmitter.event().comment("keep-alive"));
             } catch (IOException e) {
-                LOGGER.debug("Keep-alive failed for sessionId={}, removing dead emitter: {}", sessionId, e.getMessage());
+                LOGGER.info("Keep-alive failed for sessionId={}, removing dead emitter: {}", sessionId, e.getMessage());
                 emitters.remove(sessionId, emitter);
             }
         }
     }
 
     public SseEmitter subscribe(final String sessionId) {
-        LOGGER.info("subscribe sessionId={}", sessionId);
+        LOGGER.debug("subscribe sessionId={}", sessionId);
         SseEmitter emitter = new SseEmitter(0L); // no timeout — closes only on completion/error
         emitters.put(sessionId, emitter);
 
@@ -62,14 +63,14 @@ public class SessionCacheService {
     private void notifyExpired(final String sessionId) {
         final SseEmitter emitter = emitters.remove(sessionId);
         if (emitter == null) {
-            LOGGER.info("no Emitter");
+            LOGGER.debug("no Emitter");
             return; // no active tab subscribed for this session — nothing to push
         }
         try {
             emitter.send(SseEmitter.event().name("session-expired").data("expired"));
             emitter.complete();
         } catch (IOException e) {
-            LOGGER.info("Failed to notify session expiration for {}: {}", sessionId, e.getMessage());
+            LOGGER.debug("Failed to notify session expiration for {}: {}", sessionId, e.getMessage());
             emitter.completeWithError(e);
         }
     }
@@ -94,10 +95,10 @@ public class SessionCacheService {
             hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
 
             if (notify) {
-                LOGGER.info("Notify session expiration sessionId={}", sessionId);
+                LOGGER.debug("Notify session expiration sessionId={}", sessionId);
                 notifyExpired(sessionId);
             }
-            LOGGER.info("Removed all cache entries for sessionId={}", sessionId);
+            LOGGER.debug("Removed all cache entries for sessionId={}", sessionId);
         } finally {
             cleanupInProgress.remove(sessionId);
         }

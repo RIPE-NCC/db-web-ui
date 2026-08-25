@@ -44,7 +44,7 @@ export class MainContainerComponent implements OnInit {
 
     ngOnInit() {
         this.sessionService.expiredSession$.subscribe(() => {
-            this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
+            this.loginUrl = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
             this.showSessionExpireBanner = true;
         });
         this.activeMenu = this.menuService.activeMenu();

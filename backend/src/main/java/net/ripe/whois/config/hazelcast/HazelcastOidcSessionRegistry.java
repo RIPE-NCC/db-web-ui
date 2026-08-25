@@ -41,13 +41,13 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
     @Override
     public void saveSessionInformation(OidcSessionInformation info) {
         map().set(info.getSessionId(), info);
-        LOGGER.info("HZ OIDC session SAVE clientSessionId={}", info.getSessionId());
+        LOGGER.debug("HZ OIDC session SAVE clientSessionId={}", info.getSessionId());
     }
 
     @Override
     public OidcSessionInformation removeSessionInformation(String clientSessionId) {
         final OidcSessionInformation removed = map().remove(clientSessionId);
-        LOGGER.info("HZ OIDC session REMOVE clientSessionId={} found={}", clientSessionId, removed != null);
+        LOGGER.debug("HZ OIDC session REMOVE clientSessionId={} found={}", clientSessionId, removed != null);
         return removed;
     }
 
@@ -64,12 +64,12 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
             }
         }
         matches.forEach(m -> map().remove(m.getSessionId()));
-        LOGGER.info("HZ OIDC session REMOVE by logout token, matched={}", matches.size());
+        LOGGER.debug("HZ OIDC session REMOVE by logout token, matched={}", matches.size());
         return matches;
     }
 
     private boolean matches(OidcSessionInformation info, OidcLogoutToken token) {
-        LOGGER.info("Logout token claims: iss={} sub={} sid={} aud={} jti={}",
+        LOGGER.debug("Logout token claims: iss={} sub={} sid={} aud={} jti={}",
                 token.getIssuer(), token.getSubject(), token.getSessionId(),
                 token.getAudience(), token.getId());
         OidcUser oidcUser = info.getPrincipal();
