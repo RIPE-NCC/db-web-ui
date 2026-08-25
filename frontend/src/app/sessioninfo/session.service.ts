@@ -14,10 +14,6 @@ export class SessionService {
     private reconnectAttempts = 0;
     private reconnectTimer?: ReturnType<typeof setTimeout>;
 
-    constructor() {
-        this.connect();
-    }
-
     initialize() {
         this.connect();
     }
