@@ -11,10 +11,18 @@ export class SessionService {
 
     readonly expiredSession$ = this.expiredSessionSubject.asObservable();
     private eventSource?: EventSource;
+    private reconnectAttempts = 0;
+    private reconnectTimer?: ReturnType<typeof setTimeout>;
 
-    constructor() {}
+    constructor() {
+        this.connect();
+    }
 
     initialize() {
+        this.connect();
+    }
+
+    private connect(): void {
         console.log('initialise session banner');
         this.eventSource = new EventSource('/db-web-ui/api/session/events', { withCredentials: true });
 
@@ -23,12 +31,34 @@ export class SessionService {
             this.showSessionExpired();
         });
 
+        this.eventSource.onopen = () => {
+            console.log('session-events stream (re)connected');
+            this.reconnectAttempts = 0; // reset backoff once a connection actually succeeds
+        };
+
         this.eventSource.onerror = () => {
             console.log('session-events stream closed');
-            // Connection dropped (network blip, server restart, etc.).
-            // Browsers auto-retry EventSource by default; nothing to do here
-            // unless you want custom backoff/logging.
+            if (this.eventSource?.readyState === EventSource.CLOSED) {
+                // Browser gave up permanently — reconnect ourselves with backoff.
+                this.scheduleReconnect();
+            }
         };
+    }
+
+    private scheduleReconnect(): void {
+        if (this.expired) {
+            return; // session's actually dead, no point reconnecting
+        }
+
+        this.reconnectAttempts++;
+        const delay = Math.min(1000 * 2 ** this.reconnectAttempts, 60_000); // exponential backoff, capped at 30s
+
+        clearTimeout(this.reconnectTimer);
+        this.reconnectTimer = setTimeout(() => {
+            console.log(`reconnecting session-events stream, attempt ${this.reconnectAttempts}`);
+            this.eventSource?.close();
+            this.connect();
+        }, delay);
     }
 
     showSessionExpired() {
