@@ -22,7 +22,7 @@ public class SessionCacheService {
     private final HazelcastInstance hazelcastInstance;
 
     // sessionId -> active SSE connection for that browser expiration banner
-    public final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
+    private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     // guards against double-cleanup if two triggers fire for the same session close together
     private final Map<String, AtomicBoolean> cleanupInProgress = new ConcurrentHashMap<>();

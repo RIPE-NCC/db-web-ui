@@ -1,8 +1,6 @@
 package net.ripe.whois;
 
 import net.ripe.whois.services.SessionCacheService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SseKeepAliveScheduler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SseKeepAliveScheduler.class);
-
+    
     private final SessionCacheService sessionCacheService;
 
     public SseKeepAliveScheduler(SessionCacheService sessionCacheService) {
@@ -22,7 +18,6 @@ public class SseKeepAliveScheduler {
 
     @Scheduled(fixedRate = 60_000)
     public void ping() {
-        LOGGER.info("SSE keep-alive tick, active emitters={}", sessionCacheService.emitters.size());
         sessionCacheService.pingAllEmitters();
     }
 }
