@@ -1,6 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 import { TreeNode } from './tree.component';
 
@@ -29,4 +30,5 @@ export class NodePreviewComponent {
     }
 
     protected readonly Math = Math;
+    protected readonly ObjectTypesEnum = ObjectTypesEnum;
 }

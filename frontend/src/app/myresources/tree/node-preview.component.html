@@ -16,10 +16,10 @@
         <span class="value status status-gray">{{ selectedNode.resource?.status }}</span>
 
         <span class="label">Used</span>
-        <span class="value">{{ usedPercentage() }}%</span>
+        <span class="value">{{ selectedNode.type === ObjectTypesEnum.AUT_NUM ? '-' : usedPercentage() + '%' }}</span>
 
         <span class="label">Free</span>
-        <span class="value">{{ 100 - usedPercentage() }}%</span>
+        <span class="value">{{ selectedNode.type === ObjectTypesEnum.AUT_NUM ? '-' : 100 - usedPercentage() + '%' }}</span>
 
         <span class="label">More specific prefixes</span>
         <span class="value">{{ selectedNode.numberOfChildren ?? '-' }}</span>
