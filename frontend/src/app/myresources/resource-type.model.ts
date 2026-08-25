@@ -76,3 +76,9 @@ interface IIpv4ViolationsAnalysis {
 export interface IIpv4OverlappingInetnumsAnalysis {
     range: string;
 }
+
+export interface ResourceCheck {
+    primaryKey: string;
+    type: string;
+    text: string;
+}
