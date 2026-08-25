@@ -260,4 +260,5 @@ export class ResourcesComponent implements OnDestroy {
     }
 
     protected readonly ResourceType = ResourceType;
+    protected readonly ObjectTypesEnum = ObjectTypesEnum;
 }
