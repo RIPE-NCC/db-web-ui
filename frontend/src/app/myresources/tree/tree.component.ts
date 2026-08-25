@@ -1,12 +1,14 @@
-import { Component, inject, Input, OnInit, output, signal, WritableSignal } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSuffix } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTreeModule } from '@angular/material/tree';
+import { finalize } from 'rxjs/operators';
 import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
 import { IMoreSpecificResource, IMoreSpecificsApiResult, MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
 import { IResourceScreenItem, IUsage } from 'src/app/myresources/resource-type.model';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 
 export interface TreeNode {
@@ -20,6 +22,7 @@ export interface TreeNode {
 
     children?: TreeNode[];
     allChildren?: TreeNode[];
+    numberOfChildren?: number;
 
     showAllChildren?: boolean;
 
@@ -45,8 +48,10 @@ export class Tree implements OnInit {
     readonly isShowMore = (_: number, node: TreeNode): boolean => node.isShowMore === true;
 
     readonly scalabilityMsg = 'Nodes with 10+ children show first 10 items. Click "Show more" to expand the full list.';
-    @Input()
-    rootLevelNodes: IResourceScreenItem[];
+
+    rootLevelNodes = input<IResourceScreenItem[]>();
+    treeType = input<string>();
+
     nodeSelected = output<TreeNode>();
     selectedNode: TreeNode;
 
@@ -56,7 +61,7 @@ export class Tree implements OnInit {
 
     /** Initial data from database */
     initialData(): TreeNode[] {
-        return this.rootLevelNodes.map((item) => this.createNode(item, 0, this.isExpandable(item.status, item.usage)));
+        return this.rootLevelNodes().map((item) => this.createNode(item, 0, this.isExpandable(item.status, item.usage)));
     }
 
     createNode(resource: IResourceScreenItem | IMoreSpecificResource, level: number, expandable: boolean, parentNode?: TreeNode): TreeNode {
@@ -99,25 +104,28 @@ export class Tree implements OnInit {
 
         node.isLoading.set(true);
 
-        this.moreSpecificsService.getSpecifics(node.nodeName, node.type).subscribe({
-            next: (response: IMoreSpecificsApiResult) => {
-                if (!response.resources) {
-                    return;
-                }
-
-                node.allChildren = response.resources.map((resource) =>
-                    this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage), node),
-                );
-                node.children = this.getVisibleChildren(node);
-                this.dataSource.set([...this.dataSource()]);
-            },
-            error: () => {
-                //
-            },
-            complete: () => {
-                node.isLoading.set(false);
-            },
-        });
+        this.moreSpecificsService
+            .getSpecifics(node.nodeName, node.type)
+            .pipe(finalize(() => node.isLoading.set(false)))
+            .subscribe({
+                next: (response: IMoreSpecificsApiResult) => {
+                    if (!response.resources) {
+                        return;
+                    }
+                    node.numberOfChildren = response.resources.length;
+                    node.allChildren = response.resources.map((resource) =>
+                        this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage), node),
+                    );
+                    node.children = this.getVisibleChildren(node);
+                    this.dataSource.set([...this.dataSource()]);
+                    if (this.selectedNode === node) {
+                        this.nodeSelected.emit(node);
+                    }
+                },
+                error: () => {
+                    //
+                },
+            });
     }
 
     private getVisibleChildren(node: TreeNode): TreeNode[] {
@@ -154,4 +162,5 @@ export class Tree implements OnInit {
     }
 
     protected readonly BannerTypes = BannerTypes;
+    protected readonly ObjectTypesEnum = ObjectTypesEnum;
 }

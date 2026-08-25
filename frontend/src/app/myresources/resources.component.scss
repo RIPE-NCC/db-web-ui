@@ -6,6 +6,12 @@
     gap: 10px;
 }
 
+@media (max-width: 768px) {
+    .mat-mdc-tab-body-content {
+        flex-direction: column;
+    }
+}
+
 .my-resources {
     padding: 25px;
 

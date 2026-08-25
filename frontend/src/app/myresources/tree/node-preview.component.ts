@@ -13,9 +13,9 @@ import { TreeNode } from './tree.component';
 export class NodePreviewComponent {
     router = inject(Router);
 
-    readonly node = input<TreeNode>();
+    readonly node = input<TreeNode | undefined>();
     readonly usedPercentage = (): number => {
-        const { usage } = this.node().resource;
+        const usage = this.node()?.resource?.usage;
 
         if (!usage || usage.total === 0) {
             return 0;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
@@ -75,7 +75,7 @@ export class ResourcesComponent implements OnDestroy {
     isShowingSponsored: boolean = false;
     activeToggleButton = 'resources';
     showAlerts: boolean = true;
-    selectedNode: TreeNode;
+    selectedNode = signal<TreeNode | undefined>(undefined);
     private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
     readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
@@ -132,7 +132,7 @@ export class ResourcesComponent implements OnDestroy {
     }
 
     tabClicked($event: MatTabChangeEvent) {
-        this.selectedNode = undefined;
+        this.selectedNode.set(undefined);
         this.lastTab = $event.tab.id;
         this.lastTabIndex = $event.tab.position;
         const params = {
@@ -152,8 +152,7 @@ export class ResourcesComponent implements OnDestroy {
     }
 
     onNodeSelected(node: TreeNode): void {
-        this.selectedNode = node;
-        console.log('Selected node', node);
+        this.selectedNode.set({ ...node });
     }
 
     private sponsoredResourcesTabClicked() {
