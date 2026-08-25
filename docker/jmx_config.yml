@@ -1,6 +1,6 @@
 ---
-lowercaseOutputLabelNames: true
 lowercaseOutputName: true
+lowercaseOutputLabelNames: true
 whitelistObjectNames:
   - "java.lang:type=OperatingSystem"
   - "com.hazelcast:type=Metrics,*"
@@ -15,29 +15,25 @@ rules:
     type: GAUGE
     attrNameSnakeCase: true
 
-  # Hazelcast: metrics with two tags, e.g. map/executor stats keyed by name
-  - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*), tag0=(.*), tag1=(.*)><>(.+):'
-    name: hazelcast_$2_$5
+  # Hazelcast data structures (map, cache, queue, etc) tagged by name: tag0="name=xyz"
+  - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*), tag0="name=(.*)"><>(.+):'
+    name: hz_$2_$4
     labels:
-      instance: "$1"
-      tag0: "$3"
+      name: "$3"
+    type: GAUGE
+    attrNameSnakeCase: true
+
+  # Hazelcast metrics with a name-tagged plus a second tag (e.g. per-partition, per-member)
+  - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*), tag0="name=(.*)", tag1=(.*)><>(.+):'
+    name: hz_$2_$5
+    labels:
+      name: "$3"
       tag1: "$4"
     type: GAUGE
     attrNameSnakeCase: true
 
-  # Hazelcast: metrics with one tag, e.g. map.getCount{name=myMap}
-  - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*), tag0=(.*)><>(.+):'
-    name: hazelcast_$2_$4
-    labels:
-      instance: "$1"
-      tag0: "$3"
-    type: GAUGE
-    attrNameSnakeCase: true
-
-  # Hazelcast: metrics with no tags, e.g. JVM/GC-level stats
+  # Hazelcast metrics with no name tag (JVM, cluster, GC-level stats)
   - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*)><>(.+):'
-    name: hazelcast_$2_$3
-    labels:
-      instance: "$1"
+    name: hz_$2_$3
     type: GAUGE
     attrNameSnakeCase: true
