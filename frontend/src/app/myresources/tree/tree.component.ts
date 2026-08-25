@@ -70,7 +70,7 @@ export class Tree implements OnInit {
             resource: resource,
             nodeName: resource.resource,
             type: resource.type,
-            netname: resource.netname,
+            netname: resource.netname || ('asname' in resource ? resource.asname : undefined),
             level,
             expandable,
             isLoading: signal(false),
