@@ -1,14 +1,43 @@
 ---
 lowercaseOutputLabelNames: true
 lowercaseOutputName: true
-whitelistObjectNames: ["java.lang:type=OperatingSystem"]
+whitelistObjectNames:
+  - "java.lang:type=OperatingSystem"
+  - "com.hazelcast:type=Metrics,*"
 blacklistObjectNames: []
 rules:
-    - pattern: "java.lang<type=OperatingSystem><>(committed_virtual_memory|free_physical_memory|free_swap_space|total_physical_memory|total_swap_space)_size:"
-      name: os_$1_bytes
-      type: GAUGE
-      attrNameSnakeCase: true
-    - pattern: 'java.lang<type=OperatingSystem><>((?!process_cpu_time)\w+):'
-      name: os_$1
-      type: GAUGE
-      attrNameSnakeCase: true
+  - pattern: "java.lang<type=OperatingSystem><>(committed_virtual_memory|free_physical_memory|free_swap_space|total_physical_memory|total_swap_space)_size:"
+    name: os_$1_bytes
+    type: GAUGE
+    attrNameSnakeCase: true
+  - pattern: 'java.lang<type=OperatingSystem><>((?!process_cpu_time)\w+):'
+    name: os_$1
+    type: GAUGE
+    attrNameSnakeCase: true
+
+  # Hazelcast: metrics with two tags, e.g. map/executor stats keyed by name
+  - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*), tag0=(.*), tag1=(.*)><>(.+):'
+    name: hazelcast_$2_$5
+    labels:
+      instance: "$1"
+      tag0: "$3"
+      tag1: "$4"
+    type: GAUGE
+    attrNameSnakeCase: true
+
+  # Hazelcast: metrics with one tag, e.g. map.getCount{name=myMap}
+  - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*), tag0=(.*)><>(.+):'
+    name: hazelcast_$2_$4
+    labels:
+      instance: "$1"
+      tag0: "$3"
+    type: GAUGE
+    attrNameSnakeCase: true
+
+  # Hazelcast: metrics with no tags, e.g. JVM/GC-level stats
+  - pattern: 'com\.hazelcast<type=Metrics, instance=(.*), prefix=(.*)><>(.+):'
+    name: hazelcast_$2_$3
+    labels:
+      instance: "$1"
+    type: GAUGE
+    attrNameSnakeCase: true

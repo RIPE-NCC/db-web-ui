@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SseKeepAliveScheduler {
-    
+
     private final SessionCacheService sessionCacheService;
 
     public SseKeepAliveScheduler(SessionCacheService sessionCacheService) {

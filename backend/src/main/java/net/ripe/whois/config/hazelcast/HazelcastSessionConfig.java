@@ -68,6 +68,7 @@ public class HazelcastSessionConfig {
         final HazelcastInstance instance = Hazelcast.newHazelcastInstance(config);
         addListeners(instance, sessionCacheService);
 
+        config.getMetricsConfig().setEnabled(true);
         return instance;
     }
 
