@@ -2,10 +2,12 @@ package net.ripe.whois.services;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.oauth2.client.oidc.session.OidcSessionInformation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -82,7 +84,7 @@ public class SessionCacheService {
      * (natural idle-timeout expiry, or explicit /invalidate). Removes it from the
      * other two caches and pushes the SSE banner. Idempotent.
      */
-    public void removeSessionCaches(final String sessionId, final boolean notify) {
+    public void removeSessionCaches(final String sessionId) {
         AtomicBoolean guard = cleanupInProgress.computeIfAbsent(sessionId, k -> new AtomicBoolean(false));
         if (!guard.compareAndSet(false, true)) {
             return; // already being cleaned up by another trigger
@@ -94,10 +96,39 @@ public class SessionCacheService {
             oidcMap.remove(sessionId);
             hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
 
-            if (notify) {
-                LOGGER.debug("Notify session expiration sessionId={}", sessionId);
-                notifyExpired(sessionId);
+
+            LOGGER.debug("Notify session expiration sessionId={}", sessionId);
+            notifyExpired(sessionId);
+
+            LOGGER.debug("Removed all session cache entries for sessionId={}", sessionId);
+        } finally {
+            cleanupInProgress.remove(sessionId);
+        }
+    }
+
+    /**
+     * Called whenever a session disappears from any of the three Hazelcast caches
+     * (natural idle-timeout expiry, or explicit /invalidate). Removes it from the
+     * other two caches and pushes the SSE banner. Idempotent.
+     */
+    public void removeAllCaches(final String sessionId) {
+        AtomicBoolean guard = cleanupInProgress.computeIfAbsent(sessionId, k -> new AtomicBoolean(false));
+        if (!guard.compareAndSet(false, true)) {
+            return; // already being cleaned up by another trigger
+        }
+
+        try {
+            IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
+
+            final Object oidcEntry = oidcMap.remove(sessionId);
+
+            if (oidcEntry instanceof OidcSessionInformation info) {
+                final String key = "keycloak:" + info.getPrincipal().getName();
+                hazelcastInstance.getMap(HazelcastOAuth2AuthorizedClientService.MAP_NAME).remove(key);
+                LOGGER.info("Removed authorized-client key={} for sessionId={}", key, sessionId);
             }
+
+            hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
             LOGGER.debug("Removed all cache entries for sessionId={}", sessionId);
         } finally {
             cleanupInProgress.remove(sessionId);

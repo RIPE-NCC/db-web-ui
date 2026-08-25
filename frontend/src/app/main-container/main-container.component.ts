@@ -46,6 +46,9 @@ export class MainContainerComponent implements OnInit {
         this.sessionService.expiredSession$.subscribe(() => {
             this.loginUrl = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
             this.showSessionExpireBanner = true;
+
+            const userLogin = document.querySelector('user-login');
+            userLogin?.dispatchEvent(new Event('access-logout'));
         });
         this.activeMenu = this.menuService.activeMenu();
         this.isBrowserSupported = supportedBrowsers.test(navigator.userAgent);
