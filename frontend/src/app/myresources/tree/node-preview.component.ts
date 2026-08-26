@@ -1,6 +1,8 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { ResourceCheck } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
@@ -11,7 +13,7 @@ import { TreeNode } from './tree.component';
     selector: 'node-preview',
     templateUrl: 'node-preview.component.html',
     styleUrl: 'node-preview.component.scss',
-    imports: [NameFormatterComponent, MatButton],
+    imports: [NameFormatterComponent, MatButton, MatProgressSpinner],
 })
 export class NodePreviewComponent {
     router = inject(Router);
@@ -29,6 +31,7 @@ export class NodePreviewComponent {
     };
     readonly tabType = input.required<string>(); // to distinguish which node preview should execute
     readonly announcementStatus = signal<string | undefined>(undefined);
+    readonly checkingRoutingInformation = signal<boolean>(false);
 
     constructor() {
         effect(() => {
@@ -46,11 +49,15 @@ export class NodePreviewComponent {
     }
 
     checkIfAnnounced(node: TreeNode) {
-        this.resourcesDataService.checkIsAnnounced(node.type, node.nodeName).subscribe({
-            next: (response: ResourceCheck[]) => {
-                this.announcementStatus.set(response.length === 0 ? 'Announced' : response[0].type);
-            },
-        });
+        this.checkingRoutingInformation.set(true);
+        this.resourcesDataService
+            .checkIsAnnounced(node.type, node.nodeName)
+            .pipe(finalize(() => this.checkingRoutingInformation.set(false)))
+            .subscribe({
+                next: (response: ResourceCheck[]) => {
+                    this.announcementStatus.set(response.length === 0 ? 'Announced' : response[0].type);
+                },
+            });
     }
 
     protected readonly Math = Math;

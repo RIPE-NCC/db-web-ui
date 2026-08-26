@@ -36,7 +36,14 @@
         <span class="value">-</span>
     </div>
     <div class="panel node-overview">
-        <span class="panel-title">Routing information</span>
+        <h3 class="panel-title">
+            Routing information @if(checkingRoutingInformation()) {
+            <span class="checking">
+                <mat-spinner diameter="30"></mat-spinner>
+                <span>Checking</span>
+            </span>
+            }
+        </h3>
         <span class="label">Announcement status</span>
         <span class="value status status-gray">{{ announcementStatus() }}</span>
 

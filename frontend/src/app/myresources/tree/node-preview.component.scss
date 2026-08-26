@@ -77,11 +77,30 @@
     .panel-title {
         grid-column: 1 / -1;
 
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         margin: 0 0 1rem 0;
 
         font-size: 1rem;
         font-weight: 700;
         color: #131f48;
+    }
+
+    .checking {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        font-size: 1rem;
+        font-weight: 400;
+        color: #2b46a1;
+    }
+
+    .checking mat-spinner {
+        width: 30px !important;
+        height: 30px !important;
     }
 
     .present {
