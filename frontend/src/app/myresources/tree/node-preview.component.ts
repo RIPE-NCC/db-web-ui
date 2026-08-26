@@ -32,6 +32,7 @@ export class NodePreviewComponent {
     readonly tabType = input.required<string>(); // to distinguish which node preview should execute
     readonly announcementStatus = signal<string | undefined>(undefined);
     readonly checkingRoutingInformation = signal<boolean>(false);
+    readonly isEmbed = !window.location.pathname.includes('/myresources'); // url is different for embedded
 
     constructor() {
         effect(() => {
@@ -44,8 +45,16 @@ export class NodePreviewComponent {
         });
     }
 
-    navigateToDetailPage() {
-        void this.router.navigateByUrl(`/myresources/detail/${this.node().type}/${this.node().nodeName}/false`);
+    navigateToDetailPage(): void {
+        const basePath = this.isEmbed ? '/db-web-ui/myresources/detail' : '/myresources/detail';
+
+        const url = `${basePath}/${this.node().type}/${this.node().nodeName}/false`;
+
+        if (this.isEmbed) {
+            window.open(url, '_blank');
+        } else {
+            void this.router.navigateByUrl(url);
+        }
     }
 
     checkIfAnnounced(node: TreeNode) {
