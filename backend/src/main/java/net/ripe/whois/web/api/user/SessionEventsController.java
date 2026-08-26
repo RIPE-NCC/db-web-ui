@@ -34,7 +34,7 @@ public class SessionEventsController {
         }
 
         final String sessionId = session.getId();
-        sessionCacheService.removeSessionCaches(sessionId);
+        sessionCacheService.removeSessionCaches(sessionId, false);
 
         return ResponseEntity.ok().build();
     }

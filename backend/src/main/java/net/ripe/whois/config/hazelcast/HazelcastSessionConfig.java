@@ -131,13 +131,13 @@ public class HazelcastSessionConfig {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
                         logEvent("REMOVED", event);
-                        sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()));
+                        //sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), false);
                     }
 
                     @Override
                     public void entryExpired(EntryEvent<Object, Object> event) {
                         logEvent("EXPIRED", event);
-                        sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()));
+                        sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), true);
                     }
 
                     @Override
@@ -182,14 +182,14 @@ public class HazelcastSessionConfig {
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryRemovedListener<Object, Object>) event -> {
                     LOGGER.debug("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()));
+                    sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), false);
                 },
                 true
         );
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryExpiredListener<Object, Object>) event ->{
                     LOGGER.debug("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()));
+                    sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), true);
                 },
                 true
         );

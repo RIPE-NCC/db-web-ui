@@ -84,7 +84,7 @@ public class SessionCacheService {
      * Token cache is not cleaning up because it is tied to an email, which can be
      * which can be in use by a different device.
      */
-    public void removeSessionCaches(final String sessionId) {
+    public void removeSessionCaches(final String sessionId, final boolean shouldNotify) {
         AtomicBoolean guard = cleanupInProgress.computeIfAbsent(sessionId, k -> new AtomicBoolean(false));
         if (!guard.compareAndSet(false, true)) {
             return; // already being cleaned up by another trigger
@@ -98,7 +98,9 @@ public class SessionCacheService {
 
 
             LOGGER.debug("Notify session expiration sessionId={}", sessionId);
-            notifyExpired(sessionId);
+            if (shouldNotify) {
+                notifyExpired(sessionId);
+            }
 
             LOGGER.debug("Removed all session cache entries for sessionId={}", sessionId);
         } finally {
