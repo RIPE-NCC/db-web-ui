@@ -55,7 +55,6 @@ public class WhoisSyncupdatesController extends ApiController {
             OAuth2AuthorizedClient authorizedClient = oAuth2AuthorizedClientManager.authorize(authorizeRequest);
             if (authorizedClient != null) {
                 bearerToken = authorizedClient.getAccessToken().getTokenValue();
-                LOGGER.info("bearer token {}",  bearerToken);
             }
         }
         return whoisSyncupdatesService.proxy(body, request, headers, bearerToken);
