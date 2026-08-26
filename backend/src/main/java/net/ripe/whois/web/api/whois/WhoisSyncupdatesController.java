@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class WhoisSyncupdatesController extends ApiController {
 
     private final WhoisSyncupdatesService whoisSyncupdatesService;
-    private final OAuth2AuthorizedClientService authorizedClientService;
+    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
 
     @Autowired
     public WhoisSyncupdatesController(
         final WhoisSyncupdatesService whoisSyncupdatesService,
-        final OAuth2AuthorizedClientService authorizedClientService) {
+        final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         this.whoisSyncupdatesService = whoisSyncupdatesService;
-        this.authorizedClientService = authorizedClientService;
+        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -39,11 +40,16 @@ public class WhoisSyncupdatesController extends ApiController {
 
         String bearerToken = null;
         if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
-            OAuth2AuthorizedClient authorizedClient =
-                    authorizedClientService.loadAuthorizedClient(
-                    oauthToken.getAuthorizedClientRegistrationId(),
-                    oauthToken.getName());
-            bearerToken = authorizedClient.getAccessToken().getTokenValue();
+            final OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest
+                    .withClientRegistrationId(oauthToken.getAuthorizedClientRegistrationId())
+                    .principal(authentication)
+                    .attribute(HttpServletRequest.class.getName(), request)
+                    .build();
+
+            OAuth2AuthorizedClient authorizedClient = oAuth2AuthorizedClientManager.authorize(authorizeRequest);
+            if (authorizedClient != null) {
+                bearerToken = authorizedClient.getAccessToken().getTokenValue();
+            }
         }
         return whoisSyncupdatesService.proxy(body, request, headers, bearerToken);
     }

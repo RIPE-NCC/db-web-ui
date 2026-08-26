@@ -11,8 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,11 +32,12 @@ public class WhoisProxyController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
     private final WhoisService whoisService;
 
-    private final OAuth2AuthorizedClientService authorizedClientService;
+    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
+
     @Autowired
-    public WhoisProxyController(final WhoisService whoisService, OAuth2AuthorizedClientService authorizedClientService) {
+    public WhoisProxyController(final WhoisService whoisService, final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         this.whoisService = whoisService;
-        this.authorizedClientService = authorizedClientService;
+        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @GetMapping(value = "/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -56,18 +58,19 @@ public class WhoisProxyController extends ApiController {
             @RequestHeader final HttpHeaders headers,
             Authentication authentication) {
         removeUnnecessaryHeaders(headers);
-        OAuth2AuthorizedClient authorizedClient = null;
 
         if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
-            authorizedClient = authorizedClientService.loadAuthorizedClient(
-                oauthToken.getAuthorizedClientRegistrationId(),
-                oauthToken.getName());
-        }
+            final OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest
+                    .withClientRegistrationId(oauthToken.getAuthorizedClientRegistrationId())
+                    .principal(authentication)
+                    .attribute(HttpServletRequest.class.getName(), request)
+                    .build();
 
-        if (authorizedClient != null) {
-            headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            final OAuth2AuthorizedClient authorizedClient = oAuth2AuthorizedClientManager.authorize(authorizeRequest);
+            if (authorizedClient != null) {
+                headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            }
         }
-
         return whoisService.bypass(request, response, body, headers);
     }
 }
