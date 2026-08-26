@@ -3,6 +3,8 @@ package net.ripe.whois.web.api.whois;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.whois.services.WhoisSyncupdatesService;
 import net.ripe.whois.web.api.ApiController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/syncupdates")
 public class WhoisSyncupdatesController extends ApiController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisSyncupdatesController.class);
 
     private final WhoisSyncupdatesService whoisSyncupdatesService;
     private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
@@ -39,7 +43,9 @@ public class WhoisSyncupdatesController extends ApiController {
                                                  Authentication authentication)  {
 
         String bearerToken = null;
+        LOGGER.info("Received request to proxy whois sync updates");
         if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+            LOGGER.info("is oauthToken");
             final OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest
                     .withClientRegistrationId(oauthToken.getAuthorizedClientRegistrationId())
                     .principal(authentication)
@@ -49,6 +55,7 @@ public class WhoisSyncupdatesController extends ApiController {
             OAuth2AuthorizedClient authorizedClient = oAuth2AuthorizedClientManager.authorize(authorizeRequest);
             if (authorizedClient != null) {
                 bearerToken = authorizedClient.getAccessToken().getTokenValue();
+                LOGGER.info("bearer token {}",  bearerToken);
             }
         }
         return whoisSyncupdatesService.proxy(body, request, headers, bearerToken);

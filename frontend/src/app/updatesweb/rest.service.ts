@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpParameterCodec, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { forkJoin, Observable, of, shareReplay, throwError } from 'rxjs';
@@ -196,11 +196,6 @@ export class RestService {
             }),
             catchError((error: any) => {
                 console.error('modifyObject error:' + JSON.stringify(error));
-                console.log('TYPE:', typeof error);
-                console.log('CONSTRUCTOR:', error?.constructor?.name);
-                console.log('IS HttpErrorResponse:', error instanceof HttpErrorResponse);
-                console.log('KEYS:', Object.keys(error ?? {}));
-                console.log('RAW:', error);
                 return throwError(() => this.whoisResourcesService.wrapError(error));
             }),
         );
