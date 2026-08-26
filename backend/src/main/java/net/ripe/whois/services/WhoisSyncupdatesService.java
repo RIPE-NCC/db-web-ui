@@ -53,8 +53,6 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         final List<String> origin = headers.get(ORIGIN);
         if (origin != null) {
             proxyHeaders.put(ORIGIN, origin);
-        } else {
-            LOGGER.warn("No origin header found in request");
         }
 
         proxyHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
