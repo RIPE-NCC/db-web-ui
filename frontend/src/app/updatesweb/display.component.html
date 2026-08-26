@@ -24,7 +24,7 @@
         }
     </table>
     } @if (isDiff()) {
-    <pre whoisLineDiff [left]="before | sanitizeHtml" [right]="after | sanitizeHtml" class="textdiff"></pre>
+    <pre whoisLineDiff [left]="before" [right]="after" class="textdiff"></pre>
     }
 
     <button mat-flat-button color="primary" class="float-end margin-left" (click)="navigateToSelect()">BACK TO CREATE OBJECT</button>
