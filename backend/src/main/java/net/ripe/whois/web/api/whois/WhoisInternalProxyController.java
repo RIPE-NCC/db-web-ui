@@ -232,6 +232,7 @@ public class WhoisInternalProxyController extends ApiController {
 
     private HttpHeaders cleanHeaders(final HttpHeaders headers){
         removeUnnecessaryHeaders(headers);
+        headers.remove(HttpHeaders.COOKIE);
         return headers;
     }
 }

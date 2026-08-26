@@ -23,8 +23,6 @@ import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegist
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
@@ -52,7 +50,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                            DefaultOAuth2AuthorizationRequestResolver pkceResolver,
+                                            ClientRegistrationRepository clientRegistrationRepository,
                                             AuthenticationSuccessHandler successHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
                                             OidcBackChannelLogoutHandler oidcLogoutHandler,
@@ -108,7 +106,19 @@ public class SecurityConfig {
             )
             .oauth2Login(oauth -> {
                     oauth.authorizedClientRepository(authorizedClientRepository);
-                    oauth.authorizationEndpoint(auth -> auth.authorizationRequestResolver(pkceResolver));
+                    oauth.authorizationEndpoint(endpoint -> endpoint
+                                    .authorizationRequestResolver(
+                                            new SilentAwareAuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization")
+                                    )
+                            )
+                            .failureHandler((request, response, exception) -> {
+                                String error = request.getParameter("error");
+                                if ("login_required".equals(error) || "interaction_required".equals(error)) {
+                                    response.sendRedirect("/db-web-ui/?silentLoginFailed=true");
+                                } else {
+                                    response.sendRedirect("/db-web-ui/login-error");
+                                }
+                            });
                     oauth.successHandler(successHandler);
                 })
             .logout(logout -> logout
@@ -128,15 +138,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public DefaultOAuth2AuthorizationRequestResolver pkceResolver(ClientRegistrationRepository repo) {
-
-        DefaultOAuth2AuthorizationRequestResolver resolver = new DefaultOAuth2AuthorizationRequestResolver(repo, "/oauth2/authorization");
-        // for code_challenge_method
-        resolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce());
-
-        return resolver;
-    }
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService, RestTemplate restTemplate) {

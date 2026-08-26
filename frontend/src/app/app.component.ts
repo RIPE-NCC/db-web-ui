@@ -82,9 +82,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.isComponentLoaded = false;
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('silentLoginFailed')) {
+            // Came back from a failed silent SSO attempt — show logged-out UI, don't retry.
+            this.isComponentLoaded = true;
+            return;
+        }
+
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
                 this.userOidc = response;
+
                 this.usernameOidc = this.userOidc.name;
                 this.isLoggedInUser = true;
                 this.isComponentLoaded = true;
@@ -93,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.sessionService.initialize();
             },
             error: (_err) => {
-                this.isComponentLoaded = true;
+                window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true`;
             },
         });
     }

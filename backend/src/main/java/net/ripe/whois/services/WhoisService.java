@@ -23,8 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import javax.annotation.Nullable;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -37,7 +37,7 @@ import java.util.StringJoiner;
 public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
-
+    public static final String SSO_TOKEN_KEY = "crowd.token_key";
     private final RestTemplate restTemplate;
     private final WhoisProxy whoisProxy;
     private final String apiUrl;
@@ -55,6 +55,7 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     public ResponseEntity<String> bypass(final HttpServletRequest request, final HttpServletResponse response, @Nullable final String requestBody, final HttpHeaders requestHeaders) {
         // Do not accept compressed response, as it's not handled properly (by whois)
         requestHeaders.remove(HttpHeaders.ACCEPT_ENCODING);
+        requestHeaders.remove(HttpHeaders.COOKIE);
         requestHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
         requestHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         return handleErrors(() -> stream(request, response, requestBody, requestHeaders), LOGGER);
