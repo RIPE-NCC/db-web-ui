@@ -59,7 +59,10 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         proxyHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
         proxyHeaders.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
         proxyHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
-        proxyHeaders.setBearerAuth(accessToken);
+        LOGGER.info("Access Token: {}", accessToken);
+        if (accessToken != null){
+            proxyHeaders.setBearerAuth(accessToken);
+        }
 
         final URI uri = composeSyncupdatesUrl(request);
 

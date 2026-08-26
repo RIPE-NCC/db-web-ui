@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,8 +35,7 @@ public class WhoisSyncupdatesController extends ApiController {
     public ResponseEntity<String> proxyRestCalls(@RequestBody(required = true) final String body,
                                                  final HttpServletRequest request,
                                                  @RequestHeader final HttpHeaders headers,
-                                                 @RegisteredOAuth2AuthorizedClient("keycloak")
-                                                     Authentication authentication)  {
+                                                 Authentication authentication)  {
 
         String bearerToken = null;
         if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
