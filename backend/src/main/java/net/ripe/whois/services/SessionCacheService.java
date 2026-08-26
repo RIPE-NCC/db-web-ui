@@ -39,7 +39,7 @@ public class SessionCacheService {
             final String sessionId = entry.getKey();
             final SseEmitter emitter = entry.getValue();
             try {
-                LOGGER.info("Keep-alive failed for sessionId={}", sessionId);
+                LOGGER.info("Keep-alive check for sessionId={}", sessionId);
                 emitter.send(SseEmitter.event().comment("keep-alive"));
             } catch (IOException e) {
                 LOGGER.info("Keep-alive failed for sessionId={}, removing dead emitter: {}", sessionId, e.getMessage());
@@ -94,7 +94,7 @@ public class SessionCacheService {
             IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
 
             oidcMap.remove(sessionId);
-            hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
+            //hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
 
 
             LOGGER.debug("Notify session expiration sessionId={}", sessionId);

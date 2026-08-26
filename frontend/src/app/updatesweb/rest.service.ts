@@ -1,7 +1,7 @@
-import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpParameterCodec, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, forkJoin, of, shareReplay, throwError } from 'rxjs';
+import { forkJoin, Observable, of, shareReplay, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IMntByModel } from '../shared/whois-response-type.model';
@@ -196,6 +196,11 @@ export class RestService {
             }),
             catchError((error: any) => {
                 console.error('modifyObject error:' + JSON.stringify(error));
+                console.log('TYPE:', typeof error);
+                console.log('CONSTRUCTOR:', error?.constructor?.name);
+                console.log('IS HttpErrorResponse:', error instanceof HttpErrorResponse);
+                console.log('KEYS:', Object.keys(error ?? {}));
+                console.log('RAW:', error);
                 return throwError(() => this.whoisResourcesService.wrapError(error));
             }),
         );
