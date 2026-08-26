@@ -12,6 +12,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const properties = inject(PropertiesService);
     const alertService = inject(AlertsService);
     const menuService = inject(MenuService);
+    const http = inject(HttpClient);
 
     const isServerError = (status: number) => status === 500;
     const isAuthorisationError = (status: number) => status === 401;
@@ -20,7 +21,6 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
     const mustErrorBeSwallowed = (error: HttpErrorResponse) => {
         let toBeSwallowed = false;
-        const http = inject(HttpClient);
 
         console.debug('ui-url:' + router.url);
         if (error !== undefined) {
