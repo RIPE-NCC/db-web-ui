@@ -1,7 +1,7 @@
 import { QueryPage } from '../pages/query.page';
 import { WebupdatesPage } from '../pages/webupdates.page';
 
-xdescribe('Session expire', () => {
+describe('Session expire', () => {
     const queryPage = new QueryPage();
     const webupdatesPage = new WebupdatesPage();
     const personAuthError = './test/e2e/mocks/e2eTest/person-auth-error.json';

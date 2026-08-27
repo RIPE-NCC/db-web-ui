@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,8 +29,10 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
@@ -51,7 +54,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             SilentAwareAuthorizationRequestResolver silentAwareResolver,
-                                            AuthenticationSuccessHandler successHandler,
+                                            AuthenticationSuccessHandler authenticationSuccessHandler,
+                                            AuthenticationFailureHandler authenticationFailureHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
                                             OidcBackChannelLogoutHandler oidcLogoutHandler,
                                             LogoutHandler removeAuthorizedClientOnBackChannelLogout,
@@ -109,17 +113,18 @@ public class SecurityConfig {
                     // Fetch credentials when loading page
                     oauth.authorizationEndpoint(endpoint -> endpoint.authorizationRequestResolver(silentAwareResolver));
                     oauth.failureHandler((request, response, exception) -> {
-                        String error = request.getParameter("error");
+                        final String error = request.getParameter("error");
                         if ("login_required".equals(error) || "interaction_required".equals(error)) {
-                            String next = (String) request.getSession().getAttribute(NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE);
-                            String baseUrl = next != null ? next : "/db-web-ui/";
-                            String separator = baseUrl.contains("?") ? "&" : "?";
+                            final String next = (String) request.getSession().getAttribute(NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE);
+                            final String baseUrl = next != null ? next : "/db-web-ui/";
+                            final String separator = baseUrl.contains("?") ? "&" : "?";
                             response.sendRedirect(baseUrl + separator + "silentLoginFailed");
                         } else {
-                            response.sendRedirect("/db-web-ui/?loginError=true");
+                            authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
                         }
+
                     });
-                    oauth.successHandler(successHandler);
+                    oauth.successHandler(authenticationSuccessHandler);
 
                 })
             .logout(logout -> logout
@@ -159,13 +164,20 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/login?error");
+    }
+
+
+    @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("DBSESSIONID");
+        serializer.setCookieName(OidcUtils.OIDC_LOCAL_COOKIE_NAME);
         return serializer;
     }
 
     @Bean
+    @Profile("!test")
     public OAuth2AuthorizedClientManager authorizedClientManager(
             ClientRegistrationRepository clientRegistrationRepository,
             OAuth2AuthorizedClientService authorizedClientService) {
@@ -188,7 +200,7 @@ public class SecurityConfig {
                                        RestClient.Builder restClientBuilder) {
         final OAuth2ClientHttpRequestInterceptor requestInterceptor =
                 new OAuth2ClientHttpRequestInterceptor(authorizedClientManager);
-        requestInterceptor.setClientRegistrationIdResolver(request -> "keycloak");
+        requestInterceptor.setClientRegistrationIdResolver(request -> OidcUtils.REGISTRATION_ID);
 
         return restClientBuilder
                 .requestInterceptor(requestInterceptor)
@@ -240,7 +252,7 @@ public class SecurityConfig {
     @Bean
     OidcBackChannelLogoutHandler oidcLogoutHandler(OidcSessionRegistry sessionRegistry) {
         OidcBackChannelLogoutHandler handler = new OidcBackChannelLogoutHandler(sessionRegistry);
-        handler.setSessionCookieName("DBSESSIONID");
+        handler.setSessionCookieName(OidcUtils.OIDC_LOCAL_COOKIE_NAME);
         return handler;
     }
 
@@ -263,12 +275,12 @@ public class SecurityConfig {
     // silent login
     @Bean
     public SilentAwareAuthorizationRequestResolver silentAwareResolver(ClientRegistrationRepository clientRegistrationRepository) {
-        return new SilentAwareAuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization");
+        return new SilentAwareAuthorizationRequestResolver(clientRegistrationRepository, OidcUtils.IDP_AUTHORISATION_ENDPOINT);
     }
 
     private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
         CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
-        repository.setCookieName("DBCSRFTOKEN");
+        repository.setCookieName(OidcUtils.OIDC_CSRF_COOKIE_NAME);
         return repository;
     }
 }

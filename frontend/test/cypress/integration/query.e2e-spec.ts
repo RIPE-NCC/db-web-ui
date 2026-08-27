@@ -163,6 +163,11 @@ describe('Query scenario', () => {
                 },
             },
         }).as('getProfile');
+
+        cy.intercept('GET', '**/oauth2/authorization/keycloak**', (req) => {
+            req.reply({ statusCode: 302, headers: { Location: '/db-web-ui/?silentLoginFailed=true' } });
+        }).as('silentLogin');
+
         queryPage.visit();
         queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
         queryPage.clickOnSearchButton();

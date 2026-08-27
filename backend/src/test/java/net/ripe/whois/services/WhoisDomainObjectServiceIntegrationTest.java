@@ -2,6 +2,7 @@ package net.ripe.whois.services;
 
 import com.google.common.collect.Lists;
 import net.ripe.whois.AbstractIntegrationTest;
+import net.ripe.whois.config.OidcUtils;
 import net.ripe.whois.web.api.whois.domain.NameValuePair;
 import net.ripe.whois.web.api.whois.domain.WhoisWebDTO;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth("aabbccdd");
-        headers.add(HttpHeaders.COOKIE, "DBCSRFTOKEN=" + xsrfToken);
+        headers.add(HttpHeaders.COOKIE, OidcUtils.OIDC_CSRF_COOKIE_NAME + "=" + xsrfToken);
         headers.add("X-XSRF-TOKEN", xsrfToken);
 
         final HttpEntity<WhoisWebDTO> entity = new HttpEntity<>(dto, headers);
@@ -43,7 +44,7 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
         );
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getHeaders().get("Set-Cookie").getFirst(), containsString("DBSESSIONID"));
+        assertThat(response.getHeaders().get("Set-Cookie").getFirst(), containsString(OidcUtils.OIDC_LOCAL_COOKIE_NAME));
     }
 
 }

@@ -1,6 +1,7 @@
 package net.ripe.whois.services;
 
 import net.ripe.whois.AbstractIntegrationTest;
+import net.ripe.whois.config.OidcUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +37,7 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
         final String xsrfToken = extractXsrfCookie();
 
         final HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "DBCSRFTOKEN=" + xsrfToken);
+        headers.add(HttpHeaders.COOKIE, OidcUtils.OIDC_CSRF_COOKIE_NAME + "=" + xsrfToken);
         headers.add("X-XSRF-TOKEN", xsrfToken);
 
         final ResponseEntity<String> response = post("/db-web-ui/api/references/RIPE", String.class, entity("test", headers));
@@ -52,7 +53,7 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
         final String xsrfToken = extractXsrfCookie();
 
         final HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "DBCSRFTOKEN=" + xsrfToken);
+        headers.add(HttpHeaders.COOKIE, OidcUtils.OIDC_CSRF_COOKIE_NAME + "=" + xsrfToken);
         headers.add("X-XSRF-TOKEN", xsrfToken);
 
 

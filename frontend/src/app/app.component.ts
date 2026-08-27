@@ -86,10 +86,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.isComponentLoaded = false;
 
         const params = new URLSearchParams(window.location.search);
-        if (params.has('silentLoginFailed') || params.has('loginError')) {
+        if (params.has('silentLoginFailed')) {
             // Came back from a failed silent SSO attempt — show logged-out UI, don't retry.
             params.delete('silentLoginFailed');
-            params.delete('loginError');
             const cleanQuery = params.toString();
             const cleanUrl = window.location.pathname + (cleanQuery ? `?${cleanQuery}` : '');
             this.location.replaceState(cleanUrl);
@@ -98,7 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const hasSessionCookie = this.hasCookie('DBSESSIONID');
+        const hasSessionCookie = this.hasCookie('DBSESSIONID'); // needs to align OidcUtils.OIDC_LOCAL_COOKIE_NAME
 
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
@@ -117,7 +116,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     return;
                 }
                 // If not logged in attempt to silently fetch the credentials from the IdP
-                window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(window.location.href)}`;
+                window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
             },
         });
     }
@@ -179,5 +178,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
     private hasCookie(name: string): boolean {
         return document.cookie.split('; ').some((c) => c.startsWith(`${name}=`));
+    }
+
+    private getCleanUrlForNext(): string {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('silent');
+        url.searchParams.delete('next');
+        url.searchParams.delete('silentLoginFailed');
+        return url.toString();
     }
 }

@@ -45,7 +45,7 @@ bootstrapApplication(AppComponent, {
         provideHttpClient(
             withXhr(),
             withXsrfConfiguration({
-                cookieName: 'DBCSRFTOKEN',
+                cookieName: 'DBCSRFTOKEN', // needs to align OidcUtils.OIDC_CSRF_COOKIE_NAME
             }),
             withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor]),
         ),

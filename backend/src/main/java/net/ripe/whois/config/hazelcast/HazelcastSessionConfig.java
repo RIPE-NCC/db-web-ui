@@ -10,6 +10,7 @@ import com.hazelcast.map.listener.EntryAddedListener;
 import com.hazelcast.map.listener.EntryExpiredListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
+import net.ripe.whois.config.OidcUtils;
 import net.ripe.whois.services.SessionCacheService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ import java.util.List;
 @Configuration
 @EnableHazelcastHttpSession(
         saveMode = SaveMode.ON_SET_ATTRIBUTE,
-        maxInactiveIntervalInSeconds = 8 * 60 * 60
+        maxInactiveIntervalInSeconds = OidcUtils.HAZELCAST_OIDC_CACHES_TIMEOUT
 )
 public class HazelcastSessionConfig {
 
@@ -55,14 +56,14 @@ public class HazelcastSessionConfig {
         final MapConfig authorizedClientMapConfig = new MapConfig(HazelcastOAuth2AuthorizedClientService.MAP_NAME)
                 .setBackupCount(1)
                 .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(8 * 60 * 60); // 8 hours to match IdP
+                .setMaxIdleSeconds(OidcUtils.HAZELCAST_OIDC_CACHES_TIMEOUT); // 8 hours to match IdP
 
         config.addMapConfig(authorizedClientMapConfig);
 
         final MapConfig oidcSessionsMapConfig = new MapConfig(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP)
                 .setBackupCount(1)
                 .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(8 * 60 * 60);
+                .setMaxIdleSeconds(OidcUtils.HAZELCAST_OIDC_CACHES_TIMEOUT);
 
         config.addMapConfig(oidcSessionsMapConfig);
 

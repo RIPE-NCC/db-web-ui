@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.common.util.concurrent.Uninterruptibles;
+import net.ripe.whois.config.OidcUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -227,11 +228,11 @@ public abstract class AbstractIntegrationTest {
         return csrfResponse.getHeaders()
                 .getOrEmpty(HttpHeaders.SET_COOKIE)
                 .stream()
-                .filter(cookie -> cookie.startsWith("DBCSRFTOKEN="))
+                .filter(cookie -> cookie.startsWith(OidcUtils.OIDC_CSRF_COOKIE_NAME + "="))
                 .map(cookie -> {
                     final int end = cookie.indexOf(';');
                     return cookie.substring(
-                            "DBCSRFTOKEN".length() + 1,
+                            OidcUtils.OIDC_CSRF_COOKIE_NAME.length() + 1,
                             end >= 0 ? end : cookie.length()
                     );
                 })
