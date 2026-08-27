@@ -11,10 +11,9 @@ import { map, tap } from 'rxjs/operators';
 import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { WhoisVersionComponent } from '../../application-version/whois-version.component';
 import { PropertiesService } from '../../properties.service';
-import { AlertsService } from '../../shared/alert/alerts.service';
 import { WhoisLineDiffDirective } from '../../shared/whois-line-diff.directive';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
-import { IAttributeModel, IObjectVersionPreviewModel, IVersion, IWhoisResponseModel } from '../../shared/whois-response-type.model';
+import { IAttributeModel, IObjectVersionPreviewModel, IVersion } from '../../shared/whois-response-type.model';
 import { BreadcrumbsComponent } from '../breadcrumbs/breadcrumbs.component';
 import { VersionsLookupService } from '../versions-lookup.service';
 
@@ -29,7 +28,6 @@ import { VersionsLookupService } from '../versions-lookup.service';
 export class DiffComponent implements OnInit {
     private destroyRef = inject(DestroyRef);
     private activatedRoute = inject(ActivatedRoute);
-    private alertsService = inject(AlertsService);
     private versionsLookupService = inject(VersionsLookupService);
     private router = inject(Router);
     properties = inject(PropertiesService);
@@ -152,12 +150,13 @@ export class DiffComponent implements OnInit {
     }
 
     private init() {
-        this.lookupWhoisObject();
-
         this.versionsLookupService
             .getVersions(this.source, this.objectType, this.objectName)
             .pipe(
-                tap((response) => (this.versions = response.versions.version)),
+                tap((response) => {
+                    this.versions = response.versions.version;
+                    this.whoisVersion = response.version;
+                }),
                 switchMap(() => {
                     const left$ = this.fetchVersion(this.leftVersionId);
                     const leftLatest$ = of(this.isLatest(this.leftVersionId));
@@ -186,21 +185,6 @@ export class DiffComponent implements OnInit {
                 },
                 error: (err) => {
                     this.error = err;
-                },
-            });
-    }
-
-    // TODO: add support to the versions api to fetch app version alongside the versions, in order to eliminate unnecessary second request [DB-7341]
-    private lookupWhoisObject() {
-        this.versionsLookupService
-            .versionsLookup(this.source, this.objectType, this.objectName)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-                next: (response: IWhoisResponseModel) => {
-                    this.whoisVersion = response.version;
-                },
-                error: () => {
-                    this.alertsService.addGlobalError(`An error occurred looking for ${this.objectType} ${this.objectName}`);
                 },
             });
     }

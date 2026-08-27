@@ -87,6 +87,11 @@
         "terms-and-conditions": {
             "type": "locator",
             "href": "https://docs.db.ripe.net/terms-conditions.html"
+        },
+        "version": {
+            "version": "1.125-SNAPSHOT",
+            "timestamp": "2026-08-26T12:06:13Z",
+            "commit-id": "355d524"
         }
     }
 }
