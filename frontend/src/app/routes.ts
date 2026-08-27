@@ -6,7 +6,7 @@ export const appRoutes: Routes = [
     // Standalone page for iframe — no header/menu
     {
         path: 'embed/resources',
-        loadComponent: () => import('./myresources/landing-page/landing-page.component').then((m) => m.LandingPageComponent),
+        loadComponent: () => import('./myresources/resources.component').then((m) => m.ResourcesComponent),
     },
     // db-web-ui application with header/menu
     {
