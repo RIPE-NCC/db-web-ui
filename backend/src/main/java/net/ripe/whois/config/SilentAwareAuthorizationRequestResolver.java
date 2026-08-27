@@ -25,55 +25,39 @@ public class SilentAwareAuthorizationRequestResolver implements OAuth2Authorizat
     public SilentAwareAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository,
                                                    String authorizationRequestBaseUri) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, authorizationRequestBaseUri);
-        this.defaultResolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce()); // <-- the actual missing piece
-        LOGGER.info("calling solent aware authorization!");
+        this.defaultResolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce());
     }
 
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
-        LOGGER.info("resolve(request) uri={} contextPath={} servletPath={}",
-                request.getRequestURI(), request.getContextPath(), request.getServletPath());
-        OAuth2AuthorizationRequest resolved = defaultResolver.resolve(request);
-        if (resolved != null) {
-            LOGGER.info("BEFORE customize: silentParam={} attributes={}", request.getParameter("silent"), resolved.getAttributes());
-        }
-        return customize(resolved, request);
+        LOGGER.debug("resolve(request) uri={} contextPath={} servletPath={}", request.getRequestURI(), request.getContextPath(), request.getServletPath());
+        return customize(defaultResolver.resolve(request), request);
     }
 
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
-        OAuth2AuthorizationRequest resolved = defaultResolver.resolve(request, clientRegistrationId);
-        if (resolved != null) {
-            LOGGER.info("BEFORE customize: silentParam={} attributes={}", request.getParameter("silent"), resolved.getAttributes());
-        }
-        return customize(resolved, request);
+        return customize(defaultResolver.resolve(request, clientRegistrationId), request);
     }
-
 
     private OAuth2AuthorizationRequest customize(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request) {
         if (authorizationRequest == null) {
             return null;
         }
 
-        LOGGER.info("customize() ENTRY additionalParameters={}", authorizationRequest.getAdditionalParameters());
+        LOGGER.debug("customize() ENTRY additionalParameters={}", authorizationRequest.getAdditionalParameters());
 
         if (!"true".equals(request.getParameter("silent"))) {
+            LOGGER.debug("not silent, returning authorizationRequest");
             return authorizationRequest;
         }
 
         Map<String, Object> extraParams = new HashMap<>(authorizationRequest.getAdditionalParameters());
         extraParams.put("prompt", "none");
 
-        LOGGER.info("customize() extraParams after adding prompt={}", extraParams);
-
-        OAuth2AuthorizationRequest customized = OAuth2AuthorizationRequest.from(authorizationRequest)
+        return OAuth2AuthorizationRequest.from(authorizationRequest)
                 .additionalParameters(extraParams)
                 .attributes(authorizationRequest.getAttributes())
                 .build();
-
-        LOGGER.info("customize() EXIT additionalParameters={} attributes={}", customized.getAdditionalParameters(), customized.getAttributes());
-
-        return customized;
     }
 
 }

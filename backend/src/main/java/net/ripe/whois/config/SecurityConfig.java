@@ -116,11 +116,6 @@ public class SecurityConfig {
                             String separator = baseUrl.contains("?") ? "&" : "?";
                             response.sendRedirect(baseUrl + separator + "silentLoginFailed");
                         } else {
-                            LOGGER.info("REAL login failure — error={} error_description={} exceptionMessage={} exceptionClass={}",
-                                    request.getParameter("error"),
-                                    request.getParameter("error_description"),
-                                    exception.getMessage(),
-                                    exception.getClass().getSimpleName());
                             response.sendRedirect("/db-web-ui/?loginError=true");
                         }
                     });
@@ -147,9 +142,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService, RestTemplate restTemplate) {
-        DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
-        LOGGER.info("DefaultRedirectStrategy: {}", defaultRedirectStrategy);
-        SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
+        final DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
+        final SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
         delegate.setRedirectStrategy((request, response, url) -> {
             String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
             LOGGER.debug("RedirectStrategy: next={} url={}", next, url);
