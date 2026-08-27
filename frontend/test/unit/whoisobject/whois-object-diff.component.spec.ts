@@ -83,6 +83,11 @@ const leftVersionMock: IObjectVersionResponse = {
             },
         ],
     },
+    version: {
+        version: '1.124-SNAPSHOT',
+        timestamp: '2026-07-29T07:35:10Z',
+        'commit-id': 'f75b2e1',
+    },
 } as IObjectVersionResponse;
 
 describe('DiffComponent', () => {
@@ -91,7 +96,7 @@ describe('DiffComponent', () => {
     let versionsLookupServiceSpy: jasmine.SpyObj<VersionsLookupService>;
 
     beforeEach(() => {
-        versionsLookupServiceSpy = jasmine.createSpyObj('VersionsLookupService', ['versionsLookup', 'getVersion', 'getVersions']);
+        versionsLookupServiceSpy = jasmine.createSpyObj('VersionsLookupService', ['getVersion', 'getVersions']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, DiffComponent],
             providers: [
@@ -123,7 +128,6 @@ describe('DiffComponent', () => {
         fixture = TestBed.createComponent(DiffComponent);
         component = fixture.componentInstance;
 
-        versionsLookupServiceSpy.versionsLookup.and.returnValue(of(leftVersionMock));
         versionsLookupServiceSpy.getVersions.and.returnValue(of(versionsMock));
         versionsLookupServiceSpy.getVersion.and.returnValue(of(leftVersionMock));
     });
@@ -192,10 +196,5 @@ describe('DiffComponent', () => {
         const callsAfterInit = versionsLookupServiceSpy.getVersion.calls.count();
         component.onLeftVersionSelect(1);
         expect(versionsLookupServiceSpy.getVersion.calls.count()).toEqual(callsAfterInit);
-    });
-
-    it('should set whoisVersion from the lookup response', () => {
-        component.ngOnInit();
-        expect(versionsLookupServiceSpy.versionsLookup).toHaveBeenCalledWith('TEST', 'mntner', 'MHM-MNT');
     });
 });

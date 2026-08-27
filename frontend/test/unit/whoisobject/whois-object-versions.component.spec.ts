@@ -83,6 +83,11 @@ const versionMock: IObjectVersionResponse = {
             },
         ],
     },
+    version: {
+        version: '1.124-SNAPSHOT',
+        timestamp: '2026-07-29T07:35:10Z',
+        'commit-id': 'f75b2e1',
+    },
 } as IObjectVersionResponse;
 
 const lookupMock: IWhoisResponseModel = {
@@ -100,7 +105,7 @@ describe('VersionsComponent', () => {
     let router: Router;
 
     beforeEach(() => {
-        versionsLookupServiceSpy = jasmine.createSpyObj('VersionsLookupService', ['versionsLookup', 'getVersion', 'getVersions']);
+        versionsLookupServiceSpy = jasmine.createSpyObj('VersionsLookupService', ['getVersion', 'getVersions']);
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, VersionsComponent],
             providers: [
@@ -129,7 +134,6 @@ describe('VersionsComponent', () => {
         component = fixture.componentInstance;
         router = TestBed.inject(Router);
 
-        versionsLookupServiceSpy.versionsLookup.and.returnValue(of(lookupMock));
         versionsLookupServiceSpy.getVersions.and.returnValue(of(versionsMock));
         versionsLookupServiceSpy.getVersion.and.returnValue(of(versionMock));
     });
@@ -168,12 +172,6 @@ describe('VersionsComponent', () => {
     it('should mark the preselected version as latest', () => {
         component.ngOnInit();
         expect(component.isLatest).toBeTrue();
-    });
-
-    it('should set whoisVersion from the lookup response', () => {
-        component.ngOnInit();
-        expect(versionsLookupServiceSpy.versionsLookup).toHaveBeenCalledWith('TEST', 'mntner', 'MHM-MNT');
-        expect(component.whoisVersion).toBeTruthy();
     });
 
     it('should fetch a version when one is selected from the dropdown', () => {
