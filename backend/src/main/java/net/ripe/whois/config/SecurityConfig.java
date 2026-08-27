@@ -50,7 +50,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                            ClientRegistrationRepository clientRegistrationRepository,
+                                            SilentAwareAuthorizationRequestResolver silentAwareResolver,
                                             AuthenticationSuccessHandler successHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
                                             OidcBackChannelLogoutHandler oidcLogoutHandler,
@@ -106,20 +106,26 @@ public class SecurityConfig {
             )
             .oauth2Login(oauth -> {
                     oauth.authorizedClientRepository(authorizedClientRepository);
-                    oauth.authorizationEndpoint(endpoint -> endpoint
-                                    .authorizationRequestResolver(
-                                            new SilentAwareAuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization")
-                                    )
-                            )
-                            .failureHandler((request, response, exception) -> {
-                                String error = request.getParameter("error");
-                                if ("login_required".equals(error) || "interaction_required".equals(error)) {
-                                    response.sendRedirect("/db-web-ui/?silentLoginFailed=true");
-                                } else {
-                                    response.sendRedirect("/db-web-ui/login-error");
-                                }
-                            });
+                    // Fetch credentials when loading page
+                    oauth.authorizationEndpoint(endpoint -> endpoint.authorizationRequestResolver(silentAwareResolver));
+                    oauth.failureHandler((request, response, exception) -> {
+                        String error = request.getParameter("error");
+                        if ("login_required".equals(error) || "interaction_required".equals(error)) {
+                            String next = (String) request.getSession().getAttribute(NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE);
+                            String baseUrl = next != null ? next : "/db-web-ui/";
+                            String separator = baseUrl.contains("?") ? "&" : "?";
+                            response.sendRedirect(baseUrl + separator + "silentLoginFailed");
+                        } else {
+                            LOGGER.info("REAL login failure — error={} error_description={} exceptionMessage={} exceptionClass={}",
+                                    request.getParameter("error"),
+                                    request.getParameter("error_description"),
+                                    exception.getMessage(),
+                                    exception.getClass().getSimpleName());
+                            response.sendRedirect("/db-web-ui/?loginError=true");
+                        }
+                    });
                     oauth.successHandler(successHandler);
+
                 })
             .logout(logout -> logout
                 .deleteCookies()
@@ -258,6 +264,12 @@ public class SecurityConfig {
                         registrationId, principalName);
             }
         };
+    }
+
+    // silent login
+    @Bean
+    public SilentAwareAuthorizationRequestResolver silentAwareResolver(ClientRegistrationRepository clientRegistrationRepository) {
+        return new SilentAwareAuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization");
     }
 
     private CookieCsrfTokenRepository cookieCsrfTokenRepository() {

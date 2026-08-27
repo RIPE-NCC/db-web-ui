@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private menuService = inject(MenuService);
     private userInfoService = inject(UserInfoService);
     private sessionService = inject(SessionService);
+    private location = inject(Location);
 
     private readonly navigationEnd: Subscription;
 
@@ -84,11 +86,19 @@ export class AppComponent implements OnInit, OnDestroy {
         this.isComponentLoaded = false;
 
         const params = new URLSearchParams(window.location.search);
-        if (params.has('silentLoginFailed')) {
+        if (params.has('silentLoginFailed') || params.has('loginError')) {
             // Came back from a failed silent SSO attempt — show logged-out UI, don't retry.
+            params.delete('silentLoginFailed');
+            params.delete('loginError');
+            const cleanQuery = params.toString();
+            const cleanUrl = window.location.pathname + (cleanQuery ? `?${cleanQuery}` : '');
+            this.location.replaceState(cleanUrl);
+
             this.isComponentLoaded = true;
             return;
         }
+
+        const hasSessionCookie = this.hasCookie('DBSESSIONID');
 
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
@@ -102,7 +112,12 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.sessionService.initialize();
             },
             error: (_err) => {
-                window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true`;
+                if (hasSessionCookie) {
+                    this.isComponentLoaded = true;
+                    return;
+                }
+                // If not logged in attempt to silently fetch the credentials from the IdP
+                window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(window.location.href)}`;
             },
         });
     }
@@ -160,5 +175,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     setActiveSidebarItem(url: string) {
         this.activeSidebarItem = `${location.origin}/db-web-ui/${url}`;
+    }
+
+    private hasCookie(name: string): boolean {
+        return document.cookie.split('; ').some((c) => c.startsWith(`${name}=`));
     }
 }

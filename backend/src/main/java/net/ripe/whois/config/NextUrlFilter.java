@@ -28,7 +28,7 @@ public class NextUrlFilter extends OncePerRequestFilter {
 
         if (request.getRequestURI().equals("/db-web-ui/oauth2/authorization/keycloak")) {
             String next = request.getParameter("next");
-            LOGGER.debug("NextUrlFilter: next={}", next);
+            LOGGER.info("NextUrlFilter: next={}", next);
             if (next != null) {
                 request.getSession().setAttribute(NEXT_URL_SESSION_ATTRIBUTE, next);
             }
