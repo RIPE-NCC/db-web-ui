@@ -66,6 +66,9 @@ export class NodePreviewComponent {
                 next: (response: ResourceCheck[]) => {
                     this.announcementStatus.set(response.length === 0 ? 'Announced' : response[0].type);
                 },
+                error: (_err) => {
+                    this.announcementStatus.set('check failed');
+                },
             });
     }
 
