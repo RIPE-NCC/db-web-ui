@@ -25,7 +25,11 @@ describe('Session expire', () => {
             statusCode: 401,
             body: mockUnauthorizedProfile,
         }).as('getProfile');
-        cy.setCookie('crowd.ripe.hint', 'true');
+
+        cy.intercept('GET', '**/oauth2/authorization/keycloak**', (req) => {
+            req.reply({ statusCode: 302, headers: { Location: '/db-web-ui/?silentLoginFailed=true' } });
+        }).as('silentLogin');
+
         queryPage.visit();
         cy.wait('@getProfile');
         cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/user-oidc\/info/).as('getUserInfo');
@@ -46,31 +50,27 @@ describe('Session expire', () => {
         queryPage.expectUserLoggedImage(true);
     });
 
-    it('should show the session expired banner when a request returns 401', () => {
+    it('should show the session expired banner when SSE pushes session-expired', () => {
         cy.intercept('GET', 'db-web-ui/api/user-oidc/me', {
             statusCode: 200,
             body: mockProfile,
         }).as('getProfile');
 
+        cy.intercept('GET', '**/oauth2/authorization/keycloak**', (req) => {
+            req.reply({ statusCode: 302, headers: { Location: '/db-web-ui/?silentLoginFailed=true' } });
+        }).as('silentLogin');
+
+        cy.intercept('GET', '**/api/session/events', (req) => {
+            req.reply({
+                statusCode: 200,
+                headers: { 'Content-Type': 'text/event-stream' },
+                body: 'event: session-expired\ndata: expired\n\n',
+            });
+        }).as('sessionEvents');
+
         webupdatesPage.visit('select');
         cy.wait('@getProfile');
-
-        webupdatesPage
-            .selectObjectType('person')
-            .clickOnCreateButton()
-            .expectHeadingTitleToContain('Create "person" object')
-            .typeOnField('person', 'Test t')
-            .typeOnField('e-mail', 'test@ripe.net');
-
-        // Simulate the session expiring
-        cy.intercept('POST', '/db-web-ui/api/whois/RIPE/person', {
-            statusCode: 401,
-            body: personAuthError,
-        }).as('createPerson');
-
-        webupdatesPage.submitForm();
-
-        cy.wait('@createPerson');
+        cy.wait('@sessionEvents');
 
         webupdatesPage.expectWarningMessageToContain('Your RIPE NCC Access session has expired. You need to login again.');
     });
