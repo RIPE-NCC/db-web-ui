@@ -1,5 +1,6 @@
 package net.ripe.whois;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,9 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 @Configuration
 public class ApplicationSecurity {
 
+    @Value("${iframe.permitted:}")
+    private String iframePermitted;
+
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         // Security handled in SsoTokenFilter
@@ -19,7 +23,7 @@ public class ApplicationSecurity {
             .headers(headers -> headers
                 .frameOptions(frameOptions -> frameOptions.disable())
                 .contentSecurityPolicy(csp -> csp
-                    .policyDirectives("frame-ancestors *")
+                    .policyDirectives("frame-ancestors " + iframePermitted.replaceAll("\\s*,\\s*", " "))
                 )
             )
             .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
