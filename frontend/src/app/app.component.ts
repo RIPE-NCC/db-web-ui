@@ -84,16 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.isComponentLoaded = false;
-
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('silentLoginFailed')) {
-            // Came back from a failed silent SSO attempt — show logged-out UI, don't retry.
-            params.delete('silentLoginFailed');
-            const cleanQuery = params.toString();
-            const cleanUrl = window.location.pathname + (cleanQuery ? `?${cleanQuery}` : '');
-            this.location.replaceState(cleanUrl);
-
-            this.isComponentLoaded = true;
+        if (this.tryHandleSilentLoginFailure(new URLSearchParams(window.location.search))) {
             return;
         }
 
@@ -186,5 +177,32 @@ export class AppComponent implements OnInit, OnDestroy {
         url.searchParams.delete('next');
         url.searchParams.delete('silentLoginFailed');
         return url.toString();
+    }
+
+    /**
+     * Handles the return trip from a failed silent SSO check: cleans the marker from the URL
+     * and restores the sidebar highlight. Returns true if it handled this case (caller should stop).
+     */
+    private tryHandleSilentLoginFailure(params: URLSearchParams): boolean {
+        if (!params.has('silentLoginFailed')) {
+            return false;
+        }
+
+        this.isComponentLoaded = true;
+
+        const cleanParams = new URLSearchParams(window.location.search);
+        cleanParams.delete('silentLoginFailed');
+
+        const path = window.location.pathname.replace('/db-web-ui/', '');
+        const queryParams: Record<string, string> = {};
+        cleanParams.forEach((value, key) => (queryParams[key] = value));
+
+        this.setActiveSidebarItem(path);
+
+        void this.router.navigate([path], {
+            queryParams,
+            replaceUrl: true, // swaps the current history entry, same intent as Location.replaceState
+        });
+        return true;
     }
 }

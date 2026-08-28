@@ -118,11 +118,13 @@ public class SecurityConfig {
                         final String error = request.getParameter("error");
                         if ("login_required".equals(error) || "interaction_required".equals(error)) {
                             final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+                            LOGGER.info("Next is {}", next);
                             request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-                            final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/db-web-ui/query": next)
+                            final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query": next)
                                     .queryParam("silentLoginFailed", "true")
                                     .build()
                                     .toUriString();
+                            LOGGER.info("Silent login failed, redirecting to {}", redirectUrl);
                             response.sendRedirect(redirectUrl);
                         } else {
                             authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
@@ -167,6 +169,9 @@ public class SecurityConfig {
         return delegate;
     }
 
+    /**
+     * Stores exception in HttpSession and redr¡urect ti /login?error - IdP will display error message
+     */
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new SimpleUrlAuthenticationFailureHandler("/login?error");
