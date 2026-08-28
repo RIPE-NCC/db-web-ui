@@ -4,6 +4,7 @@ import com.hazelcast.core.HazelcastInstance;
 import jakarta.servlet.http.HttpSession;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,7 @@ import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 
@@ -115,10 +117,13 @@ public class SecurityConfig {
                     oauth.failureHandler((request, response, exception) -> {
                         final String error = request.getParameter("error");
                         if ("login_required".equals(error) || "interaction_required".equals(error)) {
-                            final String next = (String) request.getSession().getAttribute(NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE);
-                            final String baseUrl = next != null ? next : "/db-web-ui/";
-                            final String separator = baseUrl.contains("?") ? "&" : "?";
-                            response.sendRedirect(baseUrl + separator + "silentLoginFailed");
+                            final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+                            request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+                            final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/db-web-ui/query": next)
+                                    .queryParam("silentLoginFailed", "true")
+                                    .build()
+                                    .toUriString();
+                            response.sendRedirect(redirectUrl);
                         } else {
                             authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
                         }
@@ -150,14 +155,13 @@ public class SecurityConfig {
         final DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
         final SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
         delegate.setRedirectStrategy((request, response, url) -> {
-            String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-            LOGGER.debug("RedirectStrategy: next={} url={}", next, url);
-            if (next != null) {
-                request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-                response.sendRedirect(next);
-            } else {
+            final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+            if (StringUtils.isEmpty(next)) {
                 defaultRedirectStrategy.sendRedirect(request, response, url);
+                return;
             }
+            request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+            response.sendRedirect(next);
         });
 
         return delegate;
