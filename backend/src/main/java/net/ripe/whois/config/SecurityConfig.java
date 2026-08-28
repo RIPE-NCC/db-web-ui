@@ -170,7 +170,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Stores exception in HttpSession and redr¡urect ti /login?error - IdP will display error message
+     * Stores exception in HttpSession and redirect to /login?error - IdP will display an error message
      */
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
