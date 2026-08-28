@@ -3,12 +3,14 @@
     <br />
     <div class="my-resources">
         <div class="header">
+            @if (!isEmbedPage) {
             <mat-button-toggle-group [value]="activeToggleButton" (change)="resourcesSponsoredToggleClicked($event)">
                 <mat-button-toggle [value]="ResourceType.RESOURCES" [disableRipple]="true">{{ ResourceType.RESOURCES }}</mat-button-toggle>
                 @if (isMemberOrg()) {
                 <mat-button-toggle [value]="ResourceType.SPONSORED" [disableRipple]="true">{{ ResourceType.SPONSORED }}</mat-button-toggle>
                 }
             </mat-button-toggle-group>
+            }
             <div class="action-buttons">
                 @if (isMemberOrg()) {
                 <manage-resources [sponsoredMenu]="isShowingSponsored"></manage-resources>
