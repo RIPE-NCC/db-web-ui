@@ -2,10 +2,21 @@
 ARG BUILD_IMAGE
 FROM ${BUILD_IMAGE} AS build
 WORKDIR /src
-COPY . /src
 RUN node --version && npm --version && java -version && mvn --version
+
+# Dependencies are keyed on manifests only, so code changes reuse these layers
+COPY pom.xml ./
+COPY backend/pom.xml backend/
+COPY frontend/pom.xml frontend/
+RUN mvn -B dependency:go-offline -pl backend -am
+
+# npm postinstall reads .browserslistrc and writes browser regexes into src/assets
+COPY frontend/package.json frontend/.npmrc frontend/.browserslistrc frontend/
+RUN mkdir -p frontend/src/assets && cd frontend && npm install
+
+COPY . /src
 ARG CI_COMMIT_SHA
-RUN mvn clean package -DskipTests -Dversion=${CI_COMMIT_SHA}
+RUN mvn -B package -DskipTests -Dversion=${CI_COMMIT_SHA}
 
 # Release
 FROM amazoncorretto:21.0.11-alpine
