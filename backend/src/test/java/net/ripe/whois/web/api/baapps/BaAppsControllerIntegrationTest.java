@@ -1,8 +1,8 @@
 package net.ripe.whois.web.api.baapps;
 
 import net.ripe.whois.AbstractIntegrationTest;
-import net.ripe.whois.OAuth2TestConfig;
 import net.ripe.whois.config.CacheConfiguration;
+import net.ripe.whois.oidc.OidcTestConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-@Import(OAuth2TestConfig.class)
+@Import(OidcTestConfig.class)
 public class BaAppsControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired

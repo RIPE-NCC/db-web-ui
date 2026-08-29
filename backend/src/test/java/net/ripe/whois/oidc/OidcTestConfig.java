@@ -1,4 +1,4 @@
-package net.ripe.whois;
+package net.ripe.whois.oidc;
 
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -6,14 +6,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
 
 import java.time.Instant;
 
 @TestConfiguration
-public class OAuth2TestConfig {
+public class OidcTestConfig {
 
     @Bean
     @Primary // overrides the main application's manager bean
@@ -43,4 +49,30 @@ public class OAuth2TestConfig {
 
         return manager;
     }
+
+    // OIDC
+
+    @Bean
+    public KeycloakIdPDummyService keycloakIdPDummyService() {
+        return new KeycloakIdPDummyService();
+    }
+
+    @Bean
+    @Primary
+    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> testTokenResponseClient(final KeycloakIdPDummyService keycloakIdPDummyService) {
+        return keycloakIdPDummyService.tokenResponseClient();
+    }
+
+    @Bean
+    @Primary
+    public OAuth2UserService<OidcUserRequest, OidcUser> testOidcUserService(final KeycloakIdPDummyService keycloakIdPDummyService) {
+        return keycloakIdPDummyService.oidcUserService();
+    }
+
+    @Bean
+    @Primary
+    public JwtDecoderFactory<ClientRegistration> testJwtDecoderFactory() {
+        return registration -> new UnverifiedTestJwtDecoder();
+    }
+
 }

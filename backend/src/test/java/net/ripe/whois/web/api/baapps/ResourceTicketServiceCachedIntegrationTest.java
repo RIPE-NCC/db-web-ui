@@ -1,7 +1,7 @@
 package net.ripe.whois.web.api.baapps;
 
 import net.ripe.whois.AbstractIntegrationTest;
-import net.ripe.whois.OAuth2TestConfig;
+import net.ripe.whois.oidc.OidcTestConfig;
 import net.ripe.whois.services.RsngService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@Import(OAuth2TestConfig.class)
+@Import(OidcTestConfig.class)
 class ResourceTicketServiceCachedIntegrationTest extends AbstractIntegrationTest {
 
     @MockitoBean

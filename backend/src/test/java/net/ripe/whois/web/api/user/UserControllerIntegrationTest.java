@@ -2,7 +2,7 @@ package net.ripe.whois.web.api.user;
 
 import jakarta.ws.rs.core.MediaType;
 import net.ripe.whois.AbstractIntegrationTest;
-import net.ripe.whois.OAuth2TestConfig;
+import net.ripe.whois.oidc.OidcTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@Import(OAuth2TestConfig.class)
+@Import(OidcTestConfig.class)
 public class UserControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test

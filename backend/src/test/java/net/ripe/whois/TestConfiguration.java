@@ -50,5 +50,4 @@ public class TestConfiguration {
     public RestTemplateBuilder restTemplateBuilder() {
         return new RestTemplateBuilder().redirects(ClientHttpRequestFactorySettings.Redirects.DONT_FOLLOW);
     }
-
 }

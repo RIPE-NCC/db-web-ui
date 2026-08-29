@@ -6,6 +6,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.common.util.concurrent.Uninterruptibles;
 import net.ripe.whois.config.OidcUtils;
+import net.ripe.whois.oidc.TestJwksDummyService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,6 +66,31 @@ public abstract class AbstractIntegrationTest {
     protected static HttpServerMock httpServerMock;
 
     private static String jettyRequestLogFile = createJettyRequestLogFile();
+
+    protected static TestJwksDummyService testJwksServer;
+
+    @BeforeAll
+    static void setupJwks() {
+        testJwksServer = new TestJwksDummyService();
+        testJwksServer.start();
+        int port = testJwksServer.getPort();
+
+        System.setProperty("spring.security.oauth2.client.provider.keycloak.jwk-set-uri",
+                "http://localhost:" + port + "/test-jwks");
+        System.setProperty("spring.security.oauth2.client.provider.keycloak.issuer-uri",
+                "http://localhost:" + port + "/realms/ripe-ncc");
+        System.setProperty("spring.security.oauth2.client.provider.keycloak.authorization-uri",
+                "http://localhost:" + port + "/auth");
+        System.setProperty("spring.security.oauth2.client.provider.keycloak.token-uri",
+                "http://localhost:" + port + "/token");
+        System.setProperty("spring.security.oauth2.client.provider.keycloak.user-info-uri",
+                "http://localhost:" + port + "/userinfo");
+    }
+
+    @AfterAll
+    static void teardownJwks() {
+        testJwksServer.stop();
+    }
 
     @BeforeAll
     public static void beforeClass() {

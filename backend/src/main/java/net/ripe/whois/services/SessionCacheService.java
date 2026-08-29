@@ -3,6 +3,7 @@ package net.ripe.whois.services;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -44,6 +45,7 @@ public class SessionCacheService {
             } catch (IOException e) {
                 LOGGER.info("Keep-alive failed for sessionId={}, removing dead emitter: {}", sessionId, e.getMessage());
                 emitters.remove(sessionId, emitter);
+                emitter.completeWithError(e);
             }
         }
     }
@@ -60,21 +62,39 @@ public class SessionCacheService {
         return emitter;
     }
 
+    public SseEmitter immediatelyExpired() {
+        final SseEmitter emitter = new SseEmitter(0L);
+        return sendExpireSessionEvent(emitter);
+    }
+
+    public boolean hasValidOidcSession(final String sessionId) {
+        IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
+        return oidcMap.containsKey(sessionId);
+    }
+
+    public boolean hasActiveEmitter(final String sessionId) {
+        return emitters.containsKey(sessionId);
+    }
+
     private void notifyExpired(final String sessionId) {
         final SseEmitter emitter = emitters.remove(sessionId);
         if (emitter == null) {
             LOGGER.debug("no Emitter");
             return; // no active tab subscribed for this session — nothing to push
         }
+        sendExpireSessionEvent(emitter);
+    }
+
+    private static @NonNull SseEmitter sendExpireSessionEvent(SseEmitter emitter) {
         try {
             emitter.send(SseEmitter.event().name("session-expired").data("expired"));
             emitter.complete();
         } catch (IOException e) {
-            LOGGER.debug("Failed to notify session expiration for {}: {}", sessionId, e.getMessage());
+            LOGGER.debug("Failed to notify session expiration {}", e.getMessage());
             emitter.completeWithError(e);
         }
+        return emitter;
     }
-
     // --- Cross-cache removal ---
 
     /**

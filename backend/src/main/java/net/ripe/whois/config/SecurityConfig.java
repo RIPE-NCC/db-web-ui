@@ -1,7 +1,6 @@
 package net.ripe.whois.config;
 
 import com.hazelcast.core.HazelcastInstance;
-import jakarta.servlet.http.HttpSession;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.oidc.authentication.logout.OidcLogoutToken;
+import org.springframework.security.oauth2.client.oidc.session.OidcSessionInformation;
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -60,8 +60,9 @@ public class SecurityConfig {
                                             AuthenticationFailureHandler authenticationFailureHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
                                             OidcBackChannelLogoutHandler oidcLogoutHandler,
-                                            LogoutHandler removeAuthorizedClientOnBackChannelLogout,
-                                            OAuth2AuthorizedClientRepository authorizedClientRepository) throws Exception {
+                                            LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout,
+                                            OAuth2AuthorizedClientRepository authorizedClientRepository
+                                            ) throws Exception {
 
         PathPatternRequestMatcher.Builder requestMatcherBuilder = PathPatternRequestMatcher.withDefaults();
 
@@ -143,7 +144,7 @@ public class SecurityConfig {
                 .oidcLogout(logout -> logout
                         .backChannel(backChannel -> backChannel
                                 .logoutHandler(oidcLogoutHandler)
-                                .logoutHandler(removeAuthorizedClientOnBackChannelLogout)));
+                                .logoutHandler(cleanUpAllCachesOnClientOnBackChannelLogout)));
 
         http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
 
@@ -248,15 +249,6 @@ public class SecurityConfig {
     }
 
     // Logout from the application when a user logout from the provider
-    @Bean
-    LogoutHandler oidcSessionRegistryCleanupHandler(OidcSessionRegistry sessionRegistry) {
-        return (request, response, authentication) -> {
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                sessionRegistry.removeSessionInformation(session.getId());
-            }
-        };
-    }
 
     @Bean
     OidcBackChannelLogoutHandler oidcLogoutHandler(OidcSessionRegistry sessionRegistry) {
@@ -266,17 +258,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    LogoutHandler removeAuthorizedClientOnBackChannelLogout(
-            OAuth2AuthorizedClientService authorizedClientService) {
+    LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout(OAuth2AuthorizedClientService authorizedClientService,
+            OidcSessionRegistry oidcSessionRegistry,
+            HazelcastInstance hazelcastInstance) {
         return (request, response, authentication) -> {
-            if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
-                String registrationId = oauthToken.getAuthorizedClientRegistrationId();
-                String principalName = oauthToken.getName();
+            if (!(authentication.getPrincipal() instanceof OidcLogoutToken logoutToken)) {
+                LOGGER.info("Not an OIDC logout token: {}", authentication.getPrincipal());
+                return;
+            }
 
-                authorizedClientService.removeAuthorizedClient(registrationId, principalName);
+            final String principalName = logoutToken.getSubject();
+            authorizedClientService.removeAuthorizedClient(OidcUtils.REGISTRATION_ID, principalName);
 
-                LOGGER.debug("Removed authorized client on back-channel logout from HZ: registrationId={} principal={}",
-                        registrationId, principalName);
+            final Iterable<OidcSessionInformation> matched = oidcSessionRegistry.removeSessionInformation(logoutToken);
+
+            var sessionsMap = hazelcastInstance.getMap("spring:session:sessions");
+            for (OidcSessionInformation info : matched) {
+                sessionsMap.remove(info.getSessionId());
             }
         };
     }
