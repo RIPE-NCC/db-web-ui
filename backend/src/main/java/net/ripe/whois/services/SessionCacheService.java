@@ -68,7 +68,7 @@ public class SessionCacheService {
     }
 
     public boolean hasValidOidcSession(final String sessionId) {
-        IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
+        final IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
         return oidcMap.containsKey(sessionId);
     }
 
@@ -123,7 +123,10 @@ public class SessionCacheService {
                 notifyExpired(sessionId);
             }
             final SseEmitter emitter = emitters.remove(sessionId);
-            emitter.complete();
+            if (emitter != null){
+                LOGGER.info("Removed all session cache entries for sessionId={}, closing emitter", sessionId);
+                emitter.complete();
+            }
             LOGGER.debug("Removed all session cache entries for sessionId={}", sessionId);
         } finally {
             cleanupInProgress.remove(sessionId);
