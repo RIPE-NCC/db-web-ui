@@ -177,19 +177,19 @@ public class HazelcastSessionConfig {
 
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryAddedListener<Object, Object>) event ->
-                        LOGGER.debug("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
+                        LOGGER.info("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
                 true
         );
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryRemovedListener<Object, Object>) event -> {
-                    LOGGER.debug("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
+                    LOGGER.info("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
                     sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), false);
                 },
                 true
         );
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryExpiredListener<Object, Object>) event ->{
-                    LOGGER.debug("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                    LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
                     sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), true);
                 },
                 true
