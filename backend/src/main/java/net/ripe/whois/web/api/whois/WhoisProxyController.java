@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.ripe.whois.services.WhoisService;
 import net.ripe.whois.web.api.ApiController;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -58,19 +56,11 @@ public class WhoisProxyController extends ApiController {
             @RequestHeader final HttpHeaders headers,
             Authentication authentication) {
         removeUnnecessaryHeaders(headers);
-
-        if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
-            final OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest
-                    .withClientRegistrationId(oauthToken.getAuthorizedClientRegistrationId())
-                    .principal(authentication)
-                    .attribute(HttpServletRequest.class.getName(), request)
-                    .build();
-
-            final OAuth2AuthorizedClient authorizedClient = oAuth2AuthorizedClientManager.authorize(authorizeRequest);
-            if (authorizedClient != null) {
-                headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
-            }
+        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        if (StringUtils.isNotBlank(bearerToken)) {
+            headers.setBearerAuth(bearerToken);
         }
         return whoisService.bypass(request, response, body, headers);
     }
+
 }

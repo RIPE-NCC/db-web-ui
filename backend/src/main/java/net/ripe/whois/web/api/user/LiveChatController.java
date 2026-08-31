@@ -3,6 +3,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
@@ -26,9 +27,14 @@ public class LiveChatController {
     @GetMapping("/api/zendesk-chat-token")
     public String getZendeskChatToken() {
         LOGGER.info("Getting Zendesk Chat Token");
-        return oauth2RestClient.get()
-                .uri(livechatUrl)
-                .retrieve()
-                .body(String.class);
+        try {
+            return oauth2RestClient.get()
+                    .uri(livechatUrl)
+                    .retrieve()
+                    .body(String.class);
+        } catch (ClientAuthorizationRequiredException e) {
+            LOGGER.info("Error while extracting bearer token");
+            return null;
+        }
     }
 }
