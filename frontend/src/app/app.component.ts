@@ -95,7 +95,9 @@ export class AppComponent implements OnInit, OnDestroy {
             error: (_err) => {
                 if (hasCrowdCookie) {
                     window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
+                    return;
                 }
+                this.isComponentLoaded = true;
             },
         });
     }
