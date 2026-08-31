@@ -104,11 +104,12 @@ public class SessionCacheService {
      * Token cache is not cleaning up because it is tied to an email, which can be
      * which can be in use by a different device.
      */
-    public void removeSessionCaches(final String sessionId, final boolean shouldNotify) {
+    public void cleanUpSessionCachesAndEmitters(final String sessionId, final boolean shouldNotify) {
         AtomicBoolean guard = cleanupInProgress.computeIfAbsent(sessionId, k -> new AtomicBoolean(false));
         if (!guard.compareAndSet(false, true)) {
             return; // already being cleaned up by another trigger
         }
+
 
         try {
             IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
@@ -121,7 +122,8 @@ public class SessionCacheService {
             if (shouldNotify) {
                 notifyExpired(sessionId);
             }
-
+            final SseEmitter emitter = emitters.remove(sessionId);
+            emitter.complete();
             LOGGER.debug("Removed all session cache entries for sessionId={}", sessionId);
         } finally {
             cleanupInProgress.remove(sessionId);
