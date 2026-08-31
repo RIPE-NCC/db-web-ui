@@ -23,7 +23,9 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService.MAP_NAME;
 import static net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP;
@@ -221,12 +223,25 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void backChannelLogout_removes_session_from_caches() {
+    void backChannelLogout_removes_session_from_caches_and_expires() throws ExecutionException, InterruptedException,
+            TimeoutException {
 
         keycloakIdPDummyService.registerUser("bcl-test-code",
                 new KeycloakIdPDummyService.FakeUser("bcl-user", "bcl@example.com", "idp-sid-bcl"));
 
-        performFullLoginAndGetSessionCookie("bcl-test-code");
+        final String sessionCookie = performFullLoginAndGetSessionCookie("bcl-test-code");
+        final String sessionId = extractSessionId(sessionCookie);
+
+        final HttpClient client = HttpClient.newHttpClient();
+        final HttpRequest sseRequest = HttpRequest.newBuilder()
+                .uri(URI.create(getServerUrl() + "/db-web-ui/api/session/events"))
+                .header(HttpHeaders.COOKIE, sessionCookie)
+                .GET()
+                .build();
+        var future = client.sendAsync(sseRequest, HttpResponse.BodyHandlers.ofString());
+        await().atMost(5, TimeUnit.SECONDS)
+                .pollInterval(50, TimeUnit.MILLISECONDS)
+                .until(() -> sessionCacheService.hasActiveEmitter(sessionId));
 
         // Sanity check: session genuinely exists in all three caches before logout
         assertThat((Map<Object, Object>) hazelcastInstance.getMap("spring:session:sessions"), aMapWithSize(1));
@@ -253,6 +268,9 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(logoutResponse.getStatusCode().value(), is(200));
 
+        final HttpResponse<String> response = future.get(10, TimeUnit.SECONDS);
+
+        assertThat(response.body(), containsString("session-expired"));
         // Confirm the REAL caches were actually cleared as a result
         assertThat((Map<Object, Object>) hazelcastInstance.getMap("spring:session:sessions"), anEmptyMap());
         assertThat((Map<Object, Object>) hazelcastInstance.getMap(MAP_NAME), anEmptyMap());

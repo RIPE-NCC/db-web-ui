@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -51,8 +50,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private menuService = inject(MenuService);
     private userInfoService = inject(UserInfoService);
     private sessionService = inject(SessionService);
-    private location = inject(Location);
-    private readonly SSO_TOKEN_KEY = 'crowd.token_key';
     private readonly navigationEnd: Subscription;
 
     labelEnv!: string;
@@ -84,34 +81,34 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.isComponentLoaded = false;
-        const hasCrowdCookie = this.hasCookie(this.SSO_TOKEN_KEY);
-        const hasSessionCookie = this.hasCookie('DBSESSIONID'); // needs to align OidcUtils.OIDC_LOCAL_COOKIE_NAME
 
         if (this.tryHandleSilentLoginFailure(new URLSearchParams(window.location.search))) {
             return;
         }
 
-        if (hasCrowdCookie && !hasSessionCookie) {
-            // If not logged in attempt to silently fetch the credentials from the IdP
-            window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
-            return;
-        }
+        const hasCrowdCookie = this.hasCookie('crowd.ripe.hint');
 
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
-                this.userOidc = response;
-
-                this.usernameOidc = this.userOidc.name;
-                this.isLoggedInUser = true;
-                this.isComponentLoaded = true;
-                this.profilePhotoId = this.userOidc.photo;
-
-                this.sessionService.initialize();
+                this.loadOidcDataAndInitialiseEvent(response);
             },
             error: (_err) => {
-                this.isComponentLoaded = true;
+                if (hasCrowdCookie) {
+                    window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
+                }
             },
         });
+    }
+
+    private loadOidcDataAndInitialiseEvent(response: UserOidc) {
+        this.userOidc = response;
+
+        this.usernameOidc = this.userOidc.name;
+        this.isLoggedInUser = true;
+        this.isComponentLoaded = true;
+        this.profilePhotoId = this.userOidc.photo;
+
+        this.sessionService.initialize();
     }
 
     onActiveMenuChange() {
@@ -200,6 +197,15 @@ export class AppComponent implements OnInit, OnDestroy {
         cleanParams.forEach((value, key) => (queryParams[key] = value));
 
         this.setActiveSidebarItem(path);
+
+        this.userInfoService.getLoggedInOidc().subscribe({
+            next: (response: UserOidc) => {
+                this.loadOidcDataAndInitialiseEvent(response);
+            },
+            error: (_err) => {
+                this.isComponentLoaded = true;
+            },
+        });
 
         void this.router.navigate([path], {
             queryParams,
