@@ -20,12 +20,6 @@ public class ApplicationSecurity {
         // Security handled in SsoTokenFilter
         return http
             .csrf(config -> config.disable())
-            .headers(headers -> headers
-                .frameOptions(frameOptions -> frameOptions.disable())
-                .contentSecurityPolicy(csp -> csp
-                    .policyDirectives("frame-ancestors " + iframePermitted.replaceAll("\\s*,\\s*", " "))
-                )
-            )
             .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
             .build();
     }
