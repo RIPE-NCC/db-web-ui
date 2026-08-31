@@ -76,7 +76,7 @@ public class SessionCacheService {
         return emitters.containsKey(sessionId);
     }
 
-    private void notifyExpired(final String sessionId) {
+    public void notifyExpired(final String sessionId) {
         final SseEmitter emitter = emitters.remove(sessionId);
         if (emitter == null) {
             LOGGER.debug("no Emitter");

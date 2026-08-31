@@ -3,6 +3,7 @@ package net.ripe.whois.config;
 import com.hazelcast.core.HazelcastInstance;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
+import net.ripe.whois.services.SessionCacheService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -259,8 +260,9 @@ public class SecurityConfig {
 
     @Bean
     LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout(OAuth2AuthorizedClientService authorizedClientService,
-            OidcSessionRegistry oidcSessionRegistry,
-            HazelcastInstance hazelcastInstance) {
+                                                              OidcSessionRegistry oidcSessionRegistry,
+                                                              HazelcastInstance hazelcastInstance,
+                                                              SessionCacheService sessionCacheService) {
         return (request, response, authentication) -> {
             if (!(authentication.getPrincipal() instanceof OidcLogoutToken logoutToken)) {
                 LOGGER.info("Not an OIDC logout token: {}", authentication.getPrincipal());
@@ -274,6 +276,7 @@ public class SecurityConfig {
 
             var sessionsMap = hazelcastInstance.getMap("spring:session:sessions");
             for (OidcSessionInformation info : matched) {
+                sessionCacheService.notifyExpired(info.getSessionId());
                 sessionsMap.remove(info.getSessionId());
             }
         };

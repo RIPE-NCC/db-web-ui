@@ -84,12 +84,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.isComponentLoaded = false;
+        const hasCrowdCookie = this.hasCookie(this.SSO_TOKEN_KEY);
+        const hasSessionCookie = this.hasCookie('DBSESSIONID'); // needs to align OidcUtils.OIDC_LOCAL_COOKIE_NAME
+
         if (this.tryHandleSilentLoginFailure(new URLSearchParams(window.location.search))) {
             return;
         }
 
-        const hasCrowdCookie = this.hasCookie(this.SSO_TOKEN_KEY);
-        const hasSessionCookie = this.hasCookie('DBSESSIONID'); // needs to align OidcUtils.OIDC_LOCAL_COOKIE_NAME
+        if (hasCrowdCookie && !hasSessionCookie) {
+            // If not logged in attempt to silently fetch the credentials from the IdP
+            window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
+            return;
+        }
 
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
@@ -103,11 +109,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.sessionService.initialize();
             },
             error: (_err) => {
-                if (hasCrowdCookie && !hasSessionCookie) {
-                    // If not logged in attempt to silently fetch the credentials from the IdP
-                    window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
-                    return;
-                }
                 this.isComponentLoaded = true;
             },
         });
