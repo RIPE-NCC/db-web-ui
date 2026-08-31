@@ -86,7 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const hasCrowdCookie = this.hasCookie('crowd.ripe.hint');
+        const hasCrowdCookie = this.isCookieTrue('crowd.ripe.hint');
 
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
@@ -168,8 +168,13 @@ export class AppComponent implements OnInit, OnDestroy {
         this.activeSidebarItem = `${location.origin}/db-web-ui/${url}`;
     }
 
-    private hasCookie(name: string): boolean {
-        return document.cookie.split('; ').some((c) => c.startsWith(`${name}=`));
+    private getCookieValue(name: string): string | null {
+        const match = document.cookie.split('; ').find((c) => c.startsWith(`${name}=`));
+        return match ? decodeURIComponent(match.substring(name.length + 1)) : null;
+    }
+
+    private isCookieTrue(name: string): boolean {
+        return this.getCookieValue(name) === 'true';
     }
 
     private getCleanUrlForNext(): string {
