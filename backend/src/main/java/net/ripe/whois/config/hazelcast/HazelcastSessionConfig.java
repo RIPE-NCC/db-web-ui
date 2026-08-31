@@ -148,20 +148,20 @@ public class HazelcastSessionConfig {
 
                     @Override
                     public void mapCleared(com.hazelcast.map.MapEvent event) {
-                        LOGGER.info("OIDC Map CLEARED numberOfEntriesAffected={}", event.getNumberOfEntriesAffected());
+                        LOGGER.debug("OIDC Map CLEARED numberOfEntriesAffected={}", event.getNumberOfEntriesAffected());
                     }
 
                     @Override
                     public void mapEvicted(com.hazelcast.map.MapEvent event) {
-                        LOGGER.info("OIDC Map EVICTED numberOfEntriesAffected={}", event.getNumberOfEntriesAffected());
+                        LOGGER.debug("OIDC Map EVICTED numberOfEntriesAffected={}", event.getNumberOfEntriesAffected());
                     }
 
                     private void logEvent(String eventType, EntryEvent<Object, Object> event) {
                         OidcUser oidcUserInfo = extractOidcUserInfo(event.getOldValue());
                         if (oidcUserInfo == null) {
-                            LOGGER.info("OIDC Map {} key={} member={} oidcUserInfo=null", eventType, event.getKey(), event.getMember().getAddress());
+                            LOGGER.debug("OIDC Map {} key={} member={} oidcUserInfo=null", eventType, event.getKey(), event.getMember().getAddress());
                         } else {
-                            LOGGER.info("OIDC Map {} key={} member={} oidcUserInfo={}", eventType, event.getKey(), event.getMember().getAddress(), oidcUserInfo);
+                            LOGGER.debug("OIDC Map {} key={} member={} oidcUserInfo={}", eventType, event.getKey(), event.getMember().getAddress(), oidcUserInfo);
                         }
                     }
 
@@ -177,19 +177,19 @@ public class HazelcastSessionConfig {
 
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryAddedListener<Object, Object>) event ->
-                        LOGGER.info("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
+                        LOGGER.debug("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
                 true
         );
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryRemovedListener<Object, Object>) event -> {
-                    LOGGER.info("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
+                    LOGGER.debug("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
                     sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), false);
                 },
                 true
         );
         instance.getMap("spring:session:sessions").addEntryListener(
                 (EntryExpiredListener<Object, Object>) event ->{
-                    LOGGER.info("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
+                    LOGGER.debug("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
                     sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), true);
                 },
                 true

@@ -37,7 +37,6 @@ import java.util.StringJoiner;
 public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
-    public static final String SSO_TOKEN_KEY = "crowd.token_key";
     private final RestTemplate restTemplate;
     private final WhoisProxy whoisProxy;
     private final String apiUrl;

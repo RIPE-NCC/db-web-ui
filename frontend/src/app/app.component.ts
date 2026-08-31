@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private userInfoService = inject(UserInfoService);
     private sessionService = inject(SessionService);
     private location = inject(Location);
-
+    private readonly SSO_TOKEN_KEY = 'crowd.token_key';
     private readonly navigationEnd: Subscription;
 
     labelEnv!: string;
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const hasSessionCookie = this.hasCookie('DBSESSIONID'); // needs to align OidcUtils.OIDC_LOCAL_COOKIE_NAME
+        const hasCrowdCookie = this.hasCookie(this.SSO_TOKEN_KEY);
 
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.sessionService.initialize();
             },
             error: (_err) => {
-                if (hasSessionCookie) {
+                if (hasCrowdCookie) {
                     this.isComponentLoaded = true;
                     return;
                 }
