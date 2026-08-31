@@ -20,6 +20,7 @@ public class ApplicationSecurity {
         // Security handled in SsoTokenFilter
         return http
             .csrf(config -> config.disable())
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
             .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
             .build();
     }
