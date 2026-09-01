@@ -292,11 +292,11 @@ public class SecurityConfig {
     @Bean
     @Primary
     public ObjectPostProcessor<Object> oauth2FilterFailureHandlerPostProcessor(
-            @Qualifier("objectPostProcessor") final ObjectPostProcessor<Object> existing) {
+            @Qualifier("objectPostProcessor") final ObjectPostProcessor<Object> objectPostProcessor) {
         return new ObjectPostProcessor<>() {
             @Override
             public <O> O postProcess(final O object) {
-                final O processed = existing.postProcess(object);
+                final O processed = objectPostProcessor.postProcess(object);
                 if (processed instanceof OAuth2AuthorizationRequestRedirectFilter filter) {
                     filter.setAuthenticationFailureHandler((request, response, exception) -> {
                         LOGGER.warn("Invalid OAuth2 authorization request: {}", exception.getMessage());
