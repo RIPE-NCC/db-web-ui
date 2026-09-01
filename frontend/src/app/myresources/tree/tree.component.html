@@ -23,6 +23,16 @@
             <mat-icon matSuffix class="fa-solid fa-circle-small ok" [class.issue]="true"></mat-icon>
             <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
             <span class="netname">{{ node.netname }}</span>
+            <span
+                class="node-issues"
+                [class.issue]="node.healthStatus() === NodeHealthStatus.ISSUES"
+                [class.failed]="node.healthStatus() === NodeHealthStatus.FAILED"
+            >
+                @if (node.healthStatus() === NodeHealthStatus.FAILED) { (Check failed) } @else if (node.healthStatus() === NodeHealthStatus.ISSUES) { ({{
+                    node.issuesCount()
+                }}
+                issues) }
+            </span>
         </div>
     </mat-tree-node>
     <!--  Node with 'show more' button, more then 10 children  -->
@@ -52,6 +62,16 @@
             <mat-icon class="fa-solid fa-circle-small ok" [class.issue]="false"></mat-icon>
             <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
             <span class="netname">{{ node.netname }}</span>
+            <span
+                class="node-issues"
+                [class.issue]="node.healthStatus() === NodeHealthStatus.ISSUES"
+                [class.failed]="node.healthStatus() === NodeHealthStatus.FAILED"
+            >
+                @if (node.healthStatus() === NodeHealthStatus.FAILED) { (Check failed) } @else if (node.healthStatus() === NodeHealthStatus.ISSUES) { ({{
+                    node.issuesCount()
+                }}
+                issues) }
+            </span>
         </div>
         @if (node.isLoading()) {
         <mat-progress-bar mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
