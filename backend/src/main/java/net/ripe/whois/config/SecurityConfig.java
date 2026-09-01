@@ -1,16 +1,20 @@
 package net.ripe.whois.config;
 
 import com.hazelcast.core.HazelcastInstance;
+import jakarta.servlet.http.HttpServletResponse;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import net.ripe.whois.services.SessionCacheService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OidcBackChannelLogoutHandler;
@@ -139,7 +143,6 @@ public class SecurityConfig {
                                 .logoutHandler(cleanUpAllCachesOnClientOnBackChannelLogout)));
 
         http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
-
 
         return http.build();
     }
@@ -283,5 +286,25 @@ public class SecurityConfig {
         CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         repository.setCookieName(OidcUtils.OIDC_CSRF_COOKIE_NAME);
         return repository;
+    }
+
+    //Error handling
+    @Bean
+    @Primary
+    public ObjectPostProcessor<Object> oauth2FilterFailureHandlerPostProcessor(
+            @Qualifier("objectPostProcessor") final ObjectPostProcessor<Object> existing) {
+        return new ObjectPostProcessor<>() {
+            @Override
+            public <O> O postProcess(final O object) {
+                final O processed = existing.postProcess(object);
+                if (processed instanceof OAuth2AuthorizationRequestRedirectFilter filter) {
+                    filter.setAuthenticationFailureHandler((request, response, exception) -> {
+                        LOGGER.warn("Invalid OAuth2 authorization request: {}", exception.getMessage());
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid client registration");
+                    });
+                }
+                return processed;
+            }
+        };
     }
 }

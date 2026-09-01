@@ -277,6 +277,18 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
         assertThat((Map<Object, Object>) hazelcastInstance.getMap(OIDC_SESSIONS_MAP), anEmptyMap());
     }
 
+    @Test
+    void wrong_registry_call_should_400() {
+        HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/oauth2/authorization/wrongRegistry",
+                HttpMethod.GET, anonymousRequest, String.class);
+
+        assertThat(response.getStatusCode().value(), is(400));
+        assertThat(response.getBody(), containsString("/db-web-ui/oauth2/authorization/wrongRegistry"));
+
+    }
 
     private String performFullLoginAndGetSessionCookie(String authorizationCode) {
         HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
@@ -296,16 +308,11 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
                 .queryParam("code", authorizationCode)
                 .queryParam("state", state)
                 .build()
-                .toUri(); // URI object — already-encoded, won't be re-encoded again
+                .toUri();
 
         ResponseEntity<String> callback = restTemplate.exchange(
                 callbackUri, HttpMethod.GET, new HttpEntity<>(null, callbackHeaders), String.class);
 
-        //assertThat(callback.getStatusCode().value(), is(302));
-
-        // Callback may issue a fresh session id post-authentication (session fixation
-        // protection) — the cookie from the callback response, if present, supersedes
-        // the pre-auth one. Fall back to the original if none was reissued.
         List<String> callbackSetCookie = callback.getHeaders().get(HttpHeaders.SET_COOKIE);
         if (callbackSetCookie != null) {
             return callbackSetCookie.stream()
