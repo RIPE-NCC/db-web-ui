@@ -78,35 +78,26 @@ public class SecurityConfig {
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())    // Defers token loading
                 )
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/",
-                        "/index.html",
-                        "/assets/**",
-                        "/media/**", // fontawesome
-                        "/*.js",
-                        "/*.svg",
-                        "/*.css",
-                        "/api/**", /* let rest-operation itself decide about authentication */
-                        "/app.constants.json",
-                        "/webupdates/select",
-                        "/webupdates/display",
-                        "/webupdates/modify/**",
-                        "/forceDelete",
-                        "/query",
-                        "/fulltextsearch",
-                        "/syncupdates",
-                        "/lookup",
-                        "/fmp",
-                        "/fmp/requireLogin",
-                        "/unsubscribe.*",
-                        "/unsubscribe-confirm.*",
-                        "/myresources/overview",
-                        "/myresources/detail/**",
-                        "/ip-analyser",
-                        "/legal",
-                        "/error",
-                        "/not-found").permitAll()
-                .requestMatchers("/public/**", "/api/healthcheck", "/api/whois-internal/api/user/info","/api/metadata/help", "/api/whois/search", "/api/whois/ripe/**").permitAll()
-                .anyRequest().authenticated()
+                 // 3. Endpoints that require login
+                .requestMatchers(
+                        "/api/whois-internal/public/lir/**",
+                        "/api/whois-internal/public/rpki/roa",
+                        "/api/whois-internal/public/api-key",
+                        "/api/whois-internal/public/api-key/**",
+                        "/api/whois-internal/public/ipanalyser/**",
+                        "/api/whois-internal/api/resources/**",
+                        "/api/whois-internal/api/fmp-pub/**",
+                        "/api/whois-internal/api/user/info",
+                        "/api/user/mntners",
+                        "/api/whois-internal/api/mntner-pair/**",
+                        "/api/whois/domain-objects",
+                        "/api/ba-apps/**",
+                        "/api/dns/status",
+                        "/webupdates/modify/**"
+                        )
+                        .authenticated()
+                .anyRequest()
+                        .permitAll()
             )
 
             .oauth2Client(oauth2 -> oauth2
@@ -120,13 +111,13 @@ public class SecurityConfig {
                         final String error = request.getParameter("error");
                         if ("login_required".equals(error) || "interaction_required".equals(error)) {
                             final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-                            LOGGER.info("Next is {}", next);
+                            LOGGER.debug("Next is {}", next);
                             request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
                             final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query": next)
                                     .queryParam("silentLoginFailed", "true")
                                     .build()
                                     .toUriString();
-                            LOGGER.info("Silent login failed, redirecting to {}", redirectUrl);
+                            LOGGER.debug("Silent login failed, redirecting to {}", redirectUrl);
                             response.sendRedirect(redirectUrl);
                         } else {
                             authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
