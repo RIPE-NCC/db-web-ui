@@ -27,8 +27,8 @@ public class NextUrlFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
 
         if (request.getRequestURI().equals(OidcUtils.IDP_AUTHORISATION_ENDPOINT_REGISTRATION_ID)) {
-            String next = request.getParameter("next");
-            LOGGER.info("NextUrlFilter: next={}", next);
+            final String next = request.getParameter("next");
+            LOGGER.debug("NextUrlFilter: next={}", next);
             if (next != null) {
                 request.getSession().setAttribute(NEXT_URL_SESSION_ATTRIBUTE, next);
             }
