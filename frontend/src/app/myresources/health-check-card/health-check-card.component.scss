@@ -1,0 +1,106 @@
+.health-card {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 96px;
+
+    border: 1px solid #d0d2da;
+    border-radius: 10px;
+    background-color: white;
+
+    padding: 14px 18px;
+
+    .title {
+        margin: 0 0 7px;
+
+        font-size: 12px;
+        line-height: 16px;
+        color: #626262;
+    }
+
+    .status {
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 600;
+    }
+
+    .description {
+        margin: 7px 0 0;
+
+        font-size: 12px;
+        line-height: 16px;
+        color: #626262;
+    }
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    em {
+        width: 18px;
+        height: 18px;
+
+        font-size: 18px;
+    }
+}
+
+.checking-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.checking {
+    .status {
+        color: #131f48;
+    }
+
+    mat-spinner {
+        flex-shrink: 0;
+    }
+}
+
+.issues {
+    .status-row,
+    .refresh-button {
+        color: #f36b21;
+    }
+}
+
+.healthy {
+    .status-row {
+        color: #4a9d76;
+    }
+}
+
+.failed {
+    .status-row {
+        color: #626262;
+    }
+}
+
+.refresh-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    margin: 8px 0 0;
+    padding: 0;
+
+    border: 0;
+    background: none;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    mat-icon {
+        width: 14px;
+        height: 14px;
+
+        font-size: 14px;
+    }
+}

@@ -1,5 +1,6 @@
 // Shown on Resources page - for all resources listed in tab
 import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
+import { HealthCheckCardComponent } from 'src/app/myresources/health-check-card/health-check-card.component';
 import { IpUsageService } from './ip-usage.service';
 import { ResourceStatusService } from './resource-status.service';
 
@@ -9,6 +10,7 @@ import { ResourceStatusService } from './resource-status.service';
     styleUrl: './ip-usage-of-all-resources.component.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
+    imports: [HealthCheckCardComponent],
 })
 export class IpUsageOfAllResourcesComponent implements OnChanges {
     private resourceStatusService = inject(ResourceStatusService);

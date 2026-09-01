@@ -77,7 +77,6 @@ export class Tree implements OnInit {
         this.healthCheck(nodes);
     }
 
-    /** Initial data from database */
     initialData(): TreeNode[] {
         return this.rootLevelNodes().map((item) => this.createNode(item, 0, this.isExpandable(item.status, item.usage)));
     }
