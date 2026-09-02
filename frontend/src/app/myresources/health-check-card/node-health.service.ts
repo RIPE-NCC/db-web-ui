@@ -1,8 +1,9 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { from, of } from 'rxjs';
 import { catchError, mergeMap, tap } from 'rxjs/operators';
-import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
-import { HealthCheckableNode, NodeHealth, NodeHealthStatus } from './node-health.model';
+import { TreeNode } from 'src/app/myresources/tree/tree.component';
+import { ResourcesDataService } from '../resources-data.service';
+import { NodeHealthStatus } from './node-health.model';
 
 @Injectable({
     providedIn: 'root',
@@ -10,56 +11,49 @@ import { HealthCheckableNode, NodeHealth, NodeHealthStatus } from './node-health
 export class NodeHealthService {
     private resourcesDataService = inject(ResourcesDataService);
 
-    private readonly healthStates = signal<Map<string, NodeHealth>>(new Map());
+    readonly nodes = signal<Record<string, TreeNode[]>>({});
 
-    readonly healthStates$ = this.healthStates.asReadonly();
+    registerNodes(treeType: string, nodes: TreeNode[]): void {
+        this.nodes.update((current) => {
+            const nodesByKey = new Map((current[treeType] ?? []).map((node) => [this.getNodeKey(node), node]));
 
-    readonly totalNodes = computed(() => this.healthStates().size);
+            nodes.forEach((node) => {
+                nodesByKey.set(this.getNodeKey(node), node);
+            });
 
-    readonly okCount = computed(() => [...this.healthStates().values()].filter((health) => health.status === NodeHealthStatus.OK).length);
+            return {
+                ...current,
+                [treeType]: [...nodesByKey.values()],
+            };
+        });
+    }
 
-    readonly issuesCount = computed(() => [...this.healthStates().values()].filter((health) => health.status === NodeHealthStatus.ISSUES).length);
+    private getNodeKey(node: TreeNode): string {
+        return `${node.type}:${node.nodeName}`;
+    }
 
-    readonly failedCount = computed(() => [...this.healthStates().values()].filter((health) => health.status === NodeHealthStatus.FAILED).length);
+    healthCheck(nodes: TreeNode[]): void {
+        from(nodes)
+            .pipe(mergeMap((node) => this.checkNodeHealth(node), 5))
+            .subscribe();
+    }
 
-    readonly checkingCount = computed(() => [...this.healthStates().values()].filter((health) => health.status === NodeHealthStatus.NOT_CHECKED).length);
-
-    checkNodeHealth(node: HealthCheckableNode) {
+    checkNodeHealth(node: TreeNode) {
         return this.resourcesDataService.checkIsAnnounced(node.type, node.nodeName).pipe(
             tap((response) => {
-                this.updateHealth(node, response.length > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK, response.length);
-            }),
+                node.issuesCount.set(response.length);
 
+                node.healthStatus.set(response.length > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
+            }),
             catchError(() => {
-                this.updateHealth(node, NodeHealthStatus.FAILED, 0);
+                node.healthStatus.set(NodeHealthStatus.FAILED);
 
                 return of(null);
             }),
         );
     }
 
-    healthCheck(nodes: HealthCheckableNode[]): void {
-        from(nodes)
-            .pipe(mergeMap((node) => this.checkNodeHealth(node), 5))
-            .subscribe();
-    }
-
-    private updateHealth(node: HealthCheckableNode, status: NodeHealthStatus, issuesCount: number): void {
-        const key = this.getKey(node);
-
-        this.healthStates.update((current) => {
-            const next = new Map(current);
-
-            next.set(key, {
-                status,
-                issuesCount,
-            });
-
-            return next;
-        });
-    }
-
-    private getKey(node: HealthCheckableNode): string {
-        return `${node.type}:${node.nodeName}`;
+    reset(): void {
+        this.nodes.set({});
     }
 }

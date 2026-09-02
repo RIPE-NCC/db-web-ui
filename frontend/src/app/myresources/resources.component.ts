@@ -3,6 +3,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { NodePreviewComponent } from 'src/app/myresources/tree/node-preview.component';
 import { Tree, TreeNode } from 'src/app/myresources/tree/tree.component';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
@@ -57,6 +58,7 @@ export class ResourcesComponent implements OnDestroy {
     private alertsService = inject(AlertsService);
     private properties = inject(PropertiesService);
     private activatedRoute = inject(ActivatedRoute);
+    private nodeHealthService = inject(NodeHealthService);
     private router = inject(Router);
 
     ipv4Resources: IResourceScreenItem[] = [];
@@ -88,6 +90,7 @@ export class ResourcesComponent implements OnDestroy {
     constructor() {
         const orgSub = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
+                this.nodeHealthService.reset();
                 this.selectedOrg = selected;
                 this.loading = true;
                 if (!this.isMemberOrg() && this.isShowingSponsored) {
@@ -165,11 +168,7 @@ export class ResourcesComponent implements OnDestroy {
         if (!this.isShowingSponsored) {
             this.isShowingSponsored = true;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
-            if (this.isEmbedPage) {
-                void this.router.navigate(['embed/resources'], { queryParams: params });
-            } else {
-                void this.router.navigate(['myresources/overview'], { queryParams: params });
-            }
+            void this.router.navigate(['myresources/overview'], { queryParams: params });
         }
     }
 
@@ -177,11 +176,7 @@ export class ResourcesComponent implements OnDestroy {
         if (this.isShowingSponsored) {
             this.isShowingSponsored = false;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
-            if (this.isEmbedPage) {
-                void this.router.navigate(['embed/resources'], { queryParams: params });
-            } else {
-                void this.router.navigate(['myresources/overview'], { queryParams: params });
-            }
+            void this.router.navigate(['myresources/overview'], { queryParams: params });
         }
     }
 

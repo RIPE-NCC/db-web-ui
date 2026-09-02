@@ -60,7 +60,11 @@ export class Tree implements OnInit {
 
     ngOnInit(): void {
         const nodes = this.initialData();
+
         this.dataSource.set(nodes);
+
+        this.nodeHealthService.registerNodes(this.treeType(), nodes);
+
         this.nodeHealthService.healthCheck(nodes);
     }
 
@@ -128,6 +132,8 @@ export class Tree implements OnInit {
                     );
                     node.children = this.getVisibleChildren(node);
                     this.dataSource.set([...this.dataSource()]);
+
+                    this.nodeHealthService.registerNodes(this.treeType(), node.allChildren);
 
                     this.nodeHealthService.healthCheck(node.allChildren);
 

@@ -15,7 +15,7 @@ export interface HealthCheckableNode {
     issuesCount: WritableSignal<number>;
 }
 
-export interface NodeHealth {
+export interface NodeHealthState {
     status: NodeHealthStatus;
     issuesCount: number;
 }

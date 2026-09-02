@@ -12,7 +12,7 @@
         <p>Total Allocated Free</p>
         <span>{{ free }}</span>
     </div>
-    <health-check-card></health-check-card>
+    <health-check-card [treeType]="type"></health-check-card>
     } @if (type === 'inet6num' && !sponsored) {
     <div class="usage-card">
         <p>Total Allocated Subnets</p>
@@ -26,8 +26,8 @@
         <p>Total Allocated Subnets Free</p>
         <span>{{ ipv6CalcFree }}</span>
     </div>
-    <health-check-card></health-check-card>
+    <health-check-card [treeType]="type"></health-check-card>
     } @if (type === 'aut-num' && !sponsored) {
-    <health-check-card></health-check-card>
+    <health-check-card [treeType]="type"></health-check-card>
     }
 </div>
