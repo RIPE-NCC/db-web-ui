@@ -82,26 +82,8 @@ public class SecurityConfig {
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())    // Defers token loading
                 )
                 .authorizeHttpRequests(auth -> auth
-                 // 3. Endpoints that require login
-                .requestMatchers(
-                        "/db-web-ui/api/whois-internal/public/lir/**",
-                        "/db-web-ui/api/whois-internal/public/rpki/roa",
-                        "/db-web-ui/api/whois-internal/public/api-key",
-                        "/db-web-ui/api/whois-internal/public/api-key/**",
-                        "/db-web-ui/api/whois-internal/public/ipanalyser/**",
-                        "/db-web-ui/api/whois-internal/api/resources/**",
-                        "/db-web-ui/api/whois-internal/api/fmp-pub/**",
-                        "/db-web-ui/api/whois-internal/api/user/info",
-                        "/db-web-ui/api/user/mntners",
-                        "/db-web-ui/api/whois-internal/api/mntner-pair/**",
-                        "/db-web-ui/api/whois/domain-objects",
-                        "/db-web-ui/api/ba-apps/**",
-                        "/db-web-ui/api/dns/status",
-                        "/db-web-ui/webupdates/modify/**"
-                        )
-                        .authenticated()
-                .anyRequest()
-                        .permitAll()
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().permitAll()
             )
 
             .oauth2Client(oauth2 -> oauth2
