@@ -84,20 +84,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                  // 3. Endpoints that require login
                 .requestMatchers(
-                        "/api/whois-internal/public/lir/**",
-                        "/api/whois-internal/public/rpki/roa",
-                        "/api/whois-internal/public/api-key",
-                        "/api/whois-internal/public/api-key/**",
-                        "/api/whois-internal/public/ipanalyser/**",
-                        "/api/whois-internal/api/resources/**",
-                        "/api/whois-internal/api/fmp-pub/**",
-                        "/api/whois-internal/api/user/info",
-                        "/api/user/mntners",
-                        "/api/whois-internal/api/mntner-pair/**",
-                        "/api/whois/domain-objects",
-                        "/api/ba-apps/**",
-                        "/api/dns/status",
-                        "/webupdates/modify/**"
+                        "/db-web-ui/api/whois-internal/public/lir/**",
+                        "/db-web-ui/api/whois-internal/public/rpki/roa",
+                        "/db-web-ui/api/whois-internal/public/api-key",
+                        "/db-web-ui/api/whois-internal/public/api-key/**",
+                        "/db-web-ui/api/whois-internal/public/ipanalyser/**",
+                        "/db-web-ui/api/whois-internal/api/resources/**",
+                        "/db-web-ui/api/whois-internal/api/fmp-pub/**",
+                        "/db-web-ui/api/whois-internal/api/user/info",
+                        "/db-web-ui/api/user/mntners",
+                        "/db-web-ui/api/whois-internal/api/mntner-pair/**",
+                        "/db-web-ui/api/whois/domain-objects",
+                        "/db-web-ui/api/ba-apps/**",
+                        "/db-web-ui/api/dns/status",
+                        "/db-web-ui/webupdates/modify/**"
                         )
                         .authenticated()
                 .anyRequest()
