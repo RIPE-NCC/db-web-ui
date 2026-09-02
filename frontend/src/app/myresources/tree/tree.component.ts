@@ -4,28 +4,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSuffix } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTreeModule } from '@angular/material/tree';
-import { from, of } from 'rxjs';
-import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
+import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { IMoreSpecificResource, IMoreSpecificsApiResult, MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
 import { IResourceScreenItem, IUsage } from 'src/app/myresources/resource-type.model';
-import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
+import { HealthCheckableNode, NodeHealthStatus } from '../health-check-card/node-health.model';
 
-export enum NodeHealthStatus {
-    NOT_CHECKED = 'NOT_CHECKED',
-    OK = 'OK',
-    ISSUES = 'ISSUES',
-    FAILED = 'FAILED',
-}
-
-export interface TreeNode {
+export interface TreeNode extends HealthCheckableNode {
     parentResource: TreeNode;
     resource: IResourceScreenItem | IMoreSpecificResource;
-    nodeName: string;
     netname: string;
-    type: string;
     level: number;
     expandable: boolean;
 
@@ -41,10 +32,6 @@ export interface TreeNode {
     showMoreParent?: TreeNode;
 
     isLoading: WritableSignal<boolean>;
-
-    // Health
-    healthStatus: WritableSignal<NodeHealthStatus>;
-    issuesCount: WritableSignal<number>;
 }
 
 @Component({
@@ -55,7 +42,7 @@ export interface TreeNode {
 })
 export class Tree implements OnInit {
     private moreSpecificsService = inject(MoreSpecificsService);
-    private resourcesDataService = inject(ResourcesDataService);
+    private nodeHealthService = inject(NodeHealthService);
 
     dataSource = signal<TreeNode[]>([]);
 
@@ -74,7 +61,7 @@ export class Tree implements OnInit {
     ngOnInit(): void {
         const nodes = this.initialData();
         this.dataSource.set(nodes);
-        this.healthCheck(nodes);
+        this.nodeHealthService.healthCheck(nodes);
     }
 
     initialData(): TreeNode[] {
@@ -142,7 +129,7 @@ export class Tree implements OnInit {
                     node.children = this.getVisibleChildren(node);
                     this.dataSource.set([...this.dataSource()]);
 
-                    this.healthCheck(node.allChildren);
+                    this.nodeHealthService.healthCheck(node.allChildren);
 
                     if (this.selectedNode === node) {
                         this.nodeSelected.emit(node);
@@ -185,33 +172,6 @@ export class Tree implements OnInit {
     selectNode(node: TreeNode) {
         this.selectedNode = node;
         this.nodeSelected.emit(node);
-    }
-
-    healthCheck(nodes: TreeNode[]) {
-        from(nodes)
-            .pipe(
-                mergeMap(
-                    (node) => this.checkNodeHealth(node),
-                    5, // max 5 simultaneous requests
-                ),
-            )
-            .subscribe();
-    }
-
-    checkNodeHealth(node: TreeNode) {
-        return this.resourcesDataService.checkIsAnnounced(node.type, node.nodeName).pipe(
-            tap((response) => {
-                node.issuesCount.set(response.length);
-
-                node.healthStatus.set(response.length > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
-            }),
-
-            catchError(() => {
-                node.healthStatus.set(NodeHealthStatus.FAILED);
-
-                return of(null);
-            }),
-        );
     }
 
     protected readonly BannerTypes = BannerTypes;

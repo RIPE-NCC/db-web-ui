@@ -1,42 +1,42 @@
 <div
     class="health-card"
-    [class.checking]="status() === HealthCheckStatus.CHECKING"
-    [class.issues]="status() === HealthCheckStatus.ISSUES"
-    [class.healthy]="status() === HealthCheckStatus.HEALTHY"
-    [class.failed]="status() === HealthCheckStatus.FAILED"
+    [class.checking]="checkingCount() > 0"
+    [class.issues]="issuesCount() > 0"
+    [class.healthy]="okCount() > 0"
+    [class.failed]="failedCount() > 0"
 >
     <p class="title">Resource health</p>
-
-    @switch (status()) { @case (HealthCheckStatus.CHECKING) {
+    @if (checkingCount() > 0) {
     <div class="checking-content">
         <div>
             <div class="status">Checking...</div>
 
-            <p class="description">Verified {{ verified() }} of {{ total() }}</p>
+            <!--            <p class="description">Verified {{ verified() }} of {{ total() }}</p>-->
         </div>
 
         <mat-spinner diameter="40"></mat-spinner>
     </div>
-    } @case (HealthCheckStatus.ISSUES) {
+    } @else if (issuesCount() > 0) {
     <div class="status-row">
         <em class="fa-light fa-triangle-exclamation"></em>
         <span class="status">Need attention</span>
     </div>
 
-    <p class="description">{{ issues() }} resources with issues</p>
+    <p class="description">{{ issuesCount() }} resources with issues</p>
 
-    <button type="button" class="refresh-button" (click)="refresh()">
+    <!--    <button type="button" class="refresh-button" (click)="refresh()">-->
+    <button type="button" class="refresh-button">
         <em class="fa-light fa-arrows-rotate"></em>
         Refresh check
     </button>
-    } @case (HealthCheckStatus.HEALTHY) {
+    } @else if (okCount() > 0) {
     <div class="status-row">
         <em class="fa-light fa-face-smile"></em>
         <span class="status">Healthy</span>
     </div>
 
     <p class="description">0 resources with issues</p>
-    } @case (HealthCheckStatus.FAILED) {
+    } @else if (failedCount() > 0) {
     <div class="status-row">
         <em class="fa-light fa-circle-exclamation"></em>
         <span class="status">Check failed</span>
@@ -44,7 +44,7 @@
 
     <p class="description">
         Unable to verify the health of your resources.
-        <a (click)="refresh()" type="button" class="link-color"> Try again</a>
+        <!--        <a (click)="refresh()" type="button" class="link-color"> Try again</a>-->
     </p>
-    } }
+    }
 </div>

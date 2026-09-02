@@ -1,32 +1,18 @@
-import { Component, input, output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-export enum HealthCheckStatus {
-    CHECKING = 'checking',
-    ISSUES = 'issues',
-    HEALTHY = 'healthy',
-    FAILED = 'failed',
-}
+import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 
 @Component({
     selector: 'health-check-card',
     templateUrl: './health-check-card.component.html',
     styleUrl: './health-check-card.component.scss',
-    imports: [MatProgressSpinnerModule, MatIconModule],
+    imports: [MatProgressSpinnerModule],
 })
 export class HealthCheckCardComponent {
-    status = input<HealthCheckStatus>(HealthCheckStatus.CHECKING);
+    private nodeHealthService = inject(NodeHealthService);
 
-    verified = input<number>(0);
-    total = input<number>(0);
-    issues = input<number>(0);
-
-    refreshCheck = output<void>();
-
-    protected readonly HealthCheckStatus = HealthCheckStatus;
-
-    refresh(): void {
-        this.refreshCheck.emit();
-    }
+    readonly okCount = this.nodeHealthService.okCount;
+    readonly issuesCount = this.nodeHealthService.issuesCount;
+    readonly failedCount = this.nodeHealthService.failedCount;
+    readonly checkingCount = this.nodeHealthService.checkingCount;
 }
