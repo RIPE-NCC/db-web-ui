@@ -180,6 +180,7 @@ public class JettyConfiguration  {
         rewriteHandler.addRule(withMovedPermanently(new RedirectRegexRule("^/$", "/db-web-ui/query")));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/db-web-ui$", "/db-web-ui/query"));
         rewriteHandler.addRule(new RedirectWithQueryParamRule("^/docs$", "https://docs.db.ripe.net"));
+        rewriteHandler.addRule(new RedirectRegexRule("^/(security.txt|.well-known/security.txt)$", "https://www.ripe.net/.well-known/security.txt"));
     }
 
 

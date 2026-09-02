@@ -34,7 +34,7 @@ import { HeaderInterceptor } from './app/interceptor/header.interceptor';
 import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.interceptor';
 import { SessionInterceptor } from './app/sessioninfo/session.interceptor';
 
-import '@lir-portal/web-components';
+import '@ripencc-portal/web-components';
 
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { CUSTOM_DATE_PROVIDERS } from './app/material-custom/custom-date.providers';

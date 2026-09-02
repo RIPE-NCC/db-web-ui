@@ -24,6 +24,7 @@ export interface IObjectVersionsModel {
         key: string;
         version: IObjectVersionPreviewModel[];
     };
+    version: IVersion;
 }
 
 export interface IObjectVersionPreviewModel {
@@ -39,6 +40,7 @@ export interface IObjectVersionResponse {
     errormessages?: {
         errormessage: IObjectMessageModel[];
     };
+    version: IVersion;
 }
 
 export interface IAttributeModel {

@@ -368,7 +368,7 @@ export class EnumService {
         { key: 'NL', value: 'Netherlands' },
         { key: 'NO', value: 'Norway' },
         { key: 'NP', value: 'Nepal' },
-        { key: 'NR', value: 'Nauru' },
+        { key: 'NR', value: 'Naoero' },
         { key: 'NU', value: 'Niue' },
         { key: 'NZ', value: 'New Zealand' },
         { key: 'OM', value: 'Oman' },

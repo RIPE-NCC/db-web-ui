@@ -66,6 +66,7 @@ export class VersionsComponent implements OnInit {
             .pipe(
                 tap((response) => {
                     this.versions = response.versions.version;
+                    this.whoisVersion = response.version;
 
                     if (this.versions.length === 0) {
                         return;
@@ -147,17 +148,6 @@ export class VersionsComponent implements OnInit {
     }
 
     private init() {
-        this.versionsLookupService
-            .versionsLookup(this.source, this.objectType, this.objectName)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-                next: (response) => {
-                    this.whoisVersion = response.version;
-                },
-                error: () => {
-                    this.alertsService.addGlobalError(`An error occurred looking for ${this.objectType} ${this.objectName}`);
-                },
-            });
         this.loadVersions();
         this.loadVersion();
     }
