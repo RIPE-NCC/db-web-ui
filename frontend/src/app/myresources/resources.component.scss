@@ -68,8 +68,8 @@ ip-usage-of-all-resources {
             width: fit-content;
         }
     }
-}
 
-.resource-list {
-    margin: 20px;
+    mat-tab-body {
+        margin-top: 1em;
+    }
 }
