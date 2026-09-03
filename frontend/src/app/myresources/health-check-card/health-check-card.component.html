@@ -1,17 +1,10 @@
-<div
-    class="health-card"
-    [class.checking]="checkingCount() > 0"
-    [class.issues]="issuesCount() > 0"
-    [class.healthy]="okCount() > 0"
-    [class.failed]="failedCount() > 0"
->
+<div class="health-card" [class]="cardStatus()">
     <p class="title">Resource health</p>
     @if (checkingCount() > 0) {
     <div class="checking-content">
         <div>
             <div class="status">Checking...</div>
-
-            <!--            <p class="description">Verified {{ verified() }} of {{ total() }}</p>-->
+            <p class="description">Verified {{ currentNodes().length - checkingCount() }} of {{ currentNodes().length }}</p>
         </div>
 
         <mat-spinner diameter="40"></mat-spinner>
@@ -25,7 +18,7 @@
     <p class="description">{{ issuesCount() }} resources with issues</p>
 
     <!--    <button type="button" class="refresh-button" (click)="refresh()">-->
-    <button type="button" class="refresh-button">
+    <button type="button" class="refresh-button" (click)="refresh()">
         <em class="fa-light fa-arrows-rotate"></em>
         Refresh check
     </button>

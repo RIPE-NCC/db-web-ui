@@ -14,7 +14,7 @@ export class HealthCheckCardComponent {
 
     treeType = input.required<string>();
 
-    private readonly currentNodes = computed(() => this.nodeHealthService.nodes()[this.treeType()] ?? []);
+    readonly currentNodes = computed(() => this.nodeHealthService.nodes()[this.treeType()] ?? []);
 
     readonly checkingCount = computed(() => this.currentNodes().filter((node) => node.healthStatus() === NodeHealthStatus.NOT_CHECKED).length);
 
@@ -23,4 +23,28 @@ export class HealthCheckCardComponent {
     readonly issuesCount = computed(() => this.currentNodes().filter((node) => node.healthStatus() === NodeHealthStatus.ISSUES).length);
 
     readonly failedCount = computed(() => this.currentNodes().filter((node) => node.healthStatus() === NodeHealthStatus.FAILED).length);
+
+    readonly cardStatus = computed(() => {
+        if (this.checkingCount() > 0) {
+            return 'checking';
+        }
+
+        if (this.failedCount() > 0) {
+            return 'failed';
+        }
+
+        if (this.issuesCount() > 0) {
+            return 'issues';
+        }
+
+        if (this.okCount() > 0) {
+            return 'healthy';
+        }
+
+        return '';
+    });
+
+    refresh(): void {
+        this.nodeHealthService.refresh(this.treeType());
+    }
 }

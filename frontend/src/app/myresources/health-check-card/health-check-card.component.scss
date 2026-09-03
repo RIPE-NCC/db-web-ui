@@ -62,15 +62,17 @@
 }
 
 .issues {
-    .status-row,
+    .status-row {
+        color: #ff5f00;
+    }
     .refresh-button {
-        color: #f36b21;
+        color: #131f48;
     }
 }
 
 .healthy {
     .status-row {
-        color: #4a9d76;
+        color: #0e9c57;
     }
 }
 

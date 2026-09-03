@@ -56,4 +56,16 @@ export class NodeHealthService {
     reset(): void {
         this.nodes.set({});
     }
+
+    refresh(treeType: string): void {
+        const nodes = this.nodes()[treeType] ?? [];
+
+        // Reset status while checking
+        nodes.forEach((node) => {
+            node.healthStatus.set(NodeHealthStatus.NOT_CHECKED);
+            node.issuesCount.set(0);
+        });
+
+        this.healthCheck(nodes);
+    }
 }
