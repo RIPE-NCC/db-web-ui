@@ -51,6 +51,7 @@ export class Tree implements OnInit {
     readonly isShowMore = (_: number, node: TreeNode): boolean => node.isShowMore === true;
 
     readonly scalabilityMsg = 'Nodes with 10+ children show first 10 items. Click "Show more" to expand the full list.';
+    showScalabilityBanner = false;
 
     rootLevelNodes = input<IResourceScreenItem[]>();
     treeType = input<string>();
@@ -153,6 +154,8 @@ export class Tree implements OnInit {
         if (node.showAllChildren || children.length <= 10) {
             return children;
         }
+
+        this.showScalabilityBanner = true;
 
         return [
             ...children.slice(0, 10),

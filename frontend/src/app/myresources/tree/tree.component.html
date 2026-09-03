@@ -1,11 +1,13 @@
+@if (showScalabilityBanner) {
 <banner
+    [id]="'informational-show-more'"
     [type]="BannerTypes.informational"
     [title]="'Scalability: Large allocations'"
     [textContent]="scalabilityMsg"
-    [permanent]="true"
+    [persistDismiss]="true"
     class="scalability-banner"
 ></banner>
-@if (treeType() === ObjectTypesEnum.AUT_NUM) {
+} @if (treeType() === ObjectTypesEnum.AUT_NUM) {
 <div class="tree-header">
     <span>Autonomous Number</span>
 </div>
