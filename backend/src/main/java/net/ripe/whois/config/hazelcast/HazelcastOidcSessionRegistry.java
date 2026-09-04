@@ -60,6 +60,7 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
         LOGGER.debug("HZ OIDC session REMOVE token={}", token);
         final List<OidcSessionInformation> matches = new ArrayList<>();
         for (Map.Entry<String, OidcSessionInformation> entry : map().entrySet()) {
+            LOGGER.info("HZ OIDC session REMOVE session={}", entry.getValue());
             if (matches(entry.getValue(), token)) {
                 matches.add(entry.getValue());
             }
@@ -69,10 +70,10 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
     }
 
     private boolean matches(OidcSessionInformation info, OidcLogoutToken token) {
-        LOGGER.debug("Logout token claims: iss={} sub={} sid={} aud={} jti={}",
+        LOGGER.info("Logout token claims: iss={} sub={} sid={} aud={} jti={}",
                 token.getIssuer(), token.getSubject(), token.getSessionId(),
                 token.getAudience(), token.getId());
-        OidcUser oidcUser = info.getPrincipal();
+        final OidcUser oidcUser = info.getPrincipal();
 
         final String sid = token.getSessionId();
         if (sid != null) {

@@ -244,16 +244,14 @@ public class SecurityConfig {
                 LOGGER.info("Not an OIDC logout token: {}", authentication.getPrincipal());
                 return;
             }
-
-            final String principalName = logoutToken.getSubject();
-            authorizedClientService.removeAuthorizedClient(OidcUtils.REGISTRATION_ID, principalName);
-
             final Iterable<OidcSessionInformation> matched = oidcSessionRegistry.removeSessionInformation(logoutToken);
 
             var sessionsMap = hazelcastInstance.getMap("spring:session:sessions");
+            var oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
+
             for (OidcSessionInformation info : matched) {
-                LOGGER.info("session that should be explired is {}", info.getSessionId());
                 sessionCacheService.notifyExpired(info.getSessionId());
+                oidcMap.remove(info.getSessionId());
                 sessionsMap.remove(info.getSessionId());
             }
         };
