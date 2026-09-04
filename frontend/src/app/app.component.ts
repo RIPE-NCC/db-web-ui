@@ -86,18 +86,12 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const hasCrowdCookie = this.isCookieTrue('crowd.ripe.hint');
-
         this.userInfoService.getLoggedInOidc().subscribe({
             next: (response: UserOidc) => {
                 this.loadOidcDataAndInitialiseEvent(response);
             },
             error: (_err) => {
-                if (hasCrowdCookie) {
-                    window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
-                    return;
-                }
-                this.isComponentLoaded = true;
+                window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
             },
         });
     }
