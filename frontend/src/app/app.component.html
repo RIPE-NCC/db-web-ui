@@ -1,1 +1,31 @@
-<router-outlet />
+@if (!this.properties.isProdEnv()) {
+<ripe-unified-layout
+    class="layout-overrides"
+    [attr.service-logo]="icon"
+    [attr.active-app]="activeMenu"
+    home-url="/"
+    [menu]="sidebarMenu"
+    (:ripe-unified-sidebar:item-clicked)="onSidebarItemClick($event)"
+    [attr.active-route]="activeSidebarItem"
+    user-auth="cookie"
+    [attr.env]="envNameInRipeWebComponents"
+    [attr.env-label-img]="labelEnvImg"
+    [attr.env-label-title]="labelEnv"
+>
+    <section slot="main"><main-container></main-container></section>
+</ripe-unified-layout>
+} @else {
+<ripe-unified-layout
+    class="layout-overrides"
+    [attr.service-logo]="icon"
+    [attr.active-app]="activeMenu"
+    home-url="/"
+    [menu]="sidebarMenu"
+    (:ripe-unified-sidebar:item-clicked)="onSidebarItemClick($event)"
+    [attr.active-route]="activeSidebarItem"
+    user-auth="cookie"
+    [attr.env]="envNameInRipeWebComponents"
+>
+    <section slot="main"><main-container></main-container></section>
+</ripe-unified-layout>
+}

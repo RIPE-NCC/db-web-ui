@@ -79,7 +79,6 @@ export class ResourcesComponent implements OnDestroy {
     showAlerts: boolean = true;
     selectedNode = signal<TreeNode | undefined>(undefined);
     readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
-    readonly isEmbedPage = !window.location.pathname.includes('/myresources'); // url is different for embedded
 
     private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
@@ -114,14 +113,6 @@ export class ResourcesComponent implements OnDestroy {
 
     init() {
         this.isShowingSponsored = this.activatedRoute.snapshot.queryParamMap.get('sponsored') === 'true';
-        if (this.activatedRoute.snapshot.queryParamMap.has('org')) {
-            // FIXME
-            //@ts-ignore
-            this.selectedOrg = {
-                orgObjectId: this.activatedRoute.snapshot.queryParamMap.get('org'),
-                roles: ['lir'],
-            };
-        }
         this.activeToggleButton = this.isShowingSponsored ? ResourceType.SPONSORED : ResourceType.RESOURCES;
 
         this.showTheIpAnalyserBanner();
@@ -145,11 +136,7 @@ export class ResourcesComponent implements OnDestroy {
             sponsored: this.isShowingSponsored,
             ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser,
         };
-        if (this.isEmbedPage) {
-            void this.router.navigate(['embed/resources'], { queryParams: params });
-        } else {
-            void this.router.navigate(['myresources/overview'], { queryParams: params });
-        }
+        void this.router.navigate(['myresources/overview'], { queryParams: params });
     }
 
     resourcesSponsoredToggleClicked(toggleButtonEvent: MatButtonToggleChange): void {
