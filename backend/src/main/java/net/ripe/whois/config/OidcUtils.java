@@ -4,7 +4,7 @@ public final class OidcUtils {
 
     private OidcUtils() {}
 
-    public static final int HAZELCAST_OIDC_CACHES_TIMEOUT = 8 * 60;
+    public static final int HAZELCAST_OIDC_CACHES_TIMEOUT = 8 * 60 * 60;
 
     public static final String OIDC_LOCAL_COOKIE_NAME = "DBSESSIONID";
 
