@@ -252,7 +252,7 @@ public class SecurityConfig {
 
             var sessionsMap = hazelcastInstance.getMap("spring:session:sessions");
             for (OidcSessionInformation info : matched) {
-                LOGGER.info("session that should be explired is {}", info.getSessionId())
+                LOGGER.info("session that should be explired is {}", info.getSessionId());
                 sessionCacheService.notifyExpired(info.getSessionId());
                 sessionsMap.remove(info.getSessionId());
             }
