@@ -60,7 +60,6 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
         LOGGER.debug("HZ OIDC session REMOVE token={}", token);
         final List<OidcSessionInformation> matches = new ArrayList<>();
         for (Map.Entry<String, OidcSessionInformation> entry : map().entrySet()) {
-            LOGGER.info("HZ OIDC session REMOVE session={}", entry.getValue());
             if (matches(entry.getValue(), token)) {
                 matches.add(entry.getValue());
             }
@@ -70,18 +69,9 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
     }
 
     private boolean matches(OidcSessionInformation info, OidcLogoutToken token) {
-        LOGGER.info("Logout token claims: iss={} sub={} sid={} aud={} jti={}",
-                token.getIssuer(), token.getSubject(), token.getSessionId(),
-                token.getAudience(), token.getId());
         final OidcUser oidcUser = info.getPrincipal();
 
         final String sid = token.getSessionId();
-        if (sid != null) {
-            return sid.equals(oidcUser.getClaimAsString("sid"));
-        }
-        return token.getSubject() != null
-                && token.getSubject().equals(oidcUser.getSubject())
-                && token.getIssuer() != null
-                && token.getIssuer().toString().equals(String.valueOf(oidcUser.getIssuer()));
+        return sid != null && oidcUser.getClaimAsString("sid").equals(sid);
     }
 }
