@@ -22,7 +22,7 @@ export class ResourcesDataService {
     }
 
     checkIsAnnounced(objectType: string, name: string): Observable<ResourceCheck[]> {
-        return this.http.get<ResourceCheck[]>(`api/whois-internal/public/resourcecheck/${objectType}/${name}`);
+        return this.http.get<ResourceCheck[]>(`api/whois-internal/public/resourcecheck/${objectType}/${encodeURIComponent(name)}`);
     }
 
     fetchIpv4Analysis(orgId: string): Observable<IIpv4Analysis> {
