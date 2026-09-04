@@ -40,6 +40,10 @@ public class SessionCacheService {
             final String sessionId = entry.getKey();
             final SseEmitter emitter = entry.getValue();
             try {
+                if (!hasValidOidcSession(sessionId)){
+                    sendExpireSessionEvent(emitter);
+                    return;
+                }
                 LOGGER.info("Keep-alive check for sessionId={}", sessionId);
                 emitter.send(SseEmitter.event().comment("keep-alive"));
             } catch (IOException e) {
