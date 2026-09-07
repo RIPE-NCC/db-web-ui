@@ -4,6 +4,7 @@ import com.hazelcast.core.HazelcastInstance;
 import net.ripe.whois.AbstractIntegrationTest;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import net.ripe.whois.services.SessionCacheService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService.MAP_NAME;
 import static net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP;
@@ -45,6 +47,13 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
     KeycloakIdPDummyService keycloakIdPDummyService;
     @Autowired
     SessionCacheService sessionCacheService;
+    @Autowired
+    AtomicBoolean authorizeShouldFail;
+
+    @AfterEach
+    void resetAuthorizeFlag() {
+        authorizeShouldFail.set(false);
+    }
 
     @BeforeEach
     void resetCaches() {
@@ -286,6 +295,95 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(response.getStatusCode().value(), is(400));
         assertThat(response.getBody(), containsString("/db-web-ui/oauth2/authorization/wrongRegistry"));
+    }
 
+    // Simulate IdP Outages
+    @Test
+    void idp_timeout_during_token_exchange_redirects_without_login_and_clears_caches() {
+        keycloakIdPDummyService.registerTimeout("timeout-code");
+
+        final HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
+        final ResponseEntity<String> authStart = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/oauth2/authorization/keycloak",
+                HttpMethod.GET, anonymousRequest, String.class);
+
+        final String authorizeUrl = authStart.getHeaders().getLocation().toString();
+        final String state = extractQueryParam(authorizeUrl, "state");
+        final String sessionCookie = extractSessionCookie(authStart);
+
+        final HttpHeaders callbackHeaders = new HttpHeaders();
+        callbackHeaders.add(HttpHeaders.COOKIE, sessionCookie);
+
+        final URI callbackUri = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/login/oauth2/code/keycloak")
+                .queryParam("code", "timeout-code")
+                .queryParam("state", state)
+                .build()
+                .toUri();
+
+        final ResponseEntity<String> callback = restTemplate.exchange(
+                callbackUri, HttpMethod.GET, new HttpEntity<>(null, callbackHeaders), String.class);
+
+        // An IdP outage during token exchange should NOT dead-end on /login?error —
+        // it should route the user back to the app (next, or /query) unauthenticated,
+        // flagged with loginUnavailable=true, rather than blocking them entirely.
+        assertThat(callback.getStatusCode().value(), is(302));
+        final String redirect = callback.getHeaders().getLocation().toString();
+        assertThat(redirect, containsString("/query"));
+        assertThat(redirect, containsString("loginUnavailable=true"));
+
+        // Confirm the failed exchange never populated the post-login caches.
+        assertThat((Map<Object, Object>) hazelcastInstance.getMap(OIDC_SESSIONS_MAP), anEmptyMap());
+        assertThat((Map<Object, Object>) hazelcastInstance.getMap(MAP_NAME), anEmptyMap());
+    }
+
+    @Test
+    void authorized_request_when_idp_unreachable_returns_unauthorized() {
+        keycloakIdPDummyService.registerUser("idp-down-code",
+                new KeycloakIdPDummyService.FakeUser("idp-down-user", "idp-down@example.com", "idp-sid-down"));
+
+        // Log in normally first — succeeds, since login doesn't consult
+        // authorizedClientManager at all
+        final String sessionCookie = performFullLoginAndGetSessionCookie("idp-down-code");
+
+        // Now simulate the IdP being unreachable on a subsequent authorize()/refresh call.
+        authorizeShouldFail.set(true);
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, sessionCookie);
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20",
+                HttpMethod.GET, new HttpEntity<>(null, headers), String.class);
+
+        assertThat(response.getStatusCode().value(), is(401));
+    }
+
+    @Test
+    void authorized_request_when_idp_recovers_succeeds_again() {
+        keycloakIdPDummyService.registerUser("idp-recovers-code",
+                new KeycloakIdPDummyService.FakeUser("idp-recovers-user", "idp-recovers@example.com", "idp-sid-recovers"));
+
+        final String sessionCookie = performFullLoginAndGetSessionCookie("idp-recovers-code");
+
+        mock("/api/user/info?clientIp=127.0.0.1", getResource("mock/user-info.json"));
+        mock("/resource-services/member-resources/7347", getResource("mock/member-resources-7347.json"));
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, sessionCookie);
+        final HttpEntity<Void> authenticatedRequest = new HttpEntity<>(null, headers);
+
+        // First: IdP is down, request should fail.
+        authorizeShouldFail.set(true);
+        final ResponseEntity<String> failedResponse = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20",
+                HttpMethod.GET, authenticatedRequest, String.class);
+        assertThat(failedResponse.getStatusCode().value(), is(401));
+
+        // IdP recovers — the same session should now work again without re-login.
+        authorizeShouldFail.set(false);
+        final ResponseEntity<String> recoveredResponse = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20",
+                HttpMethod.GET, authenticatedRequest, String.class);
+        assertThat(recoveredResponse.getStatusCode().value(), is(200));
     }
 }

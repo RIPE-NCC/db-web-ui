@@ -4,6 +4,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.oauth2.client.ClientAuthorizationException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
@@ -13,17 +14,24 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
 
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @TestConfiguration
 public class OidcTestConfig {
 
     @Bean
+    public AtomicBoolean authorizeShouldFail() {
+        return new AtomicBoolean(false);
+    }
+
+    @Bean
     @Primary // overrides the main application's manager bean
-    public OAuth2AuthorizedClientManager authorizedClientManager() {
+    public OAuth2AuthorizedClientManager authorizedClientManager(final AtomicBoolean authorizeShouldFail) {
         OAuth2AuthorizedClientManager manager = Mockito.mock(OAuth2AuthorizedClientManager.class);
 
         ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("my-client-id")
@@ -45,7 +53,14 @@ public class OidcTestConfig {
                 accessToken
         );
 
-        Mockito.when(manager.authorize(Mockito.any())).thenReturn(authorizedClient);
+        Mockito.when(manager.authorize(Mockito.any())).thenAnswer(invocation -> {
+            if (authorizeShouldFail.get()) {
+                throw new ClientAuthorizationException(
+                        new OAuth2Error("server_error", "IdP token endpoint timed out during refresh", null),
+                        "keycloak");
+            }
+            return authorizedClient;
+        });
 
         return manager;
     }

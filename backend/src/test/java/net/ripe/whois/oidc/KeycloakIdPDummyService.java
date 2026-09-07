@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class KeycloakIdPDummyService {
@@ -26,13 +27,21 @@ public class KeycloakIdPDummyService {
         usersByCode.put(authorizationCode, user);
     }
 
+    private final Set<String> timeoutCodes = ConcurrentHashMap.newKeySet();
+
+    public void registerTimeout(String authorizationCode) {
+        timeoutCodes.add(authorizationCode);
+    }
+
+
     public void clear() {
         usersByCode.clear();
+        timeoutCodes.clear();
     }
 
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> tokenResponseClient() {
         return request -> {
-            String code = request.getAuthorizationExchange().getAuthorizationResponse().getCode();
+            final String code = getCodeOrTimeOut(request);
             FakeUser user = usersByCode.get(code);
             if (user == null) {
                 throw new IllegalStateException("FakeIdp: no user registered for authorization code '" + code + "'");
@@ -56,6 +65,19 @@ public class KeycloakIdPDummyService {
                     .additionalParameters(additionalParams)
                     .build();
         };
+    }
+
+    private String getCodeOrTimeOut(OAuth2AuthorizationCodeGrantRequest request) {
+        final String code = request.getAuthorizationExchange().getAuthorizationResponse().getCode();
+
+        if (timeoutCodes.contains(code)) {
+            // Mirrors what DefaultAuthorizationCodeTokenResponseClient does internally
+            // when the real HTTP call to the token endpoint times out.
+            throw new org.springframework.security.oauth2.core.OAuth2AuthorizationException(
+                    new org.springframework.security.oauth2.core.OAuth2Error("server_error", "IdP token endpoint timed out", null),
+                    new java.net.SocketTimeoutException("Read timed out"));
+        }
+        return code;
     }
 
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {

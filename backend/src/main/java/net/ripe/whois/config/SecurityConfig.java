@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OidcBackChannelLogoutHandler;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
@@ -33,6 +34,7 @@ import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAut
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -95,15 +97,23 @@ public class SecurityConfig {
                     oauth.authorizationEndpoint(endpoint -> endpoint.authorizationRequestResolver(silentAwareResolver));
                     oauth.failureHandler((request, response, exception) -> {
                         final String error = request.getParameter("error");
+                        final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+                        LOGGER.debug("Next is {}", next);
                         if ("login_required".equals(error) || "interaction_required".equals(error)) {
-                            final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-                            LOGGER.debug("Next is {}", next);
                             request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
                             final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query": next)
                                     .queryParam("silentLoginFailed", "true")
                                     .build()
                                     .toUriString();
                             LOGGER.debug("Silent login failed, redirecting to {}", redirectUrl);
+                            response.sendRedirect(redirectUrl);
+                        } else if (isIdpUnavailable(exception)) {
+                            request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+                            final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
+                                    .queryParam("loginUnavailable", "true")
+                                    .build()
+                                    .toUriString();
+                            LOGGER.warn("IdP unavailable during login, redirecting to {} without authentication", redirectUrl, exception);
                             response.sendRedirect(redirectUrl);
                         } else {
                             authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
@@ -263,12 +273,6 @@ public class SecurityConfig {
         return new SilentAwareAuthorizationRequestResolver(clientRegistrationRepository, OidcUtils.IDP_AUTHORISATION_ENDPOINT);
     }
 
-    private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
-        CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
-        repository.setCookieName(OidcUtils.OIDC_CSRF_COOKIE_NAME);
-        return repository;
-    }
-
     //Error handling
     @Bean
     @Primary
@@ -287,5 +291,19 @@ public class SecurityConfig {
                 return processed;
             }
         };
+    }
+
+    private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
+        CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        repository.setCookieName(OidcUtils.OIDC_CSRF_COOKIE_NAME);
+        return repository;
+    }
+
+    private boolean isIdpUnavailable(final AuthenticationException exception) {
+        if (exception.getCause() instanceof OAuth2AuthorizationException authEx) {
+            final String errorCode = authEx.getError().getErrorCode();
+            return "server_error".equals(errorCode) || "temporarily_unavailable".equals(errorCode);
+        }
+        return false;
     }
 }
