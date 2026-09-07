@@ -1,7 +1,10 @@
 package net.ripe.whois.config;
 
 import com.hazelcast.core.HazelcastInstance;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import net.ripe.whois.services.SessionCacheService;
@@ -64,7 +67,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             SilentAwareAuthorizationRequestResolver silentAwareResolver,
                                             AuthenticationSuccessHandler authenticationSuccessHandler,
-                                            AuthenticationFailureHandler authenticationFailureHandler,
+                                            AuthenticationFailureHandler oauth2LoginFailureHandler,
                                             OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
                                             OidcBackChannelLogoutHandler oidcLogoutHandler,
                                             LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout,
@@ -95,31 +98,7 @@ public class SecurityConfig {
                     oauth.authorizedClientRepository(authorizedClientRepository);
                     // Fetch credentials when loading page
                     oauth.authorizationEndpoint(endpoint -> endpoint.authorizationRequestResolver(silentAwareResolver));
-                    oauth.failureHandler((request, response, exception) -> {
-                        final String error = request.getParameter("error");
-                        final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-                        LOGGER.debug("Next is {}", next);
-                        if ("login_required".equals(error) || "interaction_required".equals(error)) {
-                            request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-                            final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query": next)
-                                    .queryParam("silentLoginFailed", "true")
-                                    .build()
-                                    .toUriString();
-                            LOGGER.debug("Silent login failed, redirecting to {}", redirectUrl);
-                            response.sendRedirect(redirectUrl);
-                        } else if (isIdpUnavailable(exception)) {
-                            request.getSession().removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
-                            final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
-                                    .queryParam("loginUnavailable", "true")
-                                    .build()
-                                    .toUriString();
-                            LOGGER.warn("IdP unavailable during login, redirecting to {} without authentication", redirectUrl, exception);
-                            response.sendRedirect(redirectUrl);
-                        } else {
-                            authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
-                        }
-
-                    });
+                    oauth.failureHandler(oauth2LoginFailureHandler);
                     oauth.successHandler(authenticationSuccessHandler);
 
                 })
@@ -157,13 +136,6 @@ public class SecurityConfig {
         return delegate;
     }
 
-    /**
-     * Stores exception in HttpSession and redirect to /login?error - IdP will display an error message
-     */
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new SimpleUrlAuthenticationFailureHandler("/login?error");
-    }
 
 
     @Bean
@@ -245,8 +217,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout(OAuth2AuthorizedClientService authorizedClientService,
-                                                              OidcSessionRegistry oidcSessionRegistry,
+    LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout(OidcSessionRegistry oidcSessionRegistry,
                                                               HazelcastInstance hazelcastInstance,
                                                               SessionCacheService sessionCacheService) {
         return (request, response, authentication) -> {
@@ -293,6 +264,39 @@ public class SecurityConfig {
         };
     }
 
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/login?error");
+    }
+
+    @Bean
+    public AuthenticationFailureHandler oauth2LoginFailureHandler(AuthenticationFailureHandler authenticationFailureHandler) {
+        return (request, response, exception) -> {
+            final String error = request.getParameter("error");
+            final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+
+            if ("login_required".equals(error) || "interaction_required".equals(error)) {
+                cleanupPreAuthSession(request, response);
+                final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
+                        .queryParam("silentLoginFailed", "true")
+                        .build()
+                        .toUriString();
+                LOGGER.debug("Silent login failed, redirecting to {}", redirectUrl);
+                response.sendRedirect(redirectUrl);
+            } else if (isIdpUnavailable(exception)) {
+                cleanupPreAuthSession(request, response);
+                final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
+                        .queryParam("loginUnavailable", "true")
+                        .build()
+                        .toUriString();
+                LOGGER.warn("IdP unavailable during login, redirecting to {} without authentication", redirectUrl, exception);
+                response.sendRedirect(redirectUrl);
+            } else {
+                authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
+            }
+        };
+    }
+
     private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
         CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         repository.setCookieName(OidcUtils.OIDC_CSRF_COOKIE_NAME);
@@ -305,5 +309,22 @@ public class SecurityConfig {
             return "server_error".equals(errorCode) || "temporarily_unavailable".equals(errorCode);
         }
         return false;
+    }
+
+    private void cleanupPreAuthSession(HttpServletRequest request, HttpServletResponse response) {
+        final HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.removeAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+            session.invalidate();
+        }
+        clearSessionCookie(response);
+    }
+
+    private void clearSessionCookie(HttpServletResponse response) {
+        final Cookie cookie = new Cookie(OidcUtils.OIDC_LOCAL_COOKIE_NAME, "");
+        cookie.setPath("/db-web-ui"); // must match whatever path your session cookie is actually issued with
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
     }
 }
