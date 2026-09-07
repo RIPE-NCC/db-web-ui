@@ -160,7 +160,7 @@ public class WhoisInternalServiceTest {
             .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
                 .body(AbstractIntegrationTest.getResource("mock/user-info.json")));
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ACCESS_TOKEN, "127.0.0.1");
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ACCESS_TOKEN.getTokenValue(), "127.0.0.1");
 
         assertEquals("TSTADMINC-RIPE", userInfoResponse.user.username);
     }
@@ -171,7 +171,7 @@ public class WhoisInternalServiceTest {
             .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
 
         try{
-            whoisInternalService.getUserInfo(ACCESS_TOKEN, "127.0.0.1");
+            whoisInternalService.getUserInfo(ACCESS_TOKEN.getTokenValue(), "127.0.0.1");
         }catch (RestClientException e){
             assertEquals(500, e.getStatus());
             assertEquals("Internal server error", e.getErrorMessages().stream().findFirst().get().getText());
@@ -184,7 +184,7 @@ public class WhoisInternalServiceTest {
             .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
         try{
-            whoisInternalService.getUserInfo(ACCESS_TOKEN, "127.0.0.1");
+            whoisInternalService.getUserInfo(ACCESS_TOKEN.getTokenValue(), "127.0.0.1");
         }catch (RestClientException e){
             assertEquals(401, e.getStatus());
             assertEquals("", e.getErrorMessages().stream().findFirst().get().getText());

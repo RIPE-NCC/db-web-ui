@@ -1,6 +1,7 @@
 package net.ripe.whois.web.api;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -42,8 +43,18 @@ public class ApiController {
                 }
             }
         } catch (ClientAuthorizationRequiredException e) {
-            LOGGER.info("Error while extracting bearer token");
+            LOGGER.info("Error while extracting bearer token: ", e);
         }
         return null;
+    }
+    
+    protected void setAuthorizationHeader(final HttpServletRequest request,
+                                        final Authentication authentication,
+                                        final HttpHeaders headers,
+                                        final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
+        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        if (StringUtils.isNotBlank(bearerToken)) {
+            headers.setBearerAuth(bearerToken);
+        }
     }
 }

@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.ApiController;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,10 +35,13 @@ public class WhoisInternalProxyController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalProxyController.class);
 
     private final WhoisInternalService whoisInternalService;
+    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
 
     @Autowired
-    public WhoisInternalProxyController(final WhoisInternalService whoisInternalService) {
+    public WhoisInternalProxyController(final WhoisInternalService whoisInternalService,
+                                        final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         this.whoisInternalService = whoisInternalService;
+        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @GetMapping(path = "/public/lir/{orgId}/mntner", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -46,9 +50,8 @@ public class WhoisInternalProxyController extends ApiController {
             @PathVariable final String orgId,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
-            @RegisteredOAuth2AuthorizedClient("keycloak")
-                OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -75,9 +78,8 @@ public class WhoisInternalProxyController extends ApiController {
         @RequestParam("route") final String route,
         @Nullable @RequestBody(required = false) final String body,
         @RequestHeader final HttpHeaders headers,
-        @RegisteredOAuth2AuthorizedClient("keycloak")
-            OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -86,9 +88,8 @@ public class WhoisInternalProxyController extends ApiController {
         final HttpServletRequest request,
         @Nullable @RequestBody(required = false) final String body,
         @RequestHeader final HttpHeaders headers,
-        @RegisteredOAuth2AuthorizedClient("keycloak")
-        OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -97,9 +98,8 @@ public class WhoisInternalProxyController extends ApiController {
         final HttpServletRequest request,
         @Nullable @RequestBody(required = false) final String body,
         @RequestHeader final HttpHeaders headers,
-        @RegisteredOAuth2AuthorizedClient("keycloak")
-            OAuth2AuthorizedClient authorizedClient, @PathVariable(required = false) String keyType) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        Authentication authentication, @PathVariable(required = false) String keyType) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -108,9 +108,8 @@ public class WhoisInternalProxyController extends ApiController {
         final HttpServletRequest request,
         @PathVariable final String key,
         @RequestHeader final HttpHeaders headers,
-        @RegisteredOAuth2AuthorizedClient("keycloak")
-            OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        final Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, "", headers);
     }
 
@@ -120,9 +119,8 @@ public class WhoisInternalProxyController extends ApiController {
         @Nullable @RequestBody(required = false) final String body,
         @PathVariable final String ipv,
         @RequestHeader final HttpHeaders headers,
-        @RegisteredOAuth2AuthorizedClient("keycloak")
-        OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -131,9 +129,8 @@ public class WhoisInternalProxyController extends ApiController {
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
-            @RegisteredOAuth2AuthorizedClient("keycloak")
-            OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -159,9 +156,8 @@ public class WhoisInternalProxyController extends ApiController {
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
-            @RegisteredOAuth2AuthorizedClient("keycloak")
-            OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            final Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -170,23 +166,22 @@ public class WhoisInternalProxyController extends ApiController {
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
-            @RegisteredOAuth2AuthorizedClient("keycloak")
-            OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            final Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 
     @GetMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request,
-                                                   @RegisteredOAuth2AuthorizedClient("keycloak")
-                                                   OAuth2AuthorizedClient authorizedClient) {
+                                                   final Authentication authentication) {
 
-        if (authorizedClient.getAccessToken() == null){
+        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        if (StringUtils.isEmpty(bearerToken)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         try{
-            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr()));
+            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr()));
         } catch (RestClientException re){
             return new ResponseEntity<>(re.getMessage(), HttpStatus.valueOf(re.getStatus()));
         }
@@ -214,9 +209,8 @@ public class WhoisInternalProxyController extends ApiController {
                 final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
-            @RegisteredOAuth2AuthorizedClient("keycloak")
-                OAuth2AuthorizedClient authorizedClient) {
-        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            final Authentication authentication) {
+        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
         return proxyRestCalls(request, body, headers);
     }
 

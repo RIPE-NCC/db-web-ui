@@ -8,59 +8,64 @@ import net.ripe.db.whois.common.rpsl.ObjectType;
 import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
 import net.ripe.db.whois.common.rpsl.attrs.AutNum;
 import net.ripe.whois.services.WhoisInternalService;
+import net.ripe.whois.web.api.ApiController;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ba-apps")
 @SuppressWarnings("UnusedDeclaration")
-public class BaAppsController {
+public class BaAppsController extends ApiController {
 
     private final ResourceTicketService resourceTicketService;
     private final WhoisInternalService whoisInternalService;
+    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
 
     @Autowired
     public BaAppsController(final ResourceTicketService resourceTicketService,
-                            final WhoisInternalService whoisInternalService) {
+                            final WhoisInternalService whoisInternalService,
+                            final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         this.resourceTicketService = resourceTicketService;
         this.whoisInternalService = whoisInternalService;
+        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}/{prefix:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTicketsPrefix(final HttpServletRequest request,
-                                           @RegisteredOAuth2AuthorizedClient("keycloak")
-                                           OAuth2AuthorizedClient authorizedClient,
+                                           final Authentication authentication,
                                            @PathVariable(name = "orgId") String orgIdIn,
                                            @PathVariable(name = "resource") String resourceIn,
                                            @PathVariable(name = "prefix") String prefix) {
-        return getTickets(request, authorizedClient, orgIdIn, resourceIn + "/" + prefix);
+        return getTickets(request, authentication, orgIdIn, resourceIn + "/" + prefix);
     }
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTickets(final HttpServletRequest request,
-                                     @RegisteredOAuth2AuthorizedClient("keycloak")
-                                     OAuth2AuthorizedClient authorizedClient,
+                                     final Authentication authentication,
                                      @PathVariable(name = "orgId") String orgId,
                                      @PathVariable(name = "resource") String resource) {
 
-        if (authorizedClient.getAccessToken() == null){
+        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        if (StringUtils.isEmpty(bearerToken)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         try {
             validateOrgId(orgId);
             validateResource(resource);
-            final UserInfoResponse userInfo = whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr());
+            final UserInfoResponse userInfo = whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr());
             // orgObjectId can be null in FYI pseudo-LIRs objects
             final Optional<UserInfoResponse.Member> member = userInfo.members.stream()
                 .filter(searchMember -> searchMember.orgObjectId != null && searchMember.orgObjectId.equals(orgId))

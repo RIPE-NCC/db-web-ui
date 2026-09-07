@@ -16,7 +16,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -136,13 +135,13 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         }
     }
 
-    public UserInfoResponse getUserInfo(final OAuth2AccessToken oAuth2AccessToken, final String clientIp) {
-        if (oAuth2AccessToken == null) {
+    public UserInfoResponse getUserInfo(final String bearerToken, final String clientIp) {
+        if (StringUtils.isEmpty(bearerToken)) {
             throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
 
         final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBearerAuth(oAuth2AccessToken.getTokenValue());
+        httpHeaders.setBearerAuth(bearerToken);
         httpHeaders.set(API_KEY_HEADER, apiKey);
         final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", "clientIp=" + clientIp, "", apiUrl);
         try {

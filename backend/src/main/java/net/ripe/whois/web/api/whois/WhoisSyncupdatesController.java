@@ -38,7 +38,7 @@ public class WhoisSyncupdatesController extends ApiController {
     public ResponseEntity<String> proxyRestCalls(@RequestBody(required = true) final String body,
                                                  final HttpServletRequest request,
                                                  @RequestHeader final HttpHeaders headers,
-                                                 Authentication authentication)  {
+                                                 final Authentication authentication)  {
         LOGGER.info("Received request to proxy whois sync updates");
         final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
         if (StringUtils.isNotBlank(bearerToken)) {

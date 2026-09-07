@@ -2,7 +2,10 @@ package net.ripe.whois.web.api.dns;
 
 import com.github.jgonian.ipmath.Ipv4;
 import com.github.jgonian.ipmath.Ipv6;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import net.ripe.whois.services.WhoisInternalService;
+import net.ripe.whois.web.api.ApiController;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,38 +13,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/dns")
 @SuppressWarnings("UnusedDeclaration")
-public class DnsCheckerController {
+public class DnsCheckerController extends ApiController {
     private final static Logger LOGGER = LoggerFactory.getLogger(DnsCheckerController.class);
 
     private final boolean skipDnsCheck;
 
     private final WhoisInternalService whoisInternalService;
     private final DnsClient dnsClient;
-
+    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
     private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
 
     @Autowired
     public DnsCheckerController(final WhoisInternalService whoisInternalService,
                                 final DnsClient dnsClient,
+                                final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager,
                                 @Value("${skip.dns.check:false}") final boolean skipDnsCheck) {
         this.whoisInternalService = whoisInternalService;
         this.dnsClient = dnsClient;
         this.skipDnsCheck = skipDnsCheck;
+        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
         if (skipDnsCheck) {
             LOGGER.info("DNS check is disabled");
         }
@@ -49,12 +52,12 @@ public class DnsCheckerController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<Response> status(final HttpServletRequest request,
-                                           @RegisteredOAuth2AuthorizedClient("keycloak")
-                                           OAuth2AuthorizedClient authorizedClient,
+                                           final Authentication authentication,
                                            @RequestParam(value = "ns") final String inNs,
                                            @RequestParam(value = "record") final String inRecord) {
 
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr());
+        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr());
         LOGGER.debug("DNS check for user {}", userInfoResponse.user.username);
         // tidy up a bit
         final String ns = inNs.trim();

@@ -1,42 +1,45 @@
 package net.ripe.whois.web.api.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
+import net.ripe.whois.web.api.ApiController;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
 @SuppressWarnings("UnusedDeclaration")
-public class UserController {
+public class UserController extends ApiController {
 
     private final WhoisInternalService whoisInternalService;
+    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
 
     @Autowired
-    public UserController(final WhoisInternalService whoisInternalService) {
+    public UserController(final WhoisInternalService whoisInternalService,
+                          final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         this.whoisInternalService = whoisInternalService;
+        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getMaintainersCompact(final HttpServletRequest request,
-                                                @RegisteredOAuth2AuthorizedClient("keycloak")
-                                                OAuth2AuthorizedClient authorizedClient) {
-
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr());
+                                                final Authentication authentication) {
+        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        final UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr());
 
         try {
             final List<Map<String,Object>> response = whoisInternalService
@@ -56,9 +59,9 @@ public class UserController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUserInfo(final HttpServletRequest request,
-                                      @RegisteredOAuth2AuthorizedClient("keycloak")
-                                      OAuth2AuthorizedClient authorizedClient) {
-        return new ResponseEntity<>(whoisInternalService.getUserInfo(authorizedClient.getAccessToken(), request.getRemoteAddr()), HttpStatus.OK);
+                                      final Authentication authentication) {
+        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        return new ResponseEntity<>(whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr()), HttpStatus.OK);
     }
 }
 

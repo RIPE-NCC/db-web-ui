@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class WhoisInternalProxyControllerTest {
@@ -50,11 +50,11 @@ public class WhoisInternalProxyControllerTest {
 
         when(authorizedClient.getAccessToken()).thenReturn(ACCESS_TOKEN);
         when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(ACCESS_TOKEN, "")).thenReturn(mockedUserInfoData);
+        when(whoisInternalService.getUserInfo(ACCESS_TOKEN.getTokenValue(), "")).thenReturn(mockedUserInfoData);
 
         final ResponseEntity<?> response = subject.whoisInternalUserInfo(request, authorizedClient);
 
-        verify(whoisInternalService, Mockito.times(1)).getUserInfo(ACCESS_TOKEN, "");
+        verify(whoisInternalService, Mockito.times(1)).getUserInfo(ACCESS_TOKEN.getTokenValue(), "");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockedUserInfoData, response.getBody());
     }
