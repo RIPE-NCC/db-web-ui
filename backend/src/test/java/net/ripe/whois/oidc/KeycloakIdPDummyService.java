@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class KeycloakIdPDummyService {
+
     public record FakeUser(String subject, String email, String sid) {}
 
     private final Map<String, FakeUser> usersByCode = new ConcurrentHashMap<>();
@@ -40,12 +41,12 @@ public class KeycloakIdPDummyService {
             // The value actually sent to the IdP as ?nonce=... is the HASH, stored in
             // additionalParameters — not the raw value in attributes. A real IdP just
             // echoes back whatever nonce it received, so we do the same here.
-            String nonceHash = (String) request.getAuthorizationExchange()
+            final String nonceHash = (String) request.getAuthorizationExchange()
                     .getAuthorizationRequest()
                     .getAdditionalParameters()
                     .get(org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames.NONCE);
 
-            Map<String, Object> additionalParams = new HashMap<>();
+            final Map<String, Object> additionalParams = new HashMap<>();
             additionalParams.put("id_token", buildIdToken(request.getClientRegistration().getClientId(), user, nonceHash));
 
             return OAuth2AccessTokenResponse.withToken("fake-access-token")

@@ -31,6 +31,7 @@ public class WhoisDomainObjectServiceIntegrationTest extends AbstractIntegration
         final String xsrfToken = extractXsrfCookie();
 
         final HttpHeaders headers = new HttpHeaders();
+
         headers.setBearerAuth("aabbccdd");
         headers.add(HttpHeaders.COOKIE, OidcUtils.OIDC_CSRF_COOKIE_NAME + "=" + xsrfToken);
         headers.add("X-XSRF-TOKEN", xsrfToken);

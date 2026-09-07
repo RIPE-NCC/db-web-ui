@@ -20,15 +20,19 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +53,13 @@ import java.util.concurrent.TimeUnit;
 @DirtiesContext
 public abstract class AbstractIntegrationTest {
 
-    protected static final String ACCESS_TOKEN = "aabbccdd";
+    protected static final OAuth2AccessToken ACCESS_TOKEN = new OAuth2AccessToken(
+            OAuth2AccessToken.TokenType.BEARER,
+            "mock-access-token",
+            Instant.now(),
+            Instant.now().plusSeconds(3600)
+    );
+
 
     @Autowired
     protected Environment environment;
@@ -234,22 +244,22 @@ public abstract class AbstractIntegrationTest {
         return restTemplate.exchange("http://localhost:" + getLocalServerPort() + path, HttpMethod.DELETE, httpEntity, type);
     }
 
-    public HttpEntity validOAuth2Client() {
+    public HttpEntity<Void> validOAuth2Client() {
+        String sessionCookie = performFullLoginAndGetSessionCookie("authorised");
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setBearerAuth(ACCESS_TOKEN);
+        requestHeaders.add(HttpHeaders.COOKIE, sessionCookie);
         return new HttpEntity<>(null, requestHeaders);
     }
 
-    public HttpEntity invalidOAuth2Client() {
+    public HttpEntity<Void> invalidOAuth2Client() {
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setBearerAuth(null);
+        requestHeaders.add(HttpHeaders.COOKIE, OidcUtils.OIDC_LOCAL_COOKIE_NAME + "=invalid-session-value");
         return new HttpEntity<>(null, requestHeaders);
     }
 
     protected String extractXsrfCookie() {
 
-        final ResponseEntity<String> csrfResponse =
-                get("/db-web-ui/api/csrf", String.class);
+        final ResponseEntity<String> csrfResponse = get("/db-web-ui/api/csrf", String.class, null);
 
         return csrfResponse.getHeaders()
                 .getOrEmpty(HttpHeaders.SET_COOKIE)
@@ -266,5 +276,64 @@ public abstract class AbstractIntegrationTest {
                 .orElseThrow(() ->
                         new IllegalStateException(
                                 "Cookie XSRF-TOKEN not found in response"));
+    }
+
+    protected String performFullLoginAndGetSessionCookie(final String authorizationCode) {
+        final HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
+
+        final ResponseEntity<String> authStart = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/oauth2/authorization/keycloak",
+                HttpMethod.GET, anonymousRequest, String.class);
+
+        final String authorizeUrl = authStart.getHeaders().getLocation().toString();
+        final String state = extractQueryParam(authorizeUrl, "state");
+        final String sessionCookie = extractSessionCookie(authStart);
+
+        final HttpHeaders callbackHeaders = new HttpHeaders();
+        callbackHeaders.add(HttpHeaders.COOKIE, sessionCookie);
+
+        final URI callbackUri = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/login/oauth2/code/keycloak")
+                .queryParam("code", authorizationCode)
+                .queryParam("state", state)
+                .build()
+                .toUri();
+
+        final ResponseEntity<String> callback = restTemplate.exchange(
+                callbackUri, HttpMethod.GET, new HttpEntity<>(null, callbackHeaders), String.class);
+
+        final List<String> callbackSetCookie = callback.getHeaders().get(HttpHeaders.SET_COOKIE);
+        return callbackSetCookie.stream()
+                .filter(header -> header.startsWith(OidcUtils.OIDC_LOCAL_COOKIE_NAME + "="))
+                .findFirst()
+                .map(header -> header.split(";", 2)[0])
+                .orElse(sessionCookie);
+
+    }
+
+
+    protected String extractSessionId(final String sessionCookie) {
+        final String rawValue = sessionCookie.substring(OidcUtils.OIDC_LOCAL_COOKIE_NAME.length() + 1);
+        return new String(java.util.Base64.getDecoder().decode(rawValue), java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+    protected String extractQueryParam(final String url, final String name) {
+        final String raw = UriComponentsBuilder.fromUriString(url).build().getQueryParams().getFirst(name);
+        if (raw == null) {
+            return null;
+        }
+        return java.net.URLDecoder.decode(raw, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+    protected String extractSessionCookie(final ResponseEntity<?> response) {
+        final List<String> setCookieHeaders = response.getHeaders().get(HttpHeaders.SET_COOKIE);
+        if (setCookieHeaders == null) {
+            throw new IllegalStateException("No Set-Cookie header present in response");
+        }
+        return setCookieHeaders.stream()
+                .filter(header -> header.startsWith(net.ripe.whois.config.OidcUtils.OIDC_LOCAL_COOKIE_NAME + "="))
+                .findFirst()
+                .map(header -> header.split(";", 2)[0])
+                .orElseThrow(() -> new IllegalStateException(
+                        "No session cookie found in Set-Cookie headers: " + setCookieHeaders));
     }
 }

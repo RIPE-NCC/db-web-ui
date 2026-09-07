@@ -39,13 +39,13 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
      * so a later back-channel logout request can find which HttpSession to invalidate.
      */
     @Override
-    public void saveSessionInformation(OidcSessionInformation info) {
+    public void saveSessionInformation(final OidcSessionInformation info) {
         map().set(info.getSessionId(), info);
         LOGGER.debug("HZ OIDC session SAVE clientSessionId={}", info.getSessionId());
     }
 
     @Override
-    public OidcSessionInformation removeSessionInformation(String clientSessionId) {
+    public OidcSessionInformation removeSessionInformation(final String clientSessionId) {
         final OidcSessionInformation removed = map().remove(clientSessionId);
         LOGGER.debug("HZ OIDC session REMOVE clientSessionId={} found={}", clientSessionId, removed != null);
         return removed;
@@ -56,7 +56,7 @@ public class HazelcastOidcSessionRegistry implements OidcSessionRegistry {
      * the returned sessionIds are then used by OidcBackChannelLogoutHandler to invalidate the actual HttpSessions.
      **/
     @Override
-    public Iterable<OidcSessionInformation> removeSessionInformation(OidcLogoutToken token) {
+    public Iterable<OidcSessionInformation> removeSessionInformation(final OidcLogoutToken token) {
         LOGGER.debug("HZ OIDC session REMOVE token={}", token);
         final List<OidcSessionInformation> matches = new ArrayList<>();
         for (Map.Entry<String, OidcSessionInformation> entry : map().entrySet()) {

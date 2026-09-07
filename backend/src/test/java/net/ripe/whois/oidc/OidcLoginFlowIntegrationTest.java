@@ -2,7 +2,6 @@ package net.ripe.whois.oidc;
 
 import com.hazelcast.core.HazelcastInstance;
 import net.ripe.whois.AbstractIntegrationTest;
-import net.ripe.whois.config.OidcUtils;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import net.ripe.whois.services.SessionCacheService;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -108,35 +106,35 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
     @Test
     void silent_login_failure_redirects_to_next_with_market() {
         final HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
-        String nextUrl = getServerUrl() + "/db-web-ui/syncupdates";
+        final String nextUrl = getServerUrl() + "/db-web-ui/syncupdates";
 
-        String silentLoginUrl = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/oauth2/authorization/keycloak")
+        final String silentLoginUrl = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/oauth2/authorization/keycloak")
                 .queryParam("silent", "true")
                 .queryParam("next", nextUrl) // raw, undecoded value — builder encodes it exactly once
                 .build()
                 .toUriString();
 
-        ResponseEntity<String> authStart = restTemplate.exchange(
+        final ResponseEntity<String> authStart = restTemplate.exchange(
                 silentLoginUrl, HttpMethod.GET, anonymousRequest, String.class);
 
-        String authorizeUrl = authStart.getHeaders().getLocation().toString();
+        final String authorizeUrl = authStart.getHeaders().getLocation().toString();
         assertThat(authorizeUrl, containsString("prompt=none"));
 
-        String state = extractQueryParam(authorizeUrl, "state");
-        String sessionCookie = extractSessionCookie(authStart);
+        final String state = extractQueryParam(authorizeUrl, "state");
+        final String sessionCookie = extractSessionCookie(authStart);
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, sessionCookie);
 
-        String callbackUrl = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/login/oauth2/code/keycloak")
+        final String callbackUrl = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/login/oauth2/code/keycloak")
                 .queryParam("error", "login_required")
                 .queryParam("state", state)
                 .toUriString();
 
-        ResponseEntity<String> callback = restTemplate.exchange(
+        final ResponseEntity<String> callback = restTemplate.exchange(
                 callbackUrl, HttpMethod.GET, new HttpEntity<>(null, headers), String.class);
 
-        String finalRedirect = callback.getHeaders().getLocation().toString();
+        final String finalRedirect = callback.getHeaders().getLocation().toString();
 
         assertThat(finalRedirect, containsString("/db-web-ui/syncupdates"));
         assertThat(finalRedirect, containsString("silentLoginFailed=true"));
@@ -189,8 +187,8 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(((Map<Object, Object>) hazelcastInstance.getMap(OIDC_SESSIONS_MAP)).containsKey(sessionId), is(false));
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest sseRequest = HttpRequest.newBuilder()
+        final HttpClient client = HttpClient.newHttpClient();
+        final HttpRequest sseRequest = HttpRequest.newBuilder()
                 .uri(URI.create(getServerUrl() + "/db-web-ui/api/session/events"))
                 .header(HttpHeaders.COOKIE, sessionCookie)
                 .GET()
@@ -198,7 +196,7 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
         // Subscribing now should get the event immediately, synchronously in this same
         // response, rather than depending on any future push.
-        HttpResponse<String> response = client.send(sseRequest, HttpResponse.BodyHandlers.ofString());
+        final HttpResponse<String> response = client.send(sseRequest, HttpResponse.BodyHandlers.ofString());
 
         assertThat(response.body(), containsString("session-expired"));
     }
@@ -289,66 +287,5 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
         assertThat(response.getStatusCode().value(), is(400));
         assertThat(response.getBody(), containsString("/db-web-ui/oauth2/authorization/wrongRegistry"));
 
-    }
-
-    private String performFullLoginAndGetSessionCookie(String authorizationCode) {
-        HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
-
-        ResponseEntity<String> authStart = restTemplate.exchange(
-                getServerUrl() + "/db-web-ui/oauth2/authorization/keycloak",
-                HttpMethod.GET, anonymousRequest, String.class);
-
-        String authorizeUrl = authStart.getHeaders().getLocation().toString();
-        String state = extractQueryParam(authorizeUrl, "state");
-        String sessionCookie = extractSessionCookie(authStart);
-
-        HttpHeaders callbackHeaders = new HttpHeaders();
-        callbackHeaders.add(HttpHeaders.COOKIE, sessionCookie);
-
-        URI callbackUri = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/login/oauth2/code/keycloak")
-                .queryParam("code", authorizationCode)
-                .queryParam("state", state)
-                .build()
-                .toUri();
-
-        ResponseEntity<String> callback = restTemplate.exchange(
-                callbackUri, HttpMethod.GET, new HttpEntity<>(null, callbackHeaders), String.class);
-
-        List<String> callbackSetCookie = callback.getHeaders().get(HttpHeaders.SET_COOKIE);
-        if (callbackSetCookie != null) {
-            return callbackSetCookie.stream()
-                    .filter(header -> header.startsWith(OidcUtils.OIDC_LOCAL_COOKIE_NAME + "="))
-                    .findFirst()
-                    .map(header -> header.split(";", 2)[0])
-                    .orElse(sessionCookie);
-        }
-        return sessionCookie;
-    }
-
-    private String extractSessionId(String sessionCookie) {
-        // sessionCookie is "DBSESSIONID=<value>" — Spring Session base64-encodes the raw id
-        String rawValue = sessionCookie.substring(OidcUtils.OIDC_LOCAL_COOKIE_NAME.length() + 1);
-        return new String(java.util.Base64.getDecoder().decode(rawValue), java.nio.charset.StandardCharsets.UTF_8);
-    }
-
-    private String extractQueryParam(String url, String name) {
-        String raw = UriComponentsBuilder.fromUriString(url).build().getQueryParams().getFirst(name);
-        if (raw == null) {
-            return null;
-        }
-        return java.net.URLDecoder.decode(raw, java.nio.charset.StandardCharsets.UTF_8);
-    }
-
-    private String extractSessionCookie(final ResponseEntity<?> response) {
-        final List<String> setCookieHeaders = response.getHeaders().get(HttpHeaders.SET_COOKIE);
-        if (setCookieHeaders == null) {
-            throw new IllegalStateException("No Set-Cookie header present in response");
-        }
-        return setCookieHeaders.stream()
-                .filter(header -> header.startsWith(net.ripe.whois.config.OidcUtils.OIDC_LOCAL_COOKIE_NAME + "="))
-                .findFirst()
-                .map(header -> header.split(";", 2)[0])
-                .orElseThrow(() -> new IllegalStateException(
-                        "No session cookie found in Set-Cookie headers: " + setCookieHeaders));
     }
 }

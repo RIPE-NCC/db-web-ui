@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -42,12 +41,12 @@ public class ApiController {
                     return authorizedClient.getAccessToken().getTokenValue();
                 }
             }
-        } catch (ClientAuthorizationRequiredException e) {
+        } catch (Exception e) {
             LOGGER.info("Error while extracting bearer token: ", e);
         }
         return null;
     }
-    
+
     protected void setAuthorizationHeader(final HttpServletRequest request,
                                         final Authentication authentication,
                                         final HttpHeaders headers,

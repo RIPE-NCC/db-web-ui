@@ -24,7 +24,7 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
              "<outgoing/>" +
              "</references>");
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23", String.class);
+        final ResponseEntity<String> response = get("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("<primaryKey>212.154.128.20 - 212.154.128.23</primaryKey>"));

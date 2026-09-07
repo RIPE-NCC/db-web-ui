@@ -10,20 +10,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
-import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
 
 
 public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void abuse_finder() {
-        final ResponseEntity<String> response = get("/search/abuse-finder.html", String.class);
+        final ResponseEntity<String> response = get("/search/abuse-finder.html", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
         assertThat(response.getHeaders().getLocation(), is(URI.create("https://www.ripe.net/support/abuse")));
@@ -31,7 +27,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void root_redirect() {
-        final ResponseEntity<String> response = get("/", String.class);
+        final ResponseEntity<String> response = get("/", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
         assertThat(response.getHeaders().getLocation(), is(URI.create("/db-web-ui/query")));
@@ -58,7 +54,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void default_not_found() {
-        final ResponseEntity<String> response = get("/doesnt_exist", String.class);
+        final ResponseEntity<String> response = get("/doesnt_exist", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
@@ -71,7 +67,8 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
             MediaType.APPLICATION_XML,
             HttpStatus.OK.value());
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=10.0.0.1", String.class);
+        final ResponseEntity<String> response = get("/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=r&offset=0&limit=20&query-string=10.0.0.1",
+                String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.toString().contains("6.0.0.0 - 13.115.255.255"), is(true));
@@ -87,7 +84,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void search_specific_docs() {
-        final ResponseEntity<String> response = get("/docs/RPSL-Object-Types/", String.class);
+        final ResponseEntity<String> response = get("/docs/RPSL-Object-Types/", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
         assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/RPSL-Object-Types/")));
@@ -95,7 +92,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void search_specific_docs_index() {
-        final ResponseEntity<String> response = get("/docs/RPSL-Object-Types/index.html", String.class);
+        final ResponseEntity<String> response = get("/docs/RPSL-Object-Types/index.html", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
         assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/RPSL-Object-Types/index.html")));
@@ -103,7 +100,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void search_docs_correct_path() {
-        final ResponseEntity<String> response = get("/docs/", String.class);
+        final ResponseEntity<String> response = get("/docs/", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
         assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/")));
@@ -111,7 +108,7 @@ public class RedirectIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void search_docs_without_slash() {
-        final ResponseEntity<String> response = get("/docs", String.class);
+        final ResponseEntity<String> response = get("/docs", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
         assertThat(response.getHeaders().getLocation(), is(URI.create("https://docs.db.ripe.net/")));
