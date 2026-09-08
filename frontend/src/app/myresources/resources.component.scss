@@ -32,15 +32,16 @@ ip-usage-of-all-resources {
 .ipv4-ipv6-asn-tabs {
     position: relative;
     background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 #0d0d0d26;
 
+    mat-tab-header {
+        border-bottom: 1px solid #d0d2da;
+    }
     .mdc-tab {
         width: 218px;
         height: 72px;
         font-size: 18px;
-
-        &:not(.mdc-tab--active) {
-            border-bottom: 2px solid #d0d2da;
-        }
     }
 
     .view-mode-panel {
