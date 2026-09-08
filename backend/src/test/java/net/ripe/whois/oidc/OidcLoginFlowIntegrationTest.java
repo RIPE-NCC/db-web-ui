@@ -42,13 +42,13 @@ import static org.hamcrest.Matchers.is;
 class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
-    HazelcastInstance hazelcastInstance;
+    private HazelcastInstance hazelcastInstance;
     @Autowired
-    KeycloakIdPDummyService keycloakIdPDummyService;
+    private KeycloakIdPDummyService keycloakIdPDummyService;
     @Autowired
-    SessionCacheService sessionCacheService;
+    private SessionCacheService sessionCacheService;
     @Autowired
-    AtomicBoolean authorizeShouldFail;
+    private AtomicBoolean authorizeShouldFail;
 
     @AfterEach
     void resetAuthorizeFlag() {

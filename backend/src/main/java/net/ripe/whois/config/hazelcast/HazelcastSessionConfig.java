@@ -132,7 +132,6 @@ public class HazelcastSessionConfig {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
                         logEvent("REMOVED", event);
-                        //sessionCacheService.removeSessionCaches(String.valueOf(event.getKey()), false);
                     }
 
                     @Override
