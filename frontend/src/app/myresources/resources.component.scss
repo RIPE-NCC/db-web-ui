@@ -1,25 +1,5 @@
 @import '../../styles/scss/extend.scss';
 
-.mat-mdc-tab-body-content {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-
-    tree {
-        padding-top: 1em;
-    }
-    node-preview {
-        padding-top: 1em;
-        background: #f7f7fa;
-    }
-}
-
-@media (max-width: 768px) {
-    .mat-mdc-tab-body-content {
-        flex-direction: column;
-    }
-}
-
 .my-resources {
     padding: 25px;
 
@@ -30,25 +10,23 @@
 
 .header {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding-bottom: 10px;
     gap: 15px;
+    padding-bottom: 10px;
 }
 
 .action-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
     align-items: center;
+    gap: 15px;
     z-index: 0;
 }
 
 ip-usage-of-all-resources {
     display: flex;
-    padding-top: 24px;
-    padding-bottom: 30px;
+    padding: 24px 0 30px;
 }
 
 .ipv4-ipv6-asn-tabs {
@@ -56,43 +34,75 @@ ip-usage-of-all-resources {
     background-color: white;
 
     .mdc-tab {
-        font-size: 18px;
         width: 218px;
         height: 72px;
+        font-size: 18px;
 
         &:not(.mdc-tab--active) {
             border-bottom: 2px solid #d0d2da;
         }
+    }
 
-        @media (max-width: 768px) {
-            width: fit-content;
+    .view-mode-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 5;
+
+        display: flex;
+        align-items: center;
+        height: 72px;
+
+        button {
+            min-width: 30px;
+            margin-right: 5px;
+            font-size: 20px;
+        }
+
+        .select {
+            background-color: #e8edfe;
+        }
+
+        alerts-drop-down {
+            position: absolute;
+            right: 0;
         }
     }
 }
 
-.view-mode-panel {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 72px;
-
+.mat-mdc-tab-body-content {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    gap: 10px;
 
-    z-index: 5;
-
-    button {
-        font-size: 20px;
-        min-width: 30px;
-        margin-right: 5px;
+    tree,
+    node-preview {
+        flex: 1 1 0;
+        min-width: 0;
     }
 
-    .select {
-        background-color: #e8edfe;
+    tree {
+        padding: 1em;
     }
 
-    alerts-drop-down {
-        position: absolute;
-        right: 0;
+    node-preview {
+        padding: 1em;
+        background: #f7f7fa;
+    }
+}
+
+@media (max-width: 768px) {
+    .mat-mdc-tab-body-content {
+        flex-direction: column;
+
+        tree,
+        node-preview {
+            flex: none;
+            width: 100%;
+        }
+    }
+
+    .ipv4-ipv6-asn-tabs .mdc-tab {
+        width: fit-content;
     }
 }
