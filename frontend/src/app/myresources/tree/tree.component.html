@@ -57,7 +57,10 @@
     >
         <button matIconButton [attr.aria-label]="'Toggle ' + node.nodeName" matTreeNodeToggle>
             @if (tree.isExpanded(node)) {
-            <mat-icon class="fa-light fa-minus"></mat-icon> } @else { <mat-icon class="fa-light fa-plus"></mat-icon> }
+            <mat-icon class="fa-light fa-minus"></mat-icon>
+            } @else {
+            <mat-icon class="fa-light fa-plus"></mat-icon>
+            }
         </button>
         <div class="node-content">
             <mat-icon class="fa-solid fa-circle-small ok" [class.issue]="false"></mat-icon>

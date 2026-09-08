@@ -4,9 +4,9 @@
     <div class="my-resources">
         <div class="header">
             <mat-button-toggle-group [value]="activeToggleButton" (change)="resourcesSponsoredToggleClicked($event)">
-                <mat-button-toggle [value]="ResourceType.RESOURCES" [disableRipple]="true">{{ ResourceType.RESOURCES }}</mat-button-toggle>
+                <mat-button-toggle [value]="ResourceType.RESOURCES" [disableRipple]="true">{{ ResourceType.RESOURCES }} </mat-button-toggle>
                 @if (isMemberOrg()) {
-                <mat-button-toggle [value]="ResourceType.SPONSORED" [disableRipple]="true">{{ ResourceType.SPONSORED }}</mat-button-toggle>
+                <mat-button-toggle [value]="ResourceType.SPONSORED" [disableRipple]="true">{{ ResourceType.SPONSORED }} </mat-button-toggle>
                 }
             </mat-button-toggle-group>
             <div class="action-buttons">
@@ -23,11 +23,20 @@
         <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
         </ip-usage-of-all-resources>
         <div class="ipv4-ipv6-asn-tabs">
-            @if (showAlerts) {
-            <div class="bell-panel">
-                <alerts-drop-down [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
+            <!--            @if (showAlerts) {-->
+            <!--                <div class="bell-panel">-->
+            <!--                    <alerts-drop-down [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>-->
+            <!--                </div>-->
+            <!--            }-->
+            <div class="view-mode-panel">
+                <button matButton type="button" [class.select]="showNodePreview" (click)="showNodePreview = true">
+                    <em class="fa-light fa-line-columns"></em>
+                </button>
+
+                <button matButton type="button" [class.select]="!showNodePreview" (click)="showNodePreview = false">
+                    <em class="fa-light fa-expand"></em>
+                </button>
             </div>
-            }
             <mat-tab-group
                 mat-stretch-tabs="false"
                 mat-align-tabs="start"
@@ -38,10 +47,7 @@
                 <mat-tab label="IPv4" id="inetnum">
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
-                    } @else {
-                    <tree [rootLevelNodes]="ipv4Resources" [treeType]="ObjectTypesEnum.INETNUM" (nodeSelected)="onNodeSelected($event)"></tree>
-                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
-                    } @if (loading === false && ipv4Resources.length === 0) {
+                    } @else if (loading === false && ipv4Resources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -51,15 +57,16 @@
                         <span class="resource-page-message">{{ explanation.toString() }}</span>
                         } }
                     </p>
-                    }
+                    } @else {
+                    <tree [rootLevelNodes]="ipv4Resources" [treeType]="ObjectTypesEnum.INETNUM" (nodeSelected)="onNodeSelected($event)"></tree>
+                    @if (showNodePreview) {
+                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
+                    } }
                 </mat-tab>
                 <mat-tab label="IPv6" id="inet6num">
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
-                    } @else {
-                    <tree [rootLevelNodes]="ipv6Resources" [treeType]="ObjectTypesEnum.INET6NUM" (nodeSelected)="onNodeSelected($event)"></tree>
-                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
-                    } @if (loading === false && ipv6Resources.length === 0) {
+                    } @else if (loading === false && ipv6Resources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -69,15 +76,15 @@
                         <span class="resource-page-message">{{ explanation.toString() }}</span>
                         } }
                     </p>
+                    } @else {
+                    <tree [rootLevelNodes]="ipv6Resources" [treeType]="ObjectTypesEnum.INET6NUM" (nodeSelected)="onNodeSelected($event)"></tree>
+                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
                     }
                 </mat-tab>
                 <mat-tab label="ASN" id="aut-num">
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
-                    } @else {
-                    <tree [rootLevelNodes]="asnResources" [treeType]="ObjectTypesEnum.AUT_NUM" (nodeSelected)="onNodeSelected($event)"></tree>
-                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.AUT_NUM"></node-preview>
-                    } @if (loading === false && asnResources.length === 0) {
+                    } @else if (loading === false && asnResources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -87,6 +94,9 @@
                         <span class="resource-page-message">{{ explanation.toString() }}</span>
                         } }
                     </p>
+                    } @else {
+                    <tree [rootLevelNodes]="asnResources" [treeType]="ObjectTypesEnum.AUT_NUM" (nodeSelected)="onNodeSelected($event)"></tree>
+                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.AUT_NUM"></node-preview>
                     }
                 </mat-tab>
             </mat-tab-group>

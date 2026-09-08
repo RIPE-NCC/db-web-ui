@@ -1,24 +1,40 @@
 .resources-ip-usage {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
     width: 100%;
 }
 
 .usage-card {
-    flex: 1;
+    flex: 1 0 21%;
     border-radius: 10px;
     border: 1px solid #d0d2da;
     background-color: white;
     padding: 17px;
 
-    p {
+    p,
+    .description {
         font-size: 13px;
         color: #3d3d3d;
+        display: block;
+        white-space: nowrap;
     }
 
-    span {
+    .size {
         font-size: 24px;
         font-weight: 600;
         color: #131f48;
+        display: block;
+        margin-top: 1em;
+        margin-bottom: 0.3125em;
     }
 }
+health-check-card {
+    flex: 1 0 21%;
+}
+
+//@media (max-width: 768px) {
+//    .resources-ip-usage {
+//        flex-direction: column;
+//    }
+//}

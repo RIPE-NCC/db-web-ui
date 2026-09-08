@@ -1,13 +1,12 @@
 .health-card {
-    box-sizing: border-box;
+    max-width: 15em;
     width: 100%;
-    min-height: 96px;
+    height: 100%;
 
-    border: 1px solid #d0d2da;
     border-radius: 10px;
+    border: 1px solid #d0d2da;
     background-color: white;
-
-    padding: 14px 18px;
+    padding: 17px;
 
     .title {
         margin: 0 0 7px;
@@ -21,6 +20,7 @@
         font-size: 20px;
         line-height: 24px;
         font-weight: 600;
+        white-space: nowrap;
     }
 
     .description {

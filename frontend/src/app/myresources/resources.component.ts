@@ -37,7 +37,6 @@ export enum ResourceType {
     imports: [
         MatButton,
         ManageResourcesComponent,
-        AlertsDropDownComponent,
         IpUsageOfAllResourcesComponent,
         LoadingIndicatorComponent,
         RefreshComponent,
@@ -78,6 +77,7 @@ export class ResourcesComponent implements OnDestroy {
     activeToggleButton = 'resources';
     showAlerts: boolean = true;
     selectedNode = signal<TreeNode | undefined>(undefined);
+    showNodePreview: boolean = true;
     readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
 
     private subscriptions: any[] = [];

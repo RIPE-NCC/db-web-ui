@@ -17,21 +17,22 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
     private ipUsageService = inject(IpUsageService);
 
     @Input()
-    public resources: any[];
+    resources: any[];
     @Input()
-    public type: string;
+    type: string;
     @Input()
-    public sponsored: boolean;
+    sponsored: boolean;
 
-    public total: number;
-    public used: number;
-    public free: number;
+    total: number;
+    used: number;
+    free: number;
+    usedPercentage: number;
 
-    public ipv6CalcTotal: string;
-    public ipv6CalcUsed: string;
-    public ipv6CalcFree: string;
+    ipv6CalcTotal: string;
+    ipv6CalcUsed: string;
+    ipv6CalcFree: string;
 
-    public ngOnChanges() {
+    ngOnChanges() {
         this.setResourcesIpUsage();
         if (this.type === 'inet6num') {
             this.calcValueForIPv6();
@@ -42,6 +43,7 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
         this.total = 0;
         this.used = 0;
         this.free = 0;
+        this.usedPercentage = 0;
     }
 
     private setResourcesIpUsage() {
@@ -52,6 +54,7 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
                 this.used += resource.usage.used;
             }
         }
+        this.usedPercentage = this.used > 0 ? Math.round((this.used * 100) / this.total) : 0;
         this.free = this.ipUsageService.calcFreeSpace(this.total, this.used);
     }
 
