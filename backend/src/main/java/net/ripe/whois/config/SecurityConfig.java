@@ -52,8 +52,9 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 
@@ -62,6 +63,10 @@ import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 public class SecurityConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
+
+    private static final List<String> IDP_UNAVAILABLE_ERROR_CODES = List.of("server_error", "temporarily_unavailable");
+
+    private static final List<String> SILENT_LOGIN_FAILURE_ERROR_CODES = List.of("login_required", "interaction_required");
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -120,7 +125,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler(OAuth2AuthorizedClientService authorizedClientService, RestTemplate restTemplate) {
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
         final DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
         final SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
         delegate.setRedirectStrategy((request, response, url) -> {
@@ -245,6 +250,14 @@ public class SecurityConfig {
     }
 
     //Error handling
+
+    /***
+     *
+     * Creates an internal filter that intercepts OAuth2AuthorizationRequestRedirectFilter which is the responsible
+     * for handling /oauth2/authorization/{registrationId} requests.
+     * In case someone tries /oauth2/authorization/bad-idp it will fail before hitting the IdP
+     *
+     */
     @Bean
     @Primary
     public ObjectPostProcessor<Object> oauth2FilterFailureHandlerPostProcessor(
@@ -275,13 +288,13 @@ public class SecurityConfig {
             final String error = request.getParameter("error");
             final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
 
-            if ("login_required".equals(error) || "interaction_required".equals(error)) {
+            if (SILENT_LOGIN_FAILURE_ERROR_CODES.contains(error)) {
                 cleanupPreAuthSession(request, response);
                 final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
                         .queryParam("silentLoginFailed", "true")
                         .build()
                         .toUriString();
-                LOGGER.debug("Silent login failed, redirecting to {}", redirectUrl);
+                LOGGER.debug("Silent login: User not logged in, redirecting to {}", redirectUrl);
                 response.sendRedirect(redirectUrl);
             } else if (isIdpUnavailable(exception)) {
                 cleanupPreAuthSession(request, response);
@@ -289,7 +302,8 @@ public class SecurityConfig {
                         .queryParam("loginUnavailable", "true")
                         .build()
                         .toUriString();
-                LOGGER.warn("IdP unavailable during login, redirecting to {} without authentication", redirectUrl, exception);
+                LOGGER.error("IdP unavailable during login, redirecting to {} without authentication", redirectUrl,
+                        exception);
                 response.sendRedirect(redirectUrl);
             } else {
                 authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
@@ -306,7 +320,7 @@ public class SecurityConfig {
     private boolean isIdpUnavailable(final AuthenticationException exception) {
         if (exception.getCause() instanceof OAuth2AuthorizationException authEx) {
             final String errorCode = authEx.getError().getErrorCode();
-            return "server_error".equals(errorCode) || "temporarily_unavailable".equals(errorCode);
+            return IDP_UNAVAILABLE_ERROR_CODES.contains(errorCode);
         }
         return false;
     }
