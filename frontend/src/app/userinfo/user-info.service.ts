@@ -38,14 +38,6 @@ export class UserInfoService {
         );
     }
 
-    removeUserInfo() {
-        this.userInfo = undefined;
-    }
-
-    isUserLoggedIn() {
-        return this.http.get('api/user-oidc/info');
-    }
-
     getUserOrgsAndRoles(): Observable<UserOrgsAndRegistrations> {
         if (this.userInfo) {
             return of(this.userInfo);

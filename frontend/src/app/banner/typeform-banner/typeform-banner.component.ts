@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { UserOidc } from 'src/app/dropdown/org-data-type.model';
 import { TypeformDialogComponent } from '../../query/typeform-dialog/typeform-dialog.component';
 import { UserInfoService } from '../../userinfo/user-info.service';
 
@@ -20,8 +21,8 @@ export class TypeformBannerComponent implements OnInit {
     public loggedInUser: boolean;
 
     constructor() {
-        this.userInfoService.isUserLoggedIn().subscribe((response: boolean) => {
-            this.loggedInUser = response;
+        this.userInfoService.getLoggedInOidc().subscribe((response: UserOidc) => {
+            this.loggedInUser = true;
         });
     }
 

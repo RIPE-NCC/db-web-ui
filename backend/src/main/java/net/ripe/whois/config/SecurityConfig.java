@@ -288,7 +288,7 @@ public class SecurityConfig {
             final String error = request.getParameter("error");
             final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
 
-            if (SILENT_LOGIN_FAILURE_ERROR_CODES.contains(error)) {
+            if (StringUtils.isNotEmpty(error) && SILENT_LOGIN_FAILURE_ERROR_CODES.contains(error)) {
                 cleanupPreAuthSession(request, response);
                 final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
                         .queryParam("silentLoginFailed", "true")
@@ -296,18 +296,21 @@ public class SecurityConfig {
                         .toUriString();
                 LOGGER.debug("Silent login: User not logged in, redirecting to {}", redirectUrl);
                 response.sendRedirect(redirectUrl);
-            } else if (isIdpUnavailable(exception)) {
+                return;
+            }
+
+            if (isIdpUnavailable(exception)) {
                 cleanupPreAuthSession(request, response);
                 final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
                         .queryParam("loginUnavailable", "true")
                         .build()
                         .toUriString();
-                LOGGER.error("IdP unavailable during login, redirecting to {} without authentication", redirectUrl,
-                        exception);
+                LOGGER.error("IdP unavailable during login, redirecting to {} without authentication", redirectUrl, exception);
                 response.sendRedirect(redirectUrl);
-            } else {
-                authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
+                return;
             }
+
+            authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
         };
     }
 
