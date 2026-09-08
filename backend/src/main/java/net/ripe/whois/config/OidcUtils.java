@@ -1,5 +1,9 @@
 package net.ripe.whois.config;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import javax.annotation.Nullable;
+
 public final class OidcUtils {
 
     private OidcUtils() {}
@@ -16,4 +20,14 @@ public final class OidcUtils {
 
     public static final String IDP_AUTHORISATION_ENDPOINT_REGISTRATION_ID = "/db-web-ui/oauth2/authorization/keycloak";
 
+    @Nullable
+    public static String extractRegistrationId(HttpServletRequest request) {
+        final String uri = request.getRequestURI();
+        final String prefix = IDP_AUTHORISATION_ENDPOINT + "/";
+        final int index = uri.indexOf(prefix);
+        if (index == -1) {
+            return null;
+        }
+        return uri.substring(index + prefix.length());
+    }
 }

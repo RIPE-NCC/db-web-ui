@@ -12,6 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesMapper;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -32,7 +35,9 @@ import org.springframework.security.oauth2.client.oidc.authentication.logout.Oid
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionInformation;
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
@@ -56,12 +61,14 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
 
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(OAuth2ClientProperties.class)
 public class SecurityConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
@@ -254,7 +261,7 @@ public class SecurityConfig {
     //Error handling
 
     /***
-     *
+     * <p>
      * Creates an internal filter that intercepts OAuth2AuthorizationRequestRedirectFilter which is the responsible
      * for handling /oauth2/authorization/{registrationId} requests.
      * In case someone tries /oauth2/authorization/bad-idp it will fail before hitting the IdP
@@ -263,16 +270,14 @@ public class SecurityConfig {
     @Bean
     @Primary
     public ObjectPostProcessor<Object> oauth2FilterFailureHandlerPostProcessor(
-            @Qualifier("objectPostProcessor") final ObjectPostProcessor<Object> objectPostProcessor) {
+            @Qualifier("objectPostProcessor") final ObjectPostProcessor<Object> objectPostProcessor,
+            final AuthenticationFailureHandler oauth2AuthorizationRequestFailureHandler) {
         return new ObjectPostProcessor<>() {
             @Override
             public <O> O postProcess(final O object) {
                 final O processed = objectPostProcessor.postProcess(object);
                 if (processed instanceof OAuth2AuthorizationRequestRedirectFilter filter) {
-                    filter.setAuthenticationFailureHandler((request, response, exception) -> {
-                        LOGGER.warn("Invalid OAuth2 authorization request: {}", exception.getMessage());
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid client registration");
-                    });
+                    filter.setAuthenticationFailureHandler(oauth2AuthorizationRequestFailureHandler);
                 }
                 return processed;
             }
@@ -291,29 +296,84 @@ public class SecurityConfig {
             final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
 
             if (StringUtils.isNotEmpty(error) && SILENT_LOGIN_FAILURE_ERROR_CODES.contains(error)) {
-                cleanupPreAuthSession(request, response);
-                final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
-                        .queryParam("silentLoginFailed", "true")
-                        .build()
-                        .toUriString();
-                LOGGER.debug("Silent login: User not logged in, redirecting to {}", redirectUrl);
-                response.sendRedirect(redirectUrl);
+                handleSilentLoginFailure(request, response, next);
                 return;
             }
-
             if (isIdpUnavailable(exception)) {
-                cleanupPreAuthSession(request, response);
-                final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
-                        .queryParam("loginUnavailable", "true")
-                        .build()
-                        .toUriString();
-                LOGGER.error("IdP unavailable during login, redirecting to {} without authentication", redirectUrl, exception);
-                response.sendRedirect(redirectUrl);
+                handleIdpUnavailableFailure(request, response, exception, next);
                 return;
             }
 
             authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
         };
+    }
+
+    /***
+     * <p>
+     * Handles the case when IdP is not available.
+     *
+     */
+    @Bean
+    public AuthenticationFailureHandler oauth2AuthorizationRequestFailureHandler() {
+        return (request, response, exception) -> {
+
+            final String isSilent = request.getParameter("silent");
+            if ("true".equals(isSilent)) {
+                // IdP is not available, so we expect the error before calling IdP.
+                final String next = (String) request.getSession().getAttribute(NEXT_URL_SESSION_ATTRIBUTE);
+                handleSilentLoginFailure(request, response, next);
+                return;
+            }
+
+            final String registrationId = OidcUtils.extractRegistrationId(request);
+            if (!OidcUtils.REGISTRATION_ID.equals(registrationId)){
+                LOGGER.error("Invalid client registrationId {}", registrationId);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid client registrationId");
+                return;
+            }
+
+            //falls back to default
+            LOGGER.error("Error coming form the IdP");
+            new SimpleUrlAuthenticationFailureHandler().onAuthenticationFailure(request, response, exception);
+        };
+    }
+
+    private void handleIdpUnavailableFailure(final HttpServletRequest request, final HttpServletResponse response,
+                                             final AuthenticationException exception, final String next) throws IOException {
+        cleanupPreAuthSession(request, response);
+        final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
+                .queryParam("loginUnavailable", "true")
+                .build()
+                .toUriString();
+        LOGGER.error("IdP unavailable during login, redirecting to {} without authentication", redirectUrl, exception);
+        response.sendRedirect(redirectUrl);
+    }
+
+    private void handleSilentLoginFailure(final HttpServletRequest request, final HttpServletResponse response,
+                                          final String next) throws IOException {
+        cleanupPreAuthSession(request, response);
+        final String redirectUrl = UriComponentsBuilder.fromUriString(StringUtils.isEmpty(next) ? "/query" : next)
+                .queryParam("silentLoginFailed", "true")
+                .build()
+                .toUriString();
+        LOGGER.debug("Silent login: User not logged in, redirecting to {}", redirectUrl);
+        response.sendRedirect(redirectUrl);
+    }
+
+    /***
+     * <p>
+     * Avoid failing startup if the IdP is not available.
+     */
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository(final OAuth2ClientProperties properties) {
+        try {
+            final List<ClientRegistration> registrations =
+                    new OAuth2ClientPropertiesMapper(properties).asClientRegistrations().values().stream().toList();
+            return new InMemoryClientRegistrationRepository(registrations);
+        } catch (Exception e) {
+            LOGGER.error("OIDC discovery failed at startup (IdP unavailable) — starting without OAuth2 login until restart: ", e);
+            return registrationId -> null; // any login attempt will now fail cleanly downstream, rather than blocking startup
+        }
     }
 
     //http Firewall
