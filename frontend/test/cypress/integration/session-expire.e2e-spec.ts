@@ -32,8 +32,8 @@ describe('Session expire', () => {
 
         queryPage.visit();
         cy.wait('@getProfile');
-        cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/user-oidc\/info/).as('getUserInfo');
-        cy.wait('@getUserInfo');
+        cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/user-oidc\/me/).as('getUserInfo');
+        cy.wait('@getUserInfo').its('response.statusCode').should('eq', 401);
         queryPage.expectUserLoggedImage(false);
     });
 
@@ -45,7 +45,7 @@ describe('Session expire', () => {
         }).as('getProfile');
         queryPage.visit();
         cy.wait('@getProfile');
-        cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/user-oidc\/info/).as('getUserInfo');
+        cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/user-oidc\/me/).as('getUserInfo');
         cy.wait('@getUserInfo');
         queryPage.expectUserLoggedImage(true);
     });

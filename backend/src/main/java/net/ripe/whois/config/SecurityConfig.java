@@ -47,6 +47,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.session.web.http.CookieSerializer;
@@ -69,7 +71,7 @@ public class SecurityConfig {
     private static final List<String> SILENT_LOGIN_FAILURE_ERROR_CODES = List.of("login_required", "interaction_required");
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http,
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             SilentAwareAuthorizationRequestResolver silentAwareResolver,
                                             AuthenticationSuccessHandler authenticationSuccessHandler,
                                             AuthenticationFailureHandler oauth2LoginFailureHandler,
@@ -183,7 +185,7 @@ public class SecurityConfig {
 
     // Logout from the provider when a user logout from the application
     @Bean
-    OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler(
+    public OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler(
         ClientRegistrationRepository clientRegistrationRepository) {
 
         OidcClientInitiatedLogoutSuccessHandler handler =
@@ -215,14 +217,14 @@ public class SecurityConfig {
     // Logout from the application when a user logout from the provider
 
     @Bean
-    OidcBackChannelLogoutHandler oidcLogoutHandler(OidcSessionRegistry sessionRegistry) {
+    public OidcBackChannelLogoutHandler oidcLogoutHandler(OidcSessionRegistry sessionRegistry) {
         OidcBackChannelLogoutHandler handler = new OidcBackChannelLogoutHandler(sessionRegistry);
         handler.setSessionCookieName(OidcUtils.OIDC_LOCAL_COOKIE_NAME);
         return handler;
     }
 
     @Bean
-    LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout(OidcSessionRegistry oidcSessionRegistry,
+    public LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout(OidcSessionRegistry oidcSessionRegistry,
                                                               HazelcastInstance hazelcastInstance,
                                                               SessionCacheService sessionCacheService) {
         return (request, response, authentication) -> {
@@ -312,6 +314,15 @@ public class SecurityConfig {
 
             authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
         };
+    }
+
+    //http Firewall
+    @Bean
+    public HttpFirewall allowUrlEncodedPercentHttpFirewall() {
+        final StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowUrlEncodedPercent(true);
+        firewall.setAllowUrlEncodedSlash(true);
+        return firewall;
     }
 
     private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
