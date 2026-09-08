@@ -119,8 +119,7 @@ public class SessionCacheService {
             IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
 
             oidcMap.remove(sessionId);
-            //hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
-
+            hazelcastInstance.getMap("spring:session:sessions").remove(sessionId);
 
             LOGGER.debug("Notify session expiration sessionId={}", sessionId);
             if (shouldNotify) {
