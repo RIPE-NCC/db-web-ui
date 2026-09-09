@@ -45,7 +45,7 @@ public class WhoisDomainObjectService {
                 final String source,
                 final List<WhoisObject> domainObjects,
                 final String remoteAddress,
-                final String cookie) {
+                final String bearerToken) {
 
         final WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
@@ -53,9 +53,9 @@ public class WhoisDomainObjectService {
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE.toString());
         headers.add(HttpHeaders.ACCEPT_ENCODING, "identity");
-        headers.add(HttpHeaders.COOKIE, cookie);
         headers.add(HttpHeaders.CONNECTION, "close");
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.toString());
+        headers.setBearerAuth(bearerToken);
 
         ResponseEntity<String> result;
         try {

@@ -3,7 +3,7 @@ package net.ripe.whois.web.api.whois;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.ripe.whois.services.WhoisService;
-import net.ripe.whois.web.api.ApiController;
+import net.ripe.whois.web.api.OidcAbstractController;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,17 +25,15 @@ import javax.annotation.Nullable;
 @RestController
 @RequestMapping("/api/whois")
 @SuppressWarnings("UnusedDeclaration")
-public class WhoisProxyController extends ApiController {
+public class WhoisProxyController extends OidcAbstractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
     private final WhoisService whoisService;
 
-    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
-
     @Autowired
     public WhoisProxyController(final WhoisService whoisService, final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
+        super(oAuth2AuthorizedClientManager);
         this.whoisService = whoisService;
-        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @GetMapping(value = "/**", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -56,7 +54,7 @@ public class WhoisProxyController extends ApiController {
             @RequestHeader final HttpHeaders headers,
             Authentication authentication) {
         removeUnnecessaryHeaders(headers);
-        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        final String bearerToken = extractBearerToken(request, authentication);
         if (StringUtils.isNotBlank(bearerToken)) {
             headers.setBearerAuth(bearerToken);
         }

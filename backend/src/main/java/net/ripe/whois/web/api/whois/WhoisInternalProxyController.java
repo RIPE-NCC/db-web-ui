@@ -3,7 +3,7 @@ package net.ripe.whois.web.api.whois;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
-import net.ripe.whois.web.api.ApiController;
+import net.ripe.whois.web.api.OidcAbstractController;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,17 +31,16 @@ import javax.annotation.Nullable;
 @RestController
 @RequestMapping("/api/whois-internal")
 @SuppressWarnings("UnusedDeclaration")
-public class WhoisInternalProxyController extends ApiController {
+public class WhoisInternalProxyController extends OidcAbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalProxyController.class);
 
     private final WhoisInternalService whoisInternalService;
-    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
 
     @Autowired
     public WhoisInternalProxyController(final WhoisInternalService whoisInternalService,
                                         final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
+        super(oAuth2AuthorizedClientManager);
         this.whoisInternalService = whoisInternalService;
-        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @GetMapping(path = "/public/lir/{orgId}/mntner", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -51,7 +50,7 @@ public class WhoisInternalProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
             Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -79,7 +78,7 @@ public class WhoisInternalProxyController extends ApiController {
         @Nullable @RequestBody(required = false) final String body,
         @RequestHeader final HttpHeaders headers,
         Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -89,7 +88,7 @@ public class WhoisInternalProxyController extends ApiController {
         @Nullable @RequestBody(required = false) final String body,
         @RequestHeader final HttpHeaders headers,
         Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -99,7 +98,7 @@ public class WhoisInternalProxyController extends ApiController {
         @Nullable @RequestBody(required = false) final String body,
         @RequestHeader final HttpHeaders headers,
         Authentication authentication, @PathVariable(required = false) String keyType) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -109,7 +108,7 @@ public class WhoisInternalProxyController extends ApiController {
         @PathVariable final String key,
         @RequestHeader final HttpHeaders headers,
         final Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, "", headers);
     }
 
@@ -120,7 +119,7 @@ public class WhoisInternalProxyController extends ApiController {
         @PathVariable final String ipv,
         @RequestHeader final HttpHeaders headers,
         Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -130,7 +129,7 @@ public class WhoisInternalProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
             Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -157,7 +156,7 @@ public class WhoisInternalProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
             final Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -167,7 +166,7 @@ public class WhoisInternalProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
             final Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 
@@ -175,7 +174,7 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request,
                                                    final Authentication authentication) {
 
-        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        final String bearerToken = extractBearerToken(request, authentication);
         if (StringUtils.isEmpty(bearerToken)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -210,7 +209,7 @@ public class WhoisInternalProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers,
             final Authentication authentication) {
-        setAuthorizationHeader(request, authentication, headers, oAuth2AuthorizedClientManager);
+        setAuthorizationHeader(request, authentication, headers);
         return proxyRestCalls(request, body, headers);
     }
 

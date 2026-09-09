@@ -6,16 +6,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.ripe.db.whois.api.rest.domain.Attribute;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.whois.services.WhoisDomainObjectService;
-import net.ripe.whois.web.api.ApiController;
+import net.ripe.whois.web.api.OidcAbstractController;
 import net.ripe.whois.web.api.whois.domain.NameValuePair;
 import net.ripe.whois.web.api.whois.domain.WhoisWebDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ import static org.springframework.http.HttpStatus.PARTIAL_CONTENT;
 @RestController
 @RequestMapping("/api/whois/domain-objects")
 @SuppressWarnings("UnusedDeclaration")
-public class WhoisDomainObjectController extends ApiController {
+public class WhoisDomainObjectController extends OidcAbstractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectController.class);
 
@@ -40,7 +41,10 @@ public class WhoisDomainObjectController extends ApiController {
     private final WhoisDomainObjectService whoisDomainObjectService;
 
     @Autowired
-    public WhoisDomainObjectController(final BatchUpdateSession batchUpdateSession, final WhoisDomainObjectService whoisDomainObjectService) {
+    public WhoisDomainObjectController(final BatchUpdateSession batchUpdateSession,
+                                       final WhoisDomainObjectService whoisDomainObjectService,
+                                       final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
+        super(oAuth2AuthorizedClientManager);
         this.batchUpdateSession = batchUpdateSession;
         this.whoisDomainObjectService = whoisDomainObjectService;
     }
@@ -65,7 +69,8 @@ public class WhoisDomainObjectController extends ApiController {
             final HttpServletRequest request,
             final HttpServletResponse response,
             @RequestBody final WhoisWebDTO dto,
-            @PathVariable final String source) {
+            @PathVariable final String source,
+            Authentication authentication) {
 
         LOGGER.debug("create domain objects {}", source);
         final String sessionId = request.getSession().getId();
@@ -84,12 +89,13 @@ public class WhoisDomainObjectController extends ApiController {
             domainObjects.add(domainObject);
         }
 
+        final String accessToken = extractBearerToken(request, authentication);
         batchUpdateSession.setResponseFuture(sessionId,
             whoisDomainObjectService.createDomainObjects(
                 source,
                 domainObjects,
                 request.getRemoteAddr(),
-                request.getHeader(HttpHeaders.COOKIE)));
+                accessToken));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -3,7 +3,7 @@ package net.ripe.whois.web.api.user;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
-import net.ripe.whois.web.api.ApiController;
+import net.ripe.whois.web.api.OidcAbstractController;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,22 +23,21 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user")
 @SuppressWarnings("UnusedDeclaration")
-public class UserController extends ApiController {
+public class UserController extends OidcAbstractController {
 
     private final WhoisInternalService whoisInternalService;
-    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
 
     @Autowired
     public UserController(final WhoisInternalService whoisInternalService,
                           final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
+        super(oAuth2AuthorizedClientManager);
         this.whoisInternalService = whoisInternalService;
-        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getMaintainersCompact(final HttpServletRequest request,
                                                 final Authentication authentication) {
-        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        final String bearerToken = extractBearerToken(request, authentication);
         final UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr());
 
         try {
@@ -60,7 +59,7 @@ public class UserController extends ApiController {
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUserInfo(final HttpServletRequest request,
                                       final Authentication authentication) {
-        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        final String bearerToken = extractBearerToken(request, authentication);
         return new ResponseEntity<>(whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr()), HttpStatus.OK);
     }
 }

@@ -8,7 +8,7 @@ import net.ripe.db.whois.common.rpsl.ObjectType;
 import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
 import net.ripe.db.whois.common.rpsl.attrs.AutNum;
 import net.ripe.whois.services.WhoisInternalService;
-import net.ripe.whois.web.api.ApiController;
+import net.ripe.whois.web.api.OidcAbstractController;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +27,18 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/ba-apps")
 @SuppressWarnings("UnusedDeclaration")
-public class BaAppsController extends ApiController {
+public class BaAppsController extends OidcAbstractController {
 
     private final ResourceTicketService resourceTicketService;
     private final WhoisInternalService whoisInternalService;
-    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
 
     @Autowired
     public BaAppsController(final ResourceTicketService resourceTicketService,
                             final WhoisInternalService whoisInternalService,
                             final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
+        super(oAuth2AuthorizedClientManager);
         this.resourceTicketService = resourceTicketService;
         this.whoisInternalService = whoisInternalService;
-        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
     }
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}/{prefix:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,7 +56,7 @@ public class BaAppsController extends ApiController {
                                      @PathVariable(name = "orgId") String orgId,
                                      @PathVariable(name = "resource") String resource) {
 
-        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        final String bearerToken = extractBearerToken(request, authentication);
         if (StringUtils.isEmpty(bearerToken)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

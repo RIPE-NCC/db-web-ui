@@ -5,7 +5,7 @@ import com.github.jgonian.ipmath.Ipv6;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import net.ripe.whois.services.WhoisInternalService;
-import net.ripe.whois.web.api.ApiController;
+import net.ripe.whois.web.api.OidcAbstractController;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +26,13 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/api/dns")
 @SuppressWarnings("UnusedDeclaration")
-public class DnsCheckerController extends ApiController {
+public class DnsCheckerController extends OidcAbstractController {
     private final static Logger LOGGER = LoggerFactory.getLogger(DnsCheckerController.class);
 
     private final boolean skipDnsCheck;
 
     private final WhoisInternalService whoisInternalService;
     private final DnsClient dnsClient;
-    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager;
     private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
 
     @Autowired
@@ -41,10 +40,10 @@ public class DnsCheckerController extends ApiController {
                                 final DnsClient dnsClient,
                                 final OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager,
                                 @Value("${skip.dns.check:false}") final boolean skipDnsCheck) {
+        super(oAuth2AuthorizedClientManager);
         this.whoisInternalService = whoisInternalService;
         this.dnsClient = dnsClient;
         this.skipDnsCheck = skipDnsCheck;
-        this.oAuth2AuthorizedClientManager = oAuth2AuthorizedClientManager;
         if (skipDnsCheck) {
             LOGGER.info("DNS check is disabled");
         }
@@ -56,7 +55,7 @@ public class DnsCheckerController extends ApiController {
                                            @RequestParam(value = "ns") final String inNs,
                                            @RequestParam(value = "record") final String inRecord) {
 
-        final String bearerToken = extractBearerToken(request, authentication, oAuth2AuthorizedClientManager);
+        final String bearerToken = extractBearerToken(request, authentication);
         UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(bearerToken, request.getRemoteAddr());
         LOGGER.debug("DNS check for user {}", userInfoResponse.user.username);
         // tidy up a bit
