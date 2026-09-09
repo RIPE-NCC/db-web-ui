@@ -26,9 +26,18 @@ interface ITicket {
     resource: string;
 }
 
+interface Stats {
+    numInetnums: number;
+    numInet6nums: number;
+    numAutnums: number;
+    numSponsoredInetnums: number;
+    numSponsoredInet6nums: number;
+    numSponsoredAutnums: number;
+}
+
 export interface IResourceOverviewResponseModel {
     filteredSize: number;
-    stats: string;
+    stats: Stats;
     resources: IResourceScreenItem[];
 }
 
