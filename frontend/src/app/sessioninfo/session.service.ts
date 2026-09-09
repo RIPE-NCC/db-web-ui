@@ -23,9 +23,11 @@ export class SessionService {
         this.eventSource = new EventSource('/db-web-ui/api/session/events', { withCredentials: true });
 
         this.eventSource.addEventListener('session-expired', () => {
-            console.debug('session-events session has expired - show banner');
+            console.info('session-events session has expired - show banner');
             this.showSessionExpired();
+            console.info('show banner');
             this.eventSource?.close();
+            console.info('closing');
         });
 
         this.eventSource.onopen = () => {

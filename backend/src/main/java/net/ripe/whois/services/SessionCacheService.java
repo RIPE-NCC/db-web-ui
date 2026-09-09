@@ -83,7 +83,7 @@ public class SessionCacheService {
     public void notifyExpired(final String sessionId) {
         final SseEmitter emitter = emitters.remove(sessionId);
         if (emitter == null) {
-            LOGGER.debug("no Emitter");
+            LOGGER.info("no Emitter");
             return; // no active tab subscribed for this session — nothing to push
         }
         sendExpireSessionEvent(emitter);
@@ -91,6 +91,7 @@ public class SessionCacheService {
 
     private static @NonNull SseEmitter sendExpireSessionEvent(SseEmitter emitter) {
         try {
+            LOGGER.info("Notifying session expiration");
             emitter.send(SseEmitter.event().name("session-expired").data("expired"));
             emitter.complete();
         } catch (IOException e) {
