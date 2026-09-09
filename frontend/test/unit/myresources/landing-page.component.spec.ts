@@ -1,10 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { LandingPageComponent } from 'src/app/myresources/landing-page/landing-page.component';
+import { ResourcesComponent } from 'src/app/myresources/resources.component';
 import { SessionInfoService } from 'src/app/sessioninfo/session-info.service';
 import { UserInfoService } from 'src/app/userinfo/user-info.service';
-import { ResourcesComponent } from '../../../src/app/myresources/resources.component';
+import { mockUserInfo } from '../userinfo/user-info.service.spec';
 
 describe('LandingPageComponent', () => {
     let component: LandingPageComponent;
@@ -16,7 +17,10 @@ describe('LandingPageComponent', () => {
     };
 
     beforeEach(async () => {
-        mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['isLoggedIn']);
+        mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
+
+        mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
+
         mockSessionInfoService = {
             expiredSession$: new Subject<boolean>(),
         };
@@ -43,14 +47,14 @@ describe('LandingPageComponent', () => {
     });
 
     it('should set loggedIn = false when session is expired', () => {
-        component.ngOnInit();
+        fixture.detectChanges();
         mockSessionInfoService.expiredSession$.next(true);
 
         expect(component.loggedIn).toBeFalse();
     });
 
     it('should render resource-component when loggedIn is true', () => {
-        mockUserInfoService.isLoggedIn.and.returnValue(true);
+        mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
         fixture.detectChanges();
 
         const compiled = fixture.nativeElement as HTMLElement;
@@ -58,7 +62,7 @@ describe('LandingPageComponent', () => {
     });
 
     it('should render ripe-unified-landing-page when loggedIn is false', () => {
-        mockUserInfoService.isLoggedIn.and.returnValue(false);
+        mockUserInfoService.getUserOrgsAndRoles.and.returnValue(throwError(() => 403));
         fixture.detectChanges();
 
         const compiled = fixture.nativeElement as HTMLElement;
