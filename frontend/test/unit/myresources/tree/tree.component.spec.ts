@@ -8,7 +8,7 @@ import { IResourceScreenItem } from 'src/app/myresources/resource-type.model';
 import { Tree, TreeNode } from 'src/app/myresources/tree/tree.component';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 
-fdescribe('Tree', () => {
+describe('Tree', () => {
     let component: Tree;
     let fixture: ComponentFixture<Tree>;
 
