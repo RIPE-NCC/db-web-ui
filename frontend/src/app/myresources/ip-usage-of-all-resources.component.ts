@@ -1,5 +1,5 @@
 // Shown on Resources page - for all resources listed in tab
-import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HealthCheckCardComponent } from 'src/app/myresources/health-check-card/health-check-card.component';
 import { IpUsageService } from './ip-usage.service';
 import { ResourceStatusService } from './resource-status.service';
@@ -32,7 +32,7 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
     ipv6CalcUsed: string;
     ipv6CalcFree: string;
 
-    ngOnChanges() {
+    ngOnChanges(_changes: SimpleChanges) {
         this.setResourcesIpUsage();
         if (this.type === 'inet6num') {
             this.calcValueForIPv6();
