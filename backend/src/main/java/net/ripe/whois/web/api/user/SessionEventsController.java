@@ -22,7 +22,7 @@ public class SessionEventsController {
 
     @GetMapping(path = "/events", produces = "text/event-stream")
     public SseEmitter subscribe(final HttpServletRequest request) {
-        String sessionId = request.getSession(true).getId(); // create if absent, so we always have a key to subscribe under
+        final String sessionId = request.getSession(true).getId(); // create if absent, so we always have a key to subscribe under
         if (!sessionCacheService.hasValidOidcSession(sessionId)) {
             return sessionCacheService.immediatelyExpired();
         }

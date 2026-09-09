@@ -25,6 +25,7 @@ export class SessionService {
         this.eventSource.addEventListener('session-expired', () => {
             console.debug('session-events session has expired - show banner');
             this.showSessionExpired();
+            this.eventSource?.close();
         });
 
         this.eventSource.onopen = () => {
