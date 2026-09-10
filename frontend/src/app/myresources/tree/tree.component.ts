@@ -1,10 +1,9 @@
-import { Component, inject, input, OnInit, output, signal, WritableSignal } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSuffix } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTreeModule } from '@angular/material/tree';
-import { finalize } from 'rxjs/operators';
 import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { IMoreSpecificResource, IMoreSpecificsApiResult, MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
@@ -30,8 +29,6 @@ export interface TreeNode extends HealthCheckableNode {
     isShowMore?: boolean;
     remaining?: number;
     showMoreParent?: TreeNode;
-
-    isLoading: WritableSignal<boolean>;
 }
 
 @Component({
@@ -82,7 +79,6 @@ export class Tree implements OnInit {
             netname: resource.netname || ('asname' in resource ? resource.asname : undefined),
             level,
             expandable,
-            isLoading: signal(false),
             children: undefined,
             healthStatus: signal(NodeHealthStatus.NOT_CHECKED),
             issuesCount: signal(0),
@@ -117,35 +113,30 @@ export class Tree implements OnInit {
             return;
         }
 
-        node.isLoading.set(true);
+        this.moreSpecificsService.getSpecifics(node.nodeName, node.type).subscribe({
+            next: (response: IMoreSpecificsApiResult) => {
+                if (!response.resources) {
+                    return;
+                }
+                node.numberOfChildren = response.resources.length;
+                node.allChildren = response.resources.map((resource) =>
+                    this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage), node),
+                );
+                node.children = this.getVisibleChildren(node);
+                this.dataSource.set([...this.dataSource()]);
 
-        this.moreSpecificsService
-            .getSpecifics(node.nodeName, node.type)
-            .pipe(finalize(() => node.isLoading.set(false)))
-            .subscribe({
-                next: (response: IMoreSpecificsApiResult) => {
-                    if (!response.resources) {
-                        return;
-                    }
-                    node.numberOfChildren = response.resources.length;
-                    node.allChildren = response.resources.map((resource) =>
-                        this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage), node),
-                    );
-                    node.children = this.getVisibleChildren(node);
-                    this.dataSource.set([...this.dataSource()]);
+                this.nodeHealthService.registerNodes(this.treeType(), node.allChildren);
 
-                    this.nodeHealthService.registerNodes(this.treeType(), node.allChildren);
+                this.nodeHealthService.healthCheck(node.allChildren);
 
-                    this.nodeHealthService.healthCheck(node.allChildren);
-
-                    if (this.selectedNode === node) {
-                        this.nodeSelected.emit(node);
-                    }
-                },
-                error: () => {
-                    //
-                },
-            });
+                if (this.selectedNode === node) {
+                    this.nodeSelected.emit(node);
+                }
+            },
+            error: () => {
+                //
+            },
+        });
     }
 
     private getVisibleChildren(node: TreeNode): TreeNode[] {

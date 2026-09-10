@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, Subject, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 import { NodeHealthStatus } from 'src/app/myresources/health-check-card/node-health.model';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
@@ -118,7 +118,6 @@ describe('Tree', () => {
             expect(node.expandable).toBeTrue();
             expect(node.parentResource).toBeUndefined();
             expect(node.children).toBeUndefined();
-            expect(node.isLoading()).toBeFalse();
             expect(node.healthStatus()).toBe(NodeHealthStatus.NOT_CHECKED);
             expect(node.issuesCount()).toBe(0);
         });
@@ -265,7 +264,6 @@ describe('Tree', () => {
             expect(node.numberOfChildren).toBe(2);
             expect(node.allChildren?.length).toBe(2);
             expect(node.children?.length).toBe(2);
-            expect(node.isLoading()).toBeFalse();
         });
 
         it('should register and health-check loaded children', () => {
@@ -290,37 +288,6 @@ describe('Tree', () => {
             component.onNodeExpanded(node, true);
 
             expect(mockMoreSpecificsService.getSpecifics).not.toHaveBeenCalled();
-        });
-
-        it('should set loading state while loading children', () => {
-            const node = component.createNode(createResource(), 0, true);
-
-            const response$ = new Subject<IMoreSpecificsApiResult>();
-
-            mockMoreSpecificsService.getSpecifics.and.returnValue(response$);
-
-            component.onNodeExpanded(node, true);
-
-            expect(node.isLoading()).toBeTrue();
-
-            response$.next({
-                resources: [],
-                totalNumberOfResources: 0,
-                filteredSize: 0,
-            });
-            response$.complete();
-
-            expect(node.isLoading()).toBeFalse();
-        });
-
-        it('should reset loading state when loading children fails', () => {
-            const node = component.createNode(createResource(), 0, true);
-
-            mockMoreSpecificsService.getSpecifics.and.returnValue(throwError(() => new Error('Request failed')));
-
-            component.onNodeExpanded(node, true);
-
-            expect(node.isLoading()).toBeFalse();
         });
     });
 
