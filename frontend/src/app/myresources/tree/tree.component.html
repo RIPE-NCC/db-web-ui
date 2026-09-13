@@ -21,7 +21,13 @@
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectNode(node)" [class.emphasized-node]="selectedNode === node">
         <button matIconButton disabled></button>
         <div class="node-content">
-            <mat-icon matSuffix class="fa-solid fa-circle-small ok" [class.issue]="true"></mat-icon>
+            <mat-icon
+                matSuffix
+                class="fa-solid fa-circle-small"
+                [class.ok]="node.healthStatus() === NodeHealthStatus.OK"
+                [class.issue]="node.healthStatus() === NodeHealthStatus.ISSUES"
+                [class.failed]="node.healthStatus() === NodeHealthStatus.FAILED"
+            ></mat-icon>
             <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
             <span class="netname">{{ node.netname }}</span>
             <span
@@ -63,7 +69,13 @@
             }
         </button>
         <div class="node-content">
-            <mat-icon class="fa-solid fa-circle-small ok" [class.issue]="false"></mat-icon>
+            <mat-icon
+                class="fa-solid fa-circle-small"
+                [class.ok]="node.healthStatus() === NodeHealthStatus.OK"
+                [class.issue]="node.healthStatus() === NodeHealthStatus.ISSUES"
+                [class.failed]="node.healthStatus() === NodeHealthStatus.FAILED"
+            >
+            </mat-icon>
             <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
             <span class="netname">{{ node.netname }}</span>
             <span
