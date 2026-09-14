@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/session/invalidate",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

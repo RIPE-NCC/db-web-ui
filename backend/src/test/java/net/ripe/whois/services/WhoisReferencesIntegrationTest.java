@@ -1,8 +1,10 @@
 package net.ripe.whois.services;
 
 import net.ripe.whois.AbstractIntegrationTest;
+import net.ripe.whois.config.OidcUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -11,6 +13,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
+
 
     @Test
     public void read_references() {
@@ -22,7 +25,7 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
              "<outgoing/>" +
              "</references>");
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23", String.class);
+        final ResponseEntity<String> response = get("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("<primaryKey>212.154.128.20 - 212.154.128.23</primaryKey>"));
@@ -32,7 +35,13 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
     public void create_references() {
         mock("/references/RIPE", "test");
 
-        final ResponseEntity<String> response = post("/db-web-ui/api/references/RIPE", String.class, entity("test"));
+        final String xsrfToken = extractXsrfCookie();
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, OidcUtils.OIDC_CSRF_COOKIE_NAME + "=" + xsrfToken);
+        headers.add("X-XSRF-TOKEN", xsrfToken);
+
+        final ResponseEntity<String> response = post("/db-web-ui/api/references/RIPE", String.class, entity("test", headers));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("test"));
@@ -42,7 +51,15 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
     public void delete_references() {
         mock("/references/RIPE/inetnum/212.154.128.20%20-%20212.154.128.23?reason=delete%20reason", "test");
 
-        final ResponseEntity<String> response = delete("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212.154.128.23?reason=delete reason", String.class, entity("test"));
+        final String xsrfToken = extractXsrfCookie();
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, OidcUtils.OIDC_CSRF_COOKIE_NAME + "=" + xsrfToken);
+        headers.add("X-XSRF-TOKEN", xsrfToken);
+
+
+        final ResponseEntity<String> response = delete("/db-web-ui/api/references/RIPE/inetnum/212.154.128.20 - 212" +
+                ".154.128.23?reason=delete reason", String.class, entity("test", headers));
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), containsString("test"));
@@ -50,8 +67,8 @@ public class WhoisReferencesIntegrationTest extends AbstractIntegrationTest {
 
     //helper methods
 
-    private HttpEntity entity(Object body) {
-        return new HttpEntity(body);
+    private HttpEntity entity(final Object body, final HttpHeaders headers) {
+        return new HttpEntity(body, headers);
     }
 
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeMetadataService } from '../attribute/attribute-metadata.service';
-import { IUserInfoResponseData } from '../dropdown/org-data-type.model';
+import { UserOrgsAndRegistrations } from '../dropdown/org-data-type.model';
 import { PropertiesService } from '../properties.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IWhoisResponseModel } from '../shared/whois-response-type.model';
@@ -80,7 +80,7 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     }
 
     private setSSOAccount(whoisResources: IWhoisResponseModel) {
-        this.userInfoService.getUserOrgsAndRoles().subscribe((userInfo: IUserInfoResponseData) => {
+        this.userInfoService.getUserOrgsAndRoles().subscribe((userInfo: UserOrgsAndRegistrations) => {
             const ssoUserName = userInfo.user.username;
             if (ssoUserName) {
                 const attributes = this.whoisResourcesService.addAttributeAfterType(

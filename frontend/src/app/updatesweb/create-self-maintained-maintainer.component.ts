@@ -83,19 +83,14 @@ export class CreateSelfMaintainedMaintainerComponent implements OnInit {
             this.onAdminCAdded(item);
         }
 
-        this.userInfoService.getUserOrgsAndRoles().subscribe({
-            next: (result: any) => {
-                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes, 'upd-to', result.user.username);
-                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(
-                    this.maintainerAttributes,
-                    'auth',
-                    'SSO ' + result.user.username,
-                );
-            },
-            error: () => {
-                this.alertsService.setGlobalError('Error fetching SSO information');
-            },
-        });
+        const user = this.userInfoService.user();
+
+        if (this.userInfoService.isLoggedIn) {
+            this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes, 'upd-to', user.email);
+            this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes, 'auth', 'SSO ' + user.email);
+        } else {
+            this.alertsService.setGlobalError('Error fetching SSO information');
+        }
     }
 
     public submit() {

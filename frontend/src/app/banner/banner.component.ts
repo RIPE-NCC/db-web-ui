@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Labels } from 'src/app/label.constants';
 import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { PropertiesService } from '../properties.service';
 
@@ -85,7 +86,7 @@ export class BannerComponent implements OnInit {
         if (!this.buttonUrl) return;
         const isExternal = /^(http|https):\/\//.test(this.buttonUrl);
         const isReload = this.router.url === this.buttonUrl;
-        const isLogin = this.properties.LOGIN_URL === this.buttonUrl;
+        const isLogin = this.buttonText === Labels['link.loginUrl.text'];
         if (isReload) {
             window.location.reload();
         } else if (isLogin) {

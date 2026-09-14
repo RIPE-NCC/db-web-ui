@@ -33,7 +33,8 @@ export class WebupdatesPage {
     }
 
     typeOnField(fieldName: string, text: string) {
-        cy.get(`#createForm [name^='${fieldName}']`).clear({ force: true }).type(text, { force: true });
+        cy.get(`#createForm [name^='${fieldName}']`).clear();
+        cy.get(`#createForm [name^='${fieldName}']`).type(text);
         return this;
     }
 
@@ -48,7 +49,8 @@ export class WebupdatesPage {
     }
 
     typeOnNgSelect(fieldName: string, text: string) {
-        cy.get(`#createForm [name^='${fieldName}'] input`).clear({ force: true }).type(text, { force: true });
+        cy.get(`#createForm [name^='${fieldName}'] input`).clear();
+        cy.get(`#createForm [name^='${fieldName}'] input`).type(text);
         return this;
     }
 
@@ -217,12 +219,12 @@ export class WebupdatesPage {
     }
 
     clickEditOnField(fieldName: string) {
-        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-pencil`).eq(0).click({ force: true });
+        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-pencil`).eq(0).click();
         return new ModalEditAttribute();
     }
 
     clickHelpOnField(fieldName: string) {
-        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-question`).eq(0).click({ force: true });
+        cy.get(`#createForm label:contains('${fieldName}') ~ ul .fa-question`).eq(0).click();
         return this;
     }
 

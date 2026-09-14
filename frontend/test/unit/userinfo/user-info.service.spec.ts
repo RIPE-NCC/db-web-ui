@@ -2,7 +2,7 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie-service';
-import { IUserInfoOrganisation, IUserInfoRegistration, IUserInfoResponseData } from '../../../src/app/dropdown/org-data-type.model';
+import { IUserInfoOrganisation, IUserInfoRegistration, UserOrgsAndRegistrations } from '../../../src/app/dropdown/org-data-type.model';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
 
 describe('UserInfoService', () => {
@@ -30,20 +30,12 @@ describe('UserInfoService', () => {
     });
 
     it('should provide user info on success', () => {
-        userInfoService.getUserOrgsAndRoles().subscribe((respons: IUserInfoResponseData) => {
+        userInfoService.getUserOrgsAndRoles().subscribe((respons: UserOrgsAndRegistrations) => {
             expect(respons).toBe(mockUserInfo);
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
         expect(req.request.method).toBe('GET');
         req.flush(mockUserInfo);
-    });
-
-    it('should check session status', () => {
-        userInfoService.pingUserInfo().subscribe((respons: IUserInfoResponseData) => {
-            expect(respons).toBe(mockUserInfo);
-        });
-        const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' });
-        expect(req.request.method).toBe('GET');
     });
 
     it('should not provide user-info on failure', () => {
@@ -83,12 +75,12 @@ describe('UserInfoService', () => {
     });
 });
 
-export const mockUserInfo: IUserInfoResponseData = {
+export const mockUserInfo: UserOrgsAndRegistrations = {
     user: {
+        name: 'Test User',
+        email: '',
         username: 'TSTADMINC-RIPE',
-        displayName: 'Test User',
-        uuid: 'aaaa-bbbb-cccc-dddd',
-        active: true,
+        photo: '',
     },
     members: [
         {

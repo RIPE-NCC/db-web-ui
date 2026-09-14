@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URISyntaxException;
-
 @RestController
 @RequestMapping("/api/syncupdates")
 public class WhoisSyncupdatesController extends ApiController {
@@ -29,8 +27,7 @@ public class WhoisSyncupdatesController extends ApiController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> proxyRestCalls(@RequestBody(required = true) final String body,
                                                  final HttpServletRequest request,
-                                                 @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+                                                 @RequestHeader final HttpHeaders headers)  {
         return whoisSyncupdatesService.proxy(body, request, headers);
     }
-
 }

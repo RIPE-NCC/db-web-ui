@@ -17,6 +17,7 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.net.InetAddress;
@@ -29,19 +30,18 @@ import java.util.stream.StreamSupport;
 @SpringBootApplication(scanBasePackages = {"net.ripe.whois"}, exclude = {UserDetailsServiceAutoConfiguration.class})
 @EnableCaching
 @EnableAsync
+@EnableScheduling
 public class Application implements AsyncConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private final Environment environment;
-    private final SsoTokenFilter ssoTokenFilter;
     private final CustomCacheFilter cacheFilter;
     private final RemoteAddressFilter remoteAddressFilter;
 
     @Autowired
-    public Application(final Environment environment, final SsoTokenFilter ssoTokenFilter, final CustomCacheFilter cacheFilter, RemoteAddressFilter remoteAddressFilter) {
+    public Application(final Environment environment, final CustomCacheFilter cacheFilter, RemoteAddressFilter remoteAddressFilter) {
         this.environment = environment;
-        this.ssoTokenFilter = ssoTokenFilter;
         this.cacheFilter = cacheFilter;
         this.remoteAddressFilter = remoteAddressFilter;
     }
@@ -92,11 +92,6 @@ public class Application implements AsyncConfigurer {
         LOGGER.info("\n\nRunning with Spring profile : {}\n\n", environment.getActiveProfiles()[0]);
 
         logProperties();
-    }
-
-    @Bean
-    public FilterRegistrationBean ssoFilter() {
-        return getFilterRegistrationBeanFor(ssoTokenFilter);
     }
 
     @Bean

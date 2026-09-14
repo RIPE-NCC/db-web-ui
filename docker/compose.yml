@@ -13,6 +13,7 @@ services:
             - SERVER_HTTP2_ENABLED=false
             - START_HEAP_SIZE=256m
             - MAX_HEAP_SIZE=2g
+            - ENABLE_JMX_EXPORTER=true
             # - LOGGING_CONFIG=/app/resources/logback.xml
         volumes:
             - $PWD/backend/src/main/resources/config/application-local.properties:/app/resources/application-local.properties:ro
@@ -22,3 +23,4 @@ services:
         ports:
             - "1082:1082" # http
             - "8443:8443" # https
+            - "9090:9090" # Victoria Metrics

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.rpsl.AttributeType;
+import net.ripe.whois.web.api.OidcTokenExtractor;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
-
 @Service
 public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceBase {
 
@@ -41,16 +39,19 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     private final WhoisInternalProxy whoisInternalProxy;
     private final String apiKey;
     private final String apiUrl;
+    private final OidcTokenExtractor oidcTokenExtractor;
 
     // TODO: [ES] replace internal.api properties with separate key per API path
     @Autowired
     public WhoisInternalService(
         final RestTemplate restTemplate,
         final WhoisInternalProxy whoisInternalProxy,
+        final OidcTokenExtractor oidcTokenExtractor,
         @Value("${internal.api.url}") final String apiUrl,
         @Value("${internal.api.key}") final String apiKey) {
         this.restTemplate = restTemplate;
         this.whoisInternalProxy = whoisInternalProxy;
+        this.oidcTokenExtractor = oidcTokenExtractor;
         this.apiKey = apiKey;
         this.apiUrl = apiUrl;
     }
@@ -108,6 +109,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) {
         headers.set(API_KEY_HEADER, apiKey);
         final URI uri = composeWhoisUrl(request);
+        oidcTokenExtractor.setAuthorizationHeader(headers);
         LOGGER.debug("Calling WhoisInternalService {}", uri);
         return handleErrors(() ->
             restTemplate.exchange(
@@ -138,13 +140,14 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         }
     }
 
-    public UserInfoResponse getUserInfo(final String ssoToken, final String clientIp) {
-        if (StringUtils.isEmpty(ssoToken)) {
-            throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+    public UserInfoResponse getUserInfo(final String clientIp) {
+        final String bearerToken = oidcTokenExtractor.extract();
+        if (StringUtils.isEmpty(bearerToken)) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
 
         final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Cookie", SSO_TOKEN_KEY + "=" + ssoToken);
+        httpHeaders.setBearerAuth(bearerToken);
         httpHeaders.set(API_KEY_HEADER, apiKey);
         final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", "clientIp=" + clientIp, "", apiUrl);
         try {
@@ -160,36 +163,10 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         }
     }
 
-    public boolean getActiveToken(final String ssoToken, final String clientIp) {
-        if (StringUtils.isEmpty(ssoToken)) {
-            throw new RestClientException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        }
-
-        final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Cookie", SSO_TOKEN_KEY + "=" + ssoToken);
-        httpHeaders.add(API_KEY_HEADER, apiKey);
-        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/active", "clientIp=" + clientIp, "", apiUrl);
-        LOGGER.debug("Calling Whois InternalService to retrieve user active {}", uri);
-        try {
-            return restTemplate.exchange(uri, HttpMethod.GET,
-                new HttpEntity<>("", httpHeaders), Boolean.class).getBody();
-        } catch (RestClientResponseException e) {
-            if (e.getRawStatusCode() == HttpStatus.UNAUTHORIZED.value()) {
-                return false;
-            }
-            LOGGER.warn("Exception: Failed to parse user active from whois internal {}", e.getMessage());
-            throw new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
-        } catch (Exception e) {
-            LOGGER.warn("Exception: Failed to parse user active from whois internal {}", e.getMessage());
-            throw new RestClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
-        }
-
-    }
-
     public ResponseEntity<String> callPublicPath(final String path, final HttpHeaders httpHeaders, final HashMap<String, Object> params) {
         try {
             final URI uri = buildUrl("/public/" + path, params);
-
+            oidcTokenExtractor.setAuthorizationHeader(httpHeaders);
             return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
         } catch (HttpClientErrorException e) {
             LOGGER.debug("Failed to retrieve details for {} from whois internal due to {}: {}", path, e.getClass().getName(), e.getMessage());

@@ -6,7 +6,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IObjectVersionResponse, IObjectVersionsModel, IWhoisResponseModel } from '../../../src/app/shared/whois-response-type.model';
@@ -110,7 +109,6 @@ describe('VersionsComponent', () => {
             imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, VersionsComponent],
             providers: [
                 { provide: VersionsLookupService, useValue: versionsLookupServiceSpy },
-                SessionInfoService,
                 CookieService,
                 PropertiesService,
                 AlertsService,

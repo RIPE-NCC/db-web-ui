@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
@@ -12,6 +12,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const properties = inject(PropertiesService);
     const alertService = inject(AlertsService);
     const menuService = inject(MenuService);
+    const http = inject(HttpClient);
 
     const isServerError = (status: number) => status === 500;
     const isAuthorisationError = (status: number) => status === 401;
@@ -22,9 +23,11 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
         let toBeSwallowed = false;
 
         console.debug('ui-url:' + router.url);
-        console.debug('http-status:' + error.status);
         if (error !== undefined) {
-            console.debug('rest-url:' + error.url);
+            if (isAuthorisationError(error.status)) {
+                // fire-and-forget: tell the backend to drop the Hazelcast entry now
+                http.post('/db-web-ui/api/session/invalidate', {}).subscribe();
+            }
             if ((isServerError(error.status) || isAuthorisationError(error.status)) && error.url.endsWith('api/user/info')) {
                 toBeSwallowed = true;
             }
@@ -37,9 +40,11 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
             if (isNotFoundError(error.status)) {
                 if (error.url.startsWith('api/whois-internal/')) {
                     toBeSwallowed = true;
-                } else if (error.url?.includes('ignore404')) {
-                    toBeSwallowed = true;
-                } else if (error.error?.link?.href?.includes('ignore404')) {
+                } else if (!error.url?.includes('ignore404')) {
+                    if (error.error?.link?.href?.includes('ignore404')) {
+                        toBeSwallowed = true;
+                    }
+                } else {
                     toBeSwallowed = true;
                 }
             }
@@ -49,17 +54,18 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
             if (isServerError(error.status) && error.url.startsWith('api/dns/status')) {
                 toBeSwallowed = true;
             }
+
+            if (isNotFoundError(error.status) && router.url.startsWith('/textupdates/multi')) {
+                toBeSwallowed = true;
+            }
+            if (isNotFoundError(error.status) && router.url.startsWith('/fmp')) {
+                toBeSwallowed = true;
+            }
+            if (isServerError(error.status) && error.url.includes('api/ba-apps/resources')) {
+                toBeSwallowed = true;
+            }
         }
 
-        if (isNotFoundError(error.status) && router.url.startsWith('/textupdates/multi')) {
-            toBeSwallowed = true;
-        }
-        if (isNotFoundError(error.status) && router.url.startsWith('/fmp')) {
-            toBeSwallowed = true;
-        }
-        if (isServerError(error.status) && error.url.includes('api/ba-apps/resources')) {
-            toBeSwallowed = true;
-        }
         if (router.url.includes('/syncupdates')) {
             toBeSwallowed = true;
         }

@@ -68,11 +68,11 @@ public class RateLimitCheckIntegrationTest extends AbstractIntegrationTest {
     public void shouldUseRemoteAddrIfHeaderIsNotPresent() {
         ipRanges.setTrusted("193.0.20.230");
 
-        ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class);
+        ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class, null);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is("OK"));
 
-        response = get("/db-web-ui/api/healthcheck", String.class);
+        response = get("/db-web-ui/api/healthcheck", String.class, null);
         assertThat(response.getStatusCode(), is(HttpStatus.TOO_MANY_REQUESTS));
     }
 
@@ -80,11 +80,11 @@ public class RateLimitCheckIntegrationTest extends AbstractIntegrationTest {
     public void shouldNotRejectRequestsFromTrustedSource() {
         ipRanges.setTrusted("127.0.0.1","::1");
 
-        ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class);
+        ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class, null);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is("OK"));
 
-        response = get("/db-web-ui/api/healthcheck", String.class);
+        response = get("/db-web-ui/api/healthcheck", String.class, null);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is("OK"));
     }

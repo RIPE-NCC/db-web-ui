@@ -31,20 +31,9 @@ export class SelectComponent implements OnInit {
     public objectTypes: DropdownOption[];
     public loggedIn: boolean;
 
-    constructor() {
-        this.userInfoService.userLoggedIn$.subscribe(() => {
-            this.loggedIn = true;
-        });
-    }
-
     ngOnInit() {
+        this.loggedIn = this.userInfoService.isLoggedIn();
         this.objectTypes = this.mapTypesToOptions(this.filterObjectTypes(this.whoisMetaService.getObjectTypes()));
-        this.userInfoService.getUserOrgsAndRoles().subscribe({
-            next: () => (this.loggedIn = true),
-            error: () => {
-                // do nothing
-            },
-        });
         this.selected = {
             objectType: 'role-mntnr',
             source: this.properties.SOURCE,

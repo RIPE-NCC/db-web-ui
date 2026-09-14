@@ -1,6 +1,5 @@
 package net.ripe.whois.web.api.whois;
 
-import com.google.common.base.Strings;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,8 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
-
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/whois-internal")
@@ -89,7 +85,7 @@ public class WhoisInternalProxyController extends ApiController {
     public ResponseEntity<?> saveApiKey(
         final HttpServletRequest request,
         @Nullable @RequestBody(required = false) final String body,
-        @RequestHeader final HttpHeaders headers) {
+        @RequestHeader final HttpHeaders headers, @PathVariable(required = false) String keyType) {
         return proxyRestCalls(request, body, headers);
     }
 
@@ -152,15 +148,9 @@ public class WhoisInternalProxyController extends ApiController {
     }
 
     @GetMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request,
-                                                   @CookieValue(value = SSO_TOKEN_KEY, required=false) final String ssoToken) {
-
-        if (Strings.isNullOrEmpty(ssoToken)){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
+    public ResponseEntity<?> whoisInternalUserInfo(final HttpServletRequest request) {
         try{
-            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr()));
+            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(request.getRemoteAddr()));
         } catch (RestClientException re){
             return new ResponseEntity<>(re.getMessage(), HttpStatus.valueOf(re.getStatus()));
         }
@@ -203,6 +193,7 @@ public class WhoisInternalProxyController extends ApiController {
 
     private HttpHeaders cleanHeaders(final HttpHeaders headers){
         removeUnnecessaryHeaders(headers);
+        headers.remove(HttpHeaders.COOKIE);
         return headers;
     }
 }

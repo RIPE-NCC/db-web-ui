@@ -1,58 +1,76 @@
 package net.ripe.whois.web.api.whois;
 
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static net.ripe.whois.web.api.whois.BatchStatus.DONE;
 import static net.ripe.whois.web.api.whois.BatchStatus.IDLE;
-import static net.ripe.whois.web.api.whois.BatchStatus.WAITING_FOR_RESPONSE;
 
 @Component
-@Scope(proxyMode=ScopedProxyMode.TARGET_CLASS, value="session")
-class BatchUpdateSession {
+public class BatchUpdateSession {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchUpdateSession.class);
+    private static final String RESULTS_MAP = "batch-update-results";
 
-    private Future<ResponseEntity<String>> response = null;
+    // raw Future is never serialized — stays local to whichever node started the job
+    private final Map<String, Future<ResponseEntity<String>>> localFutures = new ConcurrentHashMap<>();
 
-    public BatchStatus getStatus() {
+    private final IMap<String, BatchUpdateResult> results;
 
-        if (response == null || response.isCancelled())
-            return IDLE;
-        else if (!response.isDone())
-            return WAITING_FOR_RESPONSE;
-        else
-            return DONE;
+    public BatchUpdateSession(final HazelcastInstance hazelcastInstance) {
+        this.results = hazelcastInstance.getMap(RESULTS_MAP);
     }
 
-    void setResponseFuture(Future<ResponseEntity<String>> responseFuture) {
-        this.response = responseFuture;
+    public BatchStatus getStatus(final String sessionId) {
+        final BatchUpdateResult result = results.get(sessionId);
+        return result == null ? IDLE : result.status();
     }
 
-    public ResponseEntity getResponse() {
-        if (getStatus() != DONE){
+    public void setResponseFuture(final String sessionId, final Future<ResponseEntity<String>> responseFuture) {
+        localFutures.put(sessionId, responseFuture);
+        results.put(sessionId, BatchUpdateResult.pending());
+
+        CompletableFuture.runAsync(() -> resolve(sessionId, responseFuture));
+    }
+
+    private void resolve(final String sessionId, final Future<ResponseEntity<String>> responseFuture) {
+        try {
+            final ResponseEntity<String> responseEntity = responseFuture.get();
+            if (responseEntity == null) {
+                LOGGER.error("Response is null when getting status");
+                results.put(sessionId, BatchUpdateResult.done(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error processing your request"));
+            } else {
+                results.put(sessionId, BatchUpdateResult.done(
+                        responseEntity.getStatusCode().value(), responseEntity.getBody()));
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error(e.getMessage(), e);
+            results.put(sessionId, BatchUpdateResult.done(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+            Thread.currentThread().interrupt();
+        } finally {
+            localFutures.remove(sessionId);
+        }
+    }
+
+    public ResponseEntity<String> getResponse(final String sessionId) {
+        if (getStatus(sessionId) != DONE) {
             throw new IllegalStateException("This should not happen, something went wrong");
         }
 
-        try {
-            final ResponseEntity responseEntity = response != null ? response.get() : null;
-            if (responseEntity == null){
-                LOGGER.error("Response is null when getting status");
-                return new ResponseEntity<>("Error processing your request", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return responseEntity;
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error(e.getMessage(), e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        } finally {
-            response = null;
-        }
+        final BatchUpdateResult result = results.remove(sessionId); // one-shot, same as original behaviour
+        return new ResponseEntity<>(result.body(), HttpStatus.valueOf(result.statusCode()));
     }
 }
