@@ -154,4 +154,20 @@ describe('Resources', () => {
             resourcesPage.clickOnSponsoredResources().expectUsageToExist(false).expectResourceHealthCardInUsageToExist(false);
         });
     });
+
+    describe('Full view / View without details', () => {
+        it('should show full view by default', () => {
+            resourcesPage.expectNodePreviewPresent(true).expectFullViewButtonSelected();
+        });
+
+        it('should switch to TreeExpandView and back to ', () => {
+            resourcesPage
+                .clickOnTreeExpandView()
+                .expectNodePreviewPresent(false)
+                .expectTreeExpandViewSelected()
+                .clickOnFullView()
+                .expectNodePreviewPresent(true)
+                .expectFullViewButtonSelected();
+        });
+    });
 });

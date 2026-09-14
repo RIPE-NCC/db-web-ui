@@ -303,4 +303,29 @@ export class ResourcesOverViewPage {
         cy.get('.resources-ip-usage health-check-card').should(exist ? 'exist' : 'not.exist');
         return this;
     }
+
+    expectNodePreviewPresent(exist: boolean) {
+        cy.get('node-preview').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectFullViewButtonSelected() {
+        cy.get('.view-mode-panel button:has(em.fa-line-columns)').should('have.class', 'select');
+        return this;
+    }
+
+    expectTreeExpandViewSelected() {
+        cy.get('.view-mode-panel button:has(em.fa-expand)').should('have.class', 'select');
+        return this;
+    }
+
+    clickOnFullView() {
+        cy.get('.fa-line-columns').click();
+        return this;
+    }
+
+    clickOnTreeExpandView() {
+        cy.get('.fa-expand').click();
+        return this;
+    }
 }
