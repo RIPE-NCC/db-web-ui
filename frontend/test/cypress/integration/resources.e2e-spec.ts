@@ -22,11 +22,11 @@ describe('Resources', () => {
             .expectResourcesToContainText(3, '(1 issues)');
     });
 
-    it('should show + for IPv4 resources with more specific', () => {
+    it('should show + for IPv4 resources tree with more specific', () => {
         resourcesPage.expectExistPlusIcon(0, false).expectExistPlusIcon(1, false).expectExistPlusIcon(2, true).expectExistPlusIcon(3, false);
     });
 
-    it('should +/- click switch properly', () => {
+    it('should click on +/- in tree switch properly', () => {
         resourcesPage
             .expectExistMinusIcon(2, false)
             .clickOnPluseIcon(2)
@@ -35,6 +35,14 @@ describe('Resources', () => {
             .clickOnMinusIcon(2)
             .expectExistMinusIcon(2, false)
             .expectExistPlusIcon(2, true);
+    });
+
+    it('should show (issue) in node with issue', () => {
+        resourcesPage.expectIssueNoteInNode(3, true).expectOrangeDot(3, true).expectBlueDot(3, false);
+    });
+
+    it('should not show (issue) in node with issue', () => {
+        resourcesPage.expectIssueNoteInNode(2, false).expectOrangeDot(2, false).expectBlueDot(2, true);
     });
 
     it('should show additional explanation if no resources for enduser', () => {
@@ -152,6 +160,22 @@ describe('Resources', () => {
 
         it('should not show ip usage nor health check card for sponsored tabs', () => {
             resourcesPage.clickOnSponsoredResources().expectUsageToExist(false).expectResourceHealthCardInUsageToExist(false);
+        });
+
+        it('should contain healthy card status check with issues', () => {
+            resourcesPage
+                .clickOnIPTab('IPv4')
+                .expectHealtyStatusCheck('Resource health')
+                .expectHealtyStatusCheck('Need attention')
+                .expectHealtyStatusCheck('1 resources with issues');
+        });
+
+        it('should contain healthy card status check without issues', () => {
+            resourcesPage
+                .clickOnIPTab('IPv6')
+                .expectHealtyStatusCheck('Resource health')
+                .expectHealtyStatusCheck('Healthy')
+                .expectHealtyStatusCheck('0 resources with issues');
         });
     });
 

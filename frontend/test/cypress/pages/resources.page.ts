@@ -241,18 +241,6 @@ export class ResourcesOverViewPage {
         return this;
     }
 
-    expectResourcesToContainFlag(index: number, flag: string) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) flag`).should('contain.text', flag);
-        return this;
-    }
-
-    expectResourcesToContainHref(index: number, href: string) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) a`)
-            .should('have.attr', 'href')
-            .then((val) => expect(val).to.contain(href));
-        return this;
-    }
-
     clickOnPluseIcon(index: number) {
         cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-plus`).click();
         return this;
@@ -270,6 +258,21 @@ export class ResourcesOverViewPage {
 
     expectExistMinusIcon(index: number, exist: boolean) {
         cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-minus`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectIssueNoteInNode(index: number, contain: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index})`).should(contain ? 'contain.text' : 'not.contain.text', '1 issues');
+        return this;
+    }
+
+    expectOrangeDot(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .issue`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectBlueDot(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .ok`).should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
@@ -301,6 +304,11 @@ export class ResourcesOverViewPage {
 
     expectResourceHealthCardInUsageToExist(exist: boolean) {
         cy.get('.resources-ip-usage health-check-card').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectHealtyStatusCheck(text: string) {
+        cy.get('.resources-ip-usage health-check-card').should('contain.text', text);
         return this;
     }
 
