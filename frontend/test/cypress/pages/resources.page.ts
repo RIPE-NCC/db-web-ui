@@ -232,12 +232,12 @@ export class ResourcesOverViewPage {
     }
 
     expectResourcesSize(size: number) {
-        cy.get('.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item').should('have.length', size);
+        cy.get('.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node').should('have.length', size);
         return this;
     }
 
     expectResourcesToContainText(index: number, text: string) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index})`).should('contain.text', text);
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active .node-content:nth(${index})`).should('contain.text', text);
         return this;
     }
 
@@ -253,8 +253,23 @@ export class ResourcesOverViewPage {
         return this;
     }
 
-    expectExistProgressBarOnResource(index: number, exist: boolean) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) mat-progress-bar`).should(exist ? 'exist' : 'not.exist');
+    clickOnPluseIcon(index: number) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-plus`).click();
+        return this;
+    }
+
+    clickOnMinusIcon(index: number) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-minus`).click();
+        return this;
+    }
+
+    expectExistPlusIcon(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-plus`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectExistMinusIcon(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-minus`).should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
@@ -280,7 +295,12 @@ export class ResourcesOverViewPage {
     }
 
     expectUsageToExist(exist: boolean) {
-        cy.get('.resources-ip-usage p').should(exist ? 'exist' : 'not.exist');
+        cy.get('.resources-ip-usage .usage-card').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectResourceHealthCardInUsageToExist(exist: boolean) {
+        cy.get('.resources-ip-usage health-check-card').should(exist ? 'exist' : 'not.exist');
         return this;
     }
 }

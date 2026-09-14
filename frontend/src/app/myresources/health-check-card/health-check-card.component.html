@@ -1,3 +1,4 @@
+@if (cardStatus() !== '') {
 <div class="health-card" [class]="cardStatus()">
     <p class="title">Resource health</p>
     @if (checkingCount() > 0) {
@@ -41,3 +42,4 @@
     </p>
     }
 </div>
+}

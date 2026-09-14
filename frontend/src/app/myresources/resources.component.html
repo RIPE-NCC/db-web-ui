@@ -4,9 +4,9 @@
     <div class="my-resources">
         <div class="header">
             <mat-button-toggle-group [value]="activeToggleButton" (change)="resourcesSponsoredToggleClicked($event)">
-                <mat-button-toggle [value]="ResourceType.RESOURCES" [disableRipple]="true">{{ ResourceType.RESOURCES }} </mat-button-toggle>
+                <mat-button-toggle [value]="ResourceType.RESOURCES" [disableRipple]="true">{{ ResourceType.RESOURCES }}</mat-button-toggle>
                 @if (isMemberOrg()) {
-                <mat-button-toggle [value]="ResourceType.SPONSORED" [disableRipple]="true">{{ ResourceType.SPONSORED }} </mat-button-toggle>
+                <mat-button-toggle [value]="ResourceType.SPONSORED" [disableRipple]="true">{{ ResourceType.SPONSORED }}</mat-button-toggle>
                 }
             </mat-button-toggle-group>
             <div class="action-buttons">
@@ -23,11 +23,6 @@
         <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
         </ip-usage-of-all-resources>
         <div class="ipv4-ipv6-asn-tabs">
-            <!--            @if (showAlerts) {-->
-            <!--                <div class="bell-panel">-->
-            <!--                    <alerts-drop-down [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>-->
-            <!--                </div>-->
-            <!--            }-->
             <div class="view-mode-panel">
                 <button matButton type="button" [class.select]="showNodePreview" (click)="showNodePreview = true">
                     <em class="fa-light fa-line-columns"></em>
@@ -58,9 +53,9 @@
                         } }
                     </p>
                     } @else {
-                    <tree [rootLevelNodes]="ipv4Resources" [treeType]="ObjectTypesEnum.INETNUM" (nodeSelected)="onNodeSelected($event)"></tree>
+                    <tree [rootLevelNodes]="ipv4Resources" [treeType]="ObjectTypesEnum.INETNUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
                     @if (showNodePreview) {
-                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
+                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
                     } }
                 </mat-tab>
                 <mat-tab label="IPv6" id="inet6num">
@@ -77,9 +72,10 @@
                         } }
                     </p>
                     } @else {
-                    <tree [rootLevelNodes]="ipv6Resources" [treeType]="ObjectTypesEnum.INET6NUM" (nodeSelected)="onNodeSelected($event)"></tree>
-                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
-                    }
+                    <tree [rootLevelNodes]="ipv6Resources" [treeType]="ObjectTypesEnum.INET6NUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
+                    @if (showNodePreview) {
+                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
+                    } }
                 </mat-tab>
                 <mat-tab label="ASN" id="aut-num">
                     @if (loading) {
@@ -95,9 +91,10 @@
                         } }
                     </p>
                     } @else {
-                    <tree [rootLevelNodes]="asnResources" [treeType]="ObjectTypesEnum.AUT_NUM" (nodeSelected)="onNodeSelected($event)"></tree>
-                    <node-preview [node]="selectedNode()" [tabType]="ObjectTypesEnum.AUT_NUM"></node-preview>
-                    }
+                    <tree [rootLevelNodes]="asnResources" [treeType]="ObjectTypesEnum.AUT_NUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
+                    @if (showNodePreview) {
+                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.AUT_NUM"></node-preview>
+                    } }
                 </mat-tab>
             </mat-tab-group>
         </div>

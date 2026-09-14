@@ -75,8 +75,8 @@ export class ResourcesComponent implements OnDestroy {
 
     isShowingSponsored: boolean = false;
     activeToggleButton = 'resources';
-    showAlerts: boolean = true;
-    selectedNode = signal<TreeNode | undefined>(undefined);
+
+    selectedTreeNode = signal<TreeNode | undefined>(undefined);
     showNodePreview: boolean = true;
     readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
 
@@ -109,6 +109,7 @@ export class ResourcesComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.subscriptions.forEach((s) => s.unsubscribe());
+        this.subscriptionFetchResources.unsubscribe();
     }
 
     init() {
@@ -124,13 +125,13 @@ export class ResourcesComponent implements OnDestroy {
             this.lastTab = ObjectTypesEnum.INETNUM;
         }
         this.refreshPage();
-        this.showAlerts = !this.isShowingSponsored && this.lastTab === ObjectTypesEnum.INETNUM;
     }
 
     tabClicked($event: MatTabChangeEvent) {
-        this.selectedNode.set(undefined);
+        this.selectedTreeNode.set(undefined);
         this.lastTab = $event.tab.id;
-        this.lastTabIndex = $event.tab.position;
+        this.lastTabIndex = $event.index;
+
         const params = {
             type: this.lastTab,
             sponsored: this.isShowingSponsored,
@@ -147,8 +148,8 @@ export class ResourcesComponent implements OnDestroy {
         }
     }
 
-    onNodeSelected(node: TreeNode): void {
-        this.selectedNode.set({ ...node });
+    onTreeNodeSelected(node: TreeNode): void {
+        this.selectedTreeNode.set({ ...node });
     }
 
     private sponsoredResourcesTabClicked() {

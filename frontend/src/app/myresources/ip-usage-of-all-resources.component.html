@@ -15,7 +15,7 @@
         <span class="size">{{ free }}</span>
         <span class="description">{{ 100 - usedPercentage }}% of total</span>
     </div>
-    @if (used > 0) {
+    @if (total > 0) {
     <health-check-card [treeType]="type"></health-check-card>
     } } @if (type === 'inet6num' && !sponsored) {
     <div class="usage-card">
@@ -33,9 +33,9 @@
         <span class="size">{{ ipv6CalcFree }}</span>
         <span class="description">{{ 100 - usedPercentage }}% of total</span>
     </div>
-    @if (used > 0) {
+    @if (total > 0) {
     <health-check-card [treeType]="type"></health-check-card>
-    } } @if (type === 'aut-num' && !sponsored) {
+    }} @if (type === 'aut-num' && !sponsored) {
     <health-check-card [treeType]="type"></health-check-card>
     }
 </div>
