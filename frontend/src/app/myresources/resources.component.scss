@@ -21,7 +21,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 15px;
-    z-index: 0;
+    z-index: 2;
 }
 
 ip-usage-of-all-resources {
@@ -48,7 +48,6 @@ ip-usage-of-all-resources {
         position: absolute;
         top: 0;
         right: 0;
-        z-index: 5;
 
         display: flex;
         align-items: center;
