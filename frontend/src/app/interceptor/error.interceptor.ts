@@ -24,10 +24,6 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
         console.debug('ui-url:' + router.url);
         if (error !== undefined) {
-            if (isAuthorisationError(error.status)) {
-                // fire-and-forget: tell the backend to drop the Hazelcast entry now
-                http.post('/db-web-ui/api/session/invalidate', {}).subscribe();
-            }
             if ((isServerError(error.status) || isAuthorisationError(error.status)) && error.url.endsWith('api/user/info')) {
                 toBeSwallowed = true;
             }
