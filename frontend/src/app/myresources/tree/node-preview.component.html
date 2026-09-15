@@ -25,12 +25,35 @@
         <span class="value">{{ selectedNode.numberOfChildren ?? '-' }}</span>
     </div>
     <div class="panel node-overview">
-        <span class="panel-title">RIPE Database objects</span>
+        <h3 class="panel-title">
+            RIPE Database objects @if(checkingDatabaseObjects()) {
+            <span class="checking">
+                <mat-spinner diameter="30"></mat-spinner>
+                <span>Checking</span>
+            </span>
+            }
+        </h3>
+
+        <span class="label">Assignment object</span>
+        <span class="value">-</span>
+
         <span class="label">Route object</span>
-        <span class="value present"><em class="fa-light fa-check"></em>Present</span>
+        @if(hasAssociatedRouteObjects() === 'Present') {
+        <span class="value present"> <em class="fa-light fa-check"></em>{{ hasAssociatedRouteObjects() }} </span>
+        } @else {
+        <span class="value">
+            {{ hasAssociatedRouteObjects() }}
+        </span>
+        }
 
         <span class="label">Domain object</span>
-        <span class="value">-</span>
+        @if(hasAssociatedDomainObjects() === 'Present') {
+        <span class="value present"> <em class="fa-light fa-check"></em>{{ hasAssociatedDomainObjects() }} </span>
+        } @else {
+        <span class="value">
+            {{ hasAssociatedDomainObjects() }}
+        </span>
+        }
 
         <span class="label">Maintainer</span>
         <span class="value">-</span>
@@ -53,6 +76,9 @@
         <span class="value">-</span>
 
         <span class="label">Active announcements</span>
+        <span class="value">-</span>
+
+        <span class="label">ROA status</span>
         <span class="value">-</span>
     </div>
 </div>

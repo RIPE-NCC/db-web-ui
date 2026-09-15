@@ -3,6 +3,7 @@ import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { AssociatedObjectsService, AssociatedObjectType, IAssociatedObjectApiResult } from 'src/app/myresources/associatedobjects/associated-objects.service';
 import { ResourceCheck } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
@@ -18,6 +19,7 @@ import { TreeNode } from './tree.component';
 export class NodePreviewComponent {
     router = inject(Router);
     resourcesDataService = inject(ResourcesDataService);
+    associatedObjectService = inject(AssociatedObjectsService);
 
     readonly node = input<TreeNode | undefined>();
     readonly usedPercentage = (): number => {
@@ -31,6 +33,9 @@ export class NodePreviewComponent {
     };
     readonly tabType = input.required<string>(); // to distinguish which node preview should execute
     readonly announcementStatus = signal<string | undefined>(undefined);
+    readonly hasAssociatedRouteObjects = signal<string | undefined>(undefined);
+    readonly hasAssociatedDomainObjects = signal<string | undefined>(undefined);
+    readonly checkingDatabaseObjects = signal<boolean>(false);
     readonly checkingRoutingInformation = signal<boolean>(false);
 
     constructor() {
@@ -40,6 +45,8 @@ export class NodePreviewComponent {
 
             if (node && node.type === tabType) {
                 this.checkIfAnnounced(node);
+                this.checkIfAssociatedRouteObjects(node);
+                this.checkIfAssociatedDomainObjects(node);
             }
         });
     }
@@ -59,6 +66,36 @@ export class NodePreviewComponent {
                 },
                 error: (_err) => {
                     this.announcementStatus.set('check failed');
+                },
+            });
+    }
+
+    checkIfAssociatedRouteObjects(node: TreeNode) {
+        this.checkingDatabaseObjects.set(true);
+        this.associatedObjectService
+            .getAssociatedObjects(AssociatedObjectType.ASSOCIATED_ROUTE, node.nodeName, node.type, 0, '')
+            .pipe(finalize(() => this.checkingDatabaseObjects.set(false)))
+            .subscribe({
+                next: (response: IAssociatedObjectApiResult) => {
+                    this.hasAssociatedRouteObjects.set(response.associatedObjects.length > 0 ? 'Present' : '-');
+                },
+                error: () => {
+                    this.hasAssociatedRouteObjects.set('check failed');
+                },
+            });
+    }
+
+    checkIfAssociatedDomainObjects(node: TreeNode) {
+        this.checkingDatabaseObjects.set(true);
+        this.associatedObjectService
+            .getAssociatedObjects(AssociatedObjectType.ASSOCIATED_DOMAIN, node.nodeName, node.type, 0, '')
+            .pipe(finalize(() => this.checkingDatabaseObjects.set(false)))
+            .subscribe({
+                next: (response: IAssociatedObjectApiResult) => {
+                    this.hasAssociatedDomainObjects.set(response.associatedObjects.length > 0 ? 'Present' : '-');
+                },
+                error: () => {
+                    this.hasAssociatedDomainObjects.set('check failed');
                 },
             });
     }
