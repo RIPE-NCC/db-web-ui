@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.session.SaveMode;
 import org.springframework.session.hazelcast.config.annotation.web.http.EnableHazelcastHttpSession;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class HazelcastSessionConfig {
     @Bean
     public HazelcastInstance hazelcastInstance(@Value("${hazelcast.config.members:localhost}") final String members,
                                                @Value("${hazelcast.port:5701}") final int port,
-                                               @Value("${hazelcast.ttl:28800}") final int hazelcastTtl,
+                                               @Value("${server.servlet.session.timeout}") final Duration sessionTimeout,
                                                final SessionCacheService sessionCacheService) {
         final Config config = getGenericConfig();
         config.setProperty("hazelcast.prefer.ipv4.stack", "false");
@@ -54,24 +55,25 @@ public class HazelcastSessionConfig {
                 .setMembers(peerMembers)
                 .setEnabled(true);
 
+        final int sessionTimeoutSeconds = (int) sessionTimeout.getSeconds();
         final MapConfig httpSessionMapConfig = new MapConfig(OidcUtils.HTTP_SESSION_CACHE)
                 .setBackupCount(peerMembers.size())
                 .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(hazelcastTtl);
+                .setMaxIdleSeconds(sessionTimeoutSeconds);
 
         config.addMapConfig(httpSessionMapConfig);
 
         final MapConfig authorizedClientMapConfig = new MapConfig(HazelcastOAuth2AuthorizedClientService.MAP_NAME)
                 .setBackupCount(peerMembers.size())
                 .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(hazelcastTtl);
+                .setMaxIdleSeconds(sessionTimeoutSeconds);
 
         config.addMapConfig(authorizedClientMapConfig);
 
         final MapConfig oidcSessionsMapConfig = new MapConfig(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP)
                 .setBackupCount(peerMembers.size())
                 .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(hazelcastTtl);
+                .setMaxIdleSeconds(sessionTimeoutSeconds);
 
         config.addMapConfig(oidcSessionsMapConfig);
 
