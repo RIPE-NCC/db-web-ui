@@ -6,6 +6,7 @@ import { signal } from '@angular/core';
 import {
     AssociatedObjectsService,
     AssociatedObjectType,
+    IAssociatedDomainObject,
     IAssociatedObjectApiResult,
     IAssociatedRouteObject,
 } from 'src/app/myresources/associatedobjects/associated-objects.service';
@@ -266,6 +267,78 @@ describe('NodePreviewComponent', () => {
             component.checkIfAssociatedRouteObjects(createNode());
 
             expect(component.hasAssociatedRouteObjects()).toBe('check failed');
+            expect(component.checkingDatabaseObjects()).toBeFalse();
+        });
+    });
+
+    describe('checkIfAssociatedDomainObjects', () => {
+        const mockRouteObject: IAssociatedObjectApiResult = {
+            associatedObjects: [
+                {
+                    associatedObjectType: 'associated-domain',
+                    associatedResource: '192.168.0.0 - 192.168.0.255',
+                    associatedResourceType: 'inetnum',
+                    domain: '0.168.192.in-addr.arpa',
+                    type: 'domain',
+                } as IAssociatedDomainObject,
+            ],
+            totalNumberOfResources: 1,
+            filteredSize: 1,
+        };
+
+        it('should set checking state while checking', () => {
+            const response$ = new Subject<IAssociatedObjectApiResult>();
+
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(response$);
+
+            component.checkIfAssociatedDomainObjects(createNode());
+
+            expect(component.checkingDatabaseObjects()).toBeTrue();
+
+            response$.next(mockRouteObject);
+            response$.complete();
+
+            expect(component.checkingDatabaseObjects()).toBeFalse();
+        });
+
+        it('should set domain status to Present when response is not empty', () => {
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(mockRouteObject));
+
+            component.checkIfAssociatedDomainObjects(createNode());
+
+            expect(mockAssociatedObjectService.getAssociatedObjects).toHaveBeenCalledWith(
+                AssociatedObjectType.ASSOCIATED_DOMAIN,
+                '192.168.0.0/24',
+                'inetnum',
+                0,
+                '',
+            );
+
+            expect(component.hasAssociatedDomainObjects()).toBe('Present');
+            expect(component.checkingDatabaseObjects()).toBeFalse();
+        });
+
+        it('should set domain status to response type when response is empty', () => {
+            const response = {
+                associatedObjects: [],
+                totalNumberOfResources: 0,
+                filteredSize: 0,
+            };
+
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(response));
+
+            component.checkIfAssociatedDomainObjects(createNode());
+
+            expect(component.hasAssociatedDomainObjects()).toBe('-');
+            expect(component.checkingDatabaseObjects()).toBeFalse();
+        });
+
+        it('should set domain status to check failed when request fails', () => {
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(throwError(() => new Error('Request failed')));
+
+            component.checkIfAssociatedDomainObjects(createNode());
+
+            expect(component.hasAssociatedDomainObjects()).toBe('check failed');
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
     });
