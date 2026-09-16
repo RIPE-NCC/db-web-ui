@@ -10,10 +10,15 @@
             </td>
             <td>
                 <p [hidden]="attribute.link">
-                    {{ attribute.value }}
+                    {{ attribute.value }}{{ attribute.comment === 'Filtered' ? '# Filtered' : '' }}@if (attribute.comment && attribute.comment !== 'Filtered')
+                    {<span> # {{ attribute.comment }}</span
+                    >}
                 </p>
                 <p [hidden]="!attribute.link">
-                    <a [href]="$safeNavigationMigration(attribute.link?.href)">{{ attribute.value }}</a>
+                    <a [href]="$safeNavigationMigration(attribute.link?.href)">{{ attribute.value }}</a
+                    >{{ attribute.comment === 'Filtered' ? '# Filtered' : '' }}@if (attribute.comment && attribute.comment !== 'Filtered') {<span>
+                        # {{ attribute.comment }}</span
+                    >}
                 </p>
                 <div [hidden]="!attribute.$$error">
                     <span>{{ attribute.$$error }}</span>

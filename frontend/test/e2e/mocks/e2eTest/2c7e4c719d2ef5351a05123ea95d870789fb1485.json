@@ -1,0 +1,72 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/ripe/mntner/MHM1-MNT/versions/1.json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "mntner",
+                    "link": {
+                        "type": "locator",
+                        "href": "https://rest-dev.db.ripe.net/ripe/mntner/MHM1-MNT"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "MHM1-MNT"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "mntner",
+                                "value": "MHM1-MNT"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "https://rest-dev.db.ripe.net/ripe/mntner/MHM1-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "MHM1-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2025-10-01T10:50:22Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2025-10-01T10:50:22Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE",
+                                "comment": "Filtered"
+                            }
+                        ]
+                    },
+                    "version": 1
+                }
+            ]
+        },
+        "errormessages": {
+            "errormessage": []
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://docs.db.ripe.net/terms-conditions.html"
+        },
+        "version": {
+            "version": "1.125-SNAPSHOT",
+            "timestamp": "2026-08-26T12:06:13Z",
+            "commit-id": "355d524"
+        }
+    }
+}

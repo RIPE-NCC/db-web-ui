@@ -1,0 +1,157 @@
+{
+    "requestUrl": "/db-web-ui/api/whois/ripe/mntner/MHM1-MNT/versions.json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "errormessages": {
+            "errormessage": []
+        },
+        "versions": {
+            "type": "mntner",
+            "key": "MHM1-MNT",
+            "version": [
+                {
+                    "deleted": null,
+                    "revision": 1,
+                    "date": "2025-10-01T10:50:22Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 2,
+                    "date": "2025-10-01T10:51:04Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 3,
+                    "date": "2025-10-01T10:51:49Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 4,
+                    "date": "2025-10-01T10:51:53Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 5,
+                    "date": "2025-10-01T13:17:20Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 6,
+                    "date": "2025-10-01T13:17:55Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 7,
+                    "date": "2025-10-01T13:17:59Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 8,
+                    "date": "2025-10-06T13:21:53Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 9,
+                    "date": "2025-10-06T13:29:31Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 10,
+                    "date": "2025-10-06T13:32:58Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 11,
+                    "date": "2025-11-07T10:18:13Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 12,
+                    "date": "2025-11-07T10:18:24Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 13,
+                    "date": "2025-11-07T10:20:30Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 14,
+                    "date": "2025-11-07T10:20:53Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 15,
+                    "date": "2025-11-07T10:24:37Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 16,
+                    "date": "2025-11-07T10:24:59Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 17,
+                    "date": "2025-11-10T12:56:27Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 18,
+                    "date": "2025-11-10T12:56:44Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 19,
+                    "date": "2025-12-15T09:28:26Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 20,
+                    "date": "2026-08-29T21:31:34Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 21,
+                    "date": "2026-09-07T15:02:22Z",
+                    "operation": "ADD/UPD"
+                },
+                {
+                    "deleted": null,
+                    "revision": 22,
+                    "date": "2026-09-07T15:02:26Z",
+                    "operation": "ADD/UPD"
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "https://docs.db.ripe.net/terms-conditions.html"
+        },
+        "version": {
+            "version": "1.125-SNAPSHOT",
+            "timestamp": "2026-08-26T12:06:13Z",
+            "commit-id": "355d524"
+        }
+    }
+}
