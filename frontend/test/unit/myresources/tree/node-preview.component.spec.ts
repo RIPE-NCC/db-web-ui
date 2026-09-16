@@ -3,6 +3,12 @@ import { Router } from '@angular/router';
 import { of, Subject, throwError } from 'rxjs';
 
 import { signal } from '@angular/core';
+import {
+    AssociatedObjectsService,
+    AssociatedObjectType,
+    IAssociatedObjectApiResult,
+    IAssociatedRouteObject,
+} from 'src/app/myresources/associatedobjects/associated-objects.service';
 import { ResourceCheck } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { NodePreviewComponent } from 'src/app/myresources/tree/node-preview.component';
@@ -15,6 +21,7 @@ describe('NodePreviewComponent', () => {
 
     let mockRouter: jasmine.SpyObj<Router>;
     let mockResourcesDataService: jasmine.SpyObj<ResourcesDataService>;
+    let mockAssociatedObjectService: jasmine.SpyObj<AssociatedObjectsService>;
 
     const createNode = (overrides: Partial<TreeNode> = {}): TreeNode =>
         ({
@@ -60,8 +67,10 @@ describe('NodePreviewComponent', () => {
         mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
         mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', ['checkIsAnnounced']);
-
         mockResourcesDataService.checkIsAnnounced.and.returnValue(of([]));
+
+        mockAssociatedObjectService = jasmine.createSpyObj('AssociatedObjectsService', ['getAssociatedObjects']);
+        mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of());
 
         await TestBed.configureTestingModule({
             imports: [NodePreviewComponent],
@@ -73,6 +82,10 @@ describe('NodePreviewComponent', () => {
                 {
                     provide: ResourcesDataService,
                     useValue: mockResourcesDataService,
+                },
+                {
+                    provide: AssociatedObjectsService,
+                    useValue: mockAssociatedObjectService,
                 },
             ],
         }).compileComponents();
@@ -181,6 +194,79 @@ describe('NodePreviewComponent', () => {
 
             expect(component.announcementStatus()).toBe('check failed');
             expect(component.checkingRoutingInformation()).toBeFalse();
+        });
+    });
+
+    describe('checkIfAssociatedRouteObjects', () => {
+        const mockRouteObject: IAssociatedObjectApiResult = {
+            associatedObjects: [
+                {
+                    associatedObjectType: 'associated-route',
+                    associatedResource: '192.168.0.0 - 192.168.0.255',
+                    associatedResourceType: 'inetnum',
+                    origin: 'AS12345',
+                    prefix: '192.168.0.0/24',
+                    type: 'route',
+                } as IAssociatedRouteObject,
+            ],
+            totalNumberOfResources: 1,
+            filteredSize: 1,
+        };
+
+        it('should set checking state while checking', () => {
+            const response$ = new Subject<IAssociatedObjectApiResult>();
+
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(response$);
+
+            component.checkIfAssociatedRouteObjects(createNode());
+
+            expect(component.checkingDatabaseObjects()).toBeTrue();
+
+            response$.next(mockRouteObject);
+            response$.complete();
+
+            expect(component.checkingDatabaseObjects()).toBeFalse();
+        });
+
+        it('should set route status to Present when response is not empty', () => {
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(mockRouteObject));
+
+            component.checkIfAssociatedRouteObjects(createNode());
+
+            expect(mockAssociatedObjectService.getAssociatedObjects).toHaveBeenCalledWith(
+                AssociatedObjectType.ASSOCIATED_ROUTE,
+                '192.168.0.0/24',
+                'inetnum',
+                0,
+                '',
+            );
+
+            expect(component.hasAssociatedRouteObjects()).toBe('Present');
+            expect(component.checkingDatabaseObjects()).toBeFalse();
+        });
+
+        it('should set route status to response type when response is empty', () => {
+            const response = {
+                associatedObjects: [],
+                totalNumberOfResources: 0,
+                filteredSize: 0,
+            };
+
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(response));
+
+            component.checkIfAssociatedRouteObjects(createNode());
+
+            expect(component.hasAssociatedRouteObjects()).toBe('-');
+            expect(component.checkingDatabaseObjects()).toBeFalse();
+        });
+
+        it('should set route status to check failed when request fails', () => {
+            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(throwError(() => new Error('Request failed')));
+
+            component.checkIfAssociatedRouteObjects(createNode());
+
+            expect(component.hasAssociatedRouteObjects()).toBe('check failed');
+            expect(component.checkingDatabaseObjects()).toBeFalse();
         });
     });
 
