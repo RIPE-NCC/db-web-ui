@@ -39,7 +39,7 @@ export class NodeHealthService {
     }
 
     checkNodeHealth(node: TreeNode) {
-        return this.resourcesDataService.checkIsAnnounced(node.type, node.nodeName).pipe(
+        return this.resourcesDataService.resourceCheck(node.type, node.nodeName).pipe(
             tap((response) => {
                 node.issuesCount.set(response.length);
 

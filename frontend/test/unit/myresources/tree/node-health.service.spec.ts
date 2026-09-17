@@ -22,7 +22,7 @@ describe('NodeHealthService', () => {
         } as TreeNode);
 
     beforeEach(() => {
-        mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', ['checkIsAnnounced']);
+        mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', ['resourceCheck']);
 
         TestBed.configureTestingModule({
             providers: [
@@ -88,23 +88,23 @@ describe('NodeHealthService', () => {
                 createNode(ObjectTypesEnum.INETNUM, '192.168.2.0/24'),
             ];
 
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(of([]));
+            mockResourcesDataService.resourceCheck.and.returnValue(of([]));
 
             service.healthCheck(nodes);
 
-            expect(mockResourcesDataService.checkIsAnnounced).toHaveBeenCalledTimes(3);
+            expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledTimes(3);
 
-            expect(mockResourcesDataService.checkIsAnnounced).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
+            expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
 
-            expect(mockResourcesDataService.checkIsAnnounced).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.1.0/24');
+            expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.1.0/24');
 
-            expect(mockResourcesDataService.checkIsAnnounced).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.2.0/24');
+            expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.2.0/24');
         });
 
         it('should handle an empty node list', () => {
             service.healthCheck([]);
 
-            expect(mockResourcesDataService.checkIsAnnounced).not.toHaveBeenCalled();
+            expect(mockResourcesDataService.resourceCheck).not.toHaveBeenCalled();
         });
     });
 
@@ -112,14 +112,14 @@ describe('NodeHealthService', () => {
         it('should set node status to OK when no issues are returned', () => {
             const node = createNode();
 
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(of([]));
+            mockResourcesDataService.resourceCheck.and.returnValue(of([]));
 
             service.checkNodeHealth(node).subscribe();
 
             expect(node.healthStatus()).toBe(NodeHealthStatus.OK);
             expect(node.issuesCount()).toBe(0);
 
-            expect(mockResourcesDataService.checkIsAnnounced).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
+            expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
         });
 
         it('should set node status to ISSUES when issues are returned', () => {
@@ -127,7 +127,7 @@ describe('NodeHealthService', () => {
 
             const response = [{ type: 'Not announced' }, { type: 'Wrong origin' }] as ResourceCheck[];
 
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(of(response));
+            mockResourcesDataService.resourceCheck.and.returnValue(of(response));
 
             service.checkNodeHealth(node).subscribe();
 
@@ -138,7 +138,7 @@ describe('NodeHealthService', () => {
         it('should set node status to FAILED when the health check fails', () => {
             const node = createNode();
 
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(throwError(() => new Error('Request failed')));
+            mockResourcesDataService.resourceCheck.and.returnValue(throwError(() => new Error('Request failed')));
 
             service.checkNodeHealth(node).subscribe();
 

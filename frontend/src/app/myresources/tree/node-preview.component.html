@@ -33,9 +33,29 @@
             </span>
             }
         </h3>
+        <div class="overview-row">
+            @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+            <div class="status-missing">
+                <span class="label">Assignment object</span>
 
-        <span class="label">Assignment object</span>
-        <span class="value">-</span>
+                <span class="value">
+                    <em class="fa-light fa-triangle-exclamation"></em>
+                    Missing
+                </span>
+
+                <span class="how-to-fix">
+                    Assignment object is missing in the RIPE Database. Create an assignment object to correctly register this prefix.
+                </span>
+                <span class="fix-link"> Fix in RIPE Database <em class="fa-light fa-arrow-right"></em> </span>
+            </div>
+            } @else {
+            <span class="label">Assignment object</span>
+            @if (announcementStatus() === 'Announced') {
+            <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
+            } @else {
+            <span class="value">-</span>
+            } }
+        </div>
 
         <span class="label">Route object</span>
         @if(hasAssociatedRouteObjects() === 'Present') {
@@ -54,9 +74,6 @@
             {{ hasAssociatedDomainObjects() }}
         </span>
         }
-
-        <span class="label">Maintainer</span>
-        <span class="value">-</span>
     </div>
     <div class="panel node-overview">
         <h3 class="panel-title">
@@ -68,9 +85,11 @@
             }
         </h3>
         <span class="label">Announcement status</span>
-        <span class="value status" [class.status-green]="announcementStatus() === 'Announced'" [class.status-gray]="announcementStatus() !== 'Announced'">{{
-            announcementStatus()
-        }}</span>
+        @if (announcementStatus() === 'Announced' || announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+        <span class="value status status-green">Announced</span>
+        } @else {
+        <span class="value status status-gray">{{ announcementStatus() }}</span>
+        }
 
         <span class="label">Origin ASN</span>
         <span class="value">-</span>

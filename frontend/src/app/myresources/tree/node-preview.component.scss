@@ -74,7 +74,20 @@
         justify-self: end;
     }
 
-    .panel-title {
+    .status-missing {
+        grid-column: 1 / -1;
+
+        display: grid;
+        grid-template-columns: 1fr auto;
+        row-gap: 0.5rem;
+
+        padding: 1rem;
+        border-radius: 6px;
+        background-color: #fceee4;
+    }
+
+    .panel-title,
+    .how-to-fix {
         grid-column: 1 / -1;
 
         display: flex;
@@ -82,10 +95,23 @@
         justify-content: space-between;
 
         margin: 0 0 1rem 0;
+    }
 
+    .panel-title {
         font-size: 1rem;
         font-weight: 700;
         color: #131f48;
+    }
+
+    .how-to-fix,
+    .fix-link {
+        grid-column: 1 / -1;
+    }
+
+    .fix-link {
+        font-weight: 700;
+        color: #131f48;
+        cursor: pointer;
     }
 
     .checking {

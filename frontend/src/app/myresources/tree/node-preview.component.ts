@@ -10,6 +10,8 @@ import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 import { TreeNode } from './tree.component';
 
+export type ResourceCheckType = 'ANNOUNCED_NO_ASSIGNMENTS' | 'UNANNOUNCED_ASN' | 'check failed' | 'Announced';
+
 @Component({
     selector: 'node-preview',
     templateUrl: 'node-preview.component.html',
@@ -32,7 +34,7 @@ export class NodePreviewComponent {
         return Math.round((usage.used * 100) / usage.total);
     };
     readonly tabType = input.required<string>(); // to distinguish which node preview should execute
-    readonly announcementStatus = signal<string | undefined>(undefined);
+    readonly announcementStatus = signal<ResourceCheckType | undefined>(undefined);
     readonly hasAssociatedRouteObjects = signal<string | undefined>(undefined);
     readonly hasAssociatedDomainObjects = signal<string | undefined>(undefined);
     readonly checkingDatabaseObjects = signal<boolean>(false);
@@ -58,11 +60,11 @@ export class NodePreviewComponent {
     checkIfAnnounced(node: TreeNode) {
         this.checkingRoutingInformation.set(true);
         this.resourcesDataService
-            .checkIsAnnounced(node.type, node.nodeName)
+            .resourceCheck(node.type, node.nodeName)
             .pipe(finalize(() => this.checkingRoutingInformation.set(false)))
             .subscribe({
                 next: (response: ResourceCheck[]) => {
-                    this.announcementStatus.set(response.length === 0 ? 'Announced' : response[0].type);
+                    this.announcementStatus.set(response.length === 0 ? 'Announced' : (response[0].type as ResourceCheckType));
                 },
                 error: (_err) => {
                     this.announcementStatus.set('check failed');

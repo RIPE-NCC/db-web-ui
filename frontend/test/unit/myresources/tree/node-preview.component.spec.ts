@@ -67,8 +67,8 @@ describe('NodePreviewComponent', () => {
     beforeEach(async () => {
         mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
-        mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', ['checkIsAnnounced']);
-        mockResourcesDataService.checkIsAnnounced.and.returnValue(of([]));
+        mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', ['resourceCheck']);
+        mockResourcesDataService.resourceCheck.and.returnValue(of([]));
 
         mockAssociatedObjectService = jasmine.createSpyObj('AssociatedObjectsService', ['getAssociatedObjects']);
         mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of());
@@ -150,7 +150,7 @@ describe('NodePreviewComponent', () => {
         it('should set checking state while checking', () => {
             const response$ = new Subject<ResourceCheck[]>();
 
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(response$);
+            mockResourcesDataService.resourceCheck.and.returnValue(response$);
 
             component.checkIfAnnounced(createNode());
 
@@ -163,11 +163,11 @@ describe('NodePreviewComponent', () => {
         });
 
         it('should set announcement status to Announced when response is empty', () => {
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(of([]));
+            mockResourcesDataService.resourceCheck.and.returnValue(of([]));
 
             component.checkIfAnnounced(createNode());
 
-            expect(mockResourcesDataService.checkIsAnnounced).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
+            expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
 
             expect(component.announcementStatus()).toBe('Announced');
             expect(component.checkingRoutingInformation()).toBeFalse();
@@ -180,7 +180,7 @@ describe('NodePreviewComponent', () => {
                 },
             ] as ResourceCheck[];
 
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(of(response));
+            mockResourcesDataService.resourceCheck.and.returnValue(of(response));
 
             component.checkIfAnnounced(createNode());
 
@@ -189,7 +189,7 @@ describe('NodePreviewComponent', () => {
         });
 
         it('should set announcement status to check failed when request fails', () => {
-            mockResourcesDataService.checkIsAnnounced.and.returnValue(throwError(() => new Error('Request failed')));
+            mockResourcesDataService.resourceCheck.and.returnValue(throwError(() => new Error('Request failed')));
 
             component.checkIfAnnounced(createNode());
 
@@ -345,7 +345,7 @@ describe('NodePreviewComponent', () => {
 
     describe('effect', () => {
         it('should check announcement when node type matches tab type', () => {
-            mockResourcesDataService.checkIsAnnounced.calls.reset();
+            mockResourcesDataService.resourceCheck.calls.reset();
 
             fixture.componentRef.setInput(
                 'node',
@@ -358,11 +358,11 @@ describe('NodePreviewComponent', () => {
 
             fixture.detectChanges();
 
-            expect(mockResourcesDataService.checkIsAnnounced).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
+            expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
         });
 
         it('should not check announcement when node type does not match tab type', () => {
-            mockResourcesDataService.checkIsAnnounced.calls.reset();
+            mockResourcesDataService.resourceCheck.calls.reset();
 
             fixture.componentRef.setInput(
                 'node',
@@ -375,7 +375,7 @@ describe('NodePreviewComponent', () => {
 
             fixture.detectChanges();
 
-            expect(mockResourcesDataService.checkIsAnnounced).not.toHaveBeenCalled();
+            expect(mockResourcesDataService.resourceCheck).not.toHaveBeenCalled();
         });
     });
 

@@ -21,7 +21,7 @@ export class ResourcesDataService {
         return this.http.get<IResourceOverviewResponseModel>('api/whois-internal/api/resources', { params }).pipe(timeout(60000));
     }
 
-    checkIsAnnounced(objectType: string, name: string): Observable<ResourceCheck[]> {
+    resourceCheck(objectType: string, name: string): Observable<ResourceCheck[]> {
         return this.http.get<ResourceCheck[]>(`api/whois-internal/public/resourcecheck/${objectType}/${encodeURIComponent(name)}`);
     }
 
