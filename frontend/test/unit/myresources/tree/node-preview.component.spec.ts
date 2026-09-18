@@ -14,6 +14,7 @@ import { ResourceCheck } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { NodePreviewComponent } from 'src/app/myresources/tree/node-preview.component';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
+import { PropertiesService } from 'src/app/properties.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 
 describe('NodePreviewComponent', () => {
@@ -21,6 +22,7 @@ describe('NodePreviewComponent', () => {
     let fixture: ComponentFixture<NodePreviewComponent>;
 
     let mockRouter: jasmine.SpyObj<Router>;
+    let mockPropertiesService: jasmine.SpyObj<PropertiesService>;
     let mockResourcesDataService: jasmine.SpyObj<ResourcesDataService>;
     let mockAssociatedObjectService: jasmine.SpyObj<AssociatedObjectsService>;
 
@@ -66,6 +68,8 @@ describe('NodePreviewComponent', () => {
 
     beforeEach(async () => {
         mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']);
+
+        mockPropertiesService = jasmine.createSpyObj('mockPropertiesService', [], { SOURCE: 'RIPE' });
 
         mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', ['resourceCheck']);
         mockResourcesDataService.resourceCheck.and.returnValue(of([]));
@@ -384,6 +388,14 @@ describe('NodePreviewComponent', () => {
             component.navigateToDetailPage();
 
             expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/myresources/detail/inetnum/192.168.0.0/24/false');
+        });
+    });
+
+    describe('navigateToDetailPage', () => {
+        it('should navigate to create Assignments', () => {
+            component.navigateToCreateAssignments();
+
+            expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/webupdates/create/RIPE/inetnum');
         });
     });
 

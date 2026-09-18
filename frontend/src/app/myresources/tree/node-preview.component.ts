@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { AssociatedObjectsService, AssociatedObjectType, IAssociatedObjectApiResult } from 'src/app/myresources/associatedobjects/associated-objects.service';
 import { ResourceCheck } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
+import { PropertiesService } from 'src/app/properties.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 import { TreeNode } from './tree.component';
@@ -20,6 +21,7 @@ export type ResourceCheckType = 'ANNOUNCED_NO_ASSIGNMENTS' | 'UNANNOUNCED_ASN' |
 })
 export class NodePreviewComponent {
     router = inject(Router);
+    properties = inject(PropertiesService);
     resourcesDataService = inject(ResourcesDataService);
     associatedObjectService = inject(AssociatedObjectsService);
 
@@ -55,6 +57,10 @@ export class NodePreviewComponent {
 
     navigateToDetailPage(): void {
         void this.router.navigateByUrl(`/myresources/detail/${this.node().type}/${this.node().nodeName}/false`);
+    }
+
+    navigateToCreateAssignments() {
+        void this.router.navigateByUrl(`/webupdates/create/${this.properties.SOURCE}/${this.node().type}`);
     }
 
     checkIfAnnounced(node: TreeNode) {
