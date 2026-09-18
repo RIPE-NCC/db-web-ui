@@ -1,9 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, Subject, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { LandingPageComponent } from 'src/app/myresources/landing-page/landing-page.component';
 import { ResourcesComponent } from 'src/app/myresources/resources.component';
-import { SessionInfoService } from 'src/app/sessioninfo/session-info.service';
 import { UserInfoService } from 'src/app/userinfo/user-info.service';
 import { mockUserInfo } from '../userinfo/user-info.service.spec';
 
@@ -12,25 +11,15 @@ describe('LandingPageComponent', () => {
     let fixture: ComponentFixture<LandingPageComponent>;
 
     let mockUserInfoService: jasmine.SpyObj<UserInfoService>;
-    let mockSessionInfoService: {
-        expiredSession$: Subject<boolean>;
-    };
 
     beforeEach(async () => {
         mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
 
         mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
 
-        mockSessionInfoService = {
-            expiredSession$: new Subject<boolean>(),
-        };
-
         await TestBed.configureTestingModule({
             imports: [LandingPageComponent],
-            providers: [
-                { provide: UserInfoService, useValue: mockUserInfoService },
-                { provide: SessionInfoService, useValue: mockSessionInfoService },
-            ],
+            providers: [{ provide: UserInfoService, useValue: mockUserInfoService }],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         })
             .overrideComponent(LandingPageComponent, {
@@ -44,13 +33,6 @@ describe('LandingPageComponent', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
-    });
-
-    it('should set loggedIn = false when session is expired', () => {
-        fixture.detectChanges();
-        mockSessionInfoService.expiredSession$.next(true);
-
-        expect(component.loggedIn).toBeFalse();
     });
 
     it('should render resource-component when loggedIn is true', () => {

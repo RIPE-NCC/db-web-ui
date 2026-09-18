@@ -1,11 +1,13 @@
 import { Location } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of, throwError } from 'rxjs';
+import { UserOidc } from 'src/app/dropdown/org-data-type.model';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { CreateSelfMaintainedMaintainerComponent } from '../../../../src/app/updatesweb/create-self-maintained-maintainer.component';
 import { ErrorReporterService } from '../../../../src/app/updatesweb/error-reporter.service';
@@ -21,6 +23,12 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
     let routerMock: any;
     let restServiceMock: any;
     const SOURCE = 'RIPE';
+    const userSignal = signal<UserOidc | null>(null);
+
+    const userInfoServiceMock = {
+        user: userSignal,
+        isLoggedIn: () => true,
+    };
 
     beforeEach(async () => {
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
@@ -34,7 +42,7 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
                 { provide: Location, useValue: { path: () => '' } },
                 LinkService,
                 CookieService,
-                UserInfoService,
+                { provide: UserInfoService, useValue: userInfoServiceMock },
                 { provide: RestService, useValue: restServiceMock },
                 {
                     provide: ActivatedRoute,
@@ -57,11 +65,11 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
+        userSignal.set(USER_INFO_DATA_DUMMY);
         fixture = TestBed.createComponent(CreateSelfMaintainedMaintainerComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-        httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-        await fixture.detectChanges();
+        // await fixture.detectChanges();
     });
 
     afterEach(() => {
@@ -200,13 +208,10 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
 });
 
 const USER_INFO_DATA_DUMMY = {
-    user: {
-        username: 'tdacruzper@ripe.net',
-        displayName: 'Test User',
-        expiryDate: '[2015,7,7,14,58,3,244]',
-        uuid: 'aaaa-bbbb-cccc-dddd',
-        active: 'true',
-    },
+    username: 'tdacruzper@ripe.net',
+    email: 'tdacruzper@ripe.net',
+    name: 'Test User',
+    photo: 'aaaa-bbbb-cccc-dddd',
 };
 
 const CREATE_RESPONSE = {

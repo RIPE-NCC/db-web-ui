@@ -11,6 +11,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -26,29 +29,34 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class DnsCheckerControllerTest {
 
-    private static final String SSO_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
-
     @Mock
     private WhoisInternalService whoisInternalService;
     @Mock
     private DnsClient dnsClient;
     @Mock
     private HttpServletRequest request;
+    @Mock
+    private OAuth2AuthenticationToken oAuth2AuthenticationToken;
 
     private DnsCheckerController subject;
 
     @BeforeEach
     public void setup() throws IOException {
-        subject = new DnsCheckerController(whoisInternalService, dnsClient, false);
+        subject = new DnsCheckerController(whoisInternalService, dnsClient,false);
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(oAuth2AuthenticationToken);
+        SecurityContextHolder.setContext(context);
+
         when(request.getRemoteAddr()).thenReturn("");
-        when(whoisInternalService.getUserInfo(SSO_TOKEN, ""))
+        when(whoisInternalService.getUserInfo(""))
             .thenReturn(getResource("mock/user-info.json", UserInfoResponse.class));
     }
 
     @Test
     public void success() {
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenReturn(Optional.empty());
-        final ResponseEntity<DnsCheckerController.Response> response = subject.status(request, SSO_TOKEN,
+        final ResponseEntity<DnsCheckerController.Response> response = subject.status(request,
             "ns.ripe.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getBody().getMessage(), is("Server is authoritative for 1.2.3.4.in-addr.arpa"));
@@ -58,9 +66,9 @@ public class DnsCheckerControllerTest {
 
     @Test
     public void inactive_sso_session() {
-        when(whoisInternalService.getUserInfo(SSO_TOKEN, "")).thenThrow(new RestClientException(401, "Unauthorized"));
-        assertThrows(RestClientException.class,
-            () -> subject.status(request, SSO_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa"));
+        when(whoisInternalService.getUserInfo("")).thenThrow(new RestClientException(401,
+                "Unauthorized"));
+        assertThrows(RestClientException.class, () -> subject.status(request, "ns.ripe.net", "1.2.3.4.in-addr.arpa"));
     }
 
     @Test
@@ -68,7 +76,7 @@ public class DnsCheckerControllerTest {
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenAnswer(invocation -> Optional.of("invalid answer over TCP"));
 
         final ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, SSO_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
+            subject.status(request, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("invalid answer over TCP"));
@@ -81,7 +89,7 @@ public class DnsCheckerControllerTest {
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenAnswer(invocation -> Optional.of("invalid answer over UDP"));
 
         final ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, SSO_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
+            subject.status(request, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("invalid answer over UDP"));
@@ -92,7 +100,7 @@ public class DnsCheckerControllerTest {
     @Test
     public void nameserver_invalid_input() {
         final ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, SSO_TOKEN, "{invalid}", "1.2.3.4.in-addr.arpa");
+            subject.status(request, "{invalid}", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("Invalid characters in input"));
@@ -103,24 +111,24 @@ public class DnsCheckerControllerTest {
     @Test
     public void nameserver_invalid() {
         ResponseEntity<DnsCheckerController.Response> response =
-            subject.status(request, SSO_TOKEN, "1.2.3.4", "1.2.3.4.in-addr.arpa");
+            subject.status(request, "1.2.3.4", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getMessage(), is("Could not resolve 1.2.3.4"));
         assertThat(response.getBody().getCode(), is(- 1));
         assertThat(response.getBody().getNs(), is("1.2.3.4"));
 
-        response = subject.status(request, SSO_TOKEN, "::0", "1.2.3.4.in-addr.arpa");
+        response = subject.status(request, "::0", "1.2.3.4.in-addr.arpa");
         assertThat(response.getBody().getMessage(), is("Could not resolve ::0"));
     }
 
     @Test
     public void dns_check_disabled() {
-
-        DnsCheckerController controllerWithDnsCheckDisabled = new DnsCheckerController(whoisInternalService, dnsClient, true);
+        DnsCheckerController controllerWithDnsCheckDisabled = new DnsCheckerController(whoisInternalService,
+                dnsClient,true);
 
         ResponseEntity<DnsCheckerController.Response> response =
-            controllerWithDnsCheckDisabled.status(request, SSO_TOKEN, "ns.example.net", "1.2.3.4.in-addr.arpa");
+            controllerWithDnsCheckDisabled.status(request, "ns.example.net", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getBody().getMessage(), is("Server is authoritative for 1.2.3.4.in-addr.arpa"));
         assertThat(response.getBody().getCode(), is(0));

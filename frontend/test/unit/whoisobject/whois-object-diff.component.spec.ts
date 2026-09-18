@@ -5,8 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
+import { IAttributeModel } from 'src/app/whois-object/types';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';
 import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IObjectVersionResponse, IObjectVersionsModel } from '../../../src/app/shared/whois-response-type.model';
@@ -94,6 +94,7 @@ describe('DiffComponent', () => {
     let component: DiffComponent;
     let fixture: ComponentFixture<DiffComponent>;
     let versionsLookupServiceSpy: jasmine.SpyObj<VersionsLookupService>;
+    let whoisResourcesService: WhoisResourcesService;
 
     beforeEach(() => {
         versionsLookupServiceSpy = jasmine.createSpyObj('VersionsLookupService', ['getVersion', 'getVersions']);
@@ -101,7 +102,6 @@ describe('DiffComponent', () => {
             imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, DiffComponent],
             providers: [
                 { provide: VersionsLookupService, useValue: versionsLookupServiceSpy },
-                SessionInfoService,
                 CookieService,
                 PropertiesService,
                 AlertsService,
@@ -124,6 +124,8 @@ describe('DiffComponent', () => {
                 },
             ],
         });
+
+        whoisResourcesService = TestBed.inject(WhoisResourcesService);
 
         fixture = TestBed.createComponent(DiffComponent);
         component = fixture.componentInstance;
@@ -151,6 +153,20 @@ describe('DiffComponent', () => {
         component.ngOnInit();
         expect(versionsLookupServiceSpy.getVersions).toHaveBeenCalledWith('TEST', 'mntner', 'MHM-MNT');
         expect(component.versions.length).toEqual(5);
+    });
+
+    it('should include end of line comments in plaintext', () => {
+        const attributes = [
+            { name: 'auth', value: 'SSO', comment: 'Filtered' },
+            { name: 'auth', value: 'SSO person@net.net', comment: 'WARNING: SSO email was old.name@net.net' },
+            { name: 'source', value: 'RIPE' },
+        ] as IAttributeModel[];
+
+        const plaintext = whoisResourcesService.toPlaintext(attributes);
+
+        expect(plaintext).toContain('auth:                SSO# Filtered');
+        expect(plaintext).toContain('SSO person@net.net# WARNING: SSO email was old.name@net.net');
+        expect(plaintext).toContain('source:              RIPE\n');
     });
 
     it('should display the left version selected on the versions page', () => {

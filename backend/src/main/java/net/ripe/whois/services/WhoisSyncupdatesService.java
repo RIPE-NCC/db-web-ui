@@ -1,6 +1,7 @@
 package net.ripe.whois.services;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.ripe.whois.web.api.OidcTokenExtractor;
 import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,22 +34,21 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
 
     private final RestTemplate restTemplate;
     private final String syncupdatesApiUrl;
+    private final OidcTokenExtractor oidcTokenExtractor;
 
     @Autowired
     public WhoisSyncupdatesService(final RestTemplate restTemplate,
+                                   final OidcTokenExtractor oidcTokenExtractor,
                                    @Value("${syncupdates.api.url}") final String apiUrl) {
         this.restTemplate = restTemplate;
         this.syncupdatesApiUrl = apiUrl;
+        this.oidcTokenExtractor = oidcTokenExtractor;
     }
 
     public ResponseEntity<String> proxy(final String rpslObject, final HttpServletRequest request,
                                         final HttpHeaders headers) {
-        final HttpHeaders proxyHeaders = new HttpHeaders();
 
-        final List<String> cookie = headers.get(HttpHeaders.COOKIE);
-        if (cookie != null) {
-            proxyHeaders.put(HttpHeaders.COOKIE, cookie);
-        }
+        final HttpHeaders proxyHeaders = new HttpHeaders();
 
         final List<String> forwardedFor = headers.get(X_FORWARDED_FOR);
         if (forwardedFor != null) {
@@ -59,11 +59,11 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         if (origin != null) {
             proxyHeaders.put(ORIGIN, origin);
         }
-
         proxyHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         proxyHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
         proxyHeaders.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
         proxyHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
+        oidcTokenExtractor.setAuthorizationHeader(proxyHeaders);
 
         final URI uri = composeSyncupdatesUrl(request);
 

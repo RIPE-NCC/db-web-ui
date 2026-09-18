@@ -56,7 +56,13 @@
             <div>
                 <span class="tooltip-hint" [matTooltip]="this.versionsUtilsService.getDescription(this.objectType, attr.name)">{{ attr.name }}</span
                 >:{{ this.versionsUtilsService.padding(attr) }}
-                <span>{{ attr.name === 'date' ? (attr.value | date : 'yyyy-MM-dd HH:mm:ss' : 'UTC') : attr.value }}</span>
+                <span
+                    >{{ attr.name === 'date' ? (attr.value | date : 'yyyy-MM-dd HH:mm:ss' : 'UTC') : attr.value
+                    }}{{ attr.comment === 'Filtered' ? '# Filtered' : '' }}</span
+                >
+                @if (attr.comment && attr.comment !== 'Filtered') {
+                <span>{{ !attr.value || attr.value === '' ? '' : ' ' }}# {{ attr.comment }}</span>
+                }
             </div>
         </li>
         }

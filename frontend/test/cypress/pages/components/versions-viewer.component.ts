@@ -9,6 +9,11 @@ export class VersionsViewerComponent {
         return this;
     }
 
+    expectAttributeNotToContainValue(index: number, value: string) {
+        cy.get('.resultpane ul li').eq(index).should('not.contain.text', value);
+        return this;
+    }
+
     openDropdown() {
         cy.get('.version-select').click();
         return this;

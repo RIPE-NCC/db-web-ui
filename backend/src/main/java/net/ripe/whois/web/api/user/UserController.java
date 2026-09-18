@@ -1,5 +1,6 @@
 package net.ripe.whois.web.api.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
@@ -9,16 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
-
-import static net.ripe.whois.SsoTokenFilter.SSO_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/user")
@@ -33,10 +30,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getMaintainersCompact(final HttpServletRequest request,
-                                                @CookieValue(value = SSO_TOKEN_KEY) final String ssoToken) {
-
-        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr());
+    public ResponseEntity getMaintainersCompact(final HttpServletRequest request) {
+        final UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(request.getRemoteAddr());
 
         try {
             final List<Map<String,Object>> response = whoisInternalService
@@ -55,9 +50,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getUserInfo(final HttpServletRequest request,
-                                      @CookieValue(value = SSO_TOKEN_KEY, required = false) final String ssoToken) {
-        return new ResponseEntity<>(whoisInternalService.getUserInfo(ssoToken, request.getRemoteAddr()), HttpStatus.OK);
+    public ResponseEntity getUserInfo(final HttpServletRequest request) {
+        return new ResponseEntity<>(whoisInternalService.getUserInfo(request.getRemoteAddr()), HttpStatus.OK);
     }
 }
 

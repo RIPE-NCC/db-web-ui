@@ -1,17 +1,19 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Observable, Subscription } from 'rxjs';
+import { UserOidc } from './dropdown/org-data-type.model';
 import { FeedbackSupportDialogComponent } from './feedbacksupport/feedback-support-dialog.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { dbMenuObject } from './menu/db-menu.json';
 import { ActiveMenu, MenuService, SidebarMenu } from './menu/menu.service';
 import { getResourceMenu } from './menu/resources-menu.json';
 import { PropertiesService } from './properties.service';
+import { SessionService } from './sessioninfo/session.service';
 import { UserInfoService } from './userinfo/user-info.service';
 
 export const EnvNamesInRipeWebComponents = {
-    local: 'local',
+    local: 'prepdev',
     dev: 'development',
     prepdev: 'prepdev',
     prod: 'production',
@@ -35,7 +37,7 @@ const envDisplayMap: Record<string, string> = {
     changeDetection: ChangeDetectionStrategy.Eager,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
     activeMenu!: ActiveMenu | null;
     activeSidebarItem!: string;
     sidebarMenu!: SidebarMenu;
@@ -47,21 +49,61 @@ export class AppComponent implements OnDestroy {
     private router = inject(Router);
     private menuService = inject(MenuService);
     private userInfoService = inject(UserInfoService);
-
+    private sessionService = inject(SessionService);
     private readonly navigationEnd: Subscription;
 
     labelEnv!: string;
     labelEnvImg!: string;
+
+    userOidc: UserOidc;
+    usernameOidc: string;
+    isLoggedInUser: boolean = false;
+    isComponentLoaded: boolean = false;
+    profilePhotoId: string;
+
+    currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
 
     constructor() {
         this.envNameInRipeWebComponents = EnvNamesInRipeWebComponents[this.properties.ENV as keyof typeof EnvNamesInRipeWebComponents];
         const event = this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)) as Observable<NavigationEnd>;
         this.navigationEnd = event.subscribe((evt) => {
             this.setActiveSidebarItem(evt.url);
+
+            this.currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
         });
         effect(() => {
             this.onActiveMenuChange();
         });
+        this.sessionService.expiredSession$.subscribe(() => {
+            this.isLoggedInUser = false;
+        });
+    }
+
+    ngOnInit(): void {
+        this.isComponentLoaded = false;
+
+        if (this.tryHandleSilentLoginFailure(new URLSearchParams(window.location.search))) {
+            return;
+        }
+
+        this.userInfoService.getLoggedInOidc().subscribe({
+            next: (response: UserOidc) => {
+                this.loadOidcDataAndInitialiseEvent(response);
+            },
+            error: (_err) => {
+                window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
+            },
+        });
+    }
+
+    private loadOidcDataAndInitialiseEvent(response: UserOidc) {
+        this.userOidc = response;
+        this.usernameOidc = this.userOidc.name;
+        this.isLoggedInUser = true;
+        this.isComponentLoaded = true;
+        this.profilePhotoId = this.userOidc.photo;
+
+        this.sessionService.initialize();
     }
 
     onActiveMenuChange() {
@@ -72,23 +114,29 @@ export class AppComponent implements OnDestroy {
             this.sidebarMenu = dbMenuObject.menu;
         } else {
             this.icon = 'assets/images/Resources_2025-05.svg';
-            this.userInfoService.getUserOrgsAndRoles().subscribe({
-                next: (response) => {
-                    this.sidebarMenu = getResourceMenu(!!response);
-                },
-                error: () => {
-                    this.sidebarMenu = getResourceMenu(false);
-                },
-            });
+            this.userInfoService.isLoggedIn() ? (this.sidebarMenu = getResourceMenu(true)) : (this.sidebarMenu = getResourceMenu(false));
         }
         const env = this.properties.ENV?.toLowerCase();
         this.labelEnv = envDisplayMap[env] ?? `${this.properties.ENV} Database`;
         this.labelEnvImg = this.properties.isTrainingEnv() ? 'assets/icons/fa-graduation-cap.svg' : 'assets/icons/fa-axe.svg';
     }
 
-    public ngOnDestroy() {
+    ngOnDestroy() {
         if (this.navigationEnd) {
             this.navigationEnd.unsubscribe();
+        }
+    }
+
+    @HostListener('click', ['$event'])
+    onHostClick(event: MouseEvent) {
+        const path = event.composedPath() as HTMLElement[]; // Find elements event inside shadow DOM
+        const loginAnchor = path.find((el) => el instanceof HTMLAnchorElement && el.href.includes('oauth2/authorization/keycloak'));
+
+        if (loginAnchor) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            window.location.href = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
         }
     }
 
@@ -111,5 +159,49 @@ export class AppComponent implements OnDestroy {
 
     setActiveSidebarItem(url: string) {
         this.activeSidebarItem = `${location.origin}/db-web-ui/${url}`;
+    }
+
+    private getCookieValue(name: string): string | null {
+        const match = document.cookie.split('; ').find((c) => c.startsWith(`${name}=`));
+        return match ? decodeURIComponent(match.substring(name.length + 1)) : null;
+    }
+
+    private isCookieTrue(name: string): boolean {
+        return this.getCookieValue(name) === 'true';
+    }
+
+    private getCleanUrlForNext(): string {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('silent');
+        url.searchParams.delete('next');
+        url.searchParams.delete('silentLoginFailed');
+        return url.toString();
+    }
+
+    /**
+     * Handles the return trip from a failed silent SSO check: cleans the marker from the URL
+     * and restores the sidebar highlight. Returns true if it handled this case (caller should stop).
+     */
+    private tryHandleSilentLoginFailure(params: URLSearchParams): boolean {
+        if (!params.has('silentLoginFailed')) {
+            return false;
+        }
+
+        this.isComponentLoaded = true;
+
+        const cleanParams = new URLSearchParams(window.location.search);
+        cleanParams.delete('silentLoginFailed');
+
+        const path = window.location.pathname.replace('/db-web-ui/', '');
+        const queryParams: Record<string, string> = {};
+        cleanParams.forEach((value, key) => (queryParams[key] = value));
+
+        this.setActiveSidebarItem(path);
+
+        void this.router.navigate([path], {
+            queryParams,
+            replaceUrl: true, // swaps the current history entry, same intent as Location.replaceState
+        });
+        return true;
     }
 }

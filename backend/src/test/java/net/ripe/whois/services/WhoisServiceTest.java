@@ -1,7 +1,9 @@
 package net.ripe.whois.services;
 
+import net.ripe.whois.web.api.OidcTokenExtractor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -9,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -199,20 +202,22 @@ public class WhoisServiceTest {
     private final RestTemplate restTemplate = new RestTemplate();
     private final WhoisProxy whoisProxy = new WhoisProxy("/");
 
-    private final WhoisService whoisService = new WhoisService(restTemplate, whoisProxy, MOCK_WHOIS_URL);
+    private WhoisService whoisService;
 
     private MockRestServiceServer mockServer;
 
     @BeforeEach
     public void setUp() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
+        final OidcTokenExtractor oidcTokenExtractor = Mockito.mock(OidcTokenExtractor.class);
+        when(oidcTokenExtractor.extract()).thenReturn(null);
+        whoisService = new WhoisService(restTemplate, whoisProxy, oidcTokenExtractor, MOCK_WHOIS_URL);
     }
 
     @Test
     public void shouldFetchParentsForRange() throws Exception {
         mockServer.expect(requestTo(MOCK_WHOIS_URL + "/search.xml?query-string=194.109.6.0/24&type-filter=inetnum&flags=rL"))
             .andRespond(withSuccess(LESS_SPECIFIC_XML, MediaType.APPLICATION_XML));
-
         final List<String> inetnums = whoisService.getPathToRoot("inetnum", "194.109.6.0/24", "ORG-TST15-RIPE");
         mockServer.verify();
 

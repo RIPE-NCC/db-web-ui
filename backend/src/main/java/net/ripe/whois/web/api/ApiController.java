@@ -10,5 +10,4 @@ public class ApiController {
         // but it was not able to resolve it and the response was HTTP-400.
         headers.remove(HttpHeaders.HOST);
     }
-
 }

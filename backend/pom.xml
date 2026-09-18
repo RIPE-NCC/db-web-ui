@@ -22,6 +22,11 @@
         <dnsjava.version>3.6.2</dnsjava.version>
         <freemarker.version>2.3.34</freemarker.version>
         <google-guava.version>33.4.8-jre</google-guava.version>
+        <!--
+        Currently using Spring Session Hazelcast https://github.com/spring-projects/spring-session/issues/3481
+        Migrate later to Hazelcast Spring Session https://github.com/hazelcast/hazelcast-spring-session
+        -->
+        <spring.session.hazelcast.version>3.5.7</spring.session.hazelcast.version>
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
         <httpclient.version>5.5.2</httpclient.version>
         <jackson-annotations.version>2.21</jackson-annotations.version>
@@ -85,11 +90,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
@@ -117,6 +117,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
@@ -340,7 +345,14 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
+        <!-- Hazelcast for session-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-hazelcast</artifactId>
+            <version>${spring.session.hazelcast.version}</version>
+        </dependency>
     </dependencies>
+
 
     <build>
         <finalName>db-web-ui-${project.version}</finalName>

@@ -532,7 +532,9 @@ export class WhoisResourcesService {
     public toPlaintext(attributes: IAttributeModel[]) {
         let result = '';
         (attributes ?? []).forEach((attr: IAttributeModel) => {
-            result += attr.name + ':' + WhoisResourcesService.repeat(' ', Math.max(0, 20 - attr.name.length)) + attr.value?.trim() + '\n';
+            const value = attr.value?.trim() ?? '';
+            const comment = attr.comment?.trim();
+            result += attr.name + ':' + WhoisResourcesService.repeat(' ', Math.max(0, 20 - attr.name.length)) + value + (comment ? '# ' + comment : '') + '\n';
         });
         return result;
     }

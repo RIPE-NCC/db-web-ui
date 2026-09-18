@@ -1,7 +1,7 @@
 package net.ripe.whois.services;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.ripe.whois.SsoTokenFilter;
+import net.ripe.whois.web.api.OidcTokenExtractor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,7 +24,8 @@ public class WhoisSyncupdatesServiceTest {
 
     private static final String EXPECTED_MOCK_SYNCUPDATE_URL = "http://localhost:8090?clientIp=127.0.0.1";
 
-    private final WhoisSyncupdatesService whoisSyncupdatesService = new WhoisSyncupdatesService(restTemplate, MOCK_SYNCUPDATE_URL);
+    private static final String ACCESS_TOKEN = "u00dCkpOmYzHek0GegdqFA00";
+    private WhoisSyncupdatesService whoisSyncupdatesService;
 
     private MockRestServiceServer mockServer;
 
@@ -49,6 +50,9 @@ public class WhoisSyncupdatesServiceTest {
 
     @BeforeEach
     public void setUp() {
+        final OidcTokenExtractor oidcTokenExtractor = Mockito.mock(OidcTokenExtractor.class);
+        when(oidcTokenExtractor.extract()).thenReturn(ACCESS_TOKEN);
+        this.whoisSyncupdatesService = new WhoisSyncupdatesService(restTemplate, oidcTokenExtractor, MOCK_SYNCUPDATE_URL);
         mockServer = MockRestServiceServer.createServer(restTemplate);
         httpHeaders = new HttpHeaders();
         request = Mockito.mock(HttpServletRequest.class);
@@ -106,20 +110,14 @@ public class WhoisSyncupdatesServiceTest {
         mockServer.expect(requestTo(EXPECTED_MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
 
-        final String response = whoisSyncupdatesService.proxy(rpslObject, request,
-                httpHeaders).toString();
+        final String response = whoisSyncupdatesService.proxy(rpslObject, request, httpHeaders).toString();
 
         assertThat(response, containsString(expectedResponse));
     }
 
     @Test
     public void shouldForLoggedInMntReturnSuccessMessage() {
-        httpHeaders.add("Cookie", "pref-ui-mode=textupdates; _ga=GA1.3.1221467399.1496843568; " +
-                "pref-syncupdates-mode=rich; uslk_e=MjFiZjlkMWYtYTE1Mi1hNmFiLWZmOGUtMDFkNTYyYWRiMzIz~~~~~~~2~; " +
-                "activeMembershipId=org%3AORG-TEST1234-RIPE; cookies-accepted=accepted; " + SsoTokenFilter.SSO_TOKEN_KEY + "=u00dCkpOmYzHek0GegdqFA00; " +
-                "crowd.ripe.hint=true; uslk_s=Idle%3B0~~0~0~0~~\n");
-
-        final String rpslObjectIsvMnt =
+         final String rpslObjectIsvMnt =
                 "organisation:    ORG-TEST1234-RIPE\n" +
                 "org-name:        Shw\n" +
                 "org-type:        OTHER\n" +

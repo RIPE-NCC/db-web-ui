@@ -17,6 +17,15 @@ JAVA_OPTS="
     -Dspring.profiles.active=${PROFILE}
     -Dspring.config.location=classpath:/config/,optional:file:///app/resources/,optional:file:///app/resources/menu.properties"
 
+# Hazelcast OPTS
+JAVA_OPTS="${JAVA_OPTS}
+  --add-modules java.se
+  --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
+  --add-opens java.base/java.lang=ALL-UNNAMED
+  --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+  --add-opens java.management/sun.management=ALL-UNNAMED
+  --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
+
 # Add JMX exporter if enabled
 if [ "${ENABLE_JMX_EXPORTER}" = "true" ]; then
     JAVA_OPTS="${JAVA_OPTS} -javaagent:/app/jmx_prometheus_javaagent.jar=${JMX_EXPORTER_PORT}:/app/jmx_config.yml"

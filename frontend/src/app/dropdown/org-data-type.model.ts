@@ -10,15 +10,15 @@ export interface IUserInfoRegistration extends IUserInfoOrganisation {
     regId: string;
 }
 
-export interface IUserInfo {
-    active: boolean;
+export type UserOidc = {
+    name: string;
+    email: string;
     username: string;
-    displayName: string;
-    uuid: string;
-}
+    photo: string;
+};
 
-export interface IUserInfoResponseData {
-    user: IUserInfo;
+export interface UserOrgsAndRegistrations {
+    user: UserOidc;
     organisations: IUserInfoOrganisation[];
     members: IUserInfoRegistration[];
 }

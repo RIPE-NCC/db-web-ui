@@ -28,7 +28,7 @@ public class HealthCheckIntegrationTest extends AbstractIntegrationTest {
     public void applicationAcceptingTraffic() {
         AvailabilityChangeEvent.publish(applicationContext, ReadinessState.ACCEPTING_TRAFFIC);
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class);
+        final ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is("OK"));
@@ -38,7 +38,7 @@ public class HealthCheckIntegrationTest extends AbstractIntegrationTest {
     public void applicationRefusingTraffic() {
         AvailabilityChangeEvent.publish(applicationContext, ReadinessState.REFUSING_TRAFFIC);
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class);
+        final ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.SERVICE_UNAVAILABLE));
         assertThat(response.getBody(), is("DISABLED"));
@@ -48,7 +48,7 @@ public class HealthCheckIntegrationTest extends AbstractIntegrationTest {
     public void loadBalancerDown() {
         loadBalancerEnabler.down();
 
-        final ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class);
+        final ResponseEntity<String> response = get("/db-web-ui/api/healthcheck", String.class, null);
 
         assertThat(response.getStatusCode(), is(HttpStatus.SERVICE_UNAVAILABLE));
         assertThat(response.getBody(), is("DISABLED"));

@@ -1,7 +1,7 @@
-import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr, withXsrfConfiguration } from '@angular/common/http';
 import { importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 
@@ -10,8 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { MatLineModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components (standalone ones)
 import { AppComponent } from './app/app.component';
@@ -24,7 +22,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationGuard } from './app/authentication-guard.service';
 import { EmailConfirmationService } from './app/emailconfirmation/email-confirmation.service';
 import { PropertiesService } from './app/properties.service';
-import { SessionInfoService } from './app/sessioninfo/session-info.service';
 import { SyncupdatesService } from './app/syncupdates/syncupdates.service';
 import { UnsubscribeService } from './app/unsubscribe/unsubscribe.service';
 
@@ -32,7 +29,6 @@ import { UnsubscribeService } from './app/unsubscribe/unsubscribe.service';
 import { ErrorInterceptor } from './app/interceptor/error.interceptor';
 import { HeaderInterceptor } from './app/interceptor/header.interceptor';
 import { MetaDataCleanerInterceptor } from './app/interceptor/meta-data-cleaner.interceptor';
-import { SessionInterceptor } from './app/sessioninfo/session.interceptor';
 
 import '@ripencc-portal/web-components';
 
@@ -46,7 +42,13 @@ bootstrapApplication(AppComponent, {
         provideRouter(appRoutes),
 
         // HTTP with interceptors
-        provideHttpClient(withXhr(), withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor, SessionInterceptor])),
+        provideHttpClient(
+            withXhr(),
+            withXsrfConfiguration({
+                cookieName: 'DBCSRFTOKEN', // needs to align OidcUtils.OIDC_CSRF_COOKIE_NAME
+            }),
+            withInterceptors([MetaDataCleanerInterceptor, HeaderInterceptor, ErrorInterceptor]),
+        ),
 
         // Animations
         provideAnimations(),
@@ -62,7 +64,6 @@ bootstrapApplication(AppComponent, {
         EmailConfirmationService,
         UnsubscribeService,
         PropertiesService,
-        SessionInfoService,
 
         provideNativeDateAdapter(),
 

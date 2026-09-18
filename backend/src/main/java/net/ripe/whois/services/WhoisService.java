@@ -8,6 +8,7 @@ import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.ip.Ipv4Resource;
 import net.ripe.db.whois.common.ip.Ipv6Resource;
+import net.ripe.whois.web.api.OidcTokenExtractor;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import javax.annotation.Nullable;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -37,19 +38,21 @@ import java.util.StringJoiner;
 public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
-
     private final RestTemplate restTemplate;
     private final WhoisProxy whoisProxy;
+    private final OidcTokenExtractor oidcTokenExtractor;
     private final String apiUrl;
 
     @Autowired
     public WhoisService(
             final RestTemplate restTemplate,
             final WhoisProxy whoisProxy,
+            final OidcTokenExtractor oidcTokenExtractor,
             @Value("${rest.api.ripeUrl}") final String apiUrl) {
         this.restTemplate = restTemplate;
         this.whoisProxy = whoisProxy;
         this.apiUrl = apiUrl;
+        this.oidcTokenExtractor = oidcTokenExtractor;
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final HttpServletResponse response, @Nullable final String requestBody, final HttpHeaders requestHeaders) {
@@ -57,6 +60,8 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         requestHeaders.remove(HttpHeaders.ACCEPT_ENCODING);
         requestHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
         requestHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        oidcTokenExtractor.setAuthorizationHeader(requestHeaders);
+
         return handleErrors(() -> stream(request, response, requestBody, requestHeaders), LOGGER);
     }
 

@@ -17,7 +17,6 @@ import { QueryParametersService } from '../../../src/app/query/query-parameters.
 import { QueryComponent } from '../../../src/app/query/query.component';
 import { QueryService } from '../../../src/app/query/query.service';
 import { TemplateComponent } from '../../../src/app/query/templatecomponent/template.component';
-import { SessionInfoService } from '../../../src/app/sessioninfo/session-info.service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { IWhoisResponseModel } from '../../../src/app/shared/whois-response-type.model';
 import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
@@ -186,14 +185,14 @@ describe('QueryComponent', () => {
                 QueryFlagsService,
                 PropertiesService,
                 CookieService,
-                SessionInfoService,
                 {
                     provide: UserInfoService,
                     useValue: {
-                        getUserOrgsAndRoles: () => of(),
+                        getLoggedInOidc: () => of(),
                         isLoggedIn: () => true,
-                        getSelectedOrganisation: () => of(),
-                        userLoggedIn$: of(),
+                        isUserLoggedIn: () => of(true),
+                        getUserOrgsAndRoles: () => of(),
+                        userOrgsAndRoles$: of(),
                     },
                 },
                 provideHttpClient(withXhr(), withInterceptorsFromDi()),

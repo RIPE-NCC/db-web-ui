@@ -1,10 +1,12 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
+import { UserOidc } from 'src/app/dropdown/org-data-type.model';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
 import { SelectComponent } from '../../../../src/app/updatesweb/select.component';
@@ -23,7 +25,6 @@ describe('SelectController', () => {
     let component: SelectComponent;
     let paramMapMock: ParamMap;
     let queryParamMock: ParamMap;
-    let preferencesServiceMock: any;
     let routerMock: any;
     let modalMock: any;
     let refs: string[] = [];
@@ -197,10 +198,23 @@ describe('SelectController', () => {
         },
     };
 
+    const userSignal = signal<UserOidc | null>(null);
+
+    const userInfoServiceMock = {
+        user: userSignal,
+        isLoggedIn: () => true,
+    };
+
+    const USER_INFO_DATA_DUMMY = {
+        username: 'TSTADMINC-RIPE',
+        email: 'test@ripe.net',
+        name: 'Test User',
+        photo: 'aaaa-bbbb-cccc-dddd',
+    };
+
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
-        preferencesServiceMock = jasmine.createSpyObj('PreferenceService', ['isTextMode', 'setTextMode', 'isWebMode', 'setWebMode']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}) });
@@ -209,7 +223,7 @@ describe('SelectController', () => {
             imports: [FormsModule, SelectComponent],
             providers: [
                 { provide: WhoisMetaService, useValue: whoisMetaServiceMock },
-                UserInfoService,
+                { provide: UserInfoService, useValue: userInfoServiceMock },
                 CookieService,
                 PropertiesService,
                 { provide: Router, useValue: routerMock },
@@ -227,6 +241,7 @@ describe('SelectController', () => {
             ],
         });
         httpMock = TestBed.inject(HttpTestingController);
+        userSignal.set(USER_INFO_DATA_DUMMY);
         componentFixture = TestBed.createComponent(SelectComponent);
         component = componentFixture.componentInstance;
     });
@@ -235,10 +250,12 @@ describe('SelectController', () => {
         httpMock.verify();
     });
 
-    it('should navigate to sso if currently logged out', () => {
+    it('should navigate to loggin if currently logged out', () => {
+        spyOn(userInfoServiceMock, 'isLoggedIn').and.returnValue(false);
+        componentFixture = TestBed.createComponent(SelectComponent);
+        component = componentFixture.componentInstance;
         componentFixture.detectChanges();
-        httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush('', { statusText: 'error', status: 401 });
-        expect(component.loggedIn).toBeUndefined();
+        expect(component.loggedIn).toBeFalsy();
 
         component.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
 
@@ -250,14 +267,6 @@ describe('SelectController', () => {
 
     it('should navigate to create screen when logged in', () => {
         componentFixture.detectChanges();
-        httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush({
-            user: {
-                username: 'TSTADMINC-RIPE',
-                displayName: 'Test User',
-                uuid: 'aaaa-bbbb-cccc-dddd',
-                active: true,
-            },
-        });
         expect(component.loggedIn).toBeTruthy();
 
         component.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
@@ -269,14 +278,6 @@ describe('SelectController', () => {
 
     it('should navigate to create person maintainer screen when logged in and selected', () => {
         componentFixture.detectChanges();
-        httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush({
-            user: {
-                username: 'TSTADMINC-RIPE',
-                displayName: 'Test User',
-                uuid: 'aaaa-bbbb-cccc-dddd',
-                active: true,
-            },
-        });
 
         expect(component.loggedIn).toBeTruthy();
 
@@ -287,14 +288,6 @@ describe('SelectController', () => {
 
     it('should navigate to create self maintained mntner screen when logged in', () => {
         componentFixture.detectChanges();
-        httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush({
-            user: {
-                username: 'TSTADMINC-RIPE',
-                displayName: 'Test User',
-                uuid: 'aaaa-bbbb-cccc-dddd',
-                active: true,
-            },
-        });
 
         expect(component.loggedIn).toBeTruthy();
 

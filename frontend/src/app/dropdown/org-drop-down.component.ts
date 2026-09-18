@@ -2,9 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/cor
 import { FormsModule } from '@angular/forms';
 import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { PropertiesService } from '../properties.service';
-import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { UserInfoService } from '../userinfo/user-info.service';
-import { IUserInfoOrganisation, IUserInfoResponseData } from './org-data-type.model';
+import { IUserInfoOrganisation, UserOrgsAndRegistrations } from './org-data-type.model';
 import { OrgDropDownSharedService } from './org-drop-down-shared.service';
 
 @Component({
@@ -18,7 +17,6 @@ export class OrgDropDownComponent implements OnInit {
     private userInfoService = inject(UserInfoService);
     private orgDropDownSharedService = inject(OrgDropDownSharedService);
     private properties = inject(PropertiesService);
-    private sessionInfoService = inject(SessionInfoService);
 
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];
@@ -27,27 +25,26 @@ export class OrgDropDownComponent implements OnInit {
     public sessionExpire: boolean = false;
 
     constructor() {
-        this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
+        this.userInfoService.userOrgsAndRoles$.subscribe((userInfo: UserOrgsAndRegistrations) => {
             this.initOrgsAndMemebers(userInfo);
-        });
-        this.sessionInfoService.expiredSession$.subscribe((isSessionExpired: boolean) => {
-            this.sessionExpire = isSessionExpired;
         });
     }
 
     public ngOnInit() {
         this.trainingEnv = this.properties.isTrainingEnv();
-        this.userInfoService.getUserOrgsAndRoles().subscribe({
-            next: (userInfo: IUserInfoResponseData): void => {
-                if (!userInfo) {
-                    return;
-                }
-                this.initOrgsAndMemebers(userInfo);
-            },
-            error: (err: Error): void => {
-                console.warn('err', err);
-            },
-        });
+        if (this.userInfoService.isLoggedIn()) {
+            this.userInfoService.getUserOrgsAndRoles().subscribe({
+                next: (userInfo: UserOrgsAndRegistrations): void => {
+                    if (!userInfo) {
+                        return;
+                    }
+                    this.initOrgsAndMemebers(userInfo);
+                },
+                error: (err: Error): void => {
+                    console.warn('err', err);
+                },
+            });
+        }
     }
 
     public organisationSelected(event: any): void {
@@ -71,7 +68,7 @@ export class OrgDropDownComponent implements OnInit {
         });
     }
 
-    private initOrgsAndMemebers(userInfo: IUserInfoResponseData) {
+    private initOrgsAndMemebers(userInfo: UserOrgsAndRegistrations) {
         const orgs: IUserInfoOrganisation[] = [];
         const members: IUserInfoOrganisation[] = [];
         if (Array.isArray(userInfo.organisations)) {

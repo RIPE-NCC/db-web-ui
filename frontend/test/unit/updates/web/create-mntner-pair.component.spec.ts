@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
@@ -8,6 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
+import { UserOidc } from 'src/app/dropdown/org-data-type.model';
 import { PropertiesService } from '../../../../src/app/properties.service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { CreateService } from '../../../../src/app/updatesweb/create.service';
@@ -30,6 +32,12 @@ describe('CreateMntnerPairComponent', () => {
     const SSO_EMAIL = 'tester@ripe.net';
     const ROLE_NAME = 'ROLE-TEST';
     const ROLE_EMAIL = 'TSTADMINC-RIPE';
+    const userSignal = signal<UserOidc | null>(null);
+
+    const userInfoServiceMock = {
+        user: userSignal,
+        isLoggedIn: () => true,
+    };
 
     describe('in pair with person object', () => {
         beforeEach(() => {
@@ -48,7 +56,7 @@ describe('CreateMntnerPairComponent', () => {
                     LinkService,
                     CookieService,
                     WhoisResourcesService,
-                    UserInfoService,
+                    { provide: UserInfoService, useValue: userInfoServiceMock },
                     { provide: Location, useValue: { path: () => '' } },
                     { provide: Router, useValue: routerMock },
                     {
@@ -67,6 +75,7 @@ describe('CreateMntnerPairComponent', () => {
                 ],
             });
             httpMock = TestBed.inject(HttpTestingController);
+            userSignal.set(USER_INFO_DATA_DUMMY);
             fixture = TestBed.createComponent(CreateMntnerPairComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();
@@ -77,15 +86,14 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should extract data from url', () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-
             expect(component.source).toBe(SOURCE);
         });
 
-        it('should be able to handle failing user-info-service', () => {
-            httpMock
-                .expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' })
-                .flush(WHOIS_OBJECT_WITHE_ERRORS_DUMMY, { status: 403, statusText: 'error' });
+        it('should handle when user is not authenticated', () => {
+            spyOn(userInfoServiceMock, 'isLoggedIn').and.returnValue(false);
+            fixture = TestBed.createComponent(CreateMntnerPairComponent);
+            component = fixture.componentInstance;
+            fixture.detectChanges();
 
             component.submit();
 
@@ -96,8 +104,6 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should validate before submitting', () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-
             component.submit();
 
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'person').$$error).toEqual(
@@ -115,8 +121,6 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should pre-populate and submit ok', async () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-
             component.submit();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'person', PERSON_NAME);
@@ -158,8 +162,6 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should handle submit failure', async () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-
             component.submit();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'person', 'Titus Tester');
@@ -219,7 +221,7 @@ describe('CreateMntnerPairComponent', () => {
                     LinkService,
                     CookieService,
                     WhoisResourcesService,
-                    UserInfoService,
+                    { provide: UserInfoService, useValue: userInfoServiceMock },
                     { provide: Location, useValue: { path: () => '' } },
                     { provide: Router, useValue: routerMock },
                     {
@@ -238,6 +240,7 @@ describe('CreateMntnerPairComponent', () => {
                 ],
             });
             httpMock = TestBed.inject(HttpTestingController);
+            userSignal.set(USER_INFO_DATA_DUMMY);
             fixture = TestBed.createComponent(CreateMntnerPairComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();
@@ -248,15 +251,14 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should extract data from url', () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-
             expect(component.source).toBe(SOURCE);
         });
 
-        it('should be able to handle failing user-info-service', () => {
-            httpMock
-                .expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' })
-                .flush(WHOIS_OBJECT_WITHE_ERRORS_DUMMY, { status: 403, statusText: 'error' });
+        it('should handle when user is not authenticated', () => {
+            spyOn(userInfoServiceMock, 'isLoggedIn').and.returnValue(false);
+            fixture = TestBed.createComponent(CreateMntnerPairComponent);
+            component = fixture.componentInstance;
+            fixture.detectChanges();
 
             component.submit();
 
@@ -267,8 +269,6 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should validate before submitting', () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-
             component.submit();
 
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, 'role').$$error).toEqual(
@@ -286,7 +286,7 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should pre-populate and submit ok', async () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
+            fixture.detectChanges();
 
             component.submit();
 
@@ -328,8 +328,6 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should handle submit failure', async () => {
-            httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush(USER_INFO_DATA_DUMMY);
-
             component.submit();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, 'role', ROLE_NAME);
@@ -417,12 +415,10 @@ describe('CreateMntnerPairComponent', () => {
     };
 
     const USER_INFO_DATA_DUMMY = {
-        user: {
-            username: SSO_EMAIL,
-            displayName: 'Tester X',
-            uuid: '93efb5ac-81f7-40b1-aac7-f2ff497b00e7',
-            active: true,
-        },
+        username: SSO_EMAIL,
+        email: SSO_EMAIL,
+        name: 'Tester X',
+        photo: 'cef5372c-ac38-4bde-863d-2e7b5b44e8c0',
     };
 
     const PERSON_MNTNER_PAIR_DUMMY = {

@@ -38,6 +38,7 @@ public class WhoisProxyController extends ApiController {
             final HttpServletResponse response,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) {
+
         return this.proxyRestCalls(request, response, body, headers);
     }
     @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -46,9 +47,8 @@ public class WhoisProxyController extends ApiController {
             final HttpServletResponse response,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) {
-
         removeUnnecessaryHeaders(headers);
-
         return whoisService.bypass(request, response, body, headers);
     }
+
 }

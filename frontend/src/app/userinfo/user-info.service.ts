@@ -1,41 +1,54 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, inject } from '@angular/core';
+import { computed, EventEmitter, inject, Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, share, timeout } from 'rxjs/operators';
-import { IUserInfoOrganisation, IUserInfoResponseData } from '../dropdown/org-data-type.model';
+import { catchError, map, share, tap, timeout } from 'rxjs/operators';
+import { IUserInfoOrganisation, UserOidc, UserOrgsAndRegistrations } from '../dropdown/org-data-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService {
     private http = inject(HttpClient);
     private cookies = inject(CookieService);
 
-    private userInfo: IUserInfoResponseData;
+    private userInfo: UserOrgsAndRegistrations;
     private selectedOrganisation: IUserInfoOrganisation;
-    public userLoggedIn$: EventEmitter<IUserInfoResponseData>;
+    userOrgsAndRoles$: EventEmitter<UserOrgsAndRegistrations>;
+
+    user = signal<UserOidc | null>(null);
+
+    isLoggedIn = computed(() => !!this.user());
 
     constructor() {
-        this.userLoggedIn$ = new EventEmitter();
+        this.userOrgsAndRoles$ = new EventEmitter();
     }
 
-    public isLoggedIn(): boolean {
-        return !!this.userInfo;
+    getLoggedInOidc() {
+        return this.http.get('api/user-oidc/me').pipe(
+            timeout(30000),
+            share(),
+            tap((user: UserOidc) => this.user.set(user)),
+            catchError((error: any) => {
+                console.error('authenticate error:' + JSON.stringify(error));
+                if (error.status === 401) {
+                    // User is not logged in
+                    this.user.set(null);
+                }
+                return throwError(() => error);
+            }),
+        );
     }
 
-    public removeUserInfo() {
-        this.userInfo = undefined;
-    }
-
-    public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
+    getUserOrgsAndRoles(): Observable<UserOrgsAndRegistrations> {
         if (this.userInfo) {
             return of(this.userInfo);
         } else {
+            //send access token
             return this.http.get('api/whois-internal/api/user/info').pipe(
                 timeout(30000),
                 share(),
-                map((response: IUserInfoResponseData) => {
+                map((response: UserOrgsAndRegistrations) => {
                     this.userInfo = response;
-                    this.userLoggedIn$.emit(response);
+                    this.userOrgsAndRoles$.emit(response);
                     return this.userInfo;
                 }),
                 catchError((error: any) => {
@@ -53,7 +66,7 @@ export class UserInfoService {
     public getSelectedOrganisation(): Observable<IUserInfoOrganisation> {
         const storedSelectionId = this.getSelectedOrgFromCookie();
         return this.getUserOrgsAndRoles().pipe(
-            map((userInfo: IUserInfoResponseData) => {
+            map((userInfo: UserOrgsAndRegistrations) => {
                 if (storedSelectionId) {
                     if (Array.isArray(userInfo.organisations)) {
                         for (const org of userInfo.organisations) {
@@ -90,7 +103,7 @@ export class UserInfoService {
         );
     }
 
-    public setSelectedOrganisation(selected: any) {
+    setSelectedOrganisation(selected: any) {
         this.selectedOrganisation = selected;
         this.cookies.set(
             'activeMembershipId',

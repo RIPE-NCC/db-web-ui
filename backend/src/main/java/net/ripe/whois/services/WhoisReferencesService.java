@@ -1,5 +1,6 @@
 package net.ripe.whois.services;
 
+import net.ripe.whois.web.api.OidcTokenExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.Nullable;
 import java.net.URI;
 
 @Service
@@ -20,14 +20,16 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisReferencesService.class);
 
     private static final int MAX_RESULT_NUMBER = 5;
-
+    private final OidcTokenExtractor oidcTokenExtractor;
     private final RestTemplate restTemplate;
     private final String referencesApiUrl;
 
     @Autowired
-    public WhoisReferencesService(final RestTemplate restTemplate, @Value("${rest.api.ripeUrl}") final String restApiUrl) {
+    public WhoisReferencesService(final RestTemplate restTemplate, final OidcTokenExtractor oidcTokenExtractor,
+                                  @Value("${rest.api.ripeUrl}") final String restApiUrl) {
         this.restTemplate = restTemplate;
         this.referencesApiUrl = buildReferencesApiUri(restApiUrl).toString();
+        this.oidcTokenExtractor = oidcTokenExtractor;
     }
 
     private URI buildReferencesApiUri(final String restApiUrl) {
@@ -67,6 +69,7 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
     }
 
     public ResponseEntity<String> createReferencedObjects(final String source, final String body, final HttpHeaders headers) {
+        oidcTokenExtractor.setAuthorizationHeader(headers);
         return handleErrors(() -> restTemplate.exchange(buildCreateUri(source),
                 HttpMethod.POST,
                 new HttpEntity<>(body, headers),
@@ -88,6 +91,7 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
     }
 
     public ResponseEntity<String> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, final HttpHeaders headers) {
+        oidcTokenExtractor.setAuthorizationHeader(headers);
         return handleErrors(() -> restTemplate.exchange(buildDeleteUri(source, objectType, name, reason),
                 HttpMethod.DELETE,
                 new HttpEntity<String>(headers),

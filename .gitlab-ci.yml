@@ -2,7 +2,7 @@ image: $WHOIS_BUILD_IMAGE
 
 variables:
     # Runs all jobs and is the build-stage base in docker/Dockerfile (single pin)
-    WHOIS_BUILD_IMAGE: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:v0.0.15
+    WHOIS_BUILD_IMAGE: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:v0.0.16
     MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
     PROJECT_NAME: "db-web-ui"
     ARTIFACT_NAME: "db-web-ui"

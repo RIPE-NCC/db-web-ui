@@ -1,12 +1,12 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { SessionService } from 'src/app/sessioninfo/session.service';
 import supportedBrowsers from '../../assets/supportedBrowsers.js';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
 import { OrgDropDownComponent } from '../dropdown/org-drop-down.component';
 import { ActiveMenu, MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
-import { SessionInfoService } from '../sessioninfo/session-info.service';
 import { AlertBannersComponent } from '../shared/alert/alert-banners.component';
 import { LabelPipe } from '../shared/label.pipe';
 import { ReleaseNotificationService } from '../shared/release-notification.service';
@@ -25,8 +25,8 @@ export class MainContainerComponent implements OnInit {
     private releaseNotificationService = inject(ReleaseNotificationService);
     private router = inject(Router);
     private location = inject(Location);
-    private sessionInfoService = inject(SessionInfoService);
     private menuService = inject(MenuService);
+    private sessionService = inject(SessionService);
 
     isDesktopView: boolean;
     collapsedMenu: boolean = false;
@@ -39,20 +39,17 @@ export class MainContainerComponent implements OnInit {
     browserUnsuportedText = `Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.`;
 
     constructor() {
-        this.sessionInfoService.expiredSession$.subscribe((raiseSessionExpireBanner: boolean) => {
-            this.loginUrl = `${this.properties.LOGIN_URL}?originalUrl=${encodeURIComponent(window.location.href)}`;
-            this.showSessionExpireBanner = raiseSessionExpireBanner;
-
-            if (raiseSessionExpireBanner) {
-                const userLogin = document.querySelector('user-login');
-                userLogin?.dispatchEvent(new Event('access-logout'));
-            }
-        });
-
         this.skipHash();
     }
 
     ngOnInit() {
+        this.sessionService.expiredSession$.subscribe(() => {
+            this.loginUrl = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
+            this.showSessionExpireBanner = true;
+
+            const userLogin = document.querySelector('user-login');
+            userLogin?.dispatchEvent(new Event('access-logout'));
+        });
         this.activeMenu = this.menuService.activeMenu();
         this.isBrowserSupported = supportedBrowsers.test(navigator.userAgent);
         this.mobileOrDesktopView();

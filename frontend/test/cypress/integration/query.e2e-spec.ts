@@ -10,10 +10,6 @@ describe('Query scenario', () => {
         queryPage.visit();
     });
 
-    after(() => {
-        cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
-    });
-
     ['--list-versions', '--show-version', '--diff-versions'].forEach((flag) => {
         it(`should show a single error banner for ${flag} and not stack`, () => {
             queryPage.typeSearchTerm(`${flag} AS9777`).clickOnSearchButton();
@@ -158,7 +154,20 @@ describe('Query scenario', () => {
     });
 
     it('should show "Login to update" when user is not logged', () => {
-        cy.changeJsonResponseFile(userNotLoggedIn, userInfoFile);
+        cy.intercept('GET', 'db-web-ui/api/user-oidc/me', {
+            statusCode: 401,
+            body: {
+                response: {
+                    status: 401,
+                    message: 'Unauthorized',
+                },
+            },
+        }).as('getProfile');
+
+        cy.intercept('GET', '**/oauth2/authorization/keycloak**', (req) => {
+            req.reply({ statusCode: 302, headers: { Location: '/db-web-ui/?silentLoginFailed=true' } });
+        }).as('silentLogin');
+
         queryPage.visit();
         queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
         queryPage.clickOnSearchButton();
@@ -166,7 +175,6 @@ describe('Query scenario', () => {
     });
 
     it('should show "Update object" when user is logged', () => {
-        cy.changeJsonResponseFile(userWithAllRoles, userInfoFile);
         queryPage.visit();
         queryPage.typeSearchTerm('193.0.0.0').clickOnSearchButton().clickOnAdvancedFilterDropdown().clickCheckboxShowFullDetails().clickCheckboxDoNotRetrieve();
         queryPage.clickOnSearchButton();
