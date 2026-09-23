@@ -3,6 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { IResourceOverviewResponseModel, IResourceTickets } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 
 const TEST_ORG_ID = 'ORG-ITEST-RIPE';
 
@@ -75,7 +76,7 @@ describe('ResourcesDataService', () => {
     });
 
     it('should populate IPv4 Resources', () => {
-        resourcesDataService.fetchResources(TEST_ORG_ID, 'inetnum', false).subscribe((resp) => {
+        resourcesDataService.getResources(TEST_ORG_ID, ObjectTypesEnum.INETNUM, false).subscribe((resp) => {
             expect(resp).toBe(responseResourceOverviewResponseModel);
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/resources?org-id=ORG-ITEST-RIPE&type=inetnum' });
