@@ -1,8 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { MatIcon } from '@angular/material/icon';
+import { MatSuffix } from '@angular/material/input';
+import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin, of, switchMap } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { NodeHealthStatus } from 'src/app/myresources/health-check-card/node-health.model';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { NodePreviewComponent } from 'src/app/myresources/tree/node-preview.component';
 import { Tree, TreeNode } from 'src/app/myresources/tree/tree.component';
@@ -48,6 +53,9 @@ export enum ResourceType {
         MatButtonToggleModule,
         Tree,
         NodePreviewComponent,
+        MatTabLabel,
+        MatSuffix,
+        MatIcon,
     ],
 })
 export class ResourcesComponent implements OnDestroy {
@@ -79,6 +87,17 @@ export class ResourcesComponent implements OnDestroy {
     selectedTreeNode = signal<TreeNode | undefined>(undefined);
     showNodePreview: boolean = true;
     readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
+    readonly hasIpv4Issues = computed(
+        () => this.nodeHealthService.nodes()[ObjectTypesEnum.INETNUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
+    );
+
+    readonly hasIpv6Issues = computed(
+        () => this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
+    );
+
+    readonly hasAsnIssues = computed(
+        () => this.nodeHealthService.nodes()[ObjectTypesEnum.AUT_NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
+    );
 
     private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
@@ -224,29 +243,34 @@ export class ResourcesComponent implements OnDestroy {
             this.subscriptionFetchResources.unsubscribe();
         }
         this.loading = true;
+
         this.subscriptionFetchResources = this.resourcesDataService
-            .fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
-            .subscribe({
-                next: (response: IResourceOverviewResponseModel) => {
+            .getResources(this.selectedOrg.orgObjectId, this.lastTab as ObjectTypesEnum, this.isShowingSponsored)
+            .pipe(
+                tap((response: IResourceOverviewResponseModel) => {
+                    this.setResources(this.lastTab as ObjectTypesEnum, response.resources);
+
+                    // First/selected tab is ready
                     this.loading = false;
-                    switch (this.lastTab) {
-                        case ObjectTypesEnum.INETNUM:
-                            this.ipv4Resources = response.resources;
-                            break;
-                        case ObjectTypesEnum.INET6NUM:
-                            this.ipv6Resources = response.resources;
-                            break;
-                        case ObjectTypesEnum.AUT_NUM:
-                            this.asnResources = response.resources;
-                            break;
-                        default:
-                            this.fail = true;
-                            this.reason = 'There was problem reading resources please try again';
-                            console.error('Error. lastTab have wrong value');
-                    }
-                },
+                }),
+                switchMap(() => {
+                    const remainingTypes = [ObjectTypesEnum.INETNUM, ObjectTypesEnum.INET6NUM, ObjectTypesEnum.AUT_NUM].filter((type) => type !== this.lastTab);
+
+                    return forkJoin(
+                        remainingTypes.map((type) =>
+                            this.resourcesDataService.getResources(this.selectedOrg.orgObjectId, type, this.isShowingSponsored).pipe(
+                                tap((response) => this.setResources(type, response.resources)),
+                                catchError((error) => {
+                                    console.error(`Failed to load ${type}`, error);
+                                    return of(null);
+                                }),
+                            ),
+                        ),
+                    );
+                }),
+            )
+            .subscribe({
                 error: (error: any) => {
-                    // if it's not authentication error
                     if (error.status !== 401 && error.status !== 403) {
                         this.fail = true;
                         this.loading = false;
@@ -254,6 +278,27 @@ export class ResourcesComponent implements OnDestroy {
                     }
                 },
             });
+    }
+
+    private setResources(type: ObjectTypesEnum, resources: IResourceScreenItem[]): void {
+        switch (type) {
+            case ObjectTypesEnum.INETNUM:
+                this.ipv4Resources = resources;
+                break;
+
+            case ObjectTypesEnum.INET6NUM:
+                this.ipv6Resources = resources;
+                break;
+
+            case ObjectTypesEnum.AUT_NUM:
+                this.asnResources = resources;
+                break;
+
+            default:
+                this.fail = true;
+                this.reason = 'There was problem reading resources please try again';
+                console.error('Error. Wrong resource type:', type);
+        }
     }
 
     protected readonly ResourceType = ResourceType;

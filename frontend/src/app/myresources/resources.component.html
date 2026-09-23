@@ -39,7 +39,12 @@
                 (selectedTabChange)="tabClicked($event)"
                 [selectedIndex]="lastTabIndex"
             >
-                <mat-tab label="IPv4" id="inetnum">
+                <mat-tab id="inetnum">
+                    <ng-template mat-tab-label>
+                        IPv4 @if (hasIpv4Issues()) {
+                        <mat-icon matSuffix class="fa-solid fa-circle-small issue"></mat-icon>
+                        }
+                    </ng-template>
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
                     } @else if (loading === false && ipv4Resources.length === 0) {
@@ -58,7 +63,12 @@
                     <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
                     } }
                 </mat-tab>
-                <mat-tab label="IPv6" id="inet6num">
+                <mat-tab id="inet6num">
+                    <ng-template mat-tab-label>
+                        IPv6 @if (hasIpv6Issues()) {
+                        <mat-icon matSuffix class="fa-solid fa-circle-small issue"></mat-icon>
+                        }
+                    </ng-template>
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
                     } @else if (loading === false && ipv6Resources.length === 0) {
@@ -78,6 +88,11 @@
                     } }
                 </mat-tab>
                 <mat-tab label="ASN" id="aut-num">
+                    <ng-template mat-tab-label>
+                        ASN @if (hasAsnIssues()) {
+                        <mat-icon matSuffix class="fa-solid fa-circle-small issue"></mat-icon>
+                        }
+                    </ng-template>
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
                     } @else if (loading === false && asnResources.length === 0) {

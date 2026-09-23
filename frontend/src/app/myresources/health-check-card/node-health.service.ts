@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { from, of } from 'rxjs';
 import { catchError, mergeMap, tap } from 'rxjs/operators';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { ResourcesDataService } from '../resources-data.service';
 import { NodeHealthStatus } from './node-health.model';
 
@@ -55,6 +56,10 @@ export class NodeHealthService {
 
     reset(): void {
         this.nodes.set({});
+    }
+
+    refreshAll(): void {
+        [ObjectTypesEnum.INETNUM, ObjectTypesEnum.INET6NUM, ObjectTypesEnum.AUT_NUM].forEach((type) => this.refresh(type));
     }
 
     refresh(treeType: string): void {

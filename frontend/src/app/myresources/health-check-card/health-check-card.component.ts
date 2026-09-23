@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { NodeHealthStatus } from './node-health.model';
@@ -12,25 +12,19 @@ import { NodeHealthStatus } from './node-health.model';
 export class HealthCheckCardComponent {
     private nodeHealthService = inject(NodeHealthService);
 
-    treeType = input.required<string>();
+    readonly nodes = computed(() => Object.values(this.nodeHealthService.nodes()).flat());
 
-    readonly currentNodes = computed(() => this.nodeHealthService.nodes()[this.treeType()] ?? []);
+    readonly checkingCount = computed(() => this.nodes().filter((node) => node.healthStatus() === NodeHealthStatus.NOT_CHECKED).length);
 
-    readonly checkingCount = computed(() => this.currentNodes().filter((node) => node.healthStatus() === NodeHealthStatus.NOT_CHECKED).length);
+    readonly okCount = computed(() => this.nodes().filter((node) => node.healthStatus() === NodeHealthStatus.OK).length);
 
-    readonly okCount = computed(() => this.currentNodes().filter((node) => node.healthStatus() === NodeHealthStatus.OK).length);
+    readonly issuesCount = computed(() => this.nodes().filter((node) => node.healthStatus() === NodeHealthStatus.ISSUES).length);
 
-    readonly issuesCount = computed(() => this.currentNodes().filter((node) => node.healthStatus() === NodeHealthStatus.ISSUES).length);
-
-    readonly failedCount = computed(() => this.currentNodes().filter((node) => node.healthStatus() === NodeHealthStatus.FAILED).length);
+    readonly failedCount = computed(() => this.nodes().filter((node) => node.healthStatus() === NodeHealthStatus.FAILED).length);
 
     readonly cardStatus = computed(() => {
         if (this.checkingCount() > 0) {
             return 'checking';
-        }
-
-        if (this.failedCount() > 0) {
-            return 'failed';
         }
 
         if (this.issuesCount() > 0) {
@@ -41,10 +35,14 @@ export class HealthCheckCardComponent {
             return 'healthy';
         }
 
+        if (this.failedCount() > 0) {
+            return 'failed';
+        }
+
         return '';
     });
 
     refresh(): void {
-        this.nodeHealthService.refresh(this.treeType());
+        this.nodeHealthService.refreshAll();
     }
 }

@@ -60,7 +60,7 @@ describe('HealthCheckCardComponent', () => {
         fixture.detectChanges();
     });
 
-    describe('currentNodes', () => {
+    describe('allNodes', () => {
         it('should return nodes for the selected tree type', () => {
             const nodes = [createNode(NodeHealthStatus.OK), createNode(NodeHealthStatus.ISSUES)];
 
@@ -68,7 +68,7 @@ describe('HealthCheckCardComponent', () => {
                 inetnum: nodes,
             });
 
-            expect(component.currentNodes()).toEqual(nodes);
+            expect(component.nodes()).toEqual(nodes);
         });
 
         it('should return an empty array when tree type does not exist', () => {
@@ -79,7 +79,7 @@ describe('HealthCheckCardComponent', () => {
             fixture.componentRef.setInput('treeType', 'inet6num');
             fixture.detectChanges();
 
-            expect(component.currentNodes()).toEqual([]);
+            expect(component.nodes()).toEqual([]);
         });
     });
 
@@ -129,20 +129,20 @@ describe('HealthCheckCardComponent', () => {
             expect(component.cardStatus()).toBe('checking');
         });
 
-        it('should return failed when there are failed nodes', () => {
+        it('should return issues when there are issues nodes', () => {
             nodeHealthService.nodes.set({
                 inetnum: [createNode(NodeHealthStatus.OK), createNode(NodeHealthStatus.ISSUES), createNode(NodeHealthStatus.FAILED)],
             });
 
-            expect(component.cardStatus()).toBe('failed');
+            expect(component.cardStatus()).toBe('issues');
         });
 
-        it('should return issues when there are issues but no failed nodes', () => {
+        it('should return failed when there are failed', () => {
             nodeHealthService.nodes.set({
-                inetnum: [createNode(NodeHealthStatus.OK), createNode(NodeHealthStatus.ISSUES)],
+                inetnum: [createNode(NodeHealthStatus.OK), createNode(NodeHealthStatus.FAILED)],
             });
 
-            expect(component.cardStatus()).toBe('issues');
+            expect(component.cardStatus()).toBe('failed');
         });
 
         it('should return healthy when all nodes are healthy', () => {
