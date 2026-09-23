@@ -31,12 +31,12 @@ export class HealthCheckCardComponent {
             return 'issues';
         }
 
-        if (this.okCount() > 0) {
-            return 'healthy';
-        }
-
         if (this.failedCount() > 0) {
             return 'failed';
+        }
+
+        if (this.okCount() > 0) {
+            return 'healthy';
         }
 
         return '';

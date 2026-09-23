@@ -12,6 +12,7 @@ describe('HealthCheckCardComponent', () => {
     let nodeHealthService: {
         nodes: ReturnType<typeof signal>;
         refresh: jasmine.Spy;
+        refreshAll: jasmine.Spy;
     };
 
     const createNode = (healthStatus: NodeHealthStatus, overrides: Partial<TreeNode> = {}): TreeNode =>
@@ -40,6 +41,7 @@ describe('HealthCheckCardComponent', () => {
         nodeHealthService = {
             nodes: signal({}),
             refresh: jasmine.createSpy('refresh'),
+            refreshAll: jasmine.createSpy('refreshAll'),
         };
 
         await TestBed.configureTestingModule({
@@ -55,8 +57,6 @@ describe('HealthCheckCardComponent', () => {
         fixture = TestBed.createComponent(HealthCheckCardComponent);
         component = fixture.componentInstance;
 
-        fixture.componentRef.setInput('treeType', 'inetnum');
-
         fixture.detectChanges();
     });
 
@@ -69,17 +69,6 @@ describe('HealthCheckCardComponent', () => {
             });
 
             expect(component.nodes()).toEqual(nodes);
-        });
-
-        it('should return an empty array when tree type does not exist', () => {
-            nodeHealthService.nodes.set({
-                inetnum: [createNode(NodeHealthStatus.OK)],
-            });
-
-            fixture.componentRef.setInput('treeType', 'inet6num');
-            fixture.detectChanges();
-
-            expect(component.nodes()).toEqual([]);
         });
     });
 
@@ -166,7 +155,7 @@ describe('HealthCheckCardComponent', () => {
         it('should refresh nodes for the current tree type', () => {
             component.refresh();
 
-            expect(nodeHealthService.refresh).toHaveBeenCalledWith('inetnum');
+            expect(nodeHealthService.refreshAll).toHaveBeenCalled();
         });
     });
 });

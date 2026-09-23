@@ -22,13 +22,6 @@
         <em class="fa-light fa-arrows-rotate"></em>
         Refresh check
     </button>
-    } @else if (okCount() > 0) {
-    <div class="status-row">
-        <em class="fa-light fa-face-smile"></em>
-        <span class="status">Healthy</span>
-    </div>
-
-    <p class="description">0 resources with issues</p>
     } @else if (failedCount() > 0) {
     <div class="status-row">
         <em class="fa-light fa-circle-exclamation"></em>
@@ -39,6 +32,13 @@
         Unable to verify the health of your resources.
         <!--        <a (click)="refresh()" type="button" class="link-color"> Try again</a>-->
     </p>
+    } @else if (okCount() > 0) {
+    <div class="status-row">
+        <em class="fa-light fa-face-smile"></em>
+        <span class="status">Healthy</span>
+    </div>
+
+    <p class="description">0 resources with issues</p>
     }
 </div>
 }
