@@ -91,9 +91,10 @@ export class ResourcesComponent implements OnDestroy {
         () => this.nodeHealthService.nodes()[ObjectTypesEnum.INETNUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
     );
 
-    readonly hasIpv6Issues = computed(
-        () => this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
-    );
+    readonly hasIpv6Issues = computed(() => {
+        console.log('sta ima', this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]);
+        return this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false;
+    });
 
     readonly hasAsnIssues = computed(
         () => this.nodeHealthService.nodes()[ObjectTypesEnum.AUT_NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
@@ -242,23 +243,28 @@ export class ResourcesComponent implements OnDestroy {
         if (this.subscriptionFetchResources) {
             this.subscriptionFetchResources.unsubscribe();
         }
+
+        const orgId = this.selectedOrg.orgObjectId;
+        const selectedType = this.lastTab as ObjectTypesEnum;
+        const sponsored = this.isShowingSponsored;
+
         this.loading = true;
 
         this.subscriptionFetchResources = this.resourcesDataService
-            .getResources(this.selectedOrg.orgObjectId, this.lastTab as ObjectTypesEnum, this.isShowingSponsored)
+            .getResources(orgId, selectedType, sponsored)
             .pipe(
                 tap((response: IResourceOverviewResponseModel) => {
-                    this.setResources(this.lastTab as ObjectTypesEnum, response.resources);
+                    this.setResources(selectedType, response.resources);
 
                     // First/selected tab is ready
                     this.loading = false;
                 }),
                 switchMap(() => {
-                    const remainingTypes = [ObjectTypesEnum.INETNUM, ObjectTypesEnum.INET6NUM, ObjectTypesEnum.AUT_NUM].filter((type) => type !== this.lastTab);
+                    const remainingTypes = [ObjectTypesEnum.INETNUM, ObjectTypesEnum.INET6NUM, ObjectTypesEnum.AUT_NUM].filter((type) => type !== selectedType);
 
                     return forkJoin(
                         remainingTypes.map((type) =>
-                            this.resourcesDataService.getResources(this.selectedOrg.orgObjectId, type, this.isShowingSponsored).pipe(
+                            this.resourcesDataService.getResources(orgId, type, sponsored).pipe(
                                 tap((response) => this.setResources(type, response.resources)),
                                 catchError((error) => {
                                     console.error(`Failed to load ${type}`, error);

@@ -20,8 +20,9 @@
                 } }
             </div>
         </div>
-        <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
-        </ip-usage-of-all-resources>
+        @if (!isShowingSponsored) {
+        <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab"> </ip-usage-of-all-resources>
+        }
         <div class="ipv4-ipv6-asn-tabs">
             <div class="view-mode-panel">
                 <button matButton type="button" [class.select]="showNodePreview" (click)="showNodePreview = true">
@@ -87,7 +88,7 @@
                     <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
                     } }
                 </mat-tab>
-                <mat-tab label="ASN" id="aut-num">
+                <mat-tab id="aut-num">
                     <ng-template mat-tab-label>
                         ASN @if (hasAsnIssues()) {
                         <mat-icon matSuffix class="fa-solid fa-circle-small issue"></mat-icon>

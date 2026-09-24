@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSuffix } from '@angular/material/input';
@@ -37,11 +37,14 @@ export interface TreeNode extends HealthCheckableNode {
     styleUrl: 'tree.component.scss',
     imports: [MatTreeModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatSuffix, NameFormatterComponent, BannerComponent],
 })
-export class Tree implements OnInit {
+export class Tree {
     private moreSpecificsService = inject(MoreSpecificsService);
     private nodeHealthService = inject(NodeHealthService);
 
     dataSource = signal<TreeNode[]>([]);
+
+    rootLevelNodes = input<IResourceScreenItem[]>([]);
+    treeType = input<string>();
 
     readonly childrenAccessor = (node: TreeNode) => node.children ?? [];
     readonly hasChild = (_: number, node: TreeNode) => !node.isShowMore && node.expandable;
@@ -50,24 +53,21 @@ export class Tree implements OnInit {
     readonly scalabilityMsg = 'Nodes with 10+ children show first 10 items. Click "Show more" to expand the full list.';
     showScalabilityBanner = false;
 
-    rootLevelNodes = input<IResourceScreenItem[]>();
-    treeType = input<string>();
-
     nodeSelected = output<TreeNode>();
     selectedNode: TreeNode;
 
-    ngOnInit(): void {
-        const nodes = this.initialData();
+    constructor() {
+        effect(() => {
+            const resources = this.rootLevelNodes();
+            const type = this.treeType();
 
-        this.dataSource.set(nodes);
+            const nodes = resources.map((item) => this.createNode(item, 0, this.isExpandable(item.status, item.usage)));
 
-        this.nodeHealthService.registerNodes(this.treeType(), nodes);
+            this.dataSource.set(nodes);
 
-        this.nodeHealthService.healthCheck(nodes);
-    }
-
-    initialData(): TreeNode[] {
-        return this.rootLevelNodes().map((item) => this.createNode(item, 0, this.isExpandable(item.status, item.usage)));
+            this.nodeHealthService.registerNodes(type, nodes);
+            this.nodeHealthService.healthCheck(nodes);
+        });
     }
 
     createNode(resource: IResourceScreenItem | IMoreSpecificResource, level: number, expandable: boolean, parentNode?: TreeNode): TreeNode {

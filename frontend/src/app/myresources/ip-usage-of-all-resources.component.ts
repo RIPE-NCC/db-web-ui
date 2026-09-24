@@ -20,8 +20,6 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
     resources: any[];
     @Input()
     type: string;
-    @Input()
-    sponsored: boolean;
 
     total: number;
     used: number;

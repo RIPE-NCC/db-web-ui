@@ -1,14 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, of, shareReplay } from 'rxjs';
-import { catchError, timeout } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, tap, timeout } from 'rxjs/operators';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { IIpv4Analysis, IResourceDetailsResponseModel, IResourceOverviewResponseModel, IResourceTickets, ResourceCheck } from './resource-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class ResourcesDataService {
     private http = inject(HttpClient);
-    private resourceRequests = new Map<string, Observable<IResourceOverviewResponseModel>>();
+    private resourceCache = new Map<string, IResourceOverviewResponseModel>();
 
     fetchResource(objectName: string, type: string): Observable<IResourceDetailsResponseModel> {
         return this.http.get<IResourceDetailsResponseModel>(`api/whois-internal/api/resources/${type}/${objectName}`);
@@ -17,18 +17,21 @@ export class ResourcesDataService {
     getResources(orgId: string, resourceType: ObjectTypesEnum, sponsored: boolean): Observable<IResourceOverviewResponseModel> {
         const key = `${orgId}-${resourceType}-${sponsored}`;
 
-        const existingRequest = this.resourceRequests.get(key);
+        const cached = this.resourceCache.get(key);
 
-        if (existingRequest) {
-            return existingRequest;
+        if (cached) {
+            return of(cached);
         }
 
         const params = new HttpParams().set(sponsored ? 'sponsoring-org-id' : 'org-id', orgId).set('type', resourceType);
-        const request$ = this.http.get<IResourceOverviewResponseModel>(`api/whois-internal/api/resources`, { params }).pipe(timeout(60000), shareReplay(1));
 
-        this.resourceRequests.set(key, request$);
-
-        return request$;
+        return this.http.get<IResourceOverviewResponseModel>('api/whois-internal/api/resources', { params }).pipe(
+            timeout(60000),
+            tap((response) => {
+                console.log('CACHE RESPONSE', key, response.resources[0].orgName);
+                this.resourceCache.set(key, response);
+            }),
+        );
     }
 
     resourceCheck(objectType: string, name: string): Observable<ResourceCheck[]> {
