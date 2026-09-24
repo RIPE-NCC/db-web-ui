@@ -28,7 +28,6 @@ export class ResourcesDataService {
         return this.http.get<IResourceOverviewResponseModel>('api/whois-internal/api/resources', { params }).pipe(
             timeout(60000),
             tap((response) => {
-                console.log('CACHE RESPONSE', key, response.resources[0].orgName);
                 this.resourceCache.set(key, response);
             }),
         );
