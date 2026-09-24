@@ -5,6 +5,8 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -44,7 +46,8 @@ public class KeycloakIdPDummyService {
             final String code = getCodeOrTimeOut(request);
             FakeUser user = usersByCode.get(code);
             if (user == null) {
-                throw new IllegalStateException("FakeIdp: no user registered for authorization code '" + code + "'");
+                throw new OAuth2AuthorizationException(
+                        new OAuth2Error("invalid_grant", "Invalid authorization code", null));
             }
 
             // The value actually sent to the IdP as ?nonce=... is the HASH, stored in
