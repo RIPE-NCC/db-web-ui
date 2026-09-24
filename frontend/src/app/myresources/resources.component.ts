@@ -91,10 +91,9 @@ export class ResourcesComponent implements OnDestroy {
         () => this.nodeHealthService.nodes()[ObjectTypesEnum.INETNUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
     );
 
-    readonly hasIpv6Issues = computed(() => {
-        console.log('sta ima', this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]);
-        return this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false;
-    });
+    readonly hasIpv6Issues = computed(
+        () => this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
+    );
 
     readonly hasAsnIssues = computed(
         () => this.nodeHealthService.nodes()[ObjectTypesEnum.AUT_NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
