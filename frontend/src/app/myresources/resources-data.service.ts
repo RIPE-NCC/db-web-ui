@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, shareReplay } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { IIpv4Analysis, IResourceDetailsResponseModel, IResourceOverviewResponseModel, IResourceTickets, ResourceCheck } from './resource-type.model';
@@ -9,6 +9,7 @@ import { IIpv4Analysis, IResourceDetailsResponseModel, IResourceOverviewResponse
 export class ResourcesDataService {
     private http = inject(HttpClient);
     private resourceCache = new Map<string, IResourceOverviewResponseModel>();
+    private resourceCheckCache = new Map<string, Observable<ResourceCheck[]>>();
 
     fetchResource(objectName: string, type: string): Observable<IResourceDetailsResponseModel> {
         return this.http.get<IResourceDetailsResponseModel>(`api/whois-internal/api/resources/${type}/${objectName}`);
@@ -34,7 +35,25 @@ export class ResourcesDataService {
     }
 
     resourceCheck(objectType: string, name: string): Observable<ResourceCheck[]> {
-        return this.http.get<ResourceCheck[]>(`api/whois-internal/public/resourcecheck/${objectType}/${encodeURIComponent(name)}`);
+        const key = `${objectType}:${name}`;
+
+        const cached = this.resourceCheckCache.get(key);
+
+        if (cached) {
+            return cached;
+        }
+
+        const request$ = this.http
+            .get<ResourceCheck[]>(`api/whois-internal/public/resourcecheck/${objectType}/${encodeURIComponent(name)}`)
+            .pipe(shareReplay(1));
+
+        this.resourceCheckCache.set(key, request$);
+
+        return request$;
+    }
+
+    clearResourceCheckCache(): void {
+        this.resourceCheckCache.clear();
     }
 
     fetchIpv4Analysis(orgId: string): Observable<IIpv4Analysis> {

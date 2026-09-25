@@ -59,6 +59,7 @@ export class NodeHealthService {
     }
 
     refreshAll(): void {
+        this.resourcesDataService.clearResourceCheckCache();
         [ObjectTypesEnum.INETNUM, ObjectTypesEnum.INET6NUM, ObjectTypesEnum.AUT_NUM].forEach((type) => this.refresh(type));
     }
 
