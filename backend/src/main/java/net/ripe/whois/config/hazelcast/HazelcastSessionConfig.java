@@ -1,5 +1,7 @@
 package net.ripe.whois.config.hazelcast;
 
+import com.hazelcast.cluster.MembershipEvent;
+import com.hazelcast.cluster.MembershipListener;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.EntryEvent;
@@ -93,6 +95,19 @@ public class HazelcastSessionConfig {
     }
 
     private static void addListeners(final HazelcastInstance instance, final SessionCacheService sessionCacheService) {
+        instance.getCluster().addMembershipListener(new MembershipListener() {
+
+            @Override
+            public void memberAdded(final MembershipEvent event) {
+                LOGGER.info("Member added: {}, List of members now : {}", event.getMember(), event.getMembers());
+            }
+
+            @Override
+            public void memberRemoved(final MembershipEvent event) {
+                LOGGER.info("Member removed: {}, List of members now : {}", event.getMember(), event.getMembers());
+            }
+        });
+
         instance.getMap(HazelcastOAuth2AuthorizedClientService.MAP_NAME).addEntryListener(
                 new EntryAddedListener<Object, Object>() {
                     @Override
