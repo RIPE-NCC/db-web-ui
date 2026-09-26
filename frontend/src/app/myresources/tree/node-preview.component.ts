@@ -1,7 +1,7 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AssociatedObjectsService, AssociatedObjectType, IAssociatedObjectApiResult } from 'src/app/myresources/associatedobjects/associated-objects.service';
 import { ResourceCheck } from 'src/app/myresources/resource-type.model';
@@ -17,7 +17,7 @@ export type ResourceCheckType = 'ANNOUNCED_NO_ASSIGNMENTS' | 'UNANNOUNCED_ASN' |
     selector: 'node-preview',
     templateUrl: 'node-preview.component.html',
     styleUrl: 'node-preview.component.scss',
-    imports: [NameFormatterComponent, MatButton, MatProgressSpinner],
+    imports: [NameFormatterComponent, MatButton, MatProgressSpinner, RouterLink],
 })
 export class NodePreviewComponent {
     router = inject(Router);

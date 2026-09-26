@@ -2,7 +2,10 @@
 <div class="preview">
     <div class="panel node-details">
         <name-formatter [name]="selectedNode.nodeName" [type]="selectedNode.type" class="title"></name-formatter>
-        <button matButton (click)="navigateToDetailPage()">View resource details <em class="fa-light fa-arrow-right"></em></button>
+        <a matButton [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
+            View resource details
+            <em class="fa-light fa-arrow-right"></em>
+        </a>
         <span class="netname">{{ selectedNode.netname }}</span>
         <span class="parent">Parent: {{ selectedNode.parentResource?.nodeName ?? '-' }}</span>
         <!--        <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">Refresh check <em class="fa-light fa-arrow-right"></em></button>-->
@@ -64,8 +67,7 @@
         <span class="value">
             {{ hasAssociatedRouteObjects() }}
         </span>
-        }
-
+        } @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
         <span class="label">Domain object</span>
         @if(hasAssociatedDomainObjects() === 'Present') {
         <span class="value present"> <em class="fa-light fa-check"></em>{{ hasAssociatedDomainObjects() }} </span>
@@ -73,7 +75,7 @@
         <span class="value">
             {{ hasAssociatedDomainObjects() }}
         </span>
-        }
+        } }
     </div>
     <div class="panel node-overview">
         <h3 class="panel-title">
@@ -90,12 +92,6 @@
         } @else {
         <span class="value status status-gray">{{ announcementStatus() }}</span>
         }
-
-        <span class="label">Origin ASN</span>
-        <span class="value">-</span>
-
-        <span class="label">Active announcements</span>
-        <span class="value">-</span>
 
         <span class="label">ROA status</span>
         <span class="value">-</span>
