@@ -37,7 +37,7 @@
             }
         </h3>
         <div class="overview-row">
-            @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS' || announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+            @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
             <div class="status-missing">
                 <span class="label">Assignment object</span>
 
@@ -47,8 +47,7 @@
                 </span>
 
                 <span class="how-to-fix">
-                    @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {Assignment object is missing in the RIPE Database. Create an assignment object to
-                    correctly register this prefix.} @else if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {missing text}
+                    Assignment object is missing in the RIPE Database. Create an assignment object to correctly register this prefix.
                 </span>
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Fix in RIPE Database <em class="fa-light fa-arrow-right"></em> </span>
             </div>
@@ -90,7 +89,7 @@
         <span class="label">Announcement status</span>
         @if (announcementStatus() === 'Announced' || announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
         <span class="value status status-green">Announced</span>
-        } @else {
+        } @else if (announcementStatus() !== 'Announced' && checkIfHaveAssignments()) {missing text} @else {
         <span class="value status status-gray">{{ announcementStatus() }}</span>
         }
 
