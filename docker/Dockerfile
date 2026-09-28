@@ -19,7 +19,7 @@ ARG CI_COMMIT_SHA
 RUN mvn -B package -DskipTests -Dversion=${CI_COMMIT_SHA}
 
 # Release
-FROM amazoncorretto:21.0.11-alpine
+FROM amazoncorretto:21.0.12-alpine
 
 ARG PUID=1000
 ARG PGID=1000
