@@ -108,6 +108,15 @@ export class NodePreviewComponent {
             });
     }
 
+    canHaveAssignments(): boolean {
+        const statusesWithAssignments = ['ALLOCATED PA', 'SUB-ALLOCATED PA', 'LIR-PARTITIONED PA', 'ALLOCATED-BY-RIR', 'ALLOCATED-BY-LIR'];
+        return statusesWithAssignments.includes(this.node().resource.status);
+    }
+
+    checkIfHaveAssignments() {
+        return this.canHaveAssignments() && this.node().children?.length;
+    }
+
     protected readonly Math = Math;
     protected readonly ObjectTypesEnum = ObjectTypesEnum;
 }

@@ -53,8 +53,10 @@
             </div>
             } @else {
             <span class="label">Assignment object</span>
-            @if (announcementStatus() === 'Announced') {
+            @if (announcementStatus() === 'Announced' && checkIfHaveAssignments()) {
             <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
+            } @else if (announcementStatus() === 'Announced' && !checkIfHaveAssignments()) {
+            <span class="value"> <em class="fa-light fa-triangle-exclamation"></em>Missing </span>
             } @else {
             <span class="value">-</span>
             } }
