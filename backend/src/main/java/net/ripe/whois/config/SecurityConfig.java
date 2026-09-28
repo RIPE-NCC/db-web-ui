@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesMapper;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -56,12 +57,15 @@ import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.session.config.SessionRepositoryCustomizer;
+import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 import static net.ripe.whois.config.NextUrlFilter.NEXT_URL_SESSION_ATTRIBUTE;
@@ -221,6 +225,12 @@ public class SecurityConfig {
         return new HazelcastOidcSessionRegistry(hazelcastInstance);
     }
 
+    @Bean
+    public SessionRepositoryCustomizer<HazelcastIndexedSessionRepository> sessionTimeoutCustomizer(
+            @Value("${server.servlet.session.timeout}") Duration sessionTimeout) {
+        return repository -> repository.setDefaultMaxInactiveInterval(sessionTimeout);
+    }
+
     // Logout from the application when a user logout from the provider
 
     @Bean
@@ -283,7 +293,24 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new SimpleUrlAuthenticationFailureHandler("/login?error");
+        return (request, response, exception) -> {
+            logReason(exception);
+            final String redirectUrl = UriComponentsBuilder.fromUriString("/db-web-ui/error")
+                    .queryParam("idpError")
+                    .build()
+                    .toUriString();
+
+
+            response.sendRedirect(redirectUrl);
+        };
+    }
+
+    private void logReason(AuthenticationException exception) {
+        if (exception.getCause() instanceof OAuth2AuthorizationException authEx) {
+            LOGGER.error("Authentication failure, error code is {} — actual exception:", authEx.getError().getErrorCode(), exception);
+        }
+        LOGGER.error("Authentication failure — actual exception:", exception);
+
     }
 
     @Bean

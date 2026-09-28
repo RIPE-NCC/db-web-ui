@@ -95,7 +95,6 @@ public abstract class AbstractIntegrationTest {
                 "http://localhost:" + port + "/token");
         System.setProperty("spring.security.oauth2.client.provider.keycloak.user-info-uri",
                 "http://localhost:" + port + "/userinfo");
-        System.setProperty("server.servlet.session.timeout", "1h");
     }
 
     @AfterAll

@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.session.MapSession;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -38,7 +39,9 @@ import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.anEmptyMap;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @Import(OidcTestConfig.class)
 @Profile("test-it")
@@ -388,5 +391,57 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
                 getServerUrl() + "/db-web-ui/api/ba-apps/resources/ORG-TST3-RIPE/192.0.0.0/20",
                 HttpMethod.GET, authenticatedRequest, String.class);
         assertThat(recoveredResponse.getStatusCode().value(), is(200));
+    }
+
+    @Test
+    void sessionShouldHaveEightHourMaxInactiveInterval() {
+        keycloakIdPDummyService.registerUser("timeout-test-code",
+                new KeycloakIdPDummyService.FakeUser("timeout-user", "timeout@example.com", "idp-sid-timeout"));
+
+        final String sessionCookie = performFullLoginAndGetSessionCookie("timeout-test-code");
+        final String sessionId = extractSessionId(sessionCookie);
+
+        final Object rawValue = hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE).get(sessionId);
+
+        assertThat(rawValue, instanceOf(MapSession.class));
+        final MapSession session = (MapSession) rawValue;
+
+        assertThat(session.getMaxInactiveInterval().getSeconds(), is(28800L));
+    }
+
+    @Test
+    void authenticationFailureRedirectsToErrorPageWithIdpError(){
+        final HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
+
+        final ResponseEntity<String> authStart = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/oauth2/authorization/keycloak",
+                HttpMethod.GET, anonymousRequest, String.class);
+
+        final String authorizeUrl = authStart.getHeaders().getLocation().toString();
+        final String state = extractQueryParam(authorizeUrl, "state");
+        final String sessionCookie = extractSessionCookie(authStart);
+
+        final HttpHeaders callbackHeaders = new HttpHeaders();
+        callbackHeaders.add(HttpHeaders.COOKIE, sessionCookie);
+
+        // "unregistered-code" was never registered with keycloakIdPDummyService,
+        // so the token exchange will throw — a genuine, unclassified failure.
+        final URI callbackUri = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/db-web-ui/login/oauth2/code/keycloak")
+                .queryParam("code", "unregistered-code")
+                .queryParam("state", state)
+                .build()
+                .toUri();
+
+        final ResponseEntity<String> callback = restTemplate.exchange(
+                callbackUri, HttpMethod.GET, new HttpEntity<>(null, callbackHeaders), String.class);
+
+        assertThat(callback.getStatusCode().value(), is(302));
+
+        String redirectLocation = callback.getHeaders().getLocation().toString();
+
+        assertThat(redirectLocation, containsString("/db-web-ui/error"));
+        assertThat(redirectLocation, containsString("idpError"));
+        assertThat(redirectLocation, not(containsString("silentLoginFailed")));
+        assertThat(redirectLocation, not(containsString("loginError")));
     }
 }

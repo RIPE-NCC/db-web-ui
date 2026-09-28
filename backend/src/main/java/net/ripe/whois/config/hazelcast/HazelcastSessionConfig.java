@@ -1,5 +1,7 @@
 package net.ripe.whois.config.hazelcast;
 
+import com.hazelcast.cluster.MembershipEvent;
+import com.hazelcast.cluster.MembershipListener;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.EntryEvent;
@@ -19,10 +21,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.oidc.session.OidcSessionInformation;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.session.MapSession;
 import org.springframework.session.SaveMode;
 import org.springframework.session.hazelcast.config.annotation.web.http.EnableHazelcastHttpSession;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -91,6 +95,19 @@ public class HazelcastSessionConfig {
     }
 
     private static void addListeners(final HazelcastInstance instance, final SessionCacheService sessionCacheService) {
+        instance.getCluster().addMembershipListener(new MembershipListener() {
+
+            @Override
+            public void memberAdded(final MembershipEvent event) {
+                LOGGER.info("Member added: {}, List of members now : {}", event.getMember(), event.getMembers());
+            }
+
+            @Override
+            public void memberRemoved(final MembershipEvent event) {
+                LOGGER.info("Member removed: {}, List of members now : {}", event.getMember(), event.getMembers());
+            }
+        });
+
         instance.getMap(HazelcastOAuth2AuthorizedClientService.MAP_NAME).addEntryListener(
                 new EntryAddedListener<Object, Object>() {
                     @Override
@@ -185,8 +202,19 @@ public class HazelcastSessionConfig {
 
 
         instance.getMap(OidcUtils.HTTP_SESSION_CACHE).addEntryListener(
-                (EntryAddedListener<Object, Object>) event ->
-                        LOGGER.debug("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress()),
+                (EntryAddedListener<Object, Object>) event -> {
+                    if (event.getValue() instanceof MapSession session) {
+                        final Instant expiresAt = session.getLastAccessedTime().plus(session.getMaxInactiveInterval());
+                        LOGGER.debug("Session ADDED key={} member={} maxInactiveInterval={} seconds, Last accessed={}, Calculated session expiration={}",
+                                event.getKey(),
+                                event.getMember().getAddress(),
+                                session.getMaxInactiveInterval().getSeconds(),
+                                session.getLastAccessedTime(),
+                                expiresAt);
+                    } else {
+                        LOGGER.debug("Session ADDED key={} member={}", event.getKey(), event.getMember().getAddress());
+                    }
+                },
                 true
         );
         instance.getMap(OidcUtils.HTTP_SESSION_CACHE).addEntryListener(

@@ -82,7 +82,14 @@ export class AppComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.isComponentLoaded = false;
 
-        if (this.tryHandleSilentLoginFailure(new URLSearchParams(window.location.search))) {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.has('idpError')) {
+            this.isComponentLoaded = true;
+            return;
+        }
+
+        if (this.tryHandleSilentLoginFailure(params)) {
             return;
         }
 

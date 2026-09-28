@@ -20,7 +20,7 @@
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <commons-lang3.version>3.17.0</commons-lang3.version>
         <dnsjava.version>3.6.2</dnsjava.version>
-        <freemarker.version>2.3.34</freemarker.version>
+        <freemarker.version>2.3.35</freemarker.version>
         <google-guava.version>33.4.8-jre</google-guava.version>
         <!--
         Currently using Spring Session Hazelcast https://github.com/spring-projects/spring-session/issues/3481
