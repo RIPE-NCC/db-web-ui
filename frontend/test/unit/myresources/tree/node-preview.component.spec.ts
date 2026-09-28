@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subject, throwError } from 'rxjs';
 
 import { signal } from '@angular/core';
@@ -22,6 +22,7 @@ describe('NodePreviewComponent', () => {
     let fixture: ComponentFixture<NodePreviewComponent>;
 
     let mockRouter: jasmine.SpyObj<Router>;
+    let mockActivatedRoute: ActivatedRoute;
     let mockPropertiesService: jasmine.SpyObj<PropertiesService>;
     let mockResourcesDataService: jasmine.SpyObj<ResourcesDataService>;
     let mockAssociatedObjectService: jasmine.SpyObj<AssociatedObjectsService>;
@@ -68,6 +69,9 @@ describe('NodePreviewComponent', () => {
 
     beforeEach(async () => {
         mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']);
+        mockActivatedRoute = {
+            snapshot: {} as ActivatedRoute['snapshot'],
+        } as ActivatedRoute;
 
         mockPropertiesService = jasmine.createSpyObj('mockPropertiesService', [], { SOURCE: 'RIPE' });
 
@@ -83,6 +87,14 @@ describe('NodePreviewComponent', () => {
                 {
                     provide: Router,
                     useValue: mockRouter,
+                },
+                {
+                    provide: ActivatedRoute,
+                    useValue: mockActivatedRoute,
+                },
+                {
+                    provide: PropertiesService,
+                    useValue: mockPropertiesService,
                 },
                 {
                     provide: ResourcesDataService,

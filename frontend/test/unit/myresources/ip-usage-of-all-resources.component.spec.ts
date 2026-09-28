@@ -123,7 +123,6 @@ describe('IpUsageOfAllResourcesComponent', () => {
     it('should calculate free space for all resources in IPv4 tab', () => {
         component.type = 'inetnum';
         component.resources = ipv4Resources;
-        component.sponsored = false;
         component.ngOnChanges({
             resources: new SimpleChange(undefined, [], true),
             sponsored: new SimpleChange(undefined, undefined, true),
@@ -139,7 +138,6 @@ describe('IpUsageOfAllResourcesComponent', () => {
     it('should calculate free space for all resources in IPv6 tab', () => {
         component.type = 'inet6num';
         component.resources = ipv6Resources;
-        component.sponsored = false;
         component.ngOnChanges({
             resources: new SimpleChange(undefined, [], true),
             sponsored: new SimpleChange(undefined, undefined, true),

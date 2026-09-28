@@ -157,7 +157,7 @@ describe('Tree', () => {
         });
     });
 
-    describe('initialData', () => {
+    describe('effect', () => {
         it('should create a node for every root resource', () => {
             fixture.componentRef.setInput('rootLevelNodes', [
                 createResource({
@@ -167,8 +167,11 @@ describe('Tree', () => {
                     resource: '192.168.0.0/16',
                 }),
             ]);
+            fixture.componentRef.setInput('treeType', ObjectTypesEnum.INETNUM);
 
-            const nodes = component.initialData();
+            fixture.detectChanges();
+
+            const nodes = component.dataSource();
 
             expect(nodes.length).toBe(2);
             expect(nodes[0].nodeName).toBe('10.0.0.0/8');
@@ -186,8 +189,11 @@ describe('Tree', () => {
                     },
                 }),
             ]);
+            fixture.componentRef.setInput('treeType', ObjectTypesEnum.INETNUM);
 
-            const nodes = component.initialData();
+            fixture.detectChanges();
+
+            const nodes = component.dataSource();
 
             expect(nodes[0].expandable).toBeTrue();
         });
@@ -203,25 +209,29 @@ describe('Tree', () => {
                     },
                 }),
             ]);
+            fixture.componentRef.setInput('treeType', ObjectTypesEnum.INETNUM);
 
-            const nodes = component.initialData();
+            fixture.detectChanges();
+
+            const nodes = component.dataSource();
 
             expect(nodes[0].expandable).toBeFalse();
         });
-    });
 
-    describe('ngOnInit', () => {
         it('should initialize data source and start health checks', () => {
-            fixture.componentRef.setInput('rootLevelNodes', [
+            const nodes = [
                 createResource({
                     resource: '10.0.0.0/8',
                 }),
                 createResource({
                     resource: '192.168.0.0/16',
                 }),
-            ]);
+            ];
 
-            component.ngOnInit();
+            fixture.componentRef.setInput('rootLevelNodes', nodes);
+            fixture.componentRef.setInput('treeType', ObjectTypesEnum.INETNUM);
+
+            fixture.detectChanges();
 
             expect(component.dataSource().length).toBe(2);
 
