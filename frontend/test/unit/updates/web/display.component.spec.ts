@@ -175,6 +175,70 @@ describe('DisplayComponent', () => {
         // expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/select"]);
     });
 
+    it('should show end of line comment only once', () => {
+        fixture.detectChanges();
+
+        expectUserInfo(false);
+
+        httpMock.expectOne({ method: 'GET', url: 'api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true' }).flush({
+            objects: {
+                object: [
+                    {
+                        'primary-key': { attribute: [{ name: 'as-block', value: OBJECT_NAME }] },
+                        attributes: {
+                            attribute: [
+                                { name: 'as-block', value: OBJECT_NAME },
+                                { name: 'remarks', value: 'some remark', comment: 'testing' },
+                                { name: 'mnt-by', value: MNTNER },
+                                { name: 'source', value: SOURCE },
+                            ],
+                        },
+                    },
+                ],
+            },
+        });
+        fixture.detectChanges();
+
+        const visibleValues = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('table p:not([hidden])')).map((p) => p.textContent.trim());
+        expect(visibleValues).toEqual([OBJECT_NAME, 'some remark # testing', MNTNER, SOURCE]);
+    });
+
+    it('should show end of line comment only once in diff after modify', () => {
+        const commentedObject = {
+            objects: {
+                object: [
+                    {
+                        'primary-key': { attribute: [{ name: 'as-block', value: OBJECT_NAME }] },
+                        attributes: {
+                            attribute: [
+                                { name: 'as-block', value: OBJECT_NAME },
+                                { name: 'remarks', value: 'some remark', comment: 'testing' },
+                                { name: 'mnt-by', value: MNTNER },
+                                { name: 'source', value: SOURCE },
+                            ],
+                        },
+                    },
+                ],
+            },
+        };
+
+        const modified = component.whoisResourcesService.wrapSuccess(commentedObject as any);
+        const original = component.whoisResourcesService.wrapAndEnrichAttributes(OBJECT_TYPE, [
+            { name: 'as-block', value: OBJECT_NAME },
+            { name: 'remarks', value: 'some remark' },
+            { name: 'mnt-by', value: MNTNER },
+            { name: 'source', value: SOURCE },
+        ] as IAttributeModel[]);
+        messageStoreServiceMock.get.and.callFake((key: string) => (key === 'DIFF' ? original : modified));
+        TestBed.inject(ActivatedRoute).queryParams = of({ method: 'Modify' });
+
+        fixture.detectChanges();
+        expectUserInfo(true);
+
+        expect(component.before).toContain('remarks:             some remark\n');
+        expect(component.after).toContain('remarks:             some remark # testing\n');
+    });
+
     it('should populate the ui from rest failure', () => {
         // no objects in message store
         fixture.detectChanges();

@@ -74,7 +74,7 @@ export class DiffComponent implements OnInit {
             )
             .subscribe({
                 next: (attrs) => {
-                    this.leftDiff = this.whoisResourcesService.toPlaintext(attrs.left);
+                    this.leftDiff = this.whoisResourcesService.toPlaintext(attrs.left, true);
                     this.isLeftLatest = attrs.right;
                 },
                 error: (err) => {
@@ -94,7 +94,7 @@ export class DiffComponent implements OnInit {
             )
             .subscribe({
                 next: (attrs) => {
-                    this.rightDiff = this.whoisResourcesService.toPlaintext(attrs.left);
+                    this.rightDiff = this.whoisResourcesService.toPlaintext(attrs.left, true);
                     this.isRightLatest = attrs.right;
                 },
                 error: (err) => {
@@ -175,11 +175,11 @@ export class DiffComponent implements OnInit {
             )
             .subscribe({
                 next: ({ left, right, leftLatest, rightLatest }) => {
-                    this.leftDiff = this.whoisResourcesService.toPlaintext(left);
+                    this.leftDiff = this.whoisResourcesService.toPlaintext(left, true);
                     this.isLeftLatest = leftLatest;
                     this.isRightLatest = rightLatest;
                     if (right) {
-                        this.rightDiff = this.whoisResourcesService.toPlaintext(right);
+                        this.rightDiff = this.whoisResourcesService.toPlaintext(right, true);
                     }
                 },
                 error: (err) => {

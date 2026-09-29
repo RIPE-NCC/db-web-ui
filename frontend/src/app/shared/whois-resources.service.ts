@@ -529,11 +529,11 @@ export class WhoisResourcesService {
         return JSON.stringify(object);
     }
 
-    public toPlaintext(attributes: IAttributeModel[]) {
+    public toPlaintext(attributes: IAttributeModel[], appendComments = false) {
         let result = '';
         (attributes ?? []).forEach((attr: IAttributeModel) => {
             const value = attr.value?.trim() ?? '';
-            const comment = attr.comment?.trim();
+            const comment = appendComments ? attr.comment?.trim() : undefined;
             result += attr.name + ':' + WhoisResourcesService.repeat(' ', Math.max(0, 20 - attr.name.length)) + value + (comment ? '# ' + comment : '') + '\n';
         });
         return result;
