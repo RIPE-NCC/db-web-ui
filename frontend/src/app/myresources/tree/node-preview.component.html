@@ -59,6 +59,14 @@
                 <a href="https://academy.ripe.net/mod/page/view.php?id=679"><em class="fa-light fa-graduation-cap"></em> Watch a video for help</a>
                 }
             </div>
+            } @else if (announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
+            <div class="status-missing">
+                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Assignment object</span>
+                <span class="how-to-fix">
+                    Assignments smaller than /64 are not RIPE Policy compliant.
+                    <a href="https://www.ripe.net/publications/docs/ripe-826/">Read more about the policy</a>
+                </span>
+            </div>
             } @else {
             <span class="label">Assignment object</span>
             @if (announcementStatus() === 'Announced' && checkIfHaveAssignments()) {
@@ -103,6 +111,12 @@
                 it within 3 months.
             </span>
             <a href="https://www.ripe.net/publications/docs/ripe-679/"> Read more about the policy</a>
+        </div>
+        } @else if (announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
+        <div class="status-missing">
+            <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Announcement status</span>
+
+            <span> Assignment registered but not announced... </span>
         </div>
         } @else {
         <span class="label">Announcement status</span>

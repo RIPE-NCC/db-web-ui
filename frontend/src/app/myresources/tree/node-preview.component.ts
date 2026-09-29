@@ -11,7 +11,13 @@ import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 import { TreeNode } from './tree.component';
 
-export type ResourceCheckType = 'ANNOUNCED_NO_ASSIGNMENTS' | 'UNANNOUNCED_ASN' | 'check failed' | 'Announced';
+export type ResourceCheckType =
+    | 'ANNOUNCED_NO_ASSIGNMENTS'
+    | 'NOT_ANNOUNCED_WITH_ASSIGNMENTS'
+    | 'UNANNOUNCED_ASN'
+    | 'IPV6_ASSIGNMENT_TOO_SMALL'
+    | 'check failed'
+    | 'Announced';
 
 @Component({
     selector: 'node-preview',
