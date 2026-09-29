@@ -39,17 +39,25 @@
         <div class="overview-row">
             @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
             <div class="status-missing">
-                <span class="label">Assignment object</span>
-
-                <span class="value">
-                    <em class="fa-light fa-triangle-exclamation"></em>
-                    Missing
-                </span>
-
+                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Unregistered usage</span>
+                @if (node().resource.type === ObjectTypesEnum.INETNUM) {
                 <span class="how-to-fix">
-                    Assignment object is missing in the RIPE Database. Create an assignment object to correctly register this prefix.
+                    Register more specific IPv4 assignments or update the status of the allocation to "Allocated Assigned PA" if you are using the entire range.
+                    <a href="https://www.ripe.net/publications/docs/ripe-826/">Read more about the policy</a>
                 </span>
-                <span class="fix-link" (click)="navigateToCreateAssignments()"> Fix in RIPE Database <em class="fa-light fa-arrow-right"></em> </span>
+                <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
+                <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
+                    Update allocation <em class="fa-light fa-arrow-right"></em>
+                </span>
+                } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
+                <span class="how-to-fix">
+                    Register an inet6num object with status 'Assigned' for each network in use. Assingment size can be between /64 and /48. If you are using a
+                    pool of addresses you can register an inet6num object with status 'aggregated by LIR'.
+                    <a href="https://www.ripe.net/publications/docs/ripe-738/">Read more about the policy</a>
+                </span>
+                <span class="fix-link" (click)="navigateToCreateAssignments()"> Create inet6num object <em class="fa-light fa-arrow-right"></em> </span>
+                <a href="https://academy.ripe.net/mod/page/view.php?id=679"><em class="fa-light fa-graduation-cap"></em> Watch a video for help</a>
+                }
             </div>
             } @else {
             <span class="label">Assignment object</span>
@@ -86,13 +94,23 @@
             </span>
             }
         </h3>
+        @if (announcementStatus() === 'UNANNOUNCED_ASN') {
+        <div class="status-missing">
+            <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Announcement status</span>
+
+            <span>
+                ASN is not found in the BGP table. Is there a technical reason for this or is it unused? Please return the AS number if you do not plan to use
+                it within 3 months.
+            </span>
+            <a href="https://www.ripe.net/publications/docs/ripe-679/"> Read more about the policy</a>
+        </div>
+        } @else {
         <span class="label">Announcement status</span>
         @if (announcementStatus() === 'Announced' || announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
         <span class="value status status-green">Announced</span>
         } @else if (announcementStatus() !== 'Announced' && checkIfHaveAssignments()) {missing text} @else {
         <span class="value status status-gray">{{ announcementStatus() }}</span>
-        }
-
+        } }
         <span class="label">ROA status</span>
         <span class="value">-</span>
     </div>

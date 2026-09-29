@@ -78,7 +78,7 @@
         grid-column: 1 / -1;
 
         display: grid;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: 1fr;
         row-gap: 0.5rem;
 
         padding: 1rem;
@@ -86,8 +86,7 @@
         background-color: #fceee4;
     }
 
-    .panel-title,
-    .how-to-fix {
+    .panel-title {
         grid-column: 1 / -1;
 
         display: flex;
@@ -103,7 +102,6 @@
         color: #131f48;
     }
 
-    .how-to-fix,
     .fix-link {
         grid-column: 1 / -1;
     }
