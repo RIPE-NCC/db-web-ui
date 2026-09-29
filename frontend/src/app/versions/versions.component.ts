@@ -48,6 +48,7 @@ export class VersionsComponent implements OnInit {
     selectedVersion: IAttributeModel[];
     showRipeManagedAttrs = true;
     isLatest = false;
+    isDeleted = false;
 
     ngOnInit() {
         this.activatedRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
@@ -112,6 +113,8 @@ export class VersionsComponent implements OnInit {
 
     onVersionSelect(id: number) {
         this.versionSelect$.next(id);
+        const selected = this.versions.find((v) => v.revision === this.selectedVersionId);
+        this.isDeleted = selected?.operation === 'DEL';
     }
 
     navigateToVersionDiff() {

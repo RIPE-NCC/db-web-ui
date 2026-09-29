@@ -37,13 +37,17 @@
                 <div class="latest-badge">
                     <span>Latest</span>
                 </div>
+                } @if (isDeleted) {
+                <div class="deleted-badge">
+                    <span>Deleted</span>
+                </div>
                 }
             </div>
-            <div class="viewerbuttons">
-                <button (click)="navigateToVersionDiff()" mat-flat-button color="primary">
-                    <span>Compare</span>
-                </button>
-            </div>
+            @if (!isDeleted) {
+            <button (click)="navigateToVersionDiff()" mat-flat-button color="primary">
+                <span>Compare</span>
+            </button>
+            }
         </div>
     </div>
 </section>

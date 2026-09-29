@@ -46,6 +46,7 @@ export class DiffComponent implements OnInit {
     whoisVersion: IVersion;
     isLeftLatest = false;
     isRightLatest = false;
+    comparableVersions: IObjectVersionPreviewModel[] = [];
 
     private leftSelect$ = new Subject<number>();
     private rightSelect$ = new Subject<number>();
@@ -154,7 +155,21 @@ export class DiffComponent implements OnInit {
             .pipe(
                 tap((response) => {
                     this.versions = response.versions.version;
+                    this.comparableVersions = this.versions.filter((v) => v.operation !== 'DEL');
                     this.whoisVersion = response.version;
+
+                    if (this.versions.length === 0) {
+                        this.navigateBack();
+                        return;
+                    }
+                    if (!this.isComparable(this.leftVersionId)) {
+                        this.leftVersionId = this.nearestComparable(this.leftVersionId);
+                        this.syncUrl({ version: this.leftVersionId });
+                    }
+                    if (this.diffVersionId != null && !this.isComparable(this.diffVersionId)) {
+                        this.diffVersionId = null;
+                        this.syncUrl({ diff: null });
+                    }
                 }),
                 switchMap(() => {
                     const left$ = this.fetchVersion(this.leftVersionId);
@@ -186,6 +201,20 @@ export class DiffComponent implements OnInit {
                     this.error = err;
                 },
             });
+    }
+
+    private isComparable(id: number): boolean {
+        return this.comparableVersions.some((v) => v.revision === id);
+    }
+
+    private nearestComparable(id: number): number {
+        const below = this.comparableVersions.filter((v) => v.revision <= id).map((v) => v.revision);
+
+        return below.length > 0 ? Math.max(...below) : Math.max(...this.comparableVersions.map((v) => v.revision));
+    }
+
+    private syncUrl(queryParams: Record<string, number | null>) {
+        void this.router.navigate([], { relativeTo: this.activatedRoute, queryParams, queryParamsHandling: 'merge' });
     }
 
     private fetchVersion(id: number): Observable<IAttributeModel[]> {
