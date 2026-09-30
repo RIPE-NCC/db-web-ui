@@ -162,7 +162,7 @@ describe('DiffComponent', () => {
             { name: 'source', value: 'RIPE' },
         ] as IAttributeModel[];
 
-        const plaintext = whoisResourcesService.toPlaintext(attributes);
+        const plaintext = whoisResourcesService.toPlaintext(attributes, true);
 
         expect(plaintext).toContain('auth:                SSO# Filtered');
         expect(plaintext).toContain('SSO person@net.net# WARNING: SSO email was old.name@net.net');

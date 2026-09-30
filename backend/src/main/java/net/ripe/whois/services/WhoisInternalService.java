@@ -182,6 +182,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         headers.set(API_KEY_HEADER, apiKey);
         final URI uri = composeWhoisUrl(request);
         LOGGER.debug("Calling WhoisInternalService {}", uri);
+        oidcTokenExtractor.setAuthorizationHeader(headers);
         return restTemplate.exchange(
             uri,
             HttpMethod.valueOf(request.getMethod().toUpperCase()),

@@ -9,6 +9,15 @@ export class VersionsPage {
         return this;
     }
 
+    visitDiff(source: string, type: string, key: string, version: number, from?: string, searchtext?: string, diff?: number) {
+        const qs: any = { source, type, key, version };
+        if (from) qs.from = from;
+        if (searchtext) qs.searchtext = searchtext;
+        if (diff != null) qs.diff = diff;
+        cy.visit({ url: 'version-diff', qs });
+        return this;
+    }
+
     getVersionsViewer() {
         return new VersionsViewerComponent();
     }

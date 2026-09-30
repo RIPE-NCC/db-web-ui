@@ -12,6 +12,10 @@
     font-size: 13px;
 }
 
+.deleted-badge {
+    @extend .latest-badge;
+}
+
 .historySection {
     display: flex;
     flex-direction: column;

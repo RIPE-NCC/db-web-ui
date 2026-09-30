@@ -53,4 +53,46 @@ describe('versions', () => {
             versionsPage.expectedNoImgTag().expectedNoScriptTag();
         });
     });
+    describe('Deleted versions', () => {
+        beforeEach(() => {
+            versionsPage.visit('ripe', 'inetnum', '80.79.36.128 - 80.79.36.159', 'query', 'ripe');
+        });
+
+        it('should show the deleted badge instead of the latest badge on a DEL version', () => {
+            versionsPage.getVersionsViewer().selectVersionByDate('2010-06-20').expectDeletedBadge(true).expectLatestBadge(false);
+        });
+
+        it('should show the pre-deletion content for a DEL version', () => {
+            versionsPage.getVersionsViewer().selectVersionByDate('2010-06-20').expectAttributeToContainKeyAndValue(0, 'inetnum', '80.79.36.128 - 80.79.36.159');
+        });
+
+        it('should hide compare for a DEL version', () => {
+            versionsPage.getVersionsViewer().selectVersionByDate('2010-06-20').expectCompareAvailable(false);
+        });
+
+        it('should show compare again when navigating back to a normal version', () => {
+            versionsPage
+                .getVersionsViewer()
+                .selectVersionByDate('2010-06-20')
+                .expectCompareAvailable(false)
+                .selectVersionByDate('2005-03-14')
+                .expectCompareAvailable(true)
+                .expectDeletedBadge(false);
+        });
+
+        it('should not offer DEL versions in the diff page dropdowns', () => {
+            versionsPage.getVersionsViewer().clickCompareVersions();
+            cy.url().should('include', '/version-diff');
+            cy.get('mat-select').first().click();
+            cy.get('mat-option').should('contain.text', '2007-02-06');
+            cy.get('mat-option').should('not.contain.text', '2010-06-20');
+            cy.get('body').type('{esc}');
+        });
+
+        it('should snap a direct URL pointing at a DEL revision to the nearest comparable version', () => {
+            versionsPage.visitDiff('ripe', 'inetnum', '80.79.36.128 - 80.79.36.159', 3, 'query', 'ripe');
+            cy.url().should('include', 'version=2');
+            cy.get('mat-select').first().should('contain.text', '2007-02-06');
+        });
+    });
 });

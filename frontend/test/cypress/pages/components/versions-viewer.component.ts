@@ -15,7 +15,14 @@ export class VersionsViewerComponent {
     }
 
     openDropdown() {
+        cy.get('.cdk-overlay-backdrop').should('not.exist');
         cy.get('.version-select').click();
+        cy.get('mat-option').should('exist');
+        return this;
+    }
+
+    expectDeletedBadge(exists: boolean) {
+        cy.get('.deleted-badge').should(exists ? 'exist' : 'not.exist');
         return this;
     }
 
@@ -27,6 +34,13 @@ export class VersionsViewerComponent {
 
     clickCompareVersions() {
         cy.get('button').contains('Compare').click();
+        return this;
+    }
+
+    expectCompareAvailable(exist: boolean) {
+        cy.get('button')
+            .contains('Compare')
+            .should(exist ? 'exist' : 'not.exist');
         return this;
     }
 }

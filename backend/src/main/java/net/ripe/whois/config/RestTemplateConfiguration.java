@@ -52,7 +52,6 @@ public class RestTemplateConfiguration {
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
         restTemplate.getMessageConverters().removeIf(httpMessageConverter -> httpMessageConverter instanceof MappingJackson2HttpMessageConverter);
         restTemplate.getMessageConverters().add(1, mappingJackson2HttpMessageConverter());
-
         return restTemplate;
     }
 
@@ -80,11 +79,9 @@ public class RestTemplateConfiguration {
                                                     .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)   // long?
                                                     .setSocketTimeout(HTTPCLIENT_READ_TIMEOUT, TimeUnit.MILLISECONDS)       // int ??
                                                     .build();
-
         final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setDefaultConnectionConfig(connectionConfig);     // not a builder pattern?
         connectionManager.setMaxTotal(HTTPCLIENT_TOTAL_MAX_CONNECTIONS);
-
         final RequestConfig requestConfig = RequestConfig.custom()
                                                 .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                                                 .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -92,6 +89,7 @@ public class RestTemplateConfiguration {
                                                 .build();
         return HttpClients.custom()
                 .setDefaultHeaders(Collections.singleton(new BasicHeader(HttpHeaders.CONNECTION, "close")))
+                .disableAutomaticRetries()
                 .setConnectionReuseStrategy(
                         new ConnectionReuseStrategy() {
                             @Override
