@@ -30,7 +30,7 @@
         <!-- TODO: [ES] replace Apache HttpClient with Jersey -->
         <httpclient.version>5.5.2</httpclient.version>
         <jackson-annotations.version>2.21</jackson-annotations.version>
-        <jackson.version>2.21.4</jackson.version>
+        <jackson.version>2.21.7</jackson.version>
         <jaxb.api.version>4.0.5</jaxb.api.version>
         <jaxb.impl.version>4.0.9</jaxb.impl.version>
         <jcache.version>1.1.1</jcache.version>
