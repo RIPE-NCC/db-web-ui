@@ -1,5 +1,5 @@
 .panel {
-    padding: 20px;
+    padding: 16px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     background: white;
@@ -12,6 +12,7 @@
     align-items: center;
     height: 400px;
     justify-content: center;
+
     .fa-sitemap {
         font-weight: 100;
         font-size: 100px;
@@ -21,7 +22,7 @@
 .preview {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .node-details {
@@ -33,7 +34,7 @@
         grid-column: 1;
         grid-row: 1;
 
-        font-size: 1.375em;
+        font-size: 1rem;
         font-weight: 600;
         color: #131f48;
         align-self: center;
@@ -53,13 +54,17 @@
     .parent {
         grid-column: 1;
         color: #3d3d3d;
+        font-size: 14px;
+        font-weight: 400;
     }
 }
 
 .node-overview {
     display: grid;
     grid-template-columns: 1fr auto;
-    row-gap: 1.5rem;
+    row-gap: 0.75rem;
+
+    font-size: 14px;
 
     .overview-row {
         display: contents;
@@ -67,11 +72,13 @@
 
     .label {
         color: #424242;
+        font-weight: 400;
     }
 
     .value {
         text-align: right;
         justify-self: end;
+        font-weight: 400;
     }
 
     .status-missing {
@@ -81,7 +88,7 @@
         grid-template-columns: 1fr;
         row-gap: 0.5rem;
 
-        padding: 1rem;
+        padding: 12px 16px;
         border-radius: 6px;
         background-color: #fceee4;
     }
@@ -89,25 +96,18 @@
     .panel-title {
         grid-column: 1 / -1;
 
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        margin: 0 0 0.5rem 0;
 
-        margin: 0 0 1rem 0;
-    }
-
-    .panel-title {
-        font-size: 1rem;
-        font-weight: 700;
+        font-size: 16px;
+        font-weight: 600;
         color: #131f48;
     }
 
     .fix-link {
         grid-column: 1 / -1;
-    }
 
-    .fix-link {
-        font-weight: 700;
+        font-size: 14px;
+        font-weight: 600;
         color: #131f48;
         cursor: pointer;
     }
@@ -117,7 +117,7 @@
         align-items: center;
         gap: 0.75rem;
 
-        font-size: 1rem;
+        font-size: 14px;
         font-weight: 400;
         color: #2b46a1;
     }
@@ -133,6 +133,7 @@
         gap: 6px;
 
         color: #2e7d32;
+        font-size: 14px;
         font-weight: 500;
 
         em {
@@ -148,6 +149,7 @@
     align-items: center;
     justify-content: center;
     width: fit-content;
+    font-size: 14px;
 }
 
 .status-gray {
