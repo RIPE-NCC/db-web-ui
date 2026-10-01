@@ -39,11 +39,11 @@ public class SessionEmitterService {
             try {
                 if (!hasValidOidcSession(sessionId)){
                     sendExpireSessionEvent(emitter);
-                    return;
+                    continue;
                 }
                 LOGGER.debug("Keep-alive check for sessionId={}", sessionId);
                 emitter.send(SseEmitter.event().comment("keep-alive"));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 LOGGER.debug("Keep-alive failed for sessionId={}, removing dead emitter: {}", sessionId, e.getMessage());
                 emitters.remove(sessionId, emitter);
                 emitter.completeWithError(e);
