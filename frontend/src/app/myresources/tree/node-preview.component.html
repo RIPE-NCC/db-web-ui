@@ -126,7 +126,13 @@
         <span class="value status status-gray">{{ announcementStatus() }}</span>
         } }
         <span class="label">ROA status</span>
-        <span class="value">-</span>
+        @if (hasRoas() === 'Present') {
+        <span class="value present"> <em class="fa-light fa-check"></em>{{ hasRoas() }} </span>
+        } @else {
+        <span class="value">
+            {{ hasRoas() }}
+        </span>
+        }
     </div>
 </div>
 } @else {

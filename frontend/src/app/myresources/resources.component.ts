@@ -173,6 +173,7 @@ export class ResourcesComponent implements OnDestroy {
 
     private sponsoredResourcesTabClicked() {
         if (!this.isShowingSponsored) {
+            this.nodeHealthService.reset();
             this.isShowingSponsored = true;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
             void this.router.navigate(['myresources/overview'], { queryParams: params });
@@ -181,6 +182,7 @@ export class ResourcesComponent implements OnDestroy {
 
     private resourcesTabClicked() {
         if (this.isShowingSponsored) {
+            this.nodeHealthService.reset();
             this.isShowingSponsored = false;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
             void this.router.navigate(['myresources/overview'], { queryParams: params });

@@ -46,6 +46,7 @@ export class NodePreviewComponent {
     readonly announcementStatus = signal<ResourceCheckType | undefined>(undefined);
     readonly hasAssociatedRouteObjects = signal<string | undefined>(undefined);
     readonly hasAssociatedDomainObjects = signal<string | undefined>(undefined);
+    readonly hasRoas = signal<string | undefined>(undefined);
     readonly checkingDatabaseObjects = signal<boolean>(false);
     readonly checkingRoutingInformation = signal<boolean>(false);
 
@@ -119,7 +120,10 @@ export class NodePreviewComponent {
     checkIfHaveRoas(node: TreeNode) {
         this.rpkiValidatorService.getRoas(node.resource.type, node.nodeName).subscribe({
             next: (response: string[]) => {
-                console.log('--------------', response);
+                this.hasRoas.set(response.length > 0 ? 'Present' : '-');
+            },
+            error: () => {
+                this.hasRoas.set('check failed');
             },
         });
     }
