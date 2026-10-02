@@ -6,10 +6,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
+import { IpAddressService } from 'src/app/myresources/ip-address.service';
 import { IMoreSpecificResource, IMoreSpecificsApiResult, MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
 import { IResourceScreenItem, IUsage } from 'src/app/myresources/resource-type.model';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
-import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 import { HealthCheckableNode, NodeHealthStatus } from '../health-check-card/node-health.model';
 
 export interface TreeNode extends HealthCheckableNode {
@@ -35,7 +35,7 @@ export interface TreeNode extends HealthCheckableNode {
     selector: 'tree',
     templateUrl: 'tree.component.html',
     styleUrl: 'tree.component.scss',
-    imports: [MatTreeModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatSuffix, NameFormatterComponent, BannerComponent],
+    imports: [MatTreeModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatSuffix, BannerComponent],
 })
 export class Tree {
     private moreSpecificsService = inject(MoreSpecificsService);
@@ -74,7 +74,7 @@ export class Tree {
         return {
             parentResource: parentNode,
             resource: resource,
-            nodeName: resource.resource,
+            nodeName: IpAddressService.rangeToSlash(resource.resource),
             type: resource.type,
             netname: resource.netname || ('asname' in resource ? resource.asname : undefined),
             level,

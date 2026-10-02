@@ -63,16 +63,6 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
-    @GetMapping(path = "/public/rpki/roa")
-    public ResponseEntity<String> getRpkiRoa(
-        final HttpServletRequest request,
-        @RequestParam("origin") final String origin,
-        @RequestParam("route") final String route,
-        @Nullable @RequestBody(required = false) final String body,
-        @RequestHeader final HttpHeaders headers) {
-        return proxyRestCalls(request, body, headers);
-    }
-
     @GetMapping(path = "/public/api-key", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> getApiKeys(
         final HttpServletRequest request,
@@ -111,6 +101,26 @@ public class WhoisInternalProxyController extends ApiController {
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
+    @GetMapping(path = "/public/resources/{type}/{prefix}/roas")
+    public ResponseEntity<String> getRpkiRoas(
+        final HttpServletRequest request,
+        @PathVariable("type") final String type,
+        @PathVariable("prefix") final String prefix,
+        @Nullable @RequestBody(required = false) final String body,
+        @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
+    @GetMapping(path = "/public/rpki/roa")
+    public ResponseEntity<String> getRpkiRoa(
+        final HttpServletRequest request,
+        @RequestParam("origin") final String origin,
+        @RequestParam("route") final String route,
+        @Nullable @RequestBody(required = false) final String body,
+        @RequestHeader final HttpHeaders headers) {
         return proxyRestCalls(request, body, headers);
     }
 

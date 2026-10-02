@@ -28,7 +28,7 @@
                 [class.issue]="node.healthStatus() === NodeHealthStatus.ISSUES"
                 [class.failed]="node.healthStatus() === NodeHealthStatus.FAILED"
             ></mat-icon>
-            <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
+            <span class="prefix" [class.emphasized]="selectedNode === node">{{ node.nodeName }}</span>
             <span class="netname">{{ node.netname }}</span>
             <span
                 class="node-issues"
@@ -76,7 +76,7 @@
                 [class.failed]="node.healthStatus() === NodeHealthStatus.FAILED"
             >
             </mat-icon>
-            <name-formatter [name]="node.nodeName" [type]="node.type" [class.emphasized]="selectedNode === node"></name-formatter>
+            <span class="prefix" [class.emphasized]="selectedNode === node">{{ node.nodeName }}</span>
             <span class="netname">{{ node.netname }}</span>
             <span
                 class="node-issues"

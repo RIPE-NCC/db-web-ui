@@ -8,7 +8,7 @@ import { ResourceCheck } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { PropertiesService } from 'src/app/properties.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
-import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
+import { RpkiValidatorService } from 'src/app/updatesweb/rpki-validator.service';
 import { TreeNode } from './tree.component';
 
 export type ResourceCheckType =
@@ -23,13 +23,14 @@ export type ResourceCheckType =
     selector: 'node-preview',
     templateUrl: 'node-preview.component.html',
     styleUrl: 'node-preview.component.scss',
-    imports: [NameFormatterComponent, MatButton, MatProgressSpinner, RouterLink],
+    imports: [MatButton, MatProgressSpinner, RouterLink],
 })
 export class NodePreviewComponent {
     router = inject(Router);
     properties = inject(PropertiesService);
     resourcesDataService = inject(ResourcesDataService);
     associatedObjectService = inject(AssociatedObjectsService);
+    rpkiValidatorService = inject(RpkiValidatorService);
 
     readonly node = input<TreeNode | undefined>();
     readonly usedPercentage = (): number => {
@@ -57,6 +58,7 @@ export class NodePreviewComponent {
                 this.checkIfAnnounced(node);
                 this.checkIfAssociatedRouteObjects(node);
                 this.checkIfAssociatedDomainObjects(node);
+                this.checkIfHaveRoas(node);
             }
         });
     }
@@ -72,7 +74,7 @@ export class NodePreviewComponent {
     checkIfAnnounced(node: TreeNode) {
         this.checkingRoutingInformation.set(true);
         this.resourcesDataService
-            .resourceCheck(node.type, node.nodeName)
+            .resourceCheck(node.type, node.resource.resource)
             .pipe(finalize(() => this.checkingRoutingInformation.set(false)))
             .subscribe({
                 next: (response: ResourceCheck[]) => {
@@ -112,6 +114,14 @@ export class NodePreviewComponent {
                     this.hasAssociatedDomainObjects.set('check failed');
                 },
             });
+    }
+
+    checkIfHaveRoas(node: TreeNode) {
+        this.rpkiValidatorService.getRoas(node.resource.type, node.nodeName).subscribe({
+            next: (response: string[]) => {
+                console.log('--------------', response);
+            },
+        });
     }
 
     canHaveAssignments(): boolean {
