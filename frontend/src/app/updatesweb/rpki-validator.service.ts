@@ -11,6 +11,6 @@ export class RpkiValidatorService {
     }
 
     getRoas(type: string, prefix: string) {
-        return this.http.get(`api/whois-internal/public/resources/${type}/${encodeURIComponent(prefix)}/roas`);
+        return this.http.get(`api/whois-internal/api/resources/${type}/${prefix}/roas`);
     }
 }

@@ -104,7 +104,7 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
-    @GetMapping(path = "/public/resources/{type}/{prefix}/roas")
+    @GetMapping(path = "/api/resources/{type}/{prefix}/roas")
     public ResponseEntity<String> getRpkiRoas(
         final HttpServletRequest request,
         @PathVariable("type") final String type,
