@@ -7,14 +7,13 @@ import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Component
+@Service
 public class SessionCacheService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionCacheService.class);
@@ -53,14 +52,12 @@ public class SessionCacheService {
             oidcMap.remove(sessionId);
             hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE).remove(sessionId);
 
-            LOGGER.debug("Notify session expiration sessionId={}", sessionId);
             if (shouldNotify) {
+                LOGGER.debug("Notify session expiration sessionId={}", sessionId);
                 sessionEmitterService.notifyExpired(sessionId);
-            }
-            final SseEmitter emitter = sessionEmitterService.removeAndGet(sessionId);
-            if (emitter != null){
-                LOGGER.debug("Removed all session cache entries for sessionId={}, closing emitter", sessionId);
-                emitter.complete();
+            } else {
+                LOGGER.debug("Close session-events quietly sessionId={}", sessionId);
+                sessionEmitterService.closeQuietly(sessionId);
             }
             LOGGER.debug("Removed all session cache entries for sessionId={}", sessionId);
         } finally {

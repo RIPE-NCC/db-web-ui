@@ -34,6 +34,11 @@ export class SessionService {
             this.disconnect();
         });
 
+        this.eventSource.addEventListener('session-closed', () => {
+            console.info('session-events stream closed by server, no banner');
+            this.disconnect(); // close for good, so the browser doesn't reconnect
+        });
+
         this.eventSource.onopen = () => {
             console.info('session-events stream (re)connected');
             this.reconnectAttempts = 0; // reset backoff once a connection actually succeeds
