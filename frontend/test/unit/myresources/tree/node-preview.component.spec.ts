@@ -258,7 +258,7 @@ describe('NodePreviewComponent', () => {
                 '',
             );
 
-            expect(component.hasAssociatedRouteObjects()).toBe('Present');
+            expect(component.associatedRouteObjects()).toBe('Present');
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -273,7 +273,7 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedRouteObjects(createNode());
 
-            expect(component.hasAssociatedRouteObjects()).toBe('-');
+            expect(component.associatedRouteObjects()).toBe('-');
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -282,7 +282,7 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedRouteObjects(createNode());
 
-            expect(component.hasAssociatedRouteObjects()).toBe('check failed');
+            expect(component.associatedRouteObjects()).toBe('check failed');
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
     });
@@ -330,7 +330,7 @@ describe('NodePreviewComponent', () => {
                 '',
             );
 
-            expect(component.hasAssociatedDomainObjects()).toBe('Present');
+            expect(component.associatedDomainObjects()).toBe('Present');
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -345,7 +345,7 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedDomainObjects(createNode());
 
-            expect(component.hasAssociatedDomainObjects()).toBe('-');
+            expect(component.associatedDomainObjects()).toBe('-');
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -354,7 +354,7 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedDomainObjects(createNode());
 
-            expect(component.hasAssociatedDomainObjects()).toBe('check failed');
+            expect(component.associatedDomainObjects()).toBe('check failed');
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
     });

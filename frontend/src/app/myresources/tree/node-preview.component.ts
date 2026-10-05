@@ -3,7 +3,13 @@ import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { AssociatedObjectsService, AssociatedObjectType, IAssociatedObjectApiResult } from 'src/app/myresources/associatedobjects/associated-objects.service';
+import {
+    AssociatedObjectsService,
+    AssociatedObjectType,
+    IAssociatedDomainObject,
+    IAssociatedObjectApiResult,
+    IAssociatedRouteObject,
+} from 'src/app/myresources/associatedobjects/associated-objects.service';
 import { ResourceCheck } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { PropertiesService } from 'src/app/properties.service';
@@ -44,8 +50,8 @@ export class NodePreviewComponent {
     };
     readonly tabType = input.required<string>(); // to distinguish which node preview should execute
     readonly announcementStatus = signal<ResourceCheckType | undefined>(undefined);
-    readonly hasAssociatedRouteObjects = signal<string | undefined>(undefined);
-    readonly hasAssociatedDomainObjects = signal<string | undefined>(undefined);
+    readonly associatedRouteObjects = signal<IAssociatedRouteObject[] | undefined>(undefined);
+    readonly associatedDomainObjects = signal<IAssociatedDomainObject[] | undefined>(undefined);
     readonly hasRoas = signal<string | undefined>(undefined);
     readonly checkingDatabaseObjects = signal<boolean>(false);
     readonly checkingRoutingInformation = signal<boolean>(false);
@@ -94,11 +100,11 @@ export class NodePreviewComponent {
             .pipe(finalize(() => this.checkingDatabaseObjects.set(false)))
             .subscribe({
                 next: (response: IAssociatedObjectApiResult) => {
-                    this.hasAssociatedRouteObjects.set(response.associatedObjects.length > 0 ? 'Present' : '-');
+                    this.associatedRouteObjects.set(response.associatedObjects as IAssociatedRouteObject[]);
                 },
-                error: () => {
-                    this.hasAssociatedRouteObjects.set('check failed');
-                },
+                // error: () => {
+                //     this.associatedRouteObjects.set('check failed');
+                // },
             });
     }
 
@@ -109,11 +115,11 @@ export class NodePreviewComponent {
             .pipe(finalize(() => this.checkingDatabaseObjects.set(false)))
             .subscribe({
                 next: (response: IAssociatedObjectApiResult) => {
-                    this.hasAssociatedDomainObjects.set(response.associatedObjects.length > 0 ? 'Present' : '-');
+                    this.associatedDomainObjects.set(response.associatedObjects as IAssociatedDomainObject[]);
                 },
-                error: () => {
-                    this.hasAssociatedDomainObjects.set('check failed');
-                },
+                // error: () => {
+                //     this.hasAssociatedDomainObjects.set('check failed');
+                // },
             });
     }
 
@@ -136,6 +142,8 @@ export class NodePreviewComponent {
     checkIfHaveAssignments() {
         return this.canHaveAssignments() && this.node().children?.length;
     }
+
+    navigateToCreateRouteObject() {}
 
     protected readonly Math = Math;
     protected readonly ObjectTypesEnum = ObjectTypesEnum;
