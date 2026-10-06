@@ -42,6 +42,7 @@ public class SentryConfigurations {
         }
 
         Sentry.init(options -> {
+            options.setEnableExternalConfiguration(true);
             options.setRelease(String.format("%s@%s", environment,  commitId));
             options.setEnvironment(environment);
             options.setDsn(sentryDsn);
