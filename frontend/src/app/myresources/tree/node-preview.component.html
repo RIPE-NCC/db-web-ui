@@ -146,7 +146,7 @@
         <span class="value status status-green">Announced</span>
         } @else if (announcementStatus() !== 'Announced' && checkIfHaveAssignments()) {missing text} @else {
         <span class="value status status-gray">{{ announcementStatus() }}</span>
-        } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (originASNs().length) { @for (originASN of originASNs(); track originASN; let first = $first) {
+        } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (originASNs()?.length) { @for (originASN of originASNs(); track originASN; let first = $first) {
         <span class="label">{{ first ? 'Origin ASN' : '' }}</span>
         <span class="value">{{ originASN }}</span>
         } } @else {
