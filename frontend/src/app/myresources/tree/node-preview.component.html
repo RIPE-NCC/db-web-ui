@@ -1,7 +1,6 @@
 @if (node(); as selectedNode) {
 <div class="preview">
     <div class="panel node-details">
-        <!--        <span class="title">{{ selectedNode.nodeName }}</span>-->
         <a class="title" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
             {{ selectedNode.nodeName }}
         </a>
@@ -11,7 +10,6 @@
         </a>
         <span class="netname">{{ selectedNode.netname }}</span>
         <span class="parent">Parent: {{ selectedNode.parentResource?.nodeName ?? '—' }}</span>
-        <!--        <button matButton="outlined" color="secondary" (click)="navigateToDetailPage()">Refresh check <em class="fa-light fa-arrow-right"></em></button>-->
     </div>
     <div class="panel node-overview">
         <span class="panel-title">Overview</span>
