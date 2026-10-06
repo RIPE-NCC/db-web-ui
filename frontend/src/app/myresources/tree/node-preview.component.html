@@ -64,10 +64,10 @@
             </div>
             } @else if (announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
             <div class="status-missing">
-                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Assignment object</span>
+                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> IPv6 assignments smaller than /64</span>
                 <span class="how-to-fix">
-                    Assignments smaller than /64 are not RIPE Policy compliant.
-                    <a href="https://www.ripe.net/publications/docs/ripe-826/">Read more about the policy</a>
+                    The minimum size of an IPv6 assingment is /64. Please delete and re-create.
+                    <a href="https://www.ripe.net/publications/docs/ripe-738/">Read more about the policy</a>
                 </span>
             </div>
             } @else {
@@ -136,9 +136,9 @@
         </div>
         } @else if (announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
         <div class="status-missing">
-            <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Announcement status</span>
+            <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Usage registered but unannounced</span>
 
-            <span> Assignment registered but not announced... </span>
+            <span>Remove any out of date assignements (inetnum objects with status 'ASSIGNED PA')</span>
         </div>
         } @else {
         <span class="label">Announcement status</span>
