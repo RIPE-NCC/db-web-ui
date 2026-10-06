@@ -1,7 +1,10 @@
 @if (node(); as selectedNode) {
 <div class="preview">
     <div class="panel node-details">
-        <span class="title">{{ selectedNode.nodeName }}</span>
+        <!--        <span class="title">{{ selectedNode.nodeName }}</span>-->
+        <a class="title" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
+            {{ selectedNode.nodeName }}
+        </a>
         <a matButton [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
             View resource details
             <em class="fa-light fa-arrow-right"></em>
