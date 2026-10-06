@@ -53,6 +53,7 @@ export class NodePreviewComponent {
     readonly associatedRouteObjects = signal<IAssociatedRouteObject[] | undefined>(undefined);
     readonly associatedDomainObjects = signal<IAssociatedDomainObject[] | undefined>(undefined);
     readonly hasRoas = signal<string | undefined>(undefined);
+    readonly originASNs = signal<string[] | undefined>(undefined);
     readonly checkingDatabaseObjects = signal<boolean>(false);
     readonly checkingRoutingInformation = signal<boolean>(false);
 
@@ -127,6 +128,7 @@ export class NodePreviewComponent {
         this.rpkiValidatorService.getRoas(node.resource.type, node.nodeName).subscribe({
             next: (response: string[]) => {
                 this.hasRoas.set(response.length > 0 ? 'Present' : '-');
+                this.originASNs.set(response.map((value) => value.substring(value.lastIndexOf('AS'))));
             },
             error: () => {
                 this.hasRoas.set('check failed');
