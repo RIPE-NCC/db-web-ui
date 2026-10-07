@@ -108,6 +108,7 @@ export class ResourcesComponent implements OnDestroy {
     constructor() {
         const orgSub = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
+                this.selectedTreeNode.set(undefined);
                 this.nodeHealthService.reset();
                 this.selectedOrg = selected;
                 this.loading = true;
