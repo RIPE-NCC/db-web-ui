@@ -1,0 +1,13 @@
+<div class="status-warning">
+    <em class="fa-light fa-triangle-exclamation"></em>
+
+    <span class="title">
+        {{ title() }}
+    </span>
+
+    @if (description()) {
+    <span class="description" [innerHTML]="description()"></span>
+    }
+
+    <ng-content />
+</div>

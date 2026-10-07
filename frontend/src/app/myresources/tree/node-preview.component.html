@@ -40,36 +40,23 @@
             }
         </h3>
         <div class="overview-row">
-            @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
-            <div class="status-missing">
-                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Unregistered usage</span>
-                @if (node().resource.type === ObjectTypesEnum.INETNUM) {
-                <span class="how-to-fix">
-                    Register more specific IPv4 assignments or update the status of the allocation to "Allocated Assigned PA" if you are using the entire range.
-                    <a href="https://www.ripe.net/publications/docs/ripe-826/">Read more about the policy</a>
-                </span>
+            @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') { @if (node().resource.type ===
+            ObjectTypesEnum.INETNUM) {
+            <node-status-warning [title]="'Unregistered usage'" [description]="announcedNoAssignmentsIpv4Description">
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
                 <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
                     Update allocation <em class="fa-light fa-arrow-right"></em>
                 </span>
-                } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
-                <span class="how-to-fix">
-                    Register an inet6num object with status 'Assigned' for each network in use. Assingment size can be between /64 and /48. If you are using a
-                    pool of addresses you can register an inet6num object with status 'aggregated by LIR'.
-                    <a href="https://www.ripe.net/publications/docs/ripe-738/">Read more about the policy</a>
+            </node-status-warning>
+            } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
+            <node-status-warning [title]="'Unregistered usage'" [description]="announcedNoAssignmentsIpv6Description">
+                <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
+                <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
+                    Update allocation <em class="fa-light fa-arrow-right"></em>
                 </span>
-                <span class="fix-link" (click)="navigateToCreateAssignments()"> Create inet6num object <em class="fa-light fa-arrow-right"></em> </span>
-                <a href="https://academy.ripe.net/mod/page/view.php?id=679"><em class="fa-light fa-graduation-cap"></em> Watch a video for help</a>
-                }
-            </div>
-            } @else if (announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
-            <div class="status-missing">
-                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> IPv6 assignments smaller than /64</span>
-                <span class="how-to-fix">
-                    The minimum size of an IPv6 assingment is /64. Please delete and re-create.
-                    <a href="https://www.ripe.net/publications/docs/ripe-738/">Read more about the policy</a>
-                </span>
-            </div>
+            </node-status-warning>
+            } } @else if (announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
+            <node-status-warning [title]="'IPv6 assignments smaller than /64'" [description]="ipv6AssignmentToSmallDescription"> </node-status-warning>
             } @else {
             <span class="label">Assignment object</span>
             @if (announcementStatus() === 'Announced' && checkIfHaveAssignments()) {
@@ -92,9 +79,7 @@
                 <span class="subsection-2nd-column">{{ routeObject.origin }}</span>
             </div>
             } } @else {
-            <div class="status-missing">
-                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Missing route object</span>
-            </div>
+            <node-status-warning [title]="'Missing route object'"></node-status-warning>
             }
         </div>
 
@@ -107,9 +92,7 @@
                 <span class="subsection-1st-column">{{ domainObject.domain }}</span>
             </div>
             } } @else {
-            <div class="status-missing">
-                <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Missing domain object</span>
-            </div>
+            <node-status-warning [title]="'Missing domain object'"></node-status-warning>
             }
         </div>
 
@@ -125,21 +108,19 @@
             }
         </h3>
         @if (announcementStatus() === 'UNANNOUNCED_ASN') {
-        <div class="status-missing">
-            <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Announcement status</span>
-
-            <span>
-                ASN is not found in the BGP table. Is there a technical reason for this or is it unused? Please return the AS number if you do not plan to use
-                it within 3 months.
-            </span>
-            <a href="https://www.ripe.net/publications/docs/ripe-679/"> Read more about the policy</a>
-        </div>
+        <node-status-warning
+            [title]="'Unannounced ASN'"
+            [description]="
+                'Is there a technical reason why ASN-X is not visible in the BGP table or is the ASN unused? You must return the AS number to the RIPE NCC if you do not plan to use it within 3 months.'
+            "
+        >
+            <a class="fix-link" href="https://www.ripe.net/publications/docs/ripe-679/"> Read more about the policy</a>
+        </node-status-warning>
         } @else if (announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
-        <div class="status-missing">
-            <span class="label"><em class="fa-light fa-triangle-exclamation"></em> Usage registered but unannounced</span>
-
-            <span>Remove any out of date assignements (inetnum objects with status 'ASSIGNED PA')</span>
-        </div>
+        <node-status-warning
+            [title]="'Usage registered but unannounced'"
+            [description]="'Remove any out of date assignements (inetnum objects with status \'ASSIGNED PA\')'"
+        ></node-status-warning>
         } @else {
         <span class="label">Announcement status</span>
         @if (announcementStatus() === 'Announced' || announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
