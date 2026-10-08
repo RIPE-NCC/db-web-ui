@@ -72,7 +72,7 @@ export class NodePreviewComponent {
             const tabType = this.tabType();
 
             if (node && node.type === tabType) {
-                this.checkIfAnnounced(node);
+                this.checkResourceIssues(node);
                 this.checkIfAssociatedRouteObjects(node);
                 this.checkIfAssociatedDomainObjects(node);
                 this.checkIfHaveRoas(node);
@@ -88,7 +88,7 @@ export class NodePreviewComponent {
         void this.router.navigateByUrl(`/webupdates/create/${this.properties.SOURCE}/${this.node().type}`);
     }
 
-    checkIfAnnounced(node: TreeNode) {
+    checkResourceIssues(node: TreeNode) {
         this.checkingRoutingInformation.set(true);
         this.resourcesDataService
             .resourceCheck(node.type, node.resource.resource)

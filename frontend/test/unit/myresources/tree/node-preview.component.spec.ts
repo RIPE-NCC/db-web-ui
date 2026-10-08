@@ -168,7 +168,7 @@ describe('NodePreviewComponent', () => {
 
             mockResourcesDataService.resourceCheck.and.returnValue(response$);
 
-            component.checkIfAnnounced(createNode());
+            component.checkResourceIssues(createNode());
 
             expect(component.checkingRoutingInformation()).toBeTrue();
 
@@ -181,7 +181,7 @@ describe('NodePreviewComponent', () => {
         it('should set announcement status to Announced when response is empty', () => {
             mockResourcesDataService.resourceCheck.and.returnValue(of([]));
 
-            component.checkIfAnnounced(createNode());
+            component.checkResourceIssues(createNode());
 
             expect(mockResourcesDataService.resourceCheck).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
 
@@ -198,7 +198,7 @@ describe('NodePreviewComponent', () => {
 
             mockResourcesDataService.resourceCheck.and.returnValue(of(response));
 
-            component.checkIfAnnounced(createNode());
+            component.checkResourceIssues(createNode());
 
             expect(component.announcementStatus()).toBe('Not announced');
             expect(component.checkingRoutingInformation()).toBeFalse();
@@ -207,7 +207,7 @@ describe('NodePreviewComponent', () => {
         it('should set announcement status to check failed when request fails', () => {
             mockResourcesDataService.resourceCheck.and.returnValue(throwError(() => new Error('Request failed')));
 
-            component.checkIfAnnounced(createNode());
+            component.checkResourceIssues(createNode());
 
             expect(component.announcementStatus()).toBe('check failed');
             expect(component.checkingRoutingInformation()).toBeFalse();
