@@ -62,9 +62,9 @@ export class NodePreviewComponent {
 
     //warning messages
     readonly announcedNoAssignmentsIpv4Description =
-        'Register more specific IPv4 assignments or update the status of the allocation to \'Allocated Assigned PA\' if you are using the entire range. <a href="https://www.ripe.net/publications/docs/ripe-826/">Read more about the policy</a>';
+        'Register more specific IPv4 assignments or update the status of the allocation to \'ALLOCATED-ASSIGNED PA\' if you are using the entire range. <a href="https://www.ripe.net/publications/docs/ripe-826/">Read more about the policy</a>';
     readonly announcedNoAssignmentsIpv6Description =
-        "Register an inet6num object with status 'Assigned' for each network in use. Assingment size can be between /64 and /48. If you are using a pool of addresses you can register an inet6num object with status 'aggregated by LIR'. <a href=\"https://www.ripe.net/publications/docs/ripe-738/\">Read more about the policy</a>";
+        "Register an inet6num object with status 'ASSIGNED' for each network in use. Assingment size can be between /64 and /48. If you are using a pool of addresses you can register an inet6num object with status 'aggregated by LIR'. <a href=\"https://www.ripe.net/publications/docs/ripe-738/\">Read more about the policy</a>";
     readonly ipv6AssignmentToSmallDescription =
         'The minimum size of an IPv6 assingment is /64. Please delete and re-create. <a href="https://www.ripe.net/publications/docs/ripe-738/">Read more about the policy</a>';
 
