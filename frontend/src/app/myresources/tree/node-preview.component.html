@@ -68,7 +68,9 @@
 
         <div class="subsection">
             <div class="subsection-title">Route objects</div>
-            @if (associatedRouteObjects()?.length > 0) {
+            @if (associatedRouteObjectsCheckFailed()) {
+            <node-status-warning [title]="'Check failed'"></node-status-warning>
+            } @else if (associatedRouteObjects()?.length > 0) {
             <div class="subsection-main">
                 {{ node().nodeName }}
             </div>
@@ -86,7 +88,9 @@
         @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
         <div class="subsection">
             <div class="subsection-title">Domain objects</div>
-            @if (associatedDomainObjects()?.length > 0) { @for (domainObject of associatedDomainObjects(); track domainObject) {
+            @if (associatedDomainObjectsCheckFailed()) {
+            <node-status-warning [title]="'Check failed'"></node-status-warning>
+            } @else if (associatedDomainObjects()?.length > 0) { @for (domainObject of associatedDomainObjects(); track domainObject) {
             <div class="subsection-object domain-object">
                 <span class="subsection-dash">—</span>
                 <span class="subsection-1st-column">{{ domainObject.domain }}</span>

@@ -52,7 +52,9 @@ export class NodePreviewComponent {
     readonly tabType = input.required<string>(); // to distinguish which node preview should execute
     readonly announcementStatus = signal<ResourceCheckType | undefined>(undefined);
     readonly associatedRouteObjects = signal<IAssociatedRouteObject[] | undefined>(undefined);
+    readonly associatedRouteObjectsCheckFailed = signal(false);
     readonly associatedDomainObjects = signal<IAssociatedDomainObject[] | undefined>(undefined);
+    readonly associatedDomainObjectsCheckFailed = signal(false);
     readonly hasRoas = signal<string | undefined>(undefined);
     readonly originASNs = signal<string[] | undefined>(undefined);
     readonly checkingDatabaseObjects = signal<boolean>(false);
@@ -111,10 +113,11 @@ export class NodePreviewComponent {
             .subscribe({
                 next: (response: IAssociatedObjectApiResult) => {
                     this.associatedRouteObjects.set(response.associatedObjects as IAssociatedRouteObject[]);
+                    this.associatedRouteObjectsCheckFailed.set(false);
                 },
-                // error: () => {
-                //     this.associatedRouteObjects.set('check failed');
-                // },
+                error: () => {
+                    this.associatedRouteObjectsCheckFailed.set(true);
+                },
             });
     }
 
@@ -126,10 +129,11 @@ export class NodePreviewComponent {
             .subscribe({
                 next: (response: IAssociatedObjectApiResult) => {
                     this.associatedDomainObjects.set(response.associatedObjects as IAssociatedDomainObject[]);
+                    this.associatedDomainObjectsCheckFailed.set(false);
                 },
-                // error: () => {
-                //     this.hasAssociatedDomainObjects.set('check failed');
-                // },
+                error: () => {
+                    this.associatedDomainObjectsCheckFailed.set(true);
+                },
             });
     }
 
@@ -153,8 +157,6 @@ export class NodePreviewComponent {
     checkIfHaveAssignments() {
         return this.canHaveAssignments() && this.node().children?.length;
     }
-
-    navigateToCreateRouteObject() {}
 
     protected readonly Math = Math;
     protected readonly ObjectTypesEnum = ObjectTypesEnum;
