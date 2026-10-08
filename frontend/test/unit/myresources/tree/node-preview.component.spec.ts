@@ -33,6 +33,7 @@ describe('NodePreviewComponent', () => {
             resource: {
                 type: 'inetnum',
                 status: 'ALLOCATED',
+                resource: '192.168.0.0/24',
                 usage: {
                     used: 50,
                     total: 100,
@@ -257,8 +258,7 @@ describe('NodePreviewComponent', () => {
                 0,
                 '',
             );
-
-            expect(component.associatedRouteObjects()).toBe('Present');
+            expect(component.associatedRouteObjects()).toEqual(mockRouteObject.associatedObjects as IAssociatedRouteObject[]);
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -273,7 +273,8 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedRouteObjects(createNode());
 
-            expect(component.associatedRouteObjects()).toBe('-');
+            expect(component.associatedRouteObjects()).toEqual([]);
+            expect(component.associatedRouteObjectsCheckFailed()).toBeFalse();
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -282,7 +283,7 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedRouteObjects(createNode());
 
-            expect(component.associatedRouteObjects()).toBe('check failed');
+            expect(component.associatedRouteObjectsCheckFailed()).toBeTrue();
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
     });
@@ -330,7 +331,7 @@ describe('NodePreviewComponent', () => {
                 '',
             );
 
-            expect(component.associatedDomainObjects()).toBe('Present');
+            expect(component.associatedDomainObjects()).toBe(mockRouteObject.associatedObjects as IAssociatedDomainObject[]);
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -345,7 +346,8 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedDomainObjects(createNode());
 
-            expect(component.associatedDomainObjects()).toBe('-');
+            expect(component.associatedDomainObjects()).toEqual([]);
+            expect(component.associatedDomainObjectsCheckFailed()).toBeFalse();
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
 
@@ -354,7 +356,7 @@ describe('NodePreviewComponent', () => {
 
             component.checkIfAssociatedDomainObjects(createNode());
 
-            expect(component.associatedDomainObjects()).toBe('check failed');
+            expect(component.associatedDomainObjectsCheckFailed()).toBeTrue();
             expect(component.checkingDatabaseObjects()).toBeFalse();
         });
     });
@@ -432,7 +434,7 @@ describe('NodePreviewComponent', () => {
 
             expect(compiled.textContent).toContain('TEST-NET');
 
-            expect(compiled.textContent).toContain('Parent: -');
+            expect(compiled.textContent).toContain('Parent: —');
         });
 
         it('should display usage percentage', () => {

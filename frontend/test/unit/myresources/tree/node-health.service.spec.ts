@@ -17,6 +17,9 @@ describe('NodeHealthService', () => {
         ({
             type,
             nodeName,
+            resource: {
+                resource: nodeName,
+            },
             healthStatus: signal(NodeHealthStatus.NOT_CHECKED),
             issuesCount: signal(0),
         } as TreeNode);
