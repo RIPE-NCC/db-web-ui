@@ -2,7 +2,8 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
-import { finalize } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 import {
     AssociatedObjectsService,
     AssociatedObjectType,
@@ -10,8 +11,7 @@ import {
     IAssociatedObjectApiResult,
     IAssociatedRouteObject,
 } from 'src/app/myresources/associatedobjects/associated-objects.service';
-import { ResourceCheck } from 'src/app/myresources/resource-type.model';
-import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
+import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { NodeStatusWarningComponent } from 'src/app/myresources/tree/node-status-warning/node-status-warning.component';
 import { PropertiesService } from 'src/app/properties.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
@@ -24,7 +24,8 @@ export type ResourceCheckType =
     | 'UNANNOUNCED_ASN'
     | 'IPV6_ASSIGNMENT_TOO_SMALL'
     | 'check failed'
-    | 'Announced';
+    | 'Announced'
+    | 'Unannounced';
 
 @Component({
     selector: 'node-preview',
@@ -35,8 +36,8 @@ export type ResourceCheckType =
 export class NodePreviewComponent {
     router = inject(Router);
     properties = inject(PropertiesService);
-    resourcesDataService = inject(ResourcesDataService);
     associatedObjectService = inject(AssociatedObjectsService);
+    nodeHealthService = inject(NodeHealthService);
     rpkiValidatorService = inject(RpkiValidatorService);
 
     readonly node = input<TreeNode | undefined>();
@@ -50,7 +51,6 @@ export class NodePreviewComponent {
         return Math.round((usage.used * 100) / usage.total);
     };
     readonly tabType = input.required<string>(); // to distinguish which node preview should execute
-    readonly announcementStatus = signal<ResourceCheckType | undefined>(undefined);
     readonly associatedRouteObjects = signal<IAssociatedRouteObject[] | undefined>(undefined);
     readonly associatedRouteObjectsCheckFailed = signal(false);
     readonly associatedDomainObjects = signal<IAssociatedDomainObject[] | undefined>(undefined);
@@ -74,7 +74,6 @@ export class NodePreviewComponent {
             const tabType = this.tabType();
 
             if (node && node.type === tabType) {
-                this.checkResourceIssues(node);
                 this.checkIfAssociatedRouteObjects(node);
                 this.checkIfAssociatedDomainObjects(node);
                 this.checkIfHaveRoas(node);
@@ -90,21 +89,6 @@ export class NodePreviewComponent {
         void this.router.navigateByUrl(`/webupdates/create/${this.properties.SOURCE}/${this.node().type}`);
     }
 
-    checkResourceIssues(node: TreeNode) {
-        this.checkingRoutingInformation.set(true);
-        this.resourcesDataService
-            .resourceCheck(node.type, node.resource.resource)
-            .pipe(finalize(() => this.checkingRoutingInformation.set(false)))
-            .subscribe({
-                next: (response: ResourceCheck[]) => {
-                    this.announcementStatus.set(response.length === 0 ? 'Announced' : (response[0].type as ResourceCheckType));
-                },
-                error: (_err) => {
-                    this.announcementStatus.set('check failed');
-                },
-            });
-    }
-
     checkIfAssociatedRouteObjects(node: TreeNode) {
         this.checkingDatabaseObjects.set(true);
         this.associatedObjectService
@@ -112,8 +96,32 @@ export class NodePreviewComponent {
             .pipe(finalize(() => this.checkingDatabaseObjects.set(false)))
             .subscribe({
                 next: (response: IAssociatedObjectApiResult) => {
-                    this.associatedRouteObjects.set(response.associatedObjects as IAssociatedRouteObject[]);
-                    this.associatedRouteObjectsCheckFailed.set(false);
+                    const routes = response.associatedObjects as IAssociatedRouteObject[];
+
+                    if (routes.length === 0) {
+                        this.associatedRouteObjects.set([]);
+                        this.associatedRouteObjectsCheckFailed.set(false);
+                        return;
+                    }
+
+                    forkJoin(
+                        routes.map((route) =>
+                            this.nodeHealthService
+                                .checkAnnouncementStatus({
+                                    type: node.type,
+                                    nodeName: route.prefix,
+                                } as TreeNode)
+                                .pipe(
+                                    map((announcementStatus) => ({
+                                        ...route,
+                                        announcementStatus,
+                                    })),
+                                ),
+                        ),
+                    ).subscribe((routesWithStatus) => {
+                        this.associatedRouteObjects.set(routesWithStatus);
+                        this.associatedRouteObjectsCheckFailed.set(false);
+                    });
                 },
                 error: () => {
                     this.associatedRouteObjectsCheckFailed.set(true);
@@ -147,15 +155,6 @@ export class NodePreviewComponent {
                 this.hasRoas.set('check failed');
             },
         });
-    }
-
-    canHaveAssignments(): boolean {
-        const statusesWithAssignments = ['ALLOCATED PA', 'SUB-ALLOCATED PA', 'LIR-PARTITIONED PA', 'ALLOCATED-BY-RIR', 'ALLOCATED-BY-LIR'];
-        return statusesWithAssignments.includes(this.node().resource.status);
-    }
-
-    checkIfHaveAssignments() {
-        return this.canHaveAssignments() && this.node().children?.length;
     }
 
     protected readonly Math = Math;

@@ -91,3 +91,9 @@ export interface ResourceCheck {
     type: string;
     text: string;
 }
+
+export interface Announcement {
+    prefix: string;
+    origin: string;
+    peers: number;
+}

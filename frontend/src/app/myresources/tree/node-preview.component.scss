@@ -170,7 +170,7 @@
     }
 
     .route-object {
-        grid-template-columns: 30px minmax(50px, 150px) 100px auto;
+        grid-template-columns: 30px minmax(50px, 150px) minmax(50px, 160px) 1fr;
     }
 
     .domain-object {
@@ -182,12 +182,13 @@
         text-align: center;
     }
 
-    .subsection-1st-column {
+    .subsection-1st-column,
+    .subsection-2nd-column {
         color: #424242;
     }
 
-    .subsection-2nd-column {
-        color: #424242;
+    .subsection-3rd-column {
+        justify-self: end;
     }
 }
 
@@ -204,7 +205,7 @@ node-status-warning {
 }
 
 .status {
-    padding: 4px 10px;
+    padding: 0.5px 10px;
     border-radius: 999px;
     display: inline-flex;
     align-items: center;

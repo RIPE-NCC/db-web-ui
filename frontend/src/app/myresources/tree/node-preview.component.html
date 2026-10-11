@@ -40,7 +40,7 @@
             }
         </h3>
         <div class="overview-row">
-            @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') { @if (node().resource.type ===
+            @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') { @if (node().resource.type ===
             ObjectTypesEnum.INETNUM) {
             <node-status-warning [title]="'Unregistered usage'" [description]="announcedNoAssignmentsIpv4Description">
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
@@ -55,22 +55,20 @@
                     Update allocation <em class="fa-light fa-arrow-right"></em>
                 </span>
             </node-status-warning>
-            } } @else if (announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
+            } } @else if (node().announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
             <node-status-warning [title]="'IPv6 assignments smaller than /64'" [description]="ipv6AssignmentToSmallDescription"> </node-status-warning>
             } @else {
             <span class="label">Assignment object</span>
-            @if (announcementStatus() === 'Announced' && checkIfHaveAssignments()) {
+            @if (node().announcementStatus() === 'Announced') {
             <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
             } @else {
             <span class="value">—</span>
             } } }
         </div>
 
+        @if (associatedRouteObjects()?.length > 0) {
         <div class="subsection">
             <div class="subsection-title">Route objects</div>
-            @if (associatedRouteObjectsCheckFailed()) {
-            <node-status-warning [title]="'Check failed'"></node-status-warning>
-            } @else if (associatedRouteObjects()?.length > 0) {
             <div class="subsection-main">
                 {{ node().nodeName }}
             </div>
@@ -79,28 +77,41 @@
                 <span class="subsection-dash">—</span>
                 <span class="subsection-1st-column">{{ routeObject.prefix }}</span>
                 <span class="subsection-2nd-column">{{ routeObject.origin }}</span>
+                <span
+                    class="subsection-3rd-column status"
+                    [class.status-green]="routeObject.announcementStatus === 'Announced'"
+                    [class.status-gray]="routeObject.announcementStatus === 'Unannounced'"
+                    >{{ routeObject.announcementStatus }}
+                </span>
             </div>
-            } } @else {
-            <node-status-warning [title]="'Missing route object'"></node-status-warning>
             }
         </div>
-
-        @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
+        } @else {
+        <span class="label">Route objects</span>
+        @if (associatedRouteObjectsCheckFailed()) {
+        <span class="value"><em class="fa-light fa-circle-info"></em> Check failed</span>
+        } @else {
+        <span class="value"><em class="fa-light fa-triangle-exclamation"></em> Missing route object</span>
+        } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (associatedDomainObjects()?.length > 0) {
         <div class="subsection">
             <div class="subsection-title">Domain objects</div>
-            @if (associatedDomainObjectsCheckFailed()) {
-            <node-status-warning [title]="'Check failed'"></node-status-warning>
-            } @else if (associatedDomainObjects()?.length > 0) { @for (domainObject of associatedDomainObjects(); track domainObject) {
+            <div class="subsection-main">
+                {{ node().nodeName }}
+            </div>
+            @for (domainObject of associatedDomainObjects(); track domainObject) {
             <div class="subsection-object domain-object">
                 <span class="subsection-dash">—</span>
                 <span class="subsection-1st-column">{{ domainObject.domain }}</span>
             </div>
-            } } @else {
-            <node-status-warning [title]="'Missing domain object'"></node-status-warning>
             }
         </div>
-
-        }
+        } @else {
+        <span class="label">Domain objects</span>
+        @if (associatedDomainObjectsCheckFailed()) {
+        <span class="value"><em class="fa-light fa-circle-info"></em> Check failed</span>
+        } @else {
+        <span class="value"><em class="fa-light fa-triangle-exclamation"></em> Missing domain object</span>
+        } } }
     </div>
     <div class="panel node-overview">
         <h3 class="panel-title">
@@ -111,7 +122,7 @@
             </span>
             }
         </h3>
-        @if (announcementStatus() === 'UNANNOUNCED_ASN') {
+        @if (node().announcementStatus() === 'UNANNOUNCED_ASN') {
         <node-status-warning
             [title]="'Unannounced ASN'"
             [description]="
@@ -120,17 +131,19 @@
         >
             <a class="fix-link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/">See clean up project</a>
         </node-status-warning>
-        } @else if (announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
+        } @else if (node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
         <node-status-warning
             [title]="'Usage registered but unannounced'"
             [description]="'Remove any out of date assignements (inetnum objects with status \'ASSIGNED PA\')'"
         ></node-status-warning>
         } @else {
         <span class="label">Announcement status</span>
-        @if (announcementStatus() === 'Announced' || announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+        @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
         <span class="value status status-green">Announced</span>
-        } @else if (announcementStatus() !== 'Announced' && checkIfHaveAssignments()) {missing text} @else {
-        <span class="value status status-gray">{{ announcementStatus() }}</span>
+        } @else if (node().announcementStatus() === 'Unannounced') {
+        <span class="value status status-gray">Unannounced</span>
+        } @else {
+        <span class="value status status-gray">{{ node().announcementStatus() }}</span>
         } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (originASNs()?.length) { @for (originASN of originASNs(); track originASN; let first = $first) {
         <span class="label">{{ first ? 'Origin ASN' : '' }}</span>
         <span class="value">{{ originASN }}</span>

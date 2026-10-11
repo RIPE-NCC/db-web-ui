@@ -3,13 +3,21 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, of, shareReplay } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
-import { IIpv4Analysis, IResourceDetailsResponseModel, IResourceOverviewResponseModel, IResourceTickets, ResourceCheck } from './resource-type.model';
+import {
+    Announcement,
+    IIpv4Analysis,
+    IResourceDetailsResponseModel,
+    IResourceOverviewResponseModel,
+    IResourceTickets,
+    ResourceCheck,
+} from './resource-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class ResourcesDataService {
     private http = inject(HttpClient);
     private resourceCache = new Map<string, IResourceOverviewResponseModel>();
     private resourceCheckCache = new Map<string, Observable<ResourceCheck[]>>();
+    private announcementsCache = new Map<string, Observable<Announcement[]>>();
 
     fetchResource(objectName: string, type: string): Observable<IResourceDetailsResponseModel> {
         return this.http.get<IResourceDetailsResponseModel>(`api/whois-internal/api/resources/${type}/${objectName}`);
@@ -53,6 +61,26 @@ export class ResourcesDataService {
     }
 
     clearResourceCheckCache(): void {
+        this.resourceCheckCache.clear();
+    }
+
+    checkAnnouncements(objectType: string, name: string): Observable<Announcement[]> {
+        const key = `announcements:${objectType}:${name}`;
+
+        const cached = this.announcementsCache.get(key);
+
+        if (cached) {
+            return cached;
+        }
+
+        const request$ = this.http.get<Announcement[]>(`api/whois-internal/api/resources/${objectType}/${name}/announcements`).pipe(shareReplay(1));
+
+        this.announcementsCache.set(key, request$);
+
+        return request$;
+    }
+
+    clearAnnouncementsCache(): void {
         this.resourceCheckCache.clear();
     }
 
