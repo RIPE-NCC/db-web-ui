@@ -109,7 +109,7 @@ export class NodePreviewComponent {
                             this.nodeHealthService
                                 .checkAnnouncementStatus({
                                     type: node.type,
-                                    nodeName: route.prefix,
+                                    nodeName: node.type === 'aut-num' ? route.origin : route.prefix,
                                 } as TreeNode)
                                 .pipe(
                                     map((announcementStatus) => ({

@@ -40,26 +40,28 @@
             }
         </h3>
         <div class="overview-row">
-            @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') { @if (node().resource.type ===
-            ObjectTypesEnum.INETNUM) {
-            <node-status-warning [title]="'Unregistered usage'" [description]="announcedNoAssignmentsIpv4Description">
+            @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
+            <span class="label">Assignment object</span>
+            @if (node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+            <span class="value"></span>
+            @if (node().resource.type === ObjectTypesEnum.INETNUM) {
+            <node-status-warning [title]="'IPv4 allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv4Description">
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
                 <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
                     Update allocation <em class="fa-light fa-arrow-right"></em>
                 </span>
             </node-status-warning>
             } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
-            <node-status-warning [title]="'Unregistered usage'" [description]="announcedNoAssignmentsIpv6Description">
+            <node-status-warning [title]="'IPv6 allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv6Description">
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
                 <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
                     Update allocation <em class="fa-light fa-arrow-right"></em>
                 </span>
             </node-status-warning>
             } } @else if (node().announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
+            <span class="value"></span>
             <node-status-warning [title]="'IPv6 assignments smaller than /64'" [description]="ipv6AssignmentToSmallDescription"> </node-status-warning>
-            } @else {
-            <span class="label">Assignment object</span>
-            @if (node().announcementStatus() === 'Announced') {
+            } @else { @if (node().announcementStatus() === 'Announced') {
             <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
             } @else {
             <span class="value">—</span>
@@ -122,9 +124,11 @@
             </span>
             }
         </h3>
+        <span class="label">Announcement status</span>
         @if (node().announcementStatus() === 'UNANNOUNCED_ASN') {
+        <span class="value"></span>
         <node-status-warning
-            [title]="'Unannounced ASN'"
+            [title]="'LIR holds unannounced ASN'"
             [description]="
                 'Is there a technical reason why ASN-X is not visible in the BGP table or is the ASN unused? You must return the AS number to the RIPE NCC if you do not plan to use it within 3 months.'
             "
@@ -132,13 +136,12 @@
             <a class="fix-link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/">See clean up project</a>
         </node-status-warning>
         } @else if (node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
+        <span class="value"></span>
         <node-status-warning
             [title]="'Usage registered but unannounced'"
             [description]="'Remove any out of date assignements (inetnum objects with status \'ASSIGNED PA\')'"
         ></node-status-warning>
-        } @else {
-        <span class="label">Announcement status</span>
-        @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+        } @else { @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
         <span class="value status status-green">Announced</span>
         } @else if (node().announcementStatus() === 'Unannounced') {
         <span class="value status status-gray">Unannounced</span>
