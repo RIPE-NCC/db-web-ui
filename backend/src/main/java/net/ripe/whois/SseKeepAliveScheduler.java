@@ -16,7 +16,7 @@ public class SseKeepAliveScheduler {
         this.sessionEmitterService = sessionEmitterService;
     }
 
-    @Scheduled(fixedRate = 60_000)
+    @Scheduled(fixedRate = 30_000)
     public void ping() {
         sessionEmitterService.pingAllEmitters();
     }
