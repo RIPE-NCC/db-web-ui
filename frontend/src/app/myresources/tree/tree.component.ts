@@ -104,7 +104,7 @@ export class Tree {
             }
             return;
         }
-
+        this.selectNode(node);
         this.loadChildren(node);
     }
 
