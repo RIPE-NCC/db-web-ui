@@ -92,7 +92,7 @@ export class Tree {
 
     /**
      * Load children on node expansion.
-     * Called from template via (expandedChange) output.
+     * Called from template via + (expandedChange) output.
      */
     onNodeExpanded(node: TreeNode, expanded: boolean): void {
         if (!expanded) {
