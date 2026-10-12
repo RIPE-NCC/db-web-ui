@@ -61,7 +61,7 @@
             } } @else if (node().announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
             <span class="value"></span>
             <node-status-warning [title]="'IPv6 assignments smaller than /64'" [description]="ipv6AssignmentToSmallDescription"> </node-status-warning>
-            } @else { @if (node().announcementStatus() === 'Announced') {
+            } @else { @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
             <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
             } @else {
             <span class="value">—</span>
