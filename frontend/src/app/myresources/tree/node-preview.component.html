@@ -10,6 +10,11 @@
         </a>
         <span class="netname">{{ selectedNode.netname }}</span>
         <span class="parent">Parent: {{ selectedNode.parentResource?.nodeName ?? '—' }}</span>
+        <div class="issues-description">
+            {{ selectedNode.issuesCount() }} direct items to review. @if (selectedNode.issuesCountOfChildren() > 0) {
+            <br />
+            {{ selectedNode.issuesCountOfChildren() }} child resources also need review. Select a child resource to view the details. }
+        </div>
     </div>
     <div class="panel node-overview">
         <span class="panel-title">Overview</span>

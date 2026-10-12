@@ -83,6 +83,7 @@ export class Tree {
             healthStatus: signal(NodeHealthStatus.NOT_CHECKED),
             announcementStatus: signal(undefined),
             issuesCount: signal(0),
+            issuesCountOfChildren: signal(0),
         };
     }
 

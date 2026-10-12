@@ -83,10 +83,9 @@
                 [class.issue]="node.healthStatus() === NodeHealthStatus.ISSUES"
                 [class.failed]="node.healthStatus() === NodeHealthStatus.FAILED"
             >
-                @if (node.healthStatus() === NodeHealthStatus.FAILED) { (Check failed) } @else if (node.healthStatus() === NodeHealthStatus.ISSUES) { ({{
-                    node.issuesCount()
-                }}
-                to review) }
+                @if (node.healthStatus() === NodeHealthStatus.FAILED) { (Check failed) } @else if (node.healthStatus() === NodeHealthStatus.ISSUES) { @if
+                (node.issuesCountOfChildren() > 0) {
+                {{ node.issuesCount() }} direct - {{ node.issuesCountOfChildren() }} child to review } @else { ({{ node.issuesCount() }} to review) } }
             </span>
         </div>
     </mat-tree-node>

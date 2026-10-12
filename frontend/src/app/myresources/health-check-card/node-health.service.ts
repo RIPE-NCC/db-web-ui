@@ -34,12 +34,6 @@ export class NodeHealthService {
         return `${node.type}:${node.nodeName}`;
     }
 
-    healthCheck(nodes: TreeNode[]): void {
-        from(nodes)
-            .pipe(mergeMap((node) => this.checkNodeHealth(node), 5))
-            .subscribe();
-    }
-
     checkAnnouncementStatus(node: TreeNode): Observable<ResourceCheckType> {
         return this.resourcesDataService.checkAnnouncements(node.type, node.nodeName).pipe(
             map((response): ResourceCheckType => (response.length > 0 ? 'Announced' : 'Unannounced')),
@@ -47,13 +41,20 @@ export class NodeHealthService {
         );
     }
 
+    healthCheck(nodes: TreeNode[]): void {
+        from(nodes)
+            .pipe(mergeMap((node) => this.checkNodeHealth(node), 5))
+            .subscribe();
+    }
+
     checkNodeHealth(node: TreeNode) {
         // for child node - more specific
-        if (node.parentResource) {
+        if (node.level > 0) {
             return this.checkAnnouncementStatus(node).pipe(
                 tap((announcementStatus) => {
                     node.announcementStatus.set(announcementStatus);
 
+                    node.parentResource.issuesCountOfChildren.set(node.parentResource.issuesCountOfChildren() + 1);
                     node.issuesCount.set(announcementStatus === 'Announced' ? 0 : 1);
                     node.healthStatus.set(announcementStatus === 'Announced' ? NodeHealthStatus.OK : NodeHealthStatus.ISSUES);
                 }),

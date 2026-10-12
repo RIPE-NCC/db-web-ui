@@ -15,6 +15,7 @@ export interface HealthCheckableNode {
     healthStatus: WritableSignal<NodeHealthStatus>;
     announcementStatus: WritableSignal<ResourceCheckType>;
     issuesCount: WritableSignal<number>;
+    issuesCountOfChildren: WritableSignal<number>;
 }
 
 export interface NodeHealthState {
