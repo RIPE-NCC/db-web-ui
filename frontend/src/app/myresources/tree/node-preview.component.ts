@@ -75,7 +75,6 @@ export class NodePreviewComponent {
             const node = this.node();
             const tabType = this.tabType();
 
-            console.log('---', node.announcementStatus());
             if (node && node.type === tabType) {
                 this.checkIfAssociatedRouteObjects(node);
                 this.checkIfAssociatedDomainObjects(node);

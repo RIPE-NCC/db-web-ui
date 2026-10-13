@@ -76,9 +76,6 @@
         @if (associatedRouteObjects()?.length > 0) {
         <div class="subsection">
             <div class="subsection-title">Route objects</div>
-            <div class="subsection-main">
-                {{ node().nodeName }}
-            </div>
             @for (routeObject of associatedRouteObjects(); track routeObject) {
             <div class="subsection-object route-object">
                 <span class="subsection-dash">—</span>
@@ -102,9 +99,6 @@
         } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (associatedDomainObjects()?.length > 0) {
         <div class="subsection">
             <div class="subsection-title">Domain objects</div>
-            <div class="subsection-main">
-                {{ node().nodeName }}
-            </div>
             @for (domainObject of associatedDomainObjects(); track domainObject) {
             <div class="subsection-object domain-object">
                 <span class="subsection-dash">—</span>
