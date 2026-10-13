@@ -51,6 +51,8 @@
             <span class="value"></span>
             @if (node().resource.type === ObjectTypesEnum.INETNUM) {
             <node-status-warning [title]="'IPv4 allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv4Description">
+                <a href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
+                <a href="http://www.ripe.net/ripe/docs/ipv4-policies/#62-network-infrastructure-and-end-user-networks">Read more about the policy</a>
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
                 <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
                     Update allocation <em class="fa-light fa-arrow-right"></em>
@@ -129,10 +131,13 @@
         <node-status-warning
             [title]="'LIR holds unannounced ASN'"
             [description]="
-                'Is there a technical reason why ASN-X is not visible in the BGP table or is the ASN unused? You must return the AS number to the RIPE NCC if you do not plan to use it within 3 months.'
+                'Is there a technical reason why ' +
+                node().nodeName +
+                ' is not visible in the BGP table or is the ASN unused? Please return the AS number to the RIPE NCC if you do not plan to use it within 3 months.'
             "
         >
-            <a class="fix-link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/">See clean up project</a>
+            <a class="link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/">See clean up project</a>
+            <a class="fix-link" href="{{ properties.PORTAL_URL }}/#/generic-request/requestType">Request an update <em class="fa-light fa-arrow-right"></em></a>
         </node-status-warning>
         } @else if (node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
         <span class="value"></span>

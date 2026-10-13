@@ -196,6 +196,12 @@ node-status-warning {
     grid-column: 1 / -1;
 }
 
+.link {
+    grid-column: 2;
+    font-size: 14px;
+    cursor: pointer;
+}
+
 .fix-link {
     grid-column: 2;
     font-size: 14px;

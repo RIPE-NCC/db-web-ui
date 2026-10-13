@@ -99,7 +99,7 @@ export class NodeHealthService {
                         const issuesCount = response.length + (announcementStatus === 'Unannounced' ? 1 : 0);
                         node.issuesCount.set(issuesCount);
 
-                        node.healthStatus.set(response.length > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
+                        node.healthStatus.set(issuesCount > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
 
                         node.announcementStatus.set(response.length > 0 ? (response[0].type as ResourceCheckType) : announcementStatus);
                     }),
