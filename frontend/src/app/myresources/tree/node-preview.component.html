@@ -150,6 +150,16 @@
         <span class="value status status-green">Announced</span>
         } @else if (node().announcementStatus() === 'Unannounced') {
         <span class="value status status-gray">Unannounced</span>
+        } @else if (node().announcementStatus() === 'PARTIALLY_ANNOUNCED') {
+        <span class="value"
+            >No exact match — related announcements
+            <em
+                class="fa-light fa-circle-info"
+                [matTooltip]="
+                    'This prefix is not announced as an exact match, but more or less specific prefixes are announced. Review the related announcements to check whether the routing registration is correct.'
+                "
+            ></em
+        ></span>
         } @else {
         <span class="value status status-gray">{{ node().announcementStatus() }}</span>
         } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (originASNs()?.length) { @for (originASN of originASNs(); track originASN; let first = $first) {

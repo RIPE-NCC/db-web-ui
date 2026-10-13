@@ -1,6 +1,7 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -25,13 +26,14 @@ export type ResourceCheckType =
     | 'IPV6_ASSIGNMENT_TOO_SMALL'
     | 'check failed'
     | 'Announced'
+    | 'PARTIALLY_ANNOUNCED'
     | 'Unannounced';
 
 @Component({
     selector: 'node-preview',
     templateUrl: 'node-preview.component.html',
     styleUrl: 'node-preview.component.scss',
-    imports: [MatButton, MatProgressSpinner, RouterLink, NodeStatusWarningComponent],
+    imports: [MatButton, MatProgressSpinner, RouterLink, NodeStatusWarningComponent, MatTooltip],
 })
 export class NodePreviewComponent {
     router = inject(Router);
@@ -73,6 +75,7 @@ export class NodePreviewComponent {
             const node = this.node();
             const tabType = this.tabType();
 
+            console.log('---', node.announcementStatus());
             if (node && node.type === tabType) {
                 this.checkIfAssociatedRouteObjects(node);
                 this.checkIfAssociatedDomainObjects(node);

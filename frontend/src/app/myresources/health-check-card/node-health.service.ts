@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { from, Observable, of } from 'rxjs';
+import { Address4, Address6 } from 'ip-address';
+import { from, Observable, of, switchMap } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { ResourceCheckType } from 'src/app/myresources/tree/node-preview.component';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
@@ -36,7 +37,37 @@ export class NodeHealthService {
 
     checkAnnouncementStatus(node: TreeNode): Observable<ResourceCheckType> {
         return this.resourcesDataService.checkAnnouncements(node.type, node.nodeName).pipe(
-            map((response): ResourceCheckType => (response.length > 0 ? 'Announced' : 'Unannounced')),
+            map((response): ResourceCheckType => {
+                if (response.length === 0) {
+                    return 'Unannounced';
+                }
+
+                if (node.type == ObjectTypesEnum.AUT_NUM) {
+                    return 'Announced';
+                }
+
+                const isIPv4 = node.type === ObjectTypesEnum.INETNUM;
+
+                const isFullyAnnounced = response.some(({ prefix }) => {
+                    if (isIPv4) {
+                        const resource = new Address4(node.nodeName);
+                        const announcedPrefix = new Address4(prefix);
+
+                        return resource.isInSubnet(announcedPrefix);
+                    }
+
+                    const resource = new Address6(node.nodeName);
+                    const announcedPrefix = new Address6(prefix);
+
+                    return resource.isInSubnet(announcedPrefix);
+                });
+
+                if (isFullyAnnounced) {
+                    return 'Announced';
+                }
+
+                return 'PARTIALLY_ANNOUNCED';
+            }),
             catchError((): Observable<ResourceCheckType> => of('check failed')),
         );
     }
@@ -62,12 +93,18 @@ export class NodeHealthService {
         }
         // for parent node
         return this.resourcesDataService.resourceCheck(node.type, node.resource.resource).pipe(
-            tap((response) => {
-                node.issuesCount.set(response.length);
+            switchMap((response) =>
+                this.checkAnnouncementStatus(node).pipe(
+                    tap((announcementStatus) => {
+                        const issuesCount = response.length + (announcementStatus === 'Unannounced' ? 1 : 0);
+                        node.issuesCount.set(issuesCount);
 
-                node.healthStatus.set(response.length > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
-                node.announcementStatus.set(response.length > 0 ? (response[0].type as ResourceCheckType) : 'Announced');
-            }),
+                        node.healthStatus.set(response.length > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
+
+                        node.announcementStatus.set(response.length > 0 ? (response[0].type as ResourceCheckType) : announcementStatus);
+                    }),
+                ),
+            ),
             catchError(() => {
                 node.healthStatus.set(NodeHealthStatus.FAILED);
                 return of(null);
