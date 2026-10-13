@@ -81,6 +81,7 @@ export class Tree {
             expandable,
             children: undefined,
             healthStatus: signal(NodeHealthStatus.NOT_CHECKED),
+            resourceCheckStatus: signal(undefined),
             announcementStatus: signal(undefined),
             issuesCount: signal(0),
             issuesCountOfChildren: signal(0),

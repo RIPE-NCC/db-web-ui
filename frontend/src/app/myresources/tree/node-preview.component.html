@@ -47,12 +47,14 @@
         <div class="overview-row">
             @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
             <span class="label">Assignment object</span>
-            @if (node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+            @if (hasResourceCheck('ANNOUNCED_NO_ASSIGNMENTS')) {
             <span class="value"></span>
             @if (node().resource.type === ObjectTypesEnum.INETNUM) {
             <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv4Description">
                 <a class="link" href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
-                <a href="http://www.ripe.net/ripe/docs/ipv4-policies/#62-network-infrastructure-and-end-user-networks">Read more about the policy</a>
+                <a class="link" href="http://www.ripe.net/ripe/docs/ipv4-policies/#62-network-infrastructure-and-end-user-networks"
+                    >Read more about the policy</a
+                >
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
                 <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
                     Update allocation <em class="fa-light fa-arrow-right"></em>
@@ -64,12 +66,12 @@
                 <a class="link" href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
             </node-status-warning>
-            } } @else if (node().announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
+            } } @else if (hasResourceCheck('IPV6_ASSIGNMENT_TOO_SMALL')) {
             <span class="value"></span>
             <node-status-warning [title]="'Assingment too small'" [description]="ipv6AssignmentToSmallDescription">
                 <a class="link" href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
             </node-status-warning>
-            } @else { @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
+            } @else { @if (node().announcementStatus() === 'Announced' || hasResourceCheck('NOT_ANNOUNCED_WITH_ASSIGNMENTS')) {
             <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
             } @else {
             <span class="value">—</span>
@@ -127,7 +129,7 @@
             }
         </h3>
         <span class="label">Announcement status</span>
-        @if (node().announcementStatus() === 'UNANNOUNCED_ASN') {
+        @if (hasResourceCheck('UNANNOUNCED_ASN')) {
         <span class="value"></span>
         <node-status-warning
             [title]="'Unannounced ASN'"
@@ -140,7 +142,7 @@
             <a class="link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/">See clean up project</a>
             <a class="fix-link" [href]="properties.PORTAL_URL + '/#/generic-request/requestType'">Request an update<em class="fa-light fa-arrow-right"></em></a>
         </node-status-warning>
-        } @else if (node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
+        } @else if (hasResourceCheck('NOT_ANNOUNCED_WITH_ASSIGNMENTS')) {
         <span class="value"></span>
         <node-status-warning
             [title]="'Usage registered but unannounced'"
@@ -150,7 +152,7 @@
                     : 'Remove any out of date assignements (inet6num objects with status \'ASSIGNED\' or \'AGGREGATED-BY-LIR)'
             "
         ></node-status-warning>
-        } @else { @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
+        } @else { @if (node().announcementStatus() === 'Announced' || hasResourceCheck('ANNOUNCED_NO_ASSIGNMENTS')) {
         <span class="value status status-green">Announced</span>
         } @else if (node().announcementStatus() === 'Unannounced') {
         <span class="value status status-gray">Unannounced</span>

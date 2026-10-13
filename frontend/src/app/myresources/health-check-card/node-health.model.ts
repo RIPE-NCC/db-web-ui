@@ -1,5 +1,6 @@
 import { WritableSignal } from '@angular/core';
-import { ResourceCheckType } from 'src/app/myresources/tree/node-preview.component';
+import { ResourceCheck } from 'src/app/myresources/resource-type.model';
+import { AnnouncementOptions } from 'src/app/myresources/tree/node-preview.component';
 
 export enum NodeHealthStatus {
     NOT_CHECKED = 'NOT_CHECKED',
@@ -13,7 +14,8 @@ export interface HealthCheckableNode {
     nodeName: string;
 
     healthStatus: WritableSignal<NodeHealthStatus>;
-    announcementStatus: WritableSignal<ResourceCheckType>;
+    resourceCheckStatus: WritableSignal<ResourceCheck[]>;
+    announcementStatus: WritableSignal<AnnouncementOptions>;
     issuesCount: WritableSignal<number>;
     issuesCountOfChildren: WritableSignal<number>;
 }

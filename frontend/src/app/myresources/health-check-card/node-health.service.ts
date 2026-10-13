@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Address4, Address6 } from 'ip-address';
 import { from, Observable, of, switchMap } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import { ResourceCheckType } from 'src/app/myresources/tree/node-preview.component';
+import { AnnouncementOptions } from 'src/app/myresources/tree/node-preview.component';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { ResourcesDataService } from '../resources-data.service';
@@ -35,9 +35,9 @@ export class NodeHealthService {
         return `${node.type}:${node.nodeName}`;
     }
 
-    checkAnnouncementStatus(node: TreeNode): Observable<ResourceCheckType> {
+    checkAnnouncementStatus(node: TreeNode): Observable<AnnouncementOptions> {
         return this.resourcesDataService.checkAnnouncements(node.type, node.nodeName).pipe(
-            map((response): ResourceCheckType => {
+            map((response): AnnouncementOptions => {
                 if (response.length === 0) {
                     return 'Unannounced';
                 }
@@ -66,9 +66,9 @@ export class NodeHealthService {
                     return 'Announced';
                 }
 
-                return 'PARTIALLY_ANNOUNCED';
+                return 'Partially announced';
             }),
-            catchError((): Observable<ResourceCheckType> => of('check failed')),
+            catchError((): Observable<AnnouncementOptions> => of('check failed')),
         );
     }
 
@@ -96,8 +96,8 @@ export class NodeHealthService {
                         node.issuesCount.set(issuesCount);
 
                         node.healthStatus.set(issuesCount > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
-
-                        node.announcementStatus.set(response.length > 0 ? (response[0].type as ResourceCheckType) : announcementStatus);
+                        node.resourceCheckStatus.set(response);
+                        node.announcementStatus.set(announcementStatus);
                     }),
                 ),
             ),

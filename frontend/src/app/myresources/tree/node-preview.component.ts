@@ -24,10 +24,9 @@ export type ResourceCheckType =
     | 'NOT_ANNOUNCED_WITH_ASSIGNMENTS'
     | 'UNANNOUNCED_ASN'
     | 'IPV6_ASSIGNMENT_TOO_SMALL'
-    | 'check failed'
-    | 'Announced'
-    | 'PARTIALLY_ANNOUNCED'
-    | 'Unannounced';
+    | 'check failed';
+
+export type AnnouncementOptions = 'Announced' | 'Partially announced' | 'Unannounced' | 'check failed';
 
 @Component({
     selector: 'node-preview',
@@ -80,6 +79,12 @@ export class NodePreviewComponent {
                 this.checkIfHaveRoas(node);
             }
         });
+    }
+
+    hasResourceCheck(type: ResourceCheckType): boolean {
+        return this.node()
+            .resourceCheckStatus()
+            .some((check) => check.type === type);
     }
 
     navigateToDetailPage(): void {
