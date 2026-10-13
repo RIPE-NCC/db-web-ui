@@ -145,7 +145,7 @@
         <node-status-warning
             [title]="'Usage registered but unannounced'"
             [description]="
-                node().type == ObjectTypesEnum.INETNUM
+                node().type === ObjectTypesEnum.INETNUM
                     ? 'Remove any out of date assignements (inetnum objects with status \'ASSIGNED PA\')'
                     : 'Remove any out of date assignements (inet6num objects with status \'ASSIGNED\' or \'AGGREGATED-BY-LIR)'
             "
