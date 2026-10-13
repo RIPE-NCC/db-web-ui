@@ -50,7 +50,7 @@
             @if (node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
             <span class="value"></span>
             @if (node().resource.type === ObjectTypesEnum.INETNUM) {
-            <node-status-warning [title]="'IPv4 allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv4Description">
+            <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv4Description">
                 <a href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
                 <a href="http://www.ripe.net/ripe/docs/ipv4-policies/#62-network-infrastructure-and-end-user-networks">Read more about the policy</a>
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
@@ -59,15 +59,16 @@
                 </span>
             </node-status-warning>
             } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
-            <node-status-warning [title]="'IPv6 allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv6Description">
+            <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv6Description">
+                <a href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
+                <a href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
-                <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
-                    Update allocation <em class="fa-light fa-arrow-right"></em>
-                </span>
             </node-status-warning>
             } } @else if (node().announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
             <span class="value"></span>
-            <node-status-warning [title]="'IPv6 assignments smaller than /64'" [description]="ipv6AssignmentToSmallDescription"> </node-status-warning>
+            <node-status-warning [title]="'Assingment too small'" [description]="ipv6AssignmentToSmallDescription">
+                <a href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
+            </node-status-warning>
             } @else { @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
             <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
             } @else {
@@ -129,7 +130,7 @@
         @if (node().announcementStatus() === 'UNANNOUNCED_ASN') {
         <span class="value"></span>
         <node-status-warning
-            [title]="'LIR holds unannounced ASN'"
+            [title]="'Unannounced ASN'"
             [description]="
                 'Is there a technical reason why ' +
                 node().nodeName +
@@ -137,13 +138,17 @@
             "
         >
             <a class="link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/">See clean up project</a>
-            <a class="fix-link" href="{{ properties.PORTAL_URL }}/#/generic-request/requestType">Request an update <em class="fa-light fa-arrow-right"></em></a>
+            <a class="fix-link" [href]="properties.PORTAL_URL + '/#/generic-request/requestType'">Request an update<em class="fa-light fa-arrow-right"></em></a>
         </node-status-warning>
         } @else if (node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
         <span class="value"></span>
         <node-status-warning
             [title]="'Usage registered but unannounced'"
-            [description]="'Remove any out of date assignements (inetnum objects with status \'ASSIGNED PA\')'"
+            [description]="
+                node().type == ObjectTypesEnum.INETNUM
+                    ? 'Remove any out of date assignements (inetnum objects with status \'ASSIGNED PA\')'
+                    : 'Remove any out of date assignements (inet6num objects with status \'ASSIGNED\' or \'AGGREGATED-BY-LIR)'
+            "
         ></node-status-warning>
         } @else { @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'ANNOUNCED_NO_ASSIGNMENTS') {
         <span class="value status status-green">Announced</span>
