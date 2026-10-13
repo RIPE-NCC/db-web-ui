@@ -84,10 +84,6 @@ export class NodeHealthService {
             return this.checkAnnouncementStatus(node).pipe(
                 tap((announcementStatus) => {
                     node.announcementStatus.set(announcementStatus);
-
-                    node.parentResource.issuesCountOfChildren.set(node.parentResource.issuesCountOfChildren() + 1);
-                    node.issuesCount.set(announcementStatus === 'Announced' ? 0 : 1);
-                    node.healthStatus.set(announcementStatus === 'Announced' ? NodeHealthStatus.OK : NodeHealthStatus.ISSUES);
                 }),
             );
         }
@@ -96,7 +92,7 @@ export class NodeHealthService {
             switchMap((response) =>
                 this.checkAnnouncementStatus(node).pipe(
                     tap((announcementStatus) => {
-                        const issuesCount = response.length + (announcementStatus === 'Unannounced' ? 1 : 0);
+                        const issuesCount = response.length;
                         node.issuesCount.set(issuesCount);
 
                         node.healthStatus.set(issuesCount > 0 ? NodeHealthStatus.ISSUES : NodeHealthStatus.OK);
