@@ -150,7 +150,7 @@ export class NodePreviewComponent {
     checkIfHaveRoas(node: TreeNode) {
         this.rpkiValidatorService.getRoas(node.resource.type, node.nodeName).subscribe({
             next: (response: string[]) => {
-                this.hasRoas.set(response.length > 0 ? 'Present' : '-');
+                this.hasRoas.set(response.length > 0 ? 'Present' : '—');
                 this.originASNs.set(response.map((value) => value.substring(value.lastIndexOf('AS'))));
             },
             error: () => {
