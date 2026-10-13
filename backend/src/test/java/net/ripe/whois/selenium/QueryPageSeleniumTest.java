@@ -25,37 +25,37 @@ public class QueryPageSeleniumTest extends AbstractSeleniumTest {
 
     @Test
     public void should_query_on_Firefox_Windows() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.FIREFOX, "Windows", "Query Page"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.FIREFOX, Os.WINDOWS, "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Chrome_Windows() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.CHROME, "Windows", "Query Page"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.CHROME, Os.WINDOWS, "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Edge_Windows() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), mutableCapabilities(Browser.EDGE, "Windows", "Query Page"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), mutableCapabilities(Browser.EDGE, Os.WINDOWS, "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Firefox_Mac() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.FIREFOX, "OS X", "Query Page"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.FIREFOX, Os.MAC, "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Chrome_Mac() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.CHROME, "OS X", "Query Page"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url),  mutableCapabilities(Browser.CHROME, Os.MAC, "Query Page"));
         searchAndVerify(driver);
     }
 
     @Test
     public void should_query_on_Safari_Mac() throws  Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), mutableCapabilities(Browser.SAFARI, "OS X", "Query Page"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), mutableCapabilities(Browser.SAFARI, Os.MAC, "Query Page"));
         searchAndVerify(driver);
     }
 

@@ -9,6 +9,9 @@ import org.openqa.selenium.safari.SafariOptions;
 
 import jakarta.ws.rs.BadRequestException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class AbstractSeleniumTest {
 
     protected String browserstack_url;
@@ -23,46 +26,63 @@ public abstract class AbstractSeleniumTest {
         EDGE
     }
 
+    public enum Os {
+        WINDOWS("Windows", "11"),
+        MAC("OS X", "Tahoe");
+
+        private final String name;
+        private final String version;
+
+        Os(final String name, final String version) {
+            this.name = name;
+            this.version = version;
+        }
+    }
+
     @BeforeEach
     public void setUp() {
         browserstack_url = String.format("https://%s@hub-cloud.browserstack.com/wd/hub", System.getProperty("browserstack_key"));
         version = System.getProperty("version");
     }
 
-    protected MutableCapabilities mutableCapabilities(final LiveChatSeleniumTest.Browser browser, final String os, final String testName) {
+    protected MutableCapabilities mutableCapabilities(final Browser browser, final Os os, final String testName) {
         final MutableCapabilities caps;
+        final String browserName;
 
         switch (browser) {
             case CHROME:
                 caps = new ChromeOptions();
-
-                caps.setCapability("name", String.format("%s Chrome", os));
+                browserName = "Chrome";
                 break;
 
             case FIREFOX:
                 caps = new FirefoxOptions();
-                caps.setCapability("name", String.format("%s Firefox",  os));
+                browserName = "Firefox";
                 break;
 
             case SAFARI:
                 caps = new SafariOptions();
-                caps.setCapability("name", String.format("%s Safari", os));
+                browserName = "Safari";
                 break;
 
             case EDGE:
                 caps = new EdgeOptions();
-                caps.setCapability("name", String.format("%s Edge", os));
+                browserName = "Edge";
                 break;
 
             default: throw new BadRequestException("browser not supported");
         }
 
-        caps.setCapability("os", os);
-        caps.setCapability("os_version", os.equals("Windows") ? "10" : "Big Sur");
-        caps.setCapability("browser_version", "latest");
+        // BrowserStack-specific capabilities must be nested under "bstack:options" to be W3C compliant
+        final Map<String, Object> browserstackOptions = new HashMap<>();
+        browserstackOptions.put("os", os.name);
+        browserstackOptions.put("osVersion", os.version);
+        browserstackOptions.put("sessionName", String.format("%s %s", os.name, browserName));
+        browserstackOptions.put("buildName", String.format("%s %s", testName, version));
+        browserstackOptions.put("projectName", "Whois Browser Test");
 
-        caps.setCapability("build", String.format("%s %s", testName, version));
-        caps.setCapability("project", "Whois Browser Test");
+        caps.setCapability("browserVersion", "latest");
+        caps.setCapability("bstack:options", browserstackOptions);
 
         return  caps;
     }

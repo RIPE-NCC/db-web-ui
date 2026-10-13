@@ -22,7 +22,7 @@ public class LiveChatSeleniumTest extends AbstractSeleniumTest {
 
     @Test
     public void should_load_zendesk_chat_after_click() throws Exception {
-        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), mutableCapabilities(Browser.CHROME, "Windows", "zendesk chat"));
+        WebDriver driver = new RemoteWebDriver(new URL(browserstack_url), mutableCapabilities(Browser.CHROME, Os.WINDOWS, "zendesk chat"));
         driver.get(QUERY_PAGE_URL);
 
         try {
