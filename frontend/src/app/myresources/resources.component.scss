@@ -38,10 +38,12 @@ ip-usage-of-all-resources {
     mat-tab-header {
         border-bottom: 1px solid #d0d2da;
     }
+
     .mdc-tab {
         width: 218px;
         height: 72px;
         font-size: 18px;
+
         mat-icon {
             color: #ff5f00;
             display: flex;
@@ -75,41 +77,51 @@ ip-usage-of-all-resources {
             right: 0;
         }
     }
-}
 
-.mat-mdc-tab-body-content {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-
-    tree,
-    node-preview {
-        flex: 1 1 0;
-        min-width: 0;
+    .mat-mdc-tab-body-wrapper {
+        min-height: 0;
     }
 
-    tree {
-        padding: 1em;
-    }
-
-    node-preview {
-        padding: 1em;
-        background: #f7f7fa;
-    }
-}
-
-@media (max-width: 768px) {
     .mat-mdc-tab-body-content {
-        flex-direction: column;
+        max-height: calc(110vh);
+    }
+
+    .mat-mdc-tab-body-content {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
 
         tree,
         node-preview {
-            flex: none;
-            width: 100%;
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        tree {
+            padding: 1em;
+            overflow-y: auto;
+        }
+
+        node-preview {
+            padding: 1em;
+            overflow-y: auto;
+            background: #f7f7fa;
         }
     }
 
-    .ipv4-ipv6-asn-tabs .mdc-tab {
-        width: fit-content;
+    @media (max-width: 768px) {
+        .mat-mdc-tab-body-content {
+            flex-direction: column;
+
+            tree,
+            node-preview {
+                flex: none;
+                width: 100%;
+            }
+        }
+
+        .ipv4-ipv6-asn-tabs .mdc-tab {
+            width: fit-content;
+        }
     }
 }
