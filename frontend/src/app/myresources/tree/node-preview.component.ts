@@ -84,7 +84,7 @@ export class NodePreviewComponent {
     hasResourceCheck(type: ResourceCheckType): boolean {
         return this.node()
             .resourceCheckStatus()
-            .some((check) => check.type === type);
+            ?.some((check) => check.type === type);
     }
 
     navigateToDetailPage(): void {
