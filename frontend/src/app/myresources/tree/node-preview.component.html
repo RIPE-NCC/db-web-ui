@@ -51,7 +51,7 @@
             <span class="value"></span>
             @if (node().resource.type === ObjectTypesEnum.INETNUM) {
             <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv4Description">
-                <a href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
+                <a class="link" href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
                 <a href="http://www.ripe.net/ripe/docs/ipv4-policies/#62-network-infrastructure-and-end-user-networks">Read more about the policy</a>
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
                 <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
@@ -60,14 +60,14 @@
             </node-status-warning>
             } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
             <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv6Description">
-                <a href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
-                <a href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
+                <a class="link" href="https://academy.ripe.net/enrol/index.php?id=11">See the explainer video</a>
+                <a class="link" href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
                 <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
             </node-status-warning>
             } } @else if (node().announcementStatus() === 'IPV6_ASSIGNMENT_TOO_SMALL') {
             <span class="value"></span>
             <node-status-warning [title]="'Assingment too small'" [description]="ipv6AssignmentToSmallDescription">
-                <a href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
+                <a class="link" href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment">Read more about the policy</a>
             </node-status-warning>
             } @else { @if (node().announcementStatus() === 'Announced' || node().announcementStatus() === 'NOT_ANNOUNCED_WITH_ASSIGNMENTS') {
             <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
