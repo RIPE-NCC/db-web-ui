@@ -61,6 +61,8 @@ export class NodePreviewComponent {
     readonly checkingDatabaseObjects = signal<boolean>(false);
     readonly checkingRoutingInformation = signal<boolean>(false);
 
+    readonly allAssignmentsKinds = ['ASSIGNED PA', 'ASSIGNED PI', 'ASSIGNED ANYCAST', 'ALLOCATED ASSIGNED PA'];
+
     //warning messages
     readonly announcedNoAssignmentsIpv4Description =
         "Register more specific IPv4 assignments or update the status of the allocation to 'ALLOCATED-ASSIGNED PA'.";
@@ -102,7 +104,7 @@ export class NodePreviewComponent {
             .pipe(finalize(() => this.checkingDatabaseObjects.set(false)))
             .subscribe({
                 next: (response: IAssociatedObjectApiResult) => {
-                    const routes = response.associatedObjects as IAssociatedRouteObject[];
+                    const routes = (response.associatedObjects as IAssociatedRouteObject[]).reverse();
 
                     if (routes.length === 0) {
                         this.associatedRouteObjects.set([]);

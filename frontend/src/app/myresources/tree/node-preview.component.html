@@ -24,7 +24,7 @@
         <span class="label">Status</span>
         <span class="value">{{ selectedNode.resource?.status }}</span>
 
-        @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
+        @if (tabType() !== ObjectTypesEnum.AUT_NUM && !allAssignmentsKinds.includes(selectedNode.resource?.status)) {
         <span class="label">Used</span>
         <span class="value">{{ selectedNode.type === ObjectTypesEnum.AUT_NUM ? '—' : usedPercentage() + '%' }}</span>
 
