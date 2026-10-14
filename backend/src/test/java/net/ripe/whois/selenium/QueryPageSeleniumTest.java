@@ -61,13 +61,15 @@ public class QueryPageSeleniumTest extends AbstractSeleniumTest {
 
     private void searchAndVerify(final WebDriver driver) {
         driver.get(QUERY_PAGE_URL);
-        WebElement element = driver.findElement(By.name(SEARCH_BAR));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.of(30L, ChronoUnit.SECONDS));
+
+        // wait for Angular to render the search field
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(SEARCH_BAR)));
 
         element.sendKeys(TEST_OBJECT);
         element.submit();
 
         // conditional wait - to wait for the response
-        WebDriverWait wait = new WebDriverWait(driver, Duration.of(30L, ChronoUnit.SECONDS));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(SEARCH_RESULT_PANE)));
 
         final String key = driver.findElement(By.cssSelector(SEARCH_RESULT_PANE)).getText();
