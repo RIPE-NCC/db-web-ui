@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.containsString;
 @ActiveProfiles(profiles = "selenium")
 public class LiveChatSeleniumTest extends AbstractSeleniumTest {
 
-    public static final String LIVE_CHAT_BUTTON = "section#app-workspace > live-chat";
+    public static final String LIVE_CHAT_BUTTON = "live-chat";
 
     @Test
     public void should_load_zendesk_chat_after_click() throws Exception {

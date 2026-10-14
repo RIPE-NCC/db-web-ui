@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.containsString;
 @ActiveProfiles(profiles = "selenium")
 public class QueryPageSeleniumTest extends AbstractSeleniumTest {
 
-    private final String SEARCH_BAR = "qp.queryText";
+    private final String SEARCH_BAR = "queryText";
     private final String SEARCH_RESULT_PANE = "div.resultpane ul li";
     public static final String TEST_OBJECT = "NINJA-SSO-MNT";
 
