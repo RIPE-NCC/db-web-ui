@@ -130,7 +130,7 @@
         </h3>
         <span class="label">Announcement status</span>
         @if (hasResourceCheck('UNANNOUNCED_ASN')) {
-        <span class="value"></span>
+        <span class="value status status-gray">Unannounced</span>
         <node-status-warning
             [title]="'Unannounced ASN'"
             [description]="
@@ -143,7 +143,7 @@
             <a class="fix-link" [href]="properties.PORTAL_URL + '/#/generic-request/requestType'">Request an update<em class="fa-light fa-arrow-right"></em></a>
         </node-status-warning>
         } @else if (hasResourceCheck('NOT_ANNOUNCED_WITH_ASSIGNMENTS')) {
-        <span class="value"></span>
+        <span class="value status status-gray">Unannounced</span>
         <node-status-warning
             [title]="'Usage registered but unannounced'"
             [description]="
