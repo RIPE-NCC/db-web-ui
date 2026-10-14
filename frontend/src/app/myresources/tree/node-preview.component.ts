@@ -68,7 +68,7 @@ export class NodePreviewComponent {
 
     //warning messages
     readonly announcedNoAssignmentsIpv4Description =
-        "Register more specific IPv4 assignments or update the status of the allocation to 'ALLOCATED-ASSIGNED PA'.";
+        'Register more-specific IPv4 assignments, or if all addresses in an allocation are used for infrastructure, you may update its status to ALLOCATED-ASSIGNED PA.';
     readonly announcedNoAssignmentsIpv6Description =
         "Register an inet6num object with status 'ASSIGNED' for each network in use. Assingment size can be between /64 and /48. If you are using a large pool of addresses you can register an inet6num object with status 'aggregated by LIR'";
     readonly ipv6AssignmentToSmallDescription = 'The minimum size of an IPv6 assingment is /64. Please delete and re-create.';
