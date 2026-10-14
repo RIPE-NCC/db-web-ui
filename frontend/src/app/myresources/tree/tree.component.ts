@@ -121,7 +121,7 @@ export class Tree {
                 if (!response.resources) {
                     return;
                 }
-                node.numberOfChildren = response.resources.length;
+                node.numberOfChildren = response.totalNumberOfResources;
                 node.allChildren = response.resources.map((resource) =>
                     this.createNode(resource, node.level + 1, this.isExpandable(resource.status, resource.usage), node),
                 );
