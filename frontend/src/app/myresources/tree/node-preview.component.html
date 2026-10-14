@@ -9,7 +9,9 @@
             <em class="fa-light fa-arrow-right"></em>
         </a>
         <span class="netname">{{ selectedNode.netname }}</span>
+        @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
         <span class="parent">Parent: {{ selectedNode.parentResource?.nodeName ?? '—' }}</span>
+        }
         <div class="issues-description">
             {{ selectedNode.issuesCount() }} direct items to review. @if (selectedNode.issuesCountOfChildren() > 0) {
             <br />
