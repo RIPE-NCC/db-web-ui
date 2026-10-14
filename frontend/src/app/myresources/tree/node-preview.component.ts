@@ -13,6 +13,8 @@ import {
     IAssociatedRouteObject,
 } from 'src/app/myresources/associatedobjects/associated-objects.service';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
+import { Announcement } from 'src/app/myresources/resource-type.model';
+import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
 import { NodeStatusWarningComponent } from 'src/app/myresources/tree/node-status-warning/node-status-warning.component';
 import { PropertiesService } from 'src/app/properties.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
@@ -39,6 +41,7 @@ export class NodePreviewComponent {
     properties = inject(PropertiesService);
     associatedObjectService = inject(AssociatedObjectsService);
     nodeHealthService = inject(NodeHealthService);
+    resourcesDataService = inject(ResourcesDataService);
     rpkiValidatorService = inject(RpkiValidatorService);
 
     readonly node = input<TreeNode | undefined>();
@@ -79,6 +82,7 @@ export class NodePreviewComponent {
                 this.checkIfAssociatedRouteObjects(node);
                 this.checkIfAssociatedDomainObjects(node);
                 this.checkIfHaveRoas(node);
+                this.checkOriginAsns(node);
             }
         });
     }
@@ -153,11 +157,18 @@ export class NodePreviewComponent {
             });
     }
 
+    checkOriginAsns(node: TreeNode) {
+        this.resourcesDataService.checkAnnouncements(node.type, node.nodeName).subscribe({
+            next: (response: Announcement[]) => {
+                this.originASNs.set([...new Set(response.map((announcement) => `AS${announcement.origin}`))]);
+            },
+        });
+    }
+
     checkIfHaveRoas(node: TreeNode) {
         this.rpkiValidatorService.getRoas(node.resource.type, node.nodeName).subscribe({
             next: (response: string[]) => {
                 this.hasRoas.set(response.length > 0 ? 'Present' : '—');
-                this.originASNs.set(response.map((value) => value.substring(value.lastIndexOf('AS'))));
             },
             error: () => {
                 this.hasRoas.set('check failed');
