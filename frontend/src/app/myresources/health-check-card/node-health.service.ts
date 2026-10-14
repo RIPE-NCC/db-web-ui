@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Address4, Address6 } from 'ip-address';
 import { from, Observable, of, switchMap } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import { AnnouncementOptions } from 'src/app/myresources/tree/node-preview.component';
+import { AnnouncementOptions, RouteAnnouncementOptions } from 'src/app/myresources/tree/node-preview.component';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { ResourcesDataService } from '../resources-data.service';
@@ -69,6 +69,52 @@ export class NodeHealthService {
                 return 'Partially announced';
             }),
             catchError((): Observable<AnnouncementOptions> => of('check failed')),
+        );
+    }
+
+    checkRouteAnnouncementStatus(type: string, routePrefix: string, routeOrigin: string): Observable<RouteAnnouncementOptions> {
+        const resource = type === ObjectTypesEnum.AUT_NUM ? routeOrigin : routePrefix;
+
+        return this.resourcesDataService.checkAnnouncements(type, resource).pipe(
+            map((response): RouteAnnouncementOptions => {
+                if (response.length === 0) {
+                    return 'Unannounced';
+                }
+
+                const isIPv4 = type === ObjectTypesEnum.INETNUM;
+                const address = isIPv4 ? new Address4(routePrefix) : new Address6(routePrefix);
+
+                const hasExactMatch = response.some(({ prefix, origin }) => {
+                    const announcedAddress = isIPv4 ? new Address4(prefix) : new Address6(prefix);
+
+                    return (
+                        address.startAddress().correctForm() === announcedAddress.startAddress().correctForm() &&
+                        address.subnetMask === announcedAddress.subnetMask &&
+                        `AS${origin}` === routeOrigin
+                    );
+                });
+
+                if (hasExactMatch) {
+                    return 'Announced';
+                }
+
+                const hasOriginMismatch = response.some(({ prefix, origin }) => {
+                    const announcedAddress = isIPv4 ? new Address4(prefix) : new Address6(prefix);
+
+                    return (
+                        address.startAddress().correctForm() === announcedAddress.startAddress().correctForm() &&
+                        address.subnetMask === announcedAddress.subnetMask &&
+                        origin !== routeOrigin
+                    );
+                });
+
+                if (hasOriginMismatch) {
+                    return 'Mismatch';
+                }
+
+                return 'Not exact match';
+            }),
+            catchError((): Observable<RouteAnnouncementOptions> => of('check failed')),
         );
     }
 

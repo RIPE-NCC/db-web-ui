@@ -33,3 +33,38 @@
 health-check-card {
     flex: 1 0 21%;
 }
+
+@media (max-width: 768px) {
+    .resources-ip-usage {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .usage-card,
+    health-check-card {
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .usage-card {
+        padding: 10px;
+
+        p,
+        .description {
+            white-space: normal;
+            font-size: 11px;
+        }
+
+        .size {
+            font-size: 18px;
+            margin-top: 0.5em;
+        }
+    }
+}
+
+//@media (max-width: 320px) {
+//    .resources-ip-usage {
+//        grid-template-columns: 1fr;
+//    }
+//}

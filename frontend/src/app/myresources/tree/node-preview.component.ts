@@ -29,6 +29,7 @@ export type ResourceCheckType =
     | 'check failed';
 
 export type AnnouncementOptions = 'Announced' | 'Partially announced' | 'Unannounced' | 'check failed';
+export type RouteAnnouncementOptions = 'Announced' | 'Not exact match' | 'Mismatch' | 'Unannounced' | 'check failed';
 
 @Component({
     selector: 'node-preview',
@@ -118,17 +119,12 @@ export class NodePreviewComponent {
 
                     forkJoin(
                         routes.map((route) =>
-                            this.nodeHealthService
-                                .checkAnnouncementStatus({
-                                    type: node.type,
-                                    nodeName: node.type === 'aut-num' ? route.origin : route.prefix,
-                                } as TreeNode)
-                                .pipe(
-                                    map((announcementStatus) => ({
-                                        ...route,
-                                        announcementStatus,
-                                    })),
-                                ),
+                            this.nodeHealthService.checkRouteAnnouncementStatus(node.type, route.prefix, route.origin).pipe(
+                                map((announcementStatus) => ({
+                                    ...route,
+                                    announcementStatus,
+                                })),
+                            ),
                         ),
                     ).subscribe((routesWithStatus) => {
                         this.associatedRouteObjects.set(routesWithStatus);
