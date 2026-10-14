@@ -91,19 +91,25 @@
         @if (associatedRouteObjects()?.length > 0) {
         <div class="subsection">
             <div class="subsection-title">Route objects</div>
-            @for (routeObject of associatedRouteObjects(); track routeObject) {
-            <div class="subsection-object route-object">
-                <span class="subsection-dash">—</span>
-                <span class="subsection-1st-column">{{ routeObject.prefix }}</span>
-                <span class="subsection-2nd-column">{{ routeObject.origin }}</span>
-                <span
-                    class="subsection-3rd-column status"
-                    [class.status-green]="routeObject.announcementStatus === 'Announced'"
-                    [class.status-gray]="routeObject.announcementStatus === 'Unannounced'"
-                    >{{ routeObject.announcementStatus }}
-                </span>
-            </div>
-            }
+            <table class="preview-table">
+                <tbody>
+                    @for (routeObject of associatedRouteObjects(); track routeObject) {
+                    <tr>
+                        <td class="table-1st-col">{{ routeObject.prefix }}</td>
+                        <td class="table-col">{{ routeObject.origin }}</td>
+                        <td class="table-last-col">
+                            <span
+                                class="status"
+                                [class.status-green]="routeObject.announcementStatus === 'Announced'"
+                                [class.status-gray]="routeObject.announcementStatus === 'Unannounced'"
+                            >
+                                {{ routeObject.announcementStatus }}
+                            </span>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         } @else {
         <span class="label">Route objects</span>
@@ -114,12 +120,15 @@
         } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (associatedDomainObjects()?.length > 0) {
         <div class="subsection">
             <div class="subsection-title">Domain objects</div>
-            @for (domainObject of associatedDomainObjects(); track domainObject) {
-            <div class="subsection-object domain-object">
-                <span class="subsection-dash">—</span>
-                <span class="subsection-1st-column">{{ domainObject.domain }}</span>
-            </div>
-            }
+            <table class="preview-table">
+                <tbody>
+                    @for (domainObject of associatedDomainObjects(); track domainObject) {
+                    <tr>
+                        <td class="table-1st-col">{{ domainObject.domain }}</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         } @else {
         <span class="label">Domain objects</span>

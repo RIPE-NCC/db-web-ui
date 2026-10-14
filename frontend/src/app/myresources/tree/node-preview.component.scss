@@ -169,26 +169,25 @@
         font-size: 14px;
     }
 
-    .route-object {
-        grid-template-columns: 30px minmax(50px, 150px) minmax(50px, 160px) 1fr;
+    .preview-table {
+        padding-top: 4px;
+        padding-bottom: 4px;
     }
 
-    .domain-object {
-        grid-template-columns: 30px minmax(50px, 1fr);
+    .table-1st-col {
+        width: 40%;
+        text-align: left;
+        padding-left: 50px;
     }
 
-    .subsection-dash {
-        color: #626262;
-        text-align: center;
+    .table-col {
+        width: 30%;
+        text-align: left;
     }
 
-    .subsection-1st-column,
-    .subsection-2nd-column {
-        color: #424242;
-    }
-
-    .subsection-3rd-column {
-        justify-self: end;
+    .table-last-col {
+        width: 30%;
+        text-align: right;
     }
 }
 
