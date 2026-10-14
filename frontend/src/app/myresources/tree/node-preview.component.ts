@@ -61,7 +61,7 @@ export class NodePreviewComponent {
     readonly checkingDatabaseObjects = signal<boolean>(false);
     readonly checkingRoutingInformation = signal<boolean>(false);
 
-    readonly allAssignmentsKinds = ['ASSIGNED PA', 'ASSIGNED PI', 'ASSIGNED ANYCAST', 'ALLOCATED ASSIGNED PA'];
+    readonly allAssignmentsKinds = ['ASSIGNED PA', 'ASSIGNED PI'];
 
     //warning messages
     readonly announcedNoAssignmentsIpv4Description =
