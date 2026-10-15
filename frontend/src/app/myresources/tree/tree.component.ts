@@ -89,7 +89,7 @@ export class Tree {
     }
 
     isExpandable(status: string, usage: IUsage): boolean {
-        return status.includes('ALLOCATED') && usage?.used > 0;
+        return (status.includes('ALLOCATED') || status === 'LIR-PARTITIONED PA') && usage?.used > 0;
     }
 
     /**
