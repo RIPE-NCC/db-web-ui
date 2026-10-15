@@ -36,7 +36,7 @@ export class MainContainerComponent implements OnInit {
     isBrowserSupported: boolean = true;
     activeMenu: ActiveMenu;
 
-    browserUnsuportedText = `Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.`;
+    browserUnsupportedText = `Your browser is not supported by this application. Some features may not display or function properly. Please upgrade to a <a href="https://www.ripe.net/about-us/legal/supported-browsers" target="_blank">supported browser</a>.`;
 
     constructor() {
         this.skipHash();

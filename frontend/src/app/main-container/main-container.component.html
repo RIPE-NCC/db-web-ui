@@ -9,7 +9,7 @@
                 @if (properties.BANNER) {
                 <banner [type]="BannerTypes.warning" [id]="'notification-1'" [textContent]="properties.BANNER"> </banner>
                 } @if (!isBrowserSupported) {
-                <banner [type]="BannerTypes.warning" [id]="'notification-browser'" [textContent]="browserUnsuportedText"> </banner>
+                <banner [type]="BannerTypes.warning" [id]="'notification-browser'" [textContent]="browserUnsupportedText"> </banner>
                 } @if (showSessionExpireBanner) {
                 <banner
                     [type]="BannerTypes.warning"
