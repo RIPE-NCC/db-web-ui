@@ -3,8 +3,8 @@ import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, finalize, map } from 'rxjs/operators';
 import {
     AssociatedObjectsService,
     AssociatedObjectType,
@@ -124,6 +124,12 @@ export class NodePreviewComponent {
                                     ...route,
                                     announcementStatus,
                                 })),
+                                catchError(() =>
+                                    of({
+                                        ...route,
+                                        announcementStatus: 'check failed' as RouteAnnouncementOptions,
+                                    }),
+                                ),
                             ),
                         ),
                     ).subscribe((routesWithStatus) => {

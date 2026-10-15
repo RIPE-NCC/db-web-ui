@@ -130,6 +130,7 @@ export class NodeHealthService {
             return this.checkAnnouncementStatus(node).pipe(
                 tap((announcementStatus) => {
                     node.announcementStatus.set(announcementStatus);
+                    node.healthStatus.set(NodeHealthStatus.OK); // for now we don't count Announcement issues as issues
                 }),
             );
         }
