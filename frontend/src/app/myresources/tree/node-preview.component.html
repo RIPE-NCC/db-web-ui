@@ -59,10 +59,12 @@
                 <a class="link" href="https://www.ripe.net/ripe/docs/ipv4-policies/#62-network-infrastructure-and-end-user-networks" target="_blank"
                     >Read more about the policy <em class="fa-light fa-arrow-up-right-from-square"></em
                 ></a>
-                <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
-                <span class="fix-link" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
-                    Update allocation <em class="fa-light fa-arrow-right"></em>
-                </span>
+                <a class="link" [routerLink]="['/webupdates/create/', properties.SOURCE, node().type]" target="_blank">
+                    Create an assignment<em class="fa-light fa-arrow-up-right-from-square"></em
+                ></a>
+                <a class="link" [routerLink]="['/myresources/detail', node().type, node().resource.resource, false]" target="_blank">
+                    Update allocation <em class="fa-light fa-arrow-up-right-from-square"></em>
+                </a>
             </node-status-warning>
             } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
             <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv6Description">
@@ -72,7 +74,9 @@
                 <a class="link" href="https://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment" target="_blank"
                     >Read more about the policy <em class="fa-light fa-arrow-up-right-from-square"></em
                 ></a>
-                <span class="fix-link" (click)="navigateToCreateAssignments()"> Create an assignment <em class="fa-light fa-arrow-right"></em> </span>
+                <a class="link" [routerLink]="['/webupdates/create', properties.SOURCE, node().type]" target="_blank">
+                    Create an assignment <em class="fa-light fa-arrow-up-right-from-square"></em>
+                </a>
             </node-status-warning>
             } } @else if (hasResourceCheck('IPV6_ASSIGNMENT_TOO_SMALL')) {
             <span class="value"></span>
@@ -161,7 +165,9 @@
             <a class="link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/" target="_blank"
                 >See clean up project <em class="fa-light fa-arrow-up-right-from-square"></em
             ></a>
-            <a class="fix-link" [href]="properties.PORTAL_URL + '/#/generic-request/requestType'">Request an update<em class="fa-light fa-arrow-right"></em></a>
+            <a class="link" [href]="properties.PORTAL_URL + '/#/generic-request/requestType'" target="_blank"
+                >Request an update <em class="fa-light fa-arrow-up-right-from-square"></em
+            ></a>
         </node-status-warning>
         } @else if (hasResourceCheck('NOT_ANNOUNCED_WITH_ASSIGNMENTS')) {
         <span class="value status status-gray">Unannounced</span>
