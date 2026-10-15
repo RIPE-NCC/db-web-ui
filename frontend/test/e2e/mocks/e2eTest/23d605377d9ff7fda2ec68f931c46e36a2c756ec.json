@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources?org-id=ORG-TEST36-RIPE&type=aut-num",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {}
+}

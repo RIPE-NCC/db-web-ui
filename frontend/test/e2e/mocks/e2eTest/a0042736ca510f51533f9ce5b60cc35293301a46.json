@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources/inetnum/194.11.156.0/22/announcements",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
+}
