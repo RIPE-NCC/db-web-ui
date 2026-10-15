@@ -120,6 +120,8 @@ describe('Tree', () => {
             expect(node.children).toBeUndefined();
             expect(node.healthStatus()).toBe(NodeHealthStatus.NOT_CHECKED);
             expect(node.issuesCount()).toBe(0);
+            expect(node.resourceCheckStatus()).toBeUndefined();
+            expect(node.announcementStatus()).toBeUndefined();
         });
 
         it('should set parent resource', () => {
@@ -271,7 +273,7 @@ describe('Tree', () => {
 
             expect(mockMoreSpecificsService.getSpecifics).toHaveBeenCalledWith(node.nodeName, node.type);
 
-            expect(node.numberOfChildren).toBe(2);
+            expect(node.numberOfChildren).toBe(3);
             expect(node.allChildren?.length).toBe(2);
             expect(node.children?.length).toBe(2);
         });
@@ -298,6 +300,25 @@ describe('Tree', () => {
             component.onNodeExpanded(node, true);
 
             expect(mockMoreSpecificsService.getSpecifics).not.toHaveBeenCalled();
+        });
+
+        it('should not initialize children when the response has no resources', () => {
+            const node = component.createNode(createResource(), 0, true);
+
+            mockMoreSpecificsService.getSpecifics.and.returnValue(
+                of({
+                    resources: undefined,
+                    totalNumberOfResources: 0,
+                    filteredSize: 0,
+                } as IMoreSpecificsApiResult),
+            );
+
+            component.onNodeExpanded(node, true);
+
+            expect(node.allChildren).toBeUndefined();
+            expect(node.children).toBeUndefined();
+            expect(mockNodeHealthService.registerNodes).not.toHaveBeenCalled();
+            expect(mockNodeHealthService.healthCheck).not.toHaveBeenCalled();
         });
     });
 
