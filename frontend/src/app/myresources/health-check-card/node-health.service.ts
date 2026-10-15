@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Address4, Address6 } from 'ip-address';
 import { from, Observable, of, switchMap } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { IpAddressService } from 'src/app/myresources/ip-address.service';
 import { AnnouncementOptions, RouteAnnouncementOptions } from 'src/app/myresources/tree/node-preview.component';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
@@ -81,10 +82,13 @@ export class NodeHealthService {
                     return 'Unannounced';
                 }
 
-                const isIPv4 = type === ObjectTypesEnum.INETNUM;
+                const isIPv4 = IpAddressService.isValidV4(routePrefix);
+
                 const address = isIPv4 ? new Address4(routePrefix) : new Address6(routePrefix);
 
-                const hasExactMatch = response.some(({ prefix, origin }) => {
+                const validResponses = response.filter(({ prefix }) => (isIPv4 ? IpAddressService.isValidV4(prefix) : IpAddressService.isValidV6(prefix)));
+
+                const hasExactMatch = validResponses.some(({ prefix, origin }) => {
                     const announcedAddress = isIPv4 ? new Address4(prefix) : new Address6(prefix);
 
                     return (
@@ -98,7 +102,7 @@ export class NodeHealthService {
                     return 'Announced';
                 }
 
-                const hasOriginMismatch = response.some(({ prefix, origin }) => {
+                const hasOriginMismatch = validResponses.some(({ prefix, origin }) => {
                     const announcedAddress = isIPv4 ? new Address4(prefix) : new Address6(prefix);
 
                     return (
@@ -114,7 +118,10 @@ export class NodeHealthService {
 
                 return 'Not exact match';
             }),
-            catchError((): Observable<RouteAnnouncementOptions> => of('check failed')),
+            catchError((e): Observable<RouteAnnouncementOptions> => {
+                console.log('eeee', e);
+                return of('check failed');
+            }),
         );
     }
 
