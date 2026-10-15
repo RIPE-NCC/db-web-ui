@@ -1,10 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
 import { LandingPageComponent } from 'src/app/myresources/landing-page/landing-page.component';
 import { ResourcesComponent } from 'src/app/myresources/resources.component';
 import { UserInfoService } from 'src/app/userinfo/user-info.service';
-import { mockUserInfo } from '../userinfo/user-info.service.spec';
 
 describe('LandingPageComponent', () => {
     let component: LandingPageComponent;
@@ -13,9 +11,9 @@ describe('LandingPageComponent', () => {
     let mockUserInfoService: jasmine.SpyObj<UserInfoService>;
 
     beforeEach(async () => {
-        mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
+        mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['isLoggedIn']);
 
-        mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
+        // mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
 
         await TestBed.configureTestingModule({
             imports: [LandingPageComponent],
@@ -36,7 +34,7 @@ describe('LandingPageComponent', () => {
     });
 
     it('should render resource-component when loggedIn is true', () => {
-        mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
+        mockUserInfoService.isLoggedIn.and.returnValue(true);
         fixture.detectChanges();
 
         const compiled = fixture.nativeElement as HTMLElement;
@@ -44,7 +42,7 @@ describe('LandingPageComponent', () => {
     });
 
     it('should render ripe-unified-landing-page when loggedIn is false', () => {
-        mockUserInfoService.getUserOrgsAndRoles.and.returnValue(throwError(() => 403));
+        mockUserInfoService.isLoggedIn.and.returnValue(false);
         fixture.detectChanges();
 
         const compiled = fixture.nativeElement as HTMLElement;

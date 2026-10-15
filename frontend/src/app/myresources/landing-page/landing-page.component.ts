@@ -21,8 +21,6 @@ export class LandingPageComponent implements OnInit {
     currentHref = `${window.location.origin}/db-web-ui/oauth2/authorization/keycloak?next=${window.location.href}`;
 
     ngOnInit() {
-        this.userInfoService.getUserOrgsAndRoles().subscribe((userInfo) => {
-            this.loggedIn = !!userInfo;
-        });
+        this.loggedIn = this.userInfoService.isLoggedIn();
     }
 }
