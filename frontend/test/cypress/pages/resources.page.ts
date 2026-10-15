@@ -262,7 +262,7 @@ export class ResourcesOverViewPage {
     }
 
     expectIssueNoteInNode(index: number, contain: boolean) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index})`).should(contain ? 'contain.text' : 'not.contain.text', '1 issues');
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index})`).should(contain ? 'contain.text' : 'not.contain.text', '1 to review');
         return this;
     }
 

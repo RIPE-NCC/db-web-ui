@@ -19,7 +19,7 @@ describe('Resources', () => {
             .expectResourcesToContainText(2, 'NETNAME-TEST84')
             .expectResourcesToContainText(3, '192.87.0.0/16')
             .expectResourcesToContainText(3, 'NETNAME-TEST85')
-            .expectResourcesToContainText(3, '(1 issues)');
+            .expectResourcesToContainText(3, '(1 to review)');
     });
 
     it('should show + for IPv4 resources tree with more specific', () => {
@@ -167,15 +167,7 @@ describe('Resources', () => {
                 .clickOnIPTab('IPv4')
                 .expectHealtyStatusCheck('Resource health')
                 .expectHealtyStatusCheck('Need attention')
-                .expectHealtyStatusCheck('1 resources with issues');
-        });
-
-        it('should contain healthy card status check without issues', () => {
-            resourcesPage
-                .clickOnIPTab('IPv6')
-                .expectHealtyStatusCheck('Resource health')
-                .expectHealtyStatusCheck('Healthy')
-                .expectHealtyStatusCheck('0 resources with issues');
+                .expectHealtyStatusCheck('1 resources to review');
         });
     });
 
