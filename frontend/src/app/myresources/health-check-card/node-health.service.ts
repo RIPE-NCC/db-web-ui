@@ -88,40 +88,32 @@ export class NodeHealthService {
 
                 const validResponses = response.filter(({ prefix }) => (isIPv4 ? IpAddressService.isValidV4(prefix) : IpAddressService.isValidV6(prefix)));
 
-                const hasExactMatch = validResponses.some(({ prefix, origin }) => {
+                const matchingPrefixes = validResponses.filter(({ prefix }) => {
                     const announcedAddress = isIPv4 ? new Address4(prefix) : new Address6(prefix);
 
                     return (
                         address.startAddress().correctForm() === announcedAddress.startAddress().correctForm() &&
-                        address.subnetMask === announcedAddress.subnetMask &&
-                        `AS${origin}` === routeOrigin
+                        address.subnetMask === announcedAddress.subnetMask
                     );
                 });
 
-                if (hasExactMatch) {
+                if (matchingPrefixes.some(({ origin }) => `AS${origin}` === routeOrigin)) {
                     return 'Announced';
                 }
 
-                const hasOriginMismatch = validResponses.some(({ prefix, origin }) => {
-                    const announcedAddress = isIPv4 ? new Address4(prefix) : new Address6(prefix);
-
-                    return (
-                        address.startAddress().correctForm() === announcedAddress.startAddress().correctForm() &&
-                        address.subnetMask === announcedAddress.subnetMask &&
-                        origin !== routeOrigin
-                    );
-                });
-
-                if (hasOriginMismatch) {
+                if (matchingPrefixes.length > 0) {
                     return 'Mismatch';
                 }
 
-                return 'Not exact match';
+                const hasOverlappingPrefix = validResponses.some(({ prefix }) => {
+                    const announcedAddress = isIPv4 ? new Address4(prefix) : new Address6(prefix);
+
+                    return address.isInSubnet(announcedAddress) || announcedAddress.isInSubnet(address);
+                });
+
+                return hasOverlappingPrefix ? 'Not exact match' : 'Unannounced';
             }),
-            catchError((e): Observable<RouteAnnouncementOptions> => {
-                console.log('eeee', e);
-                return of('check failed');
-            }),
+            catchError((): Observable<RouteAnnouncementOptions> => of('check failed')),
         );
     }
 
