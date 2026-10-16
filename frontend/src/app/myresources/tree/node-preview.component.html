@@ -105,7 +105,7 @@
                             <span
                                 class="status"
                                 [class.status-green]="routeObject.announcementStatus === 'Announced'"
-                                [class.status-gray]="routeObject.announcementStatus === 'Unannounced'"
+                                [class.status-gray]="['Unannounced', 'Mismatch', 'Not exact match'].includes(routeObject.announcementStatus)"
                             >
                                 {{ routeObject.announcementStatus }}
                             </span>
