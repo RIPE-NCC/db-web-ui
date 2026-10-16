@@ -149,6 +149,7 @@ export class NodeHealthService {
             ),
             catchError(() => {
                 node.healthStatus.set(NodeHealthStatus.FAILED);
+                node.announcementStatus.set('check failed');
                 return of(null);
             }),
         );
