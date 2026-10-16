@@ -178,6 +178,21 @@ export class NodePreviewComponent {
         });
     }
 
+    getRouteAnnouncementTooltip(announcementStatus: RouteAnnouncementOptions) {
+        switch (announcementStatus) {
+            case 'Announced':
+                return 'The prefix and origin AS exactly match the current BGP announcement.';
+            case 'Mismatch':
+                return 'The prefix is announced, but the BGP origin AS does not match the route object.';
+            case 'Unannounced':
+                return 'This route object is not currently seen in the global BGP routing table.';
+            case 'Not exact match':
+                return 'The BGP announcement is for a larger or smaller subnet.';
+            default:
+                return 'Check failed. Try refreshing.';
+        }
+    }
+
     protected readonly Math = Math;
     protected readonly ObjectTypesEnum = ObjectTypesEnum;
     protected readonly PropertiesService = PropertiesService;
