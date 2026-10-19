@@ -7,51 +7,42 @@ describe('Resources', () => {
         resourcesPage = new ResourcesPage().visitOverview();
     });
 
-    it('should show IPv4 resources for an LIR', () => {
+    it('should show parent node for IPv4 resources', () => {
         resourcesPage
             .expectActiveIPTabToBe('IPv4')
             .expectResourcesSize(4)
             .expectResourcesToContainText(0, '194.104.0.0/24')
-            .expectResourcesToContainHref(0, 'myresources/detail/INETNUM/194.104.0.0%20-%20194.104.0.255/false')
+            .expectResourcesToContainText(0, 'NETNAME-TEST83')
             .expectResourcesToContainText(1, '194.171.0.0/16')
-            .expectResourcesToContainHref(1, 'myresources/detail/INETNUM/194.171.0.0%20-%20194.171.255.255/false')
+            .expectResourcesToContainText(1, 'NETNAME-TEST82')
             .expectResourcesToContainText(2, '195.169.0.0/16')
-            .expectResourcesToContainHref(2, 'myresources/detail/INETNUM/195.169.0.0%20-%20195.169.255.255/false')
+            .expectResourcesToContainText(2, 'NETNAME-TEST84')
             .expectResourcesToContainText(3, '192.87.0.0/16')
-            .expectResourcesToContainHref(3, 'myresources/detail/INETNUM/192.87.0.0%20-%20192.87.255.255/false');
+            .expectResourcesToContainText(3, 'NETNAME-TEST85')
+            .expectResourcesToContainText(3, '(1 to review)');
     });
 
-    it('should show progressbar for IPv4 resources with status ALLOCATED PA', () => {
-        resourcesPage.expectResourcesToContainFlag(1, 'ALLOCATED PA').expectExistProgressBarOnResource(1, true);
+    it('should show + for IPv4 resources tree with more specific', () => {
+        resourcesPage.expectExistPlusIcon(0, false).expectExistPlusIcon(1, false).expectExistPlusIcon(2, true).expectExistPlusIcon(3, false);
     });
 
-    it('should hide progressbar for IPv4 resources with status ASSIGNED PI', () => {
-        resourcesPage.expectResourcesToContainFlag(0, 'ASSIGNED PI').expectExistProgressBarOnResource(0, false);
-    });
-
-    it('should show sponsored IPv4 resources', () => {
+    it('should click on +/- in tree switch properly', () => {
         resourcesPage
-            .expectResourcesToggleBtnActiveToBe('My Resources')
-            .clickOnSponsoredResources()
-            .expectResourcesToggleBtnActiveToBe('Sponsored Resources')
-            .expectResourcesSize(42);
+            .expectExistMinusIcon(2, false)
+            .clickOnPluseIcon(2)
+            .expectExistMinusIcon(2, true)
+            .expectExistPlusIcon(2, false)
+            .clickOnMinusIcon(2)
+            .expectExistMinusIcon(2, false)
+            .expectExistPlusIcon(2, true);
     });
 
-    it('should not show Sponsored Resources tab after switching to an enduser', () => {
-        resourcesPage
-            .expectResourcesTabSize(2)
-            .clickOnSponsoredResources()
-            .expectResourcesToggleBtnActiveToBe('Sponsored Resources')
-            .selectOrganization('ViTest organisation')
-            .expectResourcesToggleBtnActiveToBe('My Resources')
-            .expectResourcesTabSize(1)
-            .expectResourcesSize(1)
-            .selectOrganization('SUPERTESTORG')
-            .expectResourcesTabSize(2);
+    it('should show (issue) in node with issue', () => {
+        resourcesPage.expectIssueNoteInNode(3, true).expectOrangeDot(3, true).expectBlueDot(3, false);
     });
 
-    it('should not show Create assignment button after switching to an enduser', () => {
-        resourcesPage.selectOrganization('ViTest organisation').expectResourcesToggleBtnActiveToBe('My Resources').expectCreateAssignmentButtonToExist(false);
+    it('should not show (issue) in node with issue', () => {
+        resourcesPage.expectIssueNoteInNode(2, false).expectOrangeDot(2, false).expectBlueDot(2, true);
     });
 
     it('should show additional explanation if no resources for enduser', () => {
@@ -64,93 +55,135 @@ describe('Resources', () => {
             );
     });
 
-    it('should show menu item Request resources in Menage resources button for selected LIR organisation', () => {
-        resourcesPage
-            .clickOnManageResourcesButton()
-            .expectManageResorcesOptionToContain(0, 'Transfer resources')
-            .expectManageResorcesOptionToContain(1, 'Request resources')
-            .clickOnSponsoredResources()
-            .clickOnManageResourcesButton()
-            .expectManageResorcesOptionToContain(0, 'Start sponsoring PI resources')
-            .expectManageResorcesOptionToContain(1, 'Stop sponsoring PI resources')
-            .expectManageResorcesOptionToContain(2, "Transfer customer's resources");
+    describe('Sponsored Resources', () => {
+        it('should show sponsored IPv4 resources', () => {
+            resourcesPage
+                .expectResourcesToggleBtnActiveToBe('My Resources')
+                .clickOnSponsoredResources()
+                .expectResourcesToggleBtnActiveToBe('Sponsored Resources')
+                .expectResourcesSize(3);
+        });
+
+        it('should not show Sponsored Resources tab after switching to an enduser', () => {
+            resourcesPage
+                .expectResourcesTabSize(2)
+                .clickOnSponsoredResources()
+                .expectResourcesToggleBtnActiveToBe('Sponsored Resources')
+                .selectOrganization('ViTest organisation')
+                .expectResourcesToggleBtnActiveToBe('My Resources')
+                .expectResourcesTabSize(1)
+                .expectResourcesSize(1)
+                .selectOrganization('SUPERTESTORG')
+                .expectResourcesTabSize(2);
+        });
     });
 
-    it('should hide Manage resources dropdown for selected not LIR organisation', () => {
-        resourcesPage
-            .selectOrganization('SwTest organisation')
-            .expectManageResourcesOptionToExist(false)
-            .selectOrganization('SUPERTESTORG')
-            .expectManageResourcesOptionToExist(true)
-            .clickOnManageResourcesButton()
-            .expectManageResorcesOptionToContain(0, 'Transfer resources')
-            .expectManageResorcesOptionToContain(1, 'Request resources');
+    describe('Create assignment', () => {
+        it('should not show Create assignment button after switching to an enduser', () => {
+            resourcesPage
+                .selectOrganization('ViTest organisation')
+                .expectResourcesToggleBtnActiveToBe('My Resources')
+                .expectCreateAssignmentButtonToExist(false);
+        });
+
+        it('should show Create assignment button on My Resources tab', () => {
+            resourcesPage.expectCreateAssignmentButtonToExist(true);
+        });
+
+        it('should navigate to create inetnum page on click button Create assignment', () => {
+            resourcesPage.expectCreateAssignmentButtonToExist(true).clickOnCreateAssignmentButton();
+            cy.expectCurrentUrlToContain('webupdates/create/RIPE/inetnum');
+        });
+
+        it('should navigate to create inet6num page on click button Create assignment', () => {
+            resourcesPage.clickOnIPTab('IPv6').expectCreateAssignmentButtonToExist(true).clickOnCreateAssignmentButton();
+            cy.expectCurrentUrlToContain('webupdates/create/RIPE/inet6num');
+        });
+
+        it('should not show Create assignment button on ASN tab', () => {
+            resourcesPage.clickOnIPTab('ASN').expectCreateAssignmentButtonToExist(false);
+        });
+
+        it('should not show Create assignment button on Sponsored Resources tab', () => {
+            resourcesPage.clickOnSponsoredResources().expectCreateAssignmentButtonToExist(false);
+        });
     });
 
-    it('should show Create assignment button on My Resources tab', () => {
-        resourcesPage.expectCreateAssignmentButtonToExist(true);
+    describe('Menage resources dropdown', () => {
+        it('should show menu item Request resources in Menage resources button for selected LIR organisation', () => {
+            resourcesPage
+                .clickOnManageResourcesButton()
+                .expectManageResorcesOptionToContain(0, 'Transfer resources')
+                .expectManageResorcesOptionToContain(1, 'Request resources')
+                .clickOnSponsoredResources()
+                .clickOnManageResourcesButton()
+                .expectManageResorcesOptionToContain(0, 'Start sponsoring PI resources')
+                .expectManageResorcesOptionToContain(1, 'Stop sponsoring PI resources')
+                .expectManageResorcesOptionToContain(2, "Transfer customer's resources");
+        });
+
+        it('should hide Manage resources dropdown for selected not LIR organisation', () => {
+            resourcesPage
+                .selectOrganization('SwTest organisation')
+                .expectManageResourcesOptionToExist(false)
+                .selectOrganization('SUPERTESTORG')
+                .expectManageResourcesOptionToExist(true)
+                .clickOnManageResourcesButton()
+                .expectManageResorcesOptionToContain(0, 'Transfer resources')
+                .expectManageResorcesOptionToContain(1, 'Request resources');
+        });
     });
 
-    it('should navigate to create inetnum page on click button Create assignment', () => {
-        resourcesPage.expectCreateAssignmentButtonToExist(true).clickOnCreateAssignmentButton();
-        cy.expectCurrentUrlToContain('webupdates/create/RIPE/inetnum');
+    describe('IP usage and health check card', () => {
+        it('should show ip usage for all IPv4 resources', () => {
+            resourcesPage
+                .expectUsageToExist(true)
+                .expectUsageToContain('Total IP space', '3072')
+                .expectUsageToContain('Used', '2048')
+                .expectUsageToContain('Free / unallocated', '1024')
+                .expectResourceHealthCardInUsageToExist(true);
+        });
+
+        it('should show ip usage for all IPv6 resources', () => {
+            resourcesPage
+                .clickOnIPTab('IPv6')
+                .expectUsageToExist(true)
+                .expectUsageToContain('Total IP space', '64K')
+                .expectUsageToContain('Used', '0')
+                .expectUsageToContain('Free / unallocated', '64K')
+                .expectResourceHealthCardInUsageToExist(true);
+        });
+
+        it('should not show ip usage, just health check card, for asn', () => {
+            resourcesPage.clickOnIPTab('ASN').expectUsageToExist(false).expectResourceHealthCardInUsageToExist(true);
+        });
+
+        it('should not show ip usage nor health check card for sponsored tabs', () => {
+            resourcesPage.clickOnSponsoredResources().expectUsageToExist(false).expectResourceHealthCardInUsageToExist(false);
+        });
+
+        it('should contain healthy card status check with issues', () => {
+            resourcesPage
+                .clickOnIPTab('IPv4')
+                .expectHealtyStatusCheck('Resource health')
+                .expectHealtyStatusCheck('Need attention')
+                .expectHealtyStatusCheck('1 resources to review');
+        });
     });
 
-    it('should navigate to create inet6num page on click button Create assignment', () => {
-        resourcesPage.clickOnIPTab('IPv6').expectCreateAssignmentButtonToExist(true).clickOnCreateAssignmentButton();
-        cy.expectCurrentUrlToContain('webupdates/create/RIPE/inet6num');
-    });
+    describe('Full view / View without details', () => {
+        it('should show full view by default', () => {
+            resourcesPage.expectNodePreviewPresent(true).expectFullViewButtonSelected();
+        });
 
-    it('should not show Create assignment button on ASN tab', () => {
-        resourcesPage.clickOnIPTab('ASN').expectCreateAssignmentButtonToExist(false);
-    });
-
-    it('should not show Create assignment button on Sponsored Resources tab', () => {
-        resourcesPage.clickOnSponsoredResources().expectCreateAssignmentButtonToExist(false);
-    });
-
-    it('should show sponsored flag', () => {
-        resourcesPage.expectResourcesToContainFlag(3, 'Sponsored resource');
-    });
-
-    it('should show IRR and RDNS flags', () => {
-        resourcesPage
-            .expectResourcesToContainFlag(0, 'IRR')
-            .expectResourcesToContainFlag(0, 'rDNS')
-            .expectResourcesToContainFlag(1, 'rDNS')
-            .expectResourcesToContainFlag(2, 'IRR');
-    });
-
-    it('should show out of region (RIPE-NONAUTH) autnum', () => {
-        resourcesPage
-            .clickOnIPTab('ASN')
-            .expectResourcesSize(76)
-            // RIPE-NONAUTH item - aut-num which is out of region
-            .expectResourcesToContainFlag(75, 'OTHER');
-    });
-
-    it('should show ip usage for all IPv4 resources', () => {
-        resourcesPage
-            .expectUsageToExist(true)
-            .expectUsageToContain('Total Allocated', '3072')
-            .expectUsageToContain('Total Allocated Used', '2048')
-            .expectUsageToContain('Total Allocated Free', '1024');
-    });
-
-    it('should show ip usage for all IPv6 resources', () => {
-        resourcesPage
-            .clickOnIPTab('IPv6')
-            .expectUsageToExist(true)
-            .expectUsageToContain('Total Allocated Subnets', '64K')
-            .expectUsageToContain('Total Allocated Subnets Used', '0')
-            .expectUsageToContain('Total Allocated Subnets Free', '64K');
-    });
-
-    it('should show ip usage for asn', () => {
-        resourcesPage.clickOnIPTab('ASN').expectUsageToExist(false);
-    });
-
-    it('should not show ip usage for sponsored tabs', () => {
-        resourcesPage.clickOnSponsoredResources().expectUsageToExist(false);
+        it('should switch to TreeExpandView and back to ', () => {
+            resourcesPage
+                .clickOnTreeExpandView()
+                .expectNodePreviewPresent(false)
+                .expectTreeExpandViewSelected()
+                .clickOnFullView()
+                .expectNodePreviewPresent(true)
+                .expectFullViewButtonSelected();
+        });
     });
 });

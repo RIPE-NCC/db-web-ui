@@ -1,0 +1,102 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources/aut-num/AS1101/announcements",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [
+        {
+            "prefix": "44.137.0.0/16",
+            "origin": "1101",
+            "peers": 351
+        },
+        {
+            "prefix": "145.99.0.0/16",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "145.208.0.0/13",
+            "origin": "1101",
+            "peers": 370
+        },
+        {
+            "prefix": "192.150.94.0/24",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "145.102.4.0/23",
+            "origin": "1101",
+            "peers": 365
+        },
+        {
+            "prefix": "185.100.59.0/24",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "2a04:601::/32",
+            "origin": "1101",
+            "peers": 371
+        },
+        {
+            "prefix": "192.16.200.0/24",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "2001:67c:12d8::/48",
+            "origin": "1101",
+            "peers": 368
+        },
+        {
+            "prefix": "192.42.117.0/24",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "192.12.54.0/24",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "192.42.118.0/23",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "145.220.0.0/16",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "145.192.0.0/12",
+            "origin": "1101",
+            "peers": 370
+        },
+        {
+            "prefix": "192.42.128.0/22",
+            "origin": "1101",
+            "peers": 369
+        },
+        {
+            "prefix": "192.42.119.0/24",
+            "origin": "1101",
+            "peers": 189
+        },
+        {
+            "prefix": "2001:67c:6ec::/48",
+            "origin": "1101",
+            "peers": 368
+        },
+        {
+            "prefix": "192.42.118.0/24",
+            "origin": "1101",
+            "peers": 189
+        },
+        {
+            "prefix": "185.17.73.0/24",
+            "origin": "1101",
+            "peers": 369
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+.status-warning {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+
+    padding: 12px 16px;
+    border-radius: 6px;
+    background-color: #ffe1cc;
+}
+
+.status-warning > em {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+}
+
+.title {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+.description {
+    grid-column: 2;
+    display: block;
+}

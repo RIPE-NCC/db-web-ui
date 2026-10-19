@@ -1,5 +1,6 @@
 // Shown on Resources page - for all resources listed in tab
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { HealthCheckCardComponent } from 'src/app/myresources/health-check-card/health-check-card.component';
 import { IpUsageService } from './ip-usage.service';
 import { ResourceStatusService } from './resource-status.service';
 
@@ -9,27 +10,27 @@ import { ResourceStatusService } from './resource-status.service';
     styleUrl: './ip-usage-of-all-resources.component.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
+    imports: [HealthCheckCardComponent],
 })
 export class IpUsageOfAllResourcesComponent implements OnChanges {
     private resourceStatusService = inject(ResourceStatusService);
     private ipUsageService = inject(IpUsageService);
 
     @Input()
-    public resources: any[];
+    resources: any[];
     @Input()
-    public type: string;
-    @Input()
-    public sponsored: boolean;
+    type: string;
 
-    public total: number;
-    public used: number;
-    public free: number;
+    total: number;
+    used: number;
+    free: number;
+    usedPercentage: number;
 
-    public ipv6CalcTotal: string;
-    public ipv6CalcUsed: string;
-    public ipv6CalcFree: string;
+    ipv6CalcTotal: string;
+    ipv6CalcUsed: string;
+    ipv6CalcFree: string;
 
-    public ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(_changes: SimpleChanges) {
         this.setResourcesIpUsage();
         if (this.type === 'inet6num') {
             this.calcValueForIPv6();
@@ -40,6 +41,7 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
         this.total = 0;
         this.used = 0;
         this.free = 0;
+        this.usedPercentage = 0;
     }
 
     private setResourcesIpUsage() {
@@ -50,6 +52,7 @@ export class IpUsageOfAllResourcesComponent implements OnChanges {
                 this.used += resource.usage.used;
             }
         }
+        this.usedPercentage = this.used > 0 ? Math.round((this.used * 100) / this.total) : 0;
         this.free = this.ipUsageService.calcFreeSpace(this.total, this.used);
     }
 

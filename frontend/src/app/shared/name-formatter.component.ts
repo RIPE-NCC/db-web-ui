@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { IpAddressService } from '../myresources/ip-address.service';
-import { ObjectTypesEnum } from '../query/object-types.enum';
 
 @Component({
     selector: 'name-formatter',
@@ -24,9 +23,6 @@ export class NameFormatterComponent implements OnInit, OnChanges {
     }
 
     private applyFormat() {
-        this.formatted =
-            typeof this.type === 'string' && this.type.toUpperCase() === ObjectTypesEnum.INETNUM.toUpperCase()
-                ? IpAddressService.rangeToSlash(this.name)
-                : this.name || '';
+        this.formatted = IpAddressService.rangeToSlashByType(this.type, this.name);
     }
 }

@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LandingPageComponent } from 'src/app/myresources/landing-page/landing-page.component';
+import { ResourcesComponent } from 'src/app/myresources/resources.component';
 import { UserInfoService } from 'src/app/userinfo/user-info.service';
-import { ResourcesComponent } from '../../../src/app/myresources/resources.component';
 
 describe('LandingPageComponent', () => {
     let component: LandingPageComponent;
@@ -12,6 +12,8 @@ describe('LandingPageComponent', () => {
 
     beforeEach(async () => {
         mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['isLoggedIn']);
+
+        // mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
 
         await TestBed.configureTestingModule({
             imports: [LandingPageComponent],

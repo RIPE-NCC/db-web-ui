@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources/inetnum/195.169.0.0/23/announcements",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": [{ "prefix": "195.169.0.0/16", "origin": "1103", "peers": 352 }]
+}

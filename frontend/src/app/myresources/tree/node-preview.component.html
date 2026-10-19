@@ -1,0 +1,222 @@
+@if (node(); as selectedNode) {
+<div class="preview">
+    <div class="panel node-details">
+        <a class="title" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
+            {{ selectedNode.nodeName }}
+        </a>
+        <a matButton [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
+            View resource details
+            <em class="fa-light fa-arrow-right"></em>
+        </a>
+        <span class="netname">{{ selectedNode.netname }}</span>
+        @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
+        <span class="parent">Parent: {{ selectedNode.parentResource?.nodeName ?? '—' }}</span>
+        }
+        <div class="issues-description">
+            {{ selectedNode.issuesCount() }} direct items to review. @if (selectedNode.issuesCountOfChildren() > 0) {
+            <br />
+            {{ selectedNode.issuesCountOfChildren() }} child resources also need review. Select a child resource to view the details. }
+        </div>
+    </div>
+    <div class="panel node-overview">
+        <span class="panel-title">Overview</span>
+        <span class="label">Type</span>
+        <span class="value">{{ selectedNode.resource?.type }}</span>
+
+        <span class="label">Status</span>
+        <span class="value">{{ selectedNode.resource?.status }}</span>
+
+        @if (tabType() !== ObjectTypesEnum.AUT_NUM && !allAssignmentsKinds.includes(selectedNode.resource?.status)) {
+        <span class="label">Used</span>
+        <span class="value">{{ selectedNode.type === ObjectTypesEnum.AUT_NUM ? '—' : usedPercentage() + '%' }}</span>
+
+        <span class="label">Free</span>
+        <span class="value">{{ selectedNode.type === ObjectTypesEnum.AUT_NUM ? '—' : 100 - usedPercentage() + '%' }}</span>
+
+        <span class="label">More specific prefixes</span>
+        <span class="value">{{ selectedNode.numberOfChildren ?? '—' }}</span>
+        }
+    </div>
+    <div class="panel node-overview">
+        <h3 class="panel-title">
+            RIPE Database objects @if(checkingDatabaseObjects()) {
+            <span class="checking">
+                <mat-spinner diameter="24"></mat-spinner>
+                <span>Checking</span>
+            </span>
+            }
+        </h3>
+        <div class="overview-row">
+            @if (tabType() !== ObjectTypesEnum.AUT_NUM) {
+            <span class="label">Assignment object</span>
+            @if (hasResourceCheck('ANNOUNCED_NO_ASSIGNMENTS')) {
+            <span class="value"></span>
+            @if (node().resource.type === ObjectTypesEnum.INETNUM) {
+            <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv4Description">
+                <a class="link" href="https://academy.ripe.net/mod/page/view.php?id=679" target="_blank"
+                    >See the explainer video <em class="fa-light fa-arrow-up-right-from-square"></em
+                ></a>
+                <a class="link" href="https://www.ripe.net/ripe/docs/ipv4-policies/#62-network-infrastructure-and-end-user-networks" target="_blank"
+                    >Read more about the policy <em class="fa-light fa-arrow-up-right-from-square"></em
+                ></a>
+                <a class="fix-link" [routerLink]="['/webupdates/create/', properties.SOURCE, node().type]" target="_blank">
+                    Create an assignment<em class="fa-light fa-arrow-right"></em
+                ></a>
+                <a class="fix-link" [routerLink]="['/myresources/detail', node().type, node().resource.resource, false]" target="_blank">
+                    Update allocation <em class="fa-light fa-arrow-right"></em>
+                </a>
+            </node-status-warning>
+            } @else if (node().resource.type === ObjectTypesEnum.INET6NUM) {
+            <node-status-warning [title]="'Allocation announced but no usage registered'" [description]="announcedNoAssignmentsIpv6Description">
+                <a class="link" href="https://academy.ripe.net/mod/page/view.php?id=680" target="_blank"
+                    >See the explainer video <em class="fa-light fa-arrow-up-right-from-square"></em
+                ></a>
+                <a class="link" href="https://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment" target="_blank"
+                    >Read more about the policy <em class="fa-light fa-arrow-up-right-from-square"></em
+                ></a>
+                <a class="fix-link" [routerLink]="['/webupdates/create', properties.SOURCE, node().type]" target="_blank">
+                    Create an assignment <em class="fa-light fa-arrow-right"></em>
+                </a>
+            </node-status-warning>
+            } } @else if (hasResourceCheck('IPV6_ASSIGNMENT_TOO_SMALL')) {
+            <span class="value"></span>
+            <node-status-warning [title]="'Assingment too small'" [description]="ipv6AssignmentToSmallDescription">
+                <a class="link" href="http://www.ripe.net/ripe/docs/ipv6-policies/#54-assignment" target="_blank"
+                    >Read more about the policy <em class="fa-light fa-arrow-up-right-from-square"></em
+                ></a>
+            </node-status-warning>
+            } @else { @if (node().announcementStatus() === 'Announced' || hasResourceCheck('NOT_ANNOUNCED_WITH_ASSIGNMENTS')) {
+            <span class="value present"> <em class="fa-light fa-check"></em> Present</span>
+            } @else {
+            <span class="value">—</span>
+            } } }
+        </div>
+
+        @if (associatedRouteObjects()?.length > 0) {
+        <div class="subsection">
+            <div class="subsection-title">Route objects</div>
+            <table class="preview-table">
+                <tbody>
+                    @for (routeObject of associatedRouteObjects(); track routeObject) {
+                    <tr>
+                        <td class="table-1st-col">{{ routeObject.prefix }}</td>
+                        <td class="table-col">{{ routeObject.origin }}</td>
+                        <td class="table-last-col">
+                            <span
+                                class="status"
+                                [class.status-green]="routeObject.announcementStatus === 'Announced'"
+                                [class.status-gray]="['Unannounced', 'Mismatch', 'Not exact match'].includes(routeObject.announcementStatus)"
+                                [matTooltip]="getRouteAnnouncementTooltip(routeObject.announcementStatus)"
+                            >
+                                {{ routeObject.announcementStatus }}
+                            </span>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        } @else {
+        <span class="label">Route objects</span>
+        @if (associatedRouteObjectsCheckFailed()) {
+        <span class="value"><em class="fa-light fa-circle-info"></em> Check failed</span>
+        } @else {
+        <span class="value">Not present</span>
+        } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (associatedDomainObjects()?.length > 0) {
+        <div class="subsection">
+            <div class="subsection-title">Domain objects</div>
+            <table class="preview-table">
+                <tbody>
+                    @for (domainObject of associatedDomainObjects(); track domainObject) {
+                    <tr>
+                        <td class="table-1st-col">{{ domainObject.domain }}</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        } @else {
+        <span class="label">Domain objects</span>
+        @if (associatedDomainObjectsCheckFailed()) {
+        <span class="value"><em class="fa-light fa-circle-info"></em> Check failed</span>
+        } @else {
+        <span class="value">Not present</span>
+        } } }
+    </div>
+    <div class="panel node-overview">
+        <h3 class="panel-title">
+            Routing information @if(checkingRoutingInformation()) {
+            <span class="checking">
+                <mat-spinner diameter="24"></mat-spinner>
+                <span>Checking</span>
+            </span>
+            }
+        </h3>
+        <span class="label">Announcement status</span>
+        @if (hasResourceCheck('UNANNOUNCED_ASN')) {
+        <span class="value status status-gray">Unannounced</span>
+        <node-status-warning
+            [title]="'Unannounced ASN'"
+            [description]="
+                'Is there a technical reason why ' +
+                node().nodeName +
+                ' is not visible in the BGP table or is the ASN unused? Please return the AS number to the RIPE NCC if you do not plan to use it within 3 months.'
+            "
+        >
+            <a class="link" href="https://www.ripe.net/manage-ips-and-asns/as-numbers/as-number-clean-up/" target="_blank"
+                >See clean up project <em class="fa-light fa-arrow-up-right-from-square"></em
+            ></a>
+            <a class="fix-link" [href]="properties.PORTAL_URL + '/#/generic-request/requestType'" target="_blank"
+                >Request an update <em class="fa-light fa-arrow-right"></em
+            ></a>
+        </node-status-warning>
+        } @else if (hasResourceCheck('NOT_ANNOUNCED_WITH_ASSIGNMENTS')) {
+        <span class="value status status-gray">Unannounced</span>
+        <node-status-warning
+            [title]="'Usage registered but unannounced'"
+            [description]="
+                node().type === ObjectTypesEnum.INETNUM
+                    ? 'Remove any out of date assignements (inetnum objects with status \'ASSIGNED PA\')'
+                    : 'Remove any out of date assignements (inet6num objects with status \'ASSIGNED\' or \'AGGREGATED-BY-LIR)'
+            "
+        ></node-status-warning>
+        } @else { @if (node().announcementStatus() === 'Announced' || hasResourceCheck('ANNOUNCED_NO_ASSIGNMENTS')) {
+        <span class="value status status-green">Announced</span>
+        } @else if (node().announcementStatus() === 'Unannounced') {
+        <span class="value status status-gray">Unannounced</span>
+        } @else if (node().announcementStatus() === 'Partially announced') {
+        <span class="value"
+            >No exact match — related announcements
+            <em
+                class="fa-light fa-circle-info"
+                [matTooltip]="
+                    'This prefix is not announced as an exact match, but more or less specific prefixes are announced. Review the related announcements to check whether the routing registration is correct.'
+                "
+            ></em
+        ></span>
+        } @else {
+        <span class="value status status-gray">{{ node().announcementStatus() }}</span>
+        } } @if (tabType() !== ObjectTypesEnum.AUT_NUM) { @if (originASNs()?.length) { @for (originASN of originASNs(); track originASN; let first = $first) {
+        <span class="label">{{ first ? 'Origin ASN' : '' }}</span>
+        <span class="value">{{ originASN }}</span>
+        } } @else {
+        <span class="label">Origin ASN</span>
+        <span class="value">—</span>
+        }
+        <span class="label">ROA status</span>
+        @if (hasRoas() === 'Present') {
+        <span class="value present"> <em class="fa-light fa-check"></em>{{ hasRoas() }} </span>
+        } @else {
+        <span class="value">
+            {{ hasRoas() }}
+        </span>
+        } }
+    </div>
+</div>
+} @else {
+<div class="panel no-resources-panel">
+    <span class="fa-light fa-sitemap"></span>
+    <strong>No resources selected</strong>
+    <span>Click a resource to see its assignments and any issues</span>
+</div>
+}

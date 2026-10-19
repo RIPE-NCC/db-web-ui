@@ -1,41 +1,95 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, timeout } from 'rxjs/operators';
-import { IMoreSpecificsApiResult } from './morespecifics/more-specifics.service';
-import { IIPv4ResourcesResponse, IIPv6ResourcesResponse, IIpv4Analysis, IResourceOverviewResponseModel, IResourceTickets } from './resource-type.model';
+import { Observable, of, shareReplay } from 'rxjs';
+import { catchError, tap, timeout } from 'rxjs/operators';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
+import {
+    Announcement,
+    IIpv4Analysis,
+    IResourceDetailsResponseModel,
+    IResourceOverviewResponseModel,
+    IResourceTickets,
+    ResourceCheck,
+} from './resource-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class ResourcesDataService {
     private http = inject(HttpClient);
+    private resourceCache = new Map<string, IResourceOverviewResponseModel>();
+    private resourceCheckCache = new Map<string, Observable<ResourceCheck[]>>();
+    private announcementsCache = new Map<string, Observable<Announcement[]>>();
 
-    public fetchResource(objectName: string, type: string): Observable<IMoreSpecificsApiResult> {
-        return this.http.get<IMoreSpecificsApiResult>(`api/whois-internal/api/resources/${type}/${objectName}`);
+    fetchResource(objectName: string, type: string): Observable<IResourceDetailsResponseModel> {
+        return this.http.get<IResourceDetailsResponseModel>(`api/whois-internal/api/resources/${type}/${objectName}`);
     }
 
-    public fetchIpv4Resource(objectName: string): Observable<IIPv4ResourcesResponse> {
-        return this.http.get<IIPv4ResourcesResponse>(`api/whois-internal/api/resources/inetnum/${objectName}`);
-    }
+    getResources(orgId: string, resourceType: ObjectTypesEnum, sponsored: boolean): Observable<IResourceOverviewResponseModel> {
+        const key = `${orgId}-${resourceType}-${sponsored}`;
 
-    public fetchIpv6Resource(objectName: string): Observable<IIPv6ResourcesResponse> {
-        return this.http.get<IIPv4ResourcesResponse>(`api/whois-internal/api/resources/inet6num/${objectName}`);
-    }
+        const cached = this.resourceCache.get(key);
 
-    public fetchResources(orgId: string, resourceType: string, sponsored: boolean): Observable<IResourceOverviewResponseModel> {
-        if (!resourceType) {
-            console.error('fetchResources failed. No resourceType given');
-            return;
+        if (cached) {
+            return of(cached);
         }
+
         const params = new HttpParams().set(sponsored ? 'sponsoring-org-id' : 'org-id', orgId).set('type', resourceType);
-        return this.http.get<IResourceOverviewResponseModel>('api/whois-internal/api/resources', { params }).pipe(timeout(60000));
+
+        return this.http.get<IResourceOverviewResponseModel>('api/whois-internal/api/resources', { params }).pipe(
+            timeout(60000),
+            tap((response) => {
+                this.resourceCache.set(key, response);
+            }),
+        );
     }
 
-    public fetchIpv4Analysis(orgId: string): Observable<IIpv4Analysis> {
+    resourceCheck(objectType: string, name: string): Observable<ResourceCheck[]> {
+        const key = `${objectType}:${name}`;
+
+        const cached = this.resourceCheckCache.get(key);
+
+        if (cached) {
+            return cached;
+        }
+
+        const request$ = this.http
+            .get<ResourceCheck[]>(`api/whois-internal/public/resourcecheck/${objectType}/${encodeURIComponent(name)}`)
+            .pipe(shareReplay(1));
+
+        this.resourceCheckCache.set(key, request$);
+
+        return request$;
+    }
+
+    clearResourceCheckCache(): void {
+        this.resourceCheckCache.clear();
+    }
+
+    checkAnnouncements(objectType: string, name: string): Observable<Announcement[]> {
+        const key = `announcements:${objectType}:${name}`;
+
+        const cached = this.announcementsCache.get(key);
+
+        if (cached) {
+            return cached;
+        }
+
+        const request$ = this.http.get<Announcement[]>(`api/whois-internal/api/resources/${objectType}/${name}/announcements`).pipe(shareReplay(1));
+
+        this.announcementsCache.set(key, request$);
+
+        return request$;
+    }
+
+    clearAnnouncementsCache(): void {
+        this.resourceCheckCache.clear();
+    }
+
+    fetchIpv4Analysis(orgId: string): Observable<IIpv4Analysis> {
         const params = new HttpParams().set('org-id', orgId);
         return this.http.get<IIpv4Analysis>('api/whois-internal/api/resources/ipanalyser/ipv4.json', { params }).pipe(timeout(30000));
     }
 
-    public fetchTicketsAndDates(orgId: string, resource: string): Observable<IResourceTickets> {
+    fetchTicketsAndDates(orgId: string, resource: string): Observable<IResourceTickets> {
         return this.http.get<IResourceTickets>(`api/ba-apps/resources/${orgId}/${resource}`).pipe(
             catchError((error) => {
                 console.debug('Error on tickets retrieval', error);

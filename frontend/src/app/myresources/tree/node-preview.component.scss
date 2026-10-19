@@ -1,0 +1,231 @@
+.panel {
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    box-sizing: border-box;
+}
+
+.no-resources-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 400px;
+    justify-content: center;
+
+    .fa-sitemap {
+        font-weight: 100;
+        font-size: 100px;
+    }
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.node-details {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+
+    .title {
+        grid-column: 1;
+        grid-row: 1;
+
+        font-size: 1.37rem;
+        font-weight: 600;
+        color: #131f48;
+        align-self: center;
+
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    button {
+        grid-column: 2;
+        grid-row: 1;
+
+        height: 4rem;
+        padding: 0 2rem;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .netname,
+    .parent {
+        grid-column: 1;
+        color: #3d3d3d;
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .issues-description {
+        grid-column: 1 / -1;
+        color: #3d3d3d;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+}
+
+.node-overview {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    row-gap: 0.75rem;
+
+    font-size: 14px;
+
+    .overview-row {
+        display: contents;
+    }
+
+    .title {
+        color: #424242;
+        font-weight: 400;
+    }
+
+    .value {
+        text-align: right;
+        justify-self: end;
+        font-weight: 400;
+    }
+
+    .panel-title {
+        grid-column: 1 / -1;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin: 0 0 0.5rem 0;
+
+        font-size: 16px;
+        font-weight: 700;
+        color: #131f48;
+    }
+
+    .checking {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        font-size: 14px;
+        font-weight: 400;
+        color: #626262;
+        mat-spinner {
+            color: #2b46a1;
+        }
+    }
+
+    .checking mat-spinner {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .present {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        color: #2e7d32;
+        font-size: 14px;
+        font-weight: 500;
+
+        em {
+            font-size: 18px;
+        }
+    }
+
+    .subsection {
+        grid-column: 1 / -1;
+
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin-top: 0.25rem;
+    }
+
+    .subsection-title {
+        margin-bottom: 0.5rem;
+
+        color: #424242;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .subsection-object {
+        display: grid;
+        padding-left: 20px;
+        align-items: center;
+
+        min-height: 28px;
+
+        font-size: 14px;
+    }
+
+    .preview-table {
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+
+    .table-1st-col {
+        width: 40%;
+        text-align: left;
+        padding-left: 24px;
+    }
+
+    .table-col {
+        width: 30%;
+        text-align: left;
+    }
+
+    .table-last-col {
+        width: 30%;
+        text-align: right;
+    }
+}
+
+node-status-warning {
+    grid-column: 1 / -1;
+}
+
+.link {
+    grid-column: 2;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.fix-link {
+    grid-column: 2;
+    font-size: 14px;
+    font-weight: 600;
+    color: #131f48;
+    cursor: pointer;
+}
+
+.status {
+    padding: 0.5px 10px;
+    margin: 2px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    font-size: 14px;
+}
+
+.status-gray {
+    background-color: #d0d2da;
+    color: #3d4868;
+}
+
+.status-green {
+    background-color: #cfebdd;
+    color: #3d3d3d;
+}

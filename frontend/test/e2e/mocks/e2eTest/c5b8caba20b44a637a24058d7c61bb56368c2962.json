@@ -1,0 +1,64 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/api/resources/INETNUM/195.169.0.0%20-%20195.169.255.255/more-specifics.json",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "resources": [
+            {
+                "type": "inetnum",
+                "resource": "195.169.0.0 - 195.169.0.255",
+                "status": "ASSIGNED PA",
+                "iRR": false,
+                "rDNS": true,
+                "netname": "A",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "type": "inetnum",
+                "resource": "195.170.1.0 - 195.170.1.255",
+                "status": "ASSIGNED PA",
+                "iRR": false,
+                "rDNS": true,
+                "netname": "A",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "type": "inetnum",
+                "resource": "195.170.2.0 - 195.170.2.255",
+                "status": "ASSIGNED PA",
+                "iRR": false,
+                "rDNS": true,
+                "netname": "A",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            },
+            {
+                "type": "inetnum",
+                "resource": "195.170.3.0 - 195.170.3.255",
+                "status": "ASSIGNED PA",
+                "iRR": false,
+                "rDNS": true,
+                "netname": "A",
+                "usage": {
+                    "total": 256,
+                    "used": 256,
+                    "blockSize": 32
+                }
+            }
+        ],
+        "totalNumberOfResources": 4,
+        "filteredSize": 4,
+        "pageSize": 4
+    }
+}

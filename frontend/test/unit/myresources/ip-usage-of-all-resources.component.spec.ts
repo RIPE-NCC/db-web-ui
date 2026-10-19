@@ -1,8 +1,8 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IpUsageOfAllResourcesComponent } from '../../../src/app/myresources/ip-usage-of-all-resources.component';
-import { IpUsageService } from '../../../src/app/myresources/ip-usage.service';
-import { ResourceStatusService } from '../../../src/app/myresources/resource-status.service';
+import { IpUsageOfAllResourcesComponent } from 'src/app/myresources/ip-usage-of-all-resources.component';
+import { IpUsageService } from 'src/app/myresources/ip-usage.service';
+import { ResourceStatusService } from 'src/app/myresources/resource-status.service';
 
 const ipv4Resources = [
     {
@@ -100,16 +100,6 @@ const ipv6Resources = [
     },
 ];
 
-const asnResources = [
-    {
-        type: 'aut-num',
-        resource: 'AS44569',
-        status: 'ASSIGNED',
-        sponsoredByOther: true,
-        asname: 'ONEAPI',
-    },
-];
-
 describe('IpUsageOfAllResourcesComponent', () => {
     let component: IpUsageOfAllResourcesComponent;
     let fixture: ComponentFixture<IpUsageOfAllResourcesComponent>;
@@ -133,7 +123,6 @@ describe('IpUsageOfAllResourcesComponent', () => {
     it('should calculate free space for all resources in IPv4 tab', () => {
         component.type = 'inetnum';
         component.resources = ipv4Resources;
-        component.sponsored = false;
         component.ngOnChanges({
             resources: new SimpleChange(undefined, [], true),
             sponsored: new SimpleChange(undefined, undefined, true),
@@ -143,12 +132,12 @@ describe('IpUsageOfAllResourcesComponent', () => {
         expect(component.total).toEqual(2048);
         expect(component.used).toEqual(1024);
         expect(component.free).toEqual(1024);
+        expect(component.usedPercentage).toEqual(50);
     });
 
     it('should calculate free space for all resources in IPv6 tab', () => {
         component.type = 'inet6num';
         component.resources = ipv6Resources;
-        component.sponsored = false;
         component.ngOnChanges({
             resources: new SimpleChange(undefined, [], true),
             sponsored: new SimpleChange(undefined, undefined, true),
@@ -158,8 +147,10 @@ describe('IpUsageOfAllResourcesComponent', () => {
         expect(component.total).toEqual(65536);
         expect(component.used).toEqual(1024);
         expect(component.free).toEqual(64512);
+        expect(component.usedPercentage).toEqual(2);
         expect(component.ipv6CalcTotal).toEqual('64K');
         expect(component.ipv6CalcUsed).toEqual('1K');
         expect(component.ipv6CalcFree).toEqual('63K');
+        expect(component.usedPercentage).toEqual(2);
     });
 });

@@ -232,29 +232,47 @@ export class ResourcesOverViewPage {
     }
 
     expectResourcesSize(size: number) {
-        cy.get('.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item').should('have.length', size);
+        cy.get('.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node').should('have.length', size);
         return this;
     }
 
     expectResourcesToContainText(index: number, text: string) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index})`).should('contain.text', text);
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active .node-content:nth(${index})`).should('contain.text', text);
         return this;
     }
 
-    expectResourcesToContainFlag(index: number, flag: string) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) flag`).should('contain.text', flag);
+    clickOnPluseIcon(index: number) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-plus`).click();
         return this;
     }
 
-    expectResourcesToContainHref(index: number, href: string) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) a`)
-            .should('have.attr', 'href')
-            .then((val) => expect(val).to.contain(href));
+    clickOnMinusIcon(index: number) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-minus`).click();
         return this;
     }
 
-    expectExistProgressBarOnResource(index: number, exist: boolean) {
-        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active resource-item:nth(${index}) mat-progress-bar`).should(exist ? 'exist' : 'not.exist');
+    expectExistPlusIcon(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-plus`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectExistMinusIcon(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .fa-minus`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectIssueNoteInNode(index: number, contain: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index})`).should(contain ? 'contain.text' : 'not.contain.text', '1 to review');
+        return this;
+    }
+
+    expectOrangeDot(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .issue`).should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectBlueDot(index: number, exist: boolean) {
+        cy.get(`.ipv4-ipv6-asn-tabs .mat-mdc-tab-body-active mat-tree-node:nth(${index}) .ok`).should(exist ? 'exist' : 'not.exist');
         return this;
     }
 
@@ -280,7 +298,42 @@ export class ResourcesOverViewPage {
     }
 
     expectUsageToExist(exist: boolean) {
-        cy.get('.resources-ip-usage p').should(exist ? 'exist' : 'not.exist');
+        cy.get('.resources-ip-usage .usage-card').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectResourceHealthCardInUsageToExist(exist: boolean) {
+        cy.get('.resources-ip-usage health-check-card').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectHealtyStatusCheck(text: string) {
+        cy.get('.resources-ip-usage health-check-card').should('contain.text', text);
+        return this;
+    }
+
+    expectNodePreviewPresent(exist: boolean) {
+        cy.get('node-preview').should(exist ? 'exist' : 'not.exist');
+        return this;
+    }
+
+    expectFullViewButtonSelected() {
+        cy.get('.view-mode-panel button:has(em.fa-line-columns)').should('have.class', 'select');
+        return this;
+    }
+
+    expectTreeExpandViewSelected() {
+        cy.get('.view-mode-panel button:has(em.fa-expand)').should('have.class', 'select');
+        return this;
+    }
+
+    clickOnFullView() {
+        cy.get('.fa-line-columns').click();
+        return this;
+    }
+
+    clickOnTreeExpandView() {
+        cy.get('.fa-expand').click();
         return this;
     }
 }

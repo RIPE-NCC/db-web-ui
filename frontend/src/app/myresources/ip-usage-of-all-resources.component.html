@@ -1,29 +1,36 @@
 <div class="resources-ip-usage">
-    @if (type === 'inetnum' && !sponsored) {
+    @if (type === 'inetnum') {
     <div class="usage-card">
-        <p>Total Allocated</p>
-        <span>{{ total }}</span>
+        <p>Total IP space</p>
+        <span class="size">{{ total }}</span>
+        <span class="description">addresses across all blocks</span>
     </div>
     <div class="usage-card">
-        <p>Total Allocated Used</p>
-        <span>{{ used }}</span>
+        <p>Used</p>
+        <span class="size">{{ used }}</span>
+        <span class="description">{{ usedPercentage }}% of total</span>
     </div>
     <div class="usage-card">
-        <p>Total Allocated Free</p>
-        <span>{{ free }}</span>
+        <p>Free / unallocated</p>
+        <span class="size">{{ free }}</span>
+        <span class="description">{{ 100 - usedPercentage }}% of total</span>
     </div>
-    } @if (type === 'inet6num' && !sponsored) {
+    } @if (type === 'inet6num') {
     <div class="usage-card">
-        <p>Total Allocated Subnets</p>
-        <span>{{ ipv6CalcTotal }}</span>
-    </div>
-    <div class="usage-card">
-        <p>Total Allocated Subnets Used</p>
-        <span>{{ ipv6CalcUsed }}</span>
+        <p>Total IP space</p>
+        <span class="size">{{ ipv6CalcTotal }}</span>
+        <span class="description">addresses across all blocks</span>
     </div>
     <div class="usage-card">
-        <p>Total Allocated Subnets Free</p>
-        <span>{{ ipv6CalcFree }}</span>
+        <p>Used</p>
+        <span class="size">{{ ipv6CalcUsed }}</span>
+        <span class="description">{{ usedPercentage }}% of total</span>
+    </div>
+    <div class="usage-card">
+        <p>Free / unallocated</p>
+        <span class="size">{{ ipv6CalcFree }}</span>
+        <span class="description">{{ 100 - usedPercentage }}% of total</span>
     </div>
     }
+    <health-check-card></health-check-card>
 </div>

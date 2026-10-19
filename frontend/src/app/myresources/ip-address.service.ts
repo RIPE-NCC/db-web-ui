@@ -1,4 +1,5 @@
 import { Address4, Address6 } from 'ip-address';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 
 const ipv4RangeRegex = new RegExp(/([\d.]+)\s?-\s?([\d.]+)/);
 
@@ -72,6 +73,10 @@ export class IpAddressService {
             }
         }
         return range;
+    }
+
+    public static rangeToSlashByType(type: string, range: string) {
+        return typeof type === 'string' && type.toUpperCase() === ObjectTypesEnum.INETNUM.toUpperCase() ? IpAddressService.rangeToSlash(range) : range || '';
     }
 
     public static fromSlashToRange(inetnum: string): string {

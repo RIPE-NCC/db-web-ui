@@ -1,0 +1,6 @@
+{
+    "requestUrl": "/db-web-ui/api/whois-internal/public/resourcecheck/INETNUM/194.104.0.0%20-%20194.104.0.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": []
+}

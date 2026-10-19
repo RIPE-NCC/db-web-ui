@@ -79,9 +79,3 @@ pre.textdiff {
         }
     }
 }
-
-section.centered {
-    @extend %float-l;
-    @extend %width-100;
-    text-align: center;
-}

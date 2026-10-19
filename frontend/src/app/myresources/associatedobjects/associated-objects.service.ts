@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
+import { RouteAnnouncementOptions } from 'src/app/myresources/tree/node-preview.component';
 
 export interface IAssociatedObjectApiResult {
     associatedObjects: Array<IAssociatedDomainObject | IAssociatedRouteObject>;
@@ -22,6 +23,7 @@ export interface IAssociatedRouteObject extends IAssociatedObject {
     prefix: string;
     origin: string;
     type: string;
+    announcementStatus?: RouteAnnouncementOptions;
 }
 
 export enum AssociatedObjectType {

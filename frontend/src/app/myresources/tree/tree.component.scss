@@ -1,0 +1,112 @@
+.tree-header {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    font-weight: 500;
+    gap: 120px;
+}
+
+mat-tree-node {
+    cursor: pointer;
+}
+
+// +/- button
+mat-tree-node > button[matIconButton] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
+        margin: 0;
+    }
+}
+
+.emphasized {
+    font-weight: 600;
+}
+
+.emphasized-node {
+    background-color: #e8edfe;
+}
+
+.netname {
+    color: #626262;
+}
+
+.node-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 10px;
+
+    mat-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 16px;
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
+    }
+
+    .prefix {
+        color: #131f48;
+    }
+}
+
+.node-content mat-icon.ok {
+    color: #3d3d3d;
+}
+
+.node-content mat-icon.issue {
+    color: #f36b21;
+}
+
+.node-content mat-icon.failed {
+    color: #cfcfcf;
+}
+
+.node-issues.issue {
+    color: #ff6a00;
+}
+
+.node-issues.failed {
+    color: #626262;
+}
+
+.tree-indent-button {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 0;
+}
+
+.show-more-button {
+    color: #131f48;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: auto;
+
+    mat-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 14px;
+        line-height: 16px;
+        margin: 0;
+    }
+}

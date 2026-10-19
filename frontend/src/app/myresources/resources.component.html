@@ -20,14 +20,19 @@
                 } }
             </div>
         </div>
-        <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab" [sponsored]="isShowingSponsored">
-        </ip-usage-of-all-resources>
+        @if (!isShowingSponsored) {
+        <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources" [type]="lastTab"> </ip-usage-of-all-resources>
+        }
         <div class="ipv4-ipv6-asn-tabs">
-            @if (showAlerts) {
-            <div class="bell-panel">
-                <alerts-drop-down [selectedOrganisation]="this.selectedOrg"></alerts-drop-down>
+            <div class="view-mode-panel">
+                <button matButton type="button" [class.select]="showNodePreview" (click)="showNodePreview = true">
+                    <em class="fa-light fa-line-columns"></em>
+                </button>
+
+                <button matButton type="button" [class.select]="!showNodePreview" (click)="showNodePreview = false">
+                    <em class="fa-light fa-expand"></em>
+                </button>
             </div>
-            }
             <mat-tab-group
                 mat-stretch-tabs="false"
                 mat-align-tabs="start"
@@ -35,14 +40,15 @@
                 (selectedTabChange)="tabClicked($event)"
                 [selectedIndex]="lastTabIndex"
             >
-                <mat-tab label="IPv4" id="inetnum">
+                <mat-tab id="inetnum">
+                    <ng-template mat-tab-label>
+                        IPv4 @if (hasIpv4Issues()) {
+                        <mat-icon matSuffix class="fa-solid fa-circle-small issue"></mat-icon>
+                        }
+                    </ng-template>
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
-                    } @for (resource of ipv4Resources; track resource) {
-                    <div class="resource-list">
-                        <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
-                    </div>
-                    } @if (loading === false && ipv4Resources.length === 0) {
+                    } @else if (loading === false && ipv4Resources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -52,16 +58,21 @@
                         <span class="resource-page-message">{{ explanation.toString() }}</span>
                         } }
                     </p>
-                    }
+                    } @else {
+                    <tree [rootLevelNodes]="ipv4Resources" [treeType]="ObjectTypesEnum.INETNUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
+                    @if (showNodePreview) {
+                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
+                    } }
                 </mat-tab>
-                <mat-tab label="IPv6" id="inet6num">
+                <mat-tab id="inet6num">
+                    <ng-template mat-tab-label>
+                        IPv6 @if (hasIpv6Issues()) {
+                        <mat-icon matSuffix class="fa-solid fa-circle-small issue"></mat-icon>
+                        }
+                    </ng-template>
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
-                    } @for (resource of ipv6Resources; track resource) {
-                    <div class="resource-list">
-                        <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
-                    </div>
-                    } @if (loading === false && ipv6Resources.length === 0) {
+                    } @else if (loading === false && ipv6Resources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -71,16 +82,21 @@
                         <span class="resource-page-message">{{ explanation.toString() }}</span>
                         } }
                     </p>
-                    }
+                    } @else {
+                    <tree [rootLevelNodes]="ipv6Resources" [treeType]="ObjectTypesEnum.INET6NUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
+                    @if (showNodePreview) {
+                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
+                    } }
                 </mat-tab>
-                <mat-tab label="ASN" id="aut-num">
+                <mat-tab id="aut-num">
+                    <ng-template mat-tab-label>
+                        ASN @if (hasAsnIssues()) {
+                        <mat-icon matSuffix class="fa-solid fa-circle-small issue"></mat-icon>
+                        }
+                    </ng-template>
                     @if (loading) {
                     <loading-indicator class="resource-page-message"></loading-indicator>
-                    } @for (resource of asnResources; track resource) {
-                    <div class="resource-list">
-                        <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
-                    </div>
-                    } @if (loading === false && asnResources.length === 0) {
+                    } @else if (loading === false && asnResources.length === 0) {
                     <p class="resource-page-message">
                         @if (fail) {
                         <refresh reason="{{ reason.toString() }}" (refreshClbk)="refreshPage()"></refresh>
@@ -90,7 +106,11 @@
                         <span class="resource-page-message">{{ explanation.toString() }}</span>
                         } }
                     </p>
-                    }
+                    } @else {
+                    <tree [rootLevelNodes]="asnResources" [treeType]="ObjectTypesEnum.AUT_NUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
+                    @if (showNodePreview) {
+                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.AUT_NUM"></node-preview>
+                    } }
                 </mat-tab>
             </mat-tab-group>
         </div>

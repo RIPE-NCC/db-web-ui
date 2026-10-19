@@ -1,24 +1,70 @@
 .resources-ip-usage {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
     width: 100%;
 }
 
 .usage-card {
-    flex: 1;
+    flex: 1 0 21%;
     border-radius: 10px;
     border: 1px solid #d0d2da;
-    background-color: #dae4f14d;
+    background-color: white;
     padding: 17px;
 
-    p {
+    p,
+    .description {
         font-size: 13px;
         color: #3d3d3d;
+        display: block;
+        white-space: nowrap;
     }
 
-    span {
+    .size {
         font-size: 24px;
         font-weight: 600;
         color: #131f48;
+        display: block;
+        margin-top: 1em;
+        margin-bottom: 0.3125em;
     }
 }
+
+health-check-card {
+    flex: 1 0 21%;
+}
+
+@media (max-width: 768px) {
+    .resources-ip-usage {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .usage-card,
+    health-check-card {
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .usage-card {
+        padding: 10px;
+
+        p,
+        .description {
+            white-space: normal;
+            font-size: 11px;
+        }
+
+        .size {
+            font-size: 18px;
+            margin-top: 0.5em;
+        }
+    }
+}
+
+//@media (max-width: 320px) {
+//    .resources-ip-usage {
+//        grid-template-columns: 1fr;
+//    }
+//}

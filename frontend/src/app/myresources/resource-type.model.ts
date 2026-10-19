@@ -6,40 +6,6 @@ export interface IResourceModel {
     type: string;
 }
 
-export interface IResourceRangeModel {
-    string: string;
-    slash: string;
-    start?: number;
-    end?: number;
-}
-
-export interface IIPv4ResourceDetails {
-    range: IResourceRangeModel;
-    status: string;
-    netname: string;
-    usage: IUsage;
-}
-
-export interface IIPv6ResourceDetails {
-    range: IResourceRangeModel;
-    status: string;
-    usage: IUsage;
-}
-
-export interface IAsnResourceDetails {
-    value: number;
-}
-
-export interface IIPv6ResourcesResponse {
-    orgid: string;
-    resources: IIPv6ResourceDetails[];
-}
-
-export interface IIPv4ResourcesResponse {
-    orgid: string;
-    resources: IIPv4ResourceDetails[];
-}
-
 // from backend
 export interface IUsage {
     total: number;
@@ -60,10 +26,19 @@ interface ITicket {
     resource: string;
 }
 
+interface Stats {
+    numInetnums: number;
+    numInet6nums: number;
+    numAutnums: number;
+    numSponsoredInetnums: number;
+    numSponsoredInet6nums: number;
+    numSponsoredAutnums: number;
+}
+
 export interface IResourceOverviewResponseModel {
     filteredSize: number;
-    stats: any;
-    resources: any[];
+    stats: Stats;
+    resources: IResourceScreenItem[];
 }
 
 export interface IResourceScreenItem {
@@ -109,4 +84,16 @@ interface IIpv4ViolationsAnalysis {
 
 export interface IIpv4OverlappingInetnumsAnalysis {
     range: string;
+}
+
+export interface ResourceCheck {
+    primaryKey: string;
+    type: string;
+    text: string;
+}
+
+export interface Announcement {
+    prefix: string;
+    origin: string;
+    peers: number;
 }

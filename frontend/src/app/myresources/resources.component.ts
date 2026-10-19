@@ -1,8 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { MatIcon } from '@angular/material/icon';
+import { MatSuffix } from '@angular/material/input';
+import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin, of, switchMap } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { NodeHealthStatus } from 'src/app/myresources/health-check-card/node-health.model';
+import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
+import { NodePreviewComponent } from 'src/app/myresources/tree/node-preview.component';
+import { Tree, TreeNode } from 'src/app/myresources/tree/tree.component';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../dropdown/org-data-type.model';
 import { OrgDropDownSharedService } from '../dropdown/org-drop-down-shared.service';
 import { PropertiesService } from '../properties.service';
@@ -16,8 +24,7 @@ import { ApikeysDropdownComponent } from './apikeys-dropdown/apikeys-dropdown.co
 import { IpUsageOfAllResourcesComponent } from './ip-usage-of-all-resources.component';
 import { ManageResourcesComponent } from './manage-resources/manage-resources.component';
 import { RefreshComponent } from './refresh/refresh.component';
-import { ResourceItemComponent } from './resource-item/resource-item.component';
-import { IAsnResourceDetails, IIPv4ResourceDetails, IIPv6ResourceDetails, IResourceOverviewResponseModel } from './resource-type.model';
+import { IResourceOverviewResponseModel, IResourceScreenItem } from './resource-type.model';
 import { ResourcesDataService } from './resources-data.service';
 
 export enum ResourceType {
@@ -35,10 +42,8 @@ export enum ResourceType {
     imports: [
         MatButton,
         ManageResourcesComponent,
-        AlertsDropDownComponent,
         IpUsageOfAllResourcesComponent,
         LoadingIndicatorComponent,
-        ResourceItemComponent,
         RefreshComponent,
         LabelPipe,
         ApikeysDropdownComponent,
@@ -46,6 +51,11 @@ export enum ResourceType {
         MatTab,
         MatButtonModule,
         MatButtonToggleModule,
+        Tree,
+        NodePreviewComponent,
+        MatTabLabel,
+        MatSuffix,
+        MatIcon,
     ],
 })
 export class ResourcesComponent implements OnDestroy {
@@ -55,34 +65,51 @@ export class ResourcesComponent implements OnDestroy {
     private alertsService = inject(AlertsService);
     private properties = inject(PropertiesService);
     private activatedRoute = inject(ActivatedRoute);
+    private nodeHealthService = inject(NodeHealthService);
     private router = inject(Router);
 
-    public ipv4Resources: IIPv4ResourceDetails[] = [];
-    public ipv6Resources: IIPv6ResourceDetails[] = [];
-    public asnResources: IAsnResourceDetails[] = [];
-    public selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
-    public loading: boolean = false; // true until resources are loaded to tabs
-    public reason: string = 'No resources found';
-    public explanation =
+    ipv4Resources: IResourceScreenItem[] = [];
+    ipv6Resources: IResourceScreenItem[] = [];
+    asnResources: IResourceScreenItem[] = [];
+    selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
+    loading: boolean = false; // true until resources are loaded to tabs
+    reason: string = 'No resources found';
+    explanation =
         'If you hold Provider Independent (PI) resources through a sponsoring LIR and want to view them on this page, your maintainer must be registered in your organisation object in the RIPE Database.';
-    public fail: boolean;
-    public isRedirectedFromIpAnalyser: boolean = false;
-    public lastTab: string;
-    public lastTabIndex: number = 0;
+    fail: boolean;
+    isRedirectedFromIpAnalyser: boolean = false;
+    lastTab: string;
+    lastTabIndex: number = 0;
 
-    public isShowingSponsored: boolean = false;
-    public activeToggleButton = 'resources';
-    public showAlerts: boolean = true;
+    isShowingSponsored: boolean = false;
+    activeToggleButton = 'resources';
+
+    selectedTreeNode = signal<TreeNode | undefined>(undefined);
+    showNodePreview: boolean = true;
+    readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
+    readonly hasIpv4Issues = computed(
+        () => this.nodeHealthService.nodes()[ObjectTypesEnum.INETNUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
+    );
+
+    readonly hasIpv6Issues = computed(
+        () => this.nodeHealthService.nodes()[ObjectTypesEnum.INET6NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
+    );
+
+    readonly hasAsnIssues = computed(
+        () => this.nodeHealthService.nodes()[ObjectTypesEnum.AUT_NUM]?.some((node) => node.healthStatus() === NodeHealthStatus.ISSUES) ?? false,
+    );
+
     private subscriptions: any[] = [];
     private subscriptionFetchResources: any;
-    public readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
 
     @ViewChild(AlertsDropDownComponent, { static: true })
-    public alertsDropDownComponent: AlertsDropDownComponent;
+    alertsDropDownComponent: AlertsDropDownComponent;
 
     constructor() {
         const orgSub = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
+                this.selectedTreeNode.set(undefined);
+                this.nodeHealthService.reset();
                 this.selectedOrg = selected;
                 this.loading = true;
                 if (!this.isMemberOrg() && this.isShowingSponsored) {
@@ -100,11 +127,12 @@ export class ResourcesComponent implements OnDestroy {
         this.subscriptions.push(queryParamSub);
     }
 
-    public ngOnDestroy() {
+    ngOnDestroy() {
         this.subscriptions.forEach((s) => s.unsubscribe());
+        this.subscriptionFetchResources.unsubscribe();
     }
 
-    public init() {
+    init() {
         this.isShowingSponsored = this.activatedRoute.snapshot.queryParamMap.get('sponsored') === 'true';
         this.activeToggleButton = this.isShowingSponsored ? ResourceType.SPONSORED : ResourceType.RESOURCES;
 
@@ -117,12 +145,13 @@ export class ResourcesComponent implements OnDestroy {
             this.lastTab = ObjectTypesEnum.INETNUM;
         }
         this.refreshPage();
-        this.showAlerts = !this.isShowingSponsored && this.lastTab === ObjectTypesEnum.INETNUM;
     }
 
-    public tabClicked($event: MatTabChangeEvent) {
+    tabClicked($event: MatTabChangeEvent) {
+        this.selectedTreeNode.set(undefined);
         this.lastTab = $event.tab.id;
-        this.lastTabIndex = $event.tab.position;
+        this.lastTabIndex = $event.index;
+
         const params = {
             type: this.lastTab,
             sponsored: this.isShowingSponsored,
@@ -139,8 +168,13 @@ export class ResourcesComponent implements OnDestroy {
         }
     }
 
+    onTreeNodeSelected(node: TreeNode): void {
+        this.selectedTreeNode.set({ ...node });
+    }
+
     private sponsoredResourcesTabClicked() {
         if (!this.isShowingSponsored) {
+            this.nodeHealthService.reset();
             this.isShowingSponsored = true;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
             void this.router.navigate(['myresources/overview'], { queryParams: params });
@@ -149,13 +183,14 @@ export class ResourcesComponent implements OnDestroy {
 
     private resourcesTabClicked() {
         if (this.isShowingSponsored) {
+            this.nodeHealthService.reset();
             this.isShowingSponsored = false;
             const params = { type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: '' + this.isRedirectedFromIpAnalyser };
             void this.router.navigate(['myresources/overview'], { queryParams: params });
         }
     }
 
-    public refreshPage() {
+    refreshPage() {
         if (!this.selectedOrg) {
             this.userInfoService.getSelectedOrganisation().subscribe((org: IUserInfoOrganisation) => {
                 this.selectedOrg = org;
@@ -170,11 +205,11 @@ export class ResourcesComponent implements OnDestroy {
         }
     }
 
-    public isMemberOrg(): boolean {
+    isMemberOrg(): boolean {
         return this.isUserInfoRegistration(this.selectedOrg);
     }
 
-    public navigateToCreateAssignments() {
+    navigateToCreateAssignments() {
         void this.router.navigate(['webupdates/create', this.properties.SOURCE, this.lastTab]);
     }
 
@@ -210,30 +245,40 @@ export class ResourcesComponent implements OnDestroy {
         if (this.subscriptionFetchResources) {
             this.subscriptionFetchResources.unsubscribe();
         }
+
+        const orgId = this.selectedOrg.orgObjectId;
+        const selectedType = this.lastTab as ObjectTypesEnum;
+        const sponsored = this.isShowingSponsored;
+
         this.loading = true;
+
         this.subscriptionFetchResources = this.resourcesDataService
-            .fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
-            .subscribe({
-                next: (response: IResourceOverviewResponseModel) => {
+            .getResources(orgId, selectedType, sponsored)
+            .pipe(
+                tap((response: IResourceOverviewResponseModel) => {
+                    this.setResources(selectedType, response.resources);
+
+                    // First/selected tab is ready
                     this.loading = false;
-                    switch (this.lastTab) {
-                        case ObjectTypesEnum.INETNUM:
-                            this.ipv4Resources = response.resources;
-                            break;
-                        case ObjectTypesEnum.INET6NUM:
-                            this.ipv6Resources = response.resources;
-                            break;
-                        case ObjectTypesEnum.AUT_NUM:
-                            this.asnResources = response.resources;
-                            break;
-                        default:
-                            this.fail = true;
-                            this.reason = 'There was problem reading resources please try again';
-                            console.error('Error. lastTab have wrong value');
-                    }
-                },
+                }),
+                switchMap(() => {
+                    const remainingTypes = [ObjectTypesEnum.INETNUM, ObjectTypesEnum.INET6NUM, ObjectTypesEnum.AUT_NUM].filter((type) => type !== selectedType);
+
+                    return forkJoin(
+                        remainingTypes.map((type) =>
+                            this.resourcesDataService.getResources(orgId, type, sponsored).pipe(
+                                tap((response) => this.setResources(type, response.resources)),
+                                catchError((error) => {
+                                    console.error(`Failed to load ${type}`, error);
+                                    return of(null);
+                                }),
+                            ),
+                        ),
+                    );
+                }),
+            )
+            .subscribe({
                 error: (error: any) => {
-                    // if it's not authentication error
                     if (error.status !== 401 && error.status !== 403) {
                         this.fail = true;
                         this.loading = false;
@@ -243,5 +288,27 @@ export class ResourcesComponent implements OnDestroy {
             });
     }
 
+    private setResources(type: ObjectTypesEnum, resources: IResourceScreenItem[]): void {
+        switch (type) {
+            case ObjectTypesEnum.INETNUM:
+                this.ipv4Resources = resources;
+                break;
+
+            case ObjectTypesEnum.INET6NUM:
+                this.ipv6Resources = resources;
+                break;
+
+            case ObjectTypesEnum.AUT_NUM:
+                this.asnResources = resources;
+                break;
+
+            default:
+                this.fail = true;
+                this.reason = 'There was problem reading resources please try again';
+                console.error('Error. Wrong resource type:', type);
+        }
+    }
+
     protected readonly ResourceType = ResourceType;
+    protected readonly ObjectTypesEnum = ObjectTypesEnum;
 }

@@ -1,14 +1,15 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { IResourceTickets } from '../../../src/app/myresources/resource-type.model';
-import { ResourcesDataService } from '../../../src/app/myresources/resources-data.service';
+import { IResourceOverviewResponseModel, IResourceTickets } from 'src/app/myresources/resource-type.model';
+import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 
 const TEST_ORG_ID = 'ORG-ITEST-RIPE';
 
 const TEST_RESOURCE = '185.149.24.0%20-%20185.149.27.255';
 
-const responseResourceOverviewResponseModel = {
+const responseResourceOverviewResponseModel: IResourceOverviewResponseModel = {
     stats: {
         numInetnums: 1,
         numInet6nums: 1,
@@ -17,7 +18,6 @@ const responseResourceOverviewResponseModel = {
         numSponsoredInet6nums: 0,
         numSponsoredAutnums: 0,
     },
-    orgId: 'ORG-AL250-RIPE',
     resources: [
         {
             type: 'inetnum',
@@ -29,11 +29,13 @@ const responseResourceOverviewResponseModel = {
                 used: 512,
                 blockSize: 32,
             },
+            noContract: false,
+            sponsoredByOther: false,
+            sponsored: false,
+            ipanalyserRedirect: false,
         },
     ],
-    totalNumberOfResources: 1,
     filteredSize: 1,
-    pageSize: 1,
 };
 
 const ticketAndDateResponse = {
@@ -74,7 +76,7 @@ describe('ResourcesDataService', () => {
     });
 
     it('should populate IPv4 Resources', () => {
-        resourcesDataService.fetchResources(TEST_ORG_ID, 'inetnum', false).subscribe((resp) => {
+        resourcesDataService.getResources(TEST_ORG_ID, ObjectTypesEnum.INETNUM, false).subscribe((resp) => {
             expect(resp).toBe(responseResourceOverviewResponseModel);
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/resources?org-id=ORG-ITEST-RIPE&type=inetnum' });

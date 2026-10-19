@@ -4,11 +4,11 @@ const IPv6SIZE: string[] = ['', 'K', 'M', 'G', 'T'];
 
 @Injectable({ providedIn: 'root' })
 export class IpUsageService {
-    public calcFreeSpace(total: number, used: number): number {
+    calcFreeSpace(total: number, used: number): number {
         return total - used;
     }
 
-    public calcShorterValue(value: number): string {
+    calcShorterValue(value: number): string {
         if (value === undefined) {
             return '';
         }

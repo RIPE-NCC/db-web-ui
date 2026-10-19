@@ -1,7 +1,6 @@
 @import '../../styles/scss/extend.scss';
 
 .my-resources {
-    background-color: #ffffff;
     padding: 25px;
 
     @media (max-width: 768px) {
@@ -11,54 +10,118 @@
 
 .header {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding-bottom: 10px;
     gap: 15px;
+    padding-bottom: 10px;
 }
 
 .action-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
     align-items: center;
-    z-index: 0;
+    gap: 15px;
+    z-index: 2;
 }
 
 ip-usage-of-all-resources {
     display: flex;
-    padding-top: 24px;
-    padding-bottom: 30px;
-}
-
-.bell-panel {
-    position: relative;
-    z-index: 5;
-
-    alerts-drop-down {
-        position: absolute;
-        right: 0;
-    }
+    padding: 24px 0 30px;
 }
 
 .ipv4-ipv6-asn-tabs {
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 #0d0d0d26;
+
+    mat-tab-header {
+        border-bottom: 1px solid #d0d2da;
+    }
+
     .mdc-tab {
-        font-size: 18px;
         width: 218px;
         height: 72px;
-        &:not(.mdc-tab--active) {
-            border-bottom-color: #d0d2da;
-            border-bottom-style: solid;
-            border-bottom-width: 2px;
+        font-size: 18px;
+
+        mat-icon {
+            color: #ff5f00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .view-mode-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+
+        display: flex;
+        align-items: center;
+        height: 72px;
+
+        button {
+            min-width: 30px;
+            margin-right: 5px;
+            font-size: 20px;
         }
 
-        @media (max-width: 768px) {
+        .select {
+            background-color: #e8edfe;
+        }
+
+        alerts-drop-down {
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    .mat-mdc-tab-body-wrapper {
+        min-height: 0;
+    }
+
+    .mat-mdc-tab-body-content {
+        max-height: calc(110vh);
+    }
+
+    .mat-mdc-tab-body-content {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        tree,
+        node-preview {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        tree {
+            padding: 1em;
+            overflow-y: auto;
+        }
+
+        node-preview {
+            padding: 1em;
+            overflow-y: auto;
+            background: #f7f7fa;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .mat-mdc-tab-body-content {
+            flex-direction: column;
+
+            tree,
+            node-preview {
+                flex: none;
+                width: 100%;
+            }
+        }
+
+        .ipv4-ipv6-asn-tabs .mdc-tab {
             width: fit-content;
         }
     }
-}
-
-.resource-list {
-    margin: 20px;
 }
