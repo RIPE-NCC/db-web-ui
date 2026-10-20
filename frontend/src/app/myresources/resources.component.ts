@@ -84,7 +84,9 @@ export class ResourcesComponent implements OnDestroy {
     isShowingSponsored: boolean = false;
     activeToggleButton = 'resources';
 
-    selectedTreeNode = signal<TreeNode | undefined>(undefined);
+    selectedIpv4TreeNode = signal<TreeNode | undefined>(undefined);
+    selectedIpv6TreeNode = signal<TreeNode | undefined>(undefined);
+    selectedAsnTreeNode = signal<TreeNode | undefined>(undefined);
     showNodePreview: boolean = true;
     readonly listOfTabs = [ObjectTypesEnum.INETNUM.valueOf(), ObjectTypesEnum.INET6NUM.valueOf(), ObjectTypesEnum.AUT_NUM.valueOf()];
     readonly hasIpv4Issues = computed(
@@ -108,7 +110,7 @@ export class ResourcesComponent implements OnDestroy {
     constructor() {
         const orgSub = this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
             if (this.selectedOrg?.orgObjectId !== selected.orgObjectId) {
-                this.selectedTreeNode.set(undefined);
+                this.resetSelectedTreeNode();
                 this.nodeHealthService.reset();
                 this.selectedOrg = selected;
                 this.loading = true;
@@ -148,7 +150,7 @@ export class ResourcesComponent implements OnDestroy {
     }
 
     tabClicked($event: MatTabChangeEvent) {
-        this.selectedTreeNode.set(undefined);
+        // this.selectedTreeNode.set(undefined);
         this.lastTab = $event.tab.id;
         this.lastTabIndex = $event.index;
 
@@ -169,7 +171,20 @@ export class ResourcesComponent implements OnDestroy {
     }
 
     onTreeNodeSelected(node: TreeNode): void {
-        this.selectedTreeNode.set({ ...node });
+        switch (node.type) {
+            case ObjectTypesEnum.INETNUM: {
+                this.selectedIpv4TreeNode.set({ ...node });
+                break;
+            }
+            case ObjectTypesEnum.INET6NUM: {
+                this.selectedIpv6TreeNode.set({ ...node });
+                break;
+            }
+            case ObjectTypesEnum.AUT_NUM: {
+                this.selectedAsnTreeNode.set({ ...node });
+                break;
+            }
+        }
     }
 
     private sponsoredResourcesTabClicked() {
@@ -311,4 +326,10 @@ export class ResourcesComponent implements OnDestroy {
 
     protected readonly ResourceType = ResourceType;
     protected readonly ObjectTypesEnum = ObjectTypesEnum;
+
+    private resetSelectedTreeNode() {
+        this.selectedIpv4TreeNode.set(undefined);
+        this.selectedIpv6TreeNode.set(undefined);
+        this.selectedAsnTreeNode.set(undefined);
+    }
 }

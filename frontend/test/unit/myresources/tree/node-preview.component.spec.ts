@@ -13,7 +13,7 @@ import {
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { Announcement } from 'src/app/myresources/resource-type.model';
 import { ResourcesDataService } from 'src/app/myresources/resources-data.service';
-import { NodePreviewComponent } from 'src/app/myresources/tree/node-preview.component';
+import { NodePreviewComponent, RouteAnnouncementOptions } from 'src/app/myresources/tree/node-preview.component';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
 import { PropertiesService } from 'src/app/properties.service';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
@@ -418,6 +418,22 @@ describe('NodePreviewComponent', () => {
         it('should display number of children', () => {
             const compiled = fixture.nativeElement as HTMLElement;
             expect(compiled.textContent).toContain('2');
+        });
+    });
+
+    describe('getRouteAnnouncementTooltip', () => {
+        const testCases: [RouteAnnouncementOptions, string][] = [
+            ['Announced', 'The prefix and origin AS exactly match the current BGP announcement.'],
+            ['Mismatch', 'The prefix is announced, but the BGP origin AS does not match the route object.'],
+            ['Unannounced', 'This route object is not currently seen in the global BGP routing table.'],
+            ['Not exact match', 'The BGP announcement is for a larger or smaller subnet.'],
+            ['check failed' as RouteAnnouncementOptions, 'Check failed. Try refreshing.'],
+        ];
+
+        testCases.forEach(([status, expectedTooltip]) => {
+            it(`should return the correct tooltip for status "${status}"`, () => {
+                expect(component.getRouteAnnouncementTooltip(status)).toBe(expectedTooltip);
+            });
         });
     });
 });

@@ -61,7 +61,7 @@
                     } @else {
                     <tree [rootLevelNodes]="ipv4Resources" [treeType]="ObjectTypesEnum.INETNUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
                     @if (showNodePreview) {
-                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
+                    <node-preview [node]="selectedIpv4TreeNode()" [tabType]="ObjectTypesEnum.INETNUM"></node-preview>
                     } }
                 </mat-tab>
                 <mat-tab id="inet6num">
@@ -85,7 +85,7 @@
                     } @else {
                     <tree [rootLevelNodes]="ipv6Resources" [treeType]="ObjectTypesEnum.INET6NUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
                     @if (showNodePreview) {
-                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
+                    <node-preview [node]="selectedIpv6TreeNode()" [tabType]="ObjectTypesEnum.INET6NUM"></node-preview>
                     } }
                 </mat-tab>
                 <mat-tab id="aut-num">
@@ -109,7 +109,7 @@
                     } @else {
                     <tree [rootLevelNodes]="asnResources" [treeType]="ObjectTypesEnum.AUT_NUM" (nodeSelected)="onTreeNodeSelected($event)"></tree>
                     @if (showNodePreview) {
-                    <node-preview [node]="selectedTreeNode()" [tabType]="ObjectTypesEnum.AUT_NUM"></node-preview>
+                    <node-preview [node]="selectedAsnTreeNode()" [tabType]="ObjectTypesEnum.AUT_NUM"></node-preview>
                     } }
                 </mat-tab>
             </mat-tab-group>
