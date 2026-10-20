@@ -56,6 +56,16 @@ export class Tree {
     nodeSelected = output<TreeNode>();
     selectedNode: TreeNode;
 
+    private readonly expandableStatuses = [
+        'ALLOCATED-BY-RIR',
+        'ALLOCATED-BY-LIR',
+        'ALLOCATED PA',
+        'ALLOCATED UNSPECIFIED',
+        'SUB-ALLOCATED PA',
+        'LIR-PARTITIONED PA',
+        'AGGREGATED-BY-LIR',
+    ];
+
     constructor() {
         effect(() => {
             const resources = this.rootLevelNodes();
@@ -89,7 +99,7 @@ export class Tree {
     }
 
     isExpandable(status: string, usage: IUsage): boolean {
-        return (status.includes('ALLOCATED') || status === 'LIR-PARTITIONED PA' || status === 'AGGREGATED-BY-LIR') && usage?.used > 0;
+        return this.expandableStatuses.includes(status) && usage?.used > 0;
     }
 
     /**
