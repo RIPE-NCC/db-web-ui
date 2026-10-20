@@ -146,13 +146,17 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
 
+        return getUserInfo(bearerToken, clientIp);
+    }
+
+    public UserInfoResponse getUserInfo(final String bearerToken, final String clientIp) {
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(bearerToken);
         httpHeaders.set(API_KEY_HEADER, apiKey);
         final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", "clientIp=" + clientIp, "", apiUrl);
         try {
             return restTemplate.exchange(uri, HttpMethod.GET,
-                new HttpEntity<>("", httpHeaders), UserInfoResponse.class).getBody();
+                    new HttpEntity<>("", httpHeaders), UserInfoResponse.class).getBody();
         } catch (HttpClientErrorException e) {
             LOGGER.debug("Failed to retrieve user info from whois internal due to {}: {}", e.getClass().getName(), e.getMessage());
             throw new RestClientException(e.getStatusCode().value(), "");
