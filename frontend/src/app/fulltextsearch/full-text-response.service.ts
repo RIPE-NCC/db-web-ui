@@ -36,7 +36,7 @@ export class FullTextResponseService {
                 const lookupKey = attrMap['lookup-key'];
                 // now find the highlighted results to show
                 results.push({
-                    hls: hlMap[pk],
+                    hls: hlMap[pk] ?? [],
                     lookupKey,
                     name,
                     value,
