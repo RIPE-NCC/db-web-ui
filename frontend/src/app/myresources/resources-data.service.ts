@@ -81,7 +81,7 @@ export class ResourcesDataService {
     }
 
     clearAnnouncementsCache(): void {
-        this.resourceCheckCache.clear();
+        this.announcementsCache.clear();
     }
 
     fetchIpv4Analysis(orgId: string): Observable<IIpv4Analysis> {
