@@ -222,7 +222,7 @@
                                     "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-RPSL-MNT"
                                 },
                                 "name": "mnt-routes",
-                                "value": "RIPE-NCC-RPSL-MNT",
+                                "value": "RIPE-NCC-RPSL-MNT ANY",
                                 "referenced-type": "mntner"
                             },
                             {

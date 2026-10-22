@@ -36,6 +36,17 @@ describe('lookup', () => {
         it('should show version of whois after searching', () => {
             lookupPage.expectVersionToBe('RIPE Database Software Version 1.97-SNAPSHOT');
         });
+
+        it('should contain link to lookup page with just a existing value', () => {
+            // The "mnt-routes:" syntax allows an optional list of prefix range(s), or the keyword "ANY"
+            // mnt-routes: RIPE-NCC-RPSL-MNT ANY
+            // mnt-routes: RIPE-NCC-RPSL-MNT { 193.0.0.0/24^24-24 }
+            lookupPage
+                .getWhoisObjectViewer()
+                .clickOnShowEntireObject()
+                .expectAttributeToContainKeyAndValue(32, 'mnt-routes', 'RIPE-NCC-RPSL-MNT ANY')
+                .expectAttributeToContainLink(32, 'db-web-ui/lookup?source=ripe&key=RIPE-NCC-RPSL-MNT&type=mntner');
+        });
     });
     describe('The lookup page for organisation', () => {
         beforeEach(() => {

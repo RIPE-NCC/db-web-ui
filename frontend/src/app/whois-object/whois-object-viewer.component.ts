@@ -137,14 +137,12 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy, OnInit 
     getLocalLinksQueryParams(attr: IAttributeModel) {
         return {
             source: attr.value === 'DUMY-RIPE' ? this.properties.SOURCE : this.model.source.id,
-            key: attr.value,
+            key: attr.value?.split(' ')[0],
             type: attr['referenced-type'],
         };
     }
 
     trim(value: string) {
-        console.log('before', value + '|');
-        console.log('after', value.trim() + '|');
         return value?.trim();
     }
 
