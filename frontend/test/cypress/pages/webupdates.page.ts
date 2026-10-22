@@ -100,7 +100,13 @@ export class WebupdatesPage {
     }
 
     clickOnSwitchToPersonRole() {
-        cy.get('#create-person-link a').click();
+        cy.get('#create-person-link a')
+            .invoke('text')
+            .then((linkText) => {
+                cy.get('#create-person-link a').click();
+                // the switch re-initialises the form once the route changes; interacting before that gets reset
+                cy.get('#create-person-link a').should('not.have.text', linkText);
+            });
         return this;
     }
 

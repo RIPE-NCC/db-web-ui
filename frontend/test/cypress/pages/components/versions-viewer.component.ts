@@ -14,21 +14,14 @@ export class VersionsViewerComponent {
         return this;
     }
 
-    openDropdown() {
-        cy.get('.cdk-overlay-backdrop').should('not.exist');
-        cy.get('.version-select').click();
-        cy.get('mat-option').should('exist');
-        return this;
-    }
-
     expectDeletedBadge(exists: boolean) {
         cy.get('.deleted-badge').should(exists ? 'exist' : 'not.exist');
         return this;
     }
 
     selectVersionByDate(date: string) {
-        this.openDropdown();
-        cy.get('mat-option').contains(date).click();
+        // mat-select ignores clicks until its options arrive; the latest version gets preselected at that point
+        cy.get('.version-select').should('not.have.class', 'mat-mdc-select-empty').selectMatOption(date);
         return this;
     }
 

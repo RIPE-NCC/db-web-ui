@@ -52,6 +52,8 @@ describe('The inetnum editor', () => {
     });
 
     it('should sanitized img and script tag - XSS attack', () => {
+        // there is no mock for autocompleting the typed values; its 404 redirects to /not-found when it arrives
+        cy.intercept('GET', '**/api/whois/autocomplete**', { body: [] });
         webupdatesPage
             .typeOnField(
                 'inetnum',

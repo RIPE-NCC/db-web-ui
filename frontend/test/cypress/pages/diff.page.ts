@@ -18,8 +18,9 @@ export class DiffPage {
     }
 
     selectRightVersionByDate(date: string) {
-        cy.get('mat-select').eq(1).click();
-        cy.get('mat-option').contains(date).click();
+        // mat-select ignores clicks until its options arrive; the left version gets preselected at that point
+        cy.get('mat-select').eq(0).should('not.have.class', 'mat-mdc-select-empty');
+        cy.get('mat-select').eq(1).selectMatOption(date);
         return this;
     }
 

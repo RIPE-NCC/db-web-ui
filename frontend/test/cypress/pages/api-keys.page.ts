@@ -86,9 +86,7 @@ export class ApiKeysPage {
     }
 
     changeExamplesKeyTypeFormat(keyTypeFormat: KeyTypeFormat) {
-        cy.wait(1000);
-        this.getExamplesKeyTypeFormatDropdown().click();
-        cy.get(`mat-option:contains("${keyTypeFormat}")`).click();
+        this.getExamplesKeyTypeFormatDropdown().selectMatOption(keyTypeFormat);
         return this;
     }
 

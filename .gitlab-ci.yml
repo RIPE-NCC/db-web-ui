@@ -186,13 +186,17 @@ backend:
 e2e-cypress-chrome:
     stage: test
     extends: .default_rules
+    parallel: 3
     script:
         - node --version
         - npm --version
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
-        - cd frontend && npm ci && npm run cypress:chrome
+        - cd frontend && npm ci
+        # split specs round-robin across the parallel jobs
+        - SPECS=$(ls test/cypress/integration/*.e2e-spec.ts | awk -v total=$CI_NODE_TOTAL -v node=$CI_NODE_INDEX '(NR - 1) % total == node - 1' | paste -sd, -)
+        - npm run cypress:chrome -- --spec "$SPECS"
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
           when: always
@@ -207,13 +211,17 @@ e2e-cypress-chrome:
 e2e-cypress-firefox:
     stage: test
     extends: .default_rules
+    parallel: 3
     script:
         - node --version
         - npm --version
         - echo "127.0.0.1 localhost.ripe.net" >> /etc/hosts
         - export DISPLAY=:20
         - Xvfb :20 -screen 0 1920x1080x16 &
-        - cd frontend && npm ci && npm run cypress:firefox
+        - cd frontend && npm ci
+        # split specs round-robin across the parallel jobs
+        - SPECS=$(ls test/cypress/integration/*.e2e-spec.ts | awk -v total=$CI_NODE_TOTAL -v node=$CI_NODE_INDEX '(NR - 1) % total == node - 1' | paste -sd, -)
+        - npm run cypress:firefox -- --spec "$SPECS"
     rules:
         - if: "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
           when: always

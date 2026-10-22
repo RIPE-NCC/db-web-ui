@@ -141,11 +141,11 @@ export class ResourcesComponent implements OnDestroy {
         this.showTheIpAnalyserBanner();
 
         this.lastTab = this.activatedRoute.snapshot.queryParamMap.get('type');
-        this.lastTabIndex = this.listOfTabs.indexOf(this.lastTab);
         // default show inetnum if lastTab have value different then 'inetnum', 'inet6num', 'aut-num'
         if (!this.listOfTabs.includes(this.lastTab)) {
             this.lastTab = ObjectTypesEnum.INETNUM;
         }
+        this.lastTabIndex = this.listOfTabs.indexOf(this.lastTab);
         this.refreshPage();
     }
 

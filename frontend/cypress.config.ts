@@ -3,7 +3,8 @@ import { defineConfig } from 'cypress';
 export default defineConfig({
     fixturesFolder: './test/cypress/fixtures',
     screenshotOnRunFailure: true,
-    video: true,
+    // recording costs a lot of CPU on CI; enable with CYPRESS_VIDEO=true when debugging
+    video: false,
     videosFolder: './test/cypress/videos',
     screenshotsFolder: './test/cypress/screenshots',
     chromeWebSecurity: false,
