@@ -35,11 +35,6 @@ public class SessionEmitterService {
         for (final Map.Entry<String, Set<SseEmitter>> entry : emitters.entrySet()) {
             final String sessionId = entry.getKey();
 
-            if (!hasValidOidcSession(sessionId)){
-                notifyExpired(sessionId);
-                continue;
-            }
-
             entry.getValue().forEach(emitter -> {
                 try {
                     LOGGER.debug("Keep-alive check for sessionId={}", sessionId);
@@ -100,7 +95,7 @@ public class SessionEmitterService {
 
     public boolean hasValidOidcSession(final String sessionId) {
         final IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
-        return oidcMap.containsKey(sessionId);
+        return oidcMap.getEntryView(sessionId) != null;
     }
 
     public boolean hasActiveEmitter(final String sessionId) {
@@ -112,7 +107,6 @@ public class SessionEmitterService {
         if (sessionEmitters == null || sessionEmitters.isEmpty()) return; // no active tab subscribed for this session — nothing to push
         sessionEmitters.forEach(SessionEmitterService::sendExpireSessionEvent);
     }
-
 
     public void closeQuietly(final String sessionId) {
         final Set<SseEmitter> sessionEmitters = emitters.remove(sessionId);

@@ -9,6 +9,7 @@ import com.hazelcast.core.EntryListener;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.listener.EntryAddedListener;
+import com.hazelcast.map.listener.EntryEvictedListener;
 import com.hazelcast.map.listener.EntryExpiredListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
@@ -62,8 +63,7 @@ public class HazelcastSessionConfig {
         final int sessionTimeoutSeconds = (int) sessionTimeout.getSeconds();
         final MapConfig httpSessionMapConfig = new MapConfig(OidcUtils.HTTP_SESSION_CACHE)
                 .setBackupCount(peerMembers.size())
-                .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(sessionTimeoutSeconds);
+                .setAsyncBackupCount(0);
 
         config.addMapConfig(httpSessionMapConfig);
 
@@ -82,29 +82,31 @@ public class HazelcastSessionConfig {
         config.addMapConfig(oidcSessionsMapConfig);
 
         final HazelcastInstance instance = Hazelcast.newHazelcastInstance(config);
-        addListeners(instance, sessionCacheService);
+        addListeners(instance, sessionCacheService, sessionTimeoutSeconds);
 
         config.getMetricsConfig().setEnabled(true);
         return instance;
     }
 
-    private static List<String> getPeerMembers(String members, String publicAddr) {
+    private static List<String> getPeerMembers(final String members, final String publicAddr) {
         return Arrays.stream(members.split(","))
                 .filter(m -> !m.equals(publicAddr))
                 .toList();
     }
 
-    private static void addListeners(final HazelcastInstance instance, final SessionCacheService sessionCacheService) {
+    private static void addListeners(final HazelcastInstance instance,
+                                     final SessionCacheService sessionCacheService,
+                                     final int sessionTimeoutSeconds) {
         instance.getCluster().addMembershipListener(new MembershipListener() {
 
             @Override
             public void memberAdded(final MembershipEvent event) {
-                LOGGER.info("Member added: {}, List of members now : {}", event.getMember(), event.getMembers());
+                LOGGER.debug("Member added: {}, List of members now : {}", event.getMember(), event.getMembers());
             }
 
             @Override
             public void memberRemoved(final MembershipEvent event) {
-                LOGGER.info("Member removed: {}, List of members now : {}", event.getMember(), event.getMembers());
+                LOGGER.debug("Member removed: {}, List of members now : {}", event.getMember(), event.getMembers());
             }
         });
 
@@ -159,6 +161,7 @@ public class HazelcastSessionConfig {
                     @Override
                     public void entryRemoved(EntryEvent<Object, Object> event) {
                         logEvent("REMOVED", event);
+                        sessionCacheService.cleanUpSessionCachesAndEmitters(String.valueOf(event.getKey()), false);
                     }
 
                     @Override
@@ -218,17 +221,15 @@ public class HazelcastSessionConfig {
                 true
         );
         instance.getMap(OidcUtils.HTTP_SESSION_CACHE).addEntryListener(
-                (EntryRemovedListener<Object, Object>) event -> {
-                    LOGGER.debug("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    sessionCacheService.cleanUpSessionCachesAndEmitters(String.valueOf(event.getKey()), false);
-                },
+                (EntryRemovedListener<Object, Object>) event -> LOGGER.debug("Session REMOVED key={} member={}", event.getKey(), event.getMember().getAddress()),
                 true
         );
         instance.getMap(OidcUtils.HTTP_SESSION_CACHE).addEntryListener(
-                (EntryExpiredListener<Object, Object>) event ->{
-                    LOGGER.debug("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress());
-                    sessionCacheService.cleanUpSessionCachesAndEmitters(String.valueOf(event.getKey()), true);
-                },
+                (EntryExpiredListener<Object, Object>) event -> LOGGER.debug("Session EXPIRED key={} member={}", event.getKey(), event.getMember().getAddress()),
+                true
+        );
+        instance.getMap(OidcUtils.HTTP_SESSION_CACHE).addEntryListener(
+                (EntryEvictedListener<Object, Object>) event -> LOGGER.debug("Session EVICTED key={} member={}", event.getKey(), event.getMember().getAddress()),
                 true
         );
     }

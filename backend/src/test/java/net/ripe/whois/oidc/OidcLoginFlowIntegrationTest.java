@@ -283,7 +283,7 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
         final HttpResponse<String> response = future.get(10, TimeUnit.SECONDS);
 
-        assertThat(response.body(), containsString("session-expired"));
+        assertThat(response.body(), containsString("session-closed"));
         // Confirm the REAL caches were actually cleared as a result
         assertThat((Map<Object, Object>) hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE), anEmptyMap());
         // Back-channel logout just removes session specific cache

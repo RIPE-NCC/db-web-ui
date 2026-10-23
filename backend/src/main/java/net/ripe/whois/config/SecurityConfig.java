@@ -1,6 +1,7 @@
 package net.ripe.whois.config;
 
 import com.hazelcast.core.HazelcastInstance;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OidcBackChannelLogoutHandler;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -154,8 +156,6 @@ public class SecurityConfig {
         return delegate;
     }
 
-
-
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
@@ -200,8 +200,15 @@ public class SecurityConfig {
         final ClientRegistrationRepository clientRegistrationRepository) {
 
         OidcClientInitiatedLogoutSuccessHandler handler =
-            new OidcClientInitiatedLogoutSuccessHandler(
-                clientRegistrationRepository);
+                new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository) {
+                    @Override
+                    public void onLogoutSuccess(final HttpServletRequest request,
+                                                final HttpServletResponse response,
+                                                final Authentication authentication) throws IOException, ServletException {
+                        LOGGER.debug("User logout: principal={}", authentication == null ? "anonymous" : authentication.getName());
+                        super.onLogoutSuccess(request, response, authentication);
+                    }
+                };
 
         handler.setPostLogoutRedirectUri("{baseUrl}/query");
 
@@ -216,8 +223,9 @@ public class SecurityConfig {
 
     // Hazelcast instances
     @Bean
-    public OAuth2AuthorizedClientService authorizedClientService(final HazelcastInstance hazelcastInstance) {
-        return new HazelcastOAuth2AuthorizedClientService(hazelcastInstance);
+    public OAuth2AuthorizedClientService authorizedClientService(@Value("${server.servlet.session.timeout}") final Duration sessionTimeout,
+                                                                 final HazelcastInstance hazelcastInstance) {
+        return new HazelcastOAuth2AuthorizedClientService(sessionTimeout, hazelcastInstance);
     }
 
     @Bean
@@ -253,7 +261,6 @@ public class SecurityConfig {
             var sessionsMap = hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE);
 
             for (OidcSessionInformation info : matched) {
-                sessionEmitterService.notifyExpired(info.getSessionId());
                 sessionsMap.remove(info.getSessionId());
             }
         };

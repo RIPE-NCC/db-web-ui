@@ -47,7 +47,7 @@ public class SessionCacheService {
 
 
         try {
-            IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
+            final IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
 
             oidcMap.remove(sessionId);
             hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE).remove(sessionId);

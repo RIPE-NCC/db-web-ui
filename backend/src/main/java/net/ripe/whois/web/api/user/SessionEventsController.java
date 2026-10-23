@@ -1,11 +1,14 @@
 package net.ripe.whois.web.api.user;
 
-import jakarta.servlet.http.HttpServletRequest;
+import net.ripe.whois.config.OidcUtils;
 import net.ripe.whois.services.SessionEmitterService;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/session")
@@ -18,12 +21,12 @@ public class SessionEventsController {
     }
 
     @GetMapping(path = "/events", produces = "text/event-stream")
-    public SseEmitter subscribe(final HttpServletRequest request) {
-        final String sessionId = request.getSession(true).getId(); // create if absent, so we always have a key to subscribe under
-        if (!sessionEmitterService.hasValidOidcSession(sessionId)) {
+    public SseEmitter subscribe(@CookieValue(name = OidcUtils.OIDC_LOCAL_COOKIE_NAME, required = false) String sessionCookie) {
+        final Optional<String> sessionId = OidcUtils.decodeSessionId(sessionCookie);
+        if (sessionId.isEmpty() || !sessionEmitterService.hasValidOidcSession(sessionId.get())) { //there is no session to subscribe to
             return sessionEmitterService.immediatelyExpired();
         }
-        return sessionEmitterService.subscribe(sessionId);
+        return sessionEmitterService.subscribe(sessionId.get());
     }
 
 }

@@ -3,6 +3,9 @@ package net.ripe.whois.config;
 import jakarta.servlet.http.HttpServletRequest;
 
 import javax.annotation.Nullable;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Optional;
 
 public final class OidcUtils {
 
@@ -29,5 +32,16 @@ public final class OidcUtils {
             return null;
         }
         return uri.substring(index + prefix.length());
+    }
+
+    public static Optional<String> decodeSessionId(final String cookie) {
+        if (cookie == null) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.of(new String(Base64.getDecoder().decode(cookie), StandardCharsets.UTF_8));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 }
