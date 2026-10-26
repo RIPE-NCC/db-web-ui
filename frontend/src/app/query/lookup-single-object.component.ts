@@ -61,6 +61,7 @@ export class LookupSingleObjectComponent implements OnInit, OnDestroy {
                             Labels['msg.searchResultsTandCLink.text'],
                             'https://apps.db.ripe.net/db-web-ui/legal#terms-and-conditions',
                             Labels['msg.termsAndConditions.text'],
+                            true,
                         );
                     } else {
                         console.warn('Expected a single object from query. source:', this.source, 'type:', this.objectType, 'name:', this.objectName);

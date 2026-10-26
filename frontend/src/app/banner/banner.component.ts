@@ -4,7 +4,6 @@ import { MatDialogClose } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Labels } from 'src/app/label.constants';
 import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
-import { PropertiesService } from '../properties.service';
 
 /*  Usage
     promo:
@@ -48,7 +47,6 @@ export enum BannerTypes {
 })
 export class BannerComponent implements OnInit {
     private router = inject(Router);
-    private properties = inject(PropertiesService);
 
     @Input()
     title?: string;
@@ -64,7 +62,7 @@ export class BannerComponent implements OnInit {
     buttonUrl?: string;
     @Input() // 2nd button text
     buttonText?: string;
-    @Input() //permanent means no dismiss button
+    @Input() // permanent means no dismiss button
     permanent?: boolean = false;
 
     closed: boolean;

@@ -6,6 +6,7 @@
         textContent="{{ error.plainText | sanitizeHtml }}"
         [buttonText]="error.linktext !== undefined ? error.linktext : null"
         [buttonUrl]="error.linkurl !== undefined ? error.linkurl : null"
+        [permanent]="error.hideDismissBtn ? error.hideDismissBtn : null"
     ></banner>
 </div>
 } @for (success of alerts.successes; let i = $index; track success) {
@@ -16,6 +17,7 @@
         textContent="{{ success.plainText | sanitizeHtml }}"
         [buttonText]="success.linktext !== undefined ? success.linktext : null"
         [buttonUrl]="success.linkurl !== undefined ? success.linkurl : null"
+        [permanent]="success.hideDismissBtn ? success.hideDismissBtn : null"
     ></banner>
 </div>
 } @for (warning of alerts.warnings; let i = $index; track warning) {
@@ -26,6 +28,7 @@
         textContent="{{ warning.plainText | sanitizeHtml }}"
         [buttonText]="warning.linktext !== undefined ? warning.linktext : null"
         [buttonUrl]="warning.linkurl !== undefined ? warning.linkurl : null"
+        [permanent]="warning.hideDismissBtn ? warning.hideDismissBtn : null"
     ></banner>
 </div>
 } @for (info of alerts.infos; let i = $index; track info) {
@@ -36,6 +39,7 @@
         textContent="{{ info.plainText | sanitizeHtml }}"
         [buttonText]="info.linktext !== undefined ? info.linktext : null"
         [buttonUrl]="info.linkurl !== undefined ? info.linkurl : null"
+        [permanent]="info.hideDismissBtn ? info.hideDismissBtn : null"
     ></banner>
 </div>
 }

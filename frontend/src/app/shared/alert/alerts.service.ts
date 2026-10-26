@@ -6,6 +6,7 @@ export interface IAlertMessageModel extends IObjectMessageModel {
     text?: string;
     linkurl?: string;
     linktext?: string;
+    hideDismissBtn?: boolean;
 }
 
 export interface IAlerts {
@@ -118,8 +119,8 @@ export class AlertsService {
         this.alertsChanged.emit(this.alerts);
     }
 
-    public addGlobalInfo(infoMsg: string, buttonUrl?: string, buttonText?: string) {
-        const info = buttonUrl ? { plainText: infoMsg, linkurl: buttonUrl, linktext: buttonText } : { plainText: infoMsg };
+    public addGlobalInfo(infoMsg: string, buttonUrl?: string, buttonText?: string, hideDismissBtn?: boolean) {
+        const info = buttonUrl ? { plainText: infoMsg, linkurl: buttonUrl, linktext: buttonText, hideDismissBtn: hideDismissBtn } : { plainText: infoMsg };
         this.alerts.infos.push(info);
         this.alertsChanged.emit(this.alerts);
     }
