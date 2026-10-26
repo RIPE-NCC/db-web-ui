@@ -66,6 +66,12 @@ public class HazelcastOAuth2AuthorizedClientService implements OAuth2AuthorizedC
         LOGGER.debug("HZ REMOVE registrationId={} principal={}", clientRegistrationId, principalName);
     }
 
+    /**
+     * Restarts the TTL of the OIDC session registry entry of the current HTTP session.
+     * Called whenever the authorized client (token) is loaded, so the entry expires only after
+     * the user has not used the token for the session timeout. This keeps our timer in step with
+     * the IdP SSO Session Idle timeout.
+     */
     private void resetOidcSession() {
         if (!(RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes attrs)) {
             return; // not inside a web request (scheduler, listener thread)

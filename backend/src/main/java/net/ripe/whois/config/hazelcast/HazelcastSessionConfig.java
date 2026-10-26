@@ -74,15 +74,17 @@ public class HazelcastSessionConfig {
 
         config.addMapConfig(authorizedClientMapConfig);
 
+        // No map-level TTL/max-idle on purpose: the TTL is set per entry in HazelcastOAuth2AuthorizedClientService.resetOidcSession()
+        // whenever the token is used, so it slides with user activity.
         final MapConfig oidcSessionsMapConfig = new MapConfig(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP)
                 .setBackupCount(peerMembers.size())
-                .setAsyncBackupCount(0)
-                .setMaxIdleSeconds(sessionTimeoutSeconds);
+                .setAsyncBackupCount(0);
+
 
         config.addMapConfig(oidcSessionsMapConfig);
 
         final HazelcastInstance instance = Hazelcast.newHazelcastInstance(config);
-        addListeners(instance, sessionCacheService, sessionTimeoutSeconds);
+        addListeners(instance, sessionCacheService);
 
         config.getMetricsConfig().setEnabled(true);
         return instance;
@@ -95,8 +97,7 @@ public class HazelcastSessionConfig {
     }
 
     private static void addListeners(final HazelcastInstance instance,
-                                     final SessionCacheService sessionCacheService,
-                                     final int sessionTimeoutSeconds) {
+                                     final SessionCacheService sessionCacheService) {
         instance.getCluster().addMembershipListener(new MembershipListener() {
 
             @Override

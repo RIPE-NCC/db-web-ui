@@ -95,7 +95,7 @@ public class SessionEmitterService {
 
     public boolean hasValidOidcSession(final String sessionId) {
         final IMap<Object, Object> oidcMap = hazelcastInstance.getMap(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP);
-        return oidcMap.getEntryView(sessionId) != null;
+        return oidcMap.containsKey(sessionId);
     }
 
     public boolean hasActiveEmitter(final String sessionId) {
