@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { filter, Subject } from 'rxjs';
+
+export type SessionEndReason = 'expired' | 'closed';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SessionService {
-    private readonly expiredSessionSubject = new Subject<void>();
+    private ended = false;
 
-    private expired = false;
+    private readonly sessionEndedSubject = new Subject<SessionEndReason>();
+    readonly sessionEnded$ = this.sessionEndedSubject.asObservable();
+    readonly expiredSession$ = this.sessionEnded$.pipe(filter((reason) => reason === 'expired'));
 
-    readonly expiredSession$ = this.expiredSessionSubject.asObservable();
     readonly KEEP_ALIVE_TIMEOUT_MS = 90_000;
     private eventSource?: EventSource;
     private reconnectAttempts = 0;
@@ -17,6 +20,7 @@ export class SessionService {
     private watchdogTimer?: ReturnType<typeof setTimeout>;
 
     initialize() {
+        this.ended = false;
         this.connect();
     }
 
@@ -29,14 +33,12 @@ export class SessionService {
 
         this.eventSource.addEventListener('session-expired', () => {
             console.info('session-events session has expired - show banner');
-            this.showSessionExpired();
-            console.debug('show banner');
-            this.disconnect();
+            this.endSession('expired');
         });
 
         this.eventSource.addEventListener('session-closed', () => {
             console.info('session-events stream closed by server, no banner');
-            this.disconnect(); // close for good, so the browser doesn't reconnect
+            this.endSession('closed');
         });
 
         this.eventSource.onopen = () => {
@@ -52,6 +54,15 @@ export class SessionService {
                 this.scheduleReconnect();
             }
         };
+    }
+
+    private endSession(reason: SessionEndReason): void {
+        this.disconnect();
+        if (this.ended) {
+            return;
+        }
+        this.ended = true;
+        this.sessionEndedSubject.next(reason);
     }
 
     private disconnect(): void {
@@ -72,7 +83,7 @@ export class SessionService {
     }
 
     private scheduleReconnect(): void {
-        if (this.expired) {
+        if (this.ended) {
             return; // session's actually dead, no point reconnecting
         }
 
@@ -85,14 +96,5 @@ export class SessionService {
             this.eventSource?.close();
             this.connect();
         }, delay);
-    }
-
-    showSessionExpired() {
-        if (this.expired) {
-            return;
-        }
-
-        this.expired = true;
-        this.expiredSessionSubject.next();
     }
 }

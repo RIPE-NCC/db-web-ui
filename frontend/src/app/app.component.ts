@@ -74,7 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
         effect(() => {
             this.onActiveMenuChange();
         });
-        this.sessionService.expiredSession$.subscribe(() => {
+        this.sessionService.sessionEnded$.subscribe(() => {
             this.isLoggedInUser = false;
         });
     }

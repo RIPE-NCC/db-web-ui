@@ -62,7 +62,7 @@ export class WhoisObjectViewerComponent implements OnChanges, OnDestroy, OnInit 
     private readonly HAS_VIEW_VERSIONS_TYPE = ['mntner', 'aut-num', 'route', 'route6', 'inetnum', 'inet6num', 'organisation'];
 
     constructor() {
-        this.subscription = this.sessionService.expiredSession$.subscribe({
+        this.subscription = this.sessionService.sessionEnded$.subscribe({
             next: () => this.setButtonText(false),
             error: () => this.showLoginButton(),
         });

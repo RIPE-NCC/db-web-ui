@@ -50,6 +50,7 @@ export class MainContainerComponent implements OnInit {
             const userLogin = document.querySelector('user-login');
             userLogin?.dispatchEvent(new Event('access-logout'));
         });
+
         this.activeMenu = this.menuService.activeMenu();
         this.isBrowserSupported = supportedBrowsers.test(navigator.userAgent);
         this.mobileOrDesktopView();

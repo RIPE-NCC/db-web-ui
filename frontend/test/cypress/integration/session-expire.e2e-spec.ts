@@ -93,4 +93,28 @@ describe('Session expire', () => {
         webupdatesPage.submitForm();
         webupdatesPage.expectUserLoggedImage(true);
     });
+
+    it('should show the user as logged out when session closed', () => {
+        cy.intercept('GET', 'db-web-ui/api/user-oidc/me', {
+            statusCode: 200,
+            body: mockProfile,
+        }).as('getProfile');
+
+        cy.intercept('GET', '**/api/session/events', (req) => {
+            req.reply({
+                statusCode: 200,
+                headers: { 'Content-Type': 'text/event-stream' },
+                body: 'event: session-closed\ndata: expired\n\n',
+                delay: 2000,
+            });
+        }).as('sessionEvents');
+
+        queryPage.visit();
+        cy.wait('@getProfile');
+
+        queryPage.expectUserLoggedImage(true);
+
+        cy.wait('@sessionEvents');
+        queryPage.expectUserLoggedImage(false);
+    });
 });
