@@ -419,6 +419,7 @@ public class SecurityConfig {
     private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
         CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         repository.setCookieName(OidcUtils.OIDC_CSRF_COOKIE_NAME);
+        repository.setCookieCustomizer(c -> c.sameSite("Strict").secure(true));
         return repository;
     }
 
