@@ -4,7 +4,7 @@
         <a class="title" [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
             {{ selectedNode.nodeName }}
         </a>
-        <a matButton [routerLink]="['/myresources/detail', node().type, node().nodeName, false]">
+        <a matButton [routerLink]="['/myresources/detail', node().type, node().resource.resource, false]">
             View resource details
             <em class="fa-light fa-arrow-right"></em>
         </a>
