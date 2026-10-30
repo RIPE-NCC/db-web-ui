@@ -1,8 +1,8 @@
 import { ModalAuthentication } from './components/modals.component';
 import { OrganisationSelector } from './components/organisation-selector.component';
 import { WhoisObjectEditor } from './components/whois-object-editor.component';
+import { WhoisTextEditor } from './components/whois-object-text-editor.component';
 import { WhoisObjectViewer } from './components/whois-object-viewer.component';
-import { WhoisTextEditor } from './components/whois-text-editor.component';
 
 type IPTab = 'IPv4' | 'IPv6' | 'ASN';
 type ResourceToggleBtn = 'My Resources' | 'Sponsored Resources';

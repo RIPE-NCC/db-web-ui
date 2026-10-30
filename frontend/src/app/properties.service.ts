@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
 declare let loadMatomo: (matomoId: string) => any;
 
@@ -38,35 +39,19 @@ export class PropertiesService {
 
     public ACCESS_URL = '';
     public BANNER = 'Welcome to the localhost version of the RIPE Database.';
-    // Resources - menu items
-    public MY_RESOURCES_URL = 'myresources/overview';
-    // RIPE database - menu items
-    public DATABASE_QUERY_URL = 'query';
-    public DATABASE_FULL_TEXT_SEARCH_URL = 'fulltextsearch';
-    public OBJECT_LOOKUP_URL = 'lookup';
-    public DATABASE_SYNCUPDATES_URL = 'syncupdates';
-    public DATABASE_CREATE_URL = 'webupdates/select';
-    public DATABASE_API_KEYS = 'api-keys';
-    public DOCUMENTATION_URL = 'https://docs.db.ripe.net';
-    public LEGAL = 'legal';
     public ENV = 'local';
     public RIPE_APP_WEBCOMPONENTS_ENV = 'pre';
     public static BREAKPOINTS_MOBILE_VIEW = 1025;
     public MATOMO_ID = '';
     public LOGIN_URL = '';
     public LOGOUT_URL = '';
-    public OPEN_ACQUISITION_URL = '';
     public PORTAL_URL = '';
     public PORTAL_URL_ACCOUNT = '';
     public PORTAL_URL_REQUEST = '';
     public NEWEST_PORTAL_URL = '';
     public LIVE_CHAT_KEY = '';
     public QUERY_PAGE_LINK_TO_OTHER_DB = '';
-    public REQUEST_RESOURCES_URL = '';
-    public REQUEST_TRANSFER_URL = '';
-    public REQUEST_UPDATE_URL = '';
     public REST_SEARCH_URL = '';
-    public RPKI_DASHBOARD_URL = '';
     public SOURCE = 'RIPE';
     public DB_WEB_UI_BUILD_TIME = '00:00';
     // list of all ripe ncc mntners
@@ -83,44 +68,40 @@ export class PropertiesService {
     public REST_API_RIPE_URL = '';
 
     public load(): Promise<void> {
-        return this.httpClient
-            .get<IProperties>('app.constants.json')
-            .toPromise()
-            .then(
-                (response) => {
-                    this.ENV = response.ENV;
-                    this.SOURCE = response.SOURCE;
-                    this.LOGIN_URL = response.LOGIN_URL;
-                    this.ACCESS_URL = response.ACCESS_URL;
-                    this.LOGOUT_URL = response.LOGOUT_URL;
-                    this.PORTAL_URL = response.PORTAL_URL;
-                    this.PORTAL_URL_ACCOUNT = response.PORTAL_URL_ACCOUNT;
-                    this.PORTAL_URL_REQUEST = response.PORTAL_URL_REQUEST;
-                    this.NEWEST_PORTAL_URL = response.NEWEST_PORTAL_URL;
-                    this.BANNER = response.BANNER;
-                    this.MATOMO_ID = response.MATOMO_ID;
-                    this.REST_SEARCH_URL = response.REST_SEARCH_URL;
-                    this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
-                    this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
-                    this.RIPE_APP_WEBCOMPONENTS_ENV =
-                        this.ENV === 'prod' || this.ENV === 'test' || this.ENV === 'rc' || this.ENV === 'training' ? 'prod' : 'pre';
-                    this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
-                    this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
-                    this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
-                    this.RIPE_NCC_HM_MNT = response.RIPE_NCC_HM_MNT;
-                    this.SESSION_TTL = response.SESSION_TTL;
-                    this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
-                    this.WHOIS_OVERRIDE = response.WHOIS_OVERRIDE;
-                    this.NO_PASSWORD_AUTH_POPUP = response.NO_PASSWORD_AUTH_POPUP;
-                    this.SHOW_MENU_IDS = response.SHOW_MENU_IDS;
-                    this.LINK_TO_MANAGE_APIKEYS_IN_ACCESS = response.LINK_TO_MANAGE_APIKEYS_IN_ACCESS;
-                    this.REST_API_RIPE_URL = response.REST_API_RIPE_URL;
-                    // once we deploy the db-operational
+        return firstValueFrom(this.httpClient.get<IProperties>('app.constants.json')).then(
+            (response) => {
+                this.ENV = response.ENV;
+                this.SOURCE = response.SOURCE;
+                this.LOGIN_URL = response.LOGIN_URL;
+                this.ACCESS_URL = response.ACCESS_URL;
+                this.LOGOUT_URL = response.LOGOUT_URL;
+                this.PORTAL_URL = response.PORTAL_URL;
+                this.PORTAL_URL_ACCOUNT = response.PORTAL_URL_ACCOUNT;
+                this.PORTAL_URL_REQUEST = response.PORTAL_URL_REQUEST;
+                this.NEWEST_PORTAL_URL = response.NEWEST_PORTAL_URL;
+                this.BANNER = response.BANNER;
+                this.MATOMO_ID = response.MATOMO_ID;
+                this.REST_SEARCH_URL = response.REST_SEARCH_URL;
+                this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
+                this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
+                this.RIPE_APP_WEBCOMPONENTS_ENV = this.ENV === 'prod' || this.ENV === 'test' || this.ENV === 'rc' || this.ENV === 'training' ? 'prod' : 'pre';
+                this.LIVE_CHAT_KEY = response.LIVE_CHAT_KEY;
+                this.RIPE_NCC_MNTNERS = response.RIPE_NCC_MNTNERS;
+                this.TOP_RIPE_NCC_MNTNERS = response.TOP_RIPE_NCC_MNTNERS;
+                this.RIPE_NCC_HM_MNT = response.RIPE_NCC_HM_MNT;
+                this.SESSION_TTL = response.SESSION_TTL;
+                this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
+                this.WHOIS_OVERRIDE = response.WHOIS_OVERRIDE;
+                this.NO_PASSWORD_AUTH_POPUP = response.NO_PASSWORD_AUTH_POPUP;
+                this.SHOW_MENU_IDS = response.SHOW_MENU_IDS;
+                this.LINK_TO_MANAGE_APIKEYS_IN_ACCESS = response.LINK_TO_MANAGE_APIKEYS_IN_ACCESS;
+                this.REST_API_RIPE_URL = response.REST_API_RIPE_URL;
+                // once we deploy the db-operational
 
-                    this.injectProperties();
-                },
-                (error) => console.error(error),
-            );
+                this.injectProperties();
+            },
+            (error) => console.error(error),
+        );
     }
 
     private injectProperties() {
