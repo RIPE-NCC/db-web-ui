@@ -1,10 +1,18 @@
 <form id="textModifyForm">
     <div class="form-group">
         <label for="modifyRpsl">RPSL to modify a single object</label>
-        @if (hasNonLatin1()) {
+        @if (haveNonLatin1) {
         <span class="text-error"> You can only enter latin1 characters </span>
         }
-        <textarea id="modifyRpsl" name="modifyRpsl" class="form-control" rows="20" [(ngModel)]="rpsl" style="font-family: monospace"></textarea>
+        <textarea
+            id="modifyRpsl"
+            name="modifyRpsl"
+            class="form-control"
+            rows="20"
+            [(ngModel)]="rpsl"
+            (ngModelChange)="hasNonLatin1()"
+            style="font-family: monospace"
+        ></textarea>
         <submitting-agreement></submitting-agreement>
 
         <button mat-flat-button color="primary" class="float-end margin-left" type="submit" (click)="submit()" [disabled]="haveNonLatin1">SUBMIT</button>

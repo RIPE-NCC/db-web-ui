@@ -54,7 +54,7 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     };
     public override: string;
     public deletable: boolean;
-    public haveNonLatin1: boolean;
+    public haveNonLatin1: boolean = false;
 
     public ngOnInit() {
         if (this.rpsl === undefined) {
@@ -109,12 +109,9 @@ export class WhoisObjectTextEditorComponent implements OnInit {
         this.deleteEvent.emit();
     }
 
-    hasNonLatin1(): boolean {
-        if (this.formattedObject == undefined) {
-            return true;
-        }
-        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute(this.formattedObject.attributes);
-        return this.haveNonLatin1;
+    hasNonLatin1() {
+        const objects = this.rpslService.fromRpsl(this.rpsl);
+        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute(objects[0].attributes);
     }
 
     private fetchAndPopulateObject() {

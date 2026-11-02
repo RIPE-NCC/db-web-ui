@@ -54,7 +54,7 @@ export class TextCreateComponent implements OnInit {
     public mntners: any;
     public name: string;
     public override: string;
-    public haveNonLatin1: boolean;
+    public haveNonLatin1: boolean = false;
 
     public ngOnInit() {
         this.restCallInProgress = false;
@@ -174,12 +174,9 @@ export class TextCreateComponent implements OnInit {
         this.router.navigateByUrl(`webupdates/create/${this.object.source}/${this.object.type}?noRedirect`);
     }
 
-    hasNonLatin1(): boolean {
-        if (this.object.rpsl == undefined) {
-            return true;
-        }
-        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute(this.object.rpsl.attributes);
-        return this.haveNonLatin1;
+    hasNonLatin1() {
+        const objects = this.rpslService.fromRpsl(this.object.rpsl);
+        this.haveNonLatin1 = ScreenLogicInterceptorService.hasNonLatin1SupportedAttribute(objects[0].attributes);
     }
 
     private prepopulateRpsl() {
