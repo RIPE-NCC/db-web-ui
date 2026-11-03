@@ -72,8 +72,6 @@ public class AngularConstantsController {
     private int releaseNotificationPolling;
     @Value("${git.commit.id.abbrev:}")
     private String dbWebUiCommitId;
-    @Value("${whois.override:}")
-    private String whoisOverride;
     @Value("${nopassword.auth.popup:false}")
     private boolean noPasswordAuthPopup;
     @Value("${show.menu.id:}")
@@ -128,7 +126,6 @@ public class AngularConstantsController {
         constants.setRipeNccHmMnt(ripeNccHmMnt);
         constants.setSessionTtl(sessionTtl);
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
-        constants.setWhoisOverride(whoisOverride);
         constants.setNoPasswordAuthPopup(noPasswordAuthPopup);
         constants.setShowMenuIds(showMenuIds);
         constants.setLinkToManageApiKeysInAccess(linkToManageApiKeysInAccess);
@@ -179,8 +176,6 @@ public class AngularConstantsController {
         private int sessionTtl;
         @JsonProperty("RELEASE_NOTIFICATION_POLLING")
         private int releaseNotificationPolling;
-        @JsonProperty("WHOIS_OVERRIDE")
-        private String whoisOverride;
         @JsonProperty("NO_PASSWORD_AUTH_POPUP")
         private boolean noPasswordAuthPopup;
         @JsonProperty("SHOW_MENU_IDS")
@@ -272,10 +267,6 @@ public class AngularConstantsController {
 
         public void setReleaseNotificationPolling(int releaseNotificationPolling) {
             this.releaseNotificationPolling = releaseNotificationPolling;
-        }
-
-        public void setWhoisOverride(String whoisOverride) {
-            this.whoisOverride = whoisOverride;
         }
 
         public void setNoPasswordAuthPopup(boolean noPasswordAuthPopup) {

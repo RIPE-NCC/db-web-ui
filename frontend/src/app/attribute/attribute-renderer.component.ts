@@ -8,7 +8,6 @@ import { catchError, debounceTime, distinctUntilChanged, map, mergeMap } from 'r
 import { SanitizeHtmlPipe } from 'src/app/shared/sanitize-html.pipe';
 import { ObjectTypesEnum } from '../query/object-types.enum';
 import { DescriptionSyntaxComponent } from '../shared/descriptionsyntax/description-syntax.component';
-import { OverrideCredentialsService } from '../shared/override-credentials-service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
@@ -43,7 +42,6 @@ export class AttributeRendererComponent implements OnInit {
     private restService = inject(RestService);
     private enumService = inject(EnumService);
     private modalService = inject(NgbModal);
-    private credentialsService = inject(OverrideCredentialsService);
     private whoisResourcesService = inject(WhoisResourcesService);
 
     @Input()
@@ -62,7 +60,6 @@ export class AttributeRendererComponent implements OnInit {
     public staticList: any;
 
     public isHelpShown: boolean = false;
-    private isMntHelpShown: boolean = false;
     private roleForAbuseC: any;
     public widgetReverseZone: boolean;
 
@@ -76,7 +73,6 @@ export class AttributeRendererComponent implements OnInit {
 
     public ngOnInit() {
         this.isHelpShown = false;
-        this.isMntHelpShown = false;
         if (!this.attribute.$$meta) {
             this.attribute.$$meta = {};
         }
@@ -144,7 +140,6 @@ export class AttributeRendererComponent implements OnInit {
         });
         const inputData = {
             maintainers: maintainers,
-            overrides: this.credentialsService.getOverrideForRestCall(),
             source: this.source,
         };
         const modalRef = this.modalService.open(ModalCreateRoleForAbuseCComponent, { size: 'lg' });

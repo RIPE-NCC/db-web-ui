@@ -34,11 +34,9 @@ export class WebUpdatesCommonsService {
 
     constructor() {
         const properties = this.properties;
-        console.log('properties', properties.NO_PASSWORD_AUTH_POPUP);
 
-        this.enableNonAuthUpdates =
-            !properties.isProdEnv() && // Security property, this should never be enabled in PROD
-            properties.NO_PASSWORD_AUTH_POPUP;
+        // Security property, this should never be enabled in PROD
+        this.enableNonAuthUpdates = properties.isEnableNonAuthUpdates();
     }
 
     public performAuthentication(authParams: IAuthParams) {

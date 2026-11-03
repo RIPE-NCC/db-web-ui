@@ -6,7 +6,6 @@ import { Router, RouterModule } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { PropertiesService } from '../../../../src/app/properties.service';
-import { OverrideCredentialsService } from '../../../../src/app/shared/override-credentials-service';
 import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
 import { ModalAuthenticationSSOPrefilledComponent } from '../../../../src/app/updatesweb/modal-authentication-sso-prefilled.component';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
@@ -17,7 +16,6 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
     let componentFixture: ComponentFixture<ModalAuthenticationSSOPrefilledComponent>;
     let modalAuthenticationSSOPrefilledComponent: ModalAuthenticationSSOPrefilledComponent;
     let modalMock: any;
-    let credentialsServiceMock: any;
 
     const mntners = [
         { type: 'mntner', key: 'TEST29-MNT', auth: ['SSO'] },
@@ -26,7 +24,6 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
     ];
 
     let MockPropertiesService = {
-        WHOIS_OVERRIDE: 'whois,test',
         SOURCE: 'RIPE',
         PORTAL_URL: 'https://access.test.ripe.net/',
     };
@@ -34,14 +31,12 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        credentialsServiceMock = jasmine.createSpyObj('CredentialsService', ['hasCredentials', 'getCredentials', 'removeCredentials', 'setCredentials']);
         TestBed.configureTestingModule({
             imports: [FormsModule, RouterModule, ModalAuthenticationSSOPrefilledComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 WhoisResourcesService,
                 UserInfoService,
-                { provide: OverrideCredentialsService, useValue: credentialsServiceMock },
                 { provide: PropertiesService, useValue: MockPropertiesService },
                 RestService,
                 CookieService,
@@ -112,11 +107,9 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
         httpMock
             .expectOne({
                 method: 'GET',
-                url: 'api/whois/RIPE/mntner/b-mnt?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D&unfiltered=true',
+                url: 'api/whois/override/RIPE/mntner/b-mnt?unfiltered=true',
             })
             .flush(getResp);
-
-        expect(credentialsServiceMock.setCredentials).toHaveBeenCalledWith('b-mnt', 'whois,test,Automatically Added SSO {notify=false}');
 
         httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/user/info' }).flush({
             user: {
@@ -127,13 +120,9 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
             },
         });
 
-        httpMock
-            .expectOne({ method: 'PUT', url: 'api/whois/RIPE/mntner/b-mnt?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D' })
-            .flush(resp);
+        httpMock.expectOne({ method: 'PUT', url: 'api/whois/override/RIPE/mntner/b-mnt' }).flush(resp);
 
         await componentFixture.whenStable();
-
-        expect(credentialsServiceMock.removeCredentials).toHaveBeenCalled();
 
         expect(modalMock.close).toHaveBeenCalledWith({
             $value: {

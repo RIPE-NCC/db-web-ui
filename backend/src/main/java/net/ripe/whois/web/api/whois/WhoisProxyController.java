@@ -41,6 +41,7 @@ public class WhoisProxyController extends ApiController {
 
         return this.proxyRestCalls(request, response, body, headers);
     }
+
     @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> proxyRestCalls(
             final HttpServletRequest request,

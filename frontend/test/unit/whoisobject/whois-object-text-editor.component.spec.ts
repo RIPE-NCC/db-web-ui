@@ -7,7 +7,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY, map, of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { OverrideCredentialsService } from '../../../src/app/shared/override-credentials-service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
@@ -81,7 +80,6 @@ describe('WhoisObjectTextEditorComponent', () => {
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbModal', ['open']);
         modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
-        credentialsServiceMock = jasmine.createSpyObj('OverrideCredentialsService', ['hasCredentials', 'getCredentials', 'getOverrideForRestCall']);
         TestBed.configureTestingModule({
             imports: [FormsModule, TextModifyComponent],
             providers: [
@@ -93,7 +91,6 @@ describe('WhoisObjectTextEditorComponent', () => {
                 RpslService,
                 MntnerService,
                 TextCommonsService,
-                { provide: OverrideCredentialsService, useValue: credentialsServiceMock },
                 PrefixService,
                 PropertiesService,
                 { provide: NgbModal, useValue: modalMock },
@@ -308,34 +305,6 @@ describe('WhoisObjectTextEditorComponent', () => {
                 mine: true,
             },
         ]);
-
-        await componentFixture.whenStable();
-
-        httpMock
-            .expectOne({
-                method: 'GET',
-                url: 'api/whois/RIPE/mntner/TEST-MNT?unfiltered=true&unformatted=true',
-            })
-            .flush({
-                objects: {
-                    object: [
-                        {
-                            'primary-key': { attribute: [{ name: 'mntner', value: 'TEST-MNT' }] },
-                            attributes: {
-                                attribute: [
-                                    { name: 'mntner', value: 'TEST-MNT' },
-                                    { name: 'descr', value: '.' },
-                                    { name: 'admin-c', value: 'TST08-RIPE' },
-                                    { name: 'upd-to', value: 'email@email.com' },
-                                    { name: 'auth', value: 'SSO teste2e@ripe.net' },
-                                    { name: 'mnt-by', value: 'TEST-MNT' },
-                                    { name: 'source', value: 'RIPE' },
-                                ],
-                            },
-                        },
-                    ],
-                },
-            });
 
         await componentFixture.whenStable();
 

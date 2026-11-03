@@ -27,10 +27,8 @@ export class TextCommonsService {
 
     constructor() {
         const properties = this.properties;
-
-        this.enableNonAuthUpdates =
-            !properties.isProdEnv() && // Security property, this should never be enabled in PROD
-            properties.NO_PASSWORD_AUTH_POPUP;
+        // Security property, this should never be enabled in PROD
+        this.enableNonAuthUpdates = properties.isEnableNonAuthUpdates();
     }
 
     public enrichWithDefaults(objectSource: string, objectType: string, attributes: IAttributeModel[]) {

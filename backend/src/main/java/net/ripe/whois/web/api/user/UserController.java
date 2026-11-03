@@ -27,6 +27,7 @@ public class UserController {
 
     private final WhoisInternalService whoisInternalService;
     private final OidcTokenExtractor oidcTokenExtractor;
+
     @Autowired
     public UserController(final WhoisInternalService whoisInternalService, final OidcTokenExtractor oidcTokenExtractor) {
         this.whoisInternalService = whoisInternalService;
@@ -62,4 +63,3 @@ public class UserController {
         return new ResponseEntity<>(whoisInternalService.getUserInfo(request.getRemoteAddr()), HttpStatus.OK);
     }
 }
-

@@ -10,7 +10,6 @@ import { UserInfoService } from '../userinfo/user-info.service';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { BannerComponent, BannerTypes } from '../banner/banner.component';
-import { OverrideCredentialsService } from '../shared/override-credentials-service';
 import { IModalAuthentication } from './modal-sso-required-authentication.component';
 import { RestService } from './rest.service';
 
@@ -27,7 +26,6 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     userInfoService = inject(UserInfoService);
     restService = inject(RestService);
     properties = inject(PropertiesService);
-    overrideCredentialsService = inject(OverrideCredentialsService);
 
     public close: any;
     @Input()
@@ -35,14 +33,12 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
     public PORTAL_URL: string;
     public SOURCE: string;
     public selected: any;
-    public override: string;
 
     constructor() {
         const properties = this.properties;
 
         this.SOURCE = properties.SOURCE;
         this.PORTAL_URL = properties.PORTAL_URL;
-        this.override = properties.WHOIS_OVERRIDE + ',Automatically Added SSO {notify=false}';
     }
 
     public ngOnInit() {
@@ -60,9 +56,8 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
         if (!this.selected.item || !this.selected.item.key) {
             return;
         }
-        this.restService.fetchObjectByOverride(this.SOURCE, 'mntner', this.selected.item.key, this.override).subscribe({
+        this.restService.fetchObjectByOverride(this.SOURCE, 'mntner', this.selected.item.key).subscribe({
             next: (whoisResources: IWhoisResponseModel) => {
-                this.overrideCredentialsService.setCredentials(this.selected.item.key, this.override);
                 this.setSSOAccount(whoisResources);
             },
             error: (error: any) => {
@@ -99,13 +94,11 @@ export class ModalAuthenticationSSOPrefilledComponent implements OnInit {
                         'mntner',
                         this.selected.item.key,
                         this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes),
-                        this.override,
                     )
                     .subscribe({
                         next: (resp: any) => {
                             this.selected.item.mine = true;
                             this.addSSOAsAuthMethod();
-                            this.overrideCredentialsService.removeCredentials(); // because it's now a sso mntner report success back
                             this.activeModal.close({
                                 $value: {
                                     selectedItem: this.selected.item,

@@ -6,7 +6,6 @@ import { from, mergeMap, Observable, of } from 'rxjs';
 import { PrefixServiceUtils } from '../domainobject/prefix.service.utils';
 import { IpAddressService } from '../myresources/ip-address.service';
 import { PropertiesService } from '../properties.service';
-import { OverrideCredentialsService } from '../shared/override-credentials-service';
 import { WhoisMetaService } from '../shared/whois-meta.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel, IMntByModel } from '../shared/whois-response-type.model';
@@ -17,7 +16,6 @@ import { RestService } from './rest.service';
 
 @Injectable({ providedIn: 'root' })
 export class MntnerService {
-    private overrideCredentialsService = inject(OverrideCredentialsService);
     private whoisResourcesService = inject(WhoisResourcesService);
     private whoisMetaService = inject(WhoisMetaService);
     private modalService = inject(NgbModal);
@@ -47,17 +45,6 @@ export class MntnerService {
                 return { key: mntner.value };
             });
 
-            // check if we've already got an override
-            const alreadyAuthed = parentMntners.findIndex((parentMnt) => {
-                return (
-                    this.overrideCredentialsService.hasCredentials() &&
-                    this.overrideCredentialsService.getCredentials().some((cred) => cred.mntner === parentMnt.key)
-                );
-            });
-
-            if (alreadyAuthed > -1) {
-                return of(true);
-            }
             // pop up an auth box
             return this.restService.detailsForMntners(parentMntners).pipe(
                 mergeMap((enrichedMntners: IMntByModel[]) => {
@@ -195,10 +182,7 @@ export class MntnerService {
             return false;
         }
 
-        if (this.oneOfOriginalMntnersHasCredential(originalObjectMntners)) {
-            return false;
-        }
-        return true;
+        return !this.oneOfOriginalMntnersHasCredential(ssoMntners, originalObjectMntners);
     }
 
     public getMntnersForAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]) {
@@ -298,9 +282,9 @@ export class MntnerService {
         });
     }
 
-    private oneOfOriginalMntnersHasCredential(originalObjectMntners: IMntByModel[]) {
-        if (this.overrideCredentialsService.hasCredentials()) {
-            const credentialsUpperCase = this.overrideCredentialsService.getCredentials().map((cred) => cred.mntner.toUpperCase());
+    private oneOfOriginalMntnersHasCredential(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[]) {
+        if (ssoMntners) {
+            const credentialsUpperCase = ssoMntners.map((cred) => cred.key.toUpperCase());
             return originalObjectMntners.some((mntner: IMntByModel) => credentialsUpperCase.includes(mntner.key.toUpperCase()));
         }
         return false;

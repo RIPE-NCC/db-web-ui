@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, throwError } from 'rxjs';
-import { OverrideCredentialsService } from '../../../../src/app/shared/override-credentials-service';
 import { ModalDeleteObjectComponent } from '../../../../src/app/updatesweb/modal-delete-object.component';
 import { RestService } from '../../../../src/app/updatesweb/rest.service';
 import { RpkiValidatorService } from '../../../../src/app/updatesweb/rpki-validator.service';
@@ -216,8 +215,6 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
 });
 
 describe('ModalDeleteObjectComponent deleteable object ', () => {
-    let credentialsServiceMock: any;
-
     beforeEach(() => {
         modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
         routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
@@ -225,14 +222,13 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
         restServiceMock.deleteObject.and.returnValue(of({}));
         restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT));
         rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
-        credentialsServiceMock = jasmine.createSpyObj('OverrideCredentialsService', ['hasCredentials', 'getCredentials', 'getOverrideForRestCall']);
+
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalDeleteObjectComponent],
             providers: [
                 { provide: NgbActiveModal, useValue: modalMock },
                 { provide: RestService, useValue: restServiceMock },
                 { provide: RpkiValidatorService, useValue: rpkiValidatorServiceMock },
-                { provide: OverrideCredentialsService, useValue: credentialsServiceMock },
                 { provide: Router, useValue: routerMock },
                 provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),

@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/RIPE/mntner/RIPE-NCC-END-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D&unfiltered=true",
+    "requestUrl": "/db-web-ui/api/whois/override/ripe/mntner/RIPE-NCC-END-MNT",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

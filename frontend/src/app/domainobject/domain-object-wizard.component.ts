@@ -5,7 +5,6 @@ import { AttributeMetadataService } from '../attribute/attribute-metadata.servic
 import { AttributeSharedService } from '../attribute/attribute-shared.service';
 import { JsUtilService } from '../core/js-utils.service';
 import { AlertsService } from '../shared/alert/alerts.service';
-import { OverrideCredentialsService } from '../shared/override-credentials-service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
 import { IAttributeModel } from '../shared/whois-response-type.model';
 import { IMaintainers } from '../updatesweb/create-modify.component';
@@ -46,7 +45,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     private webUpdatesCommonsService = inject(WebUpdatesCommonsService);
     private messageStoreService = inject(MessageStoreService);
     private errorReporterService = inject(ErrorReporterService);
-    private overrideCredentialsService = inject(OverrideCredentialsService);
     private alertsService = inject(AlertsService);
     activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
@@ -197,7 +195,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         }
 
         const flattenedAttributes = this.flattenStructure(this.attributes);
-        const overrides = this.overrideCredentialsService.getOverrideForRestCall();
 
         this.restCallInProgress = true;
         this.alreadySubmited = true;
@@ -207,7 +204,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
         const data = {
             attributes: flattenedAttributes,
-            overrides,
             type: this.objectType,
         };
 

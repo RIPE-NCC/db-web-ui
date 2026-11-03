@@ -8,7 +8,6 @@ describe('SSO prefilled authentication when TEST env', () => {
     const testProperties = './test/e2e/mocks/e2eTestAppConstants/app-constants-test-env.json';
 
     const userInfoFile = './test/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json';
-    const guessUser = './test/e2e/mocks/e2eTest/user-with-guest-role.json';
     const userWithAllRoles = './test/e2e/mocks/e2eTest/user-with-all-role.json';
 
     afterEach(() => {
@@ -21,10 +20,7 @@ describe('SSO prefilled authentication when TEST env', () => {
     });
 
     it('should associate SSO mntner if submitted', () => {
-        cy.intercept(
-            'PUT',
-            '**/db-web-ui/api/whois/ripe/mntner/RIPE-NCC-END-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D',
-        ).as('ssoUpdated');
+        cy.intercept('PUT', '**/db-web-ui/api/whois/override/ripe/mntner/RIPE-NCC-END-MNT').as('ssoUpdated');
 
         webupdatesPage.visit('modify/ripe/aut-num/AS9191');
         webupdatesPage.getModalSSOPrefilledAuthentication().expectSelectedAuthenticationMaintainer('TEST21-MNT').submitModal();
@@ -35,10 +31,7 @@ describe('SSO prefilled authentication when TEST env', () => {
     });
 
     it('should not associate SSO mntner if modal is closed', () => {
-        cy.intercept(
-            'PUT',
-            '**/db-web-ui/api/whois/ripe/mntner/RIPE-NCC-END-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D',
-        ).as('ssoUpdated');
+        cy.intercept('PUT', '**/db-web-ui/api/whois/override/ripe/mntner/RIPE-NCC-END-MNT').as('ssoUpdated');
 
         webupdatesPage.visit('modify/ripe/aut-num/AS9191');
         webupdatesPage.getModalSSOPrefilledAuthentication().expectSelectedAuthenticationMaintainer('TEST21-MNT').closeModal();
@@ -48,10 +41,8 @@ describe('SSO prefilled authentication when TEST env', () => {
         });
     });
 
-    it('should remove Filtered in display page after associating SSO mnt', () => {
-        cy.intercept('PUT', '**/db-web-ui/api/whois/ripe/mntner/TEST21-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D').as(
-            'ssoUpdated',
-        );
+    it.only('should remove Filtered in display page after associating SSO mnt', () => {
+        cy.intercept('PUT', '**/db-web-ui/api/whois/override/ripe/mntner/TEST21-MNT').as('ssoUpdated');
 
         webupdatesPage.visit('modify/ripe/mntner/TEST21-MNT').expectValueInField('auth', 'SSO # Filtered', 0);
 

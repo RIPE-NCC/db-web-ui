@@ -1,5 +1,5 @@
 {
-    "requestUrl": "/db-web-ui/api/whois/ripe/mntner/TEST21-MNT?override=whois%2Ctest%2CAutomatically%20Added%20SSO%20%7Bnotify%3Dfalse%7D",
+    "requestUrl": "/db-web-ui/api/whois/override/RIPE/mntner/TEST21-MNT?unfiltered=true",
     "contentType": "application/javascript",
     "statusCode": 200,
     "data": {

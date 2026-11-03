@@ -201,13 +201,14 @@ export class RestService {
         );
     }
 
-    public fetchObjectByOverride(source: string, objectType: string, objectName: string, override?: string) {
+    public fetchObjectByOverride(source: string, objectType: string, objectName: string) {
         if (!source) {
             throw new TypeError('restService.authenticate source must have a value');
         }
-        const params = this.setParams(override).set('unfiltered', 'true');
+        let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
+        params = params.set('unfiltered', 'true');
         const decodeURI = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
-        return this.http.get(`api/whois/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params }).pipe(
+        return this.http.get(`api/whois/override/${source.toUpperCase()}/${objectType}/${decodeURI}`, { params }).pipe(
             map((result: any) => {
                 console.debug('authenticate success:' + JSON.stringify(result));
                 return this.whoisResourcesService.wrapSuccess(result);
@@ -219,8 +220,8 @@ export class RestService {
         );
     }
 
-    public associateSSOMntnerByOverride(source: string, objectType: string, objectName: string, whoisResources: any, override: string) {
-        return this.http.put(`api/whois/${source}/${objectType}/${objectName}?override=${encodeURIComponent(override)}`, whoisResources).pipe(
+    public associateSSOMntnerByOverride(source: string, objectType: string, objectName: string, whoisResources: any) {
+        return this.http.put(`api/whois/override/${source}/${objectType}/${objectName}`, whoisResources).pipe(
             tap({
                 next: (result: any) => console.debug('associateSSOMntner success:' + JSON.stringify(result.data)),
                 error: (error: any) => console.error('associateSSOMntner error:' + JSON.stringify(error)),

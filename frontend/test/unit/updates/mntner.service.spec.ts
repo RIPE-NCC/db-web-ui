@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { PrefixService } from '../../../src/app/domainobject/prefix.service';
 import { PropertiesService } from '../../../src/app/properties.service';
-import { OverrideCredentialsService } from '../../../src/app/shared/override-credentials-service';
 import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
 import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
@@ -15,11 +14,6 @@ import { RestService } from '../../../src/app/updatesweb/rest.service';
 describe('MntnerService', () => {
     let mntnerService: MntnerService;
     let httpMock: HttpTestingController;
-    const credentialServiceMock = {
-        getCredentials: () => [{ mntner: 'B-MNT', successfulOverride: 'secret' }],
-        hasCredentials: () => true,
-        getOverrideForRestCall: () => ['secret'],
-    };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -31,7 +25,6 @@ describe('MntnerService', () => {
                 WhoisResourcesService,
                 WhoisMetaService,
                 PropertiesService,
-                { provide: OverrideCredentialsService, useValue: credentialServiceMock },
                 { provide: 'ModalService', useValue: {} },
                 { provide: 'PrefixService', useValue: {} },
                 {
@@ -177,17 +170,6 @@ describe('MntnerService', () => {
     it('should need authentication for SSO mntner with different case', () => {
         const ssoMntners = [{ type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] }];
         const objectMntners = [{ type: 'mntner', key: 'A-MNT' }];
-        expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
-        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
-    });
-
-    it('should need authentication for trusted mntner', () => {
-        const ssoMntners = [{ type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] }];
-        const objectMntners = [
-            { type: 'mntner', key: 'B-MNT' },
-            { type: 'mntner', key: 'D-MNT' },
-        ];
-
         expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
         expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
     });
