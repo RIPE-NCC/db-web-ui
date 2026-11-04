@@ -2,3 +2,8 @@
     --layout-layer-top: 1000;
     --layout-layer-overlay: 2000;
 }
+
+.link-back-test-db {
+    --pad: 2rem;
+    padding-inline: calc(2 * var(--pad));
+}

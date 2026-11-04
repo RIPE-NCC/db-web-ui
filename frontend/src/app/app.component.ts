@@ -118,7 +118,23 @@ export class AppComponent implements OnInit, OnDestroy {
         this.activeMenu = this.menuService.activeMenu();
         if (this.menuService.isActiveDBMenu()) {
             this.icon = 'assets/images/RIPE_NCC_Database_White_2025.svg';
-            this.sidebarMenu = dbMenuObject.menu;
+            this.sidebarMenu = this.properties.isTestEnv()
+                ? {
+                      ...dbMenuObject.menu,
+                      main: dbMenuObject.menu.main.map((item) =>
+                          item.id === 'test-database'
+                              ? {
+                                    ...item,
+                                    title: 'RIPE Database',
+                                    url: 'https://apps.db.ripe.net/db-web-ui/query',
+                                    id: 'database',
+                                    external: true,
+                                    icon: 'assets/icons/fa-server.svg',
+                                }
+                              : item,
+                      ),
+                  }
+                : dbMenuObject.menu;
         } else {
             this.icon = 'assets/images/Resources_2025-05.svg';
             this.userInfoService.isLoggedIn() ? (this.sidebarMenu = getResourceMenu(true)) : (this.sidebarMenu = getResourceMenu(false));
@@ -166,15 +182,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     setActiveSidebarItem(url: string) {
         this.activeSidebarItem = `${location.origin}/db-web-ui/${url}`;
-    }
-
-    private getCookieValue(name: string): string | null {
-        const match = document.cookie.split('; ').find((c) => c.startsWith(`${name}=`));
-        return match ? decodeURIComponent(match.substring(name.length + 1)) : null;
-    }
-
-    private isCookieTrue(name: string): boolean {
-        return this.getCookieValue(name) === 'true';
     }
 
     private getCleanUrlForNext(): string {

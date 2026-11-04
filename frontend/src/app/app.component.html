@@ -18,7 +18,12 @@
     [attr.user-profile-url]="properties.LOGIN_URL + '/profile'"
     [attr.user-auth]="'custom'"
 >
-    <section slot="main"><main-container></main-container></section>
+    <section slot="main">
+        @if (properties.isTestEnv()) {
+        <a class="link-back-test-db" href="https://apps.db.ripe.net/db-web-ui/query"><em class="fa-light fa-arrow-left"></em> Back to RIPE Database</a>
+        }
+        <main-container></main-container>
+    </section>
 </ripe-unified-layout>
 } @else if (isComponentLoaded) {
 <ripe-unified-layout
