@@ -15,7 +15,7 @@
         <assertj-core.version>3.27.7</assertj-core.version>
         <awaitility.version>4.3.0</awaitility.version>
         <bucket4j.version>0.12.8</bucket4j.version>
-        <caffeine.version>3.2.4</caffeine.version>
+        <caffeine.version>3.3.1</caffeine.version>
         <commons-io.version>2.21.0</commons-io.version>
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <commons-lang3.version>3.17.0</commons-lang3.version>
