@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Observable, Subscription } from 'rxjs';
-import { UserOidc } from './dropdown/org-data-type.model';
 import { FeedbackSupportDialogComponent } from './feedbacksupport/feedback-support-dialog.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { dbMenuObject } from './menu/db-menu.json';
@@ -54,12 +53,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     labelEnv!: string;
     labelEnvImg!: string;
+    isLoggedInUser = this.userInfoService.isLoggedIn;
+    usernameOidc = computed(() => this.userInfoService.user()?.name);
+    profilePhotoId = computed(() => this.userInfoService.user()?.photo);
 
-    userOidc: UserOidc;
-    usernameOidc: string;
-    isLoggedInUser: boolean = false;
     isComponentLoaded: boolean = false;
-    profilePhotoId: string;
 
     currentHref = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
 
@@ -73,9 +71,6 @@ export class AppComponent implements OnInit, OnDestroy {
         });
         effect(() => {
             this.onActiveMenuChange();
-        });
-        this.sessionService.sessionEnded$.subscribe(() => {
-            this.isLoggedInUser = false;
         });
     }
 
@@ -94,8 +89,8 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         this.userInfoService.getLoggedInOidc().subscribe({
-            next: (response: UserOidc) => {
-                this.loadOidcDataAndInitialiseEvent(response);
+            next: () => {
+                this.loadOidcDataAndInitialiseEvent();
             },
             error: (_err) => {
                 window.location.href = `/db-web-ui/oauth2/authorization/keycloak?silent=true&next=${encodeURIComponent(this.getCleanUrlForNext())}`;
@@ -103,13 +98,8 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
 
-    private loadOidcDataAndInitialiseEvent(response: UserOidc) {
-        this.userOidc = response;
-        this.usernameOidc = this.userOidc.name;
-        this.isLoggedInUser = true;
+    private loadOidcDataAndInitialiseEvent() {
         this.isComponentLoaded = true;
-        this.profilePhotoId = this.userOidc.photo;
-
         this.sessionService.initialize();
     }
 

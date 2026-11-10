@@ -13,6 +13,76 @@ describe('Session expire', () => {
         photo: 'test1234-1234-1234-abcd-test12345678',
     };
 
+    const mock200CreatePerson = {
+        link: {
+            type: 'locator',
+            href: 'https://localhost.ripe.net/RIPE/person?clientIp=127.0.0.1',
+        },
+        objects: {
+            object: [
+                {
+                    type: 'person',
+                    link: {
+                        type: 'locator',
+                        href: 'https://localhost.ripe.net/ripe/person/TT1-RIPE',
+                    },
+                    source: {
+                        id: 'ripe',
+                    },
+                    'primary-key': {
+                        attribute: [
+                            {
+                                name: 'nic-hdl',
+                                value: 'TT1-RIPE',
+                            },
+                        ],
+                    },
+                    attributes: {
+                        attribute: [
+                            {
+                                name: 'person',
+                                value: 'Test t',
+                            },
+                            {
+                                name: 'e-mail',
+                                value: 'test@ripe.net',
+                            },
+                            {
+                                name: 'nic-hdl',
+                                value: 'TT1-RIPE',
+                            },
+                            {
+                                name: 'created',
+                                value: '2026-11-09T14:57:09Z',
+                            },
+                            {
+                                name: 'last-modified',
+                                value: '2026-11-09T14:57:09Z',
+                            },
+                            {
+                                name: 'source',
+                                value: 'TEST',
+                            },
+                            {
+                                link: {
+                                    type: 'locator',
+                                    href: 'https://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT',
+                                },
+                                name: 'mnt-by',
+                                value: 'TEST-MNT',
+                                'referenced-type': 'mntner',
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+        'terms-and-conditions': {
+            type: 'locator',
+            href: 'https://docs.db.ripe.net/terms-conditions.html',
+        },
+    };
+
     const mockUnauthorizedProfile = {
         response: {
             status: 401,
@@ -31,9 +101,7 @@ describe('Session expire', () => {
         }).as('silentLogin');
 
         queryPage.visit();
-        cy.wait('@getProfile');
-        cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/user-oidc\/me/).as('getUserInfo');
-        cy.wait('@getUserInfo').its('response.statusCode').should('eq', 401);
+        cy.wait('@getProfile').its('response.statusCode').should('eq', 401);
         queryPage.expectUserLoggedImage(false);
     });
 
@@ -45,8 +113,6 @@ describe('Session expire', () => {
         }).as('getProfile');
         queryPage.visit();
         cy.wait('@getProfile');
-        cy.intercept('GET', /https:\/\/localhost(.ripe.net)?:9002\/db-web-ui\/api\/user-oidc\/me/).as('getUserInfo');
-        cy.wait('@getUserInfo');
         queryPage.expectUserLoggedImage(true);
     });
 
@@ -75,7 +141,7 @@ describe('Session expire', () => {
         webupdatesPage.expectWarningMessageToContain('Your RIPE NCC Access session has expired. You need to login again.');
     });
 
-    it('should not show the banner when the user is logged', () => {
+    it('should show the user as logged in when the user is logged', () => {
         cy.intercept('GET', 'db-web-ui/api/user-oidc/me', {
             statusCode: 200,
             body: mockProfile,
@@ -90,7 +156,13 @@ describe('Session expire', () => {
             .typeOnField('person', 'Test t')
             .typeOnField('e-mail', 'test@ripe.net');
 
+        cy.intercept('POST', 'db-web-ui/api/whois/RIPE/person', {
+            statusCode: 200,
+            body: mock200CreatePerson,
+        }).as('createPerson');
         webupdatesPage.submitForm();
+        cy.wait('@getProfile');
+
         webupdatesPage.expectUserLoggedImage(true);
     });
 

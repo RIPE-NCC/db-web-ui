@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { filter, Subject } from 'rxjs';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 export type SessionEndReason = 'expired' | 'closed';
 
@@ -7,6 +8,8 @@ export type SessionEndReason = 'expired' | 'closed';
     providedIn: 'root',
 })
 export class SessionService {
+    private userInfoService = inject(UserInfoService);
+
     private ended = false;
 
     private readonly sessionEndedSubject = new Subject<SessionEndReason>();
@@ -62,6 +65,7 @@ export class SessionService {
             return;
         }
         this.ended = true;
+        this.userInfoService.clearUser();
         this.sessionEndedSubject.next(reason);
     }
 

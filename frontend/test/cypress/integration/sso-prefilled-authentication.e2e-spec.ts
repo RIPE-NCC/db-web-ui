@@ -41,7 +41,7 @@ describe('SSO prefilled authentication when TEST env', () => {
         });
     });
 
-    it.only('should remove Filtered in display page after associating SSO mnt', () => {
+    it('should remove Filtered in display page after associating SSO mnt', () => {
         cy.intercept('PUT', '**/db-web-ui/api/whois/override/ripe/mntner/TEST21-MNT').as('ssoUpdated');
 
         webupdatesPage.visit('modify/ripe/mntner/TEST21-MNT').expectValueInField('auth', 'SSO # Filtered', 0);

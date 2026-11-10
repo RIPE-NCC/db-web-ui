@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
@@ -6,14 +6,14 @@ import { catchError, throwError } from 'rxjs';
 import { MenuService } from '../menu/menu.service';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
+import { UserInfoService } from '../userinfo/user-info.service';
 
 export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
     const properties = inject(PropertiesService);
     const alertService = inject(AlertsService);
     const menuService = inject(MenuService);
-    const http = inject(HttpClient);
-
+    const userInfoService = inject(UserInfoService);
     const isServerError = (status: number) => status === 500;
     const isAuthorisationError = (status: number) => status === 401;
     const isForbiddenError = (status: number) => status === 403;
@@ -71,10 +71,9 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     };
 
     const redirectToLogin = () => {
-        const url = location.href;
-        const ssoUrl = `${properties.LOGIN_URL}?originalUrl=${encodeURIComponent(url)}`;
-        console.info('Force SSO login:' + ssoUrl);
-        window.location.href = ssoUrl;
+        const url = `/db-web-ui/oauth2/authorization/keycloak?next=${encodeURIComponent(window.location.href)}`;
+        console.info('Force authentication url: {}', url);
+        window.location.href = url;
     };
 
     const handleTransitionError = (err: HttpErrorResponse) => {
@@ -94,6 +93,9 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(req).pipe(
         catchError((err: HttpErrorResponse) => {
+            if (err.status === 401 && userInfoService.isLoggedIn()) {
+                userInfoService.clearUser();
+            }
             if (!mustErrorBeSwallowed(err)) {
                 switch (err.status) {
                     case 500:

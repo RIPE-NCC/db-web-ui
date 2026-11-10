@@ -59,8 +59,8 @@ export class UserInfoService {
         }
     }
 
-    public pingUserInfo(): Observable<object> {
-        return this.http.get('api/whois-internal/api/user/info');
+    clearUser(): void {
+        this.user.set(null);
     }
 
     public getSelectedOrganisation(): Observable<IUserInfoOrganisation> {

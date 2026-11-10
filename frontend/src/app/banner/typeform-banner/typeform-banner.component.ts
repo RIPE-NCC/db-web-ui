@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { UserOidc } from 'src/app/dropdown/org-data-type.model';
 import { TypeformDialogComponent } from '../../query/typeform-dialog/typeform-dialog.component';
 import { UserInfoService } from '../../userinfo/user-info.service';
 
@@ -15,20 +14,13 @@ import { UserInfoService } from '../../userinfo/user-info.service';
 })
 export class TypeformBannerComponent implements OnInit {
     dialog = inject(MatDialog);
-    private userInfoService = inject(UserInfoService);
+    private readonly userInfoService = inject(UserInfoService);
 
     public closed: boolean;
-    public loggedInUser: boolean;
-
-    constructor() {
-        this.userInfoService.getLoggedInOidc().subscribe((response: UserOidc) => {
-            this.loggedInUser = true;
-        });
-    }
+    public loggedInUser = this.userInfoService.isLoggedIn;
 
     public ngOnInit() {
         this.closed = localStorage.getItem('typeform-banner') === 'closed';
-        this.loggedInUser = this.userInfoService.isLoggedIn();
     }
 
     openConfirmDialog() {
