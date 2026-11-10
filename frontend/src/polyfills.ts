@@ -47,7 +47,7 @@
  */
 import '@angular/localize/init';
 // this strange import is to avoid the vite/esbuild treeshaking and therefore removing "unused" components from the bundle
-void import('@technical-design/ripe-app-webcomponents');
+void import('@ripencc-shared/components');
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
