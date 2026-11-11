@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatFormField, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
-import moment from 'moment-timezone';
+import { formatInTimeZone } from 'date-fns-tz';
 import { Subject, switchMap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IUserInfoOrganisation, IUserInfoRegistration } from '../../dropdown/org-data-type.model';
@@ -107,7 +107,7 @@ export class CreateNewApiKeyComponent implements OnInit, OnChanges {
 
     saveApiKey() {
         this.alertsService.clearAlertMessages();
-        const expiresAtFormated = moment(this.expiresAt).tz('Europe/Amsterdam').format('YYYY-MM-DDTHH:mm:ssZ');
+        const expiresAtFormated = formatInTimeZone(this.expiresAt!, 'Europe/Amsterdam', "yyyy-MM-dd'T'HH:mm:ssXXX");
         this.apiKeysService
             .saveApiKey(
                 this.apiKeyName,

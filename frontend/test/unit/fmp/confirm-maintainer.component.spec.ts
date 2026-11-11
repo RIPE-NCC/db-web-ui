@@ -16,6 +16,7 @@ describe('ConfirmMaintainerComponent', () => {
     let fixture: ComponentFixture<ConfirmMaintainerComponent>;
     let mockEmailLinkService: any;
     let mockFmpErrorService: any;
+    const futureDate = '2028-08-08T00:00:00Z';
 
     beforeEach(() => {
         mockEmailLinkService = {
@@ -60,7 +61,7 @@ describe('ConfirmMaintainerComponent', () => {
             mntner: 'maintainer',
             email: 'a@b.c',
             username: 'user',
-            expiredDate: 20280808,
+            expiredDate: futureDate,
             currentUserAlreadyAssociated: false,
         };
         mockEmailLinkService.get.mockReturnValue(of(response));
@@ -130,7 +131,7 @@ describe('ConfirmMaintainerComponent', () => {
         const response = {
             mntner: 'maintainer',
             email: 'a@b.c',
-            expiredDate: '2114-08-20T02:35:51+02:00',
+            expiredDate: futureDate,
             username: 'user',
         };
         mockEmailLinkService.get.mockReturnValue(of(response));
@@ -157,7 +158,7 @@ describe('ConfirmMaintainerComponent', () => {
             mntner: 'maintainer',
             email: 'a@b.c',
             username: 'user',
-            expiredDate: 20280808,
+            expiredDate: futureDate,
             currentUserAlreadyManagesMntner: true,
         };
         mockEmailLinkService.get.mockReturnValue(of(response));
@@ -195,7 +196,7 @@ describe('ConfirmMaintainerComponent', () => {
             mntner: 'maintainer',
             email: 'a@b.c',
             username: 'user',
-            expiredDate: 20280808,
+            expiredDate: futureDate,
             currentUserAlreadyManagesMntner: true,
         };
         mockEmailLinkService.get.mockReturnValue(of(response));
@@ -204,7 +205,7 @@ describe('ConfirmMaintainerComponent', () => {
                 mntner: 'maintainer',
                 email: 'a@b.c',
                 username: 'user',
-                expiredDate: 20280808,
+                expiredDate: futureDate,
             },
         };
         mockEmailLinkService.update.mockReturnValue(of(responsePut));
@@ -226,7 +227,7 @@ describe('ConfirmMaintainerComponent', () => {
             mntner: 'maintainer',
             email: 'a@b.c',
             username: 'user',
-            expiredDate: 20280808,
+            expiredDate: futureDate,
             currentUserAlreadyManagesMntner: true,
         };
         mockEmailLinkService.get.mockReturnValue(of(response));
@@ -252,7 +253,7 @@ describe('ConfirmMaintainerComponent', () => {
             mntner: 'maintainer',
             email: 'a@b.c',
             username: 'user',
-            expiredDate: 20280808,
+            expiredDate: futureDate,
             currentUserAlreadyManagesMntner: true,
         };
         mockEmailLinkService.get.mockReturnValue(of(response));

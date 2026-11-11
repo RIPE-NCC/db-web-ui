@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment';
+import { isBefore, parseISO } from 'date-fns';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { EmailLinkService } from './email-link.services';
 import { FmpErrorService } from './fmp-error.service';
@@ -21,7 +21,7 @@ export class ConfirmMaintainerComponent implements OnInit {
     fmpErrorService = inject(FmpErrorService);
 
     public key: string = '';
-    public email: any;
+    public email: string;
     public user: any;
     public hashOk: boolean = false;
     public localHash: any;
@@ -43,7 +43,7 @@ export class ConfirmMaintainerComponent implements OnInit {
                 this.email = link.email;
                 this.user = link.username;
 
-                if (!link.hasOwnProperty('expiredDate') || moment.utc(link.expiredDate, moment.ISO_8601).isBefore(moment.utc())) {
+                if (!Object.hasOwn(link, 'expiredDate') || isBefore(parseISO(link.expiredDate), new Date())) {
                     this.alertsService.addGlobalWarning('Your link has expired');
                     return;
                 }
