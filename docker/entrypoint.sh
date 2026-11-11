@@ -41,4 +41,4 @@ else
 fi
 
 
-java $JAVA_OPTS -jar /app/db-web-ui.jar
+exec java $JAVA_OPTS -jar /app/db-web-ui.jar

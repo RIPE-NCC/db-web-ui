@@ -1,5 +1,6 @@
 services:
     db-web-ui:
+        container_name: db-web-ui
         build:
             context: ../
             dockerfile: ${PWD}/docker/Dockerfile

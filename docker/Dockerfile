@@ -50,6 +50,10 @@ USER app
 RUN wget -q https://github.com/prometheus/jmx_exporter/releases/download/1.5.0/jmx_prometheus_javaagent-1.5.0.jar \
     -O /app/jmx_prometheus_javaagent.jar
 
+# Download JMXTerm
+RUN wget -q -O /app/jmxterm-uber.jar \
+    https://repo1.maven.org/maven2/org/cyclopsgroup/jmxterm/1.0.4/jmxterm-1.0.4-uber.jar
+
 COPY --from=build --chown=app:app /src/backend/target/db-web-ui-1.0.0-SNAPSHOT.jar /app/db-web-ui.jar
 COPY --from=build --chown=app:app /src/docker/entrypoint.sh /src/docker/jmx_config.yml /app/
 

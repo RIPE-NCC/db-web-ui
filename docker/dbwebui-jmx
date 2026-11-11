@@ -1,0 +1,27 @@
+#!/bin/bash
+# dbwebui-jmx (host-side wrapper)
+#
+# Runs jmxterm inside the db-web-ui container, attached to the JVM (PID 1).
+#   dbwebui-jmx                      interactive shell
+#   dbwebui-jmx "beans"              single command
+#   echo "domains" | dbwebui-jmx     piped commands
+
+CONTAINER_NAME="${DBWEBUI_CONTAINER:-db-web-ui}"
+
+if ! docker ps --filter "name=^${CONTAINER_NAME}$" --filter "status=running" -q | grep -q .; then
+    echo "Container ${CONTAINER_NAME} is not running" >&2
+    exit 1
+fi
+
+COMMAND=(java --add-exports jdk.jconsole/sun.tools.jconsole=ALL-UNNAMED -jar /app/jmxterm-uber.jar --url 1)
+
+if [ -t 0 ] && [[ $# -eq 0 ]]; then
+    # Interactive mode: stdin is a TTY and no arguments
+    docker exec -it "${CONTAINER_NAME}" "${COMMAND[@]}"
+elif [[ $# -gt 0 ]]; then
+    # Arguments provided: run single command
+    echo -e "$*" | docker exec -i "${CONTAINER_NAME}" "${COMMAND[@]}" -n -v silent
+else
+    # Piped input: read from stdin
+    docker exec -i "${CONTAINER_NAME}" "${COMMAND[@]}" -n -v silent
+fi
