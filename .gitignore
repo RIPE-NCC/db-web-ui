@@ -28,7 +28,7 @@ frontend/tscommand-*.tmp.txt
 frontend/test/cypress/videos
 frontend/test/cypress/screenshots
 # frontend coverage
-frontend/lcov.info
+frontend/coverage
 reports
 
 # profiling files

@@ -1,12 +1,12 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { throwError } from 'rxjs';
-import { LoadingIndicatorComponent } from '../../../src/app/shared/loadingindicator/loading-indicator.component';
-import { UnsubscribeConfirmComponent } from '../../../src/app/unsubscribe-confirm/unsubscribe-confirm.component';
-import { UnsubscribeService } from '../../../src/app/unsubscribe/unsubscribe.service';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
+import { LoadingIndicatorComponent } from 'src/app/shared/loadingindicator/loading-indicator.component';
+import { UnsubscribeConfirmComponent } from 'src/app/unsubscribe-confirm/unsubscribe-confirm.component';
+import { UnsubscribeService } from 'src/app/unsubscribe/unsubscribe.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('UnsubscribeConfirmationComponent', () => {
     const url = 'api/whois-internal/public/unsubscribe?messageId=123456789012345678';
@@ -16,18 +16,18 @@ describe('UnsubscribeConfirmationComponent', () => {
     let httpMock: HttpTestingController;
     let service: UnsubscribeService;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({
             imports: [UnsubscribeConfirmComponent, LoadingIndicatorComponent],
             providers: [
                 UnsubscribeService,
-                { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (messageId: string) => '123456789012345678' } } } },
+                { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (_messageId: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: throwError(() => 401) } },
                 provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(UnsubscribeConfirmComponent);

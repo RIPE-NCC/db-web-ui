@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
+import type { MockedObject } from 'vitest';
 
 import { NodeHealthStatus } from 'src/app/myresources/health-check-card/node-health.model';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
@@ -12,8 +13,8 @@ describe('Tree', () => {
     let component: Tree;
     let fixture: ComponentFixture<Tree>;
 
-    let mockMoreSpecificsService: jasmine.SpyObj<MoreSpecificsService>;
-    let mockNodeHealthService: jasmine.SpyObj<NodeHealthService>;
+    let mockMoreSpecificsService: MockedObject<MoreSpecificsService>;
+    let mockNodeHealthService: MockedObject<NodeHealthService>;
 
     const createResource = (overrides: Partial<IResourceScreenItem> = {}): IResourceScreenItem =>
         ({
@@ -44,9 +45,14 @@ describe('Tree', () => {
         } as IMoreSpecificResource);
 
     beforeEach(async () => {
-        mockMoreSpecificsService = jasmine.createSpyObj('MoreSpecificsService', ['getSpecifics']);
+        mockMoreSpecificsService = {
+            getSpecifics: vi.fn().mockName('MoreSpecificsService.getSpecifics'),
+        } as any;
 
-        mockNodeHealthService = jasmine.createSpyObj('NodeHealthService', ['registerNodes', 'healthCheck']);
+        mockNodeHealthService = {
+            registerNodes: vi.fn().mockName('NodeHealthService.registerNodes'),
+            healthCheck: vi.fn().mockName('NodeHealthService.healthCheck'),
+        } as any;
 
         await TestBed.configureTestingModule({
             imports: [Tree],
@@ -77,7 +83,7 @@ describe('Tree', () => {
                 blockSize: 1,
             };
 
-            expect(component.isExpandable('ALLOCATED PA', usage)).toBeTrue();
+            expect(component.isExpandable('ALLOCATED PA', usage)).toBe(true);
         });
 
         it('should return false when resource is not allocated', () => {
@@ -87,7 +93,7 @@ describe('Tree', () => {
                 blockSize: 1,
             };
 
-            expect(component.isExpandable('ASSIGNED PA', usage)).toBeFalse();
+            expect(component.isExpandable('ASSIGNED PA', usage)).toBe(false);
         });
 
         it('should return false when no resources are used', () => {
@@ -97,7 +103,7 @@ describe('Tree', () => {
                 blockSize: 1,
             };
 
-            expect(component.isExpandable('ALLOCATED PA', usage)).toBeFalse();
+            expect(component.isExpandable('ALLOCATED PA', usage)).toBe(false);
         });
     });
 
@@ -115,7 +121,7 @@ describe('Tree', () => {
             expect(node.type).toBe(ObjectTypesEnum.INETNUM);
             expect(node.netname).toBe('EXAMPLE');
             expect(node.level).toBe(2);
-            expect(node.expandable).toBeTrue();
+            expect(node.expandable).toBe(true);
             expect(node.parentResource).toBeUndefined();
             expect(node.children).toBeUndefined();
             expect(node.healthStatus()).toBe(NodeHealthStatus.NOT_CHECKED);
@@ -197,7 +203,7 @@ describe('Tree', () => {
 
             const nodes = component.dataSource();
 
-            expect(nodes[0].expandable).toBeTrue();
+            expect(nodes[0].expandable).toBe(true);
         });
 
         it('should create non-expandable node when resource has no used addresses', () => {
@@ -217,7 +223,7 @@ describe('Tree', () => {
 
             const nodes = component.dataSource();
 
-            expect(nodes[0].expandable).toBeFalse();
+            expect(nodes[0].expandable).toBe(false);
         });
 
         it('should initialize data source and start health checks', () => {
@@ -254,7 +260,7 @@ describe('Tree', () => {
 
             component.onNodeExpanded(node, false);
 
-            expect(node.showAllChildren).toBeFalse();
+            expect(node.showAllChildren).toBe(false);
             expect(node.children).toEqual(node.allChildren);
         });
 
@@ -267,7 +273,7 @@ describe('Tree', () => {
                 filteredSize: 3,
             };
 
-            mockMoreSpecificsService.getSpecifics.and.returnValue(of(response));
+            mockMoreSpecificsService.getSpecifics.mockReturnValue(of(response));
 
             component.onNodeExpanded(node, true);
 
@@ -283,7 +289,7 @@ describe('Tree', () => {
 
             const children = [createMoreSpecificResource(1), createMoreSpecificResource(2)];
 
-            mockMoreSpecificsService.getSpecifics.and.returnValue(of({ resources: children, totalNumberOfResources: 3, filteredSize: 3 }));
+            mockMoreSpecificsService.getSpecifics.mockReturnValue(of({ resources: children, totalNumberOfResources: 3, filteredSize: 3 }));
 
             component.onNodeExpanded(node, true);
 
@@ -305,7 +311,7 @@ describe('Tree', () => {
         it('should not initialize children when the response has no resources', () => {
             const node = component.createNode(createResource(), 0, true);
 
-            mockMoreSpecificsService.getSpecifics.and.returnValue(
+            mockMoreSpecificsService.getSpecifics.mockReturnValue(
                 of({
                     resources: undefined,
                     totalNumberOfResources: 0,
@@ -331,9 +337,9 @@ describe('Tree', () => {
             parent.children = component['getVisibleChildren'](parent);
 
             expect(parent.children.length).toBe(10);
-            expect(parent.children.some((child) => child.isShowMore)).toBeFalse();
+            expect(parent.children.some((child) => child.isShowMore)).toBe(false);
 
-            expect(component.showScalabilityBanner).toBeFalse();
+            expect(component.showScalabilityBanner).toBe(false);
         });
 
         it('should show first 10 children and show more node when there are more than 10', () => {
@@ -348,11 +354,11 @@ describe('Tree', () => {
 
             const showMoreNode = parent.children[10];
 
-            expect(showMoreNode.isShowMore).toBeTrue();
+            expect(showMoreNode.isShowMore).toBe(true);
             expect(showMoreNode.remaining).toBe(2);
             expect(showMoreNode.showMoreParent).toBe(parent);
 
-            expect(component.showScalabilityBanner).toBeTrue();
+            expect(component.showScalabilityBanner).toBe(true);
         });
 
         it('should show all children when show more node is clicked', () => {
@@ -373,7 +379,7 @@ describe('Tree', () => {
 
             component.showMore(showMoreNode);
 
-            expect(parent.showAllChildren).toBeTrue();
+            expect(parent.showAllChildren).toBe(true);
             expect(parent.children).toEqual(parent.allChildren);
             expect(component.dataSource()).toContain(parent);
         });
@@ -395,7 +401,7 @@ describe('Tree', () => {
         it('should select node and emit it', () => {
             const node = component.createNode(createResource(), 0, false);
 
-            spyOn(component.nodeSelected, 'emit');
+            vi.spyOn(component.nodeSelected, 'emit').mockReturnValue(undefined);
 
             component.selectNode(node);
 
@@ -424,7 +430,7 @@ describe('Tree', () => {
         it('should return true from hasChild for expandable regular node', () => {
             const node = component.createNode(createResource(), 0, true);
 
-            expect(component.hasChild(0, node)).toBeTrue();
+            expect(component.hasChild(0, node)).toBe(true);
         });
 
         it('should return false from hasChild for show more node', () => {
@@ -433,7 +439,7 @@ describe('Tree', () => {
                 expandable: true,
             } as TreeNode;
 
-            expect(component.hasChild(0, node)).toBeFalse();
+            expect(component.hasChild(0, node)).toBe(false);
         });
 
         it('should identify show more node', () => {
@@ -441,7 +447,7 @@ describe('Tree', () => {
                 isShowMore: true,
             } as TreeNode;
 
-            expect(component.isShowMore(0, node)).toBeTrue();
+            expect(component.isShowMore(0, node)).toBe(true);
         });
     });
 });

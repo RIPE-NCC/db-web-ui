@@ -2,6 +2,7 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subject, throwError } from 'rxjs';
+import type { MockedObject } from 'vitest';
 
 import {
     AssociatedObjectsService,
@@ -24,12 +25,12 @@ describe('NodePreviewComponent', () => {
     let fixture: ComponentFixture<NodePreviewComponent>;
 
     let mockActivatedRoute: ActivatedRoute;
-    let mockRouter: jasmine.SpyObj<Router>;
-    let mockPropertiesService: jasmine.SpyObj<PropertiesService>;
-    let mockResourcesDataService: jasmine.SpyObj<ResourcesDataService>;
-    let mockAssociatedObjectService: jasmine.SpyObj<AssociatedObjectsService>;
-    let mockNodeHealthService: jasmine.SpyObj<NodeHealthService>;
-    let mockRpkiValidatorService: jasmine.SpyObj<RpkiValidatorService>;
+    let mockRouter: MockedObject<Router>;
+    let mockPropertiesService: MockedObject<PropertiesService>;
+    let mockResourcesDataService: MockedObject<ResourcesDataService>;
+    let mockAssociatedObjectService: MockedObject<AssociatedObjectsService>;
+    let mockNodeHealthService: MockedObject<NodeHealthService>;
+    let mockRpkiValidatorService: MockedObject<RpkiValidatorService>;
 
     const createNode = (overrides: Partial<TreeNode> = {}): TreeNode =>
         ({
@@ -87,20 +88,32 @@ describe('NodePreviewComponent', () => {
             snapshot: {} as ActivatedRoute['snapshot'],
         } as ActivatedRoute;
 
-        mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']);
-        mockPropertiesService = jasmine.createSpyObj('PropertiesService', [], { SOURCE: 'RIPE' });
+        mockRouter = {
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        } as any;
+        mockPropertiesService = {
+            SOURCE: 'RIPE',
+        } as any;
 
-        mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', ['checkAnnouncements']);
-        mockResourcesDataService.checkAnnouncements.and.returnValue(of([]));
+        mockResourcesDataService = {
+            checkAnnouncements: vi.fn().mockName('ResourcesDataService.checkAnnouncements'),
+        } as any;
+        mockResourcesDataService.checkAnnouncements.mockReturnValue(of([]));
 
-        mockAssociatedObjectService = jasmine.createSpyObj('AssociatedObjectsService', ['getAssociatedObjects']);
-        mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(emptyAssociatedObjects));
+        mockAssociatedObjectService = {
+            getAssociatedObjects: vi.fn().mockName('AssociatedObjectsService.getAssociatedObjects'),
+        } as any;
+        mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(of(emptyAssociatedObjects));
 
-        mockNodeHealthService = jasmine.createSpyObj('NodeHealthService', ['checkRouteAnnouncementStatus']);
-        mockNodeHealthService.checkRouteAnnouncementStatus.and.returnValue(of('Announced'));
+        mockNodeHealthService = {
+            checkRouteAnnouncementStatus: vi.fn().mockName('NodeHealthService.checkRouteAnnouncementStatus'),
+        } as any;
+        mockNodeHealthService.checkRouteAnnouncementStatus.mockReturnValue(of('Announced'));
 
-        mockRpkiValidatorService = jasmine.createSpyObj('RpkiValidatorService', ['getRoas']);
-        mockRpkiValidatorService.getRoas.and.returnValue(of([]));
+        mockRpkiValidatorService = {
+            getRoas: vi.fn().mockName('RpkiValidatorService.getRoas'),
+        } as any;
+        mockRpkiValidatorService.getRoas.mockReturnValue(of([]));
 
         await TestBed.configureTestingModule({
             imports: [NodePreviewComponent],
@@ -165,19 +178,19 @@ describe('NodePreviewComponent', () => {
 
         it('should set checking state while checking', () => {
             const response$ = new Subject<IAssociatedObjectApiResult>();
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(response$);
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(response$);
 
             component.checkIfAssociatedRouteObjects(createNode());
 
-            expect(component.checkingDatabaseObjects()).toBeTrue();
+            expect(component.checkingDatabaseObjects()).toBe(true);
             response$.next({ ...mockRouteObject, associatedObjects: [] });
             response$.complete();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
 
         it('should set route objects with announcement status when response is not empty', () => {
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(mockRouteObject));
-            mockNodeHealthService.checkRouteAnnouncementStatus.and.returnValue(of('Announced'));
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(of(mockRouteObject));
+            mockNodeHealthService.checkRouteAnnouncementStatus.mockReturnValue(of('Announced'));
 
             component.checkIfAssociatedRouteObjects(createNode());
 
@@ -195,24 +208,24 @@ describe('NodePreviewComponent', () => {
                     announcementStatus: 'Announced',
                 },
             ]);
-            expect(component.associatedRouteObjectsCheckFailed()).toBeFalse();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.associatedRouteObjectsCheckFailed()).toBe(false);
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
 
         it('should set an empty array when there are no route objects', () => {
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(emptyAssociatedObjects));
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(of(emptyAssociatedObjects));
 
             component.checkIfAssociatedRouteObjects(createNode());
 
             expect(component.associatedRouteObjects()).toEqual([]);
-            expect(component.associatedRouteObjectsCheckFailed()).toBeFalse();
+            expect(component.associatedRouteObjectsCheckFailed()).toBe(false);
             expect(mockNodeHealthService.checkRouteAnnouncementStatus).not.toHaveBeenCalled();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
 
         it('should mark an individual route as check failed when its announcement check fails', () => {
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(mockRouteObject));
-            mockNodeHealthService.checkRouteAnnouncementStatus.and.returnValue(throwError(() => new Error('Request failed')));
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(of(mockRouteObject));
+            mockNodeHealthService.checkRouteAnnouncementStatus.mockReturnValue(throwError(() => new Error('Request failed')));
 
             component.checkIfAssociatedRouteObjects(createNode());
 
@@ -222,16 +235,16 @@ describe('NodePreviewComponent', () => {
                     announcementStatus: 'check failed',
                 },
             ]);
-            expect(component.associatedRouteObjectsCheckFailed()).toBeFalse();
+            expect(component.associatedRouteObjectsCheckFailed()).toBe(false);
         });
 
         it('should set check failed when retrieving route objects fails', () => {
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(throwError(() => new Error('Request failed')));
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(throwError(() => new Error('Request failed')));
 
             component.checkIfAssociatedRouteObjects(createNode());
 
-            expect(component.associatedRouteObjectsCheckFailed()).toBeTrue();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.associatedRouteObjectsCheckFailed()).toBe(true);
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
     });
 
@@ -252,18 +265,18 @@ describe('NodePreviewComponent', () => {
 
         it('should set checking state while checking', () => {
             const response$ = new Subject<IAssociatedObjectApiResult>();
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(response$);
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(response$);
 
             component.checkIfAssociatedDomainObjects(createNode());
 
-            expect(component.checkingDatabaseObjects()).toBeTrue();
+            expect(component.checkingDatabaseObjects()).toBe(true);
             response$.next(mockDomainObjects);
             response$.complete();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
 
         it('should set domain objects when response is not empty', () => {
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(mockDomainObjects));
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(of(mockDomainObjects));
 
             component.checkIfAssociatedDomainObjects(createNode());
 
@@ -275,27 +288,27 @@ describe('NodePreviewComponent', () => {
                 '',
             );
             expect(component.associatedDomainObjects()).toBe(mockDomainObjects.associatedObjects as IAssociatedDomainObject[]);
-            expect(component.associatedDomainObjectsCheckFailed()).toBeFalse();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.associatedDomainObjectsCheckFailed()).toBe(false);
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
 
         it('should set an empty array when there are no domain objects', () => {
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(of(emptyAssociatedObjects));
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(of(emptyAssociatedObjects));
 
             component.checkIfAssociatedDomainObjects(createNode());
 
             expect(component.associatedDomainObjects()).toEqual([]);
-            expect(component.associatedDomainObjectsCheckFailed()).toBeFalse();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.associatedDomainObjectsCheckFailed()).toBe(false);
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
 
         it('should set check failed when retrieving domain objects fails', () => {
-            mockAssociatedObjectService.getAssociatedObjects.and.returnValue(throwError(() => new Error('Request failed')));
+            mockAssociatedObjectService.getAssociatedObjects.mockReturnValue(throwError(() => new Error('Request failed')));
 
             component.checkIfAssociatedDomainObjects(createNode());
 
-            expect(component.associatedDomainObjectsCheckFailed()).toBeTrue();
-            expect(component.checkingDatabaseObjects()).toBeFalse();
+            expect(component.associatedDomainObjectsCheckFailed()).toBe(true);
+            expect(component.checkingDatabaseObjects()).toBe(false);
         });
     });
 
@@ -306,7 +319,7 @@ describe('NodePreviewComponent', () => {
                 { prefix: '192.0.2.0/24', origin: '23456', peers: 11 },
                 { prefix: '192.0.2.0/24', origin: '12345', peers: 11 },
             ] as Announcement[];
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of(announcements));
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of(announcements));
 
             component.checkOriginAsns(createNode());
 
@@ -316,19 +329,19 @@ describe('NodePreviewComponent', () => {
 
     describe('checkIfHaveRoas', () => {
         it('should set Present when ROAs exist', () => {
-            mockRpkiValidatorService.getRoas.and.returnValue(of(['192.168.0.0/24AS12345']));
+            mockRpkiValidatorService.getRoas.mockReturnValue(of(['192.168.0.0/24AS12345']));
             component.checkIfHaveRoas(createNode());
             expect(component.hasRoas()).toBe('Present');
         });
 
         it('should set a dash when no ROAs exist', () => {
-            mockRpkiValidatorService.getRoas.and.returnValue(of([]));
+            mockRpkiValidatorService.getRoas.mockReturnValue(of([]));
             component.checkIfHaveRoas(createNode());
             expect(component.hasRoas()).toBe('—');
         });
 
         it('should set check failed when the ROA request fails', () => {
-            mockRpkiValidatorService.getRoas.and.returnValue(throwError(() => new Error('Request failed')));
+            mockRpkiValidatorService.getRoas.mockReturnValue(throwError(() => new Error('Request failed')));
             component.checkIfHaveRoas(createNode());
             expect(component.hasRoas()).toBe('check failed');
         });
@@ -336,9 +349,9 @@ describe('NodePreviewComponent', () => {
 
     describe('effect', () => {
         it('should check services when node type matches tab type', () => {
-            mockAssociatedObjectService.getAssociatedObjects.calls.reset();
-            mockRpkiValidatorService.getRoas.calls.reset();
-            mockResourcesDataService.checkAnnouncements.calls.reset();
+            mockAssociatedObjectService.getAssociatedObjects.mockClear();
+            mockRpkiValidatorService.getRoas.mockClear();
+            mockResourcesDataService.checkAnnouncements.mockClear();
 
             fixture.componentRef.setInput('node', createNode());
             fixture.componentRef.setInput('tabType', ObjectTypesEnum.INETNUM);
@@ -363,9 +376,9 @@ describe('NodePreviewComponent', () => {
         });
 
         it('should not check services when node type does not match tab type', () => {
-            mockAssociatedObjectService.getAssociatedObjects.calls.reset();
-            mockRpkiValidatorService.getRoas.calls.reset();
-            mockResourcesDataService.checkAnnouncements.calls.reset();
+            mockAssociatedObjectService.getAssociatedObjects.mockClear();
+            mockRpkiValidatorService.getRoas.mockClear();
+            mockResourcesDataService.checkAnnouncements.mockClear();
 
             fixture.componentRef.setInput('node', createNode());
             fixture.componentRef.setInput('tabType', ObjectTypesEnum.INET6NUM);

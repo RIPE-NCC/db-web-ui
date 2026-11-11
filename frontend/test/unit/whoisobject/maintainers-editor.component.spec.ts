@@ -7,16 +7,16 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EMPTY, of, throwError } from 'rxjs';
-import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
-import { AttributeSharedService } from '../../../src/app/attribute/attribute-shared.service';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
-import { WebUpdatesCommonsService } from '../../../src/app/updatesweb/web-updates-commons.service';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
-import { MaintainersEditorComponent } from '../../../src/app/whois-object/maintainers-editor.component';
+import { AttributeMetadataService } from 'src/app/attribute/attribute-metadata.service';
+import { AttributeSharedService } from 'src/app/attribute/attribute-shared.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { WebUpdatesCommonsService } from 'src/app/updatesweb/web-updates-commons.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
+import { MaintainersEditorComponent } from 'src/app/whois-object/maintainers-editor.component';
 import { defaultMntsMock } from '../updates/mntner.service.spec';
 
 describe('MaintainersEditorComponent', () => {
@@ -29,7 +29,9 @@ describe('MaintainersEditorComponent', () => {
         const BACKSPACE_KEY = 'Backspace';
 
         beforeEach(() => {
-            modalMock = jasmine.createSpyObj('NgbModal', ['open']);
+            modalMock = {
+                open: vi.fn().mockName('NgbModal.open'),
+            };
             TestBed.configureTestingModule({
                 imports: [NgSelectModule, MaintainersEditorComponent],
                 providers: [
@@ -64,9 +66,9 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should display non-sso error after add non-sso maintainer - create case.', async () => {
-            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
-            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
-            spyOn(component, 'onMntnerRemoved');
+            modalMock.open.mockReturnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
+            vi.spyOn(component.restService, 'fetchMntnersForSSOAccount').mockReturnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
+            vi.spyOn(component, 'onMntnerRemoved').mockReturnValue(undefined);
             fixture.detectChanges();
             await fixture.whenStable();
             // simulate manual removal of the last and only mntner
@@ -83,7 +85,7 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should add a null when removing the last maintainer.', async () => {
-            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
+            vi.spyOn(component.restService, 'fetchMntnersForSSOAccount').mockReturnValue(of(USER_WITH_ONE_SSO_ASSOCIATED_MNT_MOCK));
             fixture.detectChanges();
             expect(component.mntners.object.length).toEqual(1);
             expect(component.mntners.object[0].key).toEqual('TEST-MNT');
@@ -94,8 +96,8 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should add the selected maintainers to the object emit update-mntners-clbk', async () => {
-            spyOn(component.updateMntnersClbk, 'emit');
-            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(false);
+            vi.spyOn(component.updateMntnersClbk, 'emit').mockReturnValue(undefined);
+            vi.spyOn(component.mntnerService, 'needsAuthentication').mockReturnValue(false);
             fixture.detectChanges();
             expect(component.mntners.object.length).toEqual(0);
             component.onMntnerAdded({ mine: false, type: 'mntner', auth: ['SSO'], key: 'TEST-MNT-1' });
@@ -106,8 +108,8 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should remove just added mnt in case authentication was canceled', async () => {
-            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of('cancel') });
-            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(true);
+            modalMock.open.mockReturnValue({ componentInstance: {}, closed: EMPTY, dismissed: of('cancel') });
+            vi.spyOn(component.mntnerService, 'needsAuthentication').mockReturnValue(true);
             component.ngOnInit();
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
             expect(component.attributes.length).toEqual(10);
@@ -116,8 +118,8 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should not remove just added mnt in case authentication was success', async () => {
-            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
-            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(true);
+            modalMock.open.mockReturnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
+            vi.spyOn(component.mntnerService, 'needsAuthentication').mockReturnValue(true);
             component.ngOnInit();
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(MNTNERS_SSO_ACCOUNT_RESPONS);
             expect(component.attributes.length).toEqual(10);
@@ -126,8 +128,8 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should remove the selected maintainers from the object emit update-mntners-clbk', async () => {
-            spyOn(component.updateMntnersClbk, 'emit');
-            spyOn(component.mntnerService, 'needsAuthentication').and.returnValue(false);
+            vi.spyOn(component.updateMntnersClbk, 'emit').mockReturnValue(undefined);
+            vi.spyOn(component.mntnerService, 'needsAuthentication').mockReturnValue(false);
             fixture.detectChanges();
             httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
                 {
@@ -148,8 +150,8 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should remove mnt-by on backspace one by one', async () => {
-            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_WITH_MORE_ASSOCIATED_MNT_MOCK));
-            spyOn(component, 'onMntnerRemoved').and.callThrough();
+            vi.spyOn(component.restService, 'fetchMntnersForSSOAccount').mockReturnValue(of(USER_WITH_MORE_ASSOCIATED_MNT_MOCK));
+            vi.spyOn(component, 'onMntnerRemoved');
             fixture.detectChanges();
             await fixture.whenStable();
             expect(component.attributes.length).toBe(12);
@@ -168,7 +170,7 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should populate mntner data', async () => {
-            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(MNTNERS_SSO_ACCOUNT_RESPONS));
+            vi.spyOn(component.restService, 'fetchMntnersForSSOAccount').mockReturnValue(of(MNTNERS_SSO_ACCOUNT_RESPONS));
             fixture.detectChanges();
             await fixture.whenStable();
             expect(component.mntners.sso.length).toBe(2);
@@ -199,10 +201,10 @@ describe('MaintainersEditorComponent', () => {
                 organisationName: 'TEST LIR',
                 regId: 'test.regid',
             };
-            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(MNTNERS_SSO_ACCOUNT_RESPONS));
-            spyOn(component.mntnerService, 'getDefaultMaintainers').and.returnValue(of(defaultMntsMock));
+            vi.spyOn(component.restService, 'fetchMntnersForSSOAccount').mockReturnValue(of(MNTNERS_SSO_ACCOUNT_RESPONS));
+            vi.spyOn(component.mntnerService, 'getDefaultMaintainers').mockReturnValue(of(defaultMntsMock));
             //@ts-ignore
-            spyOn(component.orgDropDownSharedService, 'getSelectedOrg').and.returnValue(selectedOrg);
+            vi.spyOn(component.orgDropDownSharedService, 'getSelectedOrg').mockReturnValue(selectedOrg);
             fixture.detectChanges();
             await fixture.whenStable();
             expect(component.mntners.sso.length).toBe(2);
@@ -227,7 +229,7 @@ describe('MaintainersEditorComponent', () => {
         });
 
         it('should report error when fetching sso maintainers fails', () => {
-            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(throwError(() => ({ data: 'error' })));
+            vi.spyOn(component.restService, 'fetchMntnersForSSOAccount').mockReturnValue(throwError(() => ({ data: 'error' })));
             fixture.detectChanges();
             expect(component.alertsService.alerts.errors.length > 0).toBeTruthy();
             expect(component.alertsService.alerts.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
@@ -242,8 +244,12 @@ describe('MaintainersEditorComponent', () => {
         let webUpdatesCommonsServiceMock: any;
 
         beforeEach(() => {
-            modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-            webUpdatesCommonsServiceMock = jasmine.createSpyObj('WebUpdatesCommonsService', ['performAuthentication']);
+            modalMock = {
+                open: vi.fn().mockName('NgbModal.open'),
+            };
+            webUpdatesCommonsServiceMock = {
+                performAuthentication: vi.fn().mockName('WebUpdatesCommonsService.performAuthentication'),
+            };
             TestBed.configureTestingModule({
                 imports: [NgSelectModule, MaintainersEditorComponent],
                 providers: [

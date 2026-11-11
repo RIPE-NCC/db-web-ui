@@ -5,42 +5,23 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY } from 'rxjs';
-import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { ForceDeleteComponent } from '../../../../src/app/updatesweb/forcedelete/force-delete.component';
-import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { WebUpdatesCommonsService } from '../../../../src/app/updatesweb/web-updates-commons.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { ForceDeleteComponent } from 'src/app/updatesweb/forcedelete/force-delete.component';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { WebUpdatesCommonsService } from 'src/app/updatesweb/web-updates-commons.service';
 
 let paramMapMock: ParamMap;
 let queryParamMock: ParamMap;
 
 const createParams = (source: string, objectType: string, objectName: string) => {
-    const paramMapGetSpy = spyOn(paramMapMock, 'get');
-    const paramMapHasSpy = spyOn(paramMapMock, 'has');
-
-    if (source) {
-        paramMapHasSpy.withArgs('source').and.returnValue(true);
-        paramMapGetSpy.withArgs('source').and.returnValue(source);
-    } else {
-        paramMapHasSpy.withArgs('source').and.returnValue(false);
-        paramMapGetSpy.withArgs('source').and.returnValue(undefined);
-    }
-    if (objectType) {
-        paramMapHasSpy.withArgs('objectType').and.returnValue(true);
-        paramMapGetSpy.withArgs('objectType').and.returnValue(objectType);
-    } else {
-        paramMapHasSpy.withArgs('objectType').and.returnValue(false);
-    }
-    if (objectName) {
-        paramMapHasSpy.withArgs('objectName').and.returnValue(true);
-        paramMapGetSpy.withArgs('objectName').and.returnValue(objectName);
-    } else {
-        paramMapHasSpy.withArgs('objectName').and.returnValue(false);
-    }
+    const params = { source, objectType, objectName };
+    vi.spyOn(paramMapMock, 'get').mockImplementation((name: string) => params[name] || undefined);
+    vi.spyOn(paramMapMock, 'has').mockImplementation((name: string) => !!params[name]);
 };
 
 describe('ForceDeleteController', () => {
@@ -62,8 +43,14 @@ describe('ForceDeleteController', () => {
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
 
         TestBed.configureTestingModule({
             imports: [FormsModule, ForceDeleteComponent],
@@ -230,10 +217,18 @@ describe('ForceDeleteController should be able to handle escape objected with sl
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
         TestBed.configureTestingModule({
             imports: [FormsModule, ForceDeleteComponent],
             providers: [

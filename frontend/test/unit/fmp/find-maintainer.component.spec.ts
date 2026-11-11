@@ -2,11 +2,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { FindMaintainerComponent } from '../../../src/app/fmp/find-maintainer.component';
-import { FindMaintainerService } from '../../../src/app/fmp/find-maintainer.service';
-import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
+import { FindMaintainerComponent } from 'src/app/fmp/find-maintainer.component';
+import { FindMaintainerService } from 'src/app/fmp/find-maintainer.service';
+import { FmpErrorService } from 'src/app/fmp/fmp-error.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('FindMaintainerComponent', () => {
     let component: FindMaintainerComponent;
@@ -16,9 +16,16 @@ describe('FindMaintainerComponent', () => {
     let mockFmpErrorService: any;
 
     beforeEach(() => {
-        findMaintainerService = jasmine.createSpyObj('FindMaintainerService', ['search', 'sendMail']);
-        userInfoService = jasmine.createSpyObj('UserInfoService', ['getUserOrgsAndRoles']);
-        mockFmpErrorService = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
+        findMaintainerService = {
+            search: vi.fn().mockName('FindMaintainerService.search'),
+            sendMail: vi.fn().mockName('FindMaintainerService.sendMail'),
+        };
+        userInfoService = {
+            getUserOrgsAndRoles: vi.fn().mockName('UserInfoService.getUserOrgsAndRoles'),
+        };
+        mockFmpErrorService = {
+            isYourAccountBlockedError: vi.fn().mockName('FmpErrorService.isYourAccountBlockedError'),
+        };
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FindMaintainerComponent],
             providers: [
@@ -27,7 +34,7 @@ describe('FindMaintainerComponent', () => {
                 { provide: Router, useValue: { navigate: () => {} } },
                 PropertiesService,
                 { provide: FmpErrorService, useValue: mockFmpErrorService },
-                { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (username: string) => 'ana' } } } },
+                { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (_username: string) => 'ana' } } } },
             ],
         });
     });
@@ -39,7 +46,7 @@ describe('FindMaintainerComponent', () => {
 
     describe('Testing logged in user', () => {
         beforeEach(() => {
-            userInfoService.getUserOrgsAndRoles.and.returnValue(of(200));
+            userInfoService.getUserOrgsAndRoles.mockReturnValue(of(200));
         });
 
         it('should prefill maintainer name', () => {
@@ -69,7 +76,7 @@ describe('FindMaintainerComponent', () => {
                 email: 'TSTADMINC-RIPE',
                 mntnerFound: true,
             };
-            findMaintainerService.search.and.returnValue(of(response));
+            findMaintainerService.search.mockReturnValue(of(response));
             fixture.detectChanges();
 
             component.selectMaintainer(maintainerKey);
@@ -107,7 +114,7 @@ describe('FindMaintainerComponent', () => {
                 email: 'first@ripe.net',
                 mntnerFound: true,
             };
-            findMaintainerService.search.and.returnValue(of(response));
+            findMaintainerService.search.mockReturnValue(of(response));
             fixture.detectChanges();
 
             component.selectMaintainer(maintainerKey);
@@ -146,7 +153,7 @@ describe('FindMaintainerComponent', () => {
                 mntnerFound: true,
                 expired: false,
             };
-            findMaintainerService.search.and.returnValue(of(response));
+            findMaintainerService.search.mockReturnValue(of(response));
             fixture.detectChanges();
 
             component.selectMaintainer(maintainerKey);
@@ -163,7 +170,7 @@ describe('FindMaintainerComponent', () => {
 
         it('should not set a maintainer on not found', () => {
             const maintainerKey = 'I-AM-NO-MNT';
-            findMaintainerService.search.and.returnValue(throwError(() => 'The maintainer could not be found.'));
+            findMaintainerService.search.mockReturnValue(throwError(() => 'The maintainer could not be found.'));
             fixture.detectChanges();
             component.selectMaintainer(maintainerKey);
 
@@ -175,7 +182,7 @@ describe('FindMaintainerComponent', () => {
 
         it('should not set a maintainer Error fetching maintainer', () => {
             const maintainerKey = 'I-AM-NO-MNT';
-            findMaintainerService.search.and.returnValue(throwError(() => 'Error fetching maintainer.'));
+            findMaintainerService.search.mockReturnValue(throwError(() => 'Error fetching maintainer.'));
             fixture.detectChanges();
             component.selectMaintainer(maintainerKey);
 
@@ -188,8 +195,8 @@ describe('FindMaintainerComponent', () => {
 
         it('should go to legacy when error validating email', () => {
             const maintainerKey = 'I-AM-NO-MNT';
-            findMaintainerService.search.and.returnValue(throwError(() => 'switchToManualResetProcess'));
-            spyOn(component.router, 'navigate');
+            findMaintainerService.search.mockReturnValue(throwError(() => 'switchToManualResetProcess'));
+            vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
             component.selectMaintainer(maintainerKey);
             fixture.detectChanges();
 
@@ -207,8 +214,8 @@ describe('FindMaintainerComponent', () => {
                 mntner: 'WORLD',
                 email: 'a@b.c',
             };
-            findMaintainerService.sendMail.and.returnValue(of(response));
-            spyOn(component.router, 'navigate');
+            findMaintainerService.sendMail.mockReturnValue(of(response));
+            vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
             component.foundMaintainer = { email: 'a@b.c', maintainerKey: 'I-AM-MNT' };
             component.validateEmail();
             fixture.detectChanges();
@@ -218,8 +225,8 @@ describe('FindMaintainerComponent', () => {
         });
 
         it('should report error validating mail', () => {
-            findMaintainerService.sendMail.and.returnValue(throwError(() => 500));
-            spyOn(component.router, 'navigate');
+            findMaintainerService.sendMail.mockReturnValue(throwError(() => 500));
+            vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
             component.foundMaintainer = { email: 'a@b.c', maintainerKey: 'I-AM-MNT' };
             component.validateEmail();
             fixture.detectChanges();
@@ -233,8 +240,8 @@ describe('FindMaintainerComponent', () => {
         });
 
         it('should report error validating mail', () => {
-            findMaintainerService.sendMail.and.returnValue(throwError(() => 404));
-            spyOn(component.router, 'navigate');
+            findMaintainerService.sendMail.mockReturnValue(throwError(() => 404));
+            vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
             component.foundMaintainer = { email: 'a@b.c', maintainerKey: 'I-AM-MNT' };
             component.validateEmail();
             fixture.detectChanges();
@@ -247,7 +254,7 @@ describe('FindMaintainerComponent', () => {
         });
 
         it('should return unathorized for validate email', () => {
-            findMaintainerService.sendMail.and.returnValue(throwError(() => ({ status: 401, data: 'Unauthorized' })));
+            findMaintainerService.sendMail.mockReturnValue(throwError(() => ({ status: 401, data: 'Unauthorized' })));
             component.foundMaintainer = { email: 'a@b.c', maintainerKey: 'I-AM-MNT' };
             component.validateEmail();
             fixture.detectChanges();
@@ -256,7 +263,7 @@ describe('FindMaintainerComponent', () => {
         });
 
         it('should call history back on cancel Window', () => {
-            spyOn(window.history, 'back');
+            vi.spyOn(window.history, 'back').mockReturnValue(undefined);
             component.cancel();
             fixture.detectChanges();
             expect(window.history.back).toHaveBeenCalled();
@@ -264,7 +271,7 @@ describe('FindMaintainerComponent', () => {
 
         it('should switchToManualResetProcess', () => {
             const maintainerKey = 'I-AM-MNT';
-            spyOn(component.router, 'navigate');
+            vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
             component.foundMaintainer = { maintainerKey: maintainerKey };
             component.switchToManualResetProcess(maintainerKey);
             fixture.detectChanges();
@@ -277,8 +284,8 @@ describe('FindMaintainerComponent', () => {
 
     describe('Testing Not logged in user', () => {
         beforeEach(async () => {
-            userInfoService.getUserOrgsAndRoles.and.returnValue(throwError(() => 403));
-            spyOn(component.router, 'navigate');
+            userInfoService.getUserOrgsAndRoles.mockReturnValue(throwError(() => 403));
+            vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
             component.ngOnInit();
             await fixture.whenStable();
         });

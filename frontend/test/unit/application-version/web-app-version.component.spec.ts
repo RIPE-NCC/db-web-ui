@@ -1,17 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { WebAppVersionComponent } from '../../../src/app/application-version/web-app-version.component';
-import { PropertiesService } from '../../../src/app/properties.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { WebAppVersionComponent } from 'src/app/application-version/web-app-version.component';
+import { PropertiesService } from 'src/app/properties.service';
 
 describe('WebAppVersionComponent', () => {
     let component: WebAppVersionComponent;
     let fixture: ComponentFixture<WebAppVersionComponent>;
 
-    beforeEach(waitForAsync(() => {
-        TestBed.configureTestingModule({
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
             imports: [WebAppVersionComponent],
             providers: [{ provide: PropertiesService, useValue: { DB_WEB_UI_BUILD_TIME: '2020-01-22T18:22:13Z', isTrainingEnv: () => {} } }],
         }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(WebAppVersionComponent);

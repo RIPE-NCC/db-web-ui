@@ -43,38 +43,38 @@ describe('TypesPanelComponent', () => {
     });
 
     it('should emit numberSelected on ngOnChanges()', () => {
-        spyOn(component.numberSelected, 'emit');
+        vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
         component.ngOnChanges();
         expect(component.numberSelected.emit).toHaveBeenCalledWith(3); // AUT_NUM, PERSON, DOMAIN = 3
     });
 
     it('should emit correct count from countSelectedCheboxes()', () => {
-        spyOn(component.numberSelected, 'emit');
+        vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
         component.countSelectedCheboxes();
         expect(component.numberSelected.emit).toHaveBeenCalledWith(3);
     });
 
     it('should return false (enabled) if type is available', () => {
-        spyOn(QueryParametersService, 'inverseAsList').and.returnValue([]);
+        vi.spyOn(QueryParametersService, 'inverseAsList').mockReturnValue([]);
         const disabled = component.isDisabled(ObjectTypesEnum.AUT_NUM);
-        expect(disabled).toBeFalse();
+        expect(disabled).toBe(false);
     });
 
     it('should return true (disabled) and uncheck value if type not in availableTypes', () => {
-        spyOn(QueryParametersService, 'inverseAsList').and.returnValue([]);
+        vi.spyOn(QueryParametersService, 'inverseAsList').mockReturnValue([]);
 
-        const spy = spyOn<any>(component, 'uncheckDisabledCheckbox').and.callThrough();
+        const spy = vi.spyOn(component as any, 'uncheckDisabledCheckbox');
         const disabled = component.isDisabled(ObjectTypesEnum.DOMAIN);
 
-        expect(disabled).toBeTrue();
+        expect(disabled).toBe(true);
         expect(spy).toHaveBeenCalledWith(ObjectTypesEnum.DOMAIN);
-        expect(component.queryParameters.types.DOMAIN).toBeFalse();
+        expect(component.queryParameters.types.DOMAIN).toBe(false);
     });
 
     it('should not disable anything if inverse lookup has values', () => {
-        spyOn(QueryParametersService, 'inverseAsList').and.returnValue(['something']);
+        vi.spyOn(QueryParametersService, 'inverseAsList').mockReturnValue(['something']);
 
         const disabled = component.isDisabled(ObjectTypesEnum.DOMAIN);
-        expect(disabled).toBeFalse();
+        expect(disabled).toBe(false);
     });
 });

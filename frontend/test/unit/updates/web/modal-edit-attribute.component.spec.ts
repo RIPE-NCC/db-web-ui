@@ -3,8 +3,8 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { ModalEditAttributeComponent } from '../../../../src/app/updatesweb/modal-edit-attribute.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { ModalEditAttributeComponent } from 'src/app/updatesweb/modal-edit-attribute.component';
 
 describe('ModalEditAttributeController', () => {
     let httpMock: HttpTestingController;
@@ -14,7 +14,10 @@ describe('ModalEditAttributeController', () => {
     let modalMock: any;
 
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
+        modalMock = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        };
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalEditAttributeComponent],
             providers: [
@@ -36,7 +39,7 @@ describe('ModalEditAttributeController', () => {
     afterEach(() => httpMock.verify());
 
     it('should close the modal and open new tab with legal address details page', () => {
-        spyOn(window, 'open');
+        vi.spyOn(window, 'open').mockReturnValue(undefined);
         modalEditAttributeComponent.attr = { name: 'address' };
         componentFixture.detectChanges();
 
@@ -51,7 +54,7 @@ describe('ModalEditAttributeController', () => {
     });
 
     it('should close the modal and open new tab with legal organisation details page', () => {
-        spyOn(window, 'open');
+        vi.spyOn(window, 'open').mockReturnValue(undefined);
         modalEditAttributeComponent.attr = { name: 'org-name' };
         componentFixture.detectChanges();
 
@@ -66,7 +69,7 @@ describe('ModalEditAttributeController', () => {
     });
 
     it('should close the modal and open new tab with account details page for editing phone', () => {
-        spyOn(window, 'open');
+        vi.spyOn(window, 'open').mockReturnValue(undefined);
         modalEditAttributeComponent.attr = { name: 'phone' };
         componentFixture.detectChanges();
 
@@ -77,7 +80,7 @@ describe('ModalEditAttributeController', () => {
     });
 
     it('should close the modal and open new tab with account details page for editing fax-no', () => {
-        spyOn(window, 'open');
+        vi.spyOn(window, 'open').mockReturnValue(undefined);
         modalEditAttributeComponent.attr = { name: 'fax-no' };
         componentFixture.detectChanges();
 
@@ -88,7 +91,7 @@ describe('ModalEditAttributeController', () => {
     });
 
     it('should close the modal and open new tab with account details page for editing email', () => {
-        spyOn(window, 'open');
+        vi.spyOn(window, 'open').mockReturnValue(undefined);
         modalEditAttributeComponent.attr = { name: 'e-mail' };
         componentFixture.detectChanges();
 

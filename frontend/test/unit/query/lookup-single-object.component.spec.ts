@@ -5,20 +5,23 @@ import { convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CookieService } from 'ngx-cookie-service';
 import { of, throwError } from 'rxjs';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { LookupSingleObjectComponent } from '../../../src/app/query/lookup-single-object.component';
-import { LookupComponent } from '../../../src/app/query/lookup.component';
-import { LookupService } from '../../../src/app/query/lookup.service';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
-import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { LookupSingleObjectComponent } from 'src/app/query/lookup-single-object.component';
+import { LookupComponent } from 'src/app/query/lookup.component';
+import { LookupService } from 'src/app/query/lookup.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
+import { WhoisObjectViewerComponent } from 'src/app/whois-object/whois-object-viewer.component';
+import type { MockedObject } from 'vitest';
 
 describe('LookupSingleObjectComponent', () => {
     let component: LookupSingleObjectComponent;
     let fixture: ComponentFixture<LookupSingleObjectComponent>;
-    let lookupServiceSpy: jasmine.SpyObj<LookupService>;
+    let lookupServiceSpy: MockedObject<LookupService>;
 
     beforeEach(() => {
-        lookupServiceSpy = jasmine.createSpyObj('LookupService', ['lookupWhoisObject']);
+        lookupServiceSpy = {
+            lookupWhoisObject: vi.fn().mockName('LookupService.lookupWhoisObject'),
+        } as any;
         TestBed.configureTestingModule({
             imports: [RouterTestingModule, LookupSingleObjectComponent, LookupComponent, WhoisObjectViewerComponent],
             providers: [
@@ -35,7 +38,7 @@ describe('LookupSingleObjectComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(LookupSingleObjectComponent);
         component = fixture.componentInstance;
-        spyOn(component.router, 'navigate');
+        vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
     });
 
     it('should create', () => {
@@ -44,10 +47,10 @@ describe('LookupSingleObjectComponent', () => {
 
     describe('should shows an object', () => {
         it('but not when the params are empty', async () => {
-            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError(() => "That just won't do."));
+            lookupServiceSpy.lookupWhoisObject.mockReturnValue(throwError(() => "That just won't do."));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => component.activatedRoute.snapshot.queryParamMap[param],
-                has: (hash: string) => true,
+                has: (_hash: string) => true,
             });
             fixture.detectChanges();
             await fixture.whenStable();
@@ -55,13 +58,13 @@ describe('LookupSingleObjectComponent', () => {
         });
 
         it('but not when the response is empty', async () => {
-            lookupServiceSpy.lookupWhoisObject.and.returnValue(of(mockResponse));
+            lookupServiceSpy.lookupWhoisObject.mockReturnValue(of(mockResponse));
             component.activatedRoute.queryParams = of({
                 source: 'useTheSource',
                 type: 'thetype',
                 key: 'thekey',
                 get: (param: string) => component.activatedRoute.snapshot.queryParamMap[param],
-                has: (hash: string) => true,
+                has: (_hash: string) => true,
             });
             fixture.detectChanges();
             await fixture.whenStable();
@@ -70,7 +73,7 @@ describe('LookupSingleObjectComponent', () => {
 
         it('but not when there is more than one result', async () => {
             //@ts-ignore
-            lookupServiceSpy.lookupWhoisObject.and.returnValue(of(mockResponse.wakefield));
+            lookupServiceSpy.lookupWhoisObject.mockReturnValue(of(mockResponse.wakefield));
             // @ts-ignore
             component.activatedRoute.snapshot = {
                 queryParamMap: convertToParamMap({
@@ -78,7 +81,7 @@ describe('LookupSingleObjectComponent', () => {
                     type: 'thetype',
                     key: 'thekey',
                     get: (param: string) => component.activatedRoute.snapshot.queryParamMap[param],
-                    has: (hash: string) => true,
+                    has: (_hash: string) => true,
                 }),
             };
             fixture.detectChanges();
@@ -87,10 +90,10 @@ describe('LookupSingleObjectComponent', () => {
         });
 
         it('with RIPE source even if specifed is NONAUTH, because object actualy exist in RIPE source', async () => {
-            lookupServiceSpy.lookupWhoisObject.and.returnValue(throwError(() => mockErrorNonauth));
+            lookupServiceSpy.lookupWhoisObject.mockReturnValue(throwError(() => mockErrorNonauth));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => component.activatedRoute.snapshot.queryParamMap[param],
-                has: (hash: string) => true,
+                has: (_hash: string) => true,
             });
             fixture.detectChanges();
             await fixture.whenStable();

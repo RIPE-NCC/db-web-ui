@@ -2,7 +2,7 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { AttributeInfoComponent } from '../../../../src/app/shared/descriptionsyntax/attr-info.component';
+import { AttributeInfoComponent } from 'src/app/shared/descriptionsyntax/attr-info.component';
 
 describe('AttributeInfoComponent', () => {
     let component: AttributeInfoComponent;

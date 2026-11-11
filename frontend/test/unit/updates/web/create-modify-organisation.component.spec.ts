@@ -7,25 +7,25 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { EMPTY, of } from 'rxjs';
-import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
-import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
-import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
-import { ResourceStatusService } from '../../../../src/app/myresources/resource-status.service';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { CharsetToolsService } from '../../../../src/app/updatesweb/charset-tools.service';
-import { CreateModifyComponent } from '../../../../src/app/updatesweb/create-modify.component';
-import { EnumService } from '../../../../src/app/updatesweb/enum.service';
-import { ErrorReporterService } from '../../../../src/app/updatesweb/error-reporter.service';
-import { LinkService } from '../../../../src/app/updatesweb/link.service';
-import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
-import { OrganisationHelperService } from '../../../../src/app/updatesweb/organisation-helper.service';
-import { PreferenceService } from '../../../../src/app/updatesweb/preference.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { ScreenLogicInterceptorService } from '../../../../src/app/updatesweb/screen-logic-interceptor.service';
-import { WebUpdatesCommonsService } from '../../../../src/app/updatesweb/web-updates-commons.service';
+import { AttributeMetadataService } from 'src/app/attribute/attribute-metadata.service';
+import { AttributeSharedService } from 'src/app/attribute/attribute-shared.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { ResourceStatusService } from 'src/app/myresources/resource-status.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { CharsetToolsService } from 'src/app/updatesweb/charset-tools.service';
+import { CreateModifyComponent } from 'src/app/updatesweb/create-modify.component';
+import { EnumService } from 'src/app/updatesweb/enum.service';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { LinkService } from 'src/app/updatesweb/link.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { OrganisationHelperService } from 'src/app/updatesweb/organisation-helper.service';
+import { PreferenceService } from 'src/app/updatesweb/preference.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { ScreenLogicInterceptorService } from 'src/app/updatesweb/screen-logic-interceptor.service';
+import { WebUpdatesCommonsService } from 'src/app/updatesweb/web-updates-commons.service';
 
 describe('CreateModifyComponent for organisation', () => {
     let httpMock: HttpTestingController;
@@ -37,9 +37,14 @@ describe('CreateModifyComponent for organisation', () => {
     const NAME = 'ORG-TEST70-RIPE';
 
     beforeEach(async () => {
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ) });
-        const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(ROLE_OBJ) });
+        const routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
         TestBed.configureTestingModule({
             imports: [NgSelectModule, CreateModifyComponent],
             providers: [
@@ -98,7 +103,7 @@ describe('CreateModifyComponent for organisation', () => {
 
     it("should populate abuse-c with new role's nic-hdl", async () => {
         component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
         const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
@@ -107,7 +112,7 @@ describe('CreateModifyComponent for organisation', () => {
 
     it('should populate component.roleForAbuseC', async () => {
         component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
         const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
@@ -124,7 +129,7 @@ describe('CreateModifyComponent for organisation', () => {
             component.whoisMetaService.enrichAttributesWithMetaInfo(component.objectType, component.attributes),
         );
         await fixture.whenStable();
-        spyOn(component.organisationHelperService, 'updateAbuseC');
+        vi.spyOn(component.organisationHelperService, 'updateAbuseC').mockReturnValue(undefined);
         component.submit();
         httpMock.expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-TEST70-RIPE' }).flush(DEFAULT_RESPONSE);
         // fixture.detectChanges();
@@ -146,7 +151,7 @@ describe('CreateModifyComponent for organisation', () => {
             .expectOne({ method: 'PUT', url: 'api/whois/RIPE/organisation/ORG-TEST70-RIPE' })
             .flush(ERROR_RESPONSE, { status: 400, statusText: 'Bad request' });
         await fixture.whenStable();
-        expect(component.alertsService.alerts.errors).toHaveSize(1);
+        expect(component.alertsService.alerts.errors).toHaveLength(1);
         expect(component.alertsService.alerts.errors[0].plainText).toEqual('Update of organisation failed, please see below for more details');
     });
 

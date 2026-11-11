@@ -2,9 +2,10 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "./out-tsc/spec",
-        "types": ["jasmine", "node"]
+        "typeRoots": ["../../node_modules/@types", "../../node_modules"],
+        "types": ["vitest/globals", "node"]
     },
-    "files": ["./test.ts", "../../src/polyfills.ts"],
+    "files": ["./test-setup.ts", "../../src/polyfills.ts"],
     "include": ["./**/*.spec.ts", "../../src/**/*.d.ts"],
     "exclude": ["../cypress/**"],
     "angularCompilerOptions": {

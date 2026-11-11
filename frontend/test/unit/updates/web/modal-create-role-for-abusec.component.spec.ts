@@ -5,14 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
-import { ModalCreateRoleForAbuseCComponent } from '../../../../src/app/updatesweb/modal-create-role-for-abusec.component';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import SpyObj = jasmine.SpyObj;
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { ModalCreateRoleForAbuseCComponent } from 'src/app/updatesweb/modal-create-role-for-abusec.component';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import type { MockedObject } from 'vitest';
+type SpyObj<T> = MockedObject<T>;
 
 describe('ModalCreateRoleForAbuseCComponent', () => {
     const source = 'RIPE';
@@ -29,15 +30,25 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
     let propertiesSpy: SpyObj<PropertiesService>;
 
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
-        const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
-        propertiesSpy = jasmine.createSpyObj('PropertiesService', ['isEnableNonAuthUpdates', 'isProdEnv'], {
+        modalMock = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        };
+        const routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        restServiceMock = {
+            createObject: vi.fn().mockName('RestService.createObject'),
+        };
+        propertiesSpy = {
+            isEnableNonAuthUpdates: vi.fn().mockName('PropertiesService.isEnableNonAuthUpdates'),
+            isProdEnv: vi.fn().mockName('PropertiesService.isProdEnv'),
             ENV: 'prod',
             isAnyNccMntner: (mntnerKey: string) => {
                 return ['RIPE-NCC-HM-MNT'].includes(mntnerKey);
             },
-        });
+        } as any;
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalCreateRoleForAbuseCComponent],
             providers: [
@@ -67,19 +78,14 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
         httpMock.verify();
     });
 
-    const spyOnProperty = (propertyName: string) => {
-        // @ts-ignore
-        return Object.getOwnPropertyDescriptor(propertiesSpy, propertyName).get.and;
-    };
-
     it('should create role with abuse-mailbox and close', () => {
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {} }));
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {} }));
 
         modalCreateRoleForAbuseCComponent.email = 'm@ripe.net';
         modalCreateRoleForAbuseCComponent.create();
 
-        expect(restServiceMock.createObject.calls.mostRecent().args[2].objects.object[0].attributes.attribute).toContain(
-            jasmine.objectContaining({
+        expect(vi.mocked(restServiceMock.createObject).mock.lastCall[2].objects.object[0].attributes.attribute).toContainEqual(
+            expect.objectContaining({
                 name: 'abuse-mailbox',
                 value: 'm@ripe.net',
             }),
@@ -88,15 +94,15 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
     });
 
     it('should remove mnt-by: RIPE-NCC-HM-MNT from creating role', () => {
-        propertiesSpy.isProdEnv.and.returnValue(true);
-        spyOnProperty('ENV').returnValue('prod');
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {} }));
+        propertiesSpy.isProdEnv.mockReturnValue(true);
+        propertiesSpy.ENV = 'prod';
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {} }));
 
         modalCreateRoleForAbuseCComponent.email = 'm@ripe.net';
         modalCreateRoleForAbuseCComponent.create();
 
-        expect(restServiceMock.createObject.calls.mostRecent().args[2].objects.object[0].attributes.attribute).not.toContain(
-            jasmine.objectContaining({
+        expect(vi.mocked(restServiceMock.createObject).mock.lastCall[2].objects.object[0].attributes.attribute).not.toContainEqual(
+            expect.objectContaining({
                 name: 'mnt-by',
                 value: 'RIPE-NCC-HM-MNT',
             }),
@@ -105,17 +111,17 @@ describe('ModalCreateRoleForAbuseCComponent', () => {
     });
 
     it('should not remove mnt-by: RIPE-NCC-HM-MNT from creating role on not PROD environment', () => {
-        propertiesSpy.isProdEnv.and.returnValue(false);
-        spyOnProperty('ENV').returnValue('test');
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {} }));
+        propertiesSpy.isProdEnv.mockReturnValue(false);
+        propertiesSpy.ENV = 'test';
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {} }));
 
         componentFixture.detectChanges();
 
         modalCreateRoleForAbuseCComponent.email = 'm@ripe.net';
         modalCreateRoleForAbuseCComponent.create();
 
-        expect(restServiceMock.createObject.calls.mostRecent().args[2].objects.object[0].attributes.attribute).toContain(
-            jasmine.objectContaining({
+        expect(vi.mocked(restServiceMock.createObject).mock.lastCall[2].objects.object[0].attributes.attribute).toContainEqual(
+            expect.objectContaining({
                 name: 'mnt-by',
                 value: 'RIPE-NCC-HM-MNT',
             }),

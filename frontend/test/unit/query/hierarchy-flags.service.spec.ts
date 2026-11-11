@@ -1,4 +1,4 @@
-import { HierarchyFlagsService } from '../../../src/app/query/hierarchy-flags.service';
+import { HierarchyFlagsService } from 'src/app/query/hierarchy-flags.service';
 
 describe('HierarchyFlagsService', () => {
     it('should convert short flag to long', () => {

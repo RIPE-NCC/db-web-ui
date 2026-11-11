@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
+import { BannerComponent } from 'src/app/banner/banner.component';
 import { MainContainerComponent } from 'src/app/main-container/main-container.component';
-import { BannerComponent } from '../../../src/app/banner/banner.component';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { LabelPipe } from '../../../src/app/shared/label.pipe';
-import { ReleaseNotificationService } from '../../../src/app/shared/release-notification.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { LabelPipe } from 'src/app/shared/label.pipe';
+import { ReleaseNotificationService } from 'src/app/shared/release-notification.service';
 
 describe('MainContainerComponent', () => {
     let component: MainContainerComponent;
@@ -17,9 +17,14 @@ describe('MainContainerComponent', () => {
     let routerMock: any;
     let releaseNotificationService: ReleaseNotificationService;
 
-    beforeEach(waitForAsync(() => {
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        releaseNotificationService = jasmine.createSpyObj('ReleaseNotificationService', ['startPolling']);
+    beforeEach(async () => {
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        releaseNotificationService = {
+            startPolling: vi.fn().mockName('ReleaseNotificationService.startPolling'),
+        } as any;
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [CommonModule, RouterModule, BannerComponent, LabelPipe],
@@ -58,7 +63,7 @@ describe('MainContainerComponent', () => {
                 provideHttpClientTesting(),
             ],
         });
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(MainContainerComponent);

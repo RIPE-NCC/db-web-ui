@@ -3,8 +3,8 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
 
 describe('RestService', () => {
     let httpMock: HttpTestingController;

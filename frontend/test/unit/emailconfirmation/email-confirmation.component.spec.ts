@@ -1,12 +1,12 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { EmailConfirmationComponent } from '../../../src/app/emailconfirmation/email-confirmation.component';
-import { EmailConfirmationService } from '../../../src/app/emailconfirmation/email-confirmation.service';
-import { LoadingIndicatorComponent } from '../../../src/app/shared/loadingindicator/loading-indicator.component';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
+import { EmailConfirmationComponent } from 'src/app/emailconfirmation/email-confirmation.component';
+import { EmailConfirmationService } from 'src/app/emailconfirmation/email-confirmation.service';
+import { LoadingIndicatorComponent } from 'src/app/shared/loadingindicator/loading-indicator.component';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('Testing EmailConfirmation with logged in user', () => {
     const url = 'api/whois-internal/api/abuse-validation/validate-token?token=123456789012345678';
@@ -16,18 +16,18 @@ describe('Testing EmailConfirmation with logged in user', () => {
     let httpMock: HttpTestingController;
     let service: EmailConfirmationService;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({
             imports: [EmailConfirmationComponent, LoadingIndicatorComponent],
             providers: [
                 EmailConfirmationService,
-                { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
+                { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (_t: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: of(200) } },
                 provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(EmailConfirmationComponent);
@@ -67,18 +67,18 @@ describe('Testing EmailConfirmation with not logged in user', () => {
     let httpMock: HttpTestingController;
     let service: EmailConfirmationService;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({
             imports: [EmailConfirmationComponent, LoadingIndicatorComponent],
             providers: [
                 EmailConfirmationService,
-                { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (t: string) => '123456789012345678' } } } },
+                { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (_t: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: throwError(() => 401) } },
                 provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(EmailConfirmationComponent);

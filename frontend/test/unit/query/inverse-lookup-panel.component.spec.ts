@@ -6,8 +6,8 @@ import { InverseAttrsEnum } from 'src/app/query/inverse-attrs.enum';
 import { InverseLookupPanelComponent } from 'src/app/query/inverse-lookup-panel.component';
 import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 import { IQueryParameters } from 'src/app/query/query-parameters.service';
+import { TypeOfSearchTermEnum } from 'src/app/query/type-of-search-term.enum';
 import { LabelPipe } from 'src/app/shared/label.pipe';
-import { TypeOfSearchTermEnum } from '../../../src/app/query/type-of-search-term.enum';
 
 describe('InverseLookupPanelComponent', () => {
     let component: InverseLookupPanelComponent;
@@ -21,7 +21,7 @@ describe('InverseLookupPanelComponent', () => {
         fixture = TestBed.createComponent(InverseLookupPanelComponent);
         component = fixture.componentInstance;
 
-        spyOn(PropertiesService, 'isMobileView').and.returnValue(false);
+        vi.spyOn(PropertiesService, 'isMobileView').mockReturnValue(false);
 
         component.queryParameters = {
             inverse: {
@@ -43,12 +43,12 @@ describe('InverseLookupPanelComponent', () => {
 
     it('should initialize mapInverseLookupAttributesWithTypes on ngOnInit', () => {
         component.ngOnInit();
-        expect(component.mapInverseLookupAttributesWithTypes instanceof Map).toBeTrue();
-        expect(component.mapInverseLookupAttributesWithTypes.has(InverseAttrsEnum.ABUSE_C)).toBeTrue();
+        expect(component.mapInverseLookupAttributesWithTypes instanceof Map).toBe(true);
+        expect(component.mapInverseLookupAttributesWithTypes.has(InverseAttrsEnum.ABUSE_C)).toBe(true);
     });
 
     it('should emit number of selected checkboxes', () => {
-        const spy = spyOn(component.numberSelected, 'emit');
+        const spy = vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
         component.queryParameters.inverse = {
             ABUSE_C: true,
             ADMIN_C: false,
@@ -59,7 +59,7 @@ describe('InverseLookupPanelComponent', () => {
     });
 
     it('should call countSelectedCheboxes() on ngOnChanges', () => {
-        const spy = spyOn(component, 'countSelectedCheboxes');
+        const spy = vi.spyOn(component, 'countSelectedCheboxes').mockReturnValue(undefined);
         component.ngOnChanges();
         expect(spy).toHaveBeenCalled();
     });
@@ -72,27 +72,27 @@ describe('InverseLookupPanelComponent', () => {
         it('should disable attribute if typeOfSearchedTerm does not match allowed types', () => {
             component.typeOfSearchedTerm = [TypeOfSearchTermEnum.NSERVER];
             const result = component.isDisabled(InverseAttrsEnum.ABUSE_C);
-            expect(result).toBeTrue();
+            expect(result).toBe(true);
         });
 
         it('should not disable if typeOfSearchedTerm matches allowed types', () => {
             component.typeOfSearchedTerm = [TypeOfSearchTermEnum.EMAIL];
             const result = component.isDisabled(InverseAttrsEnum.ABUSE_MAILBOX);
-            expect(result).toBeFalse();
+            expect(result).toBe(false);
         });
 
         it('should disable when availableTypes do not include allowed types and typeOfSearchedTerm empty', () => {
             component.typeOfSearchedTerm = [];
             component.availableTypes = [ObjectTypesEnum.AUT_NUM];
             const result = component.isDisabled(InverseAttrsEnum.ABUSE_C);
-            expect(result).toBeTrue();
+            expect(result).toBe(true);
         });
 
         it('should not disable when all object types available', () => {
             component.typeOfSearchedTerm = [];
             component.availableTypes = Object.values(ObjectTypesEnum);
             const result = component.isDisabled(InverseAttrsEnum.ABUSE_C);
-            expect(result).toBeFalse();
+            expect(result).toBe(false);
         });
     });
 });

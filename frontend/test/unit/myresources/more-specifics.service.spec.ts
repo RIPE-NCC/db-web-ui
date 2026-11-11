@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MoreSpecificsService } from '../../../src/app/myresources/morespecifics/more-specifics.service';
+import { MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
 
 describe('MoreSpecificsService', () => {
     let moreSpecificsService: MoreSpecificsService;
@@ -24,40 +24,36 @@ describe('MoreSpecificsService', () => {
         expect(moreSpecificsService).toBeTruthy();
     });
 
-    it('should reject when objectType is empty', (done) => {
+    it('should reject when objectType is empty', async () => {
         moreSpecificsService.getSpecifics('', '', undefined, '').subscribe({
             next: () => {},
             error: (error: any) => {
                 expect(error).toEqual('objectType is empty. more-specifics not available');
-                done();
             },
         });
     });
 
-    it('should reject when objectType is empty', (done) => {
+    it('should reject when objectType is empty', async () => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', '', undefined, '').subscribe({
             next: () => {},
             error: (error: any) => {
                 expect(error).toEqual('objectType is empty. more-specifics not available');
-                done();
             },
         });
     });
 
-    it('should reject when objectName is empty', (done) => {
+    it('should reject when objectName is empty', async () => {
         moreSpecificsService.getSpecifics('', 'OBJECT_TYPE', undefined, '').subscribe({
             next: () => {},
             error: (error: any) => {
                 expect(error).toEqual('objectName is empty. more-specifics not available');
-                done();
             },
         });
     });
 
-    it('should do proper request without filter', (done) => {
+    it('should do proper request without filter', async () => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', 'OBJECT_TYPE', 0, '').subscribe((res: any) => {
             expect(res).toEqual({ resp: 'lol' });
-            done();
         });
         const req1 = httpMock.expectOne({
             method: 'GET',
@@ -67,10 +63,9 @@ describe('MoreSpecificsService', () => {
         req1.flush({ resp: 'lol' });
     });
 
-    it('should do proper reuqest with filter', (done) => {
+    it('should do proper reuqest with filter', async () => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', 'OBJECT_TYPE', 0, 'FILTER').subscribe((res: any) => {
             expect(res).toEqual({ resp: 'lol' });
-            done();
         });
         const req2 = httpMock.expectOne({
             method: 'GET',
@@ -80,10 +75,9 @@ describe('MoreSpecificsService', () => {
         req2.flush({ resp: 'lol' });
     });
 
-    it('should proper request for page', (done) => {
+    it('should proper request for page', async () => {
         moreSpecificsService.getSpecifics('OBJECT_NAME', 'OBJECT_TYPE', 1, 'FILTER').subscribe((res: any) => {
             expect(res).toEqual({ resp: 'lol' });
-            done();
         });
         const req3 = httpMock.expectOne({
             method: 'GET',

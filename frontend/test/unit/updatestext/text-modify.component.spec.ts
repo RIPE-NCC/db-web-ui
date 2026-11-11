@@ -6,19 +6,19 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY } from 'rxjs';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
-import { RpslService } from '../../../src/app/updatestext/rpsl.service';
-import { TextCommonsService } from '../../../src/app/updatestext/text-commons.service';
-import { TextModifyComponent } from '../../../src/app/updatestext/text-modify.component';
-import { ErrorReporterService } from '../../../src/app/updatesweb/error-reporter.service';
-import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
-import { PreferenceService } from '../../../src/app/updatesweb/preference.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { IMntByModel } from 'src/app/shared/whois-response-type.model';
+import { RpslService } from 'src/app/updatestext/rpsl.service';
+import { TextCommonsService } from 'src/app/updatestext/text-commons.service';
+import { TextModifyComponent } from 'src/app/updatestext/text-modify.component';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { PreferenceService } from 'src/app/updatesweb/preference.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
 import { routeJSON } from './mock-test-data';
 
 describe('TextModifyComponent', () => {
@@ -79,10 +79,20 @@ describe('TextModifyComponent', () => {
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
-        preferencesServiceMock = jasmine.createSpyObj('PreferenceService', ['isTextMode', 'setTextMode', 'isWebMode', 'setWebMode']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
+        preferencesServiceMock = {
+            isTextMode: vi.fn().mockName('PreferenceService.isTextMode'),
+            setTextMode: vi.fn().mockName('PreferenceService.setTextMode'),
+            isWebMode: vi.fn().mockName('PreferenceService.isWebMode'),
+            setWebMode: vi.fn().mockName('PreferenceService.setWebMode'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         TestBed.configureTestingModule({
             imports: [FormsModule, TextModifyComponent],
             providers: [
@@ -123,20 +133,12 @@ describe('TextModifyComponent', () => {
     });
 
     const createParams = (objectType?: string, objectName?: string, noRedirect?: boolean, rpsl?: string) => {
-        const paramMapSpy = spyOn(paramMapMock, 'get');
-        const queryParamHasSpy = spyOn(queryParamMock, 'has');
-        const queryParamGetSpy = spyOn(queryParamMock, 'get');
-
-        paramMapSpy.withArgs('source').and.returnValue(SOURCE);
-        paramMapSpy.withArgs('objectType').and.returnValue(objectType ? objectType : OBJECT_TYPE);
-        paramMapSpy.withArgs('objectName').and.returnValue(objectName ? objectName : OBJECT_NAME);
-        queryParamHasSpy.withArgs('noRedirect').and.returnValue(noRedirect);
-        if (rpsl) {
-            queryParamHasSpy.withArgs('rpsl').and.returnValue(true);
-            queryParamGetSpy.withArgs('rpsl').and.returnValue(rpsl);
-        } else {
-            queryParamHasSpy.withArgs('rpsl').and.returnValue(false);
-        }
+        const params = { source: SOURCE, objectType: objectType ? objectType : OBJECT_TYPE, objectName: objectName ? objectName : OBJECT_NAME };
+        const queryParamsHas = { noRedirect, rpsl: !!rpsl };
+        const queryParamsGet = { rpsl: rpsl || undefined };
+        vi.spyOn(paramMapMock, 'get').mockImplementation((name: string) => params[name]);
+        vi.spyOn(queryParamMock, 'has').mockImplementation((name: string) => queryParamsHas[name]);
+        vi.spyOn(queryParamMock, 'get').mockImplementation((name: string) => queryParamsGet[name]);
     };
 
     it('should get parameters from url', async () => {
@@ -157,7 +159,7 @@ describe('TextModifyComponent', () => {
     });
 
     it('should get rpsl from url-parameter', async () => {
-        preferencesServiceMock.isWebMode.and.returnValue(true);
+        preferencesServiceMock.isWebMode.mockReturnValue(true);
         createParams('inetnum', '1', null, 'inetnum:1inetnum:2\n');
         componentFixture.detectChanges();
         await componentFixture.whenStable();
@@ -167,7 +169,7 @@ describe('TextModifyComponent', () => {
     });
 
     it('should redirect to webupdates when web-preference is set', async () => {
-        preferencesServiceMock.isWebMode.and.returnValue(true);
+        preferencesServiceMock.isWebMode.mockReturnValue(true);
         createParams('person', 'TST08-RIPE', false);
         componentFixture.detectChanges();
         httpMock
@@ -183,7 +185,7 @@ describe('TextModifyComponent', () => {
     });
 
     it('should not redirect to webupdates no-redirect is set', async () => {
-        preferencesServiceMock.isWebMode.and.returnValue(true);
+        preferencesServiceMock.isWebMode.mockReturnValue(true);
         createParams('person', 'TST08-RIPE', true);
         componentFixture.detectChanges();
         httpMock

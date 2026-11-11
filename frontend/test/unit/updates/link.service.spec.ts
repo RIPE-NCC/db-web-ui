@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { LinkService } from '../../../src/app/updatesweb/link.service';
+import { LinkService } from 'src/app/updatesweb/link.service';
 
 describe('LinkService', () => {
     let linkService: LinkService;
@@ -14,8 +14,8 @@ describe('LinkService', () => {
     });
 
     it('should be linkService defined', () => {
-        expect(linkService === undefined).toBeFalse();
-        expect(linkService.getModifyUrl === undefined).toBeFalse();
+        expect(linkService === undefined).toBe(false);
+        expect(linkService.getModifyUrl === undefined).toBe(false);
         expect(typeof linkService.getModifyUrl === 'function').toBeTruthy();
     });
 

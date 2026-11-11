@@ -1,11 +1,11 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
+import { FmpErrorService } from 'src/app/fmp/fmp-error.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
 
 describe('FmpErrorService', () => {
     let alertServiceSpy: AlertsService;
@@ -14,7 +14,9 @@ describe('FmpErrorService', () => {
     const blockedMessage = 'Your RIPE NCC Access account has recently been used for an unusually high number of requests more text here';
 
     beforeEach(() => {
-        alertServiceSpy = jasmine.createSpyObj('AlertsService', ['setGlobalError']);
+        alertServiceSpy = {
+            setGlobalError: vi.fn().mockName('AlertsService.setGlobalError'),
+        } as any;
         TestBed.configureTestingModule({
             imports: [],
             providers: [

@@ -2,15 +2,15 @@ import { Location } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { CharsetToolsService } from '../../../src/app/updatesweb/charset-tools.service';
-import { EnumService } from '../../../src/app/updatesweb/enum.service';
-import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
-import { WhoisObjectEditorComponent } from '../../../src/app/whois-object/whois-object-editor.component';
+import { AttributeMetadataService } from 'src/app/attribute/attribute-metadata.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { CharsetToolsService } from 'src/app/updatesweb/charset-tools.service';
+import { EnumService } from 'src/app/updatesweb/enum.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { WhoisObjectEditorComponent } from 'src/app/whois-object/whois-object-editor.component';
 
 function modifyinetnum() {
     return {

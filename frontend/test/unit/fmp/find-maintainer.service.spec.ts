@@ -1,12 +1,12 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FindMaintainerService } from '../../../src/app/fmp/find-maintainer.service';
-import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
+import { FindMaintainerService } from 'src/app/fmp/find-maintainer.service';
+import { FmpErrorService } from 'src/app/fmp/fmp-error.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
 
 describe('FindMaintainerService', () => {
     let findMaintainerService: FindMaintainerService;
@@ -14,8 +14,10 @@ describe('FindMaintainerService', () => {
     let fmpErrorServiceSpy;
 
     beforeEach(() => {
-        fmpErrorServiceSpy = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
-        fmpErrorServiceSpy.isYourAccountBlockedError.and.returnValue(false);
+        fmpErrorServiceSpy = {
+            isYourAccountBlockedError: vi.fn().mockName('FmpErrorService.isYourAccountBlockedError'),
+        };
+        fmpErrorServiceSpy.isYourAccountBlockedError.mockReturnValue(false);
         TestBed.configureTestingModule({
             imports: [],
             providers: [
@@ -37,7 +39,7 @@ describe('FindMaintainerService', () => {
         httpMock.verify();
     });
 
-    it('should retrieve maintainer data', (done) => {
+    it('should retrieve maintainer data', async () => {
         const maintainerKey = 'I-AM-MNT';
         const response = {
             objects: {
@@ -62,7 +64,6 @@ describe('FindMaintainerService', () => {
             expect(respons.mntnerFound).toBeTruthy();
             expect(respons.selectedMaintainer.name).toBe('world');
             expect(respons.email).toBe('TSTADMINC-RIPE');
-            done();
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
@@ -72,7 +73,7 @@ describe('FindMaintainerService', () => {
         reqValidation.flush(validateResp);
     });
 
-    it('should choose first upd-to address if multiple found', (done) => {
+    it('should choose first upd-to address if multiple found', async () => {
         const maintainerKey = 'I-AM-MNT';
         const response = {
             objects: {
@@ -95,7 +96,6 @@ describe('FindMaintainerService', () => {
             expect(respons.mntnerFound).toBeTruthy();
             expect(respons.selectedMaintainer.name).toBe('world');
             expect(respons.email).toBe('first@ripe.net');
-            done();
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
@@ -105,7 +105,7 @@ describe('FindMaintainerService', () => {
         reqValidation.flush(validateResp);
     });
 
-    it('should validate result expired', (done) => {
+    it('should validate result expired', async () => {
         const maintainerKey = 'I-AM-MNT';
         const response = {
             objects: {
@@ -128,8 +128,7 @@ describe('FindMaintainerService', () => {
             expect(respons.mntnerFound).toBeTruthy();
             expect(respons.selectedMaintainer.name).toBe('world');
             expect(respons.email).toBe('first@ripe.net');
-            expect(respons.expired).toBeFalse();
-            done();
+            expect(respons.expired).toBe(false);
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
         expect(req.request.method).toBe('GET');
@@ -139,15 +138,14 @@ describe('FindMaintainerService', () => {
         reqValidation.flush(validateResp);
     });
 
-    it('should return error maintainer not found', (done) => {
+    it('should return error maintainer not found', async () => {
         const maintainerKey = 'I-AM-MNT';
         const mockErrorResponse = { status: 404, statusText: 'Not Found' };
         const data = 'Invalid request parameters';
         findMaintainerService.search(maintainerKey).subscribe({
-            next: (res: any) => {},
+            next: (_res: any) => {},
             error: (error: any) => {
                 expect(error).toBe('The maintainer could not be found.');
-                done();
             },
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
@@ -155,15 +153,14 @@ describe('FindMaintainerService', () => {
         req.flush(data, mockErrorResponse);
     });
 
-    it('should return error fetching maintainer', (done) => {
+    it('should return error fetching maintainer', async () => {
         const maintainerKey = 'I-AM-MNT';
         const mockErrorResponse = { status: 500, statusText: 'Internal Server Error' };
         const data = 'Invalid request parameters';
         findMaintainerService.search(maintainerKey).subscribe({
-            next: (res: any) => {},
+            next: (_res: any) => {},
             error: (error: any) => {
                 expect(error).toBe('Error fetching maintainer.');
-                done();
             },
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
@@ -171,7 +168,7 @@ describe('FindMaintainerService', () => {
         req.flush(data, mockErrorResponse);
     });
 
-    it('should return error that MNT is synchronized with organisation in LIR Portal', (done) => {
+    it('should return error that MNT is synchronized with organisation in LIR Portal', async () => {
         const maintainerKey = 'SHRYANE-MNT';
         const mockErrorResponse = { status: 403, error: 'SHRYANE-MNT is synchronized with organisation ORG-BAd1-RIPE in LIR Portal.', statusText: 'OK' };
         findMaintainerService.search(maintainerKey).subscribe({
@@ -179,7 +176,6 @@ describe('FindMaintainerService', () => {
             error: (error: any) => {
                 expect(fmpErrorServiceSpy.isYourAccountBlockedError).toHaveBeenCalled();
                 expect(error.error).toBe('SHRYANE-MNT is synchronized with organisation ORG-BAd1-RIPE in LIR Portal.');
-                done();
             },
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/SHRYANE-MNT' });
@@ -187,7 +183,7 @@ describe('FindMaintainerService', () => {
         req.flush(mockErrorResponse, mockErrorResponse);
     });
 
-    it('should return error for validating email', (done) => {
+    it('should return error for validating email', async () => {
         const maintainerKey = 'I-AM-MNT';
         const response = {
             objects: {
@@ -210,10 +206,9 @@ describe('FindMaintainerService', () => {
         const mockErrorResponse = { status: 400, statusText: 'Bad Request' };
         const data = 'Invalid request parameters';
         findMaintainerService.search(maintainerKey).subscribe({
-            next: (res: any) => {},
+            next: (_res: any) => {},
             error: (error: any) => {
                 expect(error).toBe('switchToManualResetProcess');
-                done();
             },
         });
         const req = httpMock.expectOne({ method: 'GET', url: 'api/whois-internal/api/fmp-pub/mntner/I-AM-MNT' });
@@ -243,7 +238,7 @@ describe('FindMaintainerService', () => {
         const mockErrorResponse = { status: 500, statusText: 'Internal Server Error' };
         const data = 'unable to send emaill';
         findMaintainerService.sendMail(maintainerKey).subscribe({
-            next: (res: any) => {},
+            next: (_res: any) => {},
             error: (error: any) => {
                 expect(error.message).toBe(
                     'Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 500 Internal Server Error',
@@ -275,7 +270,7 @@ describe('FindMaintainerService', () => {
         const mockErrorResponse = { status: 401, statusText: 'Unauthorized' };
         const data = 'unable to send email';
         findMaintainerService.sendMail(maintainerKey).subscribe({
-            next: (res: any) => {},
+            next: (_res: any) => {},
             error: (error: any) => {
                 expect(error.message).toBe('Http failure response for api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json: 401 Unauthorized');
             },

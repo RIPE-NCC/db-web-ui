@@ -1,7 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FullTextResultSummaryComponent } from '../../../src/app/fulltextsearch/full-text-result-summary.component';
+import { FullTextResultSummaryComponent } from 'src/app/fulltextsearch/full-text-result-summary.component';
 
 describe('FullTextResultSummaryComponent', () => {
     let component: FullTextResultSummaryComponent;

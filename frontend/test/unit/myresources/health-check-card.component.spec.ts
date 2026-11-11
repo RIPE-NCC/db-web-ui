@@ -4,6 +4,7 @@ import { HealthCheckCardComponent } from 'src/app/myresources/health-check-card/
 import { NodeHealthStatus } from 'src/app/myresources/health-check-card/node-health.model';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
 import { TreeNode } from 'src/app/myresources/tree/tree.component';
+import type { Mock } from 'vitest';
 
 describe('HealthCheckCardComponent', () => {
     let component: HealthCheckCardComponent;
@@ -11,8 +12,8 @@ describe('HealthCheckCardComponent', () => {
 
     let nodeHealthService: {
         nodes: ReturnType<typeof signal>;
-        refresh: jasmine.Spy;
-        refreshAll: jasmine.Spy;
+        refresh: Mock;
+        refreshAll: Mock;
     };
 
     const createNode = (healthStatus: NodeHealthStatus, overrides: Partial<TreeNode> = {}): TreeNode =>
@@ -40,8 +41,8 @@ describe('HealthCheckCardComponent', () => {
     beforeEach(async () => {
         nodeHealthService = {
             nodes: signal({}),
-            refresh: jasmine.createSpy('refresh'),
-            refreshAll: jasmine.createSpy('refreshAll'),
+            refresh: vi.fn().mockName('refresh'),
+            refreshAll: vi.fn().mockName('refreshAll'),
         };
 
         await TestBed.configureTestingModule({

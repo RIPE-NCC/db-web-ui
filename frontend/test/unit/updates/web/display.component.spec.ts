@@ -4,18 +4,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
-import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { IAttributeModel } from '../../../../src/app/shared/whois-response-type.model';
-import { DisplayComponent } from '../../../../src/app/updatesweb/display.component';
-import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { WebUpdatesCommonsService } from '../../../../src/app/updatesweb/web-updates-commons.service';
-import { UserInfoService } from '../../../../src/app/userinfo/user-info.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { IAttributeModel } from 'src/app/shared/whois-response-type.model';
+import { DisplayComponent } from 'src/app/updatesweb/display.component';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { WebUpdatesCommonsService } from 'src/app/updatesweb/web-updates-commons.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('DisplayComponent', () => {
     let httpMock: HttpTestingController;
@@ -31,8 +31,13 @@ describe('DisplayComponent', () => {
     const MNTNER = 'TEST-MNT';
 
     beforeEach(() => {
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        messageStoreServiceMock = {
+            get: vi.fn().mockName('MessageStoreService.get'),
+        };
         TestBed.configureTestingModule({
             imports: [DisplayComponent],
             providers: [
@@ -104,7 +109,7 @@ describe('DisplayComponent', () => {
     });
 
     it('should get source from url', async () => {
-        messageStoreServiceMock.get.and.returnValue(objectToDisplay);
+        messageStoreServiceMock.get.mockReturnValue(objectToDisplay);
         fixture.detectChanges();
 
         expectUserInfo(true);
@@ -112,7 +117,7 @@ describe('DisplayComponent', () => {
     });
 
     it('should get objectType from url', () => {
-        messageStoreServiceMock.get.and.returnValue(objectToDisplay);
+        messageStoreServiceMock.get.mockReturnValue(objectToDisplay);
         fixture.detectChanges();
 
         expectUserInfo(true);
@@ -120,7 +125,7 @@ describe('DisplayComponent', () => {
     });
 
     it('should get objectName from url', () => {
-        messageStoreServiceMock.get.and.returnValue(objectToDisplay);
+        messageStoreServiceMock.get.mockReturnValue(objectToDisplay);
 
         fixture.detectChanges();
 
@@ -129,7 +134,7 @@ describe('DisplayComponent', () => {
     });
 
     it('should detect logged in', async () => {
-        messageStoreServiceMock.get.and.returnValue(objectToDisplay);
+        messageStoreServiceMock.get.mockReturnValue(objectToDisplay);
 
         fixture.detectChanges();
 
@@ -139,7 +144,7 @@ describe('DisplayComponent', () => {
     });
 
     it('should populate the ui from message-store', () => {
-        messageStoreServiceMock.get.and.returnValue(objectToDisplay);
+        messageStoreServiceMock.get.mockReturnValue(objectToDisplay);
         fixture.detectChanges();
 
         expectUserInfo(true);
@@ -229,7 +234,7 @@ describe('DisplayComponent', () => {
             { name: 'mnt-by', value: MNTNER },
             { name: 'source', value: SOURCE },
         ] as IAttributeModel[]);
-        messageStoreServiceMock.get.and.callFake((key: string) => (key === 'DIFF' ? original : modified));
+        messageStoreServiceMock.get.mockImplementation((key: string) => (key === 'DIFF' ? original : modified));
         TestBed.inject(ActivatedRoute).queryParams = of({ method: 'Modify' });
 
         fixture.detectChanges();
@@ -273,7 +278,7 @@ describe('DisplayComponent', () => {
     });
 
     it('should navigate to select screen', () => {
-        messageStoreServiceMock.get.and.returnValue(objectToDisplay);
+        messageStoreServiceMock.get.mockReturnValue(objectToDisplay);
         fixture.detectChanges();
 
         expectUserInfo(true);
@@ -283,7 +288,7 @@ describe('DisplayComponent', () => {
     });
 
     it('should navigate to modify screen', () => {
-        messageStoreServiceMock.get.and.returnValue(objectToDisplay);
+        messageStoreServiceMock.get.mockReturnValue(objectToDisplay);
         fixture.detectChanges();
 
         expectUserInfo(true);
@@ -307,8 +312,13 @@ describe('DisplayComponent with object containing slash', () => {
     const MNTNER = 'TEST-MNT';
 
     beforeEach(() => {
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        messageStoreServiceMock = {
+            get: vi.fn().mockName('MessageStoreService.get'),
+        };
         TestBed.configureTestingModule({
             imports: [DisplayComponent],
             providers: [
@@ -443,8 +453,13 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', () => {
     const ADMINC = 'TSTADMINC-RIPE';
 
     beforeEach(() => {
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        messageStoreServiceMock = {
+            get: vi.fn().mockName('MessageStoreService.get'),
+        };
         TestBed.configureTestingModule({
             imports: [DisplayComponent],
             providers: [

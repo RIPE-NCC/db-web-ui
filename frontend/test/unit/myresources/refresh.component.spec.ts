@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RefreshComponent } from '../../../src/app/myresources/refresh/refresh.component';
+import { RefreshComponent } from 'src/app/myresources/refresh/refresh.component';
 
 describe('RefreshComponent', () => {
     let component: RefreshComponent;

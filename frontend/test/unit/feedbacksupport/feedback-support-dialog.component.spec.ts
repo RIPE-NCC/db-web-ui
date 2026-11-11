@@ -3,17 +3,16 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { FeedbackSupportDialogComponent } from '../../../src/app/feedbacksupport/feedback-support-dialog.component';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
-import createSpy = jasmine.createSpy;
+import { FeedbackSupportDialogComponent } from 'src/app/feedbacksupport/feedback-support-dialog.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('FeedbackSupportDialogComponent', () => {
     let component: FeedbackSupportDialogComponent;
     let fixture: ComponentFixture<FeedbackSupportDialogComponent>;
     let propertiesService: PropertiesService;
     let dialogRef = {
-        close: createSpy(),
+        close: vi.fn(),
     };
 
     beforeEach(() => {
@@ -66,15 +65,15 @@ describe('FeedbackSupportDialogComponent', () => {
         fixture.detectChanges();
 
         const allItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
-        expect(allItems).toHaveSize(2);
+        expect(allItems).toHaveLength(2);
 
-        const windowMock = spyOn(window, 'open');
+        const windowMock = vi.spyOn(window, 'open').mockReturnValue(undefined);
         allItems[0].triggerEventHandler('click', null);
         expect(windowMock).toHaveBeenCalled();
         expect(dialogRef.close).toHaveBeenCalledTimes(1);
 
         const livechat = document.createElement('live-chat');
-        const dispatchMock = spyOn(livechat, 'dispatchEvent');
+        const dispatchMock = vi.spyOn(livechat, 'dispatchEvent').mockReturnValue(undefined);
         document.body.appendChild(livechat);
         allItems[1].triggerEventHandler('click', null);
         expect(dispatchMock).toHaveBeenCalledWith(new Event('live-chat-open'));

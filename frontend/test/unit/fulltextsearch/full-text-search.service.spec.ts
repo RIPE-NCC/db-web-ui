@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FullTextSearchService } from '../../../src/app/fulltextsearch/full-text-search.service';
+import { FullTextSearchService } from 'src/app/fulltextsearch/full-text-search.service';
 
 describe('FullTextSearchService', () => {
     let fullTextSearchService: FullTextSearchService;
@@ -25,7 +25,7 @@ describe('FullTextSearchService', () => {
         httpMock.verify();
     });
 
-    it('should be able to encode query text', (done) => {
+    it('should be able to encode query text', async () => {
         const query = 'tsttechc-ripe';
         const start = 0;
         const advanced = false;
@@ -35,7 +35,6 @@ describe('FullTextSearchService', () => {
 
         fullTextSearchService.doSearch(query, start, advanced, advancedMode, searchObjects, searchAttributes).subscribe((respons: any) => {
             expect(respons).toBe('response');
-            done();
         });
         const req = httpMock.expectOne({
             method: 'GET',
@@ -45,7 +44,7 @@ describe('FullTextSearchService', () => {
         req.flush('response');
     });
 
-    it('should be able to encode various', (done) => {
+    it('should be able to encode various', async () => {
         const query = 'tsttechc-ripe';
         const start = 0;
         const advanced = true;
@@ -55,7 +54,6 @@ describe('FullTextSearchService', () => {
 
         fullTextSearchService.doSearch(query, start, advanced, advancedMode, searchObjects, searchAttributes).subscribe((respons: any) => {
             expect(respons).toBe('response');
-            done();
         });
         const req = httpMock.expectOne({
             method: 'GET',
@@ -65,7 +63,7 @@ describe('FullTextSearchService', () => {
         req.flush('response');
     });
 
-    it('should be able to encode advanced all options', (done) => {
+    it('should be able to encode advanced all options', async () => {
         const query = 'tsttechc-ripe etch-mnt';
         const start = 0;
         const advanced = true;
@@ -74,7 +72,6 @@ describe('FullTextSearchService', () => {
         const searchAttributes: string[] = [];
         fullTextSearchService.doSearch(query, start, advanced, advancedMode, searchObjects, searchAttributes).subscribe((respons: any) => {
             expect(respons).toBe('response');
-            done();
         });
         const req = httpMock.expectOne({
             method: 'GET',
@@ -84,7 +81,7 @@ describe('FullTextSearchService', () => {
         req.flush('response');
     });
 
-    it('should be able to encode advanced any options', (done) => {
+    it('should be able to encode advanced any options', async () => {
         const query = 'tsttechc-ripe etch-mnt';
         const start = 0;
         const advanced = true;
@@ -93,7 +90,6 @@ describe('FullTextSearchService', () => {
         const searchAttributes: string[] = [];
         fullTextSearchService.doSearch(query, start, advanced, advancedMode, searchObjects, searchAttributes).subscribe((respons: any) => {
             expect(respons).toBe('response');
-            done();
         });
         const req = httpMock.expectOne({
             method: 'GET',
@@ -103,7 +99,7 @@ describe('FullTextSearchService', () => {
         req.flush('response');
     });
 
-    it('should be able to encode advanced exact options', (done) => {
+    it('should be able to encode advanced exact options', async () => {
         const query = 'tsttechc-ripe etch-mnt';
         const start = 0;
         const advanced = true;
@@ -112,7 +108,6 @@ describe('FullTextSearchService', () => {
         const searchAttributes = ['remarks', 'country'];
         fullTextSearchService.doSearch(query, start, advanced, advancedMode, searchObjects, searchAttributes).subscribe((respons: any) => {
             expect(respons).toBe('response');
-            done();
         });
         const req = httpMock.expectOne({
             method: 'GET',

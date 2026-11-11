@@ -5,12 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { FullTextResponseService } from '../../../src/app/fulltextsearch/full-text-response.service';
-import { FullTextResultSummaryComponent } from '../../../src/app/fulltextsearch/full-text-result-summary.component';
-import { FullTextSearchComponent } from '../../../src/app/fulltextsearch/full-text-search.component';
-import { FullTextSearchService } from '../../../src/app/fulltextsearch/full-text-search.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
+import { FullTextResponseService } from 'src/app/fulltextsearch/full-text-response.service';
+import { FullTextResultSummaryComponent } from 'src/app/fulltextsearch/full-text-result-summary.component';
+import { FullTextSearchComponent } from 'src/app/fulltextsearch/full-text-search.component';
+import { FullTextSearchService } from 'src/app/fulltextsearch/full-text-search.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
 
 describe('FullTextSearchComponent', () => {
     let component: FullTextSearchComponent;
@@ -18,7 +18,9 @@ describe('FullTextSearchComponent', () => {
     let fullTextSearchService: any;
 
     beforeEach(() => {
-        fullTextSearchService = jasmine.createSpyObj('FullTextSearchService', ['doSearch']);
+        fullTextSearchService = {
+            doSearch: vi.fn().mockName('FullTextSearchService.doSearch'),
+        };
         TestBed.configureTestingModule({
             imports: [FormsModule, RouterTestingModule, FullTextSearchComponent, FullTextResultSummaryComponent],
             providers: [
@@ -43,8 +45,8 @@ describe('FullTextSearchComponent', () => {
         beforeEach(() => {
             fixture.detectChanges(); // ngOnInit; empty query → searchClicked early-returns
             router = TestBed.inject(Router);
-            spyOn(router, 'navigate');
-            fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
+            vi.spyOn(router, 'navigate').mockReturnValue(undefined);
+            fullTextSearchService.doSearch.mockReturnValue(of(responseEtchMnt));
         });
 
         it('writes selected object types on an advanced search, with merge + replaceUrl', () => {
@@ -55,8 +57,8 @@ describe('FullTextSearchComponent', () => {
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
-                jasmine.objectContaining({
-                    queryParams: jasmine.objectContaining({ objectTypes: ['inetnum', 'person'] }),
+                expect.objectContaining({
+                    queryParams: expect.objectContaining({ objectTypes: ['inetnum', 'person'] }),
                     queryParamsHandling: 'merge',
                     replaceUrl: true,
                 }),
@@ -71,8 +73,8 @@ describe('FullTextSearchComponent', () => {
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
-                jasmine.objectContaining({
-                    queryParams: jasmine.objectContaining({ advmode: 'any' }),
+                expect.objectContaining({
+                    queryParams: expect.objectContaining({ advmode: 'any' }),
                 }),
             );
         });
@@ -85,8 +87,8 @@ describe('FullTextSearchComponent', () => {
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
-                jasmine.objectContaining({
-                    queryParams: jasmine.objectContaining({ advmode: null }),
+                expect.objectContaining({
+                    queryParams: expect.objectContaining({ advmode: null }),
                 }),
             );
         });
@@ -100,8 +102,8 @@ describe('FullTextSearchComponent', () => {
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
-                jasmine.objectContaining({
-                    queryParams: jasmine.objectContaining({ attrs: ['country'] }),
+                expect.objectContaining({
+                    queryParams: expect.objectContaining({ attrs: ['country'] }),
                 }),
             );
         });
@@ -113,8 +115,8 @@ describe('FullTextSearchComponent', () => {
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
-                jasmine.objectContaining({
-                    queryParams: jasmine.objectContaining({ query: 'etch-mnt' }),
+                expect.objectContaining({
+                    queryParams: expect.objectContaining({ query: 'etch-mnt' }),
                 }),
             );
         });
@@ -128,8 +130,8 @@ describe('FullTextSearchComponent', () => {
 
             expect(router.navigate).toHaveBeenCalledWith(
                 [],
-                jasmine.objectContaining({
-                    queryParams: jasmine.objectContaining({ objectTypes: null, attrs: null, query: 'etch-mnt' }),
+                expect.objectContaining({
+                    queryParams: expect.objectContaining({ objectTypes: null, attrs: null, query: 'etch-mnt' }),
                 }),
             );
         });
@@ -171,7 +173,7 @@ describe('FullTextSearchComponent', () => {
             expect(expectedObjectTypes[i]).toEqual(component.objectTypes[i]);
         }
 
-        fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
+        fullTextSearchService.doSearch.mockReturnValue(of(responseEtchMnt));
         expect(component.selectedObjectTypes.length).toEqual(0);
         component.toggleSearchMode();
         expect(component.advancedSearch).toEqual(true);
@@ -205,7 +207,7 @@ describe('FullTextSearchComponent', () => {
 
     it('should be able to search and process the result', () => {
         fixture.detectChanges();
-        fullTextSearchService.doSearch.and.returnValue(of(responseEtchMnt));
+        fullTextSearchService.doSearch.mockReturnValue(of(responseEtchMnt));
         component.searchClicked();
         fixture.detectChanges();
         expect(component.alertsService.alerts.warnings[0].plainText).toEqual('Empty query - please specify at least one character');
@@ -218,7 +220,7 @@ describe('FullTextSearchComponent', () => {
         fixture.detectChanges();
         expect(component.alertsService.alerts.warnings.length > 0).toBeFalsy();
         expect(component.numResults).toEqual(7);
-        fullTextSearchService.doSearch.and.returnValue(of(responseEmpty));
+        fullTextSearchService.doSearch.mockReturnValue(of(responseEmpty));
         component.searchClicked();
         fixture.detectChanges();
         expect(component.alertsService.alerts.warnings.length > 0).toBeTruthy();

@@ -2,13 +2,13 @@ import { Location } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AttributeMetadataService } from '../../../src/app/attribute/attribute-metadata.service';
-import { JsUtilService } from '../../../src/app/core/js-utils.service';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { IAttributeModel } from '../../../src/app/shared/whois-response-type.model';
+import { AttributeMetadataService } from 'src/app/attribute/attribute-metadata.service';
+import { JsUtilService } from 'src/app/core/js-utils.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { IAttributeModel } from 'src/app/shared/whois-response-type.model';
 
 describe('AttributeMetadataService', () => {
     let MockPropertiesService = {
@@ -89,7 +89,7 @@ describe('AttributeMetadataService', () => {
         const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
-        expect(isReadOnly).toBeFalse();
+        expect(isReadOnly).toBe(false);
     });
 
     it('should create metadata for co-maintained inetnum object with netname read only', () => {
@@ -105,7 +105,7 @@ describe('AttributeMetadataService', () => {
         const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.netname.readOnly(type, attributes);
-        expect(isReadOnly).toBeFalse();
+        expect(isReadOnly).toBe(false);
     });
 
     it('should create metadata for co-maintained inet6num object with netname read only', () => {
@@ -132,7 +132,7 @@ describe('AttributeMetadataService', () => {
         const type = 'inetnum';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
-        expect(isReadOnly).toBeFalse();
+        expect(isReadOnly).toBe(false);
     });
 
     it('should create metadata for co-maintained inet6num object with org read only', () => {
@@ -151,7 +151,7 @@ describe('AttributeMetadataService', () => {
         const type = 'inet6num';
         const metaData = attributeMetadataService.getAllMetadata(type);
         const isReadOnly = metaData.org.readOnly(type, attributes);
-        expect(isReadOnly).toBeFalse();
+        expect(isReadOnly).toBe(false);
     });
 
     it('should be able to calculate validity of an attribute', () => {
@@ -177,19 +177,19 @@ describe('AttributeMetadataService', () => {
 
         attribute.value = 'could be anything';
         isInvalid = attributeMetadataService.isInvalid(objectType, attributes, attribute);
-        expect(isInvalid).toBeFalse();
+        expect(isInvalid).toBe(false);
     });
 
-    xit('should be able to calculate hidden state of an attribute with no dependencies', () => {
+    it.skip('should be able to calculate hidden state of an attribute with no dependencies', () => {
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         const attribute = attributes[0];
 
         expect(attribute.name).toBe('prefix');
         const isHidden = attributeMetadataService.isHidden(objectType, attributes, attribute);
-        expect(isHidden).toBeFalse();
+        expect(isHidden).toBe(false);
     });
 
-    xit('should be able to calculate hidden state of an attribute with dependencies', () => {
+    it.skip('should be able to calculate hidden state of an attribute with dependencies', () => {
         let isHidden;
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         let attrPrefix = attributes[0],
@@ -210,6 +210,6 @@ describe('AttributeMetadataService', () => {
 
         attrPrefix.value = VALID_PREFIX;
         isHidden = attributeMetadataService.isHidden(objectType, attributes, attrToTest);
-        expect(isHidden).toBeFalse();
+        expect(isHidden).toBe(false);
     });
 });

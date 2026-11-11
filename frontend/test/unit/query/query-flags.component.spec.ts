@@ -2,16 +2,21 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { QueryFlagsComponent } from '../../../src/app/query/query-flags.component';
-import { IQueryFlag, QueryFlagsService } from '../../../src/app/query/query-flags.service';
+import { QueryFlagsComponent } from 'src/app/query/query-flags.component';
+import { IQueryFlag, QueryFlagsService } from 'src/app/query/query-flags.service';
+import type { MockedObject } from 'vitest';
 
 describe('QueryFlagsComponent', () => {
     let component: QueryFlagsComponent;
     let fixture: ComponentFixture<QueryFlagsComponent>;
-    let queryFlagsServiceSpy: jasmine.SpyObj<QueryFlagsService>;
+    let queryFlagsServiceSpy: MockedObject<QueryFlagsService>;
 
     beforeEach(() => {
-        queryFlagsServiceSpy = jasmine.createSpyObj('QueryFlagsService', ['getFlagsFromTerm', 'getFlags', 'addSpaceBehindFlagT']);
+        queryFlagsServiceSpy = {
+            getFlagsFromTerm: vi.fn().mockName('QueryFlagsService.getFlagsFromTerm'),
+            getFlags: vi.fn().mockName('QueryFlagsService.getFlags'),
+            addSpaceBehindFlagT: vi.fn().mockName('QueryFlagsService.addSpaceBehindFlagT'),
+        } as any;
         TestBed.configureTestingModule({
             imports: [FormsModule, QueryFlagsComponent],
             providers: [
@@ -31,7 +36,7 @@ describe('QueryFlagsComponent', () => {
 
     it("shouldn't call service if there is no flags in query terms which user entered", () => {
         component.inputTerm = '';
-        queryFlagsServiceSpy.addSpaceBehindFlagT.and.returnValue(component.inputTerm);
+        queryFlagsServiceSpy.addSpaceBehindFlagT.mockReturnValue(component.inputTerm);
         component.ngOnChanges();
         fixture.detectChanges();
         expect(queryFlagsServiceSpy.getFlagsFromTerm).toHaveBeenCalledTimes(1);
@@ -47,9 +52,9 @@ describe('QueryFlagsComponent', () => {
                 description: 'Perform an inverse query.',
             },
         ];
-        queryFlagsServiceSpy.getFlags.and.returnValue(response);
+        queryFlagsServiceSpy.getFlags.mockReturnValue(response);
         component.inputTerm = '-i -ne -da';
-        queryFlagsServiceSpy.getFlagsFromTerm.and.returnValue(['-i', '-ne', '-da']);
+        queryFlagsServiceSpy.getFlagsFromTerm.mockReturnValue(['-i', '-ne', '-da']);
         component.ngOnChanges();
         fixture.detectChanges();
         expect(component.flags).toEqual(['-i', '-ne', '-da']);

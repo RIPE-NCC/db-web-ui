@@ -7,25 +7,25 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { EMPTY, of } from 'rxjs';
-import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
-import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
-import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
-import { ResourceStatusService } from '../../../../src/app/myresources/resource-status.service';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { CharsetToolsService } from '../../../../src/app/updatesweb/charset-tools.service';
-import { CreateModifyComponent } from '../../../../src/app/updatesweb/create-modify.component';
-import { EnumService } from '../../../../src/app/updatesweb/enum.service';
-import { ErrorReporterService } from '../../../../src/app/updatesweb/error-reporter.service';
-import { LinkService } from '../../../../src/app/updatesweb/link.service';
-import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
-import { OrganisationHelperService } from '../../../../src/app/updatesweb/organisation-helper.service';
-import { PreferenceService } from '../../../../src/app/updatesweb/preference.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { ScreenLogicInterceptorService } from '../../../../src/app/updatesweb/screen-logic-interceptor.service';
-import { WebUpdatesCommonsService } from '../../../../src/app/updatesweb/web-updates-commons.service';
+import { AttributeMetadataService } from 'src/app/attribute/attribute-metadata.service';
+import { AttributeSharedService } from 'src/app/attribute/attribute-shared.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { ResourceStatusService } from 'src/app/myresources/resource-status.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { CharsetToolsService } from 'src/app/updatesweb/charset-tools.service';
+import { CreateModifyComponent } from 'src/app/updatesweb/create-modify.component';
+import { EnumService } from 'src/app/updatesweb/enum.service';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { LinkService } from 'src/app/updatesweb/link.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { OrganisationHelperService } from 'src/app/updatesweb/organisation-helper.service';
+import { PreferenceService } from 'src/app/updatesweb/preference.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { ScreenLogicInterceptorService } from 'src/app/updatesweb/screen-logic-interceptor.service';
+import { WebUpdatesCommonsService } from 'src/app/updatesweb/web-updates-commons.service';
 
 const ORG_MOCK = {
     type: 'organisation',
@@ -153,8 +153,13 @@ describe('CreateModifyComponent with modifying test cases', () => {
     let paramMapMock: any;
 
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
         paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
             imports: [NgSelectModule, CreateModifyComponent],
@@ -211,10 +216,10 @@ describe('CreateModifyComponent with modifying test cases', () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
             paramMapMock.objectName = NAME;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
@@ -393,7 +398,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
         });
 
         it('should transition to display state if cancel is pressed', () => {
-            spyOn(window, 'confirm').and.returnValue(true);
+            vi.spyOn(window, 'confirm').mockReturnValue(true);
             component.cancel();
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
         });
@@ -408,10 +413,10 @@ describe('CreateModifyComponent with modifying test cases', () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
             paramMapMock.objectName = NAME;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
@@ -451,10 +456,10 @@ describe('CreateModifyComponent with modifying test cases', () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
             paramMapMock.objectName = NAME;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
@@ -490,10 +495,10 @@ describe('CreateModifyComponent with modifying test cases', () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
             paramMapMock.objectName = NAME;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
@@ -512,7 +517,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
 
         it("should populate abuse-c with new role's nic-hdl", async () => {
             component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
-            modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
+            modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
             const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
             component.createRoleForAbuseCAttribute(attrAbuseC);
             await fixture.whenStable();
@@ -521,7 +526,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
 
         it('should populate component.roleForAbuseC', async () => {
             component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
-            modalMock.open.and.returnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
+            modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(ROLE_OBJ), dismissed: EMPTY });
             const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, 'abuse-c');
             component.createRoleForAbuseCAttribute(attrAbuseC);
             await fixture.whenStable();
@@ -529,7 +534,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
         });
 
         it('should show LIR orgs with certain attributes disabled', () => {
-            expect();
+            expect(component).toBeTruthy();
         });
     });
 
@@ -542,10 +547,10 @@ describe('CreateModifyComponent with modifying test cases', () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
             paramMapMock.objectName = NAME;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
@@ -563,7 +568,7 @@ describe('CreateModifyComponent with modifying test cases', () => {
         });
 
         it('should TODO', () => {
-            expect();
+            expect(component).toBeTruthy();
         });
     });
 });

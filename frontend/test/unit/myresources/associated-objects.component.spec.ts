@@ -3,13 +3,9 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AssociatedObjectsComponent } from '../../../src/app/myresources/associatedobjects/associated-objects.component';
-import {
-    AssociatedObjectsService,
-    IAssociatedDomainObject,
-    IAssociatedRouteObject,
-} from '../../../src/app/myresources/associatedobjects/associated-objects.service';
-import { PropertiesService } from '../../../src/app/properties.service';
+import { AssociatedObjectsComponent } from 'src/app/myresources/associatedobjects/associated-objects.component';
+import { AssociatedObjectsService, IAssociatedDomainObject, IAssociatedRouteObject } from 'src/app/myresources/associatedobjects/associated-objects.service';
+import { PropertiesService } from 'src/app/properties.service';
 
 describe('AssociatedObjectsComponent', () => {
     let component: AssociatedObjectsComponent;

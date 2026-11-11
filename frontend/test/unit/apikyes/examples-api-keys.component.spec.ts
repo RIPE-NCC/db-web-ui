@@ -3,14 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DOCUMENT_TYPE, ExamplesApiKeysComponent } from 'src/app/apikeys/examples-api-keys/examples-api-keys.component';
 import { KeyType } from 'src/app/apikeys/utils';
-import { PropertiesService } from '../../../src/app/properties.service';
+import { PropertiesService } from 'src/app/properties.service';
 
 describe('ExamplesApiKeysComponent', () => {
     let component: ExamplesApiKeysComponent;
     let fixture: ComponentFixture<ExamplesApiKeysComponent>;
 
     const mockDialog = {
-        open: jasmine.createSpy('open'),
+        open: vi.fn().mockName('open'),
     };
 
     const mockOrg = {
@@ -36,7 +36,7 @@ describe('ExamplesApiKeysComponent', () => {
     });
 
     it('should call showExamples on ngOnChanges', () => {
-        spyOn(component, 'showExamples');
+        vi.spyOn(component, 'showExamples').mockReturnValue(undefined);
 
         component.ngOnChanges();
 

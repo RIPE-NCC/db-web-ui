@@ -2,8 +2,8 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie-service';
-import { IUserInfoOrganisation, IUserInfoRegistration, UserOrgsAndRegistrations } from '../../../src/app/dropdown/org-data-type.model';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
+import { IUserInfoOrganisation, IUserInfoRegistration, UserOrgsAndRegistrations } from 'src/app/dropdown/org-data-type.model';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('UserInfoService', () => {
     let userInfoService: UserInfoService;
@@ -40,9 +40,9 @@ describe('UserInfoService', () => {
 
     it('should not provide user-info on failure', () => {
         userInfoService.getSelectedOrganisation().subscribe({
-            next: (result: IUserInfoOrganisation) => {
+            next: (_result: IUserInfoOrganisation) => {
                 // NOT to be called
-                expect(true).toBeFalse();
+                expect(true).toBe(false);
             },
             error: (error) => {
                 expect(error.status).toBe(401);

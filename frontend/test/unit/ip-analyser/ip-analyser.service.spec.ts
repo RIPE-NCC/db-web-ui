@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { IpAnalyserService } from '../../../src/app/ip-analyser/ip-analyser.service';
+import { IpAnalyserService } from 'src/app/ip-analyser/ip-analyser.service';
 
 describe('IpAnalyserService', () => {
     let service: IpAnalyserService;

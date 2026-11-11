@@ -6,18 +6,18 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY, of } from 'rxjs';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { RpslService } from '../../../src/app/updatestext/rpsl.service';
-import { TextCommonsService } from '../../../src/app/updatestext/text-commons.service';
-import { TextCreateComponent } from '../../../src/app/updatestext/text-create.component';
-import { ErrorReporterService } from '../../../src/app/updatesweb/error-reporter.service';
-import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
-import { PreferenceService } from '../../../src/app/updatesweb/preference.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { RpslService } from 'src/app/updatestext/rpsl.service';
+import { TextCommonsService } from 'src/app/updatestext/text-commons.service';
+import { TextCreateComponent } from 'src/app/updatestext/text-create.component';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { PreferenceService } from 'src/app/updatesweb/preference.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
 
 describe('TextCreateComponent', () => {
     const SOURCE = 'RIPE';
@@ -38,10 +38,20 @@ describe('TextCreateComponent', () => {
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
-        preferencesServiceMock = jasmine.createSpyObj('PreferenceService', ['isTextMode', 'setTextMode', 'isWebMode', 'setWebMode']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}), dismissed: EMPTY });
+        preferencesServiceMock = {
+            isTextMode: vi.fn().mockName('PreferenceService.isTextMode'),
+            setTextMode: vi.fn().mockName('PreferenceService.setTextMode'),
+            isWebMode: vi.fn().mockName('PreferenceService.isWebMode'),
+            setWebMode: vi.fn().mockName('PreferenceService.setWebMode'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of({}), dismissed: EMPTY });
         TestBed.configureTestingModule({
             imports: [FormsModule, TextCreateComponent],
             providers: [
@@ -82,19 +92,12 @@ describe('TextCreateComponent', () => {
     });
 
     const createParams = (source: string, objectType: string, noRedirect: boolean, rpsl: string) => {
-        const paramMapSpy = spyOn(paramMapMock, 'get');
-        const queryParamHasSpy = spyOn(queryParamMock, 'has');
-        const queryParamGetSpy = spyOn(queryParamMock, 'get');
-
-        paramMapSpy.withArgs('source').and.returnValue(source);
-        paramMapSpy.withArgs('objectType').and.returnValue(objectType);
-        queryParamHasSpy.withArgs('noRedirect').and.returnValue(noRedirect);
-        if (rpsl) {
-            queryParamHasSpy.withArgs('rpsl').and.returnValue(true);
-            queryParamGetSpy.withArgs('rpsl').and.returnValue(rpsl);
-        } else {
-            queryParamHasSpy.withArgs('rpsl').and.returnValue(false);
-        }
+        const params = { source, objectType };
+        const queryParamsHas = { noRedirect, rpsl: !!rpsl };
+        const queryParamsGet = { rpsl: rpsl || undefined };
+        vi.spyOn(paramMapMock, 'get').mockImplementation((name: string) => params[name]);
+        vi.spyOn(queryParamMock, 'has').mockImplementation((name: string) => queryParamsHas[name]);
+        vi.spyOn(queryParamMock, 'get').mockImplementation((name: string) => queryParamsGet[name]);
     };
 
     it('should get parameters from url', () => {
@@ -119,7 +122,7 @@ describe('TextCreateComponent', () => {
 
     it('should redirect to webupdates when web-preference is set', () => {
         createParams(SOURCE, 'inetnum', false, null);
-        preferencesServiceMock.isWebMode.and.returnValue(true);
+        preferencesServiceMock.isWebMode.mockReturnValue(true);
 
         componentFixture.detectChanges();
 
@@ -128,7 +131,7 @@ describe('TextCreateComponent', () => {
 
     it('should not redirect to webupdates when web-preference is set and no-redirect is true', () => {
         createParams(SOURCE, 'inetnum', true, null);
-        preferencesServiceMock.isWebMode.and.returnValue(true);
+        preferencesServiceMock.isWebMode.mockReturnValue(true);
 
         componentFixture.detectChanges();
 

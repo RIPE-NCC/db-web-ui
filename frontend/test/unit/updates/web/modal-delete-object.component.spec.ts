@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, throwError } from 'rxjs';
-import { ModalDeleteObjectComponent } from '../../../../src/app/updatesweb/modal-delete-object.component';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { RpkiValidatorService } from '../../../../src/app/updatesweb/rpki-validator.service';
+import { ModalDeleteObjectComponent } from 'src/app/updatesweb/modal-delete-object.component';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { RpkiValidatorService } from 'src/app/updatesweb/rpki-validator.service';
 const objectType = 'mntner';
 const name = 'TEST-MNT';
 const source = 'RIPE';
@@ -23,10 +23,18 @@ let routerMock: any;
 
 describe('primitives of modalDeleteObject', () => {
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
-        restServiceMock.getReferences.and.returnValue(of({ objectType: 'mntner', primaryKey: 'TEST-MNT' }));
+        modalMock = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        restServiceMock = {
+            getReferences: vi.fn().mockName('RestService.getReferences'),
+        };
+        restServiceMock.getReferences.mockReturnValue(of({ objectType: 'mntner', primaryKey: 'TEST-MNT' }));
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalDeleteObjectComponent],
             providers: [
@@ -120,15 +128,15 @@ describe('primitives of modalDeleteObject', () => {
     });
 
     it('should not allow deletion of object with other incoming refs', () => {
-        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_UNDELETEABLE_OBJECTS)).toBeFalse();
+        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_UNDELETEABLE_OBJECTS)).toBe(false);
     });
 
     it('should detect that object has no () incoming refs', () => {
-        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [])).toBeFalse();
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [])).toBe(false);
     });
 
     it('should detect that object has no () incoming refs', () => {
-        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [{ objectType: 'mntner', primaryKey: 'TEST-MNT' }])).toBeFalse();
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [{ objectType: 'mntner', primaryKey: 'TEST-MNT' }])).toBe(false);
     });
 
     it('should detect that object has incoming refs', () => {
@@ -138,11 +146,20 @@ describe('primitives of modalDeleteObject', () => {
 
 describe('ModalDeleteObjectComponent undeletable object', () => {
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        restServiceMock = jasmine.createSpyObj('RestService', ['getReferences', 'deleteObject']);
-        restServiceMock.deleteObject.and.returnValue(of({}).toPromise());
-        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_UNDELETEABLE_OBJECTS));
+        modalMock = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        restServiceMock = {
+            getReferences: vi.fn().mockName('RestService.getReferences'),
+            deleteObject: vi.fn().mockName('RestService.deleteObject'),
+        };
+        restServiceMock.deleteObject.mockReturnValue(of({}).toPromise());
+        restServiceMock.getReferences.mockReturnValue(of(REFS_FOR_UNDELETEABLE_OBJECTS));
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalDeleteObjectComponent],
             providers: [
@@ -184,13 +201,13 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
 
     it('should decide that object cannot be deleted ', async () => {
         await componentFixture.whenStable();
-        expect(modalDeleteObjectComponent.canBeDeleted).toBeFalse();
+        expect(modalDeleteObjectComponent.canBeDeleted).toBe(false);
     });
 
     it('should not call delete endpoint', async () => {
         modalDeleteObjectComponent.reason = 'some reason';
 
-        restServiceMock.deleteObject.and.callThrough();
+        restServiceMock.deleteObject.mockReset();
 
         modalDeleteObjectComponent.delete();
         await componentFixture.whenStable();
@@ -216,12 +233,23 @@ describe('ModalDeleteObjectComponent undeletable object', () => {
 
 describe('ModalDeleteObjectComponent deleteable object ', () => {
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        restServiceMock = jasmine.createSpyObj('RestService', ['getReferences', 'deleteObject']);
-        restServiceMock.deleteObject.and.returnValue(of({}));
-        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT));
-        rpkiValidatorServiceMock = jasmine.createSpyObj('RpkiValidatorService', ['hasRoa']);
+        modalMock = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        restServiceMock = {
+            getReferences: vi.fn().mockName('RestService.getReferences'),
+            deleteObject: vi.fn().mockName('RestService.deleteObject'),
+        };
+        restServiceMock.deleteObject.mockReturnValue(of({}));
+        restServiceMock.getReferences.mockReturnValue(of(REFS_FOR_TEST_MNT));
+        rpkiValidatorServiceMock = {
+            hasRoa: vi.fn().mockName('RpkiValidatorService.hasRoa'),
+        };
 
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalDeleteObjectComponent],
@@ -283,7 +311,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
     it('should dismiss modal after error deleting object', async () => {
         await componentFixture.whenStable();
 
-        restServiceMock.deleteObject.and.returnValue(throwError(() => ({ data: 'error' })));
+        restServiceMock.deleteObject.mockReturnValue(throwError(() => ({ data: 'error' })));
         modalDeleteObjectComponent.delete();
 
         expect(modalMock.dismiss).toHaveBeenCalledWith({ data: 'error' });
@@ -292,7 +320,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
     it('should redirect to success delete page after delete object', async () => {
         await componentFixture.whenStable();
 
-        restServiceMock.deleteObject.and.returnValue(of({ data: 'error' }));
+        restServiceMock.deleteObject.mockReturnValue(of({ data: 'error' }));
 
         modalDeleteObjectComponent.delete();
 
@@ -307,7 +335,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
             onCancelPath: ON_CANCEL,
             source: source,
         };
-        rpkiValidatorServiceMock.hasRoa.and.returnValue(
+        rpkiValidatorServiceMock.hasRoa.mockReturnValue(
             of({
                 validated_route: {
                     route: {
@@ -346,7 +374,7 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
             onCancelPath: ON_CANCEL,
             source: source,
         };
-        rpkiValidatorServiceMock.hasRoa.and.returnValue(
+        rpkiValidatorServiceMock.hasRoa.mockReturnValue(
             of({
                 validated_route: {
                     route: {
@@ -373,10 +401,18 @@ describe('ModalDeleteObjectComponent deleteable object ', () => {
 
 describe('ModalDeleteObjectComponent loading references failures ', () => {
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        restServiceMock = jasmine.createSpyObj('RestService', ['getReferences']);
-        restServiceMock.getReferences.and.returnValue(throwError(() => ({ data: 'error' })));
+        modalMock = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        restServiceMock = {
+            getReferences: vi.fn().mockName('RestService.getReferences'),
+        };
+        restServiceMock.getReferences.mockReturnValue(throwError(() => ({ data: 'error' })));
         TestBed.configureTestingModule({
             imports: [FormsModule, ModalDeleteObjectComponent],
             providers: [

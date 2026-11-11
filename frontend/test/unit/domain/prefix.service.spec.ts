@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
 
 describe('PrefixService', () => {
     let prefixService: PrefixService;
@@ -25,12 +25,11 @@ describe('PrefixService', () => {
     });
 
     describe('findExistingDomainsForPrefix', () => {
-        it('should zip ', (done) => {
+        it('should zip ', async () => {
             prefixService.findExistingDomainsForPrefix('prefix').subscribe({
                 next: (response: unknown) => {
                     expect(response[0].body).toBe('drx');
                     expect(response[1].body).toBe('drM');
-                    done();
                 },
             });
             const drxReq = httpMock.expectOne({
@@ -47,11 +46,10 @@ describe('PrefixService', () => {
     });
 
     describe('getDomainCreationStatus', () => {
-        it('should call proper url', (done) => {
+        it('should call proper url', async () => {
             prefixService.getDomainCreationStatus('RIPE').subscribe({
                 next: (response) => {
                     expect(response.body).toBe('response');
-                    done();
                 },
             });
             const req = httpMock.expectOne({ method: 'GET', url: 'api/whois/domain-objects/RIPE/status' });

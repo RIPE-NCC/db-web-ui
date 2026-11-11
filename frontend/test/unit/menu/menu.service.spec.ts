@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { MenuService } from '../../../src/app/menu/menu.service';
+import { MenuService } from 'src/app/menu/menu.service';
 
 describe('MenuService', () => {
     let service: MenuService;
@@ -30,8 +30,8 @@ describe('MenuService', () => {
     });
 
     it('should return false when activeMenu is null', () => {
-        expect(service.isActiveDBMenu()).toBeFalse();
-        expect(service.isActiveResourcesMenu()).toBeFalse();
+        expect(service.isActiveDBMenu()).toBe(false);
+        expect(service.isActiveResourcesMenu()).toBe(false);
     });
 
     it('should set DB menu when url does not match resources', () => {
@@ -39,8 +39,8 @@ describe('MenuService', () => {
 
         service.setActiveMenu();
 
-        expect(service.isActiveDBMenu()).toBeTrue();
-        expect(service.isActiveResourcesMenu()).toBeFalse();
+        expect(service.isActiveDBMenu()).toBe(true);
+        expect(service.isActiveResourcesMenu()).toBe(false);
     });
 
     it('should set RESOURCES menu when url contains myresources', () => {
@@ -48,8 +48,8 @@ describe('MenuService', () => {
 
         service.setActiveMenu();
 
-        expect(service.isActiveDBMenu()).toBeFalse();
-        expect(service.isActiveResourcesMenu()).toBeTrue();
+        expect(service.isActiveDBMenu()).toBe(false);
+        expect(service.isActiveResourcesMenu()).toBe(true);
     });
 
     it('should react to NavigationEnd events', () => {
@@ -57,6 +57,6 @@ describe('MenuService', () => {
 
         routerEvents$.next(new NavigationEnd(1, '/ip-analyser', '/ip-analyser'));
 
-        expect(service.isActiveResourcesMenu()).toBeTrue();
+        expect(service.isActiveResourcesMenu()).toBe(true);
     });
 });

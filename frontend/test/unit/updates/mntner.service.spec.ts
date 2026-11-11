@@ -3,13 +3,13 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { IMntByModel } from 'src/app/shared/whois-response-type.model';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
 
 describe('MntnerService', () => {
     let mntnerService: MntnerService;
@@ -82,7 +82,7 @@ describe('MntnerService', () => {
 
         expect(enriched[1].type).toBe('mntner');
         expect(enriched[1].key).toBe('C-MNT');
-        expect(enriched[1].mine).toBeFalse();
+        expect(enriched[1].mine).toBe(false);
     });
 
     it('should detect top RIPE-NCC mntners', () => {
@@ -146,7 +146,7 @@ describe('MntnerService', () => {
 
         expect(enriched[0].type).toBe('mntner');
         expect(enriched[0].key).toBe('A-MNT');
-        expect(enriched[0].isNew).toBeFalse();
+        expect(enriched[0].isNew).toBe(false);
 
         expect(enriched[1].type).toBe('mntner');
         expect(enriched[1].key).toBe('C-MNT');
@@ -164,14 +164,14 @@ describe('MntnerService', () => {
         ];
         // need authentication for D-MNT
         expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeTruthy();
-        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
+        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBe(false);
     });
 
     it('should need authentication for SSO mntner with different case', () => {
         const ssoMntners = [{ type: 'mntner', key: 'A-MNT', mine: true, auth: ['SSO'] }];
         const objectMntners = [{ type: 'mntner', key: 'A-MNT' }];
-        expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBeFalse();
-        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBeFalse();
+        expect(mntnerService.needsAuthentication(ssoMntners, [], objectMntners)).toBe(false);
+        expect(mntnerService.needsAuthentication(ssoMntners, objectMntners, [])).toBe(false);
     });
 
     it('should have authentication when no sso', () => {

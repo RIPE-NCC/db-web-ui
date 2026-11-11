@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ResourceStatusService } from '../../../src/app/myresources/resource-status.service';
+import { ResourceStatusService } from 'src/app/myresources/resource-status.service';
 
 describe('ResourceStatusService', () => {
     let resourcesDataService: ResourceStatusService;

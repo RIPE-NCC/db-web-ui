@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
-import { NameFormatterComponent } from '../../../src/app/shared/name-formatter.component';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
+import { NameFormatterComponent } from 'src/app/shared/name-formatter.component';
 
 describe('NameFormatterComponent', () => {
     let component: NameFormatterComponent;

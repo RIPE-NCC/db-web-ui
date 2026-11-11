@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
+import type { MockedObject } from 'vitest';
 
 import { NodeHealthStatus } from 'src/app/myresources/health-check-card/node-health.model';
 import { NodeHealthService } from 'src/app/myresources/health-check-card/node-health.service';
@@ -11,7 +12,7 @@ import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
 
 describe('NodeHealthService', () => {
     let service: NodeHealthService;
-    let mockResourcesDataService: jasmine.SpyObj<ResourcesDataService>;
+    let mockResourcesDataService: MockedObject<ResourcesDataService>;
 
     const createNode = (type = ObjectTypesEnum.INETNUM, nodeName = '192.168.0.0/24', level = 0): TreeNode =>
         ({
@@ -30,15 +31,15 @@ describe('NodeHealthService', () => {
         } as unknown as TreeNode);
 
     beforeEach(() => {
-        mockResourcesDataService = jasmine.createSpyObj('ResourcesDataService', [
-            'resourceCheck',
-            'checkAnnouncements',
-            'clearResourceCheckCache',
-            'clearAnnouncementsCache',
-        ]);
+        mockResourcesDataService = {
+            resourceCheck: vi.fn().mockName('ResourcesDataService.resourceCheck'),
+            checkAnnouncements: vi.fn().mockName('ResourcesDataService.checkAnnouncements'),
+            clearResourceCheckCache: vi.fn().mockName('ResourcesDataService.clearResourceCheckCache'),
+            clearAnnouncementsCache: vi.fn().mockName('ResourcesDataService.clearAnnouncementsCache'),
+        } as any;
 
-        mockResourcesDataService.resourceCheck.and.returnValue(of([]));
-        mockResourcesDataService.checkAnnouncements.and.returnValue(of([]));
+        mockResourcesDataService.resourceCheck.mockReturnValue(of([]));
+        mockResourcesDataService.checkAnnouncements.mockReturnValue(of([]));
 
         TestBed.configureTestingModule({
             providers: [NodeHealthService, { provide: ResourcesDataService, useValue: mockResourcesDataService }],
@@ -88,105 +89,94 @@ describe('NodeHealthService', () => {
     });
 
     describe('checkAnnouncementStatus', () => {
-        it('should return Unannounced when there are no announcements', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([]));
+        it('should return Unannounced when there are no announcements', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([]));
 
             service.checkAnnouncementStatus(createNode()).subscribe((status) => {
                 expect(status).toBe('Unannounced');
-                done();
             });
         });
 
-        it('should return Announced when an IPv4 announcement covers the resource', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/23', origin: '12345', peers: 1 }]));
+        it('should return Announced when an IPv4 announcement covers the resource', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/23', origin: '12345', peers: 1 }]));
 
             service.checkAnnouncementStatus(createNode()).subscribe((status) => {
                 expect(status).toBe('Announced');
-                done();
             });
         });
 
-        it('should return Partially announced when no announcement covers the full IPv4 resource', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/25', origin: '12345', peers: 1 }]));
+        it('should return Partially announced when no announcement covers the full IPv4 resource', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/25', origin: '12345', peers: 1 }]));
 
             service.checkAnnouncementStatus(createNode()).subscribe((status) => {
                 expect(status).toBe('Partially announced');
-                done();
             });
         });
 
-        it('should return Announced for an ASN when announcements exist', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/24', origin: '12345', peers: 1 }]));
+        it('should return Announced for an ASN when announcements exist', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/24', origin: '12345', peers: 1 }]));
 
             service.checkAnnouncementStatus(createNode(ObjectTypesEnum.AUT_NUM, 'AS12345')).subscribe((status) => {
                 expect(status).toBe('Announced');
-                done();
             });
         });
 
-        it('should return check failed when the announcement request fails', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(throwError(() => new Error('Request failed')));
+        it('should return check failed when the announcement request fails', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(throwError(() => new Error('Request failed')));
 
             service.checkAnnouncementStatus(createNode()).subscribe((status) => {
                 expect(status).toBe('check failed');
-                done();
             });
         });
     });
 
     describe('checkRouteAnnouncementStatus', () => {
-        it('should return Unannounced when no announcements are returned', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([]));
+        it('should return Unannounced when no announcements are returned', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([]));
 
             service.checkRouteAnnouncementStatus(ObjectTypesEnum.INETNUM, '192.168.0.0/24', 'AS12345').subscribe((status) => {
                 expect(status).toBe('Unannounced');
                 expect(mockResourcesDataService.checkAnnouncements).toHaveBeenCalledWith(ObjectTypesEnum.INETNUM, '192.168.0.0/24');
-                done();
             });
         });
 
-        it('should return Announced for an exact prefix and origin match', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/24', origin: '12345', peers: 1 }]));
+        it('should return Announced for an exact prefix and origin match', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/24', origin: '12345', peers: 1 }]));
 
             service.checkRouteAnnouncementStatus(ObjectTypesEnum.INETNUM, '192.168.0.0/24', 'AS12345').subscribe((status) => {
                 expect(status).toBe('Announced');
-                done();
             });
         });
 
-        it('should return Mismatch when the exact prefix has a different origin', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/24', origin: '23456', peers: 1 }]));
+        it('should return Mismatch when the exact prefix has a different origin', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/24', origin: '23456', peers: 1 }]));
 
             service.checkRouteAnnouncementStatus(ObjectTypesEnum.INETNUM, '192.168.0.0/24', 'AS12345').subscribe((status) => {
                 expect(status).toBe('Mismatch');
-                done();
             });
         });
 
-        it('should return Not exact match when the prefix differs', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/25', origin: '12345', peers: 1 }]));
+        it('should return Not exact match when the prefix differs', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/25', origin: '12345', peers: 1 }]));
 
             service.checkRouteAnnouncementStatus(ObjectTypesEnum.INETNUM, '192.168.0.0/24', 'AS12345').subscribe((status) => {
                 expect(status).toBe('Not exact match');
-                done();
             });
         });
 
-        it('should check the ASN resource for an aut-num route', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/24', origin: '12345', peers: 1 }]));
+        it('should check the ASN resource for an aut-num route', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/24', origin: '12345', peers: 1 }]));
 
             service.checkRouteAnnouncementStatus(ObjectTypesEnum.AUT_NUM, '192.168.0.0/24', 'AS12345').subscribe(() => {
                 expect(mockResourcesDataService.checkAnnouncements).toHaveBeenCalledWith(ObjectTypesEnum.AUT_NUM, 'AS12345');
-                done();
             });
         });
 
-        it('should return check failed when the announcement request fails', (done) => {
-            mockResourcesDataService.checkAnnouncements.and.returnValue(throwError(() => new Error('Request failed')));
+        it('should return check failed when the announcement request fails', async () => {
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(throwError(() => new Error('Request failed')));
 
             service.checkRouteAnnouncementStatus(ObjectTypesEnum.INETNUM, '192.168.0.0/24', 'AS12345').subscribe((status) => {
                 expect(status).toBe('check failed');
-                done();
             });
         });
     });
@@ -199,8 +189,8 @@ describe('NodeHealthService', () => {
                 createNode(ObjectTypesEnum.INETNUM, '192.168.2.0/24'),
             ];
 
-            mockResourcesDataService.resourceCheck.and.returnValue(of([]));
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([]));
+            mockResourcesDataService.resourceCheck.mockReturnValue(of([]));
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([]));
 
             service.healthCheck(nodes);
 
@@ -222,8 +212,8 @@ describe('NodeHealthService', () => {
     describe('checkNodeHealth', () => {
         it('should set node status to OK when no issues are returned', () => {
             const node = createNode();
-            mockResourcesDataService.resourceCheck.and.returnValue(of([]));
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([]));
+            mockResourcesDataService.resourceCheck.mockReturnValue(of([]));
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([]));
 
             service.checkNodeHealth(node).subscribe();
 
@@ -237,8 +227,8 @@ describe('NodeHealthService', () => {
             const node = createNode();
             const response = [{ type: 'Not announced' }, { type: 'Wrong origin' }] as ResourceCheck[];
 
-            mockResourcesDataService.resourceCheck.and.returnValue(of(response));
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([]));
+            mockResourcesDataService.resourceCheck.mockReturnValue(of(response));
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([]));
 
             service.checkNodeHealth(node).subscribe();
 
@@ -249,7 +239,7 @@ describe('NodeHealthService', () => {
 
         it('should set child node announcement status without running resourceCheck', () => {
             const node = createNode(ObjectTypesEnum.INETNUM, '192.168.0.0/24', 1);
-            mockResourcesDataService.checkAnnouncements.and.returnValue(of([{ prefix: '192.168.0.0/23', origin: '12345', peers: 1 }]));
+            mockResourcesDataService.checkAnnouncements.mockReturnValue(of([{ prefix: '192.168.0.0/23', origin: '12345', peers: 1 }]));
 
             service.checkNodeHealth(node).subscribe();
 
@@ -260,7 +250,7 @@ describe('NodeHealthService', () => {
 
         it('should set node status to FAILED when the health check fails', () => {
             const node = createNode();
-            mockResourcesDataService.resourceCheck.and.returnValue(throwError(() => new Error('Request failed')));
+            mockResourcesDataService.resourceCheck.mockReturnValue(throwError(() => new Error('Request failed')));
 
             service.checkNodeHealth(node).subscribe();
 
@@ -296,7 +286,7 @@ describe('NodeHealthService', () => {
             ] as TreeNode[];
 
             service.nodes.set({ [ObjectTypesEnum.INETNUM]: nodes });
-            spyOn(service, 'healthCheck');
+            vi.spyOn(service, 'healthCheck').mockReturnValue(undefined);
 
             service.refresh(ObjectTypesEnum.INETNUM);
 
@@ -308,7 +298,7 @@ describe('NodeHealthService', () => {
         });
 
         it('should do nothing but call healthCheck with an empty list when no nodes are registered', () => {
-            spyOn(service, 'healthCheck');
+            vi.spyOn(service, 'healthCheck').mockReturnValue(undefined);
 
             service.refresh(ObjectTypesEnum.INETNUM);
 
@@ -318,7 +308,7 @@ describe('NodeHealthService', () => {
 
     describe('refreshAll', () => {
         it('should clear caches and refresh all supported tree types', () => {
-            spyOn(service, 'refresh');
+            vi.spyOn(service, 'refresh').mockReturnValue(undefined);
 
             service.refreshAll();
 

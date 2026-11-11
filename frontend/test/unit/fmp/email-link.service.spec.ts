@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { EmailLinkService } from '../../../src/app/fmp/email-link.services';
+import { EmailLinkService } from 'src/app/fmp/email-link.services';
 
 describe('EmailLinkService', () => {
     let emailLinkService: EmailLinkService;

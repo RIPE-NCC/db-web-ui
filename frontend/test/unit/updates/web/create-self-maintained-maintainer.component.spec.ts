@@ -8,13 +8,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of, throwError } from 'rxjs';
 import { UserOidc } from 'src/app/dropdown/org-data-type.model';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { CreateSelfMaintainedMaintainerComponent } from '../../../../src/app/updatesweb/create-self-maintained-maintainer.component';
-import { ErrorReporterService } from '../../../../src/app/updatesweb/error-reporter.service';
-import { LinkService } from '../../../../src/app/updatesweb/link.service';
-import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { UserInfoService } from '../../../../src/app/userinfo/user-info.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { CreateSelfMaintainedMaintainerComponent } from 'src/app/updatesweb/create-self-maintained-maintainer.component';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { LinkService } from 'src/app/updatesweb/link.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('CreateSelfMaintainedMaintainerComponent', () => {
     let httpMock: HttpTestingController;
@@ -31,8 +31,13 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
     };
 
     beforeEach(async () => {
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        restServiceMock = jasmine.createSpyObj('RestService', ['createObject']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        restServiceMock = {
+            createObject: vi.fn().mockName('RestService.createObject'),
+        };
         TestBed.configureTestingModule({
             imports: [NgSelectModule, CreateSelfMaintainedMaintainerComponent],
             providers: [
@@ -105,7 +110,7 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
     });
 
     it('should set default upd-to info for the self maintained maintainer when submitting', () => {
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
         fillForm();
 
         const validatedAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
@@ -121,7 +126,7 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
     });
 
     it('should set default auth info for the self maintained maintainer when submitting', () => {
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
         fillForm();
 
         const validateAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
@@ -133,7 +138,7 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
     });
 
     it('should set mntner value to mnt-by for the self maintained maintainer when submitting', () => {
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
         fillForm();
         let mntAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
         component.whoisResourcesService.setSingleAttributeOnName(mntAttributes, 'mntner', 'SOME-MNT');
@@ -146,7 +151,7 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
     });
 
     it('should set source from the params when submitting', () => {
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
         fillForm();
         const validateAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
         const updTo = component.whoisResourcesService.getSingleAttributeOnName(validateAttributes, 'source');
@@ -157,21 +162,21 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
     });
 
     it('should create the maintainer', () => {
-        restServiceMock.createObject.and.returnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
+        restServiceMock.createObject.mockReturnValue(of({ getAttributes: () => {}, getPrimaryKey: () => '' }));
         fillForm();
 
         component.submit();
 
         const obj = component.whoisResourcesService.turnAttrsIntoWhoisObject(component.maintainerAttributes);
-        expect(restServiceMock.createObject.calls.argsFor(0)[0]).toEqual(SOURCE);
-        expect(restServiceMock.createObject.calls.argsFor(0)[1]).toEqual('mntner');
-        expect(restServiceMock.createObject.calls.argsFor(0)[2]).toEqual(obj);
+        expect(vi.mocked(restServiceMock.createObject).mock.calls[0][0]).toEqual(SOURCE);
+        expect(vi.mocked(restServiceMock.createObject).mock.calls[0][1]).toEqual('mntner');
+        expect(vi.mocked(restServiceMock.createObject).mock.calls[0][2]).toEqual(obj);
     });
 
     it('should redirect to display page after creating a maintainer', () => {
-        spyOn(component.messageStoreService, 'add');
+        vi.spyOn(component.messageStoreService, 'add').mockReturnValue(undefined);
         const whoisResources = component.whoisResourcesService.validateWhoisResources(CREATE_RESPONSE);
-        restServiceMock.createObject.and.returnValue(of(whoisResources));
+        restServiceMock.createObject.mockReturnValue(of(whoisResources));
 
         fillForm();
 
@@ -190,12 +195,12 @@ describe('CreateSelfMaintainedMaintainerComponent', () => {
 
     it('should display global error if create the maintainer fails', async () => {
         fillForm();
-        restServiceMock.createObject.and.returnValue(throwError(() => ERROR_RESPONSE));
+        restServiceMock.createObject.mockReturnValue(throwError(() => ERROR_RESPONSE));
 
         component.submit();
 
         await fixture.whenStable();
-        expect(component.alertsService.alerts.errors).toHaveSize(1);
+        expect(component.alertsService.alerts.errors).toHaveLength(1);
         expect(component.alertsService.alerts.errors[0].plainText).toEqual('Creation of mntner failed, please see below for more details');
     });
 

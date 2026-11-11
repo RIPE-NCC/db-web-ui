@@ -7,10 +7,10 @@ import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/ro
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
 import { UserOidc } from 'src/app/dropdown/org-data-type.model';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { SelectComponent } from '../../../../src/app/updatesweb/select.component';
-import { UserInfoService } from '../../../../src/app/userinfo/user-info.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { SelectComponent } from 'src/app/updatesweb/select.component';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('SelectController', () => {
     afterAll(() => {
@@ -215,9 +215,14 @@ describe('SelectController', () => {
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of({}) });
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of({}) });
 
         TestBed.configureTestingModule({
             imports: [FormsModule, SelectComponent],
@@ -251,7 +256,7 @@ describe('SelectController', () => {
     });
 
     it('should navigate to loggin if currently logged out', () => {
-        spyOn(userInfoServiceMock, 'isLoggedIn').and.returnValue(false);
+        vi.spyOn(userInfoServiceMock, 'isLoggedIn').mockReturnValue(false);
         componentFixture = TestBed.createComponent(SelectComponent);
         component = componentFixture.componentInstance;
         componentFixture.detectChanges();
@@ -303,7 +308,7 @@ describe('SelectController', () => {
     });
 
     it('should not return as-block, poem, poetic-form, aut-num', () => {
-        spyOn(component.properties, 'isProdEnv').and.returnValue(true);
+        vi.spyOn(component.properties, 'isProdEnv').mockReturnValue(true);
         const filteredObjectTypes = component.filterObjectTypes(whoisMetaServiceMock.getObjectTypes());
         expect(filteredObjectTypes.includes('as-block')).toBeFalsy();
         expect(filteredObjectTypes.includes('poem')).toBeFalsy();
@@ -312,7 +317,7 @@ describe('SelectController', () => {
     });
 
     it('should not return poem, poetic-form, but aut-num and as-block should be present for TEST environment', () => {
-        spyOn(component.properties, 'isProdEnv').and.returnValue(false);
+        vi.spyOn(component.properties, 'isProdEnv').mockReturnValue(false);
         component.properties.NO_PASSWORD_AUTH_POPUP = true;
         const filteredObjectTypes = component.filterObjectTypes(whoisMetaServiceMock.getObjectTypes());
         expect(filteredObjectTypes.includes('as-block')).toBeTruthy();

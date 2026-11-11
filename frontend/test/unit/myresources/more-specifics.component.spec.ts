@@ -4,10 +4,10 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MoreSpecificsComponent } from '../../../src/app/myresources/morespecifics/more-specifics.component';
-import { MoreSpecificsService } from '../../../src/app/myresources/morespecifics/more-specifics.service';
-import { RefreshComponent } from '../../../src/app/myresources/refresh/refresh.component';
-import { PropertiesService } from '../../../src/app/properties.service';
+import { MoreSpecificsComponent } from 'src/app/myresources/morespecifics/more-specifics.component';
+import { MoreSpecificsService } from 'src/app/myresources/morespecifics/more-specifics.service';
+import { RefreshComponent } from 'src/app/myresources/refresh/refresh.component';
+import { PropertiesService } from 'src/app/properties.service';
 
 describe('MoreSpecificsComponent', () => {
     let component: MoreSpecificsComponent;

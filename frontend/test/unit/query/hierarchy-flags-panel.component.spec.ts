@@ -3,9 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
 import { HierarchyFlagsPanelComponent } from 'src/app/query/hierarchy-flags-panel.component';
+import { HierarchyFlagsService } from 'src/app/query/hierarchy-flags.service';
 import { IQueryParameters } from 'src/app/query/query-parameters.service';
 import { LabelPipe } from 'src/app/shared/label.pipe';
-import { HierarchyFlagsService } from '../../../src/app/query/hierarchy-flags.service';
 
 describe('HierarchyFlagsPanelComponent', () => {
     let component: HierarchyFlagsPanelComponent;
@@ -24,7 +24,7 @@ describe('HierarchyFlagsPanelComponent', () => {
             reverseDomain: false,
         } as IQueryParameters;
 
-        spyOn(HierarchyFlagsService, 'idHierarchyFlagFromShort').and.callFake((shortVal: string) => {
+        vi.spyOn(HierarchyFlagsService, 'idHierarchyFlagFromShort').mockImplementation((shortVal: string) => {
             const map = { No: 0, l: 1, L: 2, m: 3, M: 4, x: 5 };
             return map[shortVal] ?? 0;
         });
@@ -75,8 +75,8 @@ describe('HierarchyFlagsPanelComponent', () => {
     });
 
     it('should update hierarchyFlag and emit count on ngOnChanges', () => {
-        const numberSpy = spyOn(component.numberSelected, 'emit');
-        spyOn(component.queryParametersChange, 'emit');
+        const numberSpy = vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
+        vi.spyOn(component.queryParametersChange, 'emit').mockReturnValue(undefined);
 
         component.queryParameters.hierarchy = 'L';
         component.queryParameters.reverseDomain = true;
@@ -89,7 +89,7 @@ describe('HierarchyFlagsPanelComponent', () => {
     });
 
     it('should update queryParameters and emit when setHierarchyFlag() is called', () => {
-        spyOn(component, 'countSelectedHierarchyFlags');
+        vi.spyOn(component, 'countSelectedHierarchyFlags').mockReturnValue(undefined);
         component.setHierarchyFlag(2);
         expect(component.queryParameters.hierarchy).toBe('L');
         expect(component.countSelectedHierarchyFlags).toHaveBeenCalled();
@@ -106,8 +106,8 @@ describe('HierarchyFlagsPanelComponent', () => {
     });
 
     it('should emit correct number of selected hierarchy flags', () => {
-        spyOn(component.numberSelected, 'emit');
-        spyOn(component.queryParametersChange, 'emit');
+        vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
+        vi.spyOn(component.queryParametersChange, 'emit').mockReturnValue(undefined);
 
         // only reverseDomain = true
         component.queryParameters.reverseDomain = true;

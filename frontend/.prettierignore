@@ -7,8 +7,8 @@ package-lock.json
 # ignore cypress cache on gitlab
 cache/Cypress
 
-# ignore test.ts to avoid reorganize imports
-test/unit/test.ts
+# coverage reports
+coverage
 
 # ignore blockedBrowsers file
 src/assets/blockedBrowsers.js

@@ -19,7 +19,7 @@ describe('AdvanceFilterPanelComponent', () => {
         fixture = TestBed.createComponent(AdvanceFilterPanelComponent);
         component = fixture.componentInstance;
 
-        spyOn(PropertiesService, 'isMobileView').and.returnValue(false);
+        vi.spyOn(PropertiesService, 'isMobileView').mockReturnValue(false);
 
         component.queryParameters = {
             showFullObjectDetails: false,
@@ -35,23 +35,23 @@ describe('AdvanceFilterPanelComponent', () => {
     });
 
     it('should call countSelectedDropdownAdvanceFilter on ngOnChanges', () => {
-        const spy = spyOn(component, 'countSelectedDropdownAdvanceFilter');
+        const spy = vi.spyOn(component, 'countSelectedDropdownAdvanceFilter').mockReturnValue(undefined);
         component.ngOnChanges();
         expect(spy).toHaveBeenCalled();
     });
 
     it('should emit correct numberSelected and queryParametersChange (base case)', () => {
-        const emitSpy = spyOn(component.numberSelected, 'emit');
-        const changeSpy = spyOn(component.queryParametersChange, 'emit');
+        const emitSpy = vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
+        const changeSpy = vi.spyOn(component.queryParametersChange, 'emit').mockReturnValue(undefined);
 
         component.countSelectedDropdownAdvanceFilter();
 
         expect(emitSpy).toHaveBeenCalledWith(0);
-        expect(changeSpy).toHaveBeenCalledWith(jasmine.objectContaining(component.queryParameters));
+        expect(changeSpy).toHaveBeenCalledWith(expect.objectContaining(component.queryParameters));
     });
 
     it('should count correctly when all filters are selected', () => {
-        const emitSpy = spyOn(component.numberSelected, 'emit');
+        const emitSpy = vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
 
         component.queryParameters = {
             showFullObjectDetails: true,
@@ -65,7 +65,7 @@ describe('AdvanceFilterPanelComponent', () => {
     });
 
     it('should count correctly for partial selections', () => {
-        const emitSpy = spyOn(component.numberSelected, 'emit');
+        const emitSpy = vi.spyOn(component.numberSelected, 'emit').mockReturnValue(undefined);
 
         component.queryParameters = {
             showFullObjectDetails: true,

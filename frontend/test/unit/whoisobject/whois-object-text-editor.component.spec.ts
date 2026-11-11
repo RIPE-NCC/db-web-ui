@@ -5,19 +5,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY, map, of } from 'rxjs';
-import { PrefixService } from '../../../src/app/domainobject/prefix.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
-import { RpslService } from '../../../src/app/updatestext/rpsl.service';
-import { TextCommonsService } from '../../../src/app/updatestext/text-commons.service';
-import { TextModifyComponent } from '../../../src/app/updatestext/text-modify.component';
-import { ErrorReporterService } from '../../../src/app/updatesweb/error-reporter.service';
-import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
-import { WhoisObjectTextEditorComponent } from '../../../src/app/whois-object/whois-object-text-editor.component';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { IMntByModel } from 'src/app/shared/whois-response-type.model';
+import { RpslService } from 'src/app/updatestext/rpsl.service';
+import { TextCommonsService } from 'src/app/updatestext/text-commons.service';
+import { TextModifyComponent } from 'src/app/updatestext/text-modify.component';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { WhoisObjectTextEditorComponent } from 'src/app/whois-object/whois-object-text-editor.component';
 import { routeJSON } from '../updatestext/mock-test-data';
 
 describe('WhoisObjectTextEditorComponent', () => {
@@ -78,8 +78,10 @@ describe('WhoisObjectTextEditorComponent', () => {
     });
 
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: EMPTY, dismissed: EMPTY });
         TestBed.configureTestingModule({
             imports: [FormsModule, TextModifyComponent],
             providers: [
@@ -134,7 +136,7 @@ describe('WhoisObjectTextEditorComponent', () => {
     });
 
     it('should report an error when mandatory field is missing', async () => {
-        spyOn(whoisObjectTextEditorComponent.alertsServices, 'addGlobalError');
+        vi.spyOn(whoisObjectTextEditorComponent.alertsServices, 'addGlobalError').mockReturnValue(undefined);
         createInputParams();
         componentFixture.detectChanges();
 
@@ -156,7 +158,7 @@ describe('WhoisObjectTextEditorComponent', () => {
     });
 
     it('should emit delete event after pressing delete button', async () => {
-        spyOn(whoisObjectTextEditorComponent.deleteEvent, 'emit');
+        vi.spyOn(whoisObjectTextEditorComponent.deleteEvent, 'emit').mockReturnValue(undefined);
         createInputParams('route', '12.235.32.0/19AS1680');
         componentFixture.detectChanges();
 
@@ -249,19 +251,19 @@ describe('WhoisObjectTextEditorComponent', () => {
     });
 
     it('should re-fetch maintainer after authentication', async () => {
-        modalMock.open.and.returnValue({
+        modalMock.open.mockReturnValue({
             componentInstance: {},
             closed: of({}).pipe(
                 map(() => {
                     // after the modal is closed we set the mock to return authenticated user
-                    credentialsServiceMock.hasCredentials.and.returnValue(true);
-                    credentialsServiceMock.getCredentials.and.returnValue([
+                    credentialsServiceMock.hasCredentials.mockReturnValue(true);
+                    credentialsServiceMock.getCredentials.mockReturnValue([
                         {
                             mntner: 'TEST-MNT',
                             successfulPassword: 'secret',
                         },
                     ]);
-                    credentialsServiceMock.getOverrideForRestCall.and.returnValue(['secret']);
+                    credentialsServiceMock.getOverrideForRestCall.mockReturnValue(['secret']);
                     return { $value: { selectedItem: { key: 'TEST-MNT', name: 'mntner', mine: true } } };
                 }),
             ),

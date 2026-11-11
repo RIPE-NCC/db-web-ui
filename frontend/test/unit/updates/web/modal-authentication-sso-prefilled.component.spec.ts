@@ -5,11 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { ModalAuthenticationSSOPrefilledComponent } from '../../../../src/app/updatesweb/modal-authentication-sso-prefilled.component';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { UserInfoService } from '../../../../src/app/userinfo/user-info.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { ModalAuthenticationSSOPrefilledComponent } from 'src/app/updatesweb/modal-authentication-sso-prefilled.component';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('ModalAuthenticationSSOPrefilledComponent', () => {
     let httpMock: HttpTestingController;
@@ -29,8 +29,14 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
     };
 
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
-        const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        modalMock = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        };
+        const routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
         TestBed.configureTestingModule({
             imports: [FormsModule, RouterModule, ModalAuthenticationSSOPrefilledComponent],
             providers: [
@@ -127,7 +133,7 @@ describe('ModalAuthenticationSSOPrefilledComponent', () => {
         expect(modalMock.close).toHaveBeenCalledWith({
             $value: {
                 selectedItem: { type: 'mntner', key: 'b-mnt', auth: ['SSO'], mine: true },
-                response: jasmine.any(Object),
+                response: expect.any(Object),
             },
         });
     });

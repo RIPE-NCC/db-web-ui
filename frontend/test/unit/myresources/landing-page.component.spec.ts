@@ -3,15 +3,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LandingPageComponent } from 'src/app/myresources/landing-page/landing-page.component';
 import { ResourcesComponent } from 'src/app/myresources/resources.component';
 import { UserInfoService } from 'src/app/userinfo/user-info.service';
+import type { MockedObject } from 'vitest';
 
 describe('LandingPageComponent', () => {
     let component: LandingPageComponent;
     let fixture: ComponentFixture<LandingPageComponent>;
 
-    let mockUserInfoService: jasmine.SpyObj<UserInfoService>;
+    let mockUserInfoService: MockedObject<UserInfoService>;
 
     beforeEach(async () => {
-        mockUserInfoService = jasmine.createSpyObj('UserInfoService', ['isLoggedIn']);
+        mockUserInfoService = {
+            isLoggedIn: vi.fn().mockName('UserInfoService.isLoggedIn'),
+        } as any;
 
         // mockUserInfoService.getUserOrgsAndRoles.and.returnValue(of(mockUserInfo));
 
@@ -34,7 +37,7 @@ describe('LandingPageComponent', () => {
     });
 
     it('should render resource-component when loggedIn is true', () => {
-        mockUserInfoService.isLoggedIn.and.returnValue(true);
+        mockUserInfoService.isLoggedIn.mockReturnValue(true);
         fixture.detectChanges();
 
         const compiled = fixture.nativeElement as HTMLElement;
@@ -42,7 +45,7 @@ describe('LandingPageComponent', () => {
     });
 
     it('should render ripe-unified-landing-page when loggedIn is false', () => {
-        mockUserInfoService.isLoggedIn.and.returnValue(false);
+        mockUserInfoService.isLoggedIn.mockReturnValue(false);
         fixture.detectChanges();
 
         const compiled = fixture.nativeElement as HTMLElement;

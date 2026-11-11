@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { MailSentComponent } from '../../../src/app/fmp/mail-sent.component';
-import { PropertiesService } from '../../../src/app/properties.service';
+import { MailSentComponent } from 'src/app/fmp/mail-sent.component';
+import { PropertiesService } from 'src/app/properties.service';
 
 describe('MailSentComponent', () => {
     let component: MailSentComponent;
@@ -11,7 +11,7 @@ describe('MailSentComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, MailSentComponent],
-            providers: [{ provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (email: string) => 'test@work.net' } } } }, PropertiesService],
+            providers: [{ provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (_email: string) => 'test@work.net' } } } }, PropertiesService],
         });
         fixture = TestBed.createComponent(MailSentComponent);
         component = fixture.componentInstance;

@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AssociatedObjectsService } from '../../../src/app/myresources/associatedobjects/associated-objects.service';
+import { AssociatedObjectsService } from 'src/app/myresources/associatedobjects/associated-objects.service';
 
 describe('AssociatedObjectsService', () => {
     let associatedObjectsService: AssociatedObjectsService;
@@ -17,10 +17,9 @@ describe('AssociatedObjectsService', () => {
     });
 
     describe('for route', () => {
-        it('should call API for associated route objects of inetnum', (done) => {
+        it('should call API for associated route objects of inetnum', async () => {
             associatedObjectsService.getAssociatedObjects('route', '185.162.88.0%20-%20185.162.91.255', 'inetnum', 0, '').subscribe((res: any) => {
                 expect(res).toEqual({ resp: 'lol' });
-                done();
             });
             const req = httpMock.expectOne({
                 method: 'GET',
@@ -30,10 +29,9 @@ describe('AssociatedObjectsService', () => {
             req.flush({ resp: 'lol' });
         });
 
-        it('should call API for associated route objects of autnum', (done) => {
+        it('should call API for associated route objects of autnum', async () => {
             associatedObjectsService.getAssociatedObjects('route', 'AS44569', 'aut-num', 0, '').subscribe((res: any) => {
                 expect(res).toEqual({ resp: 'lol' });
-                done();
             });
             const req = httpMock.expectOne({
                 method: 'GET',
@@ -45,10 +43,9 @@ describe('AssociatedObjectsService', () => {
     });
 
     describe('for domain', () => {
-        it('should call API for associated domain objects of inet6num', (done) => {
+        it('should call API for associated domain objects of inet6num', async () => {
             associatedObjectsService.getAssociatedObjects('domain', '2001:67c:2334::/48', 'inet6num', 0, '').subscribe((res: any) => {
                 expect(res).toEqual({ resp: 'lol' });
-                done();
             });
             const req = httpMock.expectOne({
                 method: 'GET',
@@ -62,7 +59,7 @@ describe('AssociatedObjectsService', () => {
             associatedObjectsService.getAssociatedObjects('domain', 'AS44569', 'aut-num', 0, '').subscribe({
                 next: () => {
                     // NOT to be called
-                    expect(true).toBeFalse();
+                    expect(true).toBe(false);
                 },
                 error: (error) => {
                     expect(error.status).toBe(400);

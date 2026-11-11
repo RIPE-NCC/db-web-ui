@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SearchFieldComponent } from '../../../../src/app/shared/sreachfield/search-field.component';
+import { SearchFieldComponent } from 'src/app/shared/sreachfield/search-field.component';
 
 describe('SearchFieldComponent', () => {
     let component: SearchFieldComponent;
@@ -29,7 +29,7 @@ describe('SearchFieldComponent', () => {
     });
 
     it('should emit queryTextChange on input change', () => {
-        spyOn(component.queryTextChange, 'emit');
+        vi.spyOn(component.queryTextChange, 'emit').mockReturnValue(undefined);
         fixture.detectChanges();
 
         const inputEl = fixture.debugElement.query(By.css('input#searchInput')).nativeElement;
@@ -57,7 +57,7 @@ describe('SearchFieldComponent', () => {
     });
 
     it('should clear queryText when clear button is clicked', () => {
-        spyOn(component, 'onInputChange');
+        vi.spyOn(component, 'onInputChange').mockReturnValue(undefined);
         component.queryText = 'to be cleared';
         fixture.detectChanges();
 

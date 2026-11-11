@@ -8,19 +8,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CookieService } from 'ngx-cookie-service';
 import { throwError } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { CertificateInfoComponent } from '../../../src/app/query/certificate-info.component';
-import { LookupComponent } from '../../../src/app/query/lookup.component';
-import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
-import { QueryFlagsService } from '../../../src/app/query/query-flags.service';
-import { QueryParametersService } from '../../../src/app/query/query-parameters.service';
-import { QueryComponent } from '../../../src/app/query/query.component';
-import { QueryService } from '../../../src/app/query/query.service';
-import { TemplateComponent } from '../../../src/app/query/templatecomponent/template.component';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { IWhoisResponseModel } from '../../../src/app/shared/whois-response-type.model';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
-import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { CertificateInfoComponent } from 'src/app/query/certificate-info.component';
+import { LookupComponent } from 'src/app/query/lookup.component';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
+import { QueryFlagsService } from 'src/app/query/query-flags.service';
+import { QueryParametersService } from 'src/app/query/query-parameters.service';
+import { QueryComponent } from 'src/app/query/query.component';
+import { QueryService } from 'src/app/query/query.service';
+import { TemplateComponent } from 'src/app/query/templatecomponent/template.component';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { IWhoisResponseModel } from 'src/app/shared/whois-response-type.model';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
+import { WhoisObjectViewerComponent } from 'src/app/whois-object/whois-object-viewer.component';
+import type { MockedObject } from 'vitest';
 
 const whoisObjectModelMock = {
     type: 'inetnum',
@@ -153,20 +154,20 @@ const mockTemplateAutnum =
 describe('QueryComponent', () => {
     let component: QueryComponent;
     let fixture: ComponentFixture<QueryComponent>;
-    let queryServiceSpy: jasmine.SpyObj<QueryService>;
+    let queryServiceSpy: MockedObject<QueryService>;
     let userInfoService: any;
     let whoisMetaService: WhoisMetaService;
     let queryParametersService: QueryParametersService;
 
     beforeEach(() => {
-        queryServiceSpy = jasmine.createSpyObj('QueryService', [
-            'searchWhoisObjects',
-            'searchTemplate',
-            'buildQueryStringForLink',
-            'buildPermalink',
-            'getTypesAppropriateToQuery',
-            'getTypeOfSearchedTerm',
-        ]);
+        queryServiceSpy = {
+            searchWhoisObjects: vi.fn().mockName('QueryService.searchWhoisObjects'),
+            searchTemplate: vi.fn().mockName('QueryService.searchTemplate'),
+            buildQueryStringForLink: vi.fn().mockName('QueryService.buildQueryStringForLink'),
+            buildPermalink: vi.fn().mockName('QueryService.buildPermalink'),
+            getTypesAppropriateToQuery: vi.fn().mockName('QueryService.getTypesAppropriateToQuery'),
+            getTypeOfSearchedTerm: vi.fn().mockName('QueryService.getTypeOfSearchedTerm'),
+        } as any;
         TestBed.configureTestingModule({
             imports: [
                 FormsModule,
@@ -209,7 +210,7 @@ describe('QueryComponent', () => {
 
         fixture = TestBed.createComponent(QueryComponent);
         component = fixture.componentInstance;
-        spyOn(component.router, 'navigate');
+        vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
     });
 
     it('should create', () => {
@@ -287,7 +288,7 @@ describe('QueryComponent', () => {
     });
 
     it('should enable all types, set all types from ObjectTypesEnum', () => {
-        queryServiceSpy.getTypesAppropriateToQuery.and.returnValue(Object.values(ObjectTypesEnum));
+        queryServiceSpy.getTypesAppropriateToQuery.mockReturnValue(Object.values(ObjectTypesEnum));
         component.init();
         component.qp.queryText = '1.1.1.1';
         component.availableTypes = [ObjectTypesEnum.INETNUM];
@@ -354,7 +355,7 @@ describe('QueryComponent', () => {
         };
 
         beforeEach(() => {
-            queryServiceSpy.searchWhoisObjects.and.returnValue(of(successResponse));
+            queryServiceSpy.searchWhoisObjects.mockReturnValue(of(successResponse));
         });
 
         it('should parse the options into the form', () => {
@@ -508,7 +509,7 @@ describe('QueryComponent', () => {
         };
 
         beforeEach(() => {
-            queryServiceSpy.searchWhoisObjects.and.returnValue(of(successResponse));
+            queryServiceSpy.searchWhoisObjects.mockReturnValue(of(successResponse));
             queryServiceSpy.PAGE_SIZE = 20 as any;
         });
 
@@ -541,7 +542,7 @@ describe('QueryComponent', () => {
 
     describe('with a disallowed versions flag (backend rejection)', () => {
         beforeEach(() => {
-            spyOn(queryParametersService, 'validate').and.returnValue({ errors: [], warnings: [] });
+            vi.spyOn(queryParametersService, 'validate').mockReturnValue({ errors: [], warnings: [] });
         });
 
         const disallowedFlagError = (flag: string) => ({
@@ -557,7 +558,7 @@ describe('QueryComponent', () => {
         });
 
         it('does not stack the error across repeated searches', () => {
-            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(() => disallowedFlagError('diff-versions')));
+            queryServiceSpy.searchWhoisObjects.mockReturnValue(throwError(() => disallowedFlagError('diff-versions')));
 
             component.qp.queryText = '--diff-versions ripe';
             component.doSearch();
@@ -568,12 +569,12 @@ describe('QueryComponent', () => {
         });
 
         it('replaces the flag error when switching to a valid search', () => {
-            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(() => disallowedFlagError('list-versions')));
+            queryServiceSpy.searchWhoisObjects.mockReturnValue(throwError(() => disallowedFlagError('list-versions')));
             component.qp.queryText = '--list-versions ripe';
             component.doSearch();
             expect(component.alertsService.alerts.errors.length).toEqual(1);
 
-            queryServiceSpy.searchWhoisObjects.and.returnValue(of({ objects: { object: [{}, {}] } } as any));
+            queryServiceSpy.searchWhoisObjects.mockReturnValue(of({ objects: { object: [{}, {}] } } as any));
             component.qp.queryText = '193.0.0.0';
             component.doSearch();
 
@@ -581,7 +582,7 @@ describe('QueryComponent', () => {
         });
 
         it('stacks multiple disallowed-flag errors when the backend returns several', () => {
-            queryServiceSpy.searchWhoisObjects.and.returnValue(
+            queryServiceSpy.searchWhoisObjects.mockReturnValue(
                 throwError(() => ({
                     errormessages: {
                         errormessage: [
@@ -597,8 +598,8 @@ describe('QueryComponent', () => {
 
             expect(component.alertsService.alerts.errors.length).toEqual(2);
             const msgs = component.alertsService.alerts.errors.map((e) => component.formatError(e));
-            expect(msgs.some((m) => m.includes('list-versions'))).toBeTrue();
-            expect(msgs.some((m) => m.includes('diff-versions'))).toBeTrue();
+            expect(msgs.some((m) => m.includes('list-versions'))).toBe(true);
+            expect(msgs.some((m) => m.includes('diff-versions'))).toBe(true);
         });
     });
 
@@ -636,7 +637,7 @@ describe('QueryComponent', () => {
         };
 
         beforeEach(() => {
-            queryServiceSpy.searchWhoisObjects.and.returnValue(throwError(() => errorResponse));
+            queryServiceSpy.searchWhoisObjects.mockReturnValue(throwError(() => errorResponse));
         });
 
         it('should show error messages', () => {
@@ -700,7 +701,7 @@ describe('QueryComponent', () => {
 
     describe('with a --template query', () => {
         it('should not show error or warning messages', () => {
-            queryServiceSpy.searchTemplate.and.returnValue(of(mockTemplateAutnum));
+            queryServiceSpy.searchTemplate.mockReturnValue(of(mockTemplateAutnum));
             // @ts-ignore
             component.activatedRoute.snapshot = {
                 queryParamMap: convertToParamMap({
@@ -722,7 +723,7 @@ describe('QueryComponent', () => {
         });
 
         it('should show error messages', () => {
-            queryServiceSpy.searchTemplate.and.returnValue(of(mockTemplateAutnum));
+            queryServiceSpy.searchTemplate.mockReturnValue(of(mockTemplateAutnum));
             // @ts-ignore
             component.activatedRoute.snapshot = {
                 queryParamMap: convertToParamMap({

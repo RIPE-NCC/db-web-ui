@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { IAttributeModel } from '../../../src/app/shared/whois-response-type.model';
-import { CharsetToolsService } from '../../../src/app/updatesweb/charset-tools.service';
+import { IAttributeModel } from 'src/app/shared/whois-response-type.model';
+import { CharsetToolsService } from 'src/app/updatesweb/charset-tools.service';
 
 describe('updates: CharsetToolsService', () => {
     let subject: CharsetToolsService;

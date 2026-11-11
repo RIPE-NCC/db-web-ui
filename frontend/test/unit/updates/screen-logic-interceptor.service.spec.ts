@@ -2,13 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { LinkService } from '../../../src/app/updatesweb/link.service';
-import { MessageStoreService } from '../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../src/app/updatesweb/mntner.service';
-import { ScreenLogicInterceptorService } from '../../../src/app/updatesweb/screen-logic-interceptor.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { LinkService } from 'src/app/updatesweb/link.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { ScreenLogicInterceptorService } from 'src/app/updatesweb/screen-logic-interceptor.service';
 
 describe('ScreenLogicInterceptorService', () => {
     let interceptor: ScreenLogicInterceptorService;
@@ -23,10 +23,10 @@ describe('ScreenLogicInterceptorService', () => {
                 { provide: '$log', useValue: { info: () => {}, error: () => {} } },
                 {
                     provide: 'OrganisationHelperService',
-                    useValue: { containsAttribute: (attributes: any, attribute: string) => attributes, addAbuseC: (attributes: any) => attributes },
+                    useValue: { containsAttribute: (attributes: any, _attribute: string) => attributes, addAbuseC: (attributes: any) => attributes },
                 },
                 MessageStoreService,
-                { provide: MntnerService, useValue: { ssoMntners: [], isNccMntner: (mntnerKey: string) => true } },
+                { provide: MntnerService, useValue: { ssoMntners: [], isNccMntner: (_mntnerKey: string) => true } },
                 LinkService,
                 WhoisMetaService,
                 WhoisResourcesService,

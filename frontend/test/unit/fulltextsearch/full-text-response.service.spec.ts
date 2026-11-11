@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { FullTextResponseService } from '../../../src/app/fulltextsearch/full-text-response.service';
+import { FullTextResponseService } from 'src/app/fulltextsearch/full-text-response.service';
 
 describe('FullTextResponseService', () => {
     let fullTextResponseService: FullTextResponseService;

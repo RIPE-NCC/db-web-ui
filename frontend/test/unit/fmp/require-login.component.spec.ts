@@ -2,8 +2,8 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
-import { RequireLoginComponent } from '../../../src/app/fmp/require-login.component';
-import { PropertiesService } from '../../../src/app/properties.service';
+import { RequireLoginComponent } from 'src/app/fmp/require-login.component';
+import { PropertiesService } from 'src/app/properties.service';
 
 describe('RequireLoginComponent', () => {
     let component: RequireLoginComponent;
@@ -12,7 +12,10 @@ describe('RequireLoginComponent', () => {
     let queryParamMock: ParamMap;
 
     beforeEach(() => {
-        mockLocation = jasmine.createSpyObj('Location', ['search', 'absUrl']);
+        mockLocation = {
+            search: vi.fn().mockName('Location.search'),
+            absUrl: vi.fn().mockName('Location.absUrl'),
+        };
         queryParamMock = convertToParamMap({});
         TestBed.configureTestingModule({
             imports: [RequireLoginComponent],
@@ -33,24 +36,24 @@ describe('RequireLoginComponent', () => {
 
     describe('Testing login url', () => {
         it('should extract return url', () => {
-            spyOn(queryParamMock, 'has').and.returnValue(false);
-            mockLocation.search.and.returnValue({});
-            mockLocation.absUrl.and.returnValue('http://server/fmp/requireLogin');
+            vi.spyOn(queryParamMock, 'has').mockReturnValue(false);
+            mockLocation.search.mockReturnValue({});
+            mockLocation.absUrl.mockReturnValue('http://server/fmp/requireLogin');
             fixture.detectChanges();
             const expectedUrl = encodeURIComponent(window.location.origin + '/db-web-ui/fmp/');
             expect(component.loginUrl).toBe(`/db-web-ui/oauth2/authorization/keycloak?next=${expectedUrl}`);
         });
 
         it('should not extract return url for forgot maintainer page', () => {
-            spyOn(queryParamMock, 'has').and.returnValue(false);
+            vi.spyOn(queryParamMock, 'has').mockReturnValue(false);
             fixture.detectChanges();
             const expectedUrl = encodeURIComponent(window.location.origin + '/db-web-ui/fmp/');
             expect(component.loginUrl).toBe(`/db-web-ui/oauth2/authorization/keycloak?next=${expectedUrl}`);
         });
 
         it('should extract return url for forgot maintainer page', () => {
-            spyOn(queryParamMock, 'has').and.returnValue(true);
-            spyOn(queryParamMock, 'get').and.callFake((p) => {
+            vi.spyOn(queryParamMock, 'has').mockReturnValue(true);
+            vi.spyOn(queryParamMock, 'get').mockImplementation((p) => {
                 switch (p) {
                     case 'mntnerKey':
                         return 'mnt-key';
@@ -64,8 +67,8 @@ describe('RequireLoginComponent', () => {
         });
 
         it('should extract return url for forgot maintainer page with voluntary undefined', () => {
-            spyOn(queryParamMock, 'has').and.returnValue(true);
-            spyOn(queryParamMock, 'get').and.callFake((p) => {
+            vi.spyOn(queryParamMock, 'has').mockReturnValue(true);
+            vi.spyOn(queryParamMock, 'get').mockImplementation((p) => {
                 switch (p) {
                     case 'mntnerKey':
                         return 'mnt-key';
@@ -80,8 +83,8 @@ describe('RequireLoginComponent', () => {
         });
 
         it('should extract return url for forgot maintainer page with voluntary false', () => {
-            spyOn(queryParamMock, 'has').and.returnValue(true);
-            spyOn(queryParamMock, 'get').and.callFake((p) => {
+            vi.spyOn(queryParamMock, 'has').mockReturnValue(true);
+            vi.spyOn(queryParamMock, 'get').mockImplementation((p) => {
                 switch (p) {
                     case 'mntnerKey':
                         return 'mnt-key';

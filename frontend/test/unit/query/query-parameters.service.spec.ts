@@ -1,9 +1,9 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { QueryFlagsService } from '../../../src/app/query/query-flags.service';
-import { IQueryParameters, QueryParametersService } from '../../../src/app/query/query-parameters.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
+import { QueryFlagsService } from 'src/app/query/query-flags.service';
+import { IQueryParameters, QueryParametersService } from 'src/app/query/query-parameters.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
 
 describe('QueryParameters', () => {
     let queryParametersService: QueryParametersService;

@@ -4,14 +4,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { ModalPGPKeyComponent } from 'src/app/updatesweb/modal-pgp-key.component';
+import type { MockedObject } from 'vitest';
 
 describe('ModalPGPKeyComponent', () => {
     let component: ModalPGPKeyComponent;
     let fixture: ComponentFixture<ModalPGPKeyComponent>;
-    let mockActiveModal: jasmine.SpyObj<NgbActiveModal>;
+    let mockActiveModal: MockedObject<NgbActiveModal>;
 
     beforeEach(async () => {
-        mockActiveModal = jasmine.createSpyObj('NgbActiveModal', ['close', 'dismiss']);
+        mockActiveModal = {
+            close: vi.fn().mockName('NgbActiveModal.close'),
+            dismiss: vi.fn().mockName('NgbActiveModal.dismiss'),
+        } as any;
 
         await TestBed.configureTestingModule({
             imports: [FormsModule, MatButtonModule, FormsModule],
@@ -25,7 +29,7 @@ describe('ModalPGPKeyComponent', () => {
 
         component.pgpCtrl = {
             valueChanges: of('test'),
-            control: { setValue: jasmine.createSpy('setValue') },
+            control: { setValue: vi.fn().mockName('setValue') },
         } as unknown as NgModel;
 
         fixture.detectChanges();
@@ -38,20 +42,20 @@ describe('ModalPGPKeyComponent', () => {
     it('should set validPgp to true on valueChanges', async () => {
         component.validPgp = false;
         component.ngAfterViewInit();
-        component.pgpCtrl.valueChanges?.subscribe();
+        component.pgpCtrl.control.setValue('test');
         await fixture.whenStable();
-        expect(component.validPgp).toBeTrue();
+        expect(component.validPgp).toBe(true);
     });
 
     describe('verifyPGP', () => {
         it('should return true for valid PGP key', () => {
             component.pgpKey = `${component['PGP_HEADER']}abc${component['PGP_FOOTER']}`;
-            expect(component['verifyPGP'](component.pgpKey.trim())).toBeTrue();
+            expect(component['verifyPGP'](component.pgpKey.trim())).toBe(true);
         });
 
         it('should return false for invalid PGP key', () => {
             component.pgpKey = 'invalid key - without header and footer';
-            expect(component['verifyPGP'](component.pgpKey.trim())).toBeFalse();
+            expect(component['verifyPGP'](component.pgpKey.trim())).toBe(false);
         });
     });
 
@@ -60,28 +64,28 @@ describe('ModalPGPKeyComponent', () => {
             component.pgpKey = `${component['PGP_HEADER']}abc${component['PGP_FOOTER']}`;
             component.submit();
             expect(mockActiveModal.close).toHaveBeenCalledWith(component.pgpKey);
-            expect(component.validPgp).toBeTrue();
+            expect(component.validPgp).toBe(true);
         });
 
         it('should set validPgp to false if PGP is invalid', () => {
             component.pgpKey = 'invalid key - without header and footer';
             component.submit();
             expect(mockActiveModal.close).not.toHaveBeenCalled();
-            expect(component.validPgp).toBeFalse();
+            expect(component.validPgp).toBe(false);
         });
 
         it('should close modal if X509 is valid', () => {
             component.pgpKey = `${component['X509_HEADER']}abc${component['X509_FOOTER']}`;
             component.submit();
             expect(mockActiveModal.close).toHaveBeenCalledWith(component.pgpKey);
-            expect(component.validPgp).toBeTrue();
+            expect(component.validPgp).toBe(true);
         });
 
         it('should set validPgp to false if X509 is invalid', () => {
             component.pgpKey = 'invalid key - without header and footer';
             component.submit();
             expect(mockActiveModal.close).not.toHaveBeenCalled();
-            expect(component.validPgp).toBeFalse();
+            expect(component.validPgp).toBe(false);
         });
     });
 

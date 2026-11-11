@@ -3,11 +3,11 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { ForceDeleteSelectComponent } from '../../../../src/app/updatesweb/forcedeleteselect/force-delete-select.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { ForceDeleteSelectComponent } from 'src/app/updatesweb/forcedeleteselect/force-delete-select.component';
 
 describe('ForceDeleteSelectComponent', () => {
     let httpMock: HttpTestingController;
@@ -16,7 +16,10 @@ describe('ForceDeleteSelectComponent', () => {
     let routerMock: any;
 
     beforeEach(() => {
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
         TestBed.configureTestingModule({
             imports: [FormsModule, ForceDeleteSelectComponent],
             providers: [

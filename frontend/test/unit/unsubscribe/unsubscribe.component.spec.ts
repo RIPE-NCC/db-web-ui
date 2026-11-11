@@ -1,12 +1,12 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { throwError } from 'rxjs';
-import { LoadingIndicatorComponent } from '../../../src/app/shared/loadingindicator/loading-indicator.component';
-import { UnsubscribeComponent } from '../../../src/app/unsubscribe/unsubscribe.component';
-import { UnsubscribeService } from '../../../src/app/unsubscribe/unsubscribe.service';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
+import { LoadingIndicatorComponent } from 'src/app/shared/loadingindicator/loading-indicator.component';
+import { UnsubscribeComponent } from 'src/app/unsubscribe/unsubscribe.component';
+import { UnsubscribeService } from 'src/app/unsubscribe/unsubscribe.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('UnsubscribeComponent', () => {
     const url = 'api/whois-internal/public/unsubscribe';
@@ -16,18 +16,18 @@ describe('UnsubscribeComponent', () => {
     let httpMock: HttpTestingController;
     let service: UnsubscribeService;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({
             imports: [UnsubscribeComponent, LoadingIndicatorComponent],
             providers: [
                 UnsubscribeService,
-                { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (messageId: string) => '123456789012345678' } } } },
+                { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (_messageId: string) => '123456789012345678' } } } },
                 { provide: UserInfoService, useValue: { data: throwError(() => 401) } },
                 provideHttpClient(withXhr(), withInterceptorsFromDi()),
                 provideHttpClientTesting(),
             ],
         });
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(UnsubscribeComponent);

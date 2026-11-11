@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { SyncupdatesService } from '../../../src/app/syncupdates/syncupdates.service';
+import { SyncupdatesService } from 'src/app/syncupdates/syncupdates.service';
 
 describe('SyncupdatesService', () => {
     let httpMock: HttpTestingController;

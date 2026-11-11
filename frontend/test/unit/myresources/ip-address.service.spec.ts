@@ -1,4 +1,4 @@
-import { IpAddressService } from '../../../src/app/myresources/ip-address.service';
+import { IpAddressService } from 'src/app/myresources/ip-address.service';
 
 describe('IpAddressService', () => {
     it('should return true for ipv4 addres in range or CIDR', () => {

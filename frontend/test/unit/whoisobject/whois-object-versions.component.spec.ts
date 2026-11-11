@@ -5,12 +5,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { IObjectVersionResponse, IObjectVersionsModel, IWhoisResponseModel } from '../../../src/app/shared/whois-response-type.model';
-import { VersionsLookupService } from '../../../src/app/versions/versions-lookup.service';
-import { VersionsComponent } from '../../../src/app/versions/versions.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { IObjectVersionResponse, IObjectVersionsModel } from 'src/app/shared/whois-response-type.model';
+import { VersionsLookupService } from 'src/app/versions/versions-lookup.service';
+import { VersionsComponent } from 'src/app/versions/versions.component';
+import type { MockedObject } from 'vitest';
 
 const versionsMock: IObjectVersionsModel = {
     versions: {
@@ -89,22 +90,17 @@ const versionMock: IObjectVersionResponse = {
     },
 } as IObjectVersionResponse;
 
-const lookupMock: IWhoisResponseModel = {
-    version: {
-        version: '1.123-SNAPSHOT',
-        timestamp: '2026-06-03T13:29:29Z',
-        'commit-id': '84cbccb',
-    },
-} as IWhoisResponseModel;
-
 describe('VersionsComponent', () => {
     let component: VersionsComponent;
     let fixture: ComponentFixture<VersionsComponent>;
-    let versionsLookupServiceSpy: jasmine.SpyObj<VersionsLookupService>;
+    let versionsLookupServiceSpy: MockedObject<VersionsLookupService>;
     let router: Router;
 
     beforeEach(() => {
-        versionsLookupServiceSpy = jasmine.createSpyObj('VersionsLookupService', ['getVersion', 'getVersions']);
+        versionsLookupServiceSpy = {
+            getVersion: vi.fn().mockName('VersionsLookupService.getVersion'),
+            getVersions: vi.fn().mockName('VersionsLookupService.getVersions'),
+        } as any;
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, VersionsComponent],
             providers: [
@@ -132,8 +128,8 @@ describe('VersionsComponent', () => {
         component = fixture.componentInstance;
         router = TestBed.inject(Router);
 
-        versionsLookupServiceSpy.getVersions.and.returnValue(of(versionsMock));
-        versionsLookupServiceSpy.getVersion.and.returnValue(of(versionMock));
+        versionsLookupServiceSpy.getVersions.mockReturnValue(of(versionsMock));
+        versionsLookupServiceSpy.getVersion.mockReturnValue(of(versionMock));
     });
 
     it('should create', () => {
@@ -169,7 +165,7 @@ describe('VersionsComponent', () => {
 
     it('should mark the preselected version as latest', () => {
         component.ngOnInit();
-        expect(component.isLatest).toBeTrue();
+        expect(component.isLatest).toBe(true);
     });
 
     it('should fetch a version when one is selected from the dropdown', () => {
@@ -181,23 +177,23 @@ describe('VersionsComponent', () => {
 
     it('should mark a non-max version as not latest when selected', () => {
         component.ngOnInit();
-        versionsLookupServiceSpy.getVersion.and.returnValue(
+        versionsLookupServiceSpy.getVersion.mockReturnValue(
             of({ objects: { object: [{ ...versionMock.objects.object[0], version: 3 }] } } as IObjectVersionResponse),
         );
         component.onVersionSelect(3);
-        expect(component.isLatest).toBeFalse();
+        expect(component.isLatest).toBe(false);
     });
 
     it('should cache fetched versions and not refetch the same id', () => {
         component.ngOnInit();
         component.onVersionSelect(3);
-        const callsAfterFirst = versionsLookupServiceSpy.getVersion.calls.count();
+        const callsAfterFirst = vi.mocked(versionsLookupServiceSpy.getVersion).mock.calls.length;
         component.onVersionSelect(3);
-        expect(versionsLookupServiceSpy.getVersion.calls.count()).toEqual(callsAfterFirst);
+        expect(vi.mocked(versionsLookupServiceSpy.getVersion).mock.calls.length).toEqual(callsAfterFirst);
     });
 
     it('should navigate to version-diff with query params including from and searchtext', () => {
-        const navigateSpy = spyOn(router, 'navigate');
+        const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(undefined);
         component.ngOnInit();
         component.navigateToVersionDiff();
         expect(navigateSpy).toHaveBeenCalledWith(['version-diff'], {

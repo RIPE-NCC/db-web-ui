@@ -1,18 +1,19 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
+import { ApiKeyConfirmationDialogComponent } from 'src/app/apikeys/api-key-confirmation-dialog/api-key-confirmation-dialog.component';
+import { ApiKeysService } from 'src/app/apikeys/api-keys.service';
+import { CreateNewApiKeyComponent } from 'src/app/apikeys/create-new-api-key/create-new-api-key.component';
+import { ApiKey } from 'src/app/apikeys/types';
 import { KeyType } from 'src/app/apikeys/utils';
-import { ApiKeyConfirmationDialogComponent } from '../../../src/app/apikeys/api-key-confirmation-dialog/api-key-confirmation-dialog.component';
-import { ApiKeysService } from '../../../src/app/apikeys/api-keys.service';
-import { CreateNewApiKeyComponent } from '../../../src/app/apikeys/create-new-api-key/create-new-api-key.component';
-import { ApiKey } from '../../../src/app/apikeys/types';
-import { IUserInfoOrganisation } from '../../../src/app/dropdown/org-data-type.model';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { IMntByModel } from '../../../src/app/shared/whois-response-type.model';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
-import SpyObj = jasmine.SpyObj;
+import { IUserInfoOrganisation } from 'src/app/dropdown/org-data-type.model';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { IMntByModel } from 'src/app/shared/whois-response-type.model';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import type { MockedObject } from 'vitest';
+type SpyObj<T> = MockedObject<T>;
 
 describe('CreateNewApiKeyComponent', () => {
     let component: CreateNewApiKeyComponent;
@@ -36,12 +37,21 @@ describe('CreateNewApiKeyComponent', () => {
         keyType: 'mntner',
     };
 
-    beforeEach(waitForAsync(() => {
-        restServiceMock = jasmine.createSpyObj<RestService>('RestService', ['autocomplete']);
-        apiKeysServiceMock = jasmine.createSpyObj<ApiKeysService>('ApiKeysService', ['saveApiKey']);
-        matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
-        alertsServiceMock = jasmine.createSpyObj<AlertsService>('AlertsService', ['addGlobalError', 'clearAlertMessages']);
-        void TestBed.configureTestingModule({
+    beforeEach(async () => {
+        restServiceMock = {
+            autocomplete: vi.fn().mockName('RestService.autocomplete'),
+        } as any;
+        apiKeysServiceMock = {
+            saveApiKey: vi.fn().mockName('ApiKeysService.saveApiKey'),
+        } as any;
+        matDialogMock = {
+            open: vi.fn().mockName('MatDialog.open'),
+        } as any;
+        alertsServiceMock = {
+            addGlobalError: vi.fn().mockName('AlertsService.addGlobalError'),
+            clearAlertMessages: vi.fn().mockName('AlertsService.clearAlertMessages'),
+        } as any;
+        await TestBed.configureTestingModule({
             imports: [MatDialogModule, MatNativeDateModule, NoopAnimationsModule, CreateNewApiKeyComponent],
             providers: [
                 { provide: RestService, useValue: restServiceMock },
@@ -50,7 +60,7 @@ describe('CreateNewApiKeyComponent', () => {
                 { provide: AlertsService, useValue: alertsServiceMock },
             ],
         }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(CreateNewApiKeyComponent);
@@ -76,17 +86,19 @@ describe('CreateNewApiKeyComponent', () => {
         expect(component.selectedKeyType).toEqual(KeyType.MAINTAINER);
     });
 
-    it('should search maintainers', fakeAsync(() => {
+    it('should search maintainers', () => {
+        vi.useFakeTimers();
         const autocompleteResponse: IMntByModel[] = [{ key: 'maint-m', type: 'a' }];
-        restServiceMock.autocomplete.and.returnValue(of(autocompleteResponse));
+        restServiceMock.autocomplete.mockReturnValue(of(autocompleteResponse));
 
         component.maintainers = [{ key: 'search me' }];
         component.onInputChange(0, 'search me');
-        tick(500);
+        vi.advanceTimersByTime(500);
+        vi.useRealTimers();
 
         expect(restServiceMock.autocomplete).toHaveBeenCalledWith('mnt-by', 'search me', true, ['auth']);
         expect(component.maintainersOptions).toEqual(autocompleteResponse);
-    }));
+    });
 
     it('should save the new MAINTAINER apikey', () => {
         const apiKeyResponse: ApiKey = {
@@ -97,7 +109,7 @@ describe('CreateNewApiKeyComponent', () => {
             secretKey: 'secretKey',
             keyType: 'mntner',
         };
-        apiKeysServiceMock.saveApiKey.and.returnValue(of(apiKeyResponse));
+        apiKeysServiceMock.saveApiKey.mockReturnValue(of(apiKeyResponse));
 
         component.selectedKeyType = KeyType.MAINTAINER;
         component.apiKeyName = 'fake api key name';
@@ -117,7 +129,7 @@ describe('CreateNewApiKeyComponent', () => {
     });
 
     it('should save the new MAINTAINER apikey when maintainer is undefined', () => {
-        apiKeysServiceMock.saveApiKey.and.returnValue(of(mockSuccessfulApiKeyCreateResponse));
+        apiKeysServiceMock.saveApiKey.mockReturnValue(of(mockSuccessfulApiKeyCreateResponse));
 
         component.selectedKeyType = KeyType.MAINTAINER;
         component.apiKeyName = 'fake api key name';
@@ -141,7 +153,7 @@ describe('CreateNewApiKeyComponent', () => {
                 },
             },
         };
-        apiKeysServiceMock.saveApiKey.and.returnValue(throwError(() => akiKeyErrorResponse));
+        apiKeysServiceMock.saveApiKey.mockReturnValue(throwError(() => akiKeyErrorResponse));
 
         component.selectedKeyType = KeyType.MAINTAINER;
         component.apiKeyName = 'fake api key name';
@@ -156,7 +168,7 @@ describe('CreateNewApiKeyComponent', () => {
     });
 
     it('should save the new IP_ANALYSER apikey', () => {
-        apiKeysServiceMock.saveApiKey.and.returnValue(of(mockSuccessfulApiKeyCreateResponse));
+        apiKeysServiceMock.saveApiKey.mockReturnValue(of(mockSuccessfulApiKeyCreateResponse));
 
         component.selectedKeyType = KeyType.IP_ANALYSER;
         component.apiKeyName = 'IP_ANALYSER-KEY';
@@ -172,7 +184,7 @@ describe('CreateNewApiKeyComponent', () => {
     });
 
     it('should save the new MY_RESOURCES apikey', () => {
-        apiKeysServiceMock.saveApiKey.and.returnValue(of(mockSuccessfulApiKeyCreateResponse));
+        apiKeysServiceMock.saveApiKey.mockReturnValue(of(mockSuccessfulApiKeyCreateResponse));
 
         component.selectedKeyType = KeyType.MY_RESOURCES;
         component.apiKeyName = 'MY_RESOURCES-KEY';

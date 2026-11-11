@@ -7,25 +7,25 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { EMPTY, of } from 'rxjs';
-import { AttributeMetadataService } from '../../../../src/app/attribute/attribute-metadata.service';
-import { AttributeSharedService } from '../../../../src/app/attribute/attribute-shared.service';
-import { PrefixService } from '../../../../src/app/domainobject/prefix.service';
-import { ResourceStatusService } from '../../../../src/app/myresources/resource-status.service';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { CharsetToolsService } from '../../../../src/app/updatesweb/charset-tools.service';
-import { CreateModifyComponent } from '../../../../src/app/updatesweb/create-modify.component';
-import { EnumService } from '../../../../src/app/updatesweb/enum.service';
-import { ErrorReporterService } from '../../../../src/app/updatesweb/error-reporter.service';
-import { LinkService } from '../../../../src/app/updatesweb/link.service';
-import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
-import { MntnerService } from '../../../../src/app/updatesweb/mntner.service';
-import { OrganisationHelperService } from '../../../../src/app/updatesweb/organisation-helper.service';
-import { PreferenceService } from '../../../../src/app/updatesweb/preference.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { ScreenLogicInterceptorService } from '../../../../src/app/updatesweb/screen-logic-interceptor.service';
-import { WebUpdatesCommonsService } from '../../../../src/app/updatesweb/web-updates-commons.service';
+import { AttributeMetadataService } from 'src/app/attribute/attribute-metadata.service';
+import { AttributeSharedService } from 'src/app/attribute/attribute-shared.service';
+import { PrefixService } from 'src/app/domainobject/prefix.service';
+import { ResourceStatusService } from 'src/app/myresources/resource-status.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { CharsetToolsService } from 'src/app/updatesweb/charset-tools.service';
+import { CreateModifyComponent } from 'src/app/updatesweb/create-modify.component';
+import { EnumService } from 'src/app/updatesweb/enum.service';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { LinkService } from 'src/app/updatesweb/link.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { MntnerService } from 'src/app/updatesweb/mntner.service';
+import { OrganisationHelperService } from 'src/app/updatesweb/organisation-helper.service';
+import { PreferenceService } from 'src/app/updatesweb/preference.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { ScreenLogicInterceptorService } from 'src/app/updatesweb/screen-logic-interceptor.service';
+import { WebUpdatesCommonsService } from 'src/app/updatesweb/web-updates-commons.service';
 
 describe('CreateModifyComponent', () => {
     let httpMock: HttpTestingController;
@@ -36,8 +36,13 @@ describe('CreateModifyComponent', () => {
     let paramMapMock: any;
 
     beforeEach(() => {
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
         paramMapMock = convertToParamMap({});
         TestBed.configureTestingModule({
             imports: [NgSelectModule, CreateModifyComponent],
@@ -95,14 +100,14 @@ describe('CreateModifyComponent', () => {
         beforeEach(async () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
-            spyOn(component.restService, 'fetchMntnersForSSOAccount').and.returnValue(of(USER_MAINTAINERS_MOCK));
+            vi.spyOn(component.restService, 'fetchMntnersForSSOAccount').mockReturnValue(of(USER_MAINTAINERS_MOCK));
             fixture.detectChanges();
             await fixture.whenStable();
         });
@@ -202,7 +207,7 @@ describe('CreateModifyComponent', () => {
 
             await fixture.whenStable();
             httpMock.expectOne({ method: 'POST', url: 'api/whois/RIPE/as-block' }).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, { status: 400, statusText: 'error' });
-            expect(component.alertsService.alerts.errors).toHaveSize(2);
+            expect(component.alertsService.alerts.errors).toHaveLength(2);
             expect(component.alertsService.alerts.errors[0].plainText).toEqual('Creation of as-block failed, please see below for more details');
             expect(component.alertsService.alerts.errors[1].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
             expect(component.alertsService.alerts.warnings[0].plainText).toEqual('Not authenticated');
@@ -220,7 +225,7 @@ describe('CreateModifyComponent', () => {
             httpMock.expectOne({ method: 'POST', url: 'api/whois/RIPE/as-block' }).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, { status: 400, statusText: 'error' });
             await fixture.whenStable();
 
-            expect(component.alertsService.alerts.errors).toHaveSize(2);
+            expect(component.alertsService.alerts.errors).toHaveLength(2);
             expect(component.alertsService.alerts.errors[0].plainText).toEqual('Creation of as-block failed, please see below for more details');
             expect(component.alertsService.alerts.errors[1].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
             expect(component.alertsService.alerts.warnings[0].plainText).toEqual('Not authenticated');
@@ -273,7 +278,7 @@ describe('CreateModifyComponent', () => {
             expect(component.maintainers.object[0].mine).toEqual(true);
         });
 
-        xit('should add the selected maintainers to the object - attributes', async () => {
+        it.skip('should add the selected maintainers to the object - attributes', async () => {
             const emitedMnts = {
                 maintainers: {
                     object: [
@@ -290,7 +295,7 @@ describe('CreateModifyComponent', () => {
         });
 
         it('should ask for password after upon submit.', () => {
-            modalMock.open.and.returnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(() => 'cancel') });
+            modalMock.open.mockReturnValue({ componentInstance: {}, closed: EMPTY, dismissed: of(() => 'cancel') });
 
             component.whoisResourcesService.setSingleAttributeOnName(component.attributes, 'as-block', 'MY-AS-BLOCK');
             // simulate manual addition of a new mntner with only SSO
@@ -301,8 +306,8 @@ describe('CreateModifyComponent', () => {
             expect(modalMock.open).toHaveBeenCalled();
         });
 
-        xit('should remove the selected maintainers to the object before post it', async () => {
-            modalMock.open.and.returnValue({
+        it.skip('should remove the selected maintainers to the object before post it', async () => {
+            modalMock.open.mockReturnValue({
                 componentInstance: {},
                 result: of({ $value: { selectedItem: { key: 'TEST-MNT', name: 'mntner', mine: true } } }).toPromise(),
             });
@@ -360,7 +365,7 @@ describe('CreateModifyComponent', () => {
         });
 
         it('should transition to select state if cancel is pressed during create', () => {
-            spyOn(window, 'confirm').and.returnValue(true);
+            vi.spyOn(window, 'confirm').mockReturnValue(true);
             component.cancel();
             expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/select']);
         });
@@ -373,10 +378,10 @@ describe('CreateModifyComponent', () => {
         beforeEach(async () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
@@ -474,10 +479,10 @@ describe('CreateModifyComponent', () => {
         beforeEach(async () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;
@@ -497,10 +502,10 @@ describe('CreateModifyComponent', () => {
         beforeEach(async () => {
             paramMapMock.source = SOURCE;
             paramMapMock.objectType = OBJECT_TYPE;
-            spyOn(paramMapMock, 'get').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'get').mockImplementation((param: string) => {
                 return component.activatedRoute.snapshot.paramMap[param];
             });
-            spyOn(paramMapMock, 'has').and.callFake((param) => {
+            vi.spyOn(paramMapMock, 'has').mockImplementation((param: string) => {
                 return !!component.activatedRoute.snapshot.paramMap[param];
             });
             component = fixture.componentInstance;

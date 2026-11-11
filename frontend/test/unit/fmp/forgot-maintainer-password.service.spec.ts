@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ForgotMaintainerPasswordService } from '../../../src/app/fmp/forgot-maintainer-password.service';
+import { ForgotMaintainerPasswordService } from 'src/app/fmp/forgot-maintainer-password.service';
 
 describe('ForgotMaintainerPasswordService', () => {
     let forgotMaintainerPasswordService: ForgotMaintainerPasswordService;

@@ -1,9 +1,9 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
 
 describe('WhoisResourcesService', () => {
     let whoisResourcesService: WhoisResourcesService;
@@ -685,17 +685,17 @@ describe('WhoisResourcesService', () => {
             { name: 'source', value: 'g', $$meta: { $$mandatory: true, $$multiple: false } },
         ]);
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs, 'person'))).toBeFalse();
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs, 'person'))).toBe(false);
 
         expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, 'address')[0])).toBeTruthy();
         expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, 'address')[1])).toBeTruthy();
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, 'phone')[0])).toBeFalse();
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs, 'nic-hdl'))).toBeFalse();
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, 'phone')[0])).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs, 'nic-hdl'))).toBe(false);
 
         expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs, 'last-modified'))).toBeTruthy();
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs, 'source'))).toBeFalse();
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs, 'source'))).toBe(false);
     });
 
     it('should allow certain attrs to be empty but remove all others', () => {
@@ -879,7 +879,7 @@ describe('WhoisResourcesService', () => {
 
     it('should detect if object is NOT comaintained', () => {
         const attributes = [{ name: 'mnt-by', value: 'SOME-MNT' }];
-        expect(whoisResourcesService.isComaintained(attributes)).toBeFalse();
-        expect(whoisResourcesService.isComaintained([])).toBeFalse();
+        expect(whoisResourcesService.isComaintained(attributes)).toBe(false);
+        expect(whoisResourcesService.isComaintained([])).toBe(false);
     });
 });

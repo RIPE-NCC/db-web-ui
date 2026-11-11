@@ -1,18 +1,20 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { ReleaseNotificationService } from '../../../src/app/shared/release-notification.service';
+import { TestBed } from '@angular/core/testing';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { ReleaseNotificationService } from 'src/app/shared/release-notification.service';
 
 describe('ReleaseNotificationService', () => {
     let releaseNotificationService: ReleaseNotificationService;
     let httpMock: HttpTestingController;
-    const alertServiceSpy = jasmine.createSpyObj('AlertsService', ['addGlobalWarning']);
+    const alertServiceSpy = {
+        addGlobalWarning: vi.fn().mockName('AlertsService.addGlobalWarning'),
+    };
 
-    const pollInterval = 5_000;
+    const pollInterval = 5000;
     beforeEach(() => {
-        alertServiceSpy.addGlobalWarning.calls.reset();
+        alertServiceSpy.addGlobalWarning.mockClear();
         TestBed.configureTestingModule({
             imports: [],
             providers: [
@@ -30,65 +32,51 @@ describe('ReleaseNotificationService', () => {
         releaseNotificationService = TestBed.inject(ReleaseNotificationService);
     });
 
+    beforeEach(() => {
+        vi.useFakeTimers();
+    });
+
     afterEach(() => {
+        vi.useRealTimers();
         httpMock.verify();
     });
 
-    it('should start polling', fakeAsync(
-        () => {
-            releaseNotificationService.startPolling();
-            tick(pollInterval);
-            httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
+    it('should start polling', () => {
+        releaseNotificationService.startPolling();
+        vi.advanceTimersByTime(pollInterval);
+        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
+    });
 
-            discardPeriodicTasks();
-        },
-        { flush: false },
-    ));
+    it('should show banner', () => {
+        releaseNotificationService.startPolling();
+        vi.advanceTimersByTime(pollInterval);
+        const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
+        req.flush({ DB_WEB_UI_BUILD_TIME: '1' });
 
-    it('should show banner', fakeAsync(
-        () => {
-            releaseNotificationService.startPolling();
-            tick(pollInterval);
-            const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
-            req.flush({ DB_WEB_UI_BUILD_TIME: '1' });
+        expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith('There is a new release available. Click reload to start using it.', '/', 'RELOAD');
+    });
 
-            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith('There is a new release available. Click reload to start using it.', '/', 'RELOAD');
+    it('should not show banner if the build is the same', () => {
+        releaseNotificationService.startPolling();
+        vi.advanceTimersByTime(pollInterval);
+        const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
+        req.flush({ DB_WEB_UI_BUILD_TIME: '0' });
 
-            discardPeriodicTasks();
-        },
-        { flush: false },
-    ));
+        expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
+    });
 
-    it('should not show banner if the build is the same', fakeAsync(
-        () => {
-            releaseNotificationService.startPolling();
-            tick(pollInterval);
-            const req = httpMock.expectOne({ method: 'GET', url: 'app.constants.json' });
-            req.flush({ DB_WEB_UI_BUILD_TIME: '0' });
+    it('should trigger banner only 1 time', () => {
+        releaseNotificationService.startPolling();
+        vi.advanceTimersByTime(pollInterval);
+        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '1' });
 
-            expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
+        expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith('There is a new release available. Click reload to start using it.', '/', 'RELOAD');
 
-            discardPeriodicTasks();
-        },
-        { flush: false },
-    ));
+        alertServiceSpy.addGlobalWarning.mockClear();
 
-    it('should trigger banner only 1 time', fakeAsync(
-        () => {
-            releaseNotificationService.startPolling();
-            tick(pollInterval);
-            httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '1' });
+        vi.advanceTimersByTime(pollInterval);
+        httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '2' });
 
-            expect(alertServiceSpy.addGlobalWarning).toHaveBeenCalledWith('There is a new release available. Click reload to start using it.', '/', 'RELOAD');
-
-            alertServiceSpy.addGlobalWarning.calls.reset();
-
-            tick(pollInterval);
-            httpMock.expectOne({ method: 'GET', url: 'app.constants.json' }).flush({ DB_WEB_UI_BUILD_TIME: '2' });
-
-            expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
-            discardPeriodicTasks();
-        },
-        { flush: false },
-    ));
+        expect(alertServiceSpy.addGlobalWarning).not.toHaveBeenCalled();
+    });
 });

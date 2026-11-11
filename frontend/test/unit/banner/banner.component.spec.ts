@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { BannerComponent, BannerTypes } from 'src/app/banner/banner.component';
-import { PropertiesService } from '../../../src/app/properties.service';
+import { PropertiesService } from 'src/app/properties.service';
 
 describe('BannerComponent', () => {
     let component: BannerComponent;
@@ -9,7 +9,9 @@ describe('BannerComponent', () => {
     let router: Router;
 
     beforeEach(async () => {
-        const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+        const routerSpy = {
+            navigate: vi.fn().mockName('Router.navigate'),
+        };
 
         await TestBed.configureTestingModule({
             imports: [BannerComponent],
@@ -33,7 +35,7 @@ describe('BannerComponent', () => {
 
     afterEach(() => {
         localStorage.clear();
-        jasmine.clock().uninstall?.();
+        vi.useRealTimers();
     });
 
     it('should create', () => {
@@ -47,7 +49,7 @@ describe('BannerComponent', () => {
 
             component.ngOnInit();
 
-            expect(component.closed).toBeTrue();
+            expect(component.closed).toBe(true);
         });
 
         it('should not mark banner as closed if persistDismiss is true but no flag in localStorage', () => {
@@ -55,7 +57,7 @@ describe('BannerComponent', () => {
 
             component.ngOnInit();
 
-            expect(component.closed).toBeFalse();
+            expect(component.closed).toBe(false);
         });
 
         it('should leave closed undefined if persistDismiss is false', () => {
@@ -73,7 +75,7 @@ describe('BannerComponent', () => {
 
             component.closeBanner();
 
-            expect(component.closed).toBeTrue();
+            expect(component.closed).toBe(true);
         });
 
         it('should persist dismiss in localStorage if persistDismiss is true', () => {
@@ -95,7 +97,7 @@ describe('BannerComponent', () => {
 
     describe('navigateToButtonUrl', () => {
         beforeEach(() => {
-            spyOn(window, 'open');
+            vi.spyOn(window, 'open').mockReturnValue(undefined);
         });
 
         it('should do nothing if buttonUrl is not set', () => {

@@ -3,13 +3,13 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { ConfirmMaintainerComponent } from '../../../src/app/fmp/confirm-maintainer.component';
-import { EmailLinkService } from '../../../src/app/fmp/email-link.services';
-import { FmpErrorService } from '../../../src/app/fmp/fmp-error.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
+import { ConfirmMaintainerComponent } from 'src/app/fmp/confirm-maintainer.component';
+import { EmailLinkService } from 'src/app/fmp/email-link.services';
+import { FmpErrorService } from 'src/app/fmp/fmp-error.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
 
 describe('ConfirmMaintainerComponent', () => {
     let component: ConfirmMaintainerComponent;
@@ -18,8 +18,13 @@ describe('ConfirmMaintainerComponent', () => {
     let mockFmpErrorService: any;
 
     beforeEach(() => {
-        mockEmailLinkService = jasmine.createSpyObj('EmailLinkService', ['get', 'update']);
-        mockFmpErrorService = jasmine.createSpyObj('FmpErrorService', ['isYourAccountBlockedError']);
+        mockEmailLinkService = {
+            get: vi.fn().mockName('EmailLinkService.get'),
+            update: vi.fn().mockName('EmailLinkService.update'),
+        };
+        mockFmpErrorService = {
+            isYourAccountBlockedError: vi.fn().mockName('FmpErrorService.isYourAccountBlockedError'),
+        };
         TestBed.configureTestingModule({
             imports: [ConfirmMaintainerComponent],
             providers: [
@@ -58,7 +63,7 @@ describe('ConfirmMaintainerComponent', () => {
             expiredDate: 20280808,
             currentUserAlreadyAssociated: false,
         };
-        mockEmailLinkService.get.and.returnValue(of(response));
+        mockEmailLinkService.get.mockReturnValue(of(response));
         component.ngOnInit();
         fixture.detectChanges();
         expect(component.key).toBe('maintainer');
@@ -87,7 +92,7 @@ describe('ConfirmMaintainerComponent', () => {
             get: () => '',
             has: () => true,
         };
-        mockEmailLinkService.get.and.returnValue(throwError(() => 404));
+        mockEmailLinkService.get.mockReturnValue(throwError(() => 404));
         component.ngOnInit();
         fixture.detectChanges();
 
@@ -108,7 +113,7 @@ describe('ConfirmMaintainerComponent', () => {
             email: 'a@b.c',
             username: 'user',
         };
-        mockEmailLinkService.get.and.returnValue(of(response));
+        mockEmailLinkService.get.mockReturnValue(of(response));
         component.ngOnInit();
         fixture.detectChanges();
         expect(component.alertsService.alerts.errors.length).toBe(0);
@@ -128,7 +133,7 @@ describe('ConfirmMaintainerComponent', () => {
             expiredDate: '2114-08-20T02:35:51+02:00',
             username: 'user',
         };
-        mockEmailLinkService.get.and.returnValue(of(response));
+        mockEmailLinkService.get.mockReturnValue(of(response));
         component.ngOnInit();
         fixture.detectChanges();
 
@@ -155,7 +160,7 @@ describe('ConfirmMaintainerComponent', () => {
             expiredDate: 20280808,
             currentUserAlreadyManagesMntner: true,
         };
-        mockEmailLinkService.get.and.returnValue(of(response));
+        mockEmailLinkService.get.mockReturnValue(of(response));
         component.ngOnInit();
         fixture.detectChanges();
 
@@ -193,7 +198,7 @@ describe('ConfirmMaintainerComponent', () => {
             expiredDate: 20280808,
             currentUserAlreadyManagesMntner: true,
         };
-        mockEmailLinkService.get.and.returnValue(of(response));
+        mockEmailLinkService.get.mockReturnValue(of(response));
         const responsePut = {
             data: {
                 mntner: 'maintainer',
@@ -202,8 +207,8 @@ describe('ConfirmMaintainerComponent', () => {
                 expiredDate: 20280808,
             },
         };
-        mockEmailLinkService.update.and.returnValue(of(responsePut));
-        spyOn(component.router, 'navigate');
+        mockEmailLinkService.update.mockReturnValue(of(responsePut));
+        vi.spyOn(component.router, 'navigate').mockReturnValue(undefined);
         component.ngOnInit();
         fixture.detectChanges();
         component.associate();
@@ -224,8 +229,8 @@ describe('ConfirmMaintainerComponent', () => {
             expiredDate: 20280808,
             currentUserAlreadyManagesMntner: true,
         };
-        mockEmailLinkService.get.and.returnValue(of(response));
-        mockEmailLinkService.update.and.returnValue(throwError(() => 400));
+        mockEmailLinkService.get.mockReturnValue(of(response));
+        mockEmailLinkService.update.mockReturnValue(throwError(() => 400));
         component.ngOnInit();
         fixture.detectChanges();
         component.associate();
@@ -250,8 +255,8 @@ describe('ConfirmMaintainerComponent', () => {
             expiredDate: 20280808,
             currentUserAlreadyManagesMntner: true,
         };
-        mockEmailLinkService.get.and.returnValue(of(response));
-        mockEmailLinkService.update.and.returnValue(throwError(() => ({ status: 400, data: 'already contains SSO' })));
+        mockEmailLinkService.get.mockReturnValue(of(response));
+        mockEmailLinkService.update.mockReturnValue(throwError(() => ({ status: 400, data: 'already contains SSO' })));
         component.ngOnInit();
         fixture.detectChanges();
 

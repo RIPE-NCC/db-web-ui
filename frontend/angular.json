@@ -83,7 +83,7 @@
                             "outputHashing": "all",
                             "sourceMap": false,
                             "namedChunks": false,
-                            "aot": true,
+                            "aot": false,
                             "extractLicenses": true,
                             "budgets": [
                                 {
@@ -97,6 +97,13 @@
                                     "maximumError": "10kb"
                                 }
                             ]
+                        },
+                        "test": {
+                            "optimization": false,
+                            "sourceMap": true,
+                            "aot": true,
+                            "outputHashing": "none",
+                            "polyfills": ["zone.js", "src/polyfills.ts"]
                         }
                     }
                 },
@@ -109,7 +116,6 @@
                         "ssl": true,
                         "middlewares": ["test/e2e/prism.js"]
                     },
-
                     "configurations": {
                         "local": {
                             "buildTarget": "frontend:build:local"
@@ -141,22 +147,15 @@
                     }
                 },
                 "test": {
-                    "builder": "@angular/build:karma",
+                    "builder": "@angular/build:unit-test",
                     "options": {
-                        "main": "test/unit/test.ts",
-                        "polyfills": ["src/polyfills.ts"],
+                        "buildTarget": "frontend:build:test",
+                        "runner": "vitest",
+                        "runnerConfig": "vitest.config.ts",
                         "tsConfig": "test/unit/tsconfig.spec.json",
-                        "assets": ["src/assets"],
-                        "styles": ["src/styles.scss"],
-                        "scripts": []
-                    },
-                    "configurations": {
-                        "local": {
-                            "karmaConfig": "test/unit/karma.conf.js"
-                        },
-                        "remote": {
-                            "karmaConfig": "test/unit/karma.remote.conf.js"
-                        }
+                        "include": ["../test/unit/**/*.spec.ts"],
+                        "setupFiles": ["test/unit/test-setup.ts"],
+                        "splitting": false
                     }
                 },
                 "lint": {

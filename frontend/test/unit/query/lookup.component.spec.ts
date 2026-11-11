@@ -3,10 +3,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { LookupComponent } from '../../../src/app/query/lookup.component';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
-import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { LookupComponent } from 'src/app/query/lookup.component';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
+import { WhoisObjectViewerComponent } from 'src/app/whois-object/whois-object-viewer.component';
 
 describe('LookupComponent', () => {
     let component: LookupComponent;

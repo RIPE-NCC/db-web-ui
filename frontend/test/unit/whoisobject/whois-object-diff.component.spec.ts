@@ -5,13 +5,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { IObjectVersionResponse, IObjectVersionsModel } from 'src/app/shared/whois-response-type.model';
+import { DiffComponent } from 'src/app/versions/diff/diff.component';
+import { VersionsLookupService } from 'src/app/versions/versions-lookup.service';
 import { IAttributeModel } from 'src/app/whois-object/types';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { WhoisResourcesService } from '../../../src/app/shared/whois-resources.service';
-import { IObjectVersionResponse, IObjectVersionsModel } from '../../../src/app/shared/whois-response-type.model';
-import { DiffComponent } from '../../../src/app/versions/diff/diff.component';
-import { VersionsLookupService } from '../../../src/app/versions/versions-lookup.service';
+import type { MockedObject } from 'vitest';
 
 const versionsMock: IObjectVersionsModel = {
     versions: {
@@ -93,11 +94,14 @@ const leftVersionMock: IObjectVersionResponse = {
 describe('DiffComponent', () => {
     let component: DiffComponent;
     let fixture: ComponentFixture<DiffComponent>;
-    let versionsLookupServiceSpy: jasmine.SpyObj<VersionsLookupService>;
+    let versionsLookupServiceSpy: MockedObject<VersionsLookupService>;
     let whoisResourcesService: WhoisResourcesService;
 
     beforeEach(() => {
-        versionsLookupServiceSpy = jasmine.createSpyObj('VersionsLookupService', ['getVersion', 'getVersions']);
+        versionsLookupServiceSpy = {
+            getVersion: vi.fn().mockName('VersionsLookupService.getVersion'),
+            getVersions: vi.fn().mockName('VersionsLookupService.getVersions'),
+        } as any;
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, NgSelectModule, RouterTestingModule, DiffComponent],
             providers: [
@@ -130,8 +134,8 @@ describe('DiffComponent', () => {
         fixture = TestBed.createComponent(DiffComponent);
         component = fixture.componentInstance;
 
-        versionsLookupServiceSpy.getVersions.and.returnValue(of(versionsMock));
-        versionsLookupServiceSpy.getVersion.and.returnValue(of(leftVersionMock));
+        versionsLookupServiceSpy.getVersions.mockReturnValue(of(versionsMock));
+        versionsLookupServiceSpy.getVersion.mockReturnValue(of(leftVersionMock));
     });
 
     it('should create', () => {
@@ -178,13 +182,13 @@ describe('DiffComponent', () => {
 
     it('should mark left version as not latest when revision is below max', () => {
         component.ngOnInit();
-        expect(component.isLeftLatest).toBeFalse();
+        expect(component.isLeftLatest).toBe(false);
     });
 
     it('should mark version as latest when it equals the max revision', () => {
         component.ngOnInit();
-        expect(component.isLatest(5)).toBeTrue();
-        expect(component.isLatest(3)).toBeFalse();
+        expect(component.isLatest(5)).toBe(true);
+        expect(component.isLatest(3)).toBe(false);
     });
 
     it('should not render right diff when no diff param is present', () => {
@@ -202,15 +206,15 @@ describe('DiffComponent', () => {
 
     it('should ignore right selection when id is null', () => {
         component.ngOnInit();
-        const callsBefore = versionsLookupServiceSpy.getVersion.calls.count();
+        const callsBefore = vi.mocked(versionsLookupServiceSpy.getVersion).mock.calls.length;
         component.onRightVersionSelect(null);
-        expect(versionsLookupServiceSpy.getVersion.calls.count()).toEqual(callsBefore);
+        expect(vi.mocked(versionsLookupServiceSpy.getVersion).mock.calls.length).toEqual(callsBefore);
     });
 
     it('should cache fetched versions and not refetch the same id', () => {
         component.ngOnInit();
-        const callsAfterInit = versionsLookupServiceSpy.getVersion.calls.count();
+        const callsAfterInit = vi.mocked(versionsLookupServiceSpy.getVersion).mock.calls.length;
         component.onLeftVersionSelect(1);
-        expect(versionsLookupServiceSpy.getVersion.calls.count()).toEqual(callsAfterInit);
+        expect(vi.mocked(versionsLookupServiceSpy.getVersion).mock.calls.length).toEqual(callsAfterInit);
     });
 });

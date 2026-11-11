@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { IQueryFlag, QueryFlagsService } from '../../../src/app/query/query-flags.service';
+import { IQueryFlag, QueryFlagsService } from 'src/app/query/query-flags.service';
 
 describe('QueryFlagsService', () => {
     let queryFlagsService: QueryFlagsService;
@@ -26,7 +26,7 @@ describe('QueryFlagsService', () => {
     });
 
     it('should load FLAGS', () => {
-        queryFlagsService.loadFlags().subscribe((flags) => {
+        queryFlagsService.loadFlags().subscribe((_flags) => {
             expect(queryFlagsService.FLAGS).toEqual(mockAllFLAGS);
         });
         const request = httpMock.expectOne({ method: 'GET', url: 'api/metadata/help' });

@@ -6,10 +6,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { UserInfoService } from '../../../src/app/userinfo/user-info.service';
-import { WhoisObjectViewerComponent } from '../../../src/app/whois-object/whois-object-viewer.component';
-import { WhoisObjectVisualiser } from '../../../src/app/whois-object/whois-object-visualiser';
+import { PropertiesService } from 'src/app/properties.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
+import { WhoisObjectViewerComponent } from 'src/app/whois-object/whois-object-viewer.component';
+import { WhoisObjectVisualiser } from 'src/app/whois-object/whois-object-visualiser';
 
 describe('WhoisObjectViewerComponent', () => {
     let component: WhoisObjectViewerComponent;

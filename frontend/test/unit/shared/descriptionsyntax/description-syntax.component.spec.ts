@@ -2,7 +2,7 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { DescriptionSyntaxComponent } from '../../../../src/app/shared/descriptionsyntax/description-syntax.component';
+import { DescriptionSyntaxComponent } from 'src/app/shared/descriptionsyntax/description-syntax.component';
 
 describe('DescriptionSyntaxComponent', () => {
     let component: DescriptionSyntaxComponent;

@@ -2,13 +2,13 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { DisplayMntnerPairComponent } from '../../../../src/app/updatesweb/display-mntner-pair.component';
-import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { DisplayMntnerPairComponent } from 'src/app/updatesweb/display-mntner-pair.component';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
 
 describe('DisplayPairComponent', () => {
     const SOURCE = 'RIPE';
@@ -29,8 +29,13 @@ describe('DisplayPairComponent', () => {
     beforeEach(() => {
         paramMapMock = convertToParamMap({ source: SOURCE, person: PERSON_NAME, mntner: MNTNER_NAME });
         queryParamMock = convertToParamMap({});
-        routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
-        messageStoreServiceMock = jasmine.createSpyObj('MessageStoreService', ['get']);
+        routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
+        messageStoreServiceMock = {
+            get: vi.fn().mockName('MessageStoreService.get'),
+        };
         TestBed.configureTestingModule({
             imports: [DisplayMntnerPairComponent],
             providers: [
@@ -98,8 +103,7 @@ describe('DisplayPairComponent', () => {
     });
 
     it('should extract data from url', () => {
-        messageStoreServiceMock.get.withArgs(PERSON_NAME).and.returnValue(personToDisplay);
-        messageStoreServiceMock.get.withArgs(MNTNER_NAME).and.returnValue(mntnerToDisplay);
+        messageStoreServiceMock.get.mockImplementation((key: string) => ({ [PERSON_NAME]: personToDisplay, [MNTNER_NAME]: mntnerToDisplay }[key]));
 
         fixture.detectChanges();
 
@@ -109,8 +113,7 @@ describe('DisplayPairComponent', () => {
     });
 
     it('should populate the ui from message-store', () => {
-        messageStoreServiceMock.get.withArgs(PERSON_NAME).and.returnValue(personToDisplay);
-        messageStoreServiceMock.get.withArgs(MNTNER_NAME).and.returnValue(mntnerToDisplay);
+        messageStoreServiceMock.get.mockImplementation((key: string) => ({ [PERSON_NAME]: personToDisplay, [MNTNER_NAME]: mntnerToDisplay }[key]));
 
         fixture.detectChanges();
 
@@ -194,8 +197,7 @@ describe('DisplayPairComponent', () => {
     });
 
     it('should navigate to select screen', () => {
-        messageStoreServiceMock.get.withArgs(PERSON_NAME).and.returnValue(personToDisplay);
-        messageStoreServiceMock.get.withArgs(MNTNER_NAME).and.returnValue(mntnerToDisplay);
+        messageStoreServiceMock.get.mockImplementation((key: string) => ({ [PERSON_NAME]: personToDisplay, [MNTNER_NAME]: mntnerToDisplay }[key]));
 
         fixture.detectChanges();
 
@@ -204,8 +206,7 @@ describe('DisplayPairComponent', () => {
     });
 
     it('should navigate to modify person screen', () => {
-        messageStoreServiceMock.get.withArgs(PERSON_NAME).and.returnValue(personToDisplay);
-        messageStoreServiceMock.get.withArgs(MNTNER_NAME).and.returnValue(mntnerToDisplay);
+        messageStoreServiceMock.get.mockImplementation((key: string) => ({ [PERSON_NAME]: personToDisplay, [MNTNER_NAME]: mntnerToDisplay }[key]));
 
         fixture.detectChanges();
 
@@ -215,8 +216,7 @@ describe('DisplayPairComponent', () => {
     });
 
     it('should navigate to modify mntner screen', () => {
-        messageStoreServiceMock.get.withArgs(PERSON_NAME).and.returnValue(personToDisplay);
-        messageStoreServiceMock.get.withArgs(MNTNER_NAME).and.returnValue(mntnerToDisplay);
+        messageStoreServiceMock.get.mockImplementation((key: string) => ({ [PERSON_NAME]: personToDisplay, [MNTNER_NAME]: mntnerToDisplay }[key]));
 
         fixture.detectChanges();
 

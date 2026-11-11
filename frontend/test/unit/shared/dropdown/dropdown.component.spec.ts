@@ -71,7 +71,7 @@ describe('DropdownComponent', () => {
 
         fixture.detectChanges();
 
-        expect(component.isOpen).toBeTrue();
+        expect(component.isOpen).toBe(true);
 
         const items = overlayContainerElement.querySelectorAll('.dropdown-item');
 
@@ -95,7 +95,7 @@ describe('DropdownComponent', () => {
     });
 
     it('should select option and emit value', () => {
-        spyOn(component.selectedValueChange, 'emit');
+        vi.spyOn(component.selectedValueChange, 'emit').mockReturnValue(undefined);
 
         component.isOpen = true;
 
@@ -111,7 +111,7 @@ describe('DropdownComponent', () => {
 
         expect(component.selectedValueChange.emit).toHaveBeenCalledWith('as-block');
 
-        expect(component.isOpen).toBeFalse();
+        expect(component.isOpen).toBe(false);
     });
 
     it('should close dropdown', () => {
@@ -119,7 +119,7 @@ describe('DropdownComponent', () => {
 
         component.close();
 
-        expect(component.isOpen).toBeFalse();
+        expect(component.isOpen).toBe(false);
     });
 
     it('should return placeholder when no selected value exists', () => {

@@ -1,18 +1,19 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { Subject } from 'rxjs';
-import { ApiKeysComponent } from '../../../src/app/apikeys/api-keys.component';
-import { ApiKeysService } from '../../../src/app/apikeys/api-keys.service';
-import { KeyType } from '../../../src/app/apikeys/utils';
-import { IUserInfoOrganisation } from '../../../src/app/dropdown/org-data-type.model';
-import { OrgDropDownSharedService } from '../../../src/app/dropdown/org-drop-down-shared.service';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { AlertsService } from '../../../src/app/shared/alert/alerts.service';
-import { RestService } from '../../../src/app/updatesweb/rest.service';
-import SpyObj = jasmine.SpyObj;
+import { ApiKeysComponent } from 'src/app/apikeys/api-keys.component';
+import { ApiKeysService } from 'src/app/apikeys/api-keys.service';
+import { KeyType } from 'src/app/apikeys/utils';
+import { IUserInfoOrganisation } from 'src/app/dropdown/org-data-type.model';
+import { OrgDropDownSharedService } from 'src/app/dropdown/org-drop-down-shared.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import type { MockedObject } from 'vitest';
+type SpyObj<T> = MockedObject<T>;
 
 describe('ApiKeysComponent', () => {
     let component: ApiKeysComponent;
@@ -29,23 +30,28 @@ describe('ApiKeysComponent', () => {
         roles: ['ADMIN'],
     } as IUserInfoOrganisation;
 
-    beforeEach(waitForAsync(() => {
-        properties = jasmine.createSpyObj('PropertiesService', ['getTitleEnvironment'], {
+    beforeEach(async () => {
+        properties = {
+            getTitleEnvironment: vi.fn().mockName('PropertiesService.getTitleEnvironment'),
             ENV: 'prod',
             SHOW_MENU_IDS: [],
-        });
+        } as any;
         // apiKeysServiceMock = jasmine.createSpyObj<ApiKeysService>('ApiKeysService', ['getApiKeys', 'deleteApiKey']);
-        alertsServiceMock = jasmine.createSpyObj<AlertsService>('AlertsService', ['addGlobalError']);
-        matDialogMock = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
+        alertsServiceMock = {
+            addGlobalError: vi.fn().mockName('AlertsService.addGlobalError'),
+        } as any;
+        matDialogMock = {
+            open: vi.fn().mockName('MatDialog.open'),
+        } as any;
         paramMock = convertToParamMap({});
         selectedOrgSubject = new Subject();
 
         let mockOrgService = {
             selectedOrgChanged$: selectedOrgSubject.asObservable(),
-            getSelectedOrg: jasmine.createSpy().and.returnValue(mockOrg),
+            getSelectedOrg: vi.fn().mockReturnValue(mockOrg),
         };
 
-        void TestBed.configureTestingModule({
+        await TestBed.configureTestingModule({
             imports: [MatDialogModule, NoopAnimationsModule, ApiKeysComponent],
             providers: [
                 provideNativeDateAdapter(),
@@ -58,7 +64,7 @@ describe('ApiKeysComponent', () => {
                 { provide: OrgDropDownSharedService, useValue: mockOrgService },
             ],
         }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         // apiKeysServiceMock.getApiKeys.and.returnValue(of(apiKeysResponse));
@@ -68,7 +74,7 @@ describe('ApiKeysComponent', () => {
     });
 
     it('should open create panel if apiKeyType in url-path is IP_ANALAYSER or MY_RESOURCES', () => {
-        spyOn(paramMock, 'get').and.callFake(() => {
+        vi.spyOn(paramMock, 'get').mockImplementation(() => {
             return 'IP_ANALYSER';
         });
         component.ngOnInit();

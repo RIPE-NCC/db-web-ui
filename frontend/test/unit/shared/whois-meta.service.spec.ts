@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
 
 describe('WhoisMetaService', () => {
     let whoisMetaService: WhoisMetaService;
@@ -54,8 +54,8 @@ describe('WhoisMetaService', () => {
     });
 
     it('should recognise object type in Upper case as existing object types', () => {
-        expect(whoisMetaService.isExistingObjectTypes('ROLE')).toBeTrue();
-        expect(whoisMetaService.isExistingObjectTypes('PERSON')).toBeTrue();
+        expect(whoisMetaService.isExistingObjectTypes('ROLE')).toBe(true);
+        expect(whoisMetaService.isExistingObjectTypes('PERSON')).toBe(true);
     });
 
     it('should enrich attributes with meta attributes for a given type', () => {

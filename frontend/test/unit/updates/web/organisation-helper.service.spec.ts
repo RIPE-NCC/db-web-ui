@@ -2,17 +2,20 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { OrganisationHelperService } from '../../../../src/app/updatesweb/organisation-helper.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { OrganisationHelperService } from 'src/app/updatesweb/organisation-helper.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
 
 describe('OrganisationHelperService', () => {
     let organisationHelperService: OrganisationHelperService;
 
     beforeEach(() => {
-        const routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+        const routerMock = {
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+        };
 
         TestBed.configureTestingModule({
             imports: [],
@@ -41,7 +44,7 @@ describe('OrganisationHelperService', () => {
                 value: 'a@b.c',
             },
         ];
-        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBe(false);
     });
 
     it('should inform if abuse-c is available', () => {
@@ -76,7 +79,7 @@ describe('OrganisationHelperService', () => {
                 name: 'abuse-c',
             },
         ];
-        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBe(false);
     });
 
     it('should inform if abuse-c is available but with empty string', () => {
@@ -94,7 +97,7 @@ describe('OrganisationHelperService', () => {
                 value: ' ',
             },
         ];
-        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBeFalse();
+        expect(organisationHelperService.containsAttribute(attributes, 'abuse-c')).toBe(false);
     });
 
     it('should add abuse-c is object type is organisation', () => {
@@ -167,7 +170,7 @@ describe('OrganisationHelperService', () => {
             },
         ];
 
-        expect(organisationHelperService.validateOrganisationAttributes('organisation', attributes)).toBeFalse();
+        expect(organisationHelperService.validateOrganisationAttributes('organisation', attributes)).toBe(false);
     });
 
     it('should be set message if abuse-c is empty', () => {

@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY, of } from 'rxjs';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { AlertsService } from '../../../../src/app/shared/alert/alerts.service';
-import { WhoisMetaService } from '../../../../src/app/shared/whois-meta.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { DeleteComponent } from '../../../../src/app/updatesweb/delete.component';
+import { PropertiesService } from 'src/app/properties.service';
+import { AlertsService } from 'src/app/shared/alert/alerts.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { DeleteComponent } from 'src/app/updatesweb/delete.component';
 
 describe('DeleteController', () => {
     const OBJECT_TYPE = 'as-block';
@@ -31,12 +31,20 @@ describe('DeleteController', () => {
     beforeEach(() => {
         paramMapMock = convertToParamMap({ source: SOURCE, objectType: OBJECT_TYPE, objectName: 'AS1 - AS2' });
         queryParamMock = convertToParamMap({ onCancel: ON_CANCEL });
-        routerMock = jasmine.createSpyObj('Router', ['createUrlTree', 'serializeUrl', 'navigate', 'navigateByUrl', 'events']);
+        routerMock = {
+            createUrlTree: vi.fn().mockName('Router.createUrlTree'),
+            serializeUrl: vi.fn().mockName('Router.serializeUrl'),
+            navigate: vi.fn().mockName('Router.navigate'),
+            navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+            events: vi.fn().mockName('Router.events'),
+        };
         routerMock.events = {
             subscribe: () => of(),
         };
 
-        modalMock = jasmine.createSpyObj('NgbModal', ['open']);
+        modalMock = {
+            open: vi.fn().mockName('NgbModal.open'),
+        };
         TestBed.configureTestingModule({
             imports: [DeleteComponent],
             providers: [
@@ -154,7 +162,7 @@ describe('DeleteController', () => {
 
     it('should display delete object modal', async () => {
         fixture.detectChanges();
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
         await fixture.whenStable();
 
         expect(modalMock.open).toHaveBeenCalled();
@@ -171,7 +179,7 @@ describe('DeleteController', () => {
             data: whoisObjectWithErrors,
         };
 
-        modalMock.open.and.returnValue({
+        modalMock.open.mockReturnValue({
             componentInstance: {},
             closed: EMPTY,
             dismissed: of(whoisResourcesService.wrapError(error)),
@@ -197,7 +205,7 @@ describe('DeleteController', () => {
             data: 'just text',
         };
 
-        modalMock.open.and.returnValue({
+        modalMock.open.mockReturnValue({
             componentInstance: {},
             closed: EMPTY,
             dismissed: of(whoisResourcesService.wrapError(error)),
@@ -218,7 +226,7 @@ describe('DeleteController', () => {
     });
 
     it('should populate the ui after delete with 1 object', async () => {
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
 
         fixture.detectChanges();
         await fixture.whenStable();
@@ -233,7 +241,7 @@ describe('DeleteController', () => {
     });
 
     it('should populate the ui from message-store - Multiple objects', async () => {
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(multipleObjectsToDisplay), dismissed: EMPTY });
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(multipleObjectsToDisplay), dismissed: EMPTY });
 
         fixture.detectChanges();
         await fixture.whenStable();
@@ -254,21 +262,21 @@ describe('DeleteController', () => {
         const error = {
             data: whoisObjectWithErrors,
         };
-        modalMock.open.and.returnValue({
+        modalMock.open.mockReturnValue({
             componentInstance: {},
             closed: EMPTY,
             dismissed: of(whoisResourcesService.wrapError(error)),
         });
         fixture.detectChanges();
         await fixture.whenStable();
-        expect(component.skipClearError).toBeTrue();
+        expect(component.skipClearError).toBe(true);
     });
 
     it('should not skip clearing of error if delete object succeeds', async () => {
-        modalMock.open.and.returnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
+        modalMock.open.mockReturnValue({ componentInstance: {}, closed: of(objectToDisplay), dismissed: EMPTY });
         fixture.detectChanges();
         await fixture.whenStable();
         expect(component.deletedObjects.length).toBe(1);
-        expect(component.skipClearError).toBeFalse();
+        expect(component.skipClearError).toBe(false);
     });
 });

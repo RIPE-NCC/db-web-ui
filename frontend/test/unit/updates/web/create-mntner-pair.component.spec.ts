@@ -10,15 +10,15 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
 import { UserOidc } from 'src/app/dropdown/org-data-type.model';
-import { PropertiesService } from '../../../../src/app/properties.service';
-import { WhoisResourcesService } from '../../../../src/app/shared/whois-resources.service';
-import { CreateService } from '../../../../src/app/updatesweb/create.service';
-import { CreateMntnerPairComponent } from '../../../../src/app/updatesweb/createmntnerpair/create-mntner-pair.component';
-import { ErrorReporterService } from '../../../../src/app/updatesweb/error-reporter.service';
-import { LinkService } from '../../../../src/app/updatesweb/link.service';
-import { MessageStoreService } from '../../../../src/app/updatesweb/message-store.service';
-import { RestService } from '../../../../src/app/updatesweb/rest.service';
-import { UserInfoService } from '../../../../src/app/userinfo/user-info.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
+import { CreateService } from 'src/app/updatesweb/create.service';
+import { CreateMntnerPairComponent } from 'src/app/updatesweb/createmntnerpair/create-mntner-pair.component';
+import { ErrorReporterService } from 'src/app/updatesweb/error-reporter.service';
+import { LinkService } from 'src/app/updatesweb/link.service';
+import { MessageStoreService } from 'src/app/updatesweb/message-store.service';
+import { RestService } from 'src/app/updatesweb/rest.service';
+import { UserInfoService } from 'src/app/userinfo/user-info.service';
 
 describe('CreateMntnerPairComponent', () => {
     let httpMock: HttpTestingController;
@@ -41,7 +41,13 @@ describe('CreateMntnerPairComponent', () => {
 
     describe('in pair with person object', () => {
         beforeEach(() => {
-            routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl', 'events', 'createUrlTree', 'serializeUrl']);
+            routerMock = {
+                navigate: vi.fn().mockName('Router.navigate'),
+                navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+                events: vi.fn().mockName('Router.events'),
+                createUrlTree: vi.fn().mockName('Router.createUrlTree'),
+                serializeUrl: vi.fn().mockName('Router.serializeUrl'),
+            };
             routerMock.events = of({});
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
@@ -90,7 +96,7 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should handle when user is not authenticated', () => {
-            spyOn(userInfoServiceMock, 'isLoggedIn').and.returnValue(false);
+            vi.spyOn(userInfoServiceMock, 'isLoggedIn').mockReturnValue(false);
             fixture = TestBed.createComponent(CreateMntnerPairComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();
@@ -206,7 +212,13 @@ describe('CreateMntnerPairComponent', () => {
 
     describe('in pair with role object', () => {
         beforeEach(() => {
-            routerMock = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl', 'events', 'createUrlTree', 'serializeUrl']);
+            routerMock = {
+                navigate: vi.fn().mockName('Router.navigate'),
+                navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+                events: vi.fn().mockName('Router.events'),
+                createUrlTree: vi.fn().mockName('Router.createUrlTree'),
+                serializeUrl: vi.fn().mockName('Router.serializeUrl'),
+            };
             routerMock.events = of({});
             routerMock.createUrlTree = () => {};
             routerMock.serializeUrl = () => '';
@@ -255,7 +267,7 @@ describe('CreateMntnerPairComponent', () => {
         });
 
         it('should handle when user is not authenticated', () => {
-            spyOn(userInfoServiceMock, 'isLoggedIn').and.returnValue(false);
+            vi.spyOn(userInfoServiceMock, 'isLoggedIn').mockReturnValue(false);
             fixture = TestBed.createComponent(CreateMntnerPairComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();

@@ -1,11 +1,11 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { PropertiesService } from '../../../src/app/properties.service';
-import { ObjectTypesEnum } from '../../../src/app/query/object-types.enum';
-import { IQueryParameters, QueryParametersService } from '../../../src/app/query/query-parameters.service';
-import { QueryService } from '../../../src/app/query/query.service';
-import { WhoisMetaService } from '../../../src/app/shared/whois-meta.service';
+import { PropertiesService } from 'src/app/properties.service';
+import { ObjectTypesEnum } from 'src/app/query/object-types.enum';
+import { IQueryParameters, QueryParametersService } from 'src/app/query/query-parameters.service';
+import { QueryService } from 'src/app/query/query.service';
+import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
 
 describe('QueryService', () => {
     let queryService: QueryService;
@@ -52,12 +52,11 @@ describe('QueryService', () => {
         expect(queryService.buildQueryStringForLink(qp)).toEqual('');
     });
 
-    it('appends Versions-button guidance to disallowed-flag errors', (done) => {
+    it('appends Versions-button guidance to disallowed-flag errors', async () => {
         const searchQp = { ...qp, queryText: 'ripe' };
 
         queryService.searchWhoisObjects(searchQp, 0).subscribe((resp) => {
             expect(resp.errormessages.errormessage[0].text).toContain('Please use the Versions button in the query response.');
-            done();
         });
 
         const req = httpMock.expectOne((r) => r.url === 'api/whois/search');
@@ -137,7 +136,7 @@ describe('QueryService', () => {
         expect(queryService.buildQueryStringForLink(qp)).toEqual('');
     });
 
-    it('should be able to run queries and accumulate results', (done) => {
+    it('should be able to run queries and accumulate results', async () => {
         qp.queryText = 'middlestown;wakefield;yorkshire;horbury;ossett;dewsbury;netherton';
         qp.types = { MNTNER: true, ORGANISATION: false, AS_SET: true };
         qp.inverse = { MNT_REF: true, form: false, MNT_BY: true };
@@ -150,7 +149,6 @@ describe('QueryService', () => {
         queryService.searchWhoisObjects(qp, 0).subscribe((respons: any) => {
             expect(respons.objects.object.length).toEqual(27);
             expect(respons.errormessages.errormessage.length).toEqual(3);
-            done();
         });
         const allRequests: TestRequest[] = httpMock.match((req) => req.url.includes('api/whois/search'));
         expect(allRequests.length).toBe(5);
