@@ -13,7 +13,6 @@ variables:
 include:
     # Security scanning
     - project: swe/gitlab-support
-      ref: allow_Do_What_The_Fck_You_Want_To
       file: /templates/security.yml
       inputs:
           stage: security
@@ -24,7 +23,6 @@ include:
     # Container scanning
     - project: swe/gitlab-support
       file: /templates/container.yml
-      ref: allow_Do_What_The_Fck_You_Want_To
       inputs:
           stage: security
           needs: [build-container]
