@@ -1,7 +1,7 @@
 import { importProvidersFrom } from '@angular/core';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats, MatNativeDateModule } from '@angular/material/core';
 
-export const MY_DATE_FORMATS = {
+export const MY_DATE_FORMATS: MatDateFormats = {
     parse: {
         dateInput: null,
     },
