@@ -13,6 +13,8 @@ JAVA_OPTS="
     -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true
     -Dorg.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true
     -Dorg.eclipse.jetty.LEVEL=INFO
+    -XX:+UnlockDiagnosticVMOptions
+    -XX:-UseBASE64Intrinsics
     -XX:-OmitStackTraceInFastThrow
     -Dspring.profiles.active=${PROFILE}
     -Dspring.config.location=classpath:/config/,optional:file:///app/resources/,optional:file:///app/resources/menu.properties"
