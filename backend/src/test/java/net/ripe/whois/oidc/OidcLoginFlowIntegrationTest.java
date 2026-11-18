@@ -24,6 +24,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +38,7 @@ import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.anEmptyMap;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
@@ -46,6 +48,10 @@ import static org.hamcrest.Matchers.not;
 @Import(OidcTestConfig.class)
 @Profile("test-it")
 class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
+
+    public static final long EXPECTED_TTL_MS = 28800L; //8 hours
+
+    private static final long TOLERANCE_MS = Duration.ofMinutes(1).toMillis();
 
     @Autowired
     private HazelcastInstance hazelcastInstance;
@@ -116,6 +122,52 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
         assertThat(sessions.keySet(), hasSize(1));
         assertThat(oidcSessions.keySet(), hasSize(1));
         assertThat(authorizedClients.keySet(), hasSize(1));
+    }
+
+    @Test
+    void login_logout_login_again_populates_caches_each_time() {
+        // 1. First login: caches are populated and share the same TTL
+        keycloakIdPDummyService.registerUser("relogin-code-1",
+                new KeycloakIdPDummyService.FakeUser("relogin-user", "relogin@example.com", "idp-sid-relogin-1"));
+
+        final String sessionCookie1 = performFullLoginAndGetSessionCookie("relogin-code-1");
+        final String sessionId1 = extractSessionId(sessionCookie1);
+
+        final Map<Object, Object> sessions = hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE);
+        final Map<Object, Object> oidcSessions = hazelcastInstance.getMap(OIDC_SESSIONS_MAP);
+        final Map<Object, Object> authorizedClients = hazelcastInstance.getMap(MAP_NAME);
+
+        assertThat(sessions.containsKey(sessionId1), is(true));
+        assertThat(oidcSessions.containsKey(sessionId1), is(true));
+        assertThat(authorizedClients.keySet(), hasSize(1));
+        assertAllCachesHaveSameExpirationTime(sessionId1);
+
+        // 2. Logout: the HTTP session is gone, the authorized client stays (shared per user)
+        final HttpHeaders logoutHeaders = new HttpHeaders();
+        logoutHeaders.add(HttpHeaders.COOKIE, sessionCookie1);
+        final ResponseEntity<String> logout = restTemplate.exchange(
+                getServerUrl() + "/db-web-ui/logout", HttpMethod.GET, new HttpEntity<>(null, logoutHeaders), String.class);
+        assertThat(logout.getStatusCode().value(), is(302));
+
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+            assertThat(sessions.containsKey(sessionId1), is(false));
+        });
+
+        assertThat(authorizedClients.keySet(), hasSize(1)); //Session in authorize service still valid
+
+        // 3. Login again: a new session, with the caches populated and the same TTL again
+        keycloakIdPDummyService.registerUser("relogin-code-2",
+                new KeycloakIdPDummyService.FakeUser("relogin-user", "relogin@example.com", "idp-sid-relogin-2"));
+
+        final String sessionCookie2 = performFullLoginAndGetSessionCookie("relogin-code-2");
+        final String sessionId2 = extractSessionId(sessionCookie2);
+
+        assertThat(sessionId2, not(is(sessionId1)));
+
+        assertThat(sessions.containsKey(sessionId2), is(true));
+        assertThat(oidcSessions.containsKey(sessionId2), is(true));
+        assertThat(authorizedClients.keySet(), hasSize(1)); // same user, so the same key is reused
+        assertAllCachesHaveSameExpirationTime(sessionId2);
     }
 
     @Test
@@ -226,9 +278,9 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
         performFullLoginAndGetSessionCookie("user1-code");
         performFullLoginAndGetSessionCookie("user2-code");
 
-        Map<Object, Object> sessions = hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE);
-        Map<Object, Object> oidcSessions = hazelcastInstance.getMap(OIDC_SESSIONS_MAP);
-        Map<Object, Object> authorizedClients = hazelcastInstance.getMap(MAP_NAME);
+        final Map<Object, Object> sessions = hazelcastInstance.getMap(OidcUtils.HTTP_SESSION_CACHE);
+        final Map<Object, Object> oidcSessions = hazelcastInstance.getMap(OIDC_SESSIONS_MAP);
+        final Map<Object, Object> authorizedClients = hazelcastInstance.getMap(MAP_NAME);
 
         assertThat(sessions).hasSize(2);
         assertThat(oidcSessions).hasSize(2);
@@ -261,19 +313,19 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
         assertThat((Map<Object, Object>) hazelcastInstance.getMap(OIDC_SESSIONS_MAP), aMapWithSize(1));
         assertThat((Map<Object, Object>) hazelcastInstance.getMap(MAP_NAME), aMapWithSize(1));
 
-        String logoutToken = TestJwtSupport.logoutToken(
+        final String logoutToken = TestJwtSupport.logoutToken(
                 "http://localhost:" + testJwksServer.getPort() + "/realms/ripe-ncc",
                 "bcl-user",
                 "idp-sid-bcl");
 
-        String rawBody = "logout_token=" + java.net.URLEncoder.encode(logoutToken, StandardCharsets.UTF_8);
+        final String rawBody = "logout_token=" + java.net.URLEncoder.encode(logoutToken, StandardCharsets.UTF_8);
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        HttpEntity<String> entity = new HttpEntity<>(rawBody, headers);
+        final HttpEntity<String> entity = new HttpEntity<>(rawBody, headers);
 
-        ResponseEntity<String> logoutResponse = restTemplate.exchange(
+        final ResponseEntity<String> logoutResponse = restTemplate.exchange(
                 getServerUrl() + "/db-web-ui/logout/connect/back-channel/keycloak",
                 HttpMethod.POST,
                 entity,
@@ -293,7 +345,7 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void wrong_registry_call_should_400() {
-        HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
+        final HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
 
         final ResponseEntity<String> response = restTemplate.exchange(
                 getServerUrl() + "/db-web-ui/oauth2/authorization/wrongRegistry",
@@ -394,7 +446,7 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void sessionShouldHaveEightHourMaxInactiveInterval() {
+    void session_should_have_eight_hour_max_inactive_interval() {
         keycloakIdPDummyService.registerUser("timeout-test-code",
                 new KeycloakIdPDummyService.FakeUser("timeout-user", "timeout@example.com", "idp-sid-timeout"));
 
@@ -406,11 +458,11 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
         assertThat(rawValue, instanceOf(MapSession.class));
         final MapSession session = (MapSession) rawValue;
 
-        assertThat(session.getMaxInactiveInterval().getSeconds(), is(28800L));
+        assertThat(session.getMaxInactiveInterval().getSeconds(), is(EXPECTED_TTL_MS));
     }
 
     @Test
-    void authenticationFailureRedirectsToErrorPageWithIdpError(){
+    void authentication_failure_redirects_to_error_page_with_idp_error(){
         final HttpEntity<Void> anonymousRequest = new HttpEntity<>(null, new HttpHeaders());
 
         final ResponseEntity<String> authStart = restTemplate.exchange(
@@ -437,11 +489,26 @@ class OidcLoginFlowIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(callback.getStatusCode().value(), is(302));
 
-        String redirectLocation = callback.getHeaders().getLocation().toString();
+        final String redirectLocation = callback.getHeaders().getLocation().toString();
 
         assertThat(redirectLocation, containsString("/db-web-ui/error"));
         assertThat(redirectLocation, containsString("idpError"));
         assertThat(redirectLocation, not(containsString("silentLoginFailed")));
         assertThat(redirectLocation, not(containsString("loginError")));
+    }
+
+    private void assertAllCachesHaveSameExpirationTime(final String sessionId) {
+        final Object clientKey = hazelcastInstance.getMap(MAP_NAME).keySet().iterator().next();
+
+        final long httpSessionExpiration = expirationOf(OidcUtils.HTTP_SESSION_CACHE, sessionId);
+        final long oidcSessionExpiration = expirationOf(OIDC_SESSIONS_MAP, sessionId);
+        final long authorizedClientExpiration = expirationOf(MAP_NAME, clientKey);
+
+        assertThat((double) oidcSessionExpiration, is(closeTo(httpSessionExpiration, TOLERANCE_MS)));
+        assertThat((double) authorizedClientExpiration, is(closeTo(httpSessionExpiration, TOLERANCE_MS)));
+    }
+
+    private long expirationOf(final String mapName, final Object key) {
+        return hazelcastInstance.getMap(mapName).getEntryView(key).getExpirationTime();
     }
 }

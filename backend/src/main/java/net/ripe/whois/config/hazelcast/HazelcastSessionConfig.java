@@ -70,6 +70,8 @@ public class HazelcastSessionConfig {
         final MapConfig authorizedClientMapConfig = new MapConfig(HazelcastOAuth2AuthorizedClientService.MAP_NAME)
                 .setBackupCount(peerMembers.size())
                 .setAsyncBackupCount(0)
+                //This is set to idle because when users creates a new session this needs to be reset. If not user
+                // can end up with expired tokens while session is still active.
                 .setMaxIdleSeconds(sessionTimeoutSeconds);
 
         config.addMapConfig(authorizedClientMapConfig);
@@ -78,7 +80,8 @@ public class HazelcastSessionConfig {
         // whenever the token is used, so it slides with user activity.
         final MapConfig oidcSessionsMapConfig = new MapConfig(HazelcastOidcSessionRegistry.OIDC_SESSIONS_MAP)
                 .setBackupCount(peerMembers.size())
-                .setAsyncBackupCount(0);
+                .setAsyncBackupCount(0)
+                .setTimeToLiveSeconds(sessionTimeoutSeconds);
 
 
         config.addMapConfig(oidcSessionsMapConfig);

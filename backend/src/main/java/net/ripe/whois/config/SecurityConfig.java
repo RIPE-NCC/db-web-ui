@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.ripe.whois.config.hazelcast.HazelcastOAuth2AuthorizedClientService;
 import net.ripe.whois.config.hazelcast.HazelcastOidcSessionRegistry;
-import net.ripe.whois.services.SessionEmitterService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OidcBackChannelLogoutHandler;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -89,7 +87,6 @@ public class SecurityConfig {
                                             final AuthenticationSuccessHandler authenticationSuccessHandler,
                                             final AuthenticationFailureHandler oauth2LoginFailureHandler,
                                             final OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler,
-                                            final OidcBackChannelLogoutHandler oidcLogoutHandler,
                                             final LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout,
                                             final OAuth2AuthorizedClientRepository authorizedClientRepository
                                             ) throws Exception {
@@ -130,7 +127,6 @@ public class SecurityConfig {
                 .logoutSuccessHandler(logoutSuccessHandler))
                 .oidcLogout(logout -> logout
                         .backChannel(backChannel -> backChannel
-                                .logoutHandler(oidcLogoutHandler)
                                 .logoutHandler(cleanUpAllCachesOnClientOnBackChannelLogout)));
 
         http.addFilterBefore(new NextUrlFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
@@ -223,9 +219,8 @@ public class SecurityConfig {
 
     // Hazelcast instances
     @Bean
-    public OAuth2AuthorizedClientService authorizedClientService(@Value("${server.servlet.session.timeout}") final Duration sessionTimeout,
-                                                                 final HazelcastInstance hazelcastInstance) {
-        return new HazelcastOAuth2AuthorizedClientService(sessionTimeout, hazelcastInstance);
+    public OAuth2AuthorizedClientService authorizedClientService(final HazelcastInstance hazelcastInstance) {
+        return new HazelcastOAuth2AuthorizedClientService(hazelcastInstance);
     }
 
     @Bean
@@ -242,16 +237,8 @@ public class SecurityConfig {
     // Logout from the application when a user logout from the provider
 
     @Bean
-    public OidcBackChannelLogoutHandler oidcLogoutHandler(final OidcSessionRegistry sessionRegistry) {
-        OidcBackChannelLogoutHandler handler = new OidcBackChannelLogoutHandler(sessionRegistry);
-        handler.setSessionCookieName(OidcUtils.OIDC_LOCAL_COOKIE_NAME);
-        return handler;
-    }
-
-    @Bean
     public LogoutHandler cleanUpAllCachesOnClientOnBackChannelLogout(final OidcSessionRegistry oidcSessionRegistry,
-                                                              final HazelcastInstance hazelcastInstance,
-                                                              final SessionEmitterService sessionEmitterService) {
+                                                              final HazelcastInstance hazelcastInstance) {
         return (request, response, authentication) -> {
             if (!(authentication.getPrincipal() instanceof OidcLogoutToken logoutToken)) {
                 LOGGER.debug("Not an OIDC logout token: {}", authentication.getPrincipal());
