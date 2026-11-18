@@ -18,7 +18,7 @@ import { IRpslObject, RpslService } from './rpsl.service';
 import { TextCommonsService } from './text-commons.service';
 
 export interface ITextObject {
-    rpsl?: any;
+    rpsl?: string;
     source: string;
     type: string;
     name?: string;
@@ -66,9 +66,6 @@ export class TextCreateComponent implements OnInit {
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         this.object.source = paramMap.get('source');
         this.object.type = paramMap.get('objectType');
-        if (queryParamMap.has('rpsl')) {
-            this.object.rpsl = decodeURIComponent(queryParamMap.get('rpsl'));
-        }
         const redirect = !queryParamMap.has('noRedirect');
 
         // maintainers associated with this SSO-account

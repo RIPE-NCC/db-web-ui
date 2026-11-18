@@ -15,7 +15,6 @@ import { LoadingIndicatorComponent } from '../../shared/loadingindicator/loading
 import { NameFormatterComponent } from '../../shared/name-formatter.component';
 import { WhoisResourcesService } from '../../shared/whois-resources.service';
 import { IAttributeModel, IWhoisObjectModel, IWhoisResponseModel } from '../../shared/whois-response-type.model';
-import { ITextObject } from '../../updatestext/text-create.component';
 import { MntnerService } from '../../updatesweb/mntner.service';
 import { ModalDeleteObjectComponent } from '../../updatesweb/modal-delete-object.component';
 import { PreferenceService } from '../../updatesweb/preference.service';
@@ -73,10 +72,7 @@ export class ResourceDetailsComponent implements OnDestroy {
     private preferenceService = inject(PreferenceService);
 
     public whoisObject: IWhoisObjectModel;
-    public textObject: ITextObject = {
-        source: '',
-        type: '',
-    };
+
     public resource: any;
     public flags: IFlag[] = [];
     public show: {
@@ -141,8 +137,8 @@ export class ResourceDetailsComponent implements OnDestroy {
             viewer: true,
         };
         const paramMap = this.activatedRoute.snapshot.paramMap;
-        this.textObject.name = this.objectName = decodeURIComponent(paramMap.get('objectName'));
-        this.textObject.type = this.objectType = paramMap.get('objectType').toLowerCase();
+        this.objectName = decodeURIComponent(paramMap.get('objectName'));
+        this.objectType = paramMap.get('objectType').toLowerCase();
         this.sponsored = paramMap.get('sponsored') === 'true';
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         if (queryParamMap.has('alertMessage')) {
@@ -156,7 +152,7 @@ export class ResourceDetailsComponent implements OnDestroy {
                 this.loadingResource = false;
                 this.showRefreshButton = false;
                 this.whoisObject = response.object;
-                this.textObject.source = this.source = this.whoisObject ? this.whoisObject.source.id : this.properties.SOURCE;
+                this.source = this.whoisObject ? this.whoisObject.source.id : this.properties.SOURCE;
                 // should only be one
                 this.resource = response.resources[0]
                     ? response.resources[0]
@@ -207,7 +203,8 @@ export class ResourceDetailsComponent implements OnDestroy {
     }
 
     public updateButtonClicked(modifiedWhoisObject: any): void {
-        this.resetMessages();
+        this.resetAlertMessages();
+        this.clearErrorsOnFields();
 
         const attributesWithoutDates = modifiedWhoisObject.attributes.attribute.filter(
             (attr: IAttributeModel) => attr.name !== 'last-modified' && attr.name !== 'created',
@@ -229,17 +226,18 @@ export class ResourceDetailsComponent implements OnDestroy {
         }, 1000);
     }
 
-    public submit(whoisResources: any) {
-        if (whoisResources.data?.errormessages) {
+    public submit(whoisResources: IWhoisResponseModel) {
+        this.resetAlertMessages();
+        if (whoisResources?.errormessages) {
             this.onSubmitError(whoisResources);
         } else {
-            this.textObject.rpsl = whoisResources.rpsl;
             this.onSubmitSuccess(whoisResources);
         }
     }
 
     public showObjectEditor() {
-        this.resetMessages();
+        this.resetAlertMessages();
+        this.clearErrorsOnFields();
         this.isEditing = true;
         this.isDeletable = this.isDeletableResource();
         this.isWebEditingMode = this.preferenceService.isWebMode();
@@ -247,7 +245,8 @@ export class ResourceDetailsComponent implements OnDestroy {
     }
 
     public hideObjectEditor() {
-        this.resetMessages();
+        this.resetAlertMessages();
+        this.clearErrorsOnFields();
         this.isEditing = false;
         this.isDeletable = false;
     }
@@ -287,13 +286,23 @@ export class ResourceDetailsComponent implements OnDestroy {
         });
     }
 
-    private resetMessages() {
+    private resetAlertMessages() {
         this.alertsService.clearAlertMessages();
+    }
+
+    private clearErrorsOnFields() {
         // explicitly clear errors on fields before submitting the form, should probably be done elsewhere
         this.whoisObject.attributes.attribute.forEach((a) => {
             a.$$error = '';
             a.$$invalid = false;
         });
+    }
+
+    private loadMessages(whoisResources: IWhoisResponseModel): void {
+        if (!whoisResources.errormessages || !whoisResources.errormessages.errormessage) {
+            return;
+        }
+        this.alertsService.addAlertMsgs(whoisResources);
     }
 
     private onSubmitSuccess(whoisResources: IWhoisResponseModel): void {
@@ -312,20 +321,13 @@ export class ResourceDetailsComponent implements OnDestroy {
         document.querySelector('#editortop').scrollIntoView();
     }
 
-    private loadMessages(whoisResources: IWhoisResponseModel): void {
-        if (!whoisResources.errormessages || !whoisResources.errormessages.errormessage) {
-            return;
-        }
-        this.alertsService.addAlertMsgs(whoisResources);
-    }
-
-    private onSubmitError(whoisResources: { data: IWhoisResponseModel }): void {
-        const attributeErrors = whoisResources.data.errormessages.errormessage.filter((e) => e.attribute);
+    private onSubmitError(whoisResources: IWhoisResponseModel): void {
+        const attributeErrors = whoisResources.errormessages.errormessage.filter((e) => e.attribute);
         attributeErrors.forEach((e) => {
             const attribute = this.whoisObject.attributes.attribute.find((a) => a.name === e.attribute.name && a.value === e.attribute.value);
             attribute.$$error = WhoisResourcesService.readableError(e);
         });
-        this.loadMessages(whoisResources.data);
+        this.loadMessages(whoisResources);
         if (this.alertsService.alerts.errors.length === 0) {
             this.alertsService.addGlobalError('Your object NOT updated, please review issues below');
         }

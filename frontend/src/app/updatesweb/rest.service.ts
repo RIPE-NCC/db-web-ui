@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { forkJoin, Observable, of, shareReplay, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
-import { IMntByModel } from '../shared/whois-response-type.model';
+import { IMntByModel, IWhoisResponseModel } from '../shared/whois-response-type.model';
 
 export type ReferenceItem = {
     primaryKey: string;
@@ -186,7 +186,14 @@ export class RestService {
         );
     }
 
-    public modifyObject(source: string, objectType: string, objectName: any, attributes: any, overrides?: any, unformatted?: any) {
+    public modifyObject(
+        source: string,
+        objectType: string,
+        objectName: any,
+        attributes: any,
+        overrides?: any,
+        unformatted?: any,
+    ): Observable<IWhoisResponseModel> {
         const params = this.setParams(overrides, unformatted);
         const name = decodeURIComponent(objectName); // prevent double encoding of forward slash (%2f ->%252F)
         return this.http.put(`api/whois/${source.toUpperCase()}/${objectType}/${name}`, attributes, { params }).pipe(

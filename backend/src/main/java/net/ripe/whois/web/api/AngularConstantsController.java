@@ -74,8 +74,6 @@ public class AngularConstantsController {
     private String dbWebUiCommitId;
     @Value("${nopassword.auth.popup:false}")
     private boolean noPasswordAuthPopup;
-    @Value("${show.menu.id:}")
-    private String[] showMenuIds;
     @Value("${access.manage.apikeys:}")
     private String linkToManageApiKeysInAccess;
     @Value("${rest.api.ripeUrl:}")
@@ -127,7 +125,6 @@ public class AngularConstantsController {
         constants.setSessionTtl(sessionTtl);
         constants.setReleaseNotificationPolling(releaseNotificationPolling);
         constants.setNoPasswordAuthPopup(noPasswordAuthPopup);
-        constants.setShowMenuIds(showMenuIds);
         constants.setLinkToManageApiKeysInAccess(linkToManageApiKeysInAccess);
         constants.setRestApiRipeUrl(restApiRipeUrl);
         return constants;
@@ -178,8 +175,6 @@ public class AngularConstantsController {
         private int releaseNotificationPolling;
         @JsonProperty("NO_PASSWORD_AUTH_POPUP")
         private boolean noPasswordAuthPopup;
-        @JsonProperty("SHOW_MENU_IDS")
-        private String[] showMenuIds;
         @JsonProperty("LINK_TO_MANAGE_APIKEYS_IN_ACCESS")
         private String linkToManageApiKeysInAccess;
         @JsonProperty("REST_API_RIPE_URL")
@@ -271,10 +266,6 @@ public class AngularConstantsController {
 
         public void setNoPasswordAuthPopup(boolean noPasswordAuthPopup) {
             this.noPasswordAuthPopup = noPasswordAuthPopup;
-        }
-
-        public void setShowMenuIds(String[] showMenuIds) {
-            this.showMenuIds = showMenuIds;
         }
 
         public void setLinkToManageApiKeysInAccess(String linkToManageApiKeysInAccess) {

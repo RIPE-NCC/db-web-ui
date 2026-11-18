@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IWhoisResponseModel } from 'src/app/shared/whois-response-type.model';
 import { PropertiesService } from '../properties.service';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -29,25 +30,23 @@ export class TextModifyComponent implements OnInit {
     private router = inject(Router);
     private properties = inject(PropertiesService);
 
-    public restCallInProgress: boolean = false;
-    public noRedirect: boolean = false;
-    public object: ITextObject = {
+    restCallInProgress: boolean = false;
+    noRedirect: boolean = false;
+    object: ITextObject = {
         source: '',
         type: '',
     };
-    public name: string;
-    public override: string;
+    name: string;
+    override: string;
 
-    public ngOnInit() {
+    ngOnInit() {
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         this.object.source = paramMap.get('source') ?? this.properties.SOURCE;
         this.object.type = paramMap.get('objectType');
         this.object.name = decodeURIComponent(paramMap.get('objectName'));
-        if (queryParamMap.has('rpsl')) {
-            this.object.rpsl = decodeURIComponent(queryParamMap.get('rpsl'));
-        }
+
         const redirect = !queryParamMap.has('noRedirect');
 
         console.debug(
@@ -68,18 +67,17 @@ export class TextModifyComponent implements OnInit {
         }
     }
 
-    public submit(response) {
-        if (response.data?.errormessages) {
+    submit(response: IWhoisResponseModel) {
+        if (response?.errormessages) {
             this.restCallInProgress = false;
 
-            const whoisResources = response.data;
+            const whoisResources = response;
             this.alertsServices.setAllErrors(whoisResources);
             const attributes = this.whoisResourcesService.getAttributes(whoisResources);
             if (attributes.length !== 0) {
                 this.errorReporterService.log('TextModify', this.object.type, this.alertsServices.alerts.errors, attributes);
             }
         } else {
-            this.object.rpsl = response.rpsl;
             this.restCallInProgress = false;
             const primaryKey = this.whoisResourcesService.getPrimaryKey(response);
             this.messageStoreService.add(primaryKey, response);
@@ -87,18 +85,18 @@ export class TextModifyComponent implements OnInit {
         }
     }
 
-    public switchToWebMode() {
+    switchToWebMode() {
         console.debug('Switching to web-mode');
 
         this.preferenceService.setWebMode();
         void this.router.navigateByUrl(`webupdates/modify/${this.object.source}/${this.object.type}/${encodeURIComponent(this.object.name)}?noRedirect`);
     }
 
-    public cancel() {
+    cancel() {
         this.navigateToDisplayPage(this.object.source, this.object.type, this.object.name, undefined);
     }
 
-    public deleteObject() {
+    deleteObject() {
         this.textCommonsService.navigateToDelete(this.object.source, this.object.type, this.object.name, 'textupdates/modify');
     }
 

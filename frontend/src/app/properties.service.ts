@@ -27,7 +27,6 @@ export interface IProperties {
     SESSION_TTL: number;
     RELEASE_NOTIFICATION_POLLING: number;
     NO_PASSWORD_AUTH_POPUP: boolean;
-    SHOW_MENU_IDS: string[];
     LINK_TO_MANAGE_APIKEYS_IN_ACCESS: string;
     REST_API_RIPE_URL: string;
 }
@@ -36,36 +35,35 @@ export interface IProperties {
 export class PropertiesService {
     private httpClient = inject(HttpClient);
 
-    public ACCESS_URL = '';
-    public BANNER = 'Welcome to the localhost version of the RIPE Database.';
-    public ENV = 'local';
-    public RIPE_APP_WEBCOMPONENTS_ENV = 'pre';
-    public static BREAKPOINTS_MOBILE_VIEW = 1025;
-    public MATOMO_ID = '';
-    public LOGIN_URL = '';
-    public LOGOUT_URL = '';
-    public PORTAL_URL = '';
-    public PORTAL_URL_ACCOUNT = '';
-    public PORTAL_URL_REQUEST = '';
-    public NEWEST_PORTAL_URL = '';
-    public LIVE_CHAT_KEY = '';
-    public QUERY_PAGE_LINK_TO_OTHER_DB = '';
-    public REST_SEARCH_URL = '';
-    public SOURCE = 'RIPE';
-    public DB_WEB_UI_BUILD_TIME = '00:00';
+    ACCESS_URL = '';
+    BANNER = 'Welcome to the localhost version of the RIPE Database.';
+    ENV = 'local';
+    RIPE_APP_WEBCOMPONENTS_ENV = 'pre';
+    static BREAKPOINTS_MOBILE_VIEW = 1025;
+    MATOMO_ID = '';
+    LOGIN_URL = '';
+    LOGOUT_URL = '';
+    PORTAL_URL = '';
+    PORTAL_URL_ACCOUNT = '';
+    PORTAL_URL_REQUEST = '';
+    NEWEST_PORTAL_URL = '';
+    LIVE_CHAT_KEY = '';
+    QUERY_PAGE_LINK_TO_OTHER_DB = '';
+    REST_SEARCH_URL = '';
+    SOURCE = 'RIPE';
+    DB_WEB_UI_BUILD_TIME = '00:00';
     // list of all ripe ncc mntners
-    public RIPE_NCC_MNTNERS = [];
+    RIPE_NCC_MNTNERS: string[] = [];
     // maintainers on top-level allocation and PI assignments
-    public TOP_RIPE_NCC_MNTNERS = [];
-    public RIPE_NCC_HM_MNT = 'RIPE-NCC-HM-MNT';
-    public SESSION_TTL = 30000;
-    public RELEASE_NOTIFICATION_POLLING = 30000;
-    public NO_PASSWORD_AUTH_POPUP = false;
-    public SHOW_MENU_IDS = [];
-    public LINK_TO_MANAGE_APIKEYS_IN_ACCESS = '';
-    public REST_API_RIPE_URL = '';
+    TOP_RIPE_NCC_MNTNERS: string[] = [];
+    RIPE_NCC_HM_MNT = 'RIPE-NCC-HM-MNT';
+    SESSION_TTL = 30000;
+    RELEASE_NOTIFICATION_POLLING = 30000;
+    NO_PASSWORD_AUTH_POPUP = false;
+    LINK_TO_MANAGE_APIKEYS_IN_ACCESS = '';
+    REST_API_RIPE_URL = '';
 
-    public load(): Promise<void> {
+    load(): Promise<void> {
         return firstValueFrom(this.httpClient.get<IProperties>('app.constants.json')).then(
             (response) => {
                 this.ENV = response.ENV;
@@ -90,7 +88,6 @@ export class PropertiesService {
                 this.SESSION_TTL = response.SESSION_TTL;
                 this.RELEASE_NOTIFICATION_POLLING = response.RELEASE_NOTIFICATION_POLLING;
                 this.NO_PASSWORD_AUTH_POPUP = response.NO_PASSWORD_AUTH_POPUP;
-                this.SHOW_MENU_IDS = response.SHOW_MENU_IDS;
                 this.LINK_TO_MANAGE_APIKEYS_IN_ACCESS = response.LINK_TO_MANAGE_APIKEYS_IN_ACCESS;
                 this.REST_API_RIPE_URL = response.REST_API_RIPE_URL;
                 // once we deploy the db-operational
@@ -107,50 +104,46 @@ export class PropertiesService {
         }
     }
 
-    public isProdEnv(): boolean {
+    isProdEnv(): boolean {
         return this.ENV === 'prod';
     }
 
-    public isTrainingEnv(): boolean {
+    isTrainingEnv(): boolean {
         return this.ENV === 'training';
     }
 
-    public isRcEnv(): boolean {
-        return this.ENV === 'rc';
-    }
-
-    public isTestEnv(): boolean {
+    isTestEnv(): boolean {
         return this.ENV === 'test';
     }
 
-    public isNccMntner(mntnerKey: string): boolean {
+    isNccMntner(mntnerKey: string): boolean {
         return this.TOP_RIPE_NCC_MNTNERS.includes(mntnerKey.toUpperCase());
     }
 
-    public isAnyNccMntner(mntnerKey: string): boolean {
+    isAnyNccMntner(mntnerKey: string): boolean {
         return this.RIPE_NCC_MNTNERS.includes(mntnerKey.toUpperCase());
     }
 
-    public isNccHmMntner(mntnerKey: string): boolean {
+    isNccHmMntner(mntnerKey: string): boolean {
         return this.RIPE_NCC_HM_MNT === mntnerKey.toUpperCase();
     }
 
-    public isEnableNonAuthUpdates(): boolean {
+    isEnableNonAuthUpdates(): boolean {
         return (
             !this.isProdEnv() && // Security property, this should never be enabled in PROD
             this.NO_PASSWORD_AUTH_POPUP
         );
     }
 
-    public static getInnerWidth() {
+    static getInnerWidth() {
         return window.innerWidth;
     }
 
-    public static isMobileView() {
+    static isMobileView() {
         return PropertiesService.getInnerWidth() < PropertiesService.BREAKPOINTS_MOBILE_VIEW;
     }
 
-    public getTitleEnvironment() {
+    getTitleEnvironment() {
         if (this.isProdEnv()) {
             return 'RIPE';
         } else if (this.isTrainingEnv()) {

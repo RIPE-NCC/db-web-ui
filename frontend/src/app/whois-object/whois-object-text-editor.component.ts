@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { forkJoin } from 'rxjs';
+import { IWhoisResponseModel } from 'src/app/shared/whois-response-type.model';
 import { AlertsService } from '../shared/alert/alerts.service';
 import { SubmittingAgreementComponent } from '../shared/submitting-agreement.component';
 import { WhoisResourcesService } from '../shared/whois-resources.service';
@@ -34,35 +35,32 @@ export class WhoisObjectTextEditorComponent implements OnInit {
     source: string;
     @Input()
     objectName: string;
-    @Input()
     rpsl?: string;
 
     @Output()
-    submitEvent: EventEmitter<any> = new EventEmitter();
+    submitEvent: EventEmitter<IWhoisResponseModel> = new EventEmitter();
     @Output()
     cancelEvent: EventEmitter<void> = new EventEmitter();
     @Output()
     deleteEvent: EventEmitter<void> = new EventEmitter();
 
-    public restCallInProgress: boolean = false;
-    public noRedirect: boolean = false;
+    restCallInProgress: boolean = false;
+    noRedirect: boolean = false;
 
-    public mntners: IMaintainers = {
+    mntners: IMaintainers = {
         object: [],
         objectOriginal: [],
         sso: [],
     };
-    public override: string;
-    public deletable: boolean;
-    public haveNonLatin1: boolean = false;
+    override: string;
+    deletable: boolean;
+    haveNonLatin1: boolean = false;
 
-    public ngOnInit() {
-        if (this.rpsl === undefined) {
-            this.fetchAndPopulateObject();
-        }
+    ngOnInit() {
+        this.fetchAndPopulateObject();
     }
 
-    public submit() {
+    submit() {
         const objects = this.rpslService.fromRpsl(this.rpsl);
         if (objects.length > 1) {
             this.alertsServices.setGlobalError('Only a single object is allowed');
@@ -85,10 +83,10 @@ export class WhoisObjectTextEditorComponent implements OnInit {
                 this.restService
                     .modifyObject(this.source, this.type, this.objectName, this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), override, true)
                     .subscribe({
-                        next: (whoisResources: any) => {
+                        next: (whoisResources: IWhoisResponseModel) => {
                             this.submitEvent.emit(whoisResources);
                         },
-                        error: (errorWhoisResources: any) => {
+                        error: (errorWhoisResources: IWhoisResponseModel) => {
                             this.submitEvent.emit(errorWhoisResources);
                         },
                     });
@@ -99,13 +97,13 @@ export class WhoisObjectTextEditorComponent implements OnInit {
         });
     }
 
-    public cancel() {
+    cancel() {
         if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
             this.cancelEvent.emit();
         }
     }
 
-    public deleteObject() {
+    deleteObject() {
         this.deleteEvent.emit();
     }
 

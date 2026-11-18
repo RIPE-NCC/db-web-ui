@@ -1,4 +1,6 @@
-export const routeJSON = {
+import { IWhoisObjectModel, IWhoisResponseModel } from 'src/app/shared/whois-response-type.model';
+
+export const routeJSON: IWhoisResponseModel = {
     objects: {
         object: [
             {
@@ -12,7 +14,7 @@ export const routeJSON = {
                         { name: 'source', value: 'RIPE' },
                     ],
                 },
-            },
+            } as IWhoisObjectModel,
         ],
     },
 };

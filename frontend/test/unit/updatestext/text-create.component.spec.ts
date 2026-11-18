@@ -31,10 +31,6 @@ describe('TextCreateComponent', () => {
 
     let textCreateComponent: TextCreateComponent;
 
-    afterAll(() => {
-        TestBed.resetTestingModule();
-    });
-
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
         queryParamMock = convertToParamMap({});
@@ -91,17 +87,19 @@ describe('TextCreateComponent', () => {
         httpMock.verify();
     });
 
-    const createParams = (source: string, objectType: string, noRedirect: boolean, rpsl: string) => {
+    afterAll(() => {
+        TestBed.resetTestingModule();
+    });
+
+    const createParams = (source: string, objectType: string, noRedirect: boolean) => {
         const params = { source, objectType };
-        const queryParamsHas = { noRedirect, rpsl: !!rpsl };
-        const queryParamsGet = { rpsl: rpsl || undefined };
+        const queryParamsHas = { noRedirect };
         vi.spyOn(paramMapMock, 'get').mockImplementation((name: string) => params[name]);
         vi.spyOn(queryParamMock, 'has').mockImplementation((name: string) => queryParamsHas[name]);
-        vi.spyOn(queryParamMock, 'get').mockImplementation((name: string) => queryParamsGet[name]);
     };
 
     it('should get parameters from url', () => {
-        createParams(SOURCE, 'inetnum', true, null);
+        createParams(SOURCE, 'inetnum', true);
 
         componentFixture.detectChanges();
 
@@ -110,18 +108,8 @@ describe('TextCreateComponent', () => {
         expect(textCreateComponent.object.type).toBe('inetnum');
     });
 
-    it('should get rpsl from url-parameter', () => {
-        createParams(SOURCE, 'inetnum', true, 'inetnum:1inetnum:2\n');
-
-        componentFixture.detectChanges();
-
-        expect(textCreateComponent.object.source).toBe(SOURCE);
-        expect(textCreateComponent.object.type).toBe('inetnum');
-        expect(textCreateComponent.object.rpsl).toBe('inetnum:1inetnum:2\n');
-    });
-
     it('should redirect to webupdates when web-preference is set', () => {
-        createParams(SOURCE, 'inetnum', false, null);
+        createParams(SOURCE, 'inetnum', false);
         preferencesServiceMock.isWebMode.mockReturnValue(true);
 
         componentFixture.detectChanges();
@@ -130,7 +118,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should not redirect to webupdates when web-preference is set and no-redirect is true', () => {
-        createParams(SOURCE, 'inetnum', true, null);
+        createParams(SOURCE, 'inetnum', true);
         preferencesServiceMock.isWebMode.mockReturnValue(true);
 
         componentFixture.detectChanges();
@@ -139,7 +127,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should populate an empty person rpsl, mandatory attrs uppercase and optional lowercase', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
 
         componentFixture.detectChanges();
 
@@ -163,7 +151,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should fetch and populate sso mntners', async () => {
-        createParams(SOURCE, 'inetnum', true, null);
+        createParams(SOURCE, 'inetnum', true);
 
         componentFixture.detectChanges();
 
@@ -199,7 +187,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should handle empty sso mntners', async () => {
-        createParams(SOURCE, 'inetnum', true, null);
+        createParams(SOURCE, 'inetnum', true);
 
         componentFixture.detectChanges();
 
@@ -233,20 +221,8 @@ describe('TextCreateComponent', () => {
         expect(textCreateComponent.alertsService.alerts.errors.length).toEqual(0);
     });
 
-    // TODO fix
-    /*
-    it("should handle 404 error while fetching sso mntners", () => {
-        doCreateController("inetnum");
-
-        $httpBackend.whenGET("api/user/mntners").respond(404);
-        $httpBackend.flush();
-
-        expect($state.current.name).toBe("notFound");
-    });
-    */
-
     it('should handle error while fetching sso mntners', async () => {
-        createParams(SOURCE, 'inetnum', true, null);
+        createParams(SOURCE, 'inetnum', true);
 
         componentFixture.detectChanges();
 
@@ -285,7 +261,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should report an error when mandatory field is missing', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
         componentFixture.detectChanges();
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
@@ -304,7 +280,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should report an error when multiple objects are passed in', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
 
         componentFixture.detectChanges();
 
@@ -324,7 +300,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should report an error when unknown attribute is encountered', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
         componentFixture.detectChanges();
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
@@ -352,7 +328,7 @@ describe('TextCreateComponent', () => {
         'source:        RIPE\n';
 
     it('should present password popup upon submit when no sso mnt-by is used', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
         componentFixture.detectChanges();
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
@@ -365,7 +341,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should navigate to display after successful submit', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
         componentFixture.detectChanges();
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([
@@ -404,7 +380,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should extract override from rpsl and not show authentication modal', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
         componentFixture.detectChanges();
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([{ key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true }]);
@@ -444,7 +420,7 @@ describe('TextCreateComponent', () => {
     });
 
     it('should show errors after submit failure ', async () => {
-        createParams(SOURCE, 'person', true, null);
+        createParams(SOURCE, 'person', true);
         componentFixture.detectChanges();
 
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([

@@ -10,7 +10,7 @@ import { PrefixService } from 'src/app/domainobject/prefix.service';
 import { PropertiesService } from 'src/app/properties.service';
 import { WhoisMetaService } from 'src/app/shared/whois-meta.service';
 import { WhoisResourcesService } from 'src/app/shared/whois-resources.service';
-import { IMntByModel } from 'src/app/shared/whois-response-type.model';
+import { IMntByModel, IObjectMessageModel, IWhoisObjectModel, IWhoisResponseModel } from 'src/app/shared/whois-response-type.model';
 import { RpslService } from 'src/app/updatestext/rpsl.service';
 import { TextCommonsService } from 'src/app/updatestext/text-commons.service';
 import { TextModifyComponent } from 'src/app/updatestext/text-modify.component';
@@ -43,7 +43,7 @@ describe('TextModifyComponent', () => {
         'last-modified: 2012-02-27T10:11:12Z\n' +
         'source:RIPE\n';
 
-    const testPersonObject = {
+    const testPersonObject: IWhoisResponseModel = {
         objects: {
             object: [
                 {
@@ -53,12 +53,13 @@ describe('TextModifyComponent', () => {
                             { name: 'person', value: 'test person' },
                             { name: 'address', value: 'Amsterdam' },
                             { name: 'phone', value: '+316' },
+                            { name: 'e-mail', value: 'ripe@ripe.net' },
                             { name: 'nic-hdl', value: 'TST08-RIPE' },
                             { name: 'mnt-by', value: 'TEST-MNT' },
                             { name: 'source', value: 'RIPE' },
                         ],
                     },
-                },
+                } as IWhoisObjectModel,
             ],
         },
     };
@@ -71,10 +72,6 @@ describe('TextModifyComponent', () => {
             mine: true,
         },
     ];
-
-    afterAll(() => {
-        TestBed.resetTestingModule();
-    });
 
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
@@ -132,13 +129,16 @@ describe('TextModifyComponent', () => {
         httpMock.verify();
     });
 
-    const createParams = (objectType?: string, objectName?: string, noRedirect?: boolean, rpsl?: string) => {
+    afterAll(() => {
+        TestBed.resetTestingModule();
+    });
+
+    const createParams = (objectType?: string, objectName?: string, noRedirect?: boolean) => {
         const params = { source: SOURCE, objectType: objectType ? objectType : OBJECT_TYPE, objectName: objectName ? objectName : OBJECT_NAME };
-        const queryParamsHas = { noRedirect, rpsl: !!rpsl };
-        const queryParamsGet = { rpsl: rpsl || undefined };
+        const queryParamsHas = { noRedirect };
+
         vi.spyOn(paramMapMock, 'get').mockImplementation((name: string) => params[name]);
         vi.spyOn(queryParamMock, 'has').mockImplementation((name: string) => queryParamsHas[name]);
-        vi.spyOn(queryParamMock, 'get').mockImplementation((name: string) => queryParamsGet[name]);
     };
 
     it('should get parameters from url', async () => {
@@ -152,20 +152,9 @@ describe('TextModifyComponent', () => {
             .flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(mntrMock);
 
-        await componentFixture.whenStable();
         expect(textModifyComponent.object.source).toBe(SOURCE);
         expect(textModifyComponent.object.type).toBe(OBJECT_TYPE);
         expect(textModifyComponent.object.name).toBe(OBJECT_NAME);
-    });
-
-    it('should get rpsl from url-parameter', async () => {
-        preferencesServiceMock.isWebMode.mockReturnValue(true);
-        createParams('inetnum', '1', null, 'inetnum:1inetnum:2\n');
-        componentFixture.detectChanges();
-        await componentFixture.whenStable();
-        expect(textModifyComponent.object.source).toBe(SOURCE);
-        expect(textModifyComponent.object.type).toBe('inetnum');
-        expect(textModifyComponent.object.rpsl).toBe('inetnum:1inetnum:2\n');
     });
 
     it('should redirect to webupdates when web-preference is set', async () => {
@@ -180,7 +169,6 @@ describe('TextModifyComponent', () => {
             .flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(mntrMock);
 
-        await componentFixture.whenStable();
         expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/modify/RIPE/person/TST08-RIPE?noRedirect`);
     });
 
@@ -196,7 +184,6 @@ describe('TextModifyComponent', () => {
             .flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(mntrMock);
 
-        await componentFixture.whenStable();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
         expect(routerMock.navigate).not.toHaveBeenCalled();
     });
@@ -212,13 +199,9 @@ describe('TextModifyComponent', () => {
             .flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush([]);
 
-        await componentFixture.whenStable();
-
         textModifyComponent.object.rpsl = testPersonRpsl;
         textModifyComponent.submit(testPersonObject);
-        await componentFixture.whenStable();
 
-        await componentFixture.whenStable();
         expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/person/TST08-RIPE?method=Modify`);
     });
 
@@ -226,7 +209,6 @@ describe('TextModifyComponent', () => {
         createParams('route', '12.235.32.0%2F19AS1680');
         componentFixture.detectChanges();
 
-        await componentFixture.whenStable();
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(mntrMock);
         httpMock
             .expectOne({
@@ -249,10 +231,8 @@ describe('TextModifyComponent', () => {
                 url: 'api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true&unformatted=true',
             })
             .flush(routeJSON);
-        await componentFixture.whenStable();
         textModifyComponent.submit(routeJSON);
 
-        await componentFixture.whenStable();
         expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/route/12.235.32.0%2F19AS1680?method=Modify`);
     });
 
@@ -281,8 +261,6 @@ describe('TextModifyComponent', () => {
                 { status: 400, statusText: 'bad request' },
             );
 
-        await componentFixture.whenStable();
-
         const plaintextErrors = textModifyComponent.alertsServices.alerts.errors.map((item) => ({ plainText: item.plainText }));
         expect(plaintextErrors).toEqual([{ plainText: 'ERROR:101: no entries found\n\nNo entries found in source RIPE.\n' }]);
     });
@@ -299,47 +277,40 @@ describe('TextModifyComponent', () => {
             .flush(testPersonObject);
         httpMock.expectOne({ method: 'GET', url: 'api/user/mntners' }).flush(mntrMock);
 
-        await componentFixture.whenStable();
-        textModifyComponent.object.rpsl = testPersonRpsl;
         const errorRespons = {
-            data: {
-                objects: {
-                    object: [
-                        {
-                            'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TST08-RIPE' }] },
-                            attributes: {
-                                attribute: [
-                                    { name: 'person', value: 'test person' },
-                                    { name: 'address', value: 'Amsterdam' },
-                                    { name: 'phone', value: '+316' },
-                                    { name: 'nic-hdl', value: 'TST08-RIPE' },
-                                    { name: 'mnt-by', value: 'TEST-MNT' },
-                                    { name: 'source', value: 'RIPE' },
-                                ],
-                            },
+            objects: {
+                object: [
+                    {
+                        'primary-key': { attribute: [{ name: 'nic-hdl', value: 'TST08-RIPE' }] },
+                        attributes: {
+                            attribute: [
+                                { name: 'person', value: 'test person' },
+                                { name: 'address', value: 'Amsterdam' },
+                                { name: 'phone', value: '+316' },
+                                { name: 'nic-hdl', value: 'TST08-RIPE' },
+                                { name: 'mnt-by', value: 'TEST-MNT' },
+                                { name: 'source', value: 'RIPE' },
+                            ],
                         },
-                    ],
-                },
-                errormessages: {
-                    errormessage: [
-                        {
-                            severity: 'Error',
-                            text: `"%s" is not valid for this object type`,
-                            args: [{ value: 'mnt-ref' }],
-                        },
-                    ],
-                },
+                    } as IWhoisObjectModel,
+                ],
+            },
+            errormessages: {
+                errormessage: [
+                    {
+                        severity: 'Error',
+                        text: `"%s" is not valid for this object type`,
+                        args: [{ value: 'mnt-ref' }],
+                    } as IObjectMessageModel,
+                ],
             },
         };
         textModifyComponent.submit(errorRespons);
-
-        await componentFixture.whenStable();
 
         expect(textModifyComponent.alertsServices.alerts.errors.length).toEqual(1);
         const plaintextErrors = textModifyComponent.alertsServices.alerts.errors.map((item) => ({ plainText: item.plainText }));
         expect(plaintextErrors).toEqual([{ plainText: `"mnt-ref" is not valid for this object type` }]);
 
-        expect(textModifyComponent.object.rpsl).toEqual(testPersonRpsl);
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
         expect(routerMock.navigate).not.toHaveBeenCalled();
     });

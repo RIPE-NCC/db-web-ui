@@ -1,130 +1,104 @@
 import { Injectable } from '@angular/core';
 import { IAttributeModel, IStatusOption } from '../shared/whois-response-type.model';
 
-//TODO: This class should be static
+type ResourceType = 'aut-num' | 'inetnum' | 'inet6num';
+type StatusList = readonly string[];
+type ResourceStatuses = Partial<Record<string, StatusList>> & {
+    default: StatusList;
+};
+
+const toStatusOptions = (statuses: StatusList): IStatusOption[] => statuses.map((status) => ({ key: status, value: status }));
+
 @Injectable({ providedIn: 'root' })
 export class ResourceStatusService {
-    private readonly statuses = {
+    private static readonly STATUSES: Record<ResourceType, ResourceStatuses> = {
         'aut-num': {
-            default: [
-                { key: 'ASSIGNED', value: 'ASSIGNED' },
-                { key: 'LEGACY', value: 'LEGACY' },
-                { key: 'OTHER', value: 'OTHER' },
-            ],
+            default: ['ASSIGNED', 'LEGACY', 'OTHER'],
         },
+
         inet6num: {
-            'AGGREGATED-BY-LIR': [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ASSIGNED', value: 'ASSIGNED' },
-            ],
-            'ALLOCATED-BY-LIR': [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ALLOCATED-BY-LIR', value: 'ALLOCATED-BY-LIR' },
-                { key: 'ASSIGNED', value: 'ASSIGNED' },
-            ],
-            'ALLOCATED-BY-RIR': [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ALLOCATED-BY-LIR', value: 'ALLOCATED-BY-LIR' },
-                { key: 'ALLOCATED-BY-RIR', value: 'ALLOCATED-BY-RIR' },
-                { key: 'ASSIGNED', value: 'ASSIGNED' },
-                { key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST' },
-                { key: 'ASSIGNED PI', value: 'ASSIGNED PI' },
-            ],
-            default: [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ALLOCATED-BY-LIR', value: 'ALLOCATED-BY-LIR' },
-                { key: 'ALLOCATED-BY-RIR', value: 'ALLOCATED-BY-RIR' },
-                { key: 'ASSIGNED', value: 'ASSIGNED' },
-                { key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST' },
-                { key: 'ASSIGNED PI', value: 'ASSIGNED PI' },
-            ],
+            'AGGREGATED-BY-LIR': ['AGGREGATED-BY-LIR', 'ASSIGNED'],
+            'ALLOCATED-BY-LIR': ['AGGREGATED-BY-LIR', 'ALLOCATED-BY-LIR', 'ASSIGNED'],
+            'ALLOCATED-BY-RIR': ['AGGREGATED-BY-LIR', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR', 'ASSIGNED', 'ASSIGNED ANYCAST', 'ASSIGNED PI'],
+            default: ['AGGREGATED-BY-LIR', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR', 'ASSIGNED', 'ASSIGNED ANYCAST', 'ASSIGNED PI'],
         },
+
         inetnum: {
-            'AGGREGATED-BY-LIR': [{ key: 'ASSIGNED PA', value: 'ASSIGNED PA' }],
-            'ALLOCATED PA': [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
-                { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' },
-                { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' },
-            ],
-            'ALLOCATED UNSPECIFIED': [
-                { key: 'ALLOCATED PA', value: 'ALLOCATED PA' },
-                { key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED' },
-                { key: 'ALLOCATED ASSIGNED PA', value: 'ALLOCATED ASSIGNED PA' },
-                { key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST' },
-                { key: 'ASSIGNED PI', value: 'ASSIGNED PI' },
-                { key: 'LEGACY', value: 'LEGACY' }, // *
-            ],
-            LEGACY: [{ key: 'LEGACY', value: 'LEGACY' }],
-            'LIR-PARTITIONED PA': [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
-                { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' }, // *
-                { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' }, // *
-            ],
-            'SUB-ALLOCATED PA': [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
-                { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' }, // *
-            ],
+            'AGGREGATED-BY-LIR': ['ASSIGNED PA'],
+            'ALLOCATED PA': ['AGGREGATED-BY-LIR', 'ASSIGNED PA', 'LIR-PARTITIONED PA', 'SUB-ALLOCATED PA'],
+            'ALLOCATED UNSPECIFIED': ['ALLOCATED PA', 'ALLOCATED UNSPECIFIED', 'ALLOCATED ASSIGNED PA', 'ASSIGNED ANYCAST', 'ASSIGNED PI', 'LEGACY'],
+            LEGACY: ['LEGACY'],
+            'LIR-PARTITIONED PA': ['AGGREGATED-BY-LIR', 'ASSIGNED PA', 'LIR-PARTITIONED PA', 'SUB-ALLOCATED PA'],
+            'SUB-ALLOCATED PA': ['AGGREGATED-BY-LIR', 'ASSIGNED PA', 'SUB-ALLOCATED PA'],
             default: [
-                { key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR' },
-                { key: 'ALLOCATED PA', value: 'ALLOCATED PA' },
-                { key: 'ALLOCATED ASSIGNED PA', value: 'ALLOCATED ASSIGNED PA' },
-                { key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED' },
-                { key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST' },
-                { key: 'ASSIGNED PA', value: 'ASSIGNED PA' },
-                { key: 'ASSIGNED PI', value: 'ASSIGNED PI' },
-                { key: 'LEGACY', value: 'LEGACY' },
-                { key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA' },
-                { key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA' },
+                'AGGREGATED-BY-LIR',
+                'ALLOCATED PA',
+                'ALLOCATED ASSIGNED PA',
+                'ALLOCATED UNSPECIFIED',
+                'ASSIGNED ANYCAST',
+                'ASSIGNED PA',
+                'ASSIGNED PI',
+                'LEGACY',
+                'LIR-PARTITIONED PA',
+                'SUB-ALLOCATED PA',
             ],
         },
     };
 
-    private static readonly rsMntnerStatuses = new Map<string, string[]>([
-        ['inetnum', ['ALLOCATED PA', 'ALLOCATED UNSPECIFIED', 'ALLOCATED ASSIGNED PA', 'ASSIGNED ANYCAST']],
-        ['inet6num', ['ASSIGNED PI', 'ASSIGNED ANYCAST', 'ALLOCATED-BY-RIR']],
-    ]);
-    private readonly ipv4StatusesWithUsage = ['ALLOCATED PA', 'SUB-ALLOCATED PA', 'LIR-PARTITIONED PA', 'ALLOCATED-ASSIGNED PA'];
-    private readonly ipv6StatusesWithUsage = ['ALLOCATED-BY-RIR', 'ALLOCATED-BY-LIR'];
+    private static readonly RS_MNTNER_STATUSES: Partial<Record<ResourceType, StatusList>> = {
+        inetnum: ['ALLOCATED PA', 'ALLOCATED UNSPECIFIED', 'ALLOCATED ASSIGNED PA', 'ASSIGNED ANYCAST'],
+        inet6num: ['ASSIGNED PI', 'ASSIGNED ANYCAST', 'ALLOCATED-BY-RIR'],
+    };
+
+    private static readonly STATUSES_WITH_USAGE: Partial<Record<ResourceType, StatusList>> = {
+        inetnum: ['ALLOCATED PA', 'SUB-ALLOCATED PA', 'LIR-PARTITIONED PA', 'ALLOCATED-ASSIGNED PA'],
+        inet6num: ['ALLOCATED-BY-RIR', 'ALLOCATED-BY-LIR'],
+    };
+
+    public get(objectType: string, parentState?: string): IStatusOption[] {
+        const type = this.normalizeType(objectType);
+        if (!type) {
+            return [];
+        }
+
+        const statuses = ResourceStatusService.STATUSES[type];
+        const list = statuses[parentState ?? 'default'] ?? statuses.default;
+
+        return toStatusOptions(list);
+    }
+
+    public filterNonRsStatuses(objectType: string, parentState?: string): IStatusOption[] {
+        const rsStatuses = ResourceStatusService.RS_MNTNER_STATUSES[this.normalizeType(objectType) ?? 'inetnum'] ?? [];
+
+        return this.get(objectType, parentState).filter(({ key }) => !rsStatuses.includes(key));
+    }
 
     // check if usage have sense to be displayed
     public isResourceWithUsage(type: string, status: string): boolean {
-        if (type.toLowerCase() === 'inetnum') {
-            return this.ipv4StatusesWithUsage.indexOf(status) > -1;
-        } else if (type.toLowerCase() === 'inet6num') {
-            return this.ipv6StatusesWithUsage.indexOf(status) > -1;
-        }
-        return false;
+        const resourceType = this.normalizeType(type);
+
+        return resourceType !== null && (ResourceStatusService.STATUSES_WITH_USAGE[resourceType] ?? []).includes(status);
     }
 
-    public static isRsStatus(attributes: IAttributeModel[], objectType: string) {
+    public static isRsStatus(attributes: IAttributeModel[], objectType: string): boolean {
         if (!attributes) {
             return false;
         }
-        for (const attr of attributes) {
-            if (attr.name.trim() === 'status') {
-                return attr.value && (ResourceStatusService.rsMntnerStatuses.get(objectType.toLowerCase()) ?? []).includes(attr.value.trim());
-            }
-        }
-        return false;
+
+        const rsStatuses = ResourceStatusService.RS_MNTNER_STATUSES[ResourceStatusService.normalizeType(objectType) ?? 'aut-num'] ?? [];
+
+        const statusAttribute = attributes.find(({ name }) => name.trim() === 'status');
+
+        return !!statusAttribute?.value && rsStatuses.includes(statusAttribute.value.trim());
     }
 
-    public filterNonRsStatuses(objectType: string, parentState?: string) {
-        const list = this.get(objectType, parentState);
-        return list.filter((status) => !ResourceStatusService.rsMntnerStatuses.get(objectType.toLowerCase()).includes(status.key));
+    private static normalizeType(type: string): ResourceType | null {
+        const normalized = type?.toLowerCase();
+
+        return normalized && normalized in ResourceStatusService.STATUSES ? (normalized as ResourceType) : null;
     }
 
-    public get(objectType: string, parentState?: string): IStatusOption[] {
-        if (!objectType || !this.statuses[objectType]) {
-            return [];
-        }
-        let list = this.statuses[objectType][parentState || 'default'];
-        if (!list) {
-            // if no match on parentState then return all
-            list = this.statuses[objectType].default || [];
-        }
-        return list;
+    private normalizeType(type: string): ResourceType | null {
+        return ResourceStatusService.normalizeType(type);
     }
 }
